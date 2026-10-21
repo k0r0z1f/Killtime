@@ -4,18 +4,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Livre X : Cosmologie & Atlas des Mondes Connus | Codex Universel Système RP</title>
+    <title>Système de Jeu RP — Livre X : Voyage Temporel, Chrono-Physique & Causalité</title>
     <meta name="description"
-        content="Livre X du Codex Universel : Cosmologie intégrale, le Réseau des 36 Zones des Élianes, galaxies, systèmes stellaires, planètes (Hybris, Vardis, Nefris, Cléia, Karkjiue, Terre), continents, cités et points d'intérêt tactiques.">
+        content="Livre X du Système de Jeu RP : Lois fondamentales du fleuve du temps, propagation vers l'avant, effet papillon inversé, goulots d'étranglement causals et les 8 échelons de clairsentience.">
 
-    <!-- Polices Google -->
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;900&family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
 
-    <!-- Feuille de styles unifiée -->
+    <!-- Stylesheet partagée -->
     <link rel="stylesheet" href="css/style.css">
 
     <!-- Feuille de styles partagée de l'authentification -->
@@ -37,9 +37,8 @@
                     <div class="brand-icon">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2">
-                            <polygon points="12 2 2 7 12 12 22 7 12 2" />
-                            <polyline points="2 17 12 22 22 17" />
-                            <polyline points="2 12 12 17 22 12" />
+                            <circle cx="12" cy="12" r="10" />
+                            <polyline points="12 6 12 12 14 14" />
                         </svg>
                     </div>
                     <div class="brand-info">
@@ -49,7 +48,7 @@
                 <nav class="breadcrumbs">
                     <a href="index.html">Codex</a>
                     <span>/</span>
-                    <span class="current">Livre X : Cosmologie & Atlas des Mondes</span>
+                    <span class="current">Livre X : Temps & Causalité</span>
                 </nav>
             </div>
 
@@ -102,10 +101,20 @@
                 <div class="sidebar-header">
                     <div class="sidebar-title">
                         <span>Table des Matières</span>
+                        <span>12 Livres</span>
+                    </div>
+                    <div class="sidebar-search-box">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <circle cx="11" cy="11" r="8" />
+                            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                        </svg>
+                        <input type="text" id="filterInput" placeholder="Filtrer une règle ou un livre..."
+                            autocomplete="off">
                     </div>
                 </div>
 
-                <nav class="sidebar-nav">
+                <nav class="sidebar-nav" id="sidebarNav">
                     <!-- LIEN VERS L'UNIVERS KILLTIME -->
                     <div class="external-site-group">
                         <a href="Killtime/index.html" class="nav-external-link" title="Aller vers l'Univers Killtime">
@@ -164,8 +173,8 @@
                     <div class="nav-group">
                         <button class="nav-group-header">
                             <div class="group-meta">
-                                <span class="group-tag">INDEX</span>
-                                <span>Sommaire Général</span>
+                                <span class="group-tag">00</span>
+                                <span>Prologue & Vision</span>
                             </div>
                             <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
                                 stroke="currentColor" stroke-width="2">
@@ -173,28 +182,22 @@
                             </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="index.html#preface" class="nav-item-link"><span>Préface
-                                        Philosophique</span></a></li>
-                            <li><a href="index.html#harmonie-action" class="nav-item-link"><span>L'Harmonie du
-                                        Risque</span></a></li>
-                            <li><a href="index.html#cinquieme-force" class="nav-item-link"><span>La Cinquième
-                                        Force</span></a></li>
-                            <li><a href="index.html#navigation-codex" class="nav-item-link"><span>Navigation du
-                                        Codex</span></a></li>
+                            <li><a href="index.html#preface" class="nav-item-link"><span>Préface : Le Souffle & Le
+                                        Temps</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
                         </ul>
                     </div>
 
                     <!-- CATÉGORIE : MANUEL DU JOUEUR -->
                     <div class="nav-section-label joueur">
                         <span class="nav-section-title">Manuel du Joueur</span>
-                        <span class="nav-section-count">L.I - L.VIII</span>
+                        <span class="nav-section-count">L.I - L.IX</span>
                     </div>
                     <!-- LIVRE I -->
                     <div class="nav-group">
                         <button class="nav-group-header">
                             <div class="group-meta">
                                 <span class="group-tag">L.I</span>
-                                <span>Fondations & Création</span>
+                                <span>Bases & Création PJ</span>
                             </div>
                             <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
                                 stroke="currentColor" stroke-width="2">
@@ -204,10 +207,14 @@
                         <ul class="nav-items-list">
                             <li><a href="livre_1.html" class="nav-item-link"><span>Livre I (Fichier Dédié)</span><span
                                         class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_1.html#chap-1" class="nav-item-link"><span>1. Principes & Lexique</span></a></li>
-                            <li><a href="livre_1.html#chap-2" class="nav-item-link"><span>2. Cosmologie & Espèces</span></a></li>
-                            <li><a href="livre_1.html#chap-3" class="nav-item-link"><span>3. Création pas-à-pas</span></a></li>
-                            <li><a href="livre_1.html#chap-4" class="nav-item-link"><span>4. Points d'Action & Dégâts</span></a></li>
+                            <li><a href="livre_1.html#chap-1" class="nav-item-link"><span>1. Principes &
+                                        Lexique</span></a></li>
+                            <li><a href="livre_1.html#chap-2" class="nav-item-link"><span>2. Cosmologie &
+                                        Espèces</span></a></li>
+                            <li><a href="livre_1.html#chap-3" class="nav-item-link"><span>3. Création
+                                        pas-à-pas</span></a></li>
+                            <li><a href="livre_1.html#chap-4" class="nav-item-link"><span>4. Points d'Action &
+                                        Dégâts</span></a></li>
                             <li><a href="livre_1.html#chap-5" class="nav-item-link"><span>5. Progression & XP</span></a>
                             </li>
                             <li><a href="livre_1.html#chap-fiche" class="nav-item-link"><span>Fiche de PJ Prototype</span></a>
@@ -230,10 +237,14 @@
                         <ul class="nav-items-list">
                             <li><a href="livre_2.html" class="nav-item-link"><span>Livre II (Fichier Dédié)</span><span
                                         class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_2.html#chap-6" class="nav-item-link"><span>6. L'Échelle des Dés (d2-d12+)</span></a></li>
-                            <li><a href="livre_2.html#chap-7" class="nav-item-link"><span>7. Difficultés & Seuils (0-34)</span></a></li>
-                            <li><a href="livre_2.html#chap-8" class="nav-item-link"><span>8. Tables des Critiques (d2-d24)</span></a></li>
-                            <li><a href="livre_2.html#chap-9" class="nav-item-link"><span>9. Challenges Hors-Combat</span></a></li>
+                            <li><a href="livre_2.html#chap-6" class="nav-item-link"><span>6. L'Échelle des Dés
+                                        (d2-d12+)</span></a></li>
+                            <li><a href="livre_2.html#chap-7" class="nav-item-link"><span>7. Difficultés & Seuils
+                                        (0-34)</span></a></li>
+                            <li><a href="livre_2.html#chap-8" class="nav-item-link"><span>8. Tables des Critiques
+                                        (d2-d24)</span></a></li>
+                            <li><a href="livre_2.html#chap-9" class="nav-item-link"><span>9. Challenges
+                                        Hors-Combat</span></a></li>
                         </ul>
                     </div>
 
@@ -252,10 +263,14 @@
                         <ul class="nav-items-list">
                             <li><a href="livre_3.html" class="nav-item-link"><span>Livre III (Fichier Dédié)</span><span
                                         class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_3.html#chap-10" class="nav-item-link"><span>10. Architecture & Typologie</span></a></li>
-                            <li><a href="livre_3.html#chap-11" class="nav-item-link"><span>11. Arbres Physiques (FOR, AGI, CON)</span></a></li>
-                            <li><a href="livre_3.html#chap-12" class="nav-item-link"><span>12. Arbres Mentaux & Sociaux</span></a></li>
-                            <li><a href="livre_3.html#chap-13" class="nav-item-link"><span>13. Compendium Spécialisations</span></a></li>
+                            <li><a href="livre_3.html#chap-10" class="nav-item-link"><span>10. Architecture &
+                                        Typologie</span></a></li>
+                            <li><a href="livre_3.html#chap-11" class="nav-item-link"><span>11. Arbres Physiques (FOR,
+                                        AGI, CON)</span></a></li>
+                            <li><a href="livre_3.html#chap-12" class="nav-item-link"><span>12. Arbres Mentaux &
+                                        Sociaux</span></a></li>
+                            <li><a href="livre_3.html#chap-13" class="nav-item-link"><span>13. Compendium
+                                        Spécialisations</span></a></li>
                         </ul>
                     </div>
 
@@ -274,13 +289,18 @@
                         <ul class="nav-items-list">
                             <li><a href="livre_4.html" class="nav-item-link"><span>Livre IV (Fichier Dédié)</span><span
                                         class="nav-item-badge badge-live">Disponible</span></a></li>
-                                                        <li><a href="livre_4.html#chap-14" class="nav-item-link"><span>14. Physique de la 5e Force</span></a>
-                            </li>
-<li><a href="livre_4.html#chap-15" class="nav-item-link"><span>15. Moteurs Magiques & Nytharite</span></a></li>
-                            <li><a href="livre_4.html#chap-16" class="nav-item-link"><span>16. Voies Arcaniques & Portée</span></a></li>
-                            <li><a href="livre_4.html#chap-17" class="nav-item-link"><span>17. Évolution Psychique (6 Stades)</span></a></li>
-                            <li><a href="livre_4.html#chap-18" class="nav-item-link"><span>18. Liens & Résonance</span></a></li>
-                            <li><a href="livre_4.html#chap-19" class="nav-item-link"><span>19. Atelier de Création (XP=PA)</span></a></li>
+                            <li><a href="livre_4.html#chap-14" class="nav-item-link"><span>14. Physique de la 5e
+                                        Force</span></a></li>
+                            <li><a href="livre_4.html#chap-15" class="nav-item-link"><span>15. Moteurs Magiques &
+                                        Nytharite</span></a></li>
+                            <li><a href="livre_4.html#chap-16" class="nav-item-link"><span>16. Voies Arcaniques &
+                                        Portée</span></a></li>
+                            <li><a href="livre_4.html#chap-17" class="nav-item-link"><span>17. Évolution Psychique (6
+                                        Stades)</span></a></li>
+                            <li><a href="livre_4.html#chap-18" class="nav-item-link"><span>18. Liens &
+                                        Résonance</span></a></li>
+                            <li><a href="livre_4.html#chap-19" class="nav-item-link"><span>19. Atelier de Création
+                                        (XP=PA)</span></a></li>
                         </ul>
                     </div>
 
@@ -299,9 +319,12 @@
                         <ul class="nav-items-list">
                             <li><a href="livre_5.html" class="nav-item-link"><span>Livre V (Fichier Dédié)</span><span
                                         class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_5.html#chap-20" class="nav-item-link"><span>20. Le Tour de 10s & Économie des PA</span></a></li>
-                            <li><a href="livre_5.html#chap-21" class="nav-item-link"><span>21. Déplacements & Poursuites</span></a></li>
-                            <li><a href="livre_5.html#chap-22" class="nav-item-link"><span>22. Localisation & Véhicules</span></a></li>
+                            <li><a href="livre_5.html#chap-20" class="nav-item-link"><span>20. Le Tour de 10s & Économie
+                                        des PA</span></a></li>
+                            <li><a href="livre_5.html#chap-21" class="nav-item-link"><span>21. Déplacements &
+                                        Poursuites</span></a></li>
+                            <li><a href="livre_5.html#chap-22" class="nav-item-link"><span>22. Localisation &
+                                        Véhicules</span></a></li>
                         </ul>
                     </div>
 
@@ -320,9 +343,12 @@
                         <ul class="nav-items-list">
                             <li><a href="livre_6.html" class="nav-item-link"><span>Livre VI (Fichier Dédié)</span><span
                                         class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_6.html#chap-23" class="nav-item-link"><span>23. Seuils, Encaissement & Séquelles</span></a></li>
-                            <li><a href="livre_6.html#chap-24" class="nav-item-link"><span>24. Compendium des 16 États & Effets</span></a></li>
-                            <li><a href="livre_6.html#chap-25" class="nav-item-link"><span>25. Premiers Soins & Résurrection</span></a></li>
+                            <li><a href="livre_6.html#chap-23" class="nav-item-link"><span>23. Seuils, Encaissement &
+                                        Séquelles</span></a></li>
+                            <li><a href="livre_6.html#chap-24" class="nav-item-link"><span>24. Compendium des 16 États &
+                                        Effets</span></a></li>
+                            <li><a href="livre_6.html#chap-25" class="nav-item-link"><span>25. Premiers Soins &
+                                        Résurrection</span></a></li>
                         </ul>
                     </div>
 
@@ -331,6 +357,27 @@
                         <button class="nav-group-header">
                             <div class="group-meta">
                                 <span class="group-tag">L.VII</span>
+                                <span>Historiques &amp; Passés</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_7.html" class="nav-item-link"><span>Livre VII (Fichier Dédié)</span><span
+                                        class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_7.html#chap-26" class="nav-item-link"><span>26. Principes &amp; Procédure</span></a></li>
+                            <li><a href="livre_7.html#chap-27" class="nav-item-link"><span>27. Enfances (d6)</span></a></li>
+                            <li><a href="livre_7.html#chap-28" class="nav-item-link"><span>28. Métiers (d12)</span></a></li>
+                            <li><a href="livre_7.html#chap-29" class="nav-item-link"><span>29. Événement &amp; Ancrage</span></a></li>
+                        </ul>
+                    </div>
+                    <!-- LIVRE VIII -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta">
+                                <span class="group-tag">L.VIII</span>
                                 <span>Arsenal & Arcanotech</span>
                             </div>
                             <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
@@ -339,48 +386,23 @@
                             </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="livre_7.html" class="nav-item-link"><span>Livre VII (Fichier
+                            <li><a href="livre_8.html" class="nav-item-link"><span>Livre VIII (Fichier
                                         Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_7.html#chap-26" class="nav-item-link"><span>26. Nomenclature & Armes Métal</span></a></li>
-                            <li><a href="livre_7.html#chap-27" class="nav-item-link"><span>27. Épées Laser & Fusils Arcanotech</span></a></li>
-                            <li><a href="livre_7.html#chap-28" class="nav-item-link"><span>28. Blindages, Écrans & Pharmacopée</span></a></li>
+                            <li><a href="livre_8.html#chap-30" class="nav-item-link"><span>30. Nomenclature & Armes
+                                        Métal</span></a></li>
+                            <li><a href="livre_8.html#chap-31" class="nav-item-link"><span>31. Épées Laser & Fusils
+                                        Arcanotech</span></a></li>
+                            <li><a href="livre_8.html#chap-32" class="nav-item-link"><span>32. Blindages, Écrans &
+                                        Pharmacopée</span></a></li>
                         </ul>
                     </div>
 
-                    <!-- LIVRE VIII -->
-                    <div class="nav-group">
-                        <button class="nav-group-header">
-                            <div class="group-meta">
-                                <span class="group-tag">L.VIII</span>
-                                <span>Outils Web Interactifs</span>
-                            </div>
-                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2">
-                                <polyline points="9 18 15 12 9 6" />
-                            </svg>
-                        </button>
-                        <ul class="nav-items-list">
-                            <li><a href="livre_8.html" class="nav-item-link"><span>Livre VIII (Fichier Dédié)</span><span
-                                        class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_8.html#chap-29" class="nav-item-link"><span>29. Créateur de Fiche PJ</span></a></li>
-                            <li><a href="livre_8.html#chap-30" class="nav-item-link"><span>30. Atelier de Sorts (XP=PA)</span></a></li>
-                            <li><a href="livre_8.html#chap-31" class="nav-item-link"><span>31. Lanceur Polyédrique & Critiques</span></a></li>
-                            <li><a href="livre_8.html#chap-32" class="nav-item-link"><span>32. Résolveur de Challenges</span></a></li>
-                            <li><a href="livre_8.html#chap-33" class="nav-item-link"><span>33. Simulateur de Chronotrames</span></a></li>
-                        </ul>
-                    </div>
-
-                    <!-- CATÉGORIE : GUIDE DU MJ -->
-                    <div class="nav-section-label mj">
-                        <span class="nav-section-title">Guide du MJ</span>
-                        <span class="nav-section-count">L.IX - L.XI</span>
-                    </div>
                     <!-- LIVRE IX -->
                     <div class="nav-group">
                         <button class="nav-group-header">
                             <div class="group-meta">
                                 <span class="group-tag">L.IX</span>
-                                <span>Temps & Causalité</span>
+                                <span>Outils Web Interactifs</span>
                             </div>
                             <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
                                 stroke="currentColor" stroke-width="2">
@@ -390,18 +412,30 @@
                         <ul class="nav-items-list">
                             <li><a href="livre_9.html" class="nav-item-link"><span>Livre IX (Fichier Dédié)</span><span
                                         class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_9.html#chap-34" class="nav-item-link"><span>34. Fleuve du Temps & Causalité</span></a></li>
-                            <li><a href="livre_9.html#chap-35" class="nav-item-link"><span>35. Topologie des Chronotrames</span></a></li>
-                            <li><a href="livre_9.html#chap-36" class="nav-item-link"><span>36. Clairsentience (8 Échelons)</span></a></li>
-                            <li><a href="livre_9.html#chap-37" class="nav-item-link"><span>37. Mécaniques Chronales en Jeu</span></a></li>
+                            <li><a href="livre_9.html#chap-33" class="nav-item-link"><span>33. Créateur de Fiche
+                                        PJ</span></a></li>
+                            <li><a href="livre_9.html#chap-34" class="nav-item-link"><span>34. Atelier de Sorts
+                                        (XP=PA)</span></a></li>
+                            <li><a href="livre_9.html#chap-35" class="nav-item-link"><span>35. Lanceur Polyédrique &
+                                        Critiques</span></a></li>
+                            <li><a href="livre_9.html#chap-36" class="nav-item-link"><span>36. Résolveur de
+                                        Challenges</span></a></li>
+                            <li><a href="livre_9.html#chap-37" class="nav-item-link"><span>37. Simulateur de
+                                        Chronotrames</span></a></li>
                         </ul>
+                    </div>
+
+                    <!-- CATÉGORIE : GUIDE DU MJ -->
+                    <div class="nav-section-label mj">
+                        <span class="nav-section-title">Guide du MJ</span>
+                        <span class="nav-section-count">L.X - L.XII</span>
                     </div>
                     <!-- LIVRE X (ACTIF) -->
                     <div class="nav-group expanded">
-                        <button class="nav-group-header active">
+                        <button class="nav-group-header">
                             <div class="group-meta">
                                 <span class="group-tag">L.X</span>
-                                <span>Atlas des Mondes</span>
+                                <span>Temps & Causalité</span>
                             </div>
                             <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
                                 stroke="currentColor" stroke-width="2">
@@ -409,22 +443,22 @@
                             </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="livre_10.html" class="nav-item-link active"><span>Livre X (Page
-                                        Dédiée)</span><span class="nav-item-badge badge-live">Nouveau</span></a></li>
-                            <li><a href="livre_10.html#chap-38" class="nav-item-link"><span>38. Univers & 36 Élianes</span></a></li>
-                            <li><a href="livre_10.html#chap-39" class="nav-item-link"><span>39. Galaxies & Systèmes</span></a></li>
-                            <li><a href="livre_10.html#chap-40" class="nav-item-link"><span>40. Planètes & Vaisseaux</span></a></li>
-                            <li><a href="livre_10.html#chap-41" class="nav-item-link"><span>41. Atlas des Continents</span></a></li>
-                            <li><a href="livre_10.html#chap-42" class="nav-item-link"><span>42. Cités & Points d'Intérêt</span></a></li>
+                            <li><a href="#chap-38" class="nav-item-link active"><span>38. Fleuve du Temps &
+                                        Causalité</span><span class="nav-item-badge badge-live">Actif</span></a></li>
+                            <li><a href="#chap-39" class="nav-item-link"><span>39. Topologie des
+                                        Chronotrames</span><span class="nav-item-badge badge-live">Actif</span></a></li>
+                            <li><a href="#chap-40" class="nav-item-link"><span>40. Clairsentience (8
+                                        Échelons)</span><span class="nav-item-badge badge-live">Actif</span></a></li>
+                            <li><a href="#chap-41" class="nav-item-link"><span>41. Mécaniques Chronales en
+                                        Jeu</span><span class="nav-item-badge badge-live">Actif</span></a></li>
                         </ul>
                     </div>
-
                     <!-- LIVRE XI -->
                     <div class="nav-group">
                         <button class="nav-group-header">
                             <div class="group-meta">
                                 <span class="group-tag">L.XI</span>
-                                <span>Bestiaire &amp; Menaces</span>
+                                <span>Atlas des Mondes</span>
                             </div>
                             <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
                                 stroke="currentColor" stroke-width="2">
@@ -434,11 +468,44 @@
                         <ul class="nav-items-list">
                             <li><a href="livre_11.html" class="nav-item-link"><span>Livre XI (Fichier Dédié)</span><span
                                         class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_11.html#chap-43" class="nav-item-link"><span>43. Typologie &amp; Calibrage</span></a></li>
-                            <li><a href="livre_11.html#chap-44" class="nav-item-link"><span>44. Humanoïdes &amp; Factions</span></a></li>
-                            <li><a href="livre_11.html#chap-45" class="nav-item-link"><span>45. Faune &amp; Monstres d'Hybris</span></a></li>
-                            <li><a href="livre_11.html#chap-46" class="nav-item-link"><span>46. Entités &amp; Disciples</span></a></li>
-                            <li><a href="livre_11.html#chap-47" class="nav-item-link"><span>47. Automates &amp; Cybernétique</span></a></li>
+                            <li><a href="livre_11.html#chap-42" class="nav-item-link"><span>42. Univers & 36
+                                        Élianes</span></a></li>
+                            <li><a href="livre_11.html#chap-43" class="nav-item-link"><span>43. Galaxies &
+                                        Systèmes</span></a></li>
+                            <li><a href="livre_11.html#chap-44" class="nav-item-link"><span>44. Planètes &
+                                        Vaisseaux</span></a></li>
+                            <li><a href="livre_11.html#chap-45" class="nav-item-link"><span>45. Atlas des
+                                        Continents</span></a></li>
+                            <li><a href="livre_11.html#chap-46" class="nav-item-link"><span>46. Cités & Points
+                                        d'Intérêt</span></a></li>
+                        </ul>
+                    </div>
+
+                    <!-- LIVRE XII -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta">
+                                <span class="group-tag">L.XII</span>
+                                <span>Bestiaire &amp; Menaces</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_12.html" class="nav-item-link"><span>Livre XII (Fichier Dédié)</span><span
+                                        class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_12.html#chap-47" class="nav-item-link"><span>47. Typologie &amp;
+                                        Calibrage</span></a></li>
+                            <li><a href="livre_12.html#chap-48" class="nav-item-link"><span>48. Humanoïdes &amp;
+                                        Factions</span></a></li>
+                            <li><a href="livre_12.html#chap-49" class="nav-item-link"><span>49. Faune &amp; Monstres
+                                        d'Hybris</span></a></li>
+                            <li><a href="livre_12.html#chap-50" class="nav-item-link"><span>50. Entités &amp;
+                                        Disciples</span></a></li>
+                            <li><a href="livre_12.html#chap-51" class="nav-item-link"><span>51. Automates &amp;
+                                        Cybernétique</span></a></li>
                         </ul>
                     </div>
                 </nav>
@@ -453,847 +520,563 @@
                             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2">
                                 <circle cx="12" cy="12" r="10" />
-                                <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
-                                <path d="M2 12h20" />
+                                <polyline points="12 6 12 12 14 14" />
                             </svg>
-                            Livre X — Cosmologie & Cartographie Réelle
+                            Livre X — Chrono-Physique & Causalité
                         </span>
-                        <span class="doc-badge-pill accent">Hiérarchie Cosmique en 7 Niveaux</span>
-                        <span class="doc-badge-pill live">Homologué Codex</span>
+                        <span class="doc-badge-pill accent">Physique Temporelle & Clairsentience</span>
+                        <span class="doc-badge-pill live">Système Validé</span>
                     </div>
 
-                    <h1 class="doc-title">Livre X : Cosmologie & Atlas des Mondes Connus</h1>
+                    <h1 class="doc-title">Livre X : Voyage Temporel, Chrono-Physique&nbsp;& Causalité</h1>
                     <p class="doc-lead">
-                        L'univers du Système RP n'est pas un agrégat aléatoire de planètes suspendues dans le vide. Il
-                        obéit à une <strong>architecture enveloppante absolue</strong>, où chaque niveau d'existence
-                        englobe et dicte les lois physiques et arcaniques des strates inférieures. De la Cinquième Force
-                        primordiale et du réseau maillé des <strong>36 Élianes</strong> jusqu'aux ruelles étouffantes
-                        d'Atraxia ou aux forges souterraines de Brum'korath, ce livre dresse la cartographie intégrale
-                        des mondes, factions, systèmes et points d'intérêt connus.
+                        Le temps n'est pas une ligne inerte gravée dans la pierre, ni une suite infinie de paradoxes
+                        sans issue. C'est un <strong>fleuve massif et visqueux</strong>, doté d'une inertie formidable,
+                        d'une résistance à l'entropie et de carrefours inévitables. Ce livre dévoile les lois
+                        universelles de la causalité, le théorème de la propagation vers l'avant, l'effet papillon
+                        inversé et les huit échelons cognitifs de la clairsentience.
                     </p>
-
-                    <!-- BANNIÈRE DE HIÉRARCHIE COSMIQUE -->
-                    <div class="hierarchy-banner">
-                        <div
-                            style="font-family: var(--font-mono); font-size: 0.72rem; text-transform: uppercase; color: var(--arcane-cyan); letter-spacing: 0.08em;">
-                            Structure Hiérarchique Enveloppante (Chaque niveau englobe les suivants) :
-                        </div>
-                        <div class="hierarchy-steps">
-                            <span class="step-node active">1. Univers</span>
-                            <span class="step-sep">&gt;</span>
-                            <span class="step-node active">2. 36 Zones des Élianes</span>
-                            <span class="step-sep">&gt;</span>
-                            <span class="step-node active">3. Galaxies</span>
-                            <span class="step-sep">&gt;</span>
-                            <span class="step-node active">4. Systèmes Planétaires</span>
-                            <span class="step-sep">&gt;</span>
-                            <span class="step-node active">5. Planètes &amp; Lunes</span>
-                            <span class="step-sep">&gt;</span>
-                            <span class="step-node active">6. Zones Géographiques</span>
-                            <span class="step-sep">&gt;</span>
-                            <span class="step-node active">7. Villes &amp; Points d'Intérêt</span>
-                        </div>
-                    </div>
-
-                    <div style="margin: 20px 0; text-align: center;">
-                        <a href="atlas_3d.html" class="btn-step"
-                            style="display: inline-flex; width: auto; padding: 12px 24px; text-decoration: none; font-family: var(--font-mono); font-weight: 700; color: #fff; background: linear-gradient(135deg, rgba(56,189,248,0.2), rgba(15,23,42,0.9)); border: 1px solid var(--arcane-cyan); border-radius: 6px;">
-                            <span>🚀 Lancer l'Atlas 3D Temps Réel (36 Zones &amp; Mondes)</span>
-                        </a>
-                    </div>
 
                     <hr class="doc-divider">
 
-                    <!-- ================= CHAPITRE 38 ================= -->
+                    <!-- ================= CHAPITRE 20 ================= -->
                     <h2 id="chap-38">
                         <span class="section-symbol">Chapitre 38.</span>
-                        L'Univers & Le Réseau des 36 Zones des Élianes
+                        Le Fleuve du Temps & Les Lois de la Causalité
                     </h2>
 
                     <p>
-                        À l'échelle suprême se trouve la trame universelle : un continuum quadri-dimensionnel baigné par
-                        la <strong>Cinquième Force</strong> et irrigué par le <strong>Fleuve du Temps</strong>.
+                        Dans la mécanique de notre univers, le temps est appréhendé non pas comme une abstraction
+                        mathématique, mais comme un flux hydrodynamique subquantique : <strong>Le Fleuve du
+                            Temps</strong>. Tout être vivant et tout objet macroscopique y est immergé. Modifier le
+                        passé ou percevoir l'avenir répond à des contraintes physiques implacables qui interdisent la
+                        magie du paradoxe gratuit.
                     </p>
 
-                    <h3>38.1 La Genèse Cosmique : La Mère, le Fleuve et l'Eau Sombre</h3>
+                    <div class="callout temporal">
+                        <div class="callout-header">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <circle cx="12" cy="12" r="10" />
+                                <polyline points="12 6 12 12 14 14" />
+                            </svg>
+                            Axiome Premier : L'Inertie Causalité
+                        </div>
+                        <div class="callout-body">
+                            « Le tissu spatio-temporel refuse d'être déchiré par un simple caprice. Lorsqu'une variable
+                            est modifiée dans le flux, le fleuve génère une force de rappel causale immédiate. Tenter de
+                            nager à contre-courant brise le voyageur ; épouser le courant et façonner la berge en aval
+                            forge l'éternité. »
+                        </div>
+                    </div>
+
+                    <h3>38.1 L'Illusion de la Boucle Arrière vs La Propagation vers l'Avant</h3>
                     <p>
-                        Avant la matérialisation des galaxies, <strong>La Mère</strong> — conscience créatrice
-                        transdimensionnelle située sur les rives extérieures du continuum — donna naissance à <strong>36
-                            entités supérieures nommées les Élianes</strong> pour canaliser les courants de matière
-                        réelle. Mais il y a 20 milliards d'années, une perturbation catastrophique brisa l'harmonie
-                        primordiale :
+                        Dans les systèmes temporels naïfs, une entité confrontée à l'extinction ou à la défaite tente de
+                        « tricher avec les mathématiques » : elle construit un dispositif pour envoyer un projectile, un
+                        message d'avertissement ou un esprit vers l'arrière, à contre-courant du fleuve. C'est ce que
+                        notre physique qualifie de <strong>Boucle Arrière (Backward Loop)</strong>.
+                    </p>
+                    <p>
+                        La physique du Système RP établit que la boucle arrière est une impasse entropique :
                     </p>
 
                     <div class="cards-grid-2">
                         <div class="spec-card">
                             <div class="spec-card-title">
-                                <span>Capricius &amp; La Rupture</span>
-                                <span class="pill-badge ruby">Le Dieu en Panique</span>
+                                <span>La Boucle Arrière (Impasse)</span>
+                                <span class="pill-badge ruby">Instabilité Critique</span>
                             </div>
-                            <div class="spec-card-world">Cosmologie // Entité Élienne Défaillante</div>
+                            <div class="spec-card-world">Chrono-Physique // Rétro-Injection</div>
                             <p>
-                                Capricius, l'un des 36 Élianes, commit l'erreur irréversible d'engloutir les « courants
-                                scintillants » de matière pure. Cet acte créa un excédent toxique d'<strong>Eau Sombre
-                                    (Matière Noire / Dark Water)</strong> qui submergea le Fleuve du Temps. Condamnant
-                                l'univers à un effondrement thermodynamique irréversible d'ici 1 000 ans, Capricius
-                                passa les 100 000 années suivantes dans une panique absolue, déployant des équations de
-                                psychohistoire pour écraser toute anomalie menaçant son équation de survie.
+                                Envoyer de l'information ou de la matière vers le passé engendre un cisaillement
+                                temporel. La distorsion accumulée consomme exponentiellement l'énergie du signal jusqu'à
+                                l'effondrement en singularité locale ou en boucle fermée stérile où la cause s'annule
+                                elle-même. Le voyageur est broyé par la friction du continuum.
                             </p>
                             <div class="spec-card-footer">
-                                <span class="tag-pill ruby">Calcul Psychohistorique sur 100 000 ans</span>
+                                <span class="tag-pill ruby">Divergence Incontrôlable</span>
+                                <span class="tag-pill amber">Érosion Synaptique</span>
                             </div>
                         </div>
 
                         <div class="spec-card">
                             <div class="spec-card-title">
-                                <span>Les Protocoles d'Extinction</span>
-                                <span class="pill-badge amber">Les Disciples Cosmiques</span>
+                                <span>La Propagation vers l'Avant</span>
+                                <span class="pill-badge cyan">Stabilité Absolue</span>
                             </div>
-                            <div class="spec-card-world">Vecteurs d'Entropie // Missiles Biologiques</div>
+                            <div class="spec-card-world">Chrono-Physique // Vecteur Naturel</div>
                             <p>
-                                Lorsqu'une anomalie temporelle menace l'équation de Capricius, celui-ci n'envoie pas une
-                                flotte : il <strong>projette un Disciple</strong> — le prototype par traversée balistique,
-                                la série suivante par trou de ver. Ces prédateurs
-                                ultimes incarnent les éléments fondamentaux (<em>Disciple de Terre</em>, <em>d'Air</em>,
-                                <em>de Feu</em> et <em>d'Eau</em>). Blindés contre les armes balistiques et arcaniques,
-                                ils purgent les lignes divergentes pour restaurer la trajectoire prédéterminée.
+                                Au lieu de lutter contre le courant, les véritables bâtisseurs temporels acceptent
+                                l'exil dans le passé, s'y ancrent physiquement, et <strong>propagent une onde causale
+                                    vers l'avant</strong> à travers les siècles d'entropie naturelle. En plantant des
+                                graines dans l'argile du passé, ils laissent le temps broyer leurs ennemis et mûrir leur
+                                triomphe.
                             </p>
                             <div class="spec-card-footer">
-                                <span class="tag-pill amber">Disciples de Terre &bull; Air &bull; Feu &bull; Eau</span>
+                                <span class="tag-pill cyan">Convergence Causalité</span>
+                                <span class="tag-pill green">Tolérance 100%</span>
                             </div>
                         </div>
                     </div>
 
-                    <h3>38.2 Le Réseau Maillé des 36 Élianes</h3>
+                    <h3>38.2 L'Effet Papillon Inversé (The Reverse Butterfly Effect)</h3>
                     <p>
-                        Pour stabiliser le multivers, l'espace navigable est quadrillé en <strong>36 Zones d'Influence
-                            Éliennes</strong>. Chaque zone correspond au champ de résonance gravitationnelle et
-                        arcanique d'un Éliane spécifique. La rupture de communication entre ces zones provoque des
-                        tempêtes d'Eau Sombre et des distorsions de la causalité.
+                        Dans les modèles temporels classiques, un battement d'ailes de papillon dans le passé déclenche
+                        un ouragan à l'autre bout du monde des siècles plus tard (chaos divergent). Dans notre univers
+                        de jeu, les grands architectes exploitent le phénomène inverse : <strong>L'Effet Papillon
+                            Inversé</strong>.
                     </p>
 
+                    <div class="formula-box">
+                        <div class="formula-label">Théorème de l'Ancre Causalité Descendante</div>
+                        <div class="formula-math">
+                            <span class="hl-cyan">Stabilité Causalité</span> = (<span class="hl-gold">Masse
+                                Inerte</span> × <span class="hl-gold">Temps Décantation</span>) / <span
+                                class="hl-ruby">&Delta; Perturbation</span> &ge; 0.9999
+                        </div>
+                        <div class="formula-desc">
+                            Une ancre physique (un journal scellé, un sanctuaire enfoui sous la roche, une tradition
+                            culturelle tribale vivante) déposée avec une perturbation minime dans le passé voit son
+                            impact se solidifier avec les siècles. L'entropie élimine les remous chaotiques et ne
+                            conserve que la trajectoire maîtresse voulue.
+                        </div>
+                    </div>
+
                     <p>
-                        Les 36 zones sont <strong>sans forme prédéfinie mais d'étendue moyenne égale</strong>
-                        (~1,2×10⁴ Gly³ chacune, soit ~23 Gly de côté caractéristique pour un univers observable de
-                        ~93 Gly de diamètre). <strong>Exception : la Zone 02 (Capricius)</strong>, dilatée aux dépens
-                        de l'anneau 05–10 et de la Zone 01. <strong>Hybris se trouve près du bord de la Zone 01 faisant
-                            face à la Zone 02</strong>, à ~1 milliard d'années-lumière d'Aurion (z ≈ 0,07) — une
-                        distance que seule la navigation hors-espace (relais sub-spatiaux, Fleuve, trous de ver)
-                        permet de franchir.
+                        Pour qu'une ancre temporelle survive à plus d'un millénaire de friction, elle doit s'appuyer sur
+                        <strong>trois piliers fondamentaux</strong> :
                     </p>
 
                     <div class="table-container">
                         <table class="data-table">
                             <thead>
                                 <tr>
-                                    <th>Zone Élienne</th>
-                                    <th>Éliane Tutélaire</th>
-                                    <th>Nature du Vecteur Arcanique</th>
-                                    <th>Statut Actuel &amp; Menace</th>
+                                    <th>Pilier de Transmission</th>
+                                    <th>Support Physique</th>
+                                    <th>Mécanisme de Préservation</th>
+                                    <th>Résistance à l'Entropie</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td><span class="table-badge cyan">Zone 01 — Hybris Sector</span></td>
-                                    <td><strong>Aethelgard</strong></td>
-                                    <td>Gravité résonante &bull; 5e Force primordiale</td>
-                                    <td><span class="table-badge green">Stable (Foyer de l'Anomalie)</span></td>
+                                    <td><strong>L'Ancre Minérale</strong></td>
+                                    <td>Roche ignée, crypte d'obsidienne, carcasse métallique scellée</td>
+                                    <td>Inertie géologique absolue. Ne dépend d'aucun observateur ; sa présence physique
+                                        prouve la matérialité de l'avertissement.</td>
+                                    <td><span class="table-badge cyan">Millénaire (Inaltérable)</span></td>
                                 </tr>
                                 <tr>
-                                    <td><span class="table-badge ruby">Zone 02 — Aurion Nexus</span></td>
-                                    <td><strong>Capricius</strong></td>
-                                    <td>Eau Sombre &bull; Calculs Psychohistoriques</td>
-                                    <td><span class="table-badge ruby">Critique // Surveillance Impériale</span></td>
+                                    <td><strong>Le Courant Vivant</strong></td>
+                                    <td>Peuple indigène, lignée biologique, rituels oraux codés</td>
+                                    <td>Transmission culturelle et linguistique. La pierre s'érode, mais un mythe répété
+                                        de génération en génération s'adapte et survit.</td>
+                                    <td><span class="table-badge green">Dynamique & Résilient</span></td>
                                 </tr>
                                 <tr>
-                                    <td><span class="table-badge amber">Zone 03 — Cléia Astra</span></td>
-                                    <td><strong>Selene-Vor</strong></td>
-                                    <td>Magie Inhérente &bull; Singularité Subquantique</td>
-                                    <td><span class="table-badge amber">Actif // Foyer Cléien</span></td>
-                                </tr>
-                                <tr>
-                                    <td><span class="table-badge emerald">Zone 04 — Karkjiue Rim</span></td>
-                                    <td><strong>Goroth-Kahn</strong></td>
-                                    <td>Cinétique brute &bull; Densité tellurique</td>
-                                    <td><span class="table-badge green">Contrôlé // Protectorat Mikyai</span></td>
-                                </tr>
-                                <tr>
-                                    <td><span class="table-badge warning">Zone 05 à 36</span></td>
-                                    <td><strong>Les 32 Autres Archontes</strong></td>
-                                    <td>Vecteurs élémentaires, vides stellaires et failles</td>
-                                    <td><span class="table-badge warning">Partiellement submergés par l'Eau
-                                            Sombre</span></td>
+                                    <td><strong>La Capsule Biométrique</strong></td>
+                                    <td>Noyau d'IA dormante, verrou génétique ADN à tolérance 0.0001%</td>
+                                    <td>Système clos en stase totale. L'automate ne s'éveille qu'à la microseconde
+                                        exacte où l'empreinte génétique désignée pose la main dessus.</td>
+                                    <td><span class="table-badge amber">Précision Chirurgicale</span></td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
 
-                    <hr class="doc-divider">
+                    <h3>38.3 Les Trous de Ver Spatiaux (Raccourci Autorisé)</h3>
+                    <p>
+                        Ni la Boucle Arrière ni la dérive balistique ne sont les seuls vecteurs : la
+                        <strong>Cinquième Force</strong> permet de coudre deux points <strong>contemporains</strong> de
+                        l'espace par un <strong>trou de ver purement spatial</strong>. Les deux bouches restant sur le
+                        même front causal, le transit est quasi-instantané <strong>sans remonter le Fleuve</strong> :
+                        aucune friction, aucun paradoxe — c'est un raccourci, pas un voyage temporel. C'est par ce
+                        vecteur de seconde génération (relais sub-spatiaux, têtes de pont ancrées dans la 5e Force)
+                        que l'Empire projette ses Disciples Air, Feu et Eau, là où le prototype de Terre, œuvre
+                        solitaire pré-impériale, dut encore traverser l'espace à ~c.
+                    </p>
 
-                    <!-- ================= CHAPITRE 39 ================= -->
+                    <!-- ================= CHAPITRE 21 ================= -->
                     <h2 id="chap-39">
                         <span class="section-symbol">Chapitre 39.</span>
-                        Les Galaxies &amp; Systèmes Planétaires Connus
+                        Topologie des Chronotrames & Goulots d'Étranglement
                     </h2>
 
                     <p>
-                        À l'intérieur des 36 zones éliennes tourbillonnent les galaxies, au sein desquelles les
-                        civilisations ont bâti leurs empires et tracé les routes spatiales. Chaque zone compte en
-                        moyenne des <strong>milliards de galaxies anonymes</strong> : seules <strong>3 sont
-                            référencées</strong> ici, parce que seules elles importent au récit.
+                        L'univers ne tolère pas une prolifération anarchique de réalités parallèles infinies. Les lois
+                        de conservation de la Cinquième Force imposent que les branches temporelles divergentes se
+                        résorbent ou se reconnectent aux événements fondateurs.
                     </p>
 
-                    <h3>39.1 Les Galaxies Référencées</h3>
-                    <div class="cards-grid-3">
-                        <div class="spec-card">
-                            <div class="spec-card-title">
-                                <span>Galaxie d'Aurion</span>
-                                <span class="pill-badge ruby">Empire Central</span>
-                            </div>
-                            <div class="spec-card-world">Secteur Impérial // Zone Élienne 02</div>
-                            <p>
-                                Le cœur de l'<strong>Empire Intergalactique</strong>, <strong>fondé il y a 22 millions
-                                    d'années</strong> sur les vestiges de la Première Civilisation (aujourd'hui
-                                disparue). Caractérisée par une hyper-densité
-                                militaire, des relais de téléportation sub-spatiaux et le monolithe du Nexus d'Aurion.
-                                L'Empire ne tient pas un front plein : il rayonne en <strong>systèmes
-                                    tentaculaires</strong> le long des corridors rentables et laisse les mondes
-                                civilisés non stratégiques <strong>indépendants et intouchés</strong>.
-                            </p>
-                        </div>
+                    <h3>39.1 Les Goulots d'Étranglement Causals (Causal Bottlenecks)</h3>
+                    <p>
+                        Un <strong>goulot d'étranglement causal</strong> est un événement de convergence cosmique
+                        absolue. Quelles que soient les micro-décisions prises en amont par des individus, la gravité du
+                        destin courbe les chronotrames pour les forcer à traverser ce carrefour précis.
+                    </p>
 
-                        <div class="spec-card">
-                            <div class="spec-card-title">
-                                <span>Galaxie Principale</span>
-                                <span class="pill-badge cyan">Voie Centrale</span>
-                            </div>
-                            <div class="spec-card-world">Expansion Humaine // Zone Élienne 01</div>
-                            <p>
-                                Vaste galaxie spirale regroupant des dizaines de mondes colonisés par les humains, des
-                                colonies franches aux stations minières indépendantes. La <strong>Terre primitive y
-                                    reste intouchée et non impliquée</strong> : les déportés de l'An 0 venaient de
-                                multiples autres mondes avancés.
-                            </p>
+                    <div class="callout warning">
+                        <div class="callout-header">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path
+                                    d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                                <line x1="12" y1="9" x2="12" y2="13" />
+                                <line x1="12" y1="17" x2="12.01" y2="17" />
+                            </svg>
+                            Règle du Maître de Jeu : L'Inaltérabilité du Goulot
                         </div>
-
-                        <div class="spec-card">
-                            <div class="spec-card-title">
-                                <span>La Galaxie Sans Étoiles</span>
-                                <span class="pill-badge purple">Anomalie Cosmique</span>
-                            </div>
-                            <div class="spec-card-world">Faille Causaliste // Hors-Cartes</div>
-                            <p>
-                                Visible uniquement depuis les observatoires arcaniques de pointe lors d'alignements
-                                quantiques. Un gouffre stellaire dépourvu de soleils, vestige d'une ligne temporelle
-                                effacée.
-                            </p>
+                        <div class="callout-body">
+                            Les joueurs ne peuvent pas empêcher un goulot temporel d'arriver (ex: la chute d'une
+                            capitale, l'effondrement d'un bouclier planétaire, la fuite obligatoire vers un sanctuaire).
+                            En revanche, <strong>la préparation, l'état physique et psychologique, et les armes qu'ils
+                                apportent dans le goulot</strong> déterminent s'ils en sortiront broyés ou transformés
+                            en demi-dieux.
                         </div>
                     </div>
 
-                    <h3>39.2 Les Systèmes Stellaires Majeurs</h3>
+                    <h3>39.2 Le Rôle du Goulot : Forger l'Esprit au lieu de Donner des Armes</h3>
                     <p>
-                        Chaque système stellaire abrite une étoile hôte, une ceinture orbitale et des corridors de
-                        navigation Warp sécurisés :
+                        L'erreur classique des voyageurs temporels est de chercher à transmettre une arme magique ou un
+                        canon laser surpuissant à travers le temps. Une arme peut être volée, copiée ou confisquée par
+                        l'adversaire.
+                    </p>
+                    <p>
+                        Ce que lègue une chronotrame maîtresse dans un goulot temporel, c'est <strong>du temps
+                            d'arrêt</strong> :
+                    </p>
+                    <ul>
+                        <li><strong>La halte forcée :</strong> Offrir à des fuyards traqués l'espace de silence et
+                            d'obscurité nécessaire pour cesser de réagir par panique animale.</li>
+                        <li><strong>L'intégration des traumatismes :</strong> Donner les jours ou les semaines de recul
+                            indispensables pour souder les esprits, maîtriser la Cinquième Force et dompter les
+                            instincts primaires.</li>
+                        <li><strong>La révélation structurante :</strong> Découvrir la trace irréfutable de leurs
+                            propres prédécesseurs, transformant le désespoir de l'inconnu en certitude
+                            d'accomplissement.</li>
+                    </ul>
+
+                    <h3>39.3 Paradoxes & Tolérance du Tissu Temporel (Variance 0.0001%)</h3>
+                    <p>
+                        Contrairement aux récits fantastiques où tuer son propre grand-père efface le voyageur dans un
+                        flash de lumière blanche, le continuum de notre système réagit avec une <strong>friction
+                            visqueuse</strong> :
                     </p>
 
                     <div class="table-container">
                         <table class="data-table">
                             <thead>
                                 <tr>
-                                    <th>Système Stellaire</th>
-                                    <th>Étoile Centrale</th>
-                                    <th>Mondes Principaux &amp; Corps Célestes</th>
-                                    <th>Affiliation Géopolitique</th>
+                                    <th>Niveau de Distorsion</th>
+                                    <th>Écart Temporel / Déviation</th>
+                                    <th>Effet sur le Monde</th>
+                                    <th>Conséquence sur le Voyageur (PJ)</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td><strong>Système Hybris-Prime</strong></td>
-                                    <td>Hybris-Alpha (Naine jaune stable)</td>
-                                    <td><strong>Hybris</strong>, 2 lunes arcaniques, anneau de débris métalliques</td>
-                                    <td>Indépendant // Mondes Francs (Post-Déportation)</td>
+                                    <td><span class="table-badge green">Zone Neutre</span></td>
+                                    <td>Variance &le; 0.0001% (micro-détails)</td>
+                                    <td>Absorption par l'inertie du fleuve. Aucun changement macroscopique.</td>
+                                    <td>Aucune séquelle.</td>
                                 </tr>
                                 <tr>
-                                    <td><strong>Système Janus</strong></td>
-                                    <td>Vardis-Major (Étoile binaire rouge-orangée)</td>
-                                    <td><strong>Vardis</strong>, <strong>Nefris</strong>, Ceinture d'astéroïdes
-                                        tactique</td>
-                                    <td>Territoire Militaire de l'Empire Intergalactique</td>
+                                    <td><span class="table-badge cyan">Onde Mineure</span></td>
+                                    <td>Modification d'une vie locale ou d'un lieu secondaire</td>
+                                    <td>Les souvenirs oscillent. Les livres d'histoire se réécrivent imperceptiblement.
+                                    </td>
+                                    <td>Migraines chronales (-1 PA au 1er tour de chaque scène pendant 24h).</td>
                                 </tr>
                                 <tr>
-                                    <td><strong>Système Cléia</strong></td>
-                                    <td>Astra-Cléia (Étoile blanche à flux constant)</td>
-                                    <td><strong>Cléia</strong>, Réseau de satellites capteurs de 5e Force</td>
-                                    <td>Royaume Matriarcal Cléien (Indépendant, prospecté)</td>
+                                    <td><span class="table-badge amber">Tension Majeure</span></td>
+                                    <td>Altération d'une faction ou retard d'une bataille</td>
+                                    <td>Décalage de plusieurs mois sur les événements mondiaux. Dérive de phase.</td>
+                                    <td>Épreuve de Sagesse (Difficile 18) sous peine de perdre 1 Dé de Constitution
+                                        temporairement.</td>
                                 </tr>
                                 <tr>
-                                    <td><strong>Système Karkjiue</strong></td>
-                                    <td>Kark-Sol (Géante rouge à fortes éruptions)</td>
-                                    <td><strong>Karkjiue</strong>, Bassins miniers orbitaux</td>
-                                    <td>Protectorat Martial des Légions Mikyais</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Système Solaire (Sol)</strong></td>
-                                    <td>Soleil (Type G2V)</td>
-                                    <td><strong>Terre</strong>, Mars, Stations de recherche Jupiter</td>
-                                    <td>Monde primitif intouché (XXIe siècle, hors contact &amp; non impliqué)</td>
+                                    <td><span class="table-badge ruby">Rupture Causalité</span></td>
+                                    <td>Tentative de destruction d'un Goulot d'Étranglement</td>
+                                    <td>Rejet violent du tissu spatio-temporel. Effondrement de la zone en bulle de
+                                        stase.</td>
+                                    <td>Dégâts Absolus égaux à <code>Constitution &times; 3</code> et bannissement
+                                        dimensionnel.</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
 
-                    <hr class="doc-divider">
-
-                    <!-- ================= CHAPITRE 40 ================= -->
+                    <!-- ================= CHAPITRE 22 ================= -->
                     <h2 id="chap-40">
                         <span class="section-symbol">Chapitre 40.</span>
-                        Planètes, Lunes &amp; Vaisseaux-Mondes
+                        Clairsentience & Prémonition (L'Échelle des 8 Échelons)
                     </h2>
 
                     <p>
-                        Les planètes constituent le théâtre direct de l'action. Chaque monde est classé selon deux
-                        indices universels officiels du Système RP : son <strong>Échelle Technologique (1 à 6)</strong>
-                        et sa <strong>Résonance Magique (Impossible à Inhérente)</strong>.
+                        La <strong>Clairsentience</strong> est la manifestation cognitive la plus subtile et la plus
+                        exigeante de la Cinquième Force. Elle ne repose pas sur une formule magique bruyante, mais sur
+                        la capacité du cortex cérébral à capter les ondes de probabilité qui se propagent le long du
+                        fleuve temporel.
                     </p>
 
-                    <!-- COMPENDIUM DES MONDES PRINCIPAUX -->
-                    <div class="world-card">
-                        <div class="world-header">
-                            <div class="world-title-group">
-                                <h4>1. Hybris</h4>
-                                <div class="world-subtitle">Monde de Stabilisation Écologique // An 1771 HSC</div>
-                            </div>
-                            <span class="pill-badge cyan">Planète Centrale des Héros</span>
+                    <div class="callout success">
+                        <div class="callout-header">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <circle cx="12" cy="12" r="10" />
+                                <polyline points="12 6 12 12 14 14" />
+                            </svg>
+                            Neuro-Physique de la Vision
                         </div>
-                        <p>
-                            Planète jeune au climat vivifiant mais tumultueux. Inhabitée par les civilisations
-                            civilisées jusqu'à l'<strong>An 0</strong>, date à laquelle environ <strong>3 000 individus
-                                déportés</strong> issus de mondes technologiques avancés y furent largués dans
-                            d'immenses cages forgées en alliages rares. Les survivants se scindèrent : les
-                            <strong>Nains</strong> (nains) bâtirent leur empire souterrain à l'ouest ; les
-                            <strong>Tauriens</strong> (elfes des bois) s'installèrent dans la grande forêt du sud ; les
-                            humains fondèrent les cités des plaines. Les <strong>Dereks</strong>, êtres indigènes de
-                            pierre et de terre, veillent sur les entrailles du monde.
-                        </p>
-                        <div class="world-meta-grid">
-                            <div class="meta-field">
-                                <span class="meta-field-label">Technologie</span>
-                                <span class="meta-field-value cyan">Médiévale à Avancée (3-4)</span>
-                            </div>
-                            <div class="meta-field">
-                                <span class="meta-field-label">Magie (5e Force)</span>
-                                <span class="meta-field-value emerald">Normale à Inhérente</span>
-                            </div>
-                            <div class="meta-field">
-                                <span class="meta-field-label">Gravité</span>
-                                <span class="meta-field-value">1.02 g standard</span>
-                            </div>
-                            <div class="meta-field">
-                                <span class="meta-field-label">Atmosphère</span>
-                                <span class="meta-field-value">Azote-Oxygène (Pure)</span>
-                            </div>
-                            <div class="meta-field">
-                                <span class="meta-field-label">Peuples Majeurs</span>
-                                <span class="meta-field-value">Humains, Nains, Tauriens, Dereks</span>
-                            </div>
+                        <div class="callout-body">
+                            La clairsentience naît au carrefour du <strong>Réseau par Défaut (DMN)</strong> et de
+                            l'activation des noyaux profonds de résonance arcanique. Lorsque le sujet cesse de fixer son
+                            attention sur l'immédiat sensoriel, son esprit « dérive » dans l'épaisseur du temps,
+                            percevant aussi bien l'écho sédimenté du passé que la courbure gravitationnelle du futur.
                         </div>
                     </div>
 
-                    <div class="world-card ruby">
-                        <div class="world-header">
-                            <div class="world-title-group">
-                                <h4>2. Vardis</h4>
-                                <div class="world-subtitle">Monde Forteresse &amp; Bassin Minier Impérial</div>
-                            </div>
-                            <span class="pill-badge ruby">Zone Militaire Oppressive</span>
-                        </div>
-                        <p>
-                            Planète aride et rocailleuse balafrée par les guerres d'asservissement et l'exploitation
-                            industrielle effrénée. Dominée par l'Empire Intergalactique qui y maintient des garnisons
-                            d'élite, des réseaux de caméras biométriques et le redoutable Nexus d'Aurion. Les
-                            populations locales, notamment les <strong>Tribus des Thaluns</strong> et la
-                            <strong>Résistance clandestine d'Atraxia</strong>, combattent au quotidien contre les rafles
-                            de la milice impériale.
-                        </p>
-                        <div class="world-meta-grid">
-                            <div class="meta-field">
-                                <span class="meta-field-label">Technologie</span>
-                                <span class="meta-field-value ruby">Avancée (Niveau 4-5)</span>
-                            </div>
-                            <div class="meta-field">
-                                <span class="meta-field-label">Magie (5e Force)</span>
-                                <span class="meta-field-value amber">Limitée (Réglementée)</span>
-                            </div>
-                            <div class="meta-field">
-                                <span class="meta-field-label">Gravité</span>
-                                <span class="meta-field-value">1.15 g (Lourde)</span>
-                            </div>
-                            <div class="meta-field">
-                                <span class="meta-field-label">Atmosphère</span>
-                                <span class="meta-field-value">Aride // Poussières industrielles</span>
-                            </div>
-                            <div class="meta-field">
-                                <span class="meta-field-label">Factions</span>
-                                <span class="meta-field-value">Garnison Impériale, Résistance, Thaluns</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="world-card amber">
-                        <div class="world-header">
-                            <div class="world-title-group">
-                                <h4>3. Nefris</h4>
-                                <div class="world-subtitle">Planète Dévastée // Vestiges de Guerre &amp; Extraction
-                                </div>
-                            </div>
-                            <span class="pill-badge amber">Zone de Ruines Martiales</span>
-                        </div>
-                        <p>
-                            Autrefois riche en gisements minéraux rares et en cristaux résonateurs de nytharite, Nefris
-                            a été ravagée par les conflits d'annexion. Ses mégapoles ne sont plus que des squelettes de
-                            béton et de titane où s'affrontent mercenaires, tribus indigènes en lutte pour l'eau et
-                            détachements d'ingénieurs impériaux.
-                        </p>
-                        <div class="world-meta-grid">
-                            <div class="meta-field">
-                                <span class="meta-field-label">Technologie</span>
-                                <span class="meta-field-value amber">Hétérogène (Primitive à Avancée)</span>
-                            </div>
-                            <div class="meta-field">
-                                <span class="meta-field-label">Magie (5e Force)</span>
-                                <span class="meta-field-value cyan">Normale (Spiritualité Tribale)</span>
-                            </div>
-                            <div class="meta-field">
-                                <span class="meta-field-label">Gravité</span>
-                                <span class="meta-field-value">0.94 g (Légère)</span>
-                            </div>
-                            <div class="meta-field">
-                                <span class="meta-field-label">Atmosphère</span>
-                                <span class="meta-field-value">Toxique localement // Masque requis</span>
-                            </div>
-                            <div class="meta-field">
-                                <span class="meta-field-label">Avant-Poste Majeur</span>
-                                <span class="meta-field-value">Base Astéroïde de la Résistance (Orbite)</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="world-card emerald">
-                        <div class="world-header">
-                            <div class="world-title-group">
-                                <h4>4. Cléia</h4>
-                                <div class="world-subtitle">Monde Natal des Cléiennes // Magie Inhérente &amp;
-                                    Bio-Ingénierie</div>
-                            </div>
-                            <span class="pill-badge emerald">Indépendant — Prospecté par l'Empire</span>
-                        </div>
-                        <p>
-                            Monde aride aux canyons immenses, berceau de la civilisation des <strong>Cléiennes</strong>
-                            (race humanoïde alien de petite taille, composée exclusivement de femmes, au besoin en eau
-                            très inférieur à l'humain). Grâce à leur connexion instinctive à la Cinquième Force et leur
-                            génie architectural, les Cléiennes cultivent des cités-tubes : des espèces minérales qui
-                            grandissent en arches et tours immenses, creusées de dômes habités.
-                        </p>
-                        <div class="world-meta-grid">
-                            <div class="meta-field">
-                                <span class="meta-field-label">Technologie</span>
-                                <span class="meta-field-value emerald">Très Avancée (Niveau 5)</span>
-                            </div>
-                            <div class="meta-field">
-                                <span class="meta-field-label">Magie (5e Force)</span>
-                                <span class="meta-field-value cyan">Inhérente (Instinctive)</span>
-                            </div>
-                            <div class="meta-field">
-                                <span class="meta-field-label">Gravité</span>
-                                <span class="meta-field-value">0.88 g</span>
-                            </div>
-                            <div class="meta-field">
-                                <span class="meta-field-label">Atmosphère</span>
-                                <span class="meta-field-value">Aride tempérée, faible hydrologie</span>
-                            </div>
-                            <div class="meta-field">
-                                <span class="meta-field-label">Population</span>
-                                <span class="meta-field-value">Cléiennes (100% Féminine)</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="world-card">
-                        <div class="world-header">
-                            <div class="world-title-group">
-                                <h4>5. Karkjiue</h4>
-                                <div class="world-subtitle">Berceau des Mikyais // Fief des Soldats-Lézards</div>
-                            </div>
-                            <span class="pill-badge ruby">Régime Martial</span>
-                        </div>
-                        <p>
-                            Monde volcanique à haute activité tectonique et aux plaines de basalte brûlantes. Domicile
-                            des <strong>Mikyais</strong>, féroces guerriers reptiliens de taille humaine. Intégrés de
-                            force dans l'armée impériale, ils fournissent à l'Empire ses divisions de choc les plus
-                            disciplinées et ses maîtres d'armes d'artillerie lourde.
-                        </p>
-                        <div class="world-meta-grid">
-                            <div class="meta-field">
-                                <span class="meta-field-label">Technologie</span>
-                                <span class="meta-field-value cyan">Avancée (Blindages &amp; Balistique)</span>
-                            </div>
-                            <div class="meta-field">
-                                <span class="meta-field-label">Magie (5e Force)</span>
-                                <span class="meta-field-value ruby">Impossible (Rares exceptions limitées)</span>
-                            </div>
-                            <div class="meta-field">
-                                <span class="meta-field-label">Gravité</span>
-                                <span class="meta-field-value">1.28 g (Très lourde)</span>
-                            </div>
-                            <div class="meta-field">
-                                <span class="meta-field-label">Société</span>
-                                <span class="meta-field-value">Castes militaires Mikyais</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <h3>40.3 Lunes, Astéroïdes &amp; Vaisseaux-Mondes</h3>
+                    <h3>40.1 La Grille Complète des 8 Échelons d'Évolution</h3>
                     <p>
-                        Les héros et contrebandiers sillonnent également des structures artificielles et des relais
-                        spatiaux emblématiques. Hybris-Prime possède en propre <strong>deux lunes arcaniques</strong>
-                        au calendrier d'événements gratuit pour tout meneur :
+                        Chaque individu doté du potentiel de prescience progresse à travers huit paliers distincts,
+                        documentés par les maîtres de la chrono-analyse :
+                    </p>
+
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Échelon</th>
+                                    <th>Dénomination</th>
+                                    <th>Capacités & Manifestations</th>
+                                    <th>Limites & Coût Cognitif</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>1</strong></td>
+                                    <td><span class="table-badge cyan">Entrée</span><br>Visions Inconscientes</td>
+                                    <td>Reçoit des flashs spontanés d'images, d'émotions ou d'odeurs sans aucun contrôle
+                                        volontaire (ex: sentiment de mort imminente, flash d'un visage).</td>
+                                    <td>Aucune maîtrise. Visions disjointes, fragmentées et imprévisibles. Ne peut être
+                                        activé à volonté.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>2</strong></td>
+                                    <td><span class="table-badge cyan">Basique</span><br>Visions Partielles Passé/Futur
+                                    </td>
+                                    <td>Perçoit des bribes furtives du passé d'un objet touché ou du futur immédiat
+                                        (quelques secondes), souvent sans rapport avec la situation en cours.</td>
+                                    <td>Netteté floue. Difficulté à distinguer une réminiscence personnelle d'une vision
+                                        externe.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>3</strong></td>
+                                    <td><span class="table-badge cyan">Intermédiaire</span><br>Visions Dirigées</td>
+                                    <td>Peut se focaliser délibérément sur une personne, une porte ou un carrefour pour
+                                        sonder ce qui s'y est produit ou ce qui va s'y jouer dans l'heure.</td>
+                                    <td>Nécessite 1 minute d'immobilité et de concentration totale. Portée limitée au
+                                        contexte immédiat.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>4</strong></td>
+                                    <td><span class="table-badge green">Avancé</span><br>Prédictions Précises Court
+                                        Terme</td>
+                                    <td>Visions d'une netteté cristalline à l'échelle de quelques heures à quelques
+                                        jours. <strong>Bonus tactique en jeu :</strong> +2 à l'Initiative et +1 Dé en
+                                        Esquive lors du premier tour d'embuscade.</td>
+                                    <td>Difficulté à maîtriser la portée globale de la vision ; risque de biais
+                                        d'interprétation émotionnelle.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>5</strong></td>
+                                    <td><span class="table-badge green">Maîtrise</span><br>Rétro & Précognition Étendue
+                                    </td>
+                                    <td>Perçoit des événements historiques oubliés ou des trajectoires futures majeures
+                                        sur des mois voire des années entières.</td>
+                                    <td>Épuisement mental sévère. Les souvenirs personnels commencent à se mélanger avec
+                                        les souvenirs perçus.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>6</strong></td>
+                                    <td><span class="table-badge amber">Expert</span><br>Arborescence des Futurs</td>
+                                    <td>Visualise en simultané les <strong>multiples branches probabilistes</strong>
+                                        d'un événement. Voit chaque choix et son issue directe pour une cible donnée.
+                                    </td>
+                                    <td>Saturation cognitive (Analysis Paralysis). Le sujet peut hésiter face à
+                                        l'infinité des embranchements (-2 PA d'hésitation si échec d'un test d'Int).
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>7</strong></td>
+                                    <td><span class="table-badge amber">Élite</span><br>Feuilletage & Glissement
+                                        Temporel</td>
+                                    <td>Perçoit plusieurs chronotrames concurrentes superposées (Temporal Layering).
+                                        Identifie la micro-variable précise à modifier pour faire basculer une réalité
+                                        dans une autre.</td>
+                                    <td>Instabilité psychique extrême. Le sujet a l'impression de vivre dans plusieurs
+                                        réalités à la fois. Risque de dissociation d'identité.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>8</strong></td>
+                                    <td><span class="table-badge ruby">Suprême</span><br>Vision Temporelle Infinie</td>
+                                    <td>Omniprésence chronale. Accès instantané à l'infinité du spectre temporel (passé,
+                                        présent, futur et réalités fantômes) pour tout être ou particule de l'univers.
+                                    </td>
+                                    <td><strong>Rupture du lien présent.</strong> Le sujet cesse d'appartenir au monde
+                                        mortel. Son corps s'effondre dans le coma si la vision dépasse 10 secondes.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>40.2 Utilisation Tactique en Combat : Anticiper le Coup</h3>
+                    <p>
+                        En affrontement armé, un personnage possédant au moins l'<strong>Échelon 3</strong> de
+                        Clairsentience peut dépenser des Points d'Action pour deviner la prochaine manœuvre ennemie :
                     </p>
 
                     <div class="cards-grid-2">
                         <div class="spec-card">
                             <div class="spec-card-title">
-                                <span>Nyth-1, la Blanche</span>
-                                <span class="pill-badge cyan">Lune Arcanique</span>
+                                <span>Lecture d'Impact Prédictive</span>
+                                <span class="pill-badge cyan">2 PA // Réaction</span>
                             </div>
-                            <div class="spec-card-world">Hybris-Prime // Orbite interne rapide (~9 jours)</div>
+                            <div class="spec-card-world">Clairsentience // Échelon 3+</div>
                             <p>
-                                Régolithe pâle de poussière de nytharite, visible même de jour comme un second soleil
-                                pâle. À chaque <strong>Nuit Blanche</strong> (pleine lune), la 5e Force monte d'un cran :
-                                sorts et moteurs suralimentés, minage faste — mais l'Eau Sombre aussi. Les galeries
-                                naines « chantent » et attirent les Dereks. Calendrier rituel des Nythari.
-                            </p>
-                        </div>
-
-                        <div class="spec-card">
-                            <div class="spec-card-title">
-                                <span>Storm-2, l'Orageuse</span>
-                                <span class="pill-badge amber">Lune Électrostatique</span>
-                            </div>
-                            <div class="spec-card-world">Hybris-Prime // Orbite externe lente (Conjonctions ~3 ans)
-                            </div>
-                            <p>
-                                Enveloppe chargée zébrée de décharges bleues, même phénomène que les crêtes des Montagnes
-                                de l'Orage. À chaque <strong>Conjonction d'Orage</strong> : tempêtes arcaniques, arcanotech
-                                en panne, téléportations instables. Ingénieurs impériaux et Nains se disputent leur
-                                prédiction à coups de paris et de sabotages.
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="cards-grid-2">
-                        <div class="spec-card">
-                            <div class="spec-card-title">
-                                <span>L'Aeschylus</span>
-                                <span class="pill-badge amber">Vaisseau Pirate Warp</span>
-                            </div>
-                            <div class="spec-card-world">Astronef de Raid // Équipage Clandestin</div>
-                            <p>
-                                Vaisseau pirate légendaire commandé par le mystérieux <strong>Capitaine
-                                    balafré</strong>, secondé par la féroce <strong>Sara</strong> aux cheveux pourpres,
-                                <strong>Max</strong> le chef mécanicien (expert de la clé à molette et du convertisseur
-                                Warp), <strong>Gunther</strong> le chirurgien cynique et <strong>Babushka</strong> l'as
-                                du pilotage sous gravité variable. Commandé par l'Empire à Ferron, monde-forge
-                                central, puis volé à la livraison par le Capitaine, qui en a fait son fief pirate. Doté de
-                                boucliers déflecteurs et d'un propulseur FTL capable de semer les destroyers impériaux.
+                                Dès qu'un ennemi déclare une attaque contre le prescient, celui-ci peut dépenser
+                                <strong>2 PA</strong> pour entrevoir la trajectoire du coup 0.5 seconde avant son
+                                exécution. Il gagne <strong>+1 Palier de Dé en Esquive ou Parade</strong> contre cette
+                                attaque spécifique.
                             </p>
                             <div class="spec-card-footer">
-                                <span class="tag-pill amber">Propulsion Warp &bull; Furtivité Arcanique</span>
+                                <span class="tag-pill cyan">Déclenchement Réactif</span>
+                                <span class="tag-pill green">Consomme 2 PA</span>
                             </div>
                         </div>
 
                         <div class="spec-card">
                             <div class="spec-card-title">
-                                <span>Base Astéroïde de Nefris</span>
-                                <span class="pill-badge cyan">QG Orbital Secret</span>
+                                <span>Verrouillage Probabiliste</span>
+                                <span class="pill-badge amber">3 PA // Action Principale</span>
                             </div>
-                            <div class="spec-card-world">Poste d'Assaut // Résistance Insurgée</div>
+                            <div class="spec-card-world">Clairsentience // Échelon 6+</div>
                             <p>
-                                Astéroïde métallique creusé en orbite discrète au-dessus de Nefris. Rempli de consoles
-                                de piratage, de racks d'armes lasers et de hangars de lancement rapide. C'est ici que
-                                sont décodées les transmissions cryptées de l'Empire et que sont planifiées les frappes
-                                éclair contre les convois de CE (Crédits d'Énergie).
+                                Le prescient analyse les six prochaines trajectoires de déplacement de la cible. Il
+                                désigne une case précise : si la cible s'y déplace ou y reste, toutes les attaques
+                                alliées contre elle bénéficient d'une <strong>réduction de difficulté de -4</strong>
+                                jusqu'au tour suivant.
                             </p>
                             <div class="spec-card-footer">
-                                <span class="tag-pill cyan">Radar Brouillé &bull; Quai de Débarquement</span>
+                                <span class="tag-pill amber">Contrôle Tactique</span>
+                                <span class="tag-pill ruby">Difficulté Réduite -4</span>
                             </div>
                         </div>
                     </div>
 
-                    <hr class="doc-divider">
-
-                    <!-- ================= CHAPITRE 41 ================= -->
+                    <!-- ================= CHAPITRE 23 ================= -->
                     <h2 id="chap-41">
                         <span class="section-symbol">Chapitre 41.</span>
-                        Atlas Géographique des Continents &amp; Régions
+                        Mécaniques Chronales en Jeu de Rôle
                     </h2>
 
                     <p>
-                        Descente d'un cran dans la hiérarchie : zoomons sur la géographie terrestre des deux mondes les
-                        plus documentés du Codex, <strong>Hybris</strong> et <strong>Vardis</strong>.
+                        Intégrer le voyage dans le temps et la causalité dans une campagne de jeu de rôle est l'un des
+                        défis les plus redoutables pour un Maître de Jeu. Ce chapitre fournit les outils concrets pour
+                        structurer des intrigues temporelles rigoureuses, fascinantes et sans paradoxes destructeurs.
                     </p>
 
-                    <h3>41.1 Les Régions du Monde d'Hybris</h3>
+                    <h3>41.1 Les Reliques Témoins & Capsules Temporelles</h3>
                     <p>
-                        Hybris est divisé en deux grandes masses continentales séparées par la Mer des Déportés :
+                        Une <strong>capsule temporelle scellée</strong> est un objet mécanique ou minéral conçu pour
+                        traverser les âges en mode fermé. Pour qu'une relique serve de preuve irréfutable aux joueurs
+                        qu'une chronotrame antérieure s'est déjà déroulée, elle doit respecter la règle des trois
+                        empreintes :
                     </p>
+                    <ol>
+                        <li><strong>L'Empreinte Biométrique Intemporelle :</strong> Le coffre ou la console n'accepte
+                            que l'ADN d'un membre précis de la table, avec une marge d'erreur inférieure à
+                            <code>0.0001%</code>.
+                        </li>
+                        <li><strong>Le Journal de Bord Fermé :</strong> Les écrits ou holocubes stockés ne contiennent
+                            pas l'avenir de manière omnisciente, mais <strong>l'historique des erreurs passées</strong>
+                            commises par la première itération des héros.</li>
+                        <li><strong>Le Reliquaire Physique :</strong> Les ossements ou l'équipement brisé d'un compagnon
+                            mort il y a 1 700 ans, gisant là où les joueurs se trouvent actuellement. C'est le choc
+                            psychologique qui brise le doute métaphysique.</li>
+                    </ol>
 
-                    <div class="cards-grid-3">
-                        <div class="spec-card">
-                            <div class="spec-card-title">
-                                <span>Le Continent Ouest</span>
-                                <span class="pill-badge emerald">Bassin Civilisé</span>
-                            </div>
-                            <div class="spec-card-world">Territoire Central d'Hybris</div>
-                            <p>
-                                Le continent principal où se sont structurés les royaumes après l'An 0. Il regroupe les
-                                <strong>Montagnes Naines</strong> (fief des Nains), les <strong>Montagnes de
-                                    l'Orage</strong> aux crêtes électrostatiques permanentes, la <strong>Grande
-                                    Forêt</strong> des elfes Tauriens, les <strong>Terres Centrales</strong> agricoles
-                                et humaines, et la périlleuse <strong>Jungle du Sud</strong>.
-                            </p>
+                    <div class="callout temporal">
+                        <div class="callout-header">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <circle cx="12" cy="12" r="10" />
+                                <polyline points="12 6 12 12 14 14" />
+                            </svg>
+                            La Méthode des Graphes Temporels pour le MJ
                         </div>
-
-                        <div class="spec-card">
-                            <div class="spec-card-title">
-                                <span>La Grande Forêt</span>
-                                <span class="pill-badge cyan">Biôme Taurien</span>
-                            </div>
-                            <div class="spec-card-world">Secteur Sud-Ouest // Haliriel</div>
-                            <p>
-                                Canopée millénaire d'arbres titanesques dont les racines absorbent les courants
-                                telluriques de 5e Force. Abri de la faune magique et sanctuaire inviolable de la
-                                civilisation elfique.
-                            </p>
-                        </div>
-
-                        <div class="spec-card">
-                            <div class="spec-card-title">
-                                <span>Le Continent Est</span>
-                                <span class="pill-badge ruby">Terres Interdites</span>
-                            </div>
-                            <div class="spec-card-world">Inexploré // Barrière Temporelle</div>
-                            <p>
-                                Vaste masse continentale enveloppée de brumes chronales denses. Les expéditions envoyées
-                                depuis Kingston n'en sont jamais revenues intactes, évoquant des anomalies de
-                                vieillissement accéléré et des créatures hors-trames.
-                            </p>
+                        <div class="callout-body">
+                            Ne préparez jamais une aventure temporelle sous forme de script linéaire. Dessinez un
+                            <strong>Graphe Acyclique Dirigé (DAG)</strong> : chaque nœud est un événement inévitable
+                            (Goulot), et les flèches représentent les différentes manières dont les joueurs peuvent y
+                            parvenir. Peu importe le chemin qu'ils empruntent, ils frapperont le nœud suivant, mais avec
+                            des ressources, des alliances et des états psychologiques radicalement différents.
                         </div>
                     </div>
 
-                    <h3>41.2 Les Territoires de Vardis</h3>
-                    <ul>
-                        <li><strong>Le District Impérial d'Atraxia :</strong> Zone industrielle quadrillée par des
-                            miradors, des barrières à plasma et des tranchées d'artillerie lourde.</li>
-                        <li><strong>Les Terres Tribales des Thaluns :</strong> Canyons escarpés et plateaux désertiques
-                            où nomadisent les guerriers Thaluns, survivant grâce à leurs techniques ancestrales de
-                            filtration d'eau et de camouflage géologique.</li>
-                        <li><strong>Les Fosses d'Extraction :</strong> Cratères béants où des milliers d'excavatrices
-                            automatisées broient la roche pour extraire les métaux réfractaires destinés aux coques des
-                            croiseurs impériaux.</li>
-                    </ul>
-
-                    <hr class="doc-divider">
-
-                    <!-- ================= CHAPITRE 42 ================= -->
-                    <h2 id="chap-42">
-                        <span class="section-symbol">Chapitre 42.</span>
-                        Compendium des Villes, Cités &amp; Points d'Intérêt Tactiques
-                    </h2>
-
-                    <p>
-                        Au niveau le plus précis de la hiérarchie cosmique se situent les lieux où les héros marchent,
-                        négocient, se cachent et combattent.
-                    </p>
-
-                    <!-- COMPENDIUM DES POINTS D'INTÉRÊT -->
-                    <h3>42.1 Les Grandes Cités d'Hybris</h3>
-                    <div class="poi-grid">
-
-                        <div class="poi-card">
-                            <div class="poi-title">
-                                <span>Brum'korath</span>
-                                <span class="pill-badge cyan">Cité Naine</span>
-                            </div>
-                            <div class="poi-sub">Montagnes Naines // Hybris Ouest</div>
-                            <p class="poi-desc">
-                                Immense mégapole troglodytique creusée au cœur de la roche. Réputée pour ses
-                                <strong>Laboratoires de Haute Technologie Magi-Tech</strong>, ses fonderies d'alliages
-                                rares, la majestueuse salle du Conseil Nain et le <strong>Temple des Sent Ones</strong>.
-                                C'est ici qu'eut lieu le siège apocalyptique où le Disciple de Terre de Capricius
-                                dévasta les remparts extérieurs.
-                            </p>
-                        </div>
-
-                        <div class="poi-card">
-                            <div class="poi-title">
-                                <span>Haliriel</span>
-                                <span class="pill-badge emerald">Cité Elfique</span>
-                            </div>
-                            <div class="poi-sub">Grande Forêt // Hybris Sud</div>
-                            <p class="poi-desc">
-                                Cité suspendue des Elfes Tauriens, construite dans les branches d'arbres géants reliés
-                                par des ponts d'énergie pure. Abrite le <strong>Temple Haut de la Nature</strong>, la
-                                Salle du Trône de la <strong>Reine Aphyrosia</strong>, et le spectaculaire Hangar des
-                                <em>Windfighters</em> (chasseurs antigravité propulsés par la brise arcanique).
-                            </p>
-                        </div>
-
-                        <div class="poi-card">
-                            <div class="poi-title">
-                                <span>Kingston</span>
-                                <span class="pill-badge amber">Métropole Humaine</span>
-                            </div>
-                            <div class="poi-sub">Terres Centrales // Hybris</div>
-                            <p class="poi-desc">
-                                La plus grande métropole humaine d'Hybris. Cosmopolite et animée, elle héberge
-                                l'Académie supérieure (où étudient Lucas et Mina en 1771 HSC) et le Quartier Général de
-                                la <strong>World Police</strong>. Ville carrefour entre la tradition artisanale et les
-                                recherches arcanotechnologiques émergentes.
-                            </p>
-                        </div>
-
-                        <div class="poi-card">
-                            <div class="poi-title">
-                                <span>Le Guetteur (The Watcher)</span>
-                                <span class="pill-badge purple">Sanctuaire Sacré</span>
-                            </div>
-                            <div class="poi-sub">Profondeurs de la Jungle du Sud</div>
-                            <p class="poi-desc">
-                                Monument cyclopéen pré-colonial dissimulé sous une végétation millénaire. Les légendes
-                                affirment qu'il canalise la résonance du <em>Minulican</em> (le loup temporel). Les
-                                tribus indigènes Nytharis gardent férocement les sentiers menant à ce sanctuaire chargé
-                                d'énergie chronale.
-                            </p>
-                        </div>
-
-                        <div class="poi-card">
-                            <div class="poi-title">
-                                <span>Village Nythari</span>
-                                <span class="pill-badge green">Communauté Tribale</span>
-                            </div>
-                            <div class="poi-sub">Jungle du Sud // Fief de Candice &amp; Ceylan</div>
-                            <p class="poi-desc">
-                                Village de huttes végétales interconnectées au-dessus du sol marécageux. Les Nytharis y
-                                pratiquent une magie chamanique de la terre et des plantes, en harmonie avec les
-                                prédateurs de la jungle.
-                            </p>
-                        </div>
-
-                        <div class="poi-card">
-                            <div class="poi-title">
-                                <span>Les Portes Naines (Dwarven Gates)</span>
-                                <span class="pill-badge cyan">Bastion Militaire</span>
-                            </div>
-                            <div class="poi-sub">Entrée des Montagnes Naines</div>
-                            <p class="poi-desc">
-                                Deux vantaux titanesques forgés en acier noir et nytharite compressée, fermant le col
-                                stratégique entre les Terres Centrales et les mines de Brum'korath. Infranchissables par
-                                les armes ordinaires.
-                            </p>
-                        </div>
-
-                    </div>
-
-                    <h3>42.2 Les Bastions Stratégiques de Vardis</h3>
-                    <div class="poi-grid">
-
-                        <div class="poi-card">
-                            <div class="poi-title">
-                                <span>Atraxia</span>
-                                <span class="pill-badge ruby">Mégapole Impériale</span>
-                            </div>
-                            <div class="poi-sub">Vardis // Centre Industriel &amp; Militaire</div>
-                            <p class="poi-desc">
-                                Cité métallique oppressante sous surveillance constante par drones et scanners
-                                biométriques. Ses gratte-ciels en acier brut surplombent des quartiers d'ouvriers
-                                asservis. Les forces de sécurité y patrouillent en phalanxes lourdement armées.
-                            </p>
-                        </div>
-
-                        <div class="poi-card">
-                            <div class="poi-title">
-                                <span>Le Nexus d'Aurion</span>
-                                <span class="pill-badge ruby">Monolithe Psychohistorique</span>
-                            </div>
-                            <div class="poi-sub">Atraxia // Cœur du Réseau Impérial</div>
-                            <p class="poi-desc">
-                                Tour colossale étendant ses antennes dans la haute atmosphère de Vardis. Elle héberge
-                                les supercalculateurs reliés aux équations de Capricius. Centre névralgique de détection
-                                des anomalies temporelles et des insurrections planétaires.
-                            </p>
-                        </div>
-
-                        <div class="poi-card">
-                            <div class="poi-title">
-                                <span>Bases Clandestines A13 &amp; B5</span>
-                                <span class="pill-badge amber">Refuges Rebelles</span>
-                            </div>
-                            <div class="poi-sub">Réseau des Égouts d'Atraxia</div>
-                            <p class="poi-desc">
-                                Enclaves souterraines protégées par des générateurs de brouillage de signatures
-                                thermiques. La Résistance y stocke des armes arcaniques, des kits de premiers soins et
-                                des relais radio pour coordonner le soulèvement contre l'Empire.
-                            </p>
-                        </div>
-
-                        <div class="poi-card">
-                            <div class="poi-title">
-                                <span>Poste Céleste de l'Aeschylus</span>
-                                <span class="pill-badge cyan">Passerelle &amp; Salle Warp</span>
-                            </div>
-                            <div class="poi-sub">Espace Profond // Flotte Indépendante</div>
-                            <p class="poi-desc">
-                                À bord de l'<em>Aeschylus</em>, la table de conférence holographique du Capitaine
-                                balafré et la baie des moteurs où Max surveille la jauge critique du convertisseur Warp
-                                constituent le foyer opérationnel des aventuriers de l'espace.
-                            </p>
-                        </div>
-
-                    </div>
-
-                    <hr class="doc-divider">
-
-                    <!-- ================= EXPLORATEUR INTERACTIF ================= -->
-                    <h3>Module Interactif : Explorateur Hiérarchique de l'Atlas</h3>
-                    <p>
-                        Utilisez les filtres interactifs ci-dessous pour inspecter les entités répertoriées selon leur
-                        niveau d'intégration cosmique :
-                    </p>
-
-                    <div class="atlas-filter-bar">
-                        <button class="atlas-filter-btn active" data-filter="all">Tous les Paliers (Complet)</button>
-                        <button class="atlas-filter-btn" data-filter="cosmos">1-2. Univers &amp; 36 Élianes</button>
-                        <button class="atlas-filter-btn" data-filter="space">3-4. Galaxies &amp; Systèmes</button>
-                        <button class="atlas-filter-btn" data-filter="planets">5. Planètes &amp; Vaisseaux</button>
-                        <button class="atlas-filter-btn" data-filter="poi">6-7. Régions &amp; Villes</button>
-                    </div>
-
-                    <div id="atlasTelemetryReport"
-                        style="padding: 14px 18px; background: rgba(6, 182, 212, 0.06); border: 1px dashed var(--arcane-cyan); border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 0.82rem; color: var(--arcane-cyan); margin-bottom: 24px;">
-                        Cartographie Synchronisée : 1 Univers &bull; 36 Zones d'Élianes &bull; 3 Galaxies &bull; 5
-                        Systèmes &bull; 6 Mondes Majeurs &bull; 10 Cités &amp; Lieux Stratégiques.
+                    <h3>41.2 Synthèse des Lois Temporelles du Système RP</h3>
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Loi Fondamentale</th>
+                                    <th>Principe Mécanique</th>
+                                    <th>Application Table de Jeu</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>1. Vecteur Aval</strong></td>
+                                    <td>Le temps s'écoule naturellement vers l'avant. Tout retour arrière coûte
+                                        100&times; plus d'énergie.</td>
+                                    <td>Les PJ ne « rechargent » pas une sauvegarde. Leurs erreurs passées sont gravées
+                                        ; ils doivent corriger le futur.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>2. Ancrage Inversé</strong></td>
+                                    <td>Une ancre discrète semée dans le passé mûrit et se renforce au fil des siècles.
+                                    </td>
+                                    <td>Les PJ peuvent planquer un objet dans un sanctuaire désert au chapitre 1 et le
+                                        retrouver intact 1 000 ans plus tard au chapitre 10.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>3. Inaltérabilité du Goulot</strong></td>
+                                    <td>Les carrefours du destin sont inévitables ; seul change l'état des acteurs qui
+                                        le traversent.</td>
+                                    <td>L'Empire attaquera toujours la cité à minuit. La question est : les PJ
+                                        auront-ils réparé le générateur à temps ?</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>4. Résistance Synaptique</strong></td>
+                                    <td>Sonder l'infinité des futurs inflige de la fatigue cognitive et du stress
+                                        mental.</td>
+                                    <td>Utiliser la Clairsentience au-delà de l'Échelon 4 consomme des PA et impose des
+                                        malus de concentration prolongée.</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
 
                     <div class="codex-signature">
                         <div class="sig-meta">
                             <strong>LIVRE X DU CODEX UNIVERSEL</strong><br>
-                            Cosmologie Fondamentale &amp; Atlas Cartographique Réel<br>
-                            <em>Compilé d'après les archives de l'Académie de Kingston, les chroniques de Brum'korath et
-                                les relevés de bord de l'Aeschylus.</em>
+                            Chrono-Physique, Topologie des Chronotrames & Clairsentience<br>
+                            <em>Approuvé par les observateurs de la trame temporelle et les maîtres de
+                                l'arcanotech.</em>
                         </div>
                         <div class="sig-stamp">
-                            <span class="stamp-title">CARTOGRAPHIE OFFICIELLE</span>
-                            <span class="stamp-date">10 / 11 LIVRES HOMOLOGUÉS // CODEX UNIVERSEL</span>
+                            <span class="stamp-title">CAUSALITÉ VÉRIFIÉE</span>
+                            <span class="stamp-date">VARIANCE : 0.0001% // STABLE</span>
                         </div>
                     </div>
 
@@ -1302,13 +1085,13 @@
                         <a href="livre_9.html" class="pagination-btn">
                             <div>
                                 <div class="pagination-label">Livre Précédent</div>
-                                <div class="pagination-title">← Livre IX : Temps & Causalité</div>
+                                <div class="pagination-title">← Livre IX : Outils Web Interactifs</div>
                             </div>
                         </a>
                         <a href="livre_11.html" class="pagination-btn">
                             <div>
                                 <div class="pagination-label">Livre Suivant</div>
-                                <div class="pagination-title">Livre XI : Le Bestiaire &amp; Menaces Cosmiques →</div>
+                                <div class="pagination-title">Livre XI : Atlas des Mondes →</div>
                             </div>
                         </a>
                     </div>
@@ -1332,11 +1115,10 @@
                         Sur cette page
                     </div>
                     <ul class="toc-on-page">
-                        <li><a href="#chap-38">38. Univers &amp; 36 Élianes</a></li>
-                        <li><a href="#chap-39">39. Galaxies &amp; Systèmes</a></li>
-                        <li><a href="#chap-40">40. Planètes &amp; Vaisseaux</a></li>
-                        <li><a href="#chap-41">41. Atlas des Continents</a></li>
-                        <li><a href="#chap-42">42. Cités &amp; Points d'Intérêt</a></li>
+                        <li><a href="#chap-38">38. Fleuve du Temps & Causalité</a></li>
+                        <li><a href="#chap-39">39. Topologie des Chronotrames</a></li>
+                        <li><a href="#chap-40">40. Clairsentience (8 Échelons)</a></li>
+                        <li><a href="#chap-41">41. Mécaniques Chronales en Jeu</a></li>
                     </ul>
                 </div>
 
@@ -1344,47 +1126,43 @@
                     <div class="inspector-title">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2">
-                            <circle cx="12" cy="12" r="10" />
-                            <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
-                            <path d="M2 12h20" />
+                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+                            <line x1="8" y1="21" x2="16" y2="21" />
+                            <line x1="12" y1="17" x2="12" y2="21" />
                         </svg>
-                        Télémétrie Cosmique
+                        Télémétrie Chronale
                     </div>
                     <div class="telemetry-card">
                         <div class="telemetry-row">
-                            <span class="telemetry-label">Paliers Cosmiques :</span>
-                            <span class="telemetry-val">7 Niveaux</span>
+                            <span class="telemetry-label">Vecteur Maître :</span>
+                            <span class="telemetry-val">Propagation Avant</span>
                         </div>
                         <div class="telemetry-row">
-                            <span class="telemetry-label">Zones d'Élianes :</span>
-                            <span class="telemetry-val">36 Secteurs</span>
+                            <span class="telemetry-label">Tolérance Flux :</span>
+                            <span class="telemetry-val">0.0001% Variance</span>
                         </div>
                         <div class="telemetry-row">
-                            <span class="telemetry-label">Galaxies Référencées :</span>
-                            <span class="telemetry-val">3 Cartographiées</span>
+                            <span class="telemetry-label">Goulot Temporel :</span>
+                            <span class="telemetry-val">Convergence Absolue</span>
                         </div>
                         <div class="telemetry-row">
-                            <span class="telemetry-label">Mondes Majeurs :</span>
-                            <span class="telemetry-val">6 Planètes</span>
+                            <span class="telemetry-label">Clairsentience :</span>
+                            <span class="telemetry-val">8 Échelons Cognitifs</span>
                         </div>
                         <div class="telemetry-row">
-                            <span class="telemetry-label">Vaisseau Amiral :</span>
-                            <span class="telemetry-val">L'Aeschylus (Warp)</span>
-                        </div>
-                        <div class="telemetry-row">
-                            <span class="telemetry-label">Cités &amp; Lieux :</span>
-                            <span class="telemetry-val">10 Répertoriés</span>
+                            <span class="telemetry-label">Ancre Matière :</span>
+                            <span class="telemetry-val">Capsule Biométrique</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="next-stage-card">
-                    <h5>Étape Suivante</h5>
-                    <p>Découvrez le compendium des menaces, créatures sauvages, bandes armées et automates dans le
-                        Bestiaire.</p>
-                    <a href="livre_11.html" class="btn-step"
+                    <h5>Prochaine Étape</h5>
+                    <p>Livre V : Combat Tactique & Déplacements (séquence du tour de 10s, ordre d'initiative par PA,
+                        tranches de mouvement et tableau anatomique de localisation).</p>
+                    <a href="livre_5.html" class="btn-step"
                         style="text-decoration: none; display: flex; align-items: center; justify-content: space-between;">
-                        <span>Consulter le Livre XI : Bestiaire</span>
+                        <span>Consulter Livre V</span>
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2">
                             <polyline points="9 18 15 12 9 6" />
@@ -1395,38 +1173,11 @@
 
         </div>
     </div>
+
     <!-- Scripts partagés & Authentification -->
     <script src="js/codex.js"></script>
     <script src="users/user_store.js"></script>
     <script src="users/auth.js"></script>
-
-    <!-- Script d'interaction pour le filtre de l'atlas -->
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const filterBtns = document.querySelectorAll('.atlas-filter-btn');
-            const report = document.getElementById('atlasTelemetryReport');
-
-            filterBtns.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    filterBtns.forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-
-                    const filter = btn.dataset.filter;
-                    if (filter === 'all') {
-                        report.textContent = 'Affichage global : 1 Univers • 36 Zones d\'Élianes • 3 Galaxies • 5 Systèmes • 6 Mondes Majeurs • 10 Cités & Lieux Stratégiques.';
-                    } else if (filter === 'cosmos') {
-                        report.textContent = 'Filtre Cosmique : 1 Univers primordial, la Mère, le Fleuve du Temps et les 36 Archontes dimensionnels (Élianes).';
-                    } else if (filter === 'space') {
-                        report.textContent = 'Filtre Spatial : Galaxie d\'Aurion, Galaxie Centrale, Galaxie Sans Étoiles et les 5 systèmes stellaires cartographiés.';
-                    } else if (filter === 'planets') {
-                        report.textContent = 'Filtre Planétaire : Hybris (Héros), Vardis (Forteresse), Nefris (Ruines), Cléia (Cléiennes), Karkjiue (Mikyais), Terre & L\'Aeschylus.';
-                    } else if (filter === 'poi') {
-                        report.textContent = 'Filtre Tactique : Brum\'korath, Haliriel, Kingston, The Watcher, Village Nythari, Atraxia, Le Nexus d\'Aurion & Bases A13/B5.';
-                    }
-                });
-            });
-        });
-    </script>
 </body>
 
 </html>

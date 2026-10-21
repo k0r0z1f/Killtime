@@ -255,7 +255,7 @@ namespace Killtime.UI
                 cfg.ResetToCodexDefaults();
                 cfg.SaveToDisk();
                 cfg.PropagateLiveChanges();
-                _statusMsg = "Toutes les constantes sont réinitialisées selon les 11 Livres du Codex.";
+                _statusMsg = "Toutes les constantes sont réinitialisées selon les 12 Livres du Codex.";
             }
             GUI.backgroundColor = Color.white;
 

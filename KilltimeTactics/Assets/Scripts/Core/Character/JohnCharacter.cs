@@ -221,7 +221,7 @@ namespace Killtime.Core.Character
             sheet.UnlockedSpecializations.Add("Plan de Vol du Starlight");
             sheet.UnlockedSpecializations.Add("Pistolet & Tir Rapide");
 
-            // Équipement officiel — dotation catalogue Armurerie/Marché (Livre VII) :
+            // Équipement officiel — dotation catalogue Armurerie/Marché (Livre VIII) :
             // le Passeur tire au pistolet laser (Tir de Couverture, hangars du Creuset).
             if (!ArmoryCatalog.GiveLoadoutItem(sheet, "Pistolet Léger Ivoire", false))
             {

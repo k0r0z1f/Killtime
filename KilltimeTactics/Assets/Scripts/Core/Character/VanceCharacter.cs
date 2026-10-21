@@ -224,7 +224,7 @@ namespace Killtime.Core.Character
             sheet.UnlockedSpecializations.Add("Bras Cybernétique Renforcé");
             sheet.UnlockedSpecializations.Add("Pistolet & Tir Rapide");
 
-            // Équipement officiel — dotation catalogue Armurerie/Marché (Livre VII) :
+            // Équipement officiel — dotation catalogue Armurerie/Marché (Livre VIII) :
             // la carabine d'assaut de la cellule devient le fusil d'assaut laser
             // (cadence soutenue, tir d'ordre et suppression).
             if (!ArmoryCatalog.GiveLoadoutItem(sheet, "Fusil d'Assaut Laser", false))

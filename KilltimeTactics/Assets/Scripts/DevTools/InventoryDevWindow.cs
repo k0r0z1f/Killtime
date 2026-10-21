@@ -11,7 +11,7 @@ using Killtime.Tactics.TurnSystem;
 namespace Killtime.UI
 {
     /// <summary>
-    /// Inventaire PJ + Armurerie complète (Livre VII) + Marché (achat/revente CE).
+    /// Inventaire PJ + Armurerie complète (Livre VIII) + Marché (achat/revente CE).
     /// Accessible via : bouton 🎒 Sac (HUD/Dev Arena), touche I/F5, onglet Inventaire du Créateur (F1).
     /// Catalogue = ArmoryCatalog (121 items JSON, tout ce qui peut aller en inventaire) ;
     /// modèles 3D = prefabs Resources/Guns si présents, sinon placeholders procéduraux.
@@ -65,7 +65,7 @@ namespace Killtime.UI
         private Vector2 _catalogScroll;
         private Vector2 _marketScroll;
         private Vector2 _mainScroll;
-        private string _statusMessage = "Prêt. Catalogue Livre VII chargé.";
+        private string _statusMessage = "Prêt. Catalogue Livre VIII chargé.";
 
         // Studio de rendu 3D
         private RenderTexture _previewRT;
@@ -183,7 +183,7 @@ namespace Killtime.UI
             _inspectedItem = null;
             _previewCatalogDef = null;
             RefreshSceneUnits();
-            _statusMessage = "Prêt. Catalogue Livre VII chargé.";
+            _statusMessage = "Prêt. Catalogue Livre VIII chargé.";
         }
 
         /// <summary>Vrai quand l'armurerie édite la fiche du créateur plutôt qu'une unité.</summary>

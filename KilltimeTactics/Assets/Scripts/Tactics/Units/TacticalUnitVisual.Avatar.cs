@@ -7,6 +7,7 @@ using Killtime.Tactics.Units;
 using Killtime.Tactics.CombatUI;
 using Killtime.Tactics.Grid;
 using Killtime.Core.Character;
+using Killtime.Tactics.Visual;
 
 namespace Killtime.Tactics.Units
 {
@@ -366,6 +367,7 @@ namespace Killtime.Tactics.Units
                 if (_isUnconscious)
                 {
                     _isUnconscious = false;
+                    GetComponentInChildren<MiniatureLookRig>()?.SetAlive(true);
                     // Réarmé : un prochain K.O. lâchera la (nouvelle) arme tenue.
                     _heldItemsDroppedOnKO = false;
                     if (_animator != null)

@@ -6,7 +6,7 @@ using Killtime.Tactics.Grid;
 namespace Killtime.Tactics.Units
 {
     /// <summary>
-    /// Registre officiel des entités colossales et Boss du Codex (Livre XI).
+    /// Registre officiel des entités colossales et Boss du Codex (Livre XII).
     /// Source unique : Bestiary.json (RD-087 suite) ; les constructeurs codés
     /// ci-dessous ne servent que de repli si l'entrée est absente (log warning).
     /// </summary>

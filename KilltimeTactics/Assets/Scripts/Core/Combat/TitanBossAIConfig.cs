@@ -6,7 +6,7 @@ namespace Killtime.Core.Combat
 {
     /// <summary>
     /// Registre des réglages IA des Boss Titans lus depuis Bestiary.json
-    /// ("bossAI" par entrée, Livre XI §45-46 — RD-087 suite).
+    /// ("bossAI" par entrée, Livre XII §49-50 — RD-087 suite).
     /// Pur C# testable : le registre se charge depuis une
     /// <see cref="BestiaryData"/> injectée (aucun accès Unity direct).
     /// Au runtime, <see cref="EnsureLoaded"/> charge paresseusement depuis

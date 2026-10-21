@@ -105,7 +105,7 @@ namespace Killtime.Core.Character
                 int shieldAbs = 0;
                 int finalDmg = dmg;
 
-                // EnFeu : brûlure externe → bouclier d'abord (Livre VII §28.2).
+                // EnFeu : brûlure externe → bouclier d'abord (Livre VIII §32.2).
                 // AbsorbShield retourne le RESTE (test ArmoryJsonTests) : absorbé = dmg - reste.
                 if (dot == StatusEffect.EnFeu)
                 {

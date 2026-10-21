@@ -9,7 +9,7 @@ namespace Killtime.Core.Character
     {
 
         /// <summary>
-        /// Soin par consommable marketplace (Livre VII §28.3 : seringues, bandage).
+        /// Soin par consommable marketplace (Livre VIII §32.3 : seringues, bandage).
         /// Ne réanime pas (IsDead ou Inconscient profond exclu) : la réanimation
         /// reste à la Défibrillation. Plafonné à MaxHealth. Retourne le soin réel.
         /// RD-045 : tout soin stoppe le Saignement (compression + cautérisation).
@@ -35,7 +35,7 @@ namespace Killtime.Core.Character
         }
 
         /// <summary>
-        /// Bonus temporaire d'encaissement (Antidouleurs +2, Livre VII).
+        /// Bonus temporaire d'encaissement (Antidouleurs +2, Livre VIII).
         /// Cumulable en combat, réinitialisé par RecalculateDerivedStats.
         /// </summary>
         public void AddEncaissementBonus(int amount)

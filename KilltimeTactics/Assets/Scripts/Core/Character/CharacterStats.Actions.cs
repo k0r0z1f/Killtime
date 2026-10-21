@@ -30,7 +30,7 @@ namespace Killtime.Core.Character
 
         /// <summary>
         /// Paie un coût PA. Les blindages lourds portés ajoutent leur malus à TOUTE action
-        /// (Livre VII §28.1), avant le multiplicateur Ralenti. Les mises de duel aveugle
+        /// (Livre VIII §32.1), avant le multiplicateur Ralenti. Les mises de duel aveugle
         /// (1 PA = +1 au jet) en sont exemptées : passer ignoreArmorMalus.
         /// </summary>
         public bool ConsumeActionPoints(int cost, bool ignoreArmorMalus = false)

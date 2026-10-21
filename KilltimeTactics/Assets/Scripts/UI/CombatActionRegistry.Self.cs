@@ -448,7 +448,7 @@ namespace Killtime.Tactics.CombatUI
                     ));
                 }
 
-                // Dopants marketplace Livre VII §28.3 : Antidouleurs + Speed, 1 PA, soi-même.
+                // Dopants marketplace Livre VIII §32.3 : Antidouleurs + Speed, 1 PA, soi-même.
                 InventoryItem antalgique = FindConsumableByName(actor, "Antidouleur");
                 if (antalgique != null)
                 {

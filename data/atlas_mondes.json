@@ -1,7 +1,7 @@
 {
   "version": 4,
   "updated": "2026-10-20",
-  "note": "BASE CANON DE RÉFÉRENCE (v4) : fait foi sur tout le reste du contenu (livres, lore, scripts Unity, visuels). Inclut : 36 Zones Éliennes, 3 Galaxies, 10 Systèmes stellaires, Planètes, Lunes, Stations, Vaisseaux, Continents & Régions, Cités & Lieux (Registre Hybris 1-8 / A-H / b-ah + Vardis/Cléia/Nefris/Karkjiue), Espèces jouables, Tribus, Faunes & Boss Cosmiques (Livre XI). Statut 'documenté' / 'canon' = Livres I/X/XI + atlas_3d + Unity ; 'notes auteur' = ajouts auteur 2026-10-19. Correctif cosmologie 2026-10-20 : Empire fondé il y a 22 Ma (Première Civilisation disparue), Disciples en 2 générations (Terre = prototype divin ~-1 Ga, Air/Feu/Eau = série ver + 5e Force, Feu & Eau dormants), Terre primitive non impliquée, Aurion-Hybris ~1 Gly.",
+  "note": "BASE CANON DE RÉFÉRENCE (v4) : fait foi sur tout le reste du contenu (livres, lore, scripts Unity, visuels). Inclut : 36 Zones Éliennes, 3 Galaxies, 10 Systèmes stellaires, Planètes, Lunes, Stations, Vaisseaux, Continents & Régions, Cités & Lieux (Registre Hybris 1-8 / A-H / b-ah + Vardis/Cléia/Nefris/Karkjiue), Espèces jouables, Tribus, Faunes & Boss Cosmiques (Livre XII). Statut 'documenté' / 'canon' = Livres I/XI/XII + atlas_3d + Unity ; 'notes auteur' = ajouts auteur 2026-10-19. Correctif cosmologie 2026-10-20 : Empire fondé il y a 22 Ma (Première Civilisation disparue), Disciples en 2 générations (Terre = prototype divin ~-1 Ga, Air/Feu/Eau = série ver + 5e Force, Feu & Eau dormants), Terre primitive non impliquée, Aurion-Hybris ~1 Gly.",
   "souches_ref": {
     "C": "carbone ADN-ARN ACGT, eau",
     "C+": "carbone dopé nytharite / 5e Force (perméable)",
@@ -41,23 +41,23 @@
       "civilisation": "planétaire fragmentée (royaumes)",
       "affiliation": "Indépendant // Mondes Francs",
       "statut": "documenté",
-      "source": "livre_10.html:755-792, livre_1.html:662-714, livre_11.html:871-978",
+      "source": "livre_11.html:755-792, livre_1.html:662-714, livre_12.html:871-978",
       "liens": [
         {
-          "titre": "Livre X §40 — Planètes",
-          "url": "livre_10.html#chap-40"
+          "titre": "Livre XI §44 — Planètes",
+          "url": "livre_11.html#chap-44"
         },
         {
-          "titre": "Livre X §41 — Régions",
-          "url": "livre_10.html#chap-41"
+          "titre": "Livre XI §45 — Régions",
+          "url": "livre_11.html#chap-45"
         },
         {
           "titre": "Livre I §2 — Espèces",
           "url": "livre_1.html#chap-2"
         },
         {
-          "titre": "Livre XI §45 — Faune",
-          "url": "livre_11.html#chap-45"
+          "titre": "Livre XII §49 — Faune",
+          "url": "livre_12.html#chap-49"
         },
         {
           "titre": "Atlas 3D",
@@ -93,11 +93,11 @@
       "affiliation": "Primaire d'Hybris-Prime",
       "statut": "documenté",
       "notes": "Naine jaune stable. Foyer d'Hybris et de ses deux lunes arcaniques.",
-      "source": "atlas_3d.html:625, livre_10.html:703-704",
+      "source": "atlas_3d.html:625, livre_11.html:703-704",
       "liens": [
         {
-          "titre": "Livre X §39 — Systèmes",
-          "url": "livre_10.html#chap-39"
+          "titre": "Livre XI §43 — Systèmes",
+          "url": "livre_11.html#chap-43"
         },
         {
           "titre": "Atlas 3D",
@@ -133,8 +133,8 @@
       "source": "atlas_3d.html:637-640 + notes auteur 2026-10-19",
       "liens": [
         {
-          "titre": "Livre X §40.3 — Lunes",
-          "url": "livre_10.html#chap-40"
+          "titre": "Livre XI §44.3 — Lunes",
+          "url": "livre_11.html#chap-44"
         },
         {
           "titre": "Atlas 3D",
@@ -170,8 +170,8 @@
       "source": "atlas_3d.html:637-640 + notes auteur 2026-10-19",
       "liens": [
         {
-          "titre": "Livre X §40.3 — Lunes",
-          "url": "livre_10.html#chap-40"
+          "titre": "Livre XI §44.3 — Lunes",
+          "url": "livre_11.html#chap-44"
         },
         {
           "titre": "Atlas 3D",
@@ -201,11 +201,11 @@
       "affiliation": "Primaire de Janus",
       "statut": "documenté",
       "notes": "Étoile binaire rouge-orangée. Composantes à préciser.",
-      "source": "atlas_3d.html:626, livre_10.html:709-713",
+      "source": "atlas_3d.html:626, livre_11.html:709-713",
       "liens": [
         {
-          "titre": "Livre X §39 — Systèmes",
-          "url": "livre_10.html#chap-39"
+          "titre": "Livre XI §43 — Systèmes",
+          "url": "livre_11.html#chap-43"
         },
         {
           "titre": "Atlas 3D",
@@ -241,15 +241,15 @@
       "affiliation": "Empire (colonisation en cours)",
       "statut": "documenté + notes auteur 2026-10-19",
       "notes": "Phase de colonisation militaire par l'Empire et guerre active [RA 04h 11m // Dec +44°19']. Anneaux planétaires, forêts déboisées, fosses d'extraction à ciel ouvert, mégapole blindée d'Atraxia, miradors biométriques et Monolithe du Nexus d'Aurion. Résistance souterraine (Bases A13 & B5) et guérilla des tribus Thaluns.",
-      "source": "livre_10.html:794-832",
+      "source": "livre_11.html:794-832",
       "liens": [
         {
-          "titre": "Livre X §40 — Vardis",
-          "url": "livre_10.html#chap-40"
+          "titre": "Livre XI §44 — Vardis",
+          "url": "livre_11.html#chap-44"
         },
         {
-          "titre": "Livre X §41 — Territoires",
-          "url": "livre_10.html#chap-41"
+          "titre": "Livre XI §45 — Territoires",
+          "url": "livre_11.html#chap-45"
         },
         {
           "titre": "Atlas 3D",
@@ -293,11 +293,11 @@
       "affiliation": "contesté (Empire bloqué en orbites et têtes de pont, jamais soumis)",
       "statut": "documenté + notes auteur 2026-10-19",
       "notes": "Nom local canon : Nefris [RA 04h 16m // Dec +43°50']. Ancien monde riche en cristaux résonateurs de nytharite, dévasté par les guerres d'annexion. Jamais soumis : l'Empire est bloqué en orbite et dans quelques têtes de pont. Cimetière de cuirassés, mégapoles en ruines, tribus en guérilla toxique-résistante utilisant de la tech récupérée.",
-      "source": "livre_10.html:834-871 + notes auteur 2026-10-19",
+      "source": "livre_11.html:834-871 + notes auteur 2026-10-19",
       "liens": [
         {
-          "titre": "Livre X §40 — Nefris",
-          "url": "livre_10.html#chap-40"
+          "titre": "Livre XI §44 — Nefris",
+          "url": "livre_11.html#chap-44"
         },
         {
           "titre": "Atlas 3D",
@@ -337,11 +337,11 @@
       "civilisation": "avant-poste",
       "affiliation": "Résistance",
       "statut": "documenté",
-      "source": "livre_10.html:968-983",
+      "source": "livre_11.html:968-983",
       "liens": [
         {
-          "titre": "Livre X §40.3 — Base",
-          "url": "livre_10.html#chap-40"
+          "titre": "Livre XI §44.3 — Base",
+          "url": "livre_11.html#chap-44"
         },
         {
           "titre": "Lore — Overview",
@@ -375,11 +375,11 @@
       "affiliation": "Royaume Matriarcal indépendant (Empire : prospection sans issue)",
       "statut": "documenté + notes auteur 2026-10-19",
       "notes": "Non associée à l'Empire : l'Empire tâte le terrain mais juge les Cléiennes très difficiles à soumettre (magie inhérente C+X, tech 5). Cités-tubes cultivées (espèces minérales en arches immenses), pas d'océans de méthane ; conforme aux visuels Cleya. Orbite circumbinaire autour du couple Mère/Sœur. Noces tous les 7 ans, pendant une saison : oracles télépathiques boostés + poussée de croissance des cités-tubes. Année orbitale : 400 jours ; saison des Noces : 90 jours.",
-      "source": "livre_10.html:873-906, livre_1.html:716-731 + notes auteur 2026-10-19",
+      "source": "livre_11.html:873-906, livre_1.html:716-731 + notes auteur 2026-10-19",
       "liens": [
         {
-          "titre": "Livre X §40 — Cléia",
-          "url": "livre_10.html#chap-40"
+          "titre": "Livre XI §44 — Cléia",
+          "url": "livre_11.html#chap-44"
         },
         {
           "titre": "Livre I §2 — Cléien",
@@ -417,8 +417,8 @@
       "source": "notes auteur 2026-10-19",
       "liens": [
         {
-          "titre": "Livre X §39 — Systèmes",
-          "url": "livre_10.html#chap-39"
+          "titre": "Livre XI §43 — Systèmes",
+          "url": "livre_11.html#chap-43"
         },
         {
           "titre": "Atlas 3D",
@@ -451,8 +451,8 @@
       "source": "notes auteur 2026-10-19",
       "liens": [
         {
-          "titre": "Livre X §39 — Systèmes",
-          "url": "livre_10.html#chap-39"
+          "titre": "Livre XI §43 — Systèmes",
+          "url": "livre_11.html#chap-43"
         },
         {
           "titre": "Atlas 3D",
@@ -482,11 +482,11 @@
       "affiliation": "Primaire de Karkjiue",
       "statut": "documenté",
       "notes": "Géante rouge à fortes éruptions.",
-      "source": "atlas_3d.html:628, livre_10.html:722-725",
+      "source": "atlas_3d.html:628, livre_11.html:722-725",
       "liens": [
         {
-          "titre": "Livre X §39 — Systèmes",
-          "url": "livre_10.html#chap-39"
+          "titre": "Livre XI §43 — Systèmes",
+          "url": "livre_11.html#chap-43"
         },
         {
           "titre": "Atlas 3D",
@@ -519,11 +519,11 @@
       "civilisation": "castes militaires",
       "affiliation": "Protectorat Martial Mikyai",
       "statut": "documenté",
-      "source": "livre_10.html:908-940, livre_1.html:733-748",
+      "source": "livre_11.html:908-940, livre_1.html:733-748",
       "liens": [
         {
-          "titre": "Livre X §40 — Karkjiue",
-          "url": "livre_10.html#chap-40"
+          "titre": "Livre XI §44 — Karkjiue",
+          "url": "livre_11.html#chap-44"
         },
         {
           "titre": "Livre I §2 — Mikyai",
@@ -559,11 +559,11 @@
       "affiliation": "Primaire du Sol",
       "statut": "documenté",
       "notes": "Référence 1 g. Matrice des déportés de l'An 0.",
-      "source": "atlas_3d.html:629, livre_10.html:728-731",
+      "source": "atlas_3d.html:629, livre_11.html:728-731",
       "liens": [
         {
-          "titre": "Livre X §39 — Système Sol",
-          "url": "livre_10.html#chap-39"
+          "titre": "Livre XI §43 — Système Sol",
+          "url": "livre_11.html#chap-43"
         },
         {
           "titre": "Atlas 3D",
@@ -594,11 +594,11 @@
       "civilisation": "Aucune (monde primitif, hors contact)",
       "affiliation": "Aucune // Non impliquée",
       "statut": "documenté",
-      "source": "atlas_3d.html:711-726, livre_10.html:728-731",
+      "source": "atlas_3d.html:711-726, livre_11.html:728-731",
       "liens": [
         {
-          "titre": "Livre X §39 — Système Sol",
-          "url": "livre_10.html#chap-39"
+          "titre": "Livre XI §43 — Système Sol",
+          "url": "livre_11.html#chap-43"
         },
         {
           "titre": "Atlas 3D",
@@ -633,8 +633,8 @@
       "source": "notes auteur 2026-10-19",
       "liens": [
         {
-          "titre": "Livre X §39 — Systèmes",
-          "url": "livre_10.html#chap-39"
+          "titre": "Livre XI §43 — Systèmes",
+          "url": "livre_11.html#chap-43"
         }
       ],
       "_nx": 425.33792438783496,
@@ -667,8 +667,8 @@
       "source": "notes auteur 2026-10-19",
       "liens": [
         {
-          "titre": "Livre X §39 — Systèmes",
-          "url": "livre_10.html#chap-39"
+          "titre": "Livre XI §43 — Systèmes",
+          "url": "livre_11.html#chap-43"
         }
       ],
       "_nx": 455.70153725388997,
@@ -698,15 +698,15 @@
       "affiliation": "Pirates (base : Avaleur de Mondes)",
       "statut": "documenté + notes auteur 2026-10-19",
       "notes": "Construit sur Ferron sur commande impériale, livré puis volé par le Capitaine balafré. Passe la majorité de son existence à bord de l'Avaleur de Mondes. Base principale : ventre-refuge-monde de l'Avaleur (dérive lente vers le système digestif, villes près de l'entrée).",
-      "source": "livre_10.html:948-966 + notes auteur 2026-10-19",
+      "source": "livre_11.html:948-966 + notes auteur 2026-10-19",
       "liens": [
         {
-          "titre": "Livre X §40.3 — Vaisseaux",
-          "url": "livre_10.html#chap-40"
+          "titre": "Livre XI §44.3 — Vaisseaux",
+          "url": "livre_11.html#chap-44"
         },
         {
-          "titre": "Livre XI §44 — Factions",
-          "url": "livre_11.html#chap-44"
+          "titre": "Livre XII §48 — Factions",
+          "url": "livre_12.html#chap-48"
         }
       ],
       "_nx": 364.29846274611003,
@@ -737,8 +737,8 @@
       "source": "notes auteur 2026-10-19",
       "liens": [
         {
-          "titre": "Livre XI §46 — Entités cosmiques",
-          "url": "livre_11.html#chap-46"
+          "titre": "Livre XII §50 — Entités cosmiques",
+          "url": "livre_12.html#chap-50"
         }
       ],
       "_nx": 306.9614678551878,
@@ -762,25 +762,25 @@
       "magie": "Impossible à Limitée (exceptions Éveillées)",
       "civilisation": "Métropole de Kingston, Royaumes (Aurora, Atika) & colonies",
       "affiliation": "Mondes Francs // Terres Centrales d'Hybris",
-      "statut": "documenté (Livre I §2.2, Livre X §40)",
+      "statut": "documenté (Livre I §2.2, Livre XI §44)",
       "notes": "Descendants des ~1 600 déportés humains restés près des cages d'atterrissage en l'An 0 HSC. Polyvalence et adaptabilité remarquables, sens min 3 (Vision/Ouïe). Ont bâti Kingston, le Central Institute, la World Police et l'Aetheric Energy Grid. Magie généralement impossible à limitée, sauf anomalies (Lucas, Mina).",
-      "source": "livre_10.html:755-792, livre_1.html:662-714, livre_11.html:871-978 (espèce)",
+      "source": "livre_11.html:755-792, livre_1.html:662-714, livre_12.html:871-978 (espèce)",
       "liens": [
         {
-          "titre": "Livre X §40 — Planètes",
-          "url": "livre_10.html#chap-40"
+          "titre": "Livre XI §44 — Planètes",
+          "url": "livre_11.html#chap-44"
         },
         {
-          "titre": "Livre X §41 — Régions",
-          "url": "livre_10.html#chap-41"
+          "titre": "Livre XI §45 — Régions",
+          "url": "livre_11.html#chap-45"
         },
         {
           "titre": "Livre I §2 — Espèces",
           "url": "livre_1.html#chap-2"
         },
         {
-          "titre": "Livre XI §45 — Faune",
-          "url": "livre_11.html#chap-45"
+          "titre": "Livre XII §49 — Faune",
+          "url": "livre_12.html#chap-49"
         }
       ],
       "hote": "Hybris",
@@ -807,23 +807,23 @@
       "affiliation": "Conseil de Brum'korath & Culte des Sent Ones",
       "statut": "documenté + corr. auteur 2026-10-19",
       "notes": "Exilés de l'An 0 ayant migré vers les Montagnes Naines de l'Ouest (non souterrains biologiques : vivent en cités creusées à flanc et au cœur des montagnes). Maîtres de la métallurgie des alliages élastiques (recyclés des cages de l'An 0), des forges géothermiques et de la surfréquence nytharite. Traversés par le schisme entre Sent Ones et Unbound.",
-      "source": "livre_10.html:755-792, livre_1.html:662-714, livre_11.html:871-978 (espèce)",
+      "source": "livre_11.html:755-792, livre_1.html:662-714, livre_12.html:871-978 (espèce)",
       "liens": [
         {
-          "titre": "Livre X §40 — Planètes",
-          "url": "livre_10.html#chap-40"
+          "titre": "Livre XI §44 — Planètes",
+          "url": "livre_11.html#chap-44"
         },
         {
-          "titre": "Livre X §41 — Régions",
-          "url": "livre_10.html#chap-41"
+          "titre": "Livre XI §45 — Régions",
+          "url": "livre_11.html#chap-45"
         },
         {
           "titre": "Livre I §2 — Espèces",
           "url": "livre_1.html#chap-2"
         },
         {
-          "titre": "Livre XI §45 — Faune",
-          "url": "livre_11.html#chap-45"
+          "titre": "Livre XII §49 — Faune",
+          "url": "livre_12.html#chap-49"
         }
       ],
       "hote": "Hybris",
@@ -848,25 +848,25 @@
       "magie": "Normale à Inhérente (harmonie élémentaire)",
       "civilisation": "Royaume sylvestre d'Haliriel & Royaume de Lepla",
       "affiliation": "Couronne d'Haliriel (Reine Aphyrosia)",
-      "statut": "documenté (Livre I §2.2, Livre X §41-42)",
+      "statut": "documenté (Livre I §2.2, Livre XI §45-46)",
       "notes": "Peuple elfique sylvestre d'une agilité exceptionnelle (sens min 3-4), établi dans la Grande Forêt du Sud et à Lepla (Continent Est). Refuse la métallurgie polluante au profit d'une bio-symbiose avec le bois Serran régénératif et la sève conductrice de 5e Force (chasseurs Windfighters à voiles cinétiques, ponts d'énergie pure).",
-      "source": "livre_10.html:755-792, livre_1.html:662-714, livre_11.html:871-978 (espèce)",
+      "source": "livre_11.html:755-792, livre_1.html:662-714, livre_12.html:871-978 (espèce)",
       "liens": [
         {
-          "titre": "Livre X §40 — Planètes",
-          "url": "livre_10.html#chap-40"
+          "titre": "Livre XI §44 — Planètes",
+          "url": "livre_11.html#chap-44"
         },
         {
-          "titre": "Livre X §41 — Régions",
-          "url": "livre_10.html#chap-41"
+          "titre": "Livre XI §45 — Régions",
+          "url": "livre_11.html#chap-45"
         },
         {
           "titre": "Livre I §2 — Espèces",
           "url": "livre_1.html#chap-2"
         },
         {
-          "titre": "Livre XI §45 — Faune",
-          "url": "livre_11.html#chap-45"
+          "titre": "Livre XII §49 — Faune",
+          "url": "livre_12.html#chap-49"
         }
       ],
       "hote": "Hybris",
@@ -891,25 +891,25 @@
       "magie": "Limitée à Inhérente (Magie Tellurique rang 4)",
       "civilisation": "Clans des profondeurs pré-coloniaux",
       "affiliation": "Indigènes souverains des cavernes d'Hybris",
-      "statut": "documenté (Livre I §2.2, Livre XI §45)",
+      "statut": "documenté (Livre I §2.2, Livre XII §49)",
       "notes": "Seule espèce humanoïde native d'Hybris (souche hybride S/C), issue de l'évolution planétaire naturelle bien avant l'An 0. Peau de granit grisâtre (Armure naturelle 3 pts), squelette dense, communication par résonance acoustique dans la pierre, capacité Séisme Souterrain. Attirés par le 'chant' des galeries lors des Nuits Blanches de Nyth-1.",
-      "source": "livre_10.html:755-792, livre_1.html:662-714, livre_11.html:871-978 (espèce)",
+      "source": "livre_11.html:755-792, livre_1.html:662-714, livre_12.html:871-978 (espèce)",
       "liens": [
         {
-          "titre": "Livre X §40 — Planètes",
-          "url": "livre_10.html#chap-40"
+          "titre": "Livre XI §44 — Planètes",
+          "url": "livre_11.html#chap-44"
         },
         {
-          "titre": "Livre X §41 — Régions",
-          "url": "livre_10.html#chap-41"
+          "titre": "Livre XI §45 — Régions",
+          "url": "livre_11.html#chap-45"
         },
         {
           "titre": "Livre I §2 — Espèces",
           "url": "livre_1.html#chap-2"
         },
         {
-          "titre": "Livre XI §45 — Faune",
-          "url": "livre_11.html#chap-45"
+          "titre": "Livre XII §49 — Faune",
+          "url": "livre_12.html#chap-49"
         }
       ],
       "hote": "Hybris",
@@ -936,23 +936,23 @@
       "affiliation": "Continent Est d'Hybris (Hors-trame)",
       "statut": "documenté + notes auteur 2026-10-19",
       "notes": "Colosses multi-hexagones (empreintes Rosette7 / Colossus19, Livre V & XI) évoluant dans les brumes chronales du Continent Est et les zones de fracture temporelle. Métabolisme dopé par la 5e Force, capables de Saisie Colossale, Piétinement de Zone et Souffle Titanesque.",
-      "source": "livre_10.html:755-792, livre_1.html:662-714, livre_11.html:871-978 (espèce)",
+      "source": "livre_11.html:755-792, livre_1.html:662-714, livre_12.html:871-978 (espèce)",
       "liens": [
         {
-          "titre": "Livre X §40 — Planètes",
-          "url": "livre_10.html#chap-40"
+          "titre": "Livre XI §44 — Planètes",
+          "url": "livre_11.html#chap-44"
         },
         {
-          "titre": "Livre X §41 — Régions",
-          "url": "livre_10.html#chap-41"
+          "titre": "Livre XI §45 — Régions",
+          "url": "livre_11.html#chap-45"
         },
         {
           "titre": "Livre I §2 — Espèces",
           "url": "livre_1.html#chap-2"
         },
         {
-          "titre": "Livre XI §45 — Faune",
-          "url": "livre_11.html#chap-45"
+          "titre": "Livre XII §49 — Faune",
+          "url": "livre_12.html#chap-49"
         }
       ],
       "hote": "Hybris",
@@ -977,25 +977,25 @@
       "magie": "Normale à Inhérente (métabolisme C+)",
       "civilisation": "Biosphère sauvage (forêts, falaises, cavernes)",
       "affiliation": "Écosystème d'Hybris",
-      "statut": "documenté (Livre XI §45)",
+      "statut": "documenté (Livre XII §49)",
       "notes": "Faune jeune et féroce dont le métabolisme est dopé par les veines souterraines de nytharite : prédateurs aquatiques des cavernes, bêtes des falaises, faune sylvestre de la Grande Forêt et créatures électro-sensibles excitées lors des Conjonctions d'Orage de Storm-2.",
-      "source": "livre_10.html:755-792, livre_1.html:662-714, livre_11.html:871-978 (espèce)",
+      "source": "livre_11.html:755-792, livre_1.html:662-714, livre_12.html:871-978 (espèce)",
       "liens": [
         {
-          "titre": "Livre X §40 — Planètes",
-          "url": "livre_10.html#chap-40"
+          "titre": "Livre XI §44 — Planètes",
+          "url": "livre_11.html#chap-44"
         },
         {
-          "titre": "Livre X §41 — Régions",
-          "url": "livre_10.html#chap-41"
+          "titre": "Livre XI §45 — Régions",
+          "url": "livre_11.html#chap-45"
         },
         {
           "titre": "Livre I §2 — Espèces",
           "url": "livre_1.html#chap-2"
         },
         {
-          "titre": "Livre XI §45 — Faune",
-          "url": "livre_11.html#chap-45"
+          "titre": "Livre XII §49 — Faune",
+          "url": "livre_12.html#chap-49"
         }
       ],
       "hote": "Hybris",
@@ -1020,17 +1020,17 @@
       "magie": "Variable (Limitée à Normale)",
       "civilisation": "Cités minières, enclaves rebelles & marches (Prat)",
       "affiliation": "Vardis (Résistance / Colons) & diaspora sur Hybris",
-      "statut": "documenté (Livre I §2.2, Livre X §40)",
+      "statut": "documenté (Livre I §2.2, Livre XI §44)",
       "notes": "Populations humaines et métissées issues de Vardis et des mondes de bordure marqués par la gravité lourde (1.15 g), l'exploitation minière et la guerre. Volonté d'acier, sens de la survie et maîtrise du matériel hybride de récupération. Aussi présents sur Hybris (Royaume de Prat, Kuart-Kavé, Port d'Orof-garen, Tredmor).",
-      "source": "livre_10.html:794-832 (espèce)",
+      "source": "livre_11.html:794-832 (espèce)",
       "liens": [
         {
-          "titre": "Livre X §40 — Vardis",
-          "url": "livre_10.html#chap-40"
+          "titre": "Livre XI §44 — Vardis",
+          "url": "livre_11.html#chap-44"
         },
         {
-          "titre": "Livre X §41 — Territoires",
-          "url": "livre_10.html#chap-41"
+          "titre": "Livre XI §45 — Territoires",
+          "url": "livre_11.html#chap-45"
         }
       ],
       "hote": "Vardis",
@@ -1055,17 +1055,17 @@
       "magie": "Normale (rituels de la terre et des esprits)",
       "civilisation": "Confédérations tribales par conseils d'anciens",
       "affiliation": "Tribus libres de Vardis (alliées à la Résistance)",
-      "statut": "documenté (Livre X §40-41, Lore Vardis)",
+      "statut": "documenté (Livre XI §44-45, Lore Vardis)",
       "notes": "Peuple indigène de Vardis (souche C filtrante adaptée à l'aridité et aux poussières industrielles). Nomadise dans les canyons escarpés et jungles de Vardis ; maître du camouflage géologique, de la filtration d'eau et de la guérilla contre la déforestation et les avant-postes impériaux.",
-      "source": "livre_10.html:794-832 (espèce)",
+      "source": "livre_11.html:794-832 (espèce)",
       "liens": [
         {
-          "titre": "Livre X §40 — Vardis",
-          "url": "livre_10.html#chap-40"
+          "titre": "Livre XI §44 — Vardis",
+          "url": "livre_11.html#chap-44"
         },
         {
-          "titre": "Livre X §41 — Territoires",
-          "url": "livre_10.html#chap-41"
+          "titre": "Livre XI §45 — Territoires",
+          "url": "livre_11.html#chap-45"
         }
       ],
       "hote": "Vardis",
@@ -1090,17 +1090,17 @@
       "magie": "Limitée (strictement réglementée / réprimée)",
       "civilisation": "Corps expéditionnaire, SWAT & phalanxes d'Atraxia",
       "affiliation": "Empire Galactique (Occupation de Vardis)",
-      "statut": "documenté (Livre X §40, Livre XI §44-47)",
+      "statut": "documenté (Livre XI §44, Livre XII §48-51)",
       "notes": "Forces d'occupation multi-souches (officiers humains, troupes de choc Mikyais, auxiliaires) déployées à Atraxia et autour des fosses d'extraction. Équipées d'armures lourdes, fusils laser, Deglazers, drones de répression et molosses bioniques.",
-      "source": "livre_10.html:794-832 (espèce)",
+      "source": "livre_11.html:794-832 (espèce)",
       "liens": [
         {
-          "titre": "Livre X §40 — Vardis",
-          "url": "livre_10.html#chap-40"
+          "titre": "Livre XI §44 — Vardis",
+          "url": "livre_11.html#chap-44"
         },
         {
-          "titre": "Livre X §41 — Territoires",
-          "url": "livre_10.html#chap-41"
+          "titre": "Livre XI §45 — Territoires",
+          "url": "livre_11.html#chap-45"
         }
       ],
       "hote": "Vardis",
@@ -1127,11 +1127,11 @@
       "affiliation": "Tribus insoumises de Nefris",
       "statut": "documenté + notes auteur 2026-10-19",
       "notes": "Peuple indigène de Nefris à biologie C résistante aux toxines atmosphériques. Organisé en tribus mobiles qui piègent les ruines de béton et de titane, récupèrent l'armement impérial et bloquent toute conquête terrestre de la planète.",
-      "source": "livre_10.html:834-871 + notes auteur 2026-10-19 (espèce)",
+      "source": "livre_11.html:834-871 + notes auteur 2026-10-19 (espèce)",
       "liens": [
         {
-          "titre": "Livre X §40 — Nefris",
-          "url": "livre_10.html#chap-40"
+          "titre": "Livre XI §44 — Nefris",
+          "url": "livre_11.html#chap-44"
         }
       ],
       "hote": "Nefris",
@@ -1156,13 +1156,13 @@
       "magie": "Limitée",
       "civilisation": "Compagnies minières armées & têtes de pont",
       "affiliation": "Empire Galactique / Compagnies sous contrat",
-      "statut": "documenté (Livre X §40)",
+      "statut": "documenté (Livre XI §44)",
       "notes": "Détachements d'ingénieurs de combat et mercenaires sous contrat impérial retranchés dans les têtes de pont de Nefris pour tenter d'extraire les derniers gisements de cristaux résonateurs de nytharite sous masque respiratoire.",
-      "source": "livre_10.html:834-871 + notes auteur 2026-10-19 (espèce)",
+      "source": "livre_11.html:834-871 + notes auteur 2026-10-19 (espèce)",
       "liens": [
         {
-          "titre": "Livre X §40 — Nefris",
-          "url": "livre_10.html#chap-40"
+          "titre": "Livre XI §44 — Nefris",
+          "url": "livre_11.html#chap-44"
         }
       ],
       "hote": "Nefris",
@@ -1187,13 +1187,13 @@
       "magie": "Variable",
       "civilisation": "Cellules insurgées interstellaires",
       "affiliation": "Résistance (Base Astéroïde de Nefris, Starlight Voyager)",
-      "statut": "documenté (Livre X §40.3)",
+      "statut": "documenté (Livre XI §44.3)",
       "notes": "Opérateurs, pilotes, hackers et commandos (dont John et Erika) coordonnant le décodage des transmissions impériales et les raids contre les convois de Crédits d'Énergie (CE) depuis la Base Astéroïde de Nefris.",
-      "source": "livre_10.html:968-983 (espèce)",
+      "source": "livre_11.html:968-983 (espèce)",
       "liens": [
         {
-          "titre": "Livre X §40.3 — Base",
-          "url": "livre_10.html#chap-40"
+          "titre": "Livre XI §44.3 — Base",
+          "url": "livre_11.html#chap-44"
         }
       ],
       "hote": "Base Astéroïde de Nefris",
@@ -1218,13 +1218,13 @@
       "magie": "Inhérente (télépathie chirurgicale à 6 stades)",
       "civilisation": "Royaume Matriarcal de Cléia & enclaves (Obelia, Kalici)",
       "affiliation": "Royaume Matriarcal indépendant (Cléia)",
-      "statut": "documenté (Livre I §2.2, Livre X §40) + notes auteur",
+      "statut": "documenté (Livre I §2.2, Livre XI §44) + notes auteur",
       "notes": "Espèce alien 100% féminine de petite taille (souche C+X : ADN-ARN + 3e brin de 5e Force, sens min 4, besoin en eau très faible). Réseau neural hypersensible doté d'une télépathie innée et d'une maîtrise de la bio-architecture des cités-tubes. L'Empire renonce à les soumettre par la force.",
-      "source": "livre_10.html:873-906, livre_1.html:716-731 + notes auteur 2026-10-19 (espèce)",
+      "source": "livre_11.html:873-906, livre_1.html:716-731 + notes auteur 2026-10-19 (espèce)",
       "liens": [
         {
-          "titre": "Livre X §40 — Cléia",
-          "url": "livre_10.html#chap-40"
+          "titre": "Livre XI §44 — Cléia",
+          "url": "livre_11.html#chap-44"
         },
         {
           "titre": "Livre I §2 — Cléien",
@@ -1255,11 +1255,11 @@
       "affiliation": "Biosphère de Cléia",
       "statut": "notes auteur 2026-10-19",
       "notes": "Inclut la faune xérophile des grands canyons de Cléia et les espèces minérales vivantes (souche X) qui croissent en arches et tours géantes pour former les cités-tubes, avec une poussée de croissance tous les 7 ans lors de la saison des Noces.",
-      "source": "livre_10.html:873-906, livre_1.html:716-731 + notes auteur 2026-10-19 (espèce)",
+      "source": "livre_11.html:873-906, livre_1.html:716-731 + notes auteur 2026-10-19 (espèce)",
       "liens": [
         {
-          "titre": "Livre X §40 — Cléia",
-          "url": "livre_10.html#chap-40"
+          "titre": "Livre XI §44 — Cléia",
+          "url": "livre_11.html#chap-44"
         },
         {
           "titre": "Livre I §2 — Cléien",
@@ -1288,13 +1288,13 @@
       "magie": "Impossible (biologie réfractaire, rares exceptions limitées)",
       "civilisation": "Castes militaires de Karkjiue & comptoirs (Akalemna)",
       "affiliation": "Protectorat Martial Mikyai (enrôlé par l'Empire)",
-      "statut": "documenté (Livre I §2.2, Livre X §40)",
+      "statut": "documenté (Livre I §2.2, Livre XI §44)",
       "notes": "Reptiliens bipèdes de taille humaine originaires de Karkjiue (1.28 g). Écailles silicées thermorésistantes (souche S-partielle) offrant un encaissement naturel supérieur. Fantassins de choc et maîtres d'artillerie lourde enrôlés dans les légions impériales.",
-      "source": "livre_10.html:908-940, livre_1.html:733-748 (espèce)",
+      "source": "livre_11.html:908-940, livre_1.html:733-748 (espèce)",
       "liens": [
         {
-          "titre": "Livre X §40 — Karkjiue",
-          "url": "livre_10.html#chap-40"
+          "titre": "Livre XI §44 — Karkjiue",
+          "url": "livre_11.html#chap-44"
         },
         {
           "titre": "Livre I §2 — Mikyai",
@@ -1323,13 +1323,13 @@
       "magie": "Impossible (réfractaire à la 5e Force)",
       "civilisation": "Faune sauvage des plaines de basalte",
       "affiliation": "Biosphère de Karkjiue",
-      "statut": "documenté (Livre X §40)",
+      "statut": "documenté (Livre XI §44)",
       "notes": "Organismes à base de silicone double-brin (souche S pure) prospérant dans les coulées de basalte, les vapeurs de soufre et la haute gravité (1.28 g) de Karkjiue.",
-      "source": "livre_10.html:908-940, livre_1.html:733-748 (espèce)",
+      "source": "livre_11.html:908-940, livre_1.html:733-748 (espèce)",
       "liens": [
         {
-          "titre": "Livre X §40 — Karkjiue",
-          "url": "livre_10.html#chap-40"
+          "titre": "Livre XI §44 — Karkjiue",
+          "url": "livre_11.html#chap-44"
         },
         {
           "titre": "Livre I §2 — Mikyai",
@@ -1358,13 +1358,13 @@
       "magie": "Ignorée / Dormante",
       "civilisation": "Nations industrielles pré-Warp (Terre, Mars, Jupiter)",
       "affiliation": "Système Solaire (Matrice historique)",
-      "statut": "documenté (Livre I §2.1, Livre X §39)",
+      "statut": "documenté (Livre I §2.1, Livre XI §43)",
       "notes": "Humanité terrestre du XXIe siècle (souche C pure, 1.00 g). Matrice génétique et culturelle des 3 000 civils arrachés lors de la Déportation de l'An 0 HSC vers Hybris.",
-      "source": "atlas_3d.html:711-726, livre_10.html:728-731 (espèce)",
+      "source": "atlas_3d.html:711-726, livre_11.html:728-731 (espèce)",
       "liens": [
         {
-          "titre": "Livre X §39 — Système Sol",
-          "url": "livre_10.html#chap-39"
+          "titre": "Livre XI §43 — Système Sol",
+          "url": "livre_11.html#chap-43"
         }
       ],
       "hote": "Terre",
@@ -1391,17 +1391,17 @@
       "magie": "Variable (équipage multi-souches)",
       "civilisation": "Confrérie pirate libre (base : Avaleur de Mondes)",
       "affiliation": "Pirates de l'Aeschylus (traqués par l'Empire)",
-      "statut": "documenté (Livre X §40.3) + notes auteur 2026-10-19",
+      "statut": "documenté (Livre XI §44.3) + notes auteur 2026-10-19",
       "notes": "Équipage d'élite réuni autour du Capitaine balafré après le vol de l'Aeschylus à Ferron : Sara (seconde aux cheveux pourpres), Max (chef mécanicien du convertisseur Warp), Gunther (chirurgien cynique) et Babushka (pilote sous gravité variable).",
-      "source": "livre_10.html:948-966 + notes auteur 2026-10-19 (espèce)",
+      "source": "livre_11.html:948-966 + notes auteur 2026-10-19 (espèce)",
       "liens": [
         {
-          "titre": "Livre X §40.3 — Vaisseaux",
-          "url": "livre_10.html#chap-40"
+          "titre": "Livre XI §44.3 — Vaisseaux",
+          "url": "livre_11.html#chap-44"
         },
         {
-          "titre": "Livre XI §44 — Factions",
-          "url": "livre_11.html#chap-44"
+          "titre": "Livre XII §48 — Factions",
+          "url": "livre_12.html#chap-48"
         }
       ],
       "hote": "L'Aeschylus",
@@ -1431,8 +1431,8 @@
       "source": "notes auteur 2026-10-19 (espèce)",
       "liens": [
         {
-          "titre": "Livre X §39 — Systèmes",
-          "url": "livre_10.html#chap-39"
+          "titre": "Livre XI §43 — Systèmes",
+          "url": "livre_11.html#chap-43"
         }
       ],
       "hote": "Ferron",
@@ -1462,8 +1462,8 @@
       "source": "notes auteur 2026-10-19 (espèce)",
       "liens": [
         {
-          "titre": "Livre X §39 — Systèmes",
-          "url": "livre_10.html#chap-39"
+          "titre": "Livre XI §43 — Systèmes",
+          "url": "livre_11.html#chap-43"
         }
       ],
       "hote": "Ferron",
@@ -1493,8 +1493,8 @@
       "source": "génération auteur 2026-10-19",
       "liens": [
         {
-          "titre": "Livre X §39 — Systèmes",
-          "url": "livre_10.html#chap-39"
+          "titre": "Livre XI §43 — Systèmes",
+          "url": "livre_11.html#chap-43"
         }
       ],
       "_nx": 281.15530170006036,
@@ -1529,8 +1529,8 @@
       "source": "génération auteur 2026-10-19",
       "liens": [
         {
-          "titre": "Livre X §39 — Systèmes",
-          "url": "livre_10.html#chap-39"
+          "titre": "Livre XI §43 — Systèmes",
+          "url": "livre_11.html#chap-43"
         }
       ],
       "_nx": 257.9720420448923,
@@ -1559,8 +1559,8 @@
       "source": "génération auteur 2026-10-19",
       "liens": [
         {
-          "titre": "Livre X §39 — Systèmes",
-          "url": "livre_10.html#chap-39"
+          "titre": "Livre XI §43 — Systèmes",
+          "url": "livre_11.html#chap-43"
         }
       ],
       "_nx": 199.9134238162007,
@@ -1593,8 +1593,8 @@
       "source": "génération auteur 2026-10-19",
       "liens": [
         {
-          "titre": "Livre X §39 — Systèmes",
-          "url": "livre_10.html#chap-39"
+          "titre": "Livre XI §43 — Systèmes",
+          "url": "livre_11.html#chap-43"
         }
       ],
       "_nx": 208.5558091250512,
@@ -1623,8 +1623,8 @@
       "source": "génération auteur 2026-10-19",
       "liens": [
         {
-          "titre": "Livre X §39 — Systèmes",
-          "url": "livre_10.html#chap-39"
+          "titre": "Livre XI §43 — Systèmes",
+          "url": "livre_11.html#chap-43"
         }
       ],
       "_nx": 485.13479861380614,
@@ -1656,8 +1656,8 @@
       "source": "génération auteur 2026-10-19",
       "liens": [
         {
-          "titre": "Livre X §39 — Systèmes",
-          "url": "livre_10.html#chap-39"
+          "titre": "Livre XI §43 — Systèmes",
+          "url": "livre_11.html#chap-43"
         }
       ],
       "_nx": 513.0385321448123,
@@ -1688,8 +1688,8 @@
       "source": "génération auteur 2026-10-19",
       "liens": [
         {
-          "titre": "Livre X §39 — Systèmes",
-          "url": "livre_10.html#chap-39"
+          "titre": "Livre XI §43 — Systèmes",
+          "url": "livre_11.html#chap-43"
         }
       ],
       "_nx": 237.88363320126254,
@@ -1722,8 +1722,8 @@
       "source": "génération auteur 2026-10-19",
       "liens": [
         {
-          "titre": "Livre X §39 — Systèmes",
-          "url": "livre_10.html#chap-39"
+          "titre": "Livre XI §43 — Systèmes",
+          "url": "livre_11.html#chap-43"
         }
       ],
       "_nx": 221.29901724304008,
@@ -1754,8 +1754,8 @@
       "source": "génération auteur 2026-10-19",
       "liens": [
         {
-          "titre": "Livre X §39 — Systèmes",
-          "url": "livre_10.html#chap-39"
+          "titre": "Livre XI §43 — Systèmes",
+          "url": "livre_11.html#chap-43"
         }
       ],
       "_nx": 538.8446982999396,
@@ -1788,8 +1788,8 @@
       "source": "génération auteur 2026-10-19",
       "liens": [
         {
-          "titre": "Livre X §39 — Systèmes",
-          "url": "livre_10.html#chap-39"
+          "titre": "Livre XI §43 — Systèmes",
+          "url": "livre_11.html#chap-43"
         }
       ],
       "_nx": 513.0385321448122,
@@ -1818,8 +1818,8 @@
       "source": "génération auteur 2026-10-19",
       "liens": [
         {
-          "titre": "Livre X §39 — Systèmes",
-          "url": "livre_10.html#chap-39"
+          "titre": "Livre XI §43 — Systèmes",
+          "url": "livre_11.html#chap-43"
         }
       ],
       "_nx": 334.8652013861938,
@@ -1852,8 +1852,8 @@
       "source": "génération auteur 2026-10-19",
       "liens": [
         {
-          "titre": "Livre X §39 — Systèmes",
-          "url": "livre_10.html#chap-39"
+          "titre": "Livre XI §43 — Systèmes",
+          "url": "livre_11.html#chap-43"
         }
       ],
       "_nx": 364.2984627461101,
@@ -1884,8 +1884,8 @@
       "source": "génération auteur 2026-10-19",
       "liens": [
         {
-          "titre": "Livre X §39 — Systèmes",
-          "url": "livre_10.html#chap-39"
+          "titre": "Livre XI §43 — Systèmes",
+          "url": "livre_11.html#chap-43"
         }
       ],
       "_nx": 394.6620756121651,
@@ -1919,13 +1919,13 @@
       "magie": "Normale à Inhérente (5e Force primordiale)",
       "civilisation": "Mondes Francs, Royaumes d'Hybris & colonies",
       "affiliation": "Éliane Aethelgard / Ceylan (Hors Empire)",
-      "statut": "documenté (Livre X §38, Atlas 3D)",
+      "statut": "documenté (Livre XI §42, Atlas 3D)",
       "notes": "Secteur oriental adjacent à Capricius (Zone 02), Zone 07 (NE) et Zone 08 (SE). Coordonnées 3D [620, 15, -25]. Vecteur arcanique : gravité résonante et 5e Force primordiale. Abrite la Galaxie Principale, la Galaxie Sans Étoiles, le système Hybris-Prime et le point d'ancrage de la Timeline-A. Hybris se trouve près du bord de la Zone 01 faisant face à la Zone 02, à ~1 milliard d'années-lumières d'Aurion (z ~ 0,07) : seule la navigation hors-espace (relais sub-spatiaux, trou de ver) franchit cette distance.",
-      "source": "livre_10.html:598-602, atlas_3d.html:583",
+      "source": "livre_11.html:598-602, atlas_3d.html:583",
       "liens": [
         {
-          "titre": "Livre X §38 — 36 Zones Éliennes",
-          "url": "livre_10.html#chap-38"
+          "titre": "Livre XI §42 — 36 Zones Éliennes",
+          "url": "livre_11.html#chap-42"
         },
         {
           "titre": "Atlas 3D",
@@ -1962,13 +1962,13 @@
       "magie": "Limitée (réprimée) à Godlike (Disciples)",
       "civilisation": "Empire Intergalactique (milliers de mondes)",
       "affiliation": "Capricius & Empire Galactique",
-      "statut": "documenté (Livre X §38, Atlas 3D, Lore)",
+      "statut": "documenté (Livre XI §42, Atlas 3D, Lore)",
       "notes": "Centre-Est universel [280, 0, -35], entouré de l'anneau hexagonal des Zones 01 et 05 à 10. Foyer de la faute cosmique (-20 milliards HSC) où Capricius engloutit les courants scintillants de matière réelle, générant l'Eau Sombre et condamnant l'univers à l'effondrement d'ici 1 000 ans. Siège des calculs psychohistoriques sur 100 000 ans. Empire Intergalactique fondé il y a 22 millions d'années sur les vestiges de la Première Civilisation (aujourd'hui disparue) ; saturation de la Galaxie d'Aurion ~-10 Ma, puis stagnation face à l'Eau Sombre et aux coûts de coordination. Expansion en systèmes tentaculaires le long des corridors rentables ; mondes non stratégiques laissés indépendants et intouchés.",
-      "source": "livre_10.html:540-608, atlas_3d.html:584, capricius_and_empire.html",
+      "source": "livre_11.html:540-608, atlas_3d.html:584, capricius_and_empire.html",
       "liens": [
         {
-          "titre": "Livre X §38 — Capricius & 36 Zones",
-          "url": "livre_10.html#chap-38"
+          "titre": "Livre XI §42 — Capricius & 36 Zones",
+          "url": "livre_11.html#chap-42"
         },
         {
           "titre": "Lore — Capricius & The Empire",
@@ -2005,13 +2005,13 @@
       "magie": "Inhérente (télépathie & singularité subquantique)",
       "civilisation": "Royaume Matriarcal Cléien",
       "affiliation": "Éliane Selene-Vor // Cléia",
-      "statut": "documenté (Livre X §38)",
+      "statut": "documenté (Livre XI §42)",
       "notes": "Troisième zone élienne gouvernée par l'Archonte Selene-Vor. Caractérisée par une perméabilité maximale à la 5e Force.",
-      "source": "livre_10.html:609-614",
+      "source": "livre_11.html:609-614",
       "liens": [
         {
-          "titre": "Livre X §38 — 36 Zones Éliennes",
-          "url": "livre_10.html#chap-38"
+          "titre": "Livre XI §42 — 36 Zones Éliennes",
+          "url": "livre_11.html#chap-42"
         }
       ],
       "_nx": 385.62,
@@ -2040,13 +2040,13 @@
       "magie": "Impossible / Cinétique brute",
       "civilisation": "Protectorat Martial des Légions Mikyais",
       "affiliation": "Éliane Goroth-Kahn // Empire (Protectorat)",
-      "statut": "documenté (Livre X §38)",
+      "statut": "documenté (Livre XI §42)",
       "notes": "Quatrième zone élienne sous la résonance de Goroth-Kahn : vecteur de cinétique brute et de haute densité tellurique.",
-      "source": "livre_10.html:615-620",
+      "source": "livre_11.html:615-620",
       "liens": [
         {
-          "titre": "Livre X §38 — 36 Zones Éliennes",
-          "url": "livre_10.html#chap-38"
+          "titre": "Livre XI §42 — 36 Zones Éliennes",
+          "url": "livre_11.html#chap-42"
         }
       ],
       "_nx": 374.38,
@@ -2077,17 +2077,17 @@
       "magie": "Variable (perturbations d'Eau Sombre)",
       "civilisation": "Secteurs tampons & remparts dimensionnels",
       "affiliation": "Élianes V à X (Confinement de Capricius)",
-      "statut": "documenté (Atlas 3D, Livre X §38)",
+      "statut": "documenté (Atlas 3D, Livre XI §42)",
       "notes": "Six zones ceinturant directement la Zone 02 (Capricius) : Zone 05 NO (Morvath), Zone 06 Nord (Val-Tesh), Zone 07 NE (Oros-Amon, mitoyenne de Ceylan/Hybris avec conduits d'Eau Sombre instables), Zone 08 SE (Tethys-Zul, mitoyenne de Ceylan/Hybris), Zone 09 Sud (Kael-Sarkon) et Zone 10 SO (Xir-Nox).",
-      "source": "atlas_3d.html:587-592, livre_10.html:622-627",
+      "source": "atlas_3d.html:587-592, livre_11.html:622-627",
       "liens": [
         {
           "titre": "Atlas 3D — Topologie des 36 Zones",
           "url": "atlas_3d.html"
         },
         {
-          "titre": "Livre X §38.2 — Réseau des 36 Élianes",
-          "url": "livre_10.html#chap-38"
+          "titre": "Livre XI §42.2 — Réseau des 36 Élianes",
+          "url": "livre_11.html#chap-42"
         }
       ],
       "_nx": 363.16,
@@ -2117,13 +2117,13 @@
       "magie": "Vecteurs élémentaires & failles causales",
       "civilisation": "Secteurs dimensionnels extérieurs",
       "affiliation": "Le Réseau des 36 Élianes (La Mère)",
-      "statut": "documenté (Livre X §38, Atlas 3D)",
+      "statut": "documenté (Livre XI §42, Atlas 3D)",
       "notes": "Les 26 secteurs dimensionnels périphériques (Outer-11 à Outer-36) stabilisés par les Archontes de La Mère. Subissent la lente submersion thermodynamique par l'Eau Sombre depuis la rupture de Capricius.",
-      "source": "livre_10.html:622-627, atlas_3d.html:595-614",
+      "source": "livre_11.html:622-627, atlas_3d.html:595-614",
       "liens": [
         {
-          "titre": "Livre X §38 — 36 Zones Éliennes",
-          "url": "livre_10.html#chap-38"
+          "titre": "Livre XI §42 — 36 Zones Éliennes",
+          "url": "livre_11.html#chap-42"
         },
         {
           "titre": "Atlas 3D",
@@ -2158,13 +2158,13 @@
       "magie": "Dormante (Sol) à Inhérente (Hybris, Cléia)",
       "civilisation": "Mondes Francs, Royaumes d'Hybris, Matriarcat Cléien",
       "affiliation": "Indépendant // Zone 01",
-      "statut": "documenté (Livre X §39.1, Atlas 3D)",
+      "statut": "documenté (Livre XI §43.1, Atlas 3D)",
       "notes": "Vaste galaxie spirale [620, 15, -25] abritant le système d'Hybris-Prime, le système Solaire (Terre), les colonies humaines franches et les stations minières indépendantes. La Terre primitive y reste intouchée et non impliquée (déportés issus d'autres mondes avancés).",
-      "source": "livre_10.html:659-669, atlas_3d.html:618",
+      "source": "livre_11.html:659-669, atlas_3d.html:618",
       "liens": [
         {
-          "titre": "Livre X §39.1 — Galaxies",
-          "url": "livre_10.html#chap-39"
+          "titre": "Livre XI §43.1 — Galaxies",
+          "url": "livre_11.html#chap-43"
         },
         {
           "titre": "Atlas 3D",
@@ -2200,13 +2200,13 @@
       "magie": "Limitée / Contrôlée par l'Empire",
       "civilisation": "Empire Galactique (hyper-densité militaire)",
       "affiliation": "Empire Galactique (Zone 02)",
-      "statut": "documenté (Livre X §39.1, Atlas 3D)",
+      "statut": "documenté (Livre XI §43.1, Atlas 3D)",
       "notes": "Cœur militaro-industriel de l'Empire Intergalactique [280, 0, -35]. Flottes de cuirassés, forteresses de matière noire, chantiers navals de Ferron, capitale Nexus d'Aurion et front de Vardis/Nefris. Empire fondé il y a 22 Ma (Première Civilisation disparue) ; expansion tentaculaire, mondes non stratégiques intouchés.",
-      "source": "livre_10.html:648-657, atlas_3d.html:619",
+      "source": "livre_11.html:648-657, atlas_3d.html:619",
       "liens": [
         {
-          "titre": "Livre X §39.1 — Galaxies",
-          "url": "livre_10.html#chap-39"
+          "titre": "Livre XI §43.1 — Galaxies",
+          "url": "livre_11.html#chap-43"
         },
         {
           "titre": "Atlas 3D",
@@ -2239,17 +2239,17 @@
       "magie": "Inhérente / Rupture Causale",
       "civilisation": "chronotrame effacée (aucune civilisation survivante)",
       "affiliation": "Anomalie Hors-Cartes (liée aux Disciples & au Minulican)",
-      "statut": "documenté (Livre X §39.1, Atlas 3D)",
+      "statut": "documenté (Livre XI §43.1, Atlas 3D)",
       "notes": "Anomalie subquantique [740, -70, 40] visible uniquement depuis les observatoires arcaniques lors d'alignements quantiques. Gouffre stellaire dépourvu de soleils : vestige effondré d'une ligne temporelle entière purgée par un Disciple.",
-      "source": "livre_10.html:671-682, atlas_3d.html:620",
+      "source": "livre_11.html:671-682, atlas_3d.html:620",
       "liens": [
         {
-          "titre": "Livre X §39.1 — La Galaxie Sans Étoiles",
-          "url": "livre_10.html#chap-39"
+          "titre": "Livre XI §43.1 — La Galaxie Sans Étoiles",
+          "url": "livre_11.html#chap-43"
         },
         {
-          "titre": "Livre XI §46 — Le Minulican",
-          "url": "livre_11.html#chap-46"
+          "titre": "Livre XII §50 — Le Minulican",
+          "url": "livre_12.html#chap-50"
         },
         {
           "titre": "Atlas 3D",
@@ -2289,8 +2289,8 @@
           "url": "atlas_3d.html"
         },
         {
-          "titre": "Livre X §39.2 — Système Sol",
-          "url": "livre_10.html#chap-39"
+          "titre": "Livre XI §43.2 — Système Sol",
+          "url": "livre_11.html#chap-43"
         }
       ],
       "hote": "Terre",
@@ -2317,13 +2317,13 @@
       "magie": "Dormante",
       "civilisation": "colonies minières et scientifiques",
       "affiliation": "Système Solaire (Matrice historique)",
-      "statut": "documenté (Livre X §39.2)",
+      "statut": "documenté (Livre XI §43.2)",
       "notes": "Quatrième planète du Système Solaire. Colonies sous dômes et mines d'alliages du XXIe siècle avancé, antérieures à la Déportation de l'An 0.",
-      "source": "livre_10.html:728-731",
+      "source": "livre_11.html:728-731",
       "liens": [
         {
-          "titre": "Livre X §39.2 — Système Sol",
-          "url": "livre_10.html#chap-39"
+          "titre": "Livre XI §43.2 — Système Sol",
+          "url": "livre_11.html#chap-43"
         }
       ],
       "_nx": 195.5477953587955,
@@ -2349,13 +2349,13 @@
       "magie": "Dormante (premières mesures d'anomalies subquantiques)",
       "civilisation": "stations scientifiques en orbite jovienne",
       "affiliation": "Système Solaire (Matrice historique)",
-      "statut": "documenté (Livre X §39.2)",
+      "statut": "documenté (Livre XI §43.2)",
       "notes": "Stations orbitales autour de Jupiter dédiées à l'extraction d'hélium-3 et à la physique des hautes énergies.",
-      "source": "livre_10.html:728-731",
+      "source": "livre_11.html:728-731",
       "liens": [
         {
-          "titre": "Livre X §39.2 — Système Sol",
-          "url": "livre_10.html#chap-39"
+          "titre": "Livre XI §43.2 — Système Sol",
+          "url": "livre_11.html#chap-43"
         }
       ],
       "hote": "Terre",
@@ -2382,13 +2382,13 @@
       "magie": "Normale",
       "civilisation": "ceinture d'épaves orbitales",
       "affiliation": "Hybris-Prime (vestiges An 0)",
-      "statut": "documenté (Livre X §39.2)",
+      "statut": "documenté (Livre XI §43.2)",
       "notes": "Ceinture de débris métalliques et d'épaves orbitales entourant Hybris, issue du largage des 3 000 cages de déportation en l'An 0 HSC.",
-      "source": "livre_10.html:705",
+      "source": "livre_11.html:705",
       "liens": [
         {
-          "titre": "Livre X §39.2 — Système Hybris-Prime",
-          "url": "livre_10.html#chap-39"
+          "titre": "Livre XI §43.2 — Système Hybris-Prime",
+          "url": "livre_11.html#chap-43"
         }
       ],
       "hote": "Hybris",
@@ -2417,13 +2417,13 @@
       "magie": "Variable",
       "civilisation": "caches pirates & champ de ruines spatiales",
       "affiliation": "Pirates / Résistance (contesté par l'Empire)",
-      "statut": "documenté (Livre X §39.2, Atlas 3D)",
+      "statut": "documenté (Livre XI §43.2, Atlas 3D)",
       "notes": "Ceinture d'astéroïdes et d'épaves de cuirassés entre Vardis et Nefris. Abrite la cache où le Capitaine balafré ravitaille l'Aeschylus en cristaux de propulsion Warp.",
-      "source": "livre_10.html:711-712, atlas_3d.html:671-681",
+      "source": "livre_11.html:711-712, atlas_3d.html:671-681",
       "liens": [
         {
-          "titre": "Livre X §39.2 — Système Janus",
-          "url": "livre_10.html#chap-39"
+          "titre": "Livre XI §43.2 — Système Janus",
+          "url": "livre_11.html#chap-43"
         },
         {
           "titre": "Atlas 3D — Cache de l'Aeschylus",
@@ -2455,13 +2455,13 @@
       "magie": "Inhérente (capteurs de flux 5e Force)",
       "civilisation": "réseau orbital de veille et d'harmonie",
       "affiliation": "Royaume Matriarcal de Cléia",
-      "statut": "documenté (Livre X §39.2)",
+      "statut": "documenté (Livre XI §43.2)",
       "notes": "Constellation de satellites capteurs de 5e Force en orbite autour de Cléia. Cartographie les marées arcaniques du couple binaire Veyla-Mère / Veyla-Sœur et détecte toute approche de la flotte impériale.",
-      "source": "livre_10.html:718",
+      "source": "livre_11.html:718",
       "liens": [
         {
-          "titre": "Livre X §39.2 — Système Cléia",
-          "url": "livre_10.html#chap-39"
+          "titre": "Livre XI §43.2 — Système Cléia",
+          "url": "livre_11.html#chap-43"
         }
       ],
       "hote": "Cléia",
@@ -2490,13 +2490,13 @@
       "magie": "Impossible",
       "civilisation": "complexes sidérurgiques orbitaux",
       "affiliation": "Protectorat Martial Mikyai // Empire",
-      "statut": "documenté (Livre X §39.2)",
+      "statut": "documenté (Livre XI §43.2)",
       "notes": "Anneau de stations d'extraction et de fonderies en orbite basse de Karkjiue, raffinant les minerais hyper-denses du monde volcanique pour les blindages et l'artillerie des légions Mikyais et de la flotte impériale.",
-      "source": "livre_10.html:724",
+      "source": "livre_11.html:724",
       "liens": [
         {
-          "titre": "Livre X §39.2 — Système Karkjiue",
-          "url": "livre_10.html#chap-39"
+          "titre": "Livre XI §43.2 — Système Karkjiue",
+          "url": "livre_11.html#chap-43"
         }
       ],
       "hote": "Karkjiue",
@@ -2568,13 +2568,13 @@
       "magie": "Inhérente (voiles d'énergie cinétique & pilotage télépathique)",
       "civilisation": "Hangar du Haut Commandement d'Haliriel",
       "affiliation": "Couronne d'Haliriel (Reine Aphyrosia)",
-      "statut": "documenté (Livre X §42.1, Chroniques d'Hybris)",
+      "statut": "documenté (Livre XI §46.1, Chroniques d'Hybris)",
       "notes": "Chasseurs fuselés (16m × 7m) en bois Serran régénératif imprégné d'alliages légers. Propulsés par des voiles d'énergie cinétique et turbines de Nytharite (250 km/h croisière, 300 km/h overdrive), armés de canons plasma focalisés, harpons cinétiques et écran d'invisibilité thermique/acoustique. Dôme de cristal relié aux impulsions télépathiques du pilote (temps de réaction 0.05s).",
-      "source": "livre_10.html:1138-1140, hybris_history.html:1353-1389",
+      "source": "livre_11.html:1138-1140, hybris_history.html:1353-1389",
       "liens": [
         {
-          "titre": "Livre X §42.1 — Haliriel",
-          "url": "livre_10.html#chap-42"
+          "titre": "Livre XI §46.1 — Haliriel",
+          "url": "livre_11.html#chap-46"
         },
         {
           "titre": "Chroniques d'Hybris — Série Windfighter",
@@ -2612,13 +2612,13 @@
       "magie": "Normale à Inhérente",
       "civilisation": "Royaumes et cités-États post-An 0",
       "affiliation": "Mondes Francs // Royaumes d'Hybris Ouest",
-      "statut": "documenté (Livre X §41.1)",
+      "statut": "documenté (Livre XI §45.1)",
       "notes": "Continent principal d'Hybris où ont atterri les cages de l'An 0 HSC. Regroupe les Terres Centrales (Kingston), les Montagnes Naines (Brum'korath, Marscua, Brot), les Montagnes de l'Orage, la Grande Forêt (Haliriel), la Jungle du Sud (Le Guetteur, Village Nythari) et le détroit d'Akalemna.",
-      "source": "livre_10.html:1043-1056",
+      "source": "livre_11.html:1043-1056",
       "liens": [
         {
-          "titre": "Livre X §41.1 — Régions d'Hybris",
-          "url": "livre_10.html#chap-41"
+          "titre": "Livre XI §45.1 — Régions d'Hybris",
+          "url": "livre_11.html#chap-45"
         },
         {
           "titre": "Lore — Central Lands",
@@ -2652,13 +2652,13 @@
       "magie": "Inhérente (distorsions temporelles & Disciple de l'Air)",
       "civilisation": "Royaumes orientaux (Atika, Obelia, Lepla, Prat) & Terres Sauvages",
       "affiliation": "Indépendant // Verrouillé (Flag: expedition_est)",
-      "statut": "documenté (Livre X §41.1, Lore, Unity WorldMap)",
+      "statut": "documenté (Livre XI §45.1, Lore, Unity WorldMap)",
       "notes": "Vaste masse continentale orientale séparée de l'Ouest par la Mer des Déportés et l'Île de Vagas. Enveloppée de brumes chronales et marquée par la présence du Disciple de l'Air. Abrite néanmoins quatre grands royaumes (Atika, Obelia, Lepla, Prat), la Mer de Césil (B) et onze ports et cités (Grejka, Port d'Anestar, Kalici, Brogre, Geth-ekor, Dermantil, Port de Magisma, Port d'Orof-garen, Marte, Vilousi, Tredmor, Trestoï).",
-      "source": "livre_10.html:1071-1082, Eastern Continent 1771-27.2 Overview.html, HybrisWorldMapRegistry.cs",
+      "source": "livre_11.html:1071-1082, Eastern Continent 1771-27.2 Overview.html, HybrisWorldMapRegistry.cs",
       "liens": [
         {
-          "titre": "Livre X §41.1 — Le Continent Est",
-          "url": "livre_10.html#chap-41"
+          "titre": "Livre XI §45.1 — Le Continent Est",
+          "url": "livre_11.html#chap-45"
         },
         {
           "titre": "Lore — Eastern Continent",
@@ -2691,13 +2691,13 @@
       "magie": "Normale (veines de nytharite & résonance tellurique)",
       "civilisation": "Bastions miniers et cités-forges naines",
       "affiliation": "Conseil de Brum'korath, Marscua & Brot",
-      "statut": "documenté (Livre X §41.1, Lore)",
+      "statut": "documenté (Livre XI §45.1, Lore)",
       "notes": "Massif montagneux du nord-ouest d'Hybris Ouest, riche en minerais et en cristaux de nytharite. Défendu par les Portes Naines (Dwarven Gates), il abrite Brum'korath, Marscua, Brot, Kitiari et Otuma.",
-      "source": "livre_10.html:1050-1052, Dwarven Mountains 1771-26.5 Overview.html",
+      "source": "livre_11.html:1050-1052, Dwarven Mountains 1771-26.5 Overview.html",
       "liens": [
         {
-          "titre": "Livre X §41.1 — Régions d'Hybris",
-          "url": "livre_10.html#chap-41"
+          "titre": "Livre XI §45.1 — Régions d'Hybris",
+          "url": "livre_11.html#chap-45"
         },
         {
           "titre": "Lore — Dwarven Mountains",
@@ -2733,13 +2733,13 @@
       "magie": "Inhérente (résonance directe avec la lune Storm-2)",
       "civilisation": "rempart naturel sacré protégeant les Terres du Sud",
       "affiliation": "Hybris Ouest (frontière naturelle Nythari)",
-      "statut": "documenté (Livre X §40.3 & §41.1, Lore)",
+      "statut": "documenté (Livre XI §44.3 & §45.1, Lore)",
       "notes": "Chaîne longitudinale de pics déchiquetés zébrés d'éclairs perpétuels. La montagne 'répond' aux cycles de la Lune Électrostatique Storm-2, provoquant des tempêtes arcaniques qui protègent la Jungle du Sud et les Nytharis.",
-      "source": "livre_10.html:977-981,1051-1052, Storm Mountains 1771-29.1 RAW Overview.html",
+      "source": "livre_11.html:977-981,1051-1052, Storm Mountains 1771-29.1 RAW Overview.html",
       "liens": [
         {
-          "titre": "Livre X §41.1 — Montagnes de l'Orage",
-          "url": "livre_10.html#chap-41"
+          "titre": "Livre XI §45.1 — Montagnes de l'Orage",
+          "url": "livre_11.html#chap-45"
         },
         {
           "titre": "Lore — Storm Mountains",
@@ -2772,13 +2772,13 @@
       "magie": "Normale à Inhérente (courants telluriques de 5e Force)",
       "civilisation": "Royaume elfique d'Haliriel",
       "affiliation": "Couronne d'Haliriel (Reine Aphyrosia)",
-      "statut": "documenté (Livre X §41.1, Lore)",
+      "statut": "documenté (Livre XI §45.1, Lore)",
       "notes": "Canopée millénaire d'arbres Serran titanesques au sud-ouest d'Hybris, dont les racines absorbent les courants telluriques de 5e Force. Sanctuaire inviolable de la civilisation elfique taurienne et d'Haliriel.",
-      "source": "livre_10.html:1058-1069, The Great Forest 1771-29.1 Overview.html",
+      "source": "livre_11.html:1058-1069, The Great Forest 1771-29.1 Overview.html",
       "liens": [
         {
-          "titre": "Livre X §41.1 — La Grande Forêt",
-          "url": "livre_10.html#chap-41"
+          "titre": "Livre XI §45.1 — La Grande Forêt",
+          "url": "livre_11.html#chap-45"
         },
         {
           "titre": "Lore — The Great Forest",
@@ -2811,13 +2811,13 @@
       "magie": "Normale à Inhérente (chamanisme & résonance chronale)",
       "civilisation": "Tribu Nythari & sanctuaires pré-coloniaux",
       "affiliation": "Tribu Nythari (Candice, Ceylan, Aria, Eryndor)",
-      "statut": "documenté (Livre X §41-42, Lore)",
+      "statut": "documenté (Livre XI §45-46, Lore)",
       "notes": "Région méridionale sauvage mêlant jungle dense, marécages, vallées cachées et sommets glacés autour du Mont du Guetteur (The Watcher). Berceau de la tribu Nythari guidée par Party-0 dès l'An 0 HSC.",
-      "source": "livre_10.html:1054,1158-1182, South Lands 1771-25.5 RAW Overview.html",
+      "source": "livre_11.html:1054,1158-1182, South Lands 1771-25.5 RAW Overview.html",
       "liens": [
         {
-          "titre": "Livre X §42.1 — Guetteur & Village Nythari",
-          "url": "livre_10.html#chap-42"
+          "titre": "Livre XI §46.1 — Guetteur & Village Nythari",
+          "url": "livre_11.html#chap-46"
         },
         {
           "titre": "Lore — South Lands",
@@ -2855,13 +2855,13 @@
       "magie": "Normale (enseignée et surveillée au Central Institute)",
       "civilisation": "Plus grande métropole humaine d'Hybris",
       "affiliation": "Terres Centrales // QG de la World Police",
-      "statut": "documenté (Livre X §42.1, Unity WorldMap)",
+      "statut": "documenté (Livre XI §46.1, Unity WorldMap)",
       "notes": "Coordonnées carte [-6, 3] (0.30, 0.56). Fondée près du site d'atterrissage des cages de l'An 0 HSC. Abrite le Central Institute (où étudient Lucas, Mina et Thomas en 1771 HSC), le QG de la World Police, le Medi-Laboratoire secret du Dr Elias Thorne, et la maternité détruite par la Tempête d'Arcane du 29 août 1754 HSC.",
-      "source": "livre_10.html:1143-1155, HybrisWorldMapRegistry.cs:50, hybris_history.html:1654-1767",
+      "source": "livre_11.html:1143-1155, HybrisWorldMapRegistry.cs:50, hybris_history.html:1654-1767",
       "liens": [
         {
-          "titre": "Livre X §42.1 — Kingston",
-          "url": "livre_10.html#chap-42"
+          "titre": "Livre XI §46.1 — Kingston",
+          "url": "livre_11.html#chap-46"
         },
         {
           "titre": "Lore — Kingston (1771-26.5)",
@@ -2904,13 +2904,13 @@
       "magie": "Normale à Causal (Reliques Tri-Fusion dans les cryptes)",
       "civilisation": "Mégapole troglodytique et industrielle naine",
       "affiliation": "Conseil Nain de Brum'korath (Elder Thrainor, Goldar)",
-      "statut": "documenté (Livre X §42.1, Lore, Chroniques)",
+      "statut": "documenté (Livre XI §46.1, Lore, Chroniques)",
       "notes": "Mégapole creusée au cœur des Montagnes Naines d'Hybris Ouest. Réputée pour son Laboratoire Magi-Tech, ses fonderies d'alliages élastiques, sa Salle du Conseil, ses Justice Halls, le Temple des Sent Ones et les Cryptes Primordiales où les Reliques Tri-Fusion se lient à Lucas, Mina et Thomas en 1772 HSC après le siège apocalyptique du Disciple de Terre.",
-      "source": "livre_10.html:1114-1127, hybris_history.html:1788-1863",
+      "source": "livre_11.html:1114-1127, hybris_history.html:1788-1863",
       "liens": [
         {
-          "titre": "Livre X §42.1 — Brum'korath",
-          "url": "livre_10.html#chap-42"
+          "titre": "Livre XI §46.1 — Brum'korath",
+          "url": "livre_11.html#chap-46"
         },
         {
           "titre": "Lore — City of Brum'korath",
@@ -2951,13 +2951,13 @@
       "magie": "Normale (runes et blindage réfractaire)",
       "civilisation": "Bastion frontalier & campement de piémont (Veldruk)",
       "affiliation": "Montagnes Naines (Brum'korath / Marscua)",
-      "statut": "documenté (Livre X §42.1, Chroniques d'Hybris)",
+      "statut": "documenté (Livre XI §46.1, Chroniques d'Hybris)",
       "notes": "Deux vantaux titanesques en acier noir et nytharite compressée fermant le col entre les Terres Centrales et Brum'korath. À leur pied se trouve Veldruk, où Lucas-0 (en l'An 0/1772) et Lucas-A (en 1772 HSC) achètent et amorcent leur Journal de bord.",
-      "source": "livre_10.html:1184-1195, hybris_history.html:1801-1815",
+      "source": "livre_11.html:1184-1195, hybris_history.html:1801-1815",
       "liens": [
         {
-          "titre": "Livre X §42.1 — Les Portes Naines",
-          "url": "livre_10.html#chap-42"
+          "titre": "Livre XI §46.1 — Les Portes Naines",
+          "url": "livre_11.html#chap-46"
         },
         {
           "titre": "Lore — Dwarven Gates",
@@ -2995,17 +2995,17 @@
       "magie": "Inhérente (ponts d'énergie pure & Temple Haut de la Nature)",
       "civilisation": "Capitale royale des Elfes Tauriens",
       "affiliation": "Couronne d'Haliriel (Reine Aphyrosia)",
-      "statut": "documenté (Livre X §42.1, Livre XI §45, Unity WorldMap)",
+      "statut": "documenté (Livre XI §46.1, Livre XII §49, Unity WorldMap)",
       "notes": "Coordonnées carte [-9, 7] (0.24, 0.70). Cité suspendue dans les branches d'arbres Serran géants reliés par des ponts d'énergie pure. Abrite le Temple Haut de la Nature, la Salle du Trône de la Reine Aphyrosia, le Centre de Recherche Magi-Tech, le Hangar des Windfighters, et sur ses falaises volcaniques le repaire initiatique de La Bête d'Hybris.",
-      "source": "livre_10.html:1129-1141, livre_11.html:883-937, HybrisWorldMapRegistry.cs:51",
+      "source": "livre_11.html:1129-1141, livre_12.html:883-937, HybrisWorldMapRegistry.cs:51",
       "liens": [
         {
-          "titre": "Livre X §42.1 — Haliriel",
-          "url": "livre_10.html#chap-42"
+          "titre": "Livre XI §46.1 — Haliriel",
+          "url": "livre_11.html#chap-46"
         },
         {
-          "titre": "Livre XI §45 — La Bête d'Hybris",
-          "url": "livre_11.html#chap-45"
+          "titre": "Livre XII §49 — La Bête d'Hybris",
+          "url": "livre_12.html#chap-49"
         },
         {
           "titre": "Lore — Haliriel (1771-29.1)",
@@ -3048,13 +3048,13 @@
       "magie": "Inhérente à Godlike (convergence temporelle & Minulican)",
       "civilisation": "Sanctuaire sacré et complexe de grottes/temples",
       "affiliation": "Tribu Nythari & Boucle de Timeline-0",
-      "statut": "documenté (Livre X §42.1, Lore, Chroniques)",
+      "statut": "documenté (Livre XI §46.1, Lore, Chroniques)",
       "notes": "Monument cyclopéen et sommet sacré dans les profondeurs de la Jungle du Sud. Comprend la Crypte d'Obsidienne (où reposent les corps momifiés de Party-0 morts en 59, 67 et 69 HSC avec le Journal-0 complet), la Grotte et le Manoir de Ceylan, le Temple des Cristaux, le Temple Caché, le Col du Faucon (Pass of the Hawk), la Forteresse de Vermicalis et la Place de Troc du Minulican.",
-      "source": "livre_10.html:1157-1169, hybris_history.html:1581-1611,1865-1879, The Watcher 1771-32 Overview.html",
+      "source": "livre_11.html:1157-1169, hybris_history.html:1581-1611,1865-1879, The Watcher 1771-32 Overview.html",
       "liens": [
         {
-          "titre": "Livre X §42.1 — Le Guetteur",
-          "url": "livre_10.html#chap-42"
+          "titre": "Livre XI §46.1 — Le Guetteur",
+          "url": "livre_11.html#chap-46"
         },
         {
           "titre": "Lore — The Watcher (1771-32)",
@@ -3098,13 +3098,13 @@
       "magie": "Normale à Inhérente (chamanisme de la terre et des plantes)",
       "civilisation": "Communauté tribale elfique",
       "affiliation": "Tribu Nythari (fondée par Party-0 en l'An 0 HSC)",
-      "statut": "documenté (Livre X §42.1, Lore)",
+      "statut": "documenté (Livre XI §46.1, Lore)",
       "notes": "Village de huttes végétales et cabanes arboricoles interconnectées au-dessus du sol marécageux de la Jungle du Sud. Orné de l'emblème du faucon des montagnes, il garde les sentiers menant au Guetteur et suit le calendrier rituel de Nyth-1.",
-      "source": "livre_10.html:1171-1182, Nythari Tribe 1771-29.2 Overview.html",
+      "source": "livre_11.html:1171-1182, Nythari Tribe 1771-29.2 Overview.html",
       "liens": [
         {
-          "titre": "Livre X §42.1 — Village Nythari",
-          "url": "livre_10.html#chap-42"
+          "titre": "Livre XI §46.1 — Village Nythari",
+          "url": "livre_11.html#chap-46"
         },
         {
           "titre": "Lore — Nythari Tribe",
@@ -3145,8 +3145,8 @@
       "source": "HybrisWorldMapRegistry.cs:54, HybrisWorldMapData.cs:194-198",
       "liens": [
         {
-          "titre": "Livre X §41 — Régions d'Hybris",
-          "url": "livre_10.html#chap-41"
+          "titre": "Livre XI §45 — Régions d'Hybris",
+          "url": "livre_11.html#chap-45"
         }
       ],
       "hote": "Hybris",
@@ -3183,8 +3183,8 @@
       "source": "HybrisWorldMapRegistry.cs:55, HybrisWorldMapData.cs:170-174",
       "liens": [
         {
-          "titre": "Livre X §41.1 — Continent Est",
-          "url": "livre_10.html#chap-41"
+          "titre": "Livre XI §45.1 — Continent Est",
+          "url": "livre_11.html#chap-45"
         }
       ],
       "hote": "Hybris",
@@ -3223,8 +3223,8 @@
       "source": "HybrisWorldMapRegistry.cs:56, HybrisWorldMapData.cs:176-180",
       "liens": [
         {
-          "titre": "Livre X §41.1 — Continent Est",
-          "url": "livre_10.html#chap-41"
+          "titre": "Livre XI §45.1 — Continent Est",
+          "url": "livre_11.html#chap-45"
         }
       ],
       "hote": "Hybris",
@@ -3261,8 +3261,8 @@
       "source": "HybrisWorldMapRegistry.cs:57, HybrisWorldMapData.cs:134-138",
       "liens": [
         {
-          "titre": "Livre X §41.1 — Continent Ouest",
-          "url": "livre_10.html#chap-41"
+          "titre": "Livre XI §45.1 — Continent Ouest",
+          "url": "livre_11.html#chap-45"
         }
       ],
       "hote": "Hybris",
@@ -3299,8 +3299,8 @@
       "source": "HybrisWorldMapRegistry.cs:58, HybrisWorldMapData.cs:140-144",
       "liens": [
         {
-          "titre": "Livre X §41.1 — Continent Ouest",
-          "url": "livre_10.html#chap-41"
+          "titre": "Livre XI §45.1 — Continent Ouest",
+          "url": "livre_11.html#chap-45"
         }
       ],
       "hote": "Hybris",
@@ -3337,8 +3337,8 @@
       "source": "HybrisWorldMapRegistry.cs:59, HybrisWorldMapData.cs:182-186",
       "liens": [
         {
-          "titre": "Livre X §41.1 — Continent Est",
-          "url": "livre_10.html#chap-41"
+          "titre": "Livre XI §45.1 — Continent Est",
+          "url": "livre_11.html#chap-45"
         }
       ],
       "hote": "Hybris",
@@ -3375,8 +3375,8 @@
       "source": "HybrisWorldMapRegistry.cs:60, HybrisWorldMapData.cs:188-192",
       "liens": [
         {
-          "titre": "Livre X §41.1 — Continent Est",
-          "url": "livre_10.html#chap-41"
+          "titre": "Livre XI §45.1 — Continent Est",
+          "url": "livre_11.html#chap-45"
         }
       ],
       "hote": "Hybris",
@@ -3415,8 +3415,8 @@
       "source": "HybrisWorldMapRegistry.cs:61, HybrisWorldMapData.cs:158-162",
       "liens": [
         {
-          "titre": "Livre X §41.1 — Continent Ouest",
-          "url": "livre_10.html#chap-41"
+          "titre": "Livre XI §45.1 — Continent Ouest",
+          "url": "livre_11.html#chap-45"
         }
       ],
       "hote": "Hybris",
@@ -3455,8 +3455,8 @@
       "source": "HybrisWorldMapRegistry.cs:103-106, HybrisWorldMapData.cs:164-168",
       "liens": [
         {
-          "titre": "Livre X §41.1 — Mer des Déportés",
-          "url": "livre_10.html#chap-41"
+          "titre": "Livre XI §45.1 — Mer des Déportés",
+          "url": "livre_11.html#chap-45"
         }
       ],
       "hote": "Hybris",
@@ -3537,8 +3537,8 @@
       "source": "HybrisWorldMapRegistry.cs:74-90",
       "liens": [
         {
-          "titre": "Livre X §41.1 — Continent Ouest",
-          "url": "livre_10.html#chap-41"
+          "titre": "Livre XI §45.1 — Continent Ouest",
+          "url": "livre_11.html#chap-45"
         }
       ],
       "hote": "Hybris",
@@ -3578,8 +3578,8 @@
       "source": "HybrisWorldMapRegistry.cs:91-102",
       "liens": [
         {
-          "titre": "Livre X §41.1 — Continent Est",
-          "url": "livre_10.html#chap-41"
+          "titre": "Livre XI §45.1 — Continent Est",
+          "url": "livre_11.html#chap-45"
         }
       ],
       "hote": "Hybris",
@@ -3612,13 +3612,13 @@
       "magie": "Limitée / Réprimée par scanners",
       "civilisation": "Capitale industrielle et militaire de Vardis",
       "affiliation": "Empire Galactique (contesté dans les égouts par la Résistance)",
-      "statut": "documenté (Livre X §41.2 & §42.2, Lore Vardis)",
+      "statut": "documenté (Livre XI §45.2 & §46.2, Lore Vardis)",
       "notes": "Cité métallique oppressante hérissée de gratte-ciels d'acier brut, miradors, barrières à plasma et tranchées d'artillerie. Surveillée en permanence par drones thermiques et phalanxes SWAT. Son réseau d'égouts abrite les bases rebelles A13 et B5.",
-      "source": "livre_10.html:1087-1088,1202-1213, Atraxia 1775-30.3 Overview.html",
+      "source": "livre_11.html:1087-1088,1202-1213, Atraxia 1775-30.3 Overview.html",
       "liens": [
         {
-          "titre": "Livre X §42.2 — Atraxia",
-          "url": "livre_10.html#chap-42"
+          "titre": "Livre XI §46.2 — Atraxia",
+          "url": "livre_11.html#chap-46"
         },
         {
           "titre": "Lore — Atraxia (1775-30.3)",
@@ -3659,13 +3659,13 @@
       "magie": "Limitée (détection d'anomalies temporelles)",
       "civilisation": "Monolithe de commandement planétaire",
       "affiliation": "Empire Galactique // Équation de Capricius",
-      "statut": "documenté (Livre X §42.2, Lore Vardis)",
+      "statut": "documenté (Livre XI §46.2, Lore Vardis)",
       "notes": "Tour colossale érigée au cœur d'Atraxia sur Vardis, étendant ses antennes dans la haute atmosphère. Relais local de la capitale impériale (Nexus d'Aurion / Regalia) hébergeant les supercalculateurs branchés sur les équations psychohistoriques de Capricius pour traquer les anomalies temporelles et les insurrections.",
-      "source": "livre_10.html:1215-1226, Aurion Nexus 1775-28 Overview.html",
+      "source": "livre_11.html:1215-1226, Aurion Nexus 1775-28 Overview.html",
       "liens": [
         {
-          "titre": "Livre X §42.2 — Le Nexus d'Aurion",
-          "url": "livre_10.html#chap-42"
+          "titre": "Livre XI §46.2 — Le Nexus d'Aurion",
+          "url": "livre_11.html#chap-46"
         },
         {
           "titre": "Lore — Aurion Nexus (1775-28)",
@@ -3696,13 +3696,13 @@
       "magie": "Variable",
       "civilisation": "Refuges rebelles souterrains",
       "affiliation": "Résistance d'Atraxia",
-      "statut": "documenté (Livre X §42.2, Lore Resistance)",
+      "statut": "documenté (Livre XI §46.2, Lore Resistance)",
       "notes": "Enclaves souterraines dissimulées dans le réseau d'égouts d'Atraxia, protégées contre les drones et molosses bioniques par des générateurs de brouillage de signatures thermiques. Bases d'opération pour l'infiltration du Nexus d'Aurion en 1775 HSC.",
-      "source": "livre_10.html:1228-1239, Resistance Base A13 1775-30.1 Overview.html, Resistance Base B5 1775-30.3 Overview.html",
+      "source": "livre_11.html:1228-1239, Resistance Base A13 1775-30.1 Overview.html, Resistance Base B5 1775-30.3 Overview.html",
       "liens": [
         {
-          "titre": "Livre X §42.2 — Bases A13 & B5",
-          "url": "livre_10.html#chap-42"
+          "titre": "Livre XI §46.2 — Bases A13 & B5",
+          "url": "livre_11.html#chap-46"
         },
         {
           "titre": "Lore — Resistance Base A13",
@@ -3739,13 +3739,13 @@
       "magie": "Normale (rituels de la nature et esprits de Vardis)",
       "civilisation": "Villages tribaux camouflés vs Cratères miniers impériaux",
       "affiliation": "Tribus Thaluns (en lutte contre l'Empire)",
-      "statut": "documenté (Livre X §41.2, Lore Vardis)",
+      "statut": "documenté (Livre XI §45.2, Lore Vardis)",
       "notes": "Canyons escarpés, forêts déboisées et plateaux désertiques de Vardis où nomadisent les tribus Thaluns, bordant les gigantesques Fosses d'Extraction où des milliers d'excavatrices automatisées broient la roche pour la flotte impériale.",
-      "source": "livre_10.html:1089-1095, The Tribal Guards 1775-28 Overview.html",
+      "source": "livre_11.html:1089-1095, The Tribal Guards 1775-28 Overview.html",
       "liens": [
         {
-          "titre": "Livre X §41.2 — Territoires de Vardis",
-          "url": "livre_10.html#chap-41"
+          "titre": "Livre XI §45.2 — Territoires de Vardis",
+          "url": "livre_11.html#chap-45"
         },
         {
           "titre": "Lore — The Tribal Guards (Thalun)",
@@ -3778,13 +3778,13 @@
       "magie": "Inhérente (croissance guidée par Veyla-Mère et Noces de 90 jours)",
       "civilisation": "Mégastructures bio-minérales en arches au-dessus des canyons",
       "affiliation": "Royaume Matriarcal de Cléia",
-      "statut": "documenté (Livre X §40, notes auteur 2026-10-19)",
+      "statut": "documenté (Livre XI §44, notes auteur 2026-10-19)",
       "notes": "Cités cultivées par les Cléiennes à partir d'espèces minérales vivantes qui grandissent en arches et tours immenses enjambant les canyons arides de Cléia. Creusées de dômes habités, elles connaissent une poussée de croissance tous les 7 ans pendant la saison des Noces (90 jours sur l'année de 400 jours).",
-      "source": "livre_10.html:883-888, atlas_3d.html:694 + notes auteur 2026-10-19",
+      "source": "livre_11.html:883-888, atlas_3d.html:694 + notes auteur 2026-10-19",
       "liens": [
         {
-          "titre": "Livre X §40 — Cléia",
-          "url": "livre_10.html#chap-40"
+          "titre": "Livre XI §44 — Cléia",
+          "url": "livre_11.html#chap-44"
         }
       ],
       "hote": "Cléia",
@@ -3813,13 +3813,13 @@
       "magie": "Normale (chamanisme tribal & résidus de nytharite)",
       "civilisation": "Champs de bataille urbains et mines contestées",
       "affiliation": "Contesté (Tribus Nefrisiennes vs Têtes de pont de l'Empire)",
-      "statut": "documenté (Livre X §40, notes auteur 2026-10-19)",
+      "statut": "documenté (Livre XI §44, notes auteur 2026-10-19)",
       "notes": "Squelettes de béton et de titane des anciennes mégapoles de Nefris et mines de nytharite dévastées. Les forces impériales y sont confinées dans quelques têtes de pont ravitaillées depuis l'orbite face aux tribus locales.",
-      "source": "livre_10.html:844-848 + notes auteur 2026-10-19",
+      "source": "livre_11.html:844-848 + notes auteur 2026-10-19",
       "liens": [
         {
-          "titre": "Livre X §40 — Nefris",
-          "url": "livre_10.html#chap-40"
+          "titre": "Livre XI §44 — Nefris",
+          "url": "livre_11.html#chap-44"
         }
       ],
       "hote": "Nefris",
@@ -3847,13 +3847,13 @@
       "magie": "Impossible",
       "civilisation": "Citadelles-casernes et fonderies des castes Mikyais",
       "affiliation": "Protectorat Martial Mikyai",
-      "statut": "documenté (Livre X §40)",
+      "statut": "documenté (Livre XI §44)",
       "notes": "Forteresses de basalte érigées sur les plaques tectoniques actives de Karkjiue, où sont entraînées les divisions de choc Mikyais sous 1.28 g.",
-      "source": "livre_10.html:921-943",
+      "source": "livre_11.html:921-943",
       "liens": [
         {
-          "titre": "Livre X §40 — Karkjiue",
-          "url": "livre_10.html#chap-40"
+          "titre": "Livre XI §44 — Karkjiue",
+          "url": "livre_11.html#chap-44"
         }
       ],
       "hote": "Karkjiue",
@@ -3889,8 +3889,8 @@
       "source": "notes auteur 2026-10-19",
       "liens": [
         {
-          "titre": "Livre X §40.3 — L'Aeschylus",
-          "url": "livre_10.html#chap-40"
+          "titre": "Livre XI §44.3 — L'Aeschylus",
+          "url": "livre_11.html#chap-44"
         }
       ],
       "hote": "Avaleur de Mondes",
@@ -3915,13 +3915,13 @@
       "magie": "Normale à Inhérente (chamanisme de la terre, des plantes et de Nyth-1)",
       "civilisation": "Communauté tribale (~280 membres) autour du Guetteur",
       "affiliation": "Tribu Nythari (Candice, Ceylan, Aria, Eryndor)",
-      "statut": "documenté (Livre X §42.1, Lore, Chroniques An 0)",
+      "statut": "documenté (Livre XI §46.1, Lore, Chroniques An 0)",
       "notes": "Branche australe des déportés tauriens de l'An 0 HSC, sauvée et guidée dans la Jungle du Sud par Party-0 (Lucianae-0, Minalia-0, Thomar-0). Caractérisés par leurs yeux ambre, leurs cheveux bruns et l'emblème du faucon des montagnes. Gardiens de la Crypte d'Obsidienne du Guetteur.",
-      "source": "livre_10.html:1165-1181, hybris_history.html:1600-1611, Nythari Tribe 1771-29.2 Overview.html",
+      "source": "livre_11.html:1165-1181, hybris_history.html:1600-1611, Nythari Tribe 1771-29.2 Overview.html",
       "liens": [
         {
-          "titre": "Livre X §42.1 — Village Nythari",
-          "url": "livre_10.html#chap-42"
+          "titre": "Livre XI §46.1 — Village Nythari",
+          "url": "livre_11.html#chap-46"
         },
         {
           "titre": "Lore — Nythari Tribe",
@@ -3954,13 +3954,13 @@
       "magie": "Inhérente (Mémoire des Flammes : -2 dégâts pyro successifs)",
       "civilisation": "Gardien initiatique millénaire (1 200 ans)",
       "affiliation": "Falaises d'Haliriel & Le Guetteur",
-      "statut": "documenté (Livre XI §45, Bestiary.json)",
+      "statut": "documenté (Livre XII §49, Bestiary.json)",
       "notes": "Colosse bipède de 4 mètres à la fourrure noire dense et aux crocs en dents de sabre (FOR 7, AGI 5, CON 6, INS 6, 13 PA, Encaissement 12, Létal 30, 3 PM). Testant la trempe des porteurs de la 5e Force : Morsure Sabre (5D + Saignement), Balayage de Griffes en Arc (4D + À Terre), Charge Tellurique des Falaises (bond 10 cases + éboulement 3D).",
-      "source": "livre_11.html:883-937, Bestiary.json:237-257",
+      "source": "livre_12.html:883-937, Bestiary.json:237-257",
       "liens": [
         {
-          "titre": "Livre XI §45 — La Bête d'Hybris",
-          "url": "livre_11.html#chap-45"
+          "titre": "Livre XII §49 — La Bête d'Hybris",
+          "url": "livre_12.html#chap-49"
         },
         {
           "titre": "Lore — The Beast (1771-32)",
@@ -3993,13 +3993,13 @@
       "magie": "Godlike / Arcanique rang 9 (1d10, 14 PA, 3 PM)",
       "civilisation": "Prédateur solitaire du continuum",
       "affiliation": "Néant // Lié au Guetteur et à la Galaxie Sans Étoiles",
-      "statut": "documenté (Livre XI §46, Chroniques 1772 HSC)",
+      "statut": "documenté (Livre XII §50, Chroniques 1772 HSC)",
       "notes": "Titan lupin aux cornes spiralées démoniaques et flammes bleu-violettes, engendré lors de la collision d'arcane de Lucas et Mina à Kingston en 1772 HSC. Traque la variance biogénomique de 0.0001%. Pouvoirs : Éclairs de Néant en Chaîne (5D, 3 cibles), Absorption d'Énergie Thermique (convertit la moitié des dégâts feu/plasma en PV) et Saut Quantique Déphasé.",
-      "source": "livre_11.html:994-1041, hybris_history.html:1753-1767, Bestiary.json:259-279",
+      "source": "livre_12.html:994-1041, hybris_history.html:1753-1767, Bestiary.json:259-279",
       "liens": [
         {
-          "titre": "Livre XI §46 — Le Minulican",
-          "url": "livre_11.html#chap-46"
+          "titre": "Livre XII §50 — Le Minulican",
+          "url": "livre_12.html#chap-50"
         },
         {
           "titre": "Lore — The Minulican (1771-31)",
@@ -4029,13 +4029,13 @@
       "magie": "Godlike élémentaire (Terre, Air, Feu, Eau)",
       "civilisation": "Prototype divin pré-impérial (~-1 Ga) & protocoles d'extinction impériaux (-100 000 HSC)",
       "affiliation": "Capricius & Empire Galactique",
-      "statut": "documenté (Livre X §38.1, Livre XI §46, Lore Empire)",
+      "statut": "documenté (Livre XI §42.1, Livre XII §50, Lore Empire)",
       "notes": "Deux générations. (1) PROTOTYPE DE TERRE : œuvre solitaire de Capricius ~1 Ga avant l'Empire, tir balistique plasma à ~c depuis Aurion (~1 Gly, timer en temps propre, sans guidage en route), ré-impression lithosphérique à Brum'korath en 1772 HSC (colosse 3m, FOR 9, CON 9, Armure 6, Poing Tectonique 7D, Régénération sur pierre, vulnérable au Choc Thermique froid/feu). (2) SÉRIE IMPÉRIALE (Air, Feu, Eau) : largage par trous de ver + 5e Force (2e génération, dépend d'un ancrage). L'Air (largué ~1620 HSC) doubla le prototype et frappa le Continent Est (saut de 1622 HSC, Cratère du Grand Lac). Le Feu et l'Eau, largués en dormance, restent infiltrés et NON RÉVÉLÉS.",
-      "source": "livre_10.html:559-575, livre_11.html:1043-1097, Disciples of the Empire 1771-24.5 Overview.html",
+      "source": "livre_11.html:559-575, livre_12.html:1043-1097, Disciples of the Empire 1771-24.5 Overview.html",
       "liens": [
         {
-          "titre": "Livre XI §46 — Disciple de Terre",
-          "url": "livre_11.html#chap-46"
+          "titre": "Livre XII §50 — Disciple de Terre",
+          "url": "livre_12.html#chap-50"
         },
         {
           "titre": "Lore — Disciples of the Empire",
@@ -4050,8 +4050,8 @@
           "url": "Killtime/Killtime/lore/empire/characters/Disciples%20of%20Air%201771-27%20Overview.html"
         },
         {
-          "titre": "Livre IX §34.3 — Trous de ver spatiaux",
-          "url": "livre_9.html#chap-34"
+          "titre": "Livre X §38.3 — Trous de ver spatiaux",
+          "url": "livre_10.html#chap-38"
         }
       ],
       "hote": "Nexus d'Aurion",
@@ -4076,13 +4076,13 @@
       "magie": "Godlike (source des 36 vecteurs arcaniques)",
       "civilisation": "Panthéon dimensionnel en lente noyade (-20 milliards HSC)",
       "affiliation": "La Mère & Le Réseau des 36 Élianes",
-      "statut": "documenté (Livre X §38, capricius_and_empire.html)",
+      "statut": "documenté (Livre XI §42, capricius_and_empire.html)",
       "notes": "36 entités supérieures engendrées par La Mère il y a 20 milliards d'années pour réguler les courants de matière réelle (dont Aethelgard/Ceylan en Zone 01, Capricius en Zone 02, Selene-Vor en Zone 03, Goroth-Kahn en Zone 04, Morvath, Val-Tesh, Oros-Amon, Tethys-Zul, Kael-Sarkon, Xir-Nox en Zones 05-10). Noyées dans l'Eau Sombre après l'erreur de Capricius.",
-      "source": "livre_10.html:530-629, capricius_and_empire.html:193-211",
+      "source": "livre_11.html:530-629, capricius_and_empire.html:193-211",
       "liens": [
         {
-          "titre": "Livre X §38 — La Mère & Les 36 Élianes",
-          "url": "livre_10.html#chap-38"
+          "titre": "Livre XI §42 — La Mère & Les 36 Élianes",
+          "url": "livre_11.html#chap-42"
         },
         {
           "titre": "Lore — Capricius & The Empire",
@@ -4112,13 +4112,13 @@
       "magie": "Impossible",
       "civilisation": "Unités autonomes de sécurité, traque et combat",
       "affiliation": "Empire Galactique (et unités reprogrammées par la Résistance : Syn)",
-      "statut": "documenté (Livre XI §47, Chroniques d'Hybris)",
+      "statut": "documenté (Livre XII §51, Chroniques d'Hybris)",
       "notes": "Trois familles d'unités mécanisées : (1) Drones de Surveillance & Répression d'Atraxia (vol 12 cases/tour, Flash Aveuglant, Balise d'Alerte Réseau) ; (2) Molosses Bioniques de Traque (mâchoire hydraulique 3D immobilisante dans les égouts d'Atraxia) ; (3) Androïdes Série Syn à processeurs quantiques et blindage réfractaire (dont Syn aux côtés de John et Erika en 1775 HSC).",
-      "source": "livre_11.html:1102-1171, hybris_history.html:1464-1467, Bestiary.json:195-235",
+      "source": "livre_12.html:1102-1171, hybris_history.html:1464-1467, Bestiary.json:195-235",
       "liens": [
         {
-          "titre": "Livre XI §47 — Automates & Cybernétique",
-          "url": "livre_11.html#chap-47"
+          "titre": "Livre XII §51 — Automates & Cybernétique",
+          "url": "livre_12.html#chap-51"
         },
         {
           "titre": "Chroniques d'Hybris — Série Syn",
@@ -4182,13 +4182,13 @@
       "magie": "Inhérente / Entropique (Eau Sombre)",
       "civilisation": "Organismes et soldats altérés par la Matière Noire",
       "affiliation": "Vecteur d'entropie (Vardis, Nefris, Zones 02 & 05–10)",
-      "statut": "notes auteur 2026-10-19 + canon (Livre X §38 & §40)",
+      "statut": "notes auteur 2026-10-19 + canon (Livre XI §42 & §44)",
       "notes": "Êtres vivants et combattants contaminés par les résidus d'Eau Sombre sur Vardis, Nefris et le long des conduits instables reliant Capricius aux zones voisines. Leur biologie bascule en souche X entropique.",
-      "source": "livre_10.html:548-553 + notes auteur 2026-10-19",
+      "source": "livre_11.html:548-553 + notes auteur 2026-10-19",
       "liens": [
         {
-          "titre": "Livre X §38.1 — L'Eau Sombre",
-          "url": "livre_10.html#chap-38"
+          "titre": "Livre XI §42.1 — L'Eau Sombre",
+          "url": "livre_11.html#chap-42"
         }
       ],
       "hote": "Vardis",
@@ -4220,8 +4220,8 @@
       "source": "notes auteur 2026-10-19",
       "liens": [
         {
-          "titre": "Livre X §39 — Systèmes",
-          "url": "livre_10.html#chap-39"
+          "titre": "Livre XI §43 — Systèmes",
+          "url": "livre_11.html#chap-43"
         }
       ],
       "hote": "Nexus d'Aurion",
@@ -4237,9 +4237,9 @@
       "echelle": "milliers de planètes · centaines de systèmes étoiles",
       "capitale": "Nexus d'Aurion (Système Regalia, Zone 02)",
       "zone_eliane": "Zone 02 — Aurion Nexus (Capricius)",
-      "statut": "notes auteur 2026-10-19 + canon (livre_10.html:598-656)",
+      "statut": "notes auteur 2026-10-19 + canon (livre_11.html:598-656)",
       "notes": "Système immunitaire terrestre de Capricius. Vardis en colonisation + guerre active (Atraxia) ; Nefris contestée (Empire bloqué en orbites et têtes de pont) ; Karkjiue sous protectorat martial (Mikyais) ; Cléia indépendante (prospection sans issue) ; Hybris indépendant (Mondes Francs). Capitale : Nexus d'Aurion (Regalia) ; monde-forge : Ferron (Aurion-Forge) ; verrou : Tiber-Bastion & Tiber-Gard ; grenier : Demeter & Moisson ; relais : Vigil & Fanal ; écoute : Argus (capitale) et K-9 (Vardis, disputé).",
-      "source": "notes auteur 2026-10-19 + livre_10.html + capricius_and_empire.html"
+      "source": "notes auteur 2026-10-19 + livre_11.html + capricius_and_empire.html"
     },
     {
       "id": "reseau-elianes",
@@ -4248,9 +4248,9 @@
       "echelle": "36 Zones Éliennes · Continuum universel & Fleuve du Temps",
       "capitale": "Rives du Fleuve du Temps (La Mère) / Zone 02 (Capricius)",
       "zone_eliane": "Zones 01 à 36 (Omnivers)",
-      "statut": "canon (Livre X §38, Atlas 3D)",
+      "statut": "canon (Livre XI §42, Atlas 3D)",
       "notes": "Architecture enveloppante de l'univers : 36 Archontes créés par La Mère il y a 20 milliards d'années. En lente noyade dans l'Eau Sombre depuis la faute de Capricius. Échéance d'effondrement thermodynamique : 1 000 ans.",
-      "source": "livre_10.html:530-629, capricius_and_empire.html"
+      "source": "livre_11.html:530-629, capricius_and_empire.html"
     },
     {
       "id": "mondes-francs-hybris",
@@ -4259,9 +4259,9 @@
       "echelle": "Système Hybris-Prime · 2 continents · 8 Royaumes Majeurs & Kingston",
       "capitale": "Kingston (Terres Centrales) / Brum'korath / Haliriel",
       "zone_eliane": "Zone 01 — Hybris Sector (Aethelgard / Ceylan)",
-      "statut": "canon (Livre X §40-42, Unity WorldMap)",
+      "statut": "canon (Livre XI §44-46, Unity WorldMap)",
       "notes": "Civilisation multi-espèces issue des 3 000 déportés de l'An 0 HSC et des Dereks natifs : Métropole de Kingston (World Police, Central Institute), Conseil Nain de Brum'korath, Couronne Elfique d'Haliriel, Tribu Nythari du Guetteur et les 8 Royaumes (Aurora, Atika, Obelia, Marscua, Brot, Lepla, Prat, Akalemna).",
-      "source": "livre_10.html:755-792,1037-1197, HybrisWorldMapRegistry.cs"
+      "source": "livre_11.html:755-792,1037-1197, HybrisWorldMapRegistry.cs"
     },
     {
       "id": "matriarcat-cleien",
@@ -4272,7 +4272,7 @@
       "zone_eliane": "Zone 03 — Cléia Astra (Selene-Vor)",
       "statut": "canon + notes auteur 2026-10-19",
       "notes": "Matriarcat interstellaire 100% féminin (souche C+X, tech 5, télépathie innée). Culte binaire de Veyla-Mère (Mère-Loi) et Veyla-Sœur (Sœur-Caprice) rythmé par les Noces tous les 7 ans (90 jours sur l'année de 400 jours). Indépendant de l'Empire.",
-      "source": "livre_10.html:873-911 + notes auteur 2026-10-19"
+      "source": "livre_11.html:873-911 + notes auteur 2026-10-19"
     },
     {
       "id": "resistance-pirates",
@@ -4283,7 +4283,7 @@
       "zone_eliane": "Zone 02 & espace interdimensionnel",
       "statut": "canon + notes auteur 2026-10-19",
       "notes": "Réseau clandestin luttant contre l'Empire Galactique : cellules rebelles d'Atraxia (John, Erika, Mira, Doran), tribus Thaluns (Vardis) et Nefrisiennes (Nefris), Base Astéroïde de Nefris, vaisseau furtif Starlight Voyager et croiseur pirate L'Aeschylus du Capitaine balafré basé dans l'Avaleur de Mondes.",
-      "source": "livre_10.html:948-1022,1228-1252 + notes auteur 2026-10-19"
+      "source": "livre_11.html:948-1022,1228-1252 + notes auteur 2026-10-19"
     }
   ],
   "relations": [
@@ -4504,7 +4504,7 @@
     "Veyla (Cléia) : distance orbitale exacte Mère/Sœur en UA (période Cléia 400 j et saison des Noces 90 j déjà intégrées)",
     "Nefris : noms propres individuels des chefferies tribales et des commandants des têtes de pont impériales",
     "Zones 11 à 36 : noms propres individuels des 26 Archontes extérieurs (Zones 01 à 10 nommées)",
-    "FAIT (2026-10-20) : Disciples du Feu et de l'Eau documentés (Livre XI §46, dormants infiltrés) ; Terre = prototype divin ~-1 Ga, Air = série ver ~1620->1622."
+    "FAIT (2026-10-20) : Disciples du Feu et de l'Eau documentés (Livre XII §50, dormants infiltrés) ; Terre = prototype divin ~-1 Ga, Air = série ver ~1620->1622."
   ],
   "hybris_registry": [
     {

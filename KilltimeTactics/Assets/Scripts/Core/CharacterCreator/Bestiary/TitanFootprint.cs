@@ -12,7 +12,7 @@ namespace Killtime.Tactics.Grid
     }
 
     /// <summary>
-    /// Gestion mathématique des empreintes multi-hexagonales axiales (Livres X & XI).
+    /// Gestion mathématique des empreintes multi-hexagonales axiales (Livres XI & XII).
     /// </summary>
     public static class TitanFootprint
     {

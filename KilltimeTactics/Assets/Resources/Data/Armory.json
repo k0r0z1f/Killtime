@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "source": "Arsenal Killtime Livre VII §26-32 — export automatique de ArmoryCatalog.cs. Fichier éditable (UTF-8) ; un override persistentDataPath/Armory.json ou la fenêtre Armurerie (M) prend le pas. Re-générable via tools/export_armory.py.",
+  "source": "Arsenal Killtime Livre VIII §30-32 — export automatique de ArmoryCatalog.cs. Fichier éditable (UTF-8) ; un override persistentDataPath/Armory.json ou la fenêtre Armurerie (M) prend le pas. Re-générable via tools/export_armory.py.",
   "items": [
     {
       "name": "Épée Métal Courte",
@@ -2316,7 +2316,7 @@
       "category": "Grenades",
       "placeholder": "Grenade",
       "prefab": "",
-      "desc": "Bulle de Fleuve figé 2 tours (Livre IX). Paralyse temporelle.",
+      "desc": "Bulle de Fleuve figé 2 tours (Livre X). Paralyse temporelle.",
       "rarity": "Prototype",
       "armor": 0,
       "shield": 0,
@@ -2355,7 +2355,7 @@
       "category": "Grenades",
       "placeholder": "Grenade",
       "prefab": "",
-      "desc": "Spores de Karkjiue (Livre XI). Nuage persistant 3 tours.",
+      "desc": "Spores de Karkjiue (Livre XII). Nuage persistant 3 tours.",
       "rarity": "Legendaire",
       "armor": 0,
       "shield": 0,
@@ -4656,7 +4656,7 @@
       "category": "Divers & Quête",
       "placeholder": "Ration",
       "prefab": "",
-      "desc": "Butin faune d'Hybris (Livre XI). Prix selon taxidermiste.",
+      "desc": "Butin faune d'Hybris (Livre XII). Prix selon taxidermiste.",
       "rarity": "Courant",
       "armor": 0,
       "shield": 0,

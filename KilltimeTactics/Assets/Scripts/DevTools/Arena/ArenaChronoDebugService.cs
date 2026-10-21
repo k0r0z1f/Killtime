@@ -89,7 +89,7 @@ namespace Killtime.Tactics.Arena
             RestoreSnapshot(snap);
             if (KilltimeAudioManager.Instance != null)
                 KilltimeAudioManager.Instance.Play(SoundId.Rewind_Time, 0.9f);
-            _host.ArenaLog($"⏪ <b>Rembobinage Temporel (Livre IX)</b> : Retour au snapshot #{index} '{snap.ActionDescription}' (Round {snap.RoundNumber}, ligne {ActiveBranchId})");
+            _host.ArenaLog($"⏪ <b>Rembobinage Temporel (Livre X)</b> : Retour au snapshot #{index} '{snap.ActionDescription}' (Round {snap.RoundNumber}, ligne {ActiveBranchId})");
         }
 
         public void RewindLastSnapshot()
@@ -106,7 +106,7 @@ namespace Killtime.Tactics.Arena
             RestoreSnapshot(snap);
             if (KilltimeAudioManager.Instance != null)
                 KilltimeAudioManager.Instance.Play(SoundId.Rewind_Time, 0.9f);
-            _host.ArenaLog($"⏪ <b>Rembobinage Temporel (Livre IX)</b> : Retour au snapshot '{snap.ActionDescription}' (Round {snap.RoundNumber})");
+            _host.ArenaLog($"⏪ <b>Rembobinage Temporel (Livre X)</b> : Retour au snapshot '{snap.ActionDescription}' (Round {snap.RoundNumber})");
         }
 
         private void RestoreSnapshot(TacticalTimeSnapshot snap)

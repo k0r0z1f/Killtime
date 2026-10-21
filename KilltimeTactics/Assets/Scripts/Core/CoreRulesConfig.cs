@@ -201,6 +201,19 @@ namespace Killtime.Core.Rules
         [Tooltip("Malus en ec sur tous les jets pendant la convalescence post-résurrection (-1 par défaut).")]
         public int ResurrectionSequelaePenalty = -1;
 
+        // --- RD-205 : Stabilisation & Convalescence (Livre VI §25) ---
+        [Header("Stabilisation & Convalescence (Livre VI §25 — RD-205)")]
+        [Tooltip("Coût en PA de la Stabilisation d'un Agonisant au chevet (3 par défaut, Livre VI §25).")]
+        public int StabilizationAPCost = 3;
+        [Tooltip("Difficulté du jet de Premiers Soins pour stabiliser (12 par défaut) : succès = Agonisant → Inconscient stable.")]
+        public int StabilizationDifficulty = 12;
+        [Tooltip("Bonus de convalescence (PV) quand ration + hydratation fournies pour la nuit sûre (+2 par défaut).")]
+        public int ConvalescenceRationBonus = 2;
+        [Tooltip("Malus de convalescence (PV) quand ni ration ni eau pour la nuit sûre (-3 par défaut, plancher 0).")]
+        public int ConvalescenceNeglectPenalty = -3;
+        [Tooltip("Multiplicateur de convalescence quand magie/arcanotech accélère le repos (×2 par défaut).")]
+        public int ConvalescenceMagicMultiplier = 2;
+
         public static event Action OnRulesChanged;
 
         public CoreRulesConfig()
@@ -255,6 +268,12 @@ namespace Killtime.Core.Rules
             SouffrantMajorCareMultiplier = 2;
             ResurrectionSequelaeBaseDays = 10;
             ResurrectionSequelaePenalty = -1;
+
+            StabilizationAPCost = 3;
+            StabilizationDifficulty = 12;
+            ConvalescenceRationBonus = 2;
+            ConvalescenceNeglectPenalty = -3;
+            ConvalescenceMagicMultiplier = 2;
 
             OverwatchAPCost = 2;
             OverwatchShotsPerWatch = 1;

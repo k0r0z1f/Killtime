@@ -17,7 +17,7 @@ namespace Killtime.Tactics.CombatUI
     /// </summary>
     public static partial class CombatActionRegistry
     {
-        // Helpers consommables marketplace (Livre VII §28.3). Résolus à l'exécution
+        // Helpers consommables marketplace (Livre VIII §32.3). Résolus à l'exécution
         // pour suivre le stock réel (Quantity / ConsumeOne).
         private static InventoryItem FindBestHealingConsumable(TacticalUnit actor)
         {
@@ -59,7 +59,7 @@ namespace Killtime.Tactics.CombatUI
             return total;
         }
 
-        // Helpers outils marketplace (possession sauf mention, §28-33).
+        // Helpers outils marketplace (possession sauf mention, §32-37).
         private static InventoryItem FindTool(TacticalUnit actor, string fragment)
         {
             var inv = actor?.Sheet?.Inventory;

@@ -18,7 +18,7 @@ namespace Killtime.Core.Character
         HerosPJ,    // 1 attribut à 5, 1 à 4, 15 pts secondaires (17 si Magie > 0), max 3 restant
         PnjNormal,  // 2 attributs à 4, 15 pts secondaires (17 si Magie > 0), max 3 restant
         PnjSbire,   // "Petite Merde" : 12 pts au total à répartir, max 3 par carac
-        PnjBoss     // Boss de scénario : budget étendu libre (Livre XI)
+        PnjBoss     // Boss de scénario : budget étendu libre (Livre XII)
     }
 
     public static class SpeciesRules

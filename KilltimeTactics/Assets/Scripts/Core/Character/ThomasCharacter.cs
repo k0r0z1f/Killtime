@@ -243,7 +243,7 @@ namespace Killtime.Core.Character
             sheet.UnlockedSpecializations.Add("Bloquer : Mur de Bouclier");
             sheet.UnlockedSpecializations.Add("Mener (Commandement)");
 
-            // Équipement officiel — dotation catalogue Armurerie/Marché (Livre VII) :
+            // Équipement officiel — dotation catalogue Armurerie/Marché (Livre VIII) :
             // acier replié de maître au poing, fibres balistiques souples sur le dos
             // (le catalogue ne propose aucun pavois : l'armure légère le remplace, sans malus PA).
             if (!ArmoryCatalog.GiveLoadoutItem(sheet, "Épée Métal Supérieure", false))

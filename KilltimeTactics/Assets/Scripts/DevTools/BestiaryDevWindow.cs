@@ -255,7 +255,7 @@ namespace Killtime.UI
                 }
             }
 
-            // ---- Équipement (noms catalogue Livre VII) ----
+            // ---- Équipement (noms catalogue Livre VIII) ----
             GUILayout.Label("Équipement (nom exact du catalogue, ex: Épée Métal Standard)", new GUIStyle(GUI.skin.label) { fontStyle = FontStyle.Bold });
             if (e.equipment == null) e.equipment = new List<string>();
             for (int i = e.equipment.Count - 1; i >= 0; i--)

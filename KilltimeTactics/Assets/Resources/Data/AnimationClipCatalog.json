@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "source": "RD-023 — Liste des clips requis valides game design. Familles : Idle, Marche, Course, Visée, Tir, Blessé, Mort (+ Transitions, Utilitaire). Audit du 2026-09-30 : 17 FBX sous Assets/Resources/Animations + 4 overrides Male + Roundkick.fbx à la racine Resources + 2 modèles (mina, Soldier in equipment). Référentiel game design : Livres I/VI (attributs, 16 états), VI (tour 10s, duel aveugle, couvert), VIII (armurerie DLPH, grenades §27.3), IV (5e Force, sorts).",
+  "source": "RD-023 — Liste des clips requis valides game design. Familles : Idle, Marche, Course, Visée, Tir, Blessé, Mort (+ Transitions, Utilitaire). Audit du 2026-09-30 : 17 FBX sous Assets/Resources/Animations + 4 overrides Male + Roundkick.fbx à la racine Resources + 2 modèles (mina, Soldier in equipment). Référentiel game design : Livres I/VI (attributs, 16 états), V (tour 10s, duel aveugle, couvert), VIII (armurerie DLPH, grenades §31.3), IV (5e Force, sorts).",
   "updated": "2026-09-30",
   "families": [
     "Idle",
@@ -51,7 +51,7 @@
       "genderVariants": "Root",
       "status": "present",
       "priority": "high",
-      "gameDesignRef": "Livre V §21.3 + Livre VII : posture de visée fusil 2 mains (WeaponType 1), base overwatch RD-030",
+      "gameDesignRef": "Livre V §21.3 + Livre VIII : posture de visée fusil 2 mains (WeaponType 1), base overwatch RD-030",
       "codeRef": "TacticalUnitVisual.RifleIdleStateName / IsRifleWeapon() / WeaponTypeRifle=1",
       "fallback": "—",
       "action": "RD-024 : produire variante Male (absente). RD-025 : déjà câblé."
@@ -65,7 +65,7 @@
       "genderVariants": "Root",
       "status": "present_non_cable",
       "priority": "high",
-      "gameDesignRef": "Livre VII : garde dédiée contondants lourds (WeaponType 2). ECART : clip présent mais état jamais créé dans PlayerAnimatorLinker",
+      "gameDesignRef": "Livre VIII : garde dédiée contondants lourds (WeaponType 2). ECART : clip présent mais état jamais créé dans PlayerAnimatorLinker",
       "codeRef": "TacticalUnitVisual.WeaponFightIdleStateName + IsHeavyMeleeWeapon() + GetWeaponType() ; ABSENT de PlayerAnimatorLinker.EnsureRequiredStatesAndTransitions",
       "fallback": "CrossFade direct vers un état sans motion => T-pose / freeze probable sur porteurs de gourdin (sbires Bestiaire : Petite Merde)",
       "action": "RD-025 : créer l'état Weapon Fight Idle + transition (prioritaire). RD-024 : variante Male."
@@ -121,7 +121,7 @@
       "genderVariants": "Root",
       "status": "present",
       "priority": "high",
-      "gameDesignRef": "Livre VII : tir Ballistique / fusils laser ; duel aveugle déclaration attaquant",
+      "gameDesignRef": "Livre VIII : tir Ballistique / fusils laser ; duel aveugle déclaration attaquant",
       "codeRef": "TacticalUnitVisual.TriggerFiringRifle() / TriggerActionAnimation() si HasRifleEquipped",
       "fallback": "—",
       "action": "RD-024 : variante Male. RD-025 : déjà câblé (TriggerFiringRifle, retour Rifle Idle exit 0.85)."
@@ -135,7 +135,7 @@
       "genderVariants": "Root+Male",
       "status": "present",
       "priority": "high",
-      "gameDesignRef": "Livre V Chap. 22 ciblage anatomique ; Livre VII épées/haches/marteaux/piques (ManiementArmes)",
+      "gameDesignRef": "Livre V Chap. 22 ciblage anatomique ; Livre VIII épées/haches/marteaux/piques (ManiementArmes)",
       "codeRef": "TacticalUnitVisual.TriggerMeleeAttack() / PlayerAnimatorLinker alias Melee Attack -> Standing Melee Attack",
       "fallback": "—",
       "action": "RD-024 : valider. RD-025 : déjà câblé (TriggerMeleeAttack, one-shot non loopé)."
@@ -163,7 +163,7 @@
       "genderVariants": "—",
       "status": "missing",
       "priority": "medium",
-      "gameDesignRef": "Livre VII §27.3 : lancer main 8 cases / 2 PA vs lance-grenades 20 cases / 3 PA, jet Ballistique SD 10 + dispersion",
+      "gameDesignRef": "Livre VIII §31.3 : lancer main 8 cases / 2 PA vs lance-grenades 20 cases / 3 PA, jet Ballistique SD 10 + dispersion",
       "codeRef": "TacticalUnitVisual.TriggerGrenadeThrow() => fallback Roundkick (main) ou Firing Rifle (lanceur)",
       "fallback": "Roundkick (coup de pied pour un lancer : lisible mais faux)",
       "action": "RD-024 : produire 1 geste de lancer (lever de bras + projection). RD-025 : état + trigger."
@@ -177,7 +177,7 @@
       "genderVariants": "—",
       "status": "missing",
       "priority": "medium",
-      "gameDesignRef": "Livre VII : pistolets (Pistolet Léger Ivoire des conscrits) — tir à 1 main, poigne pistolet déjà gérée côté arme",
+      "gameDesignRef": "Livre VIII : pistolets (Pistolet Léger Ivoire des conscrits) — tir à 1 main, poigne pistolet déjà gérée côté arme",
       "codeRef": "TacticalUnitVisual.IsPistolWeapon() existe ; TriggerActionAnimation() route pistolet vers Firing Rifle (2 mains : incohérent)",
       "fallback": "Firing Rifle (épaulé 2 mains pour un pistolet)",
       "action": "RD-024 : produire 1 tir 1 main. RD-025 : router IsPistolWeapon vers le nouvel état."

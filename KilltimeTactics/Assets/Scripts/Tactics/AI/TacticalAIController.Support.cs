@@ -33,7 +33,7 @@ namespace Killtime.Tactics.AI
                 int dist = actor.CurrentCoords.DistanceTo(ally.CurrentCoords);
                 if (dist > 1) continue;
 
-                // Réanimation proscrite si mort instantanée irréversible (boîte crânienne détruite, Livre VI §26)
+                // Réanimation proscrite si mort instantanée irréversible (boîte crânienne détruite, Livre VI §25)
                 if (!ally.Stats.IsAlive && ally.Stats.LastFatalBlowResolution != FatalBlowResolution.InstantDeath && actor.Stats.CurrentActionPoints >= 4)
                 {
                     if (actor.Stats.ConsumeActionPoints(4))
@@ -52,6 +52,23 @@ namespace Killtime.Tactics.AI
                 bool hasSouffrant = (ally.Stats.ActiveStatus & StatusEffect.Souffrant) != 0;
                 bool hasPoison = (ally.Stats.ActiveStatus & StatusEffect.Empoisonne) != 0;
                 bool hasChirKit = SmokeScreen.FindItemByName(actor.Stats, "Chirurgie") != null;
+
+                // RD-205 (Livre VI §25) : Stabilisation d'un allié Agonisant au contact
+                // (jet Premiers Soins vs Difficulté 12 → Inconscient stable). Prioritaire
+                // sur la suture : un paniqué doit d'abord être stabilisé.
+                if (ally.Stats.IsAlive && ally.Stats.ActiveStatus.HasFlag(StatusEffect.Agonisant))
+                {
+                    int stabCost = 3;
+                    try { int c = CoreRulesConfig.Instance.StabilizationAPCost; if (c >= 1) stabCost = c; } catch { }
+                    if (actor.Stats.CurrentActionPoints >= stabCost && actor.Stats.ConsumeActionPoints(stabCost))
+                    {
+                        var stab = ally.Stats.TryStabilize(actor.Stats, new DiceRoller());
+                        visual?.SpawnFloatingText($"🩹 [STABILISATION] (-{stabCost} PA)", Color.green);
+                        ally.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText(stab.Succeeded ? "STABILISÉ" : "Instable…", stab.Succeeded ? Color.green : Color.yellow);
+                        _arena?.Log($"🩹 <b>{actor.Stats.Name}</b> tente de stabiliser <b>{ally.Stats.Name}</b> : {stab.Log}");
+                        return true;
+                    }
+                }
 
                 if (ally.Stats.IsAlive && (allyHpRatio <= 0.35f || hasBleed || hasSouffrant || (hasPoison && hasChirKit)) && actor.Stats.CurrentActionPoints >= healCost)
                 {

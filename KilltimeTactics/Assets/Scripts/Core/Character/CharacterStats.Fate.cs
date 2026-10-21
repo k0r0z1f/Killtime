@@ -8,7 +8,7 @@ namespace Killtime.Core.Character
     public partial class CharacterStats
     {
 
-        /// <summary>Blindage porté : somme des protections des armures équipées (Livre VII §28.1).</summary>
+        /// <summary>Blindage porté : somme des protections des armures équipées (Livre VIII §32.1).</summary>
         public int GetWornArmorBonus()
         {
             if (Sheet?.Inventory == null) return 0;
@@ -23,7 +23,7 @@ namespace Killtime.Core.Character
             return total;
         }
 
-        /// <summary>Malus PA permanent des blindages lourds portés (Livre VII §28.1).</summary>
+        /// <summary>Malus PA permanent des blindages lourds portés (Livre VIII §32.1).</summary>
         public int GetWornApMalus()
         {
             if (Sheet?.Inventory == null) return 0;
@@ -57,7 +57,7 @@ namespace Killtime.Core.Character
             CurrentShieldHP = Math.Clamp(CurrentShieldHP, 0, Math.Max(0, MaxShieldHP));
         }
 
-        /// <summary>Recharge auto hors combat (Livre VII §28.2).</summary>
+        /// <summary>Recharge auto hors combat (Livre VIII §32.2).</summary>
         public void RefillShield()
         {
             RecalcShieldMax();

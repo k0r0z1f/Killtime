@@ -7,6 +7,7 @@ using Killtime.Tactics.Units;
 using Killtime.Tactics.CombatUI;
 using Killtime.Tactics.Grid;
 using Killtime.Core.Character;
+using Killtime.Tactics.Visual;
 
 namespace Killtime.Tactics.Units
 {
@@ -267,6 +268,7 @@ namespace Killtime.Tactics.Units
         public void TriggerFallingBackDeath()
         {
             _isUnconscious = true;
+            GetComponentInChildren<MiniatureLookRig>()?.SetAlive(false);
             // La main s'ouvre immédiatement : l'arme tombe en physique réelle.
             try { DropHeldItemsWithPhysics(); } catch { }
             if (_animator != null)
@@ -331,7 +333,7 @@ namespace Killtime.Tactics.Units
 
             if (baseController != null)
             {
-                ConfigureAnimatorClips(baseController);
+                ConfigureAnimatorClips(baseController, instance);
             }
 
             if (_animator != null && _isInCombat)
@@ -341,7 +343,7 @@ namespace Killtime.Tactics.Units
             }
         }
 
-        private void ConfigureAnimatorClips(RuntimeAnimatorController baseController)
+        private void ConfigureAnimatorClips(RuntimeAnimatorController baseController, GameObject modelInstance)
         {
             _animatorOverride = new AnimatorOverrideController(baseController);
             string genderKey = ResolveAnimationGenderKey();
@@ -373,6 +375,7 @@ namespace Killtime.Tactics.Units
 
             _animator.runtimeAnimatorController = _animatorOverride;
             CheckWalkingAnimationCapabilities();
+            MiniatureRandomizer.AttachTo(modelInstance);
         }
 
         /// <summary>
@@ -385,7 +388,7 @@ namespace Killtime.Tactics.Units
             if (_animator == null || _animatorOverride == null) return;
             var baseController = _animatorOverride.runtimeAnimatorController;
             if (baseController == null) return;
-            ConfigureAnimatorClips(baseController);
+            ConfigureAnimatorClips(baseController, _animator.gameObject);
         }
 
         /// <summary>

@@ -300,7 +300,7 @@ namespace Killtime.Tactics.AI
         }
 
         // =========================================================================
-        // GRENADES TACTIQUES DE ZONE (LIVRE VIII §27.3)
+        // GRENADES TACTIQUES DE ZONE (LIVRE VIII §31.3)
         // =========================================================================
         private bool TryThrowGrenadeAI(TacticalUnit actor, TacticalPosture posture)
         {

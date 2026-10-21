@@ -117,6 +117,7 @@ namespace Killtime.Core.Character
                 parts.Add("Immobilisé -2");
             }
             if (ActiveStatus.HasFlag(StatusEffect.Agonisant)) parts.Add("Agonisant -2");
+            if (IsStabilized) parts.Add("Stabilisé (Inconscient stable)");
             if (HasResurrectionSequelae()) parts.Add($"Poids du Trépas {GetResurrectionSequelaeModifier()}ec ({GetResurrectionSequelaeRemainingDays()}j restants)");
             if (isOffensive)
             {

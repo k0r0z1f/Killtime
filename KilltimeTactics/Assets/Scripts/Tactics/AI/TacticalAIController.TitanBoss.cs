@@ -16,7 +16,7 @@ namespace Killtime.Tactics.AI
     public partial class TacticalAIController : MonoBehaviour
     {
         // =========================================================================
-        // KITS BOSS TITANS (LIVRE XI §45-46 - RD-087)
+        // KITS BOSS TITANS (LIVRE XII §49-50 - RD-087)
         // Garde par nom/spécialisation comme Bandit/Illumo (RD-088) ; calculs purs
         // dans TitanBossMechanics, états dans TitanBossState. Appelé depuis
         // TryExecuteLivreXIManeuver (SupportLivreXI), avant les routines génériques.

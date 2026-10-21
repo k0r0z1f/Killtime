@@ -41,7 +41,7 @@ namespace Killtime.UI
             _activeUnitContextMenuRect = Rect.zero;
         }
 
-        // --- Grenades (Livre VII §27.3) : viser la case de la cible verrouillée,
+        // --- Grenades (Livre VIII §31.3) : viser la case de la cible verrouillée,
         // --- lancer main (2 PA / 8 cases) ou lanceur (3 PA / 20 cases), visée +1 PA.
         private bool _showGrenadeDrawer = false;
         private float _grenadeOpenAnim;

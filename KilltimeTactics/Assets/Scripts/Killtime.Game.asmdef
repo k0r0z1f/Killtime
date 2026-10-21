@@ -3,7 +3,8 @@
     "rootNamespace": "",
     "references": [
         "Unity.InferenceEngine",
-        "Unity.RenderPipelines.Universal.Runtime"
+        "Unity.RenderPipelines.Universal.Runtime",
+        "Unity.Animation.Rigging"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

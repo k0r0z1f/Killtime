@@ -15,7 +15,7 @@ namespace Killtime.Core.Combat
     /// Decoupage move-only, aucune logique modifiee.
     /// </summary>
     /// <summary>
-    /// Ères historiques / technologiques des grenades (Livre VII §27.3 étendu).
+    /// Ères historiques / technologiques des grenades (Livre VIII §31.3 étendu).
     /// Sert au filtre du marché + au fluff + aux placeholders 3D.
     /// </summary>
     public enum GrenadeEra
@@ -59,7 +59,7 @@ namespace Killtime.Core.Combat
     }
 
     /// <summary>
-    /// Règles tactiques des grenades (Livre V §20 + Livre VII §27.3).
+    /// Règles tactiques des grenades (Livre V §20 + Livre VIII §31.3).
     /// - Main : 2 PA, 8 cases. Lanceur : 3 PA, +bonus portée/précision.
     /// - Visée compensée : +1 PA, annule le malus de distance (-1 / 3 cases au-delà de 4).
     /// - Échec du jet Ballistique (SD 10) => dispersion 1-3 cases (réduite par lanceur/précision).
@@ -361,7 +361,7 @@ namespace Killtime.Core.Combat
                 raw = Math.Max(0, raw - grenade.ShrapnelDamage);
             int afterCover = Math.Max(0, raw - coverRed);
 
-            // Champs de force portés (Livre VII §28.2) : barrière avant armure/chair.
+            // Champs de force portés (Livre VIII §32.2) : barrière avant armure/chair.
             // AbsorbShield retourne le RESTE : absorbé = avant - reste.
             int shieldRemainder = target.AbsorbShield(afterCover);
             int shieldAbs = Math.Max(0, afterCover - shieldRemainder);
@@ -371,7 +371,7 @@ namespace Killtime.Core.Combat
             int absorbed = Math.Min(totalArmor, afterShield);
             int final = Math.Max(0, afterShield - absorbed);
 
-            // RD-087 (Livre XI §45-46) : réactions des Boss Titans aux dégâts
+            // RD-087 (Livre XII §49-50) : réactions des Boss Titans aux dégâts
             // typés (GrenadeEffectKind exact : Incendiaire/Plasma/Thermobarique
             // = feu, Cryo = froid) — avant statuts/létal, tracé log.
             string bossReactionLog = "";

@@ -227,7 +227,7 @@ namespace Killtime.Tactics.TurnSystem
                 return;
             }
 
-            // RD-087 (Livre XI §46) : Régénération lithosphérique du Disciple
+            // RD-087 (Livre XII §50) : Régénération lithosphérique du Disciple
             // de Terre (montant bossAI regenAmount, défaut 3 PV) au début de
             // son tour personnel s'il est au contact de la pierre ou d'un
             // couvert. Pur + testé via TitanBossMechanics (contact = voisin

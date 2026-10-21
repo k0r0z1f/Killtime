@@ -11,7 +11,7 @@ using Killtime.Tactics.Units;
 namespace Killtime.Tests
 {
     /// <summary>
-    /// RD-087 : Capacités Réactives &amp; Vulnérabilités des Boss Titans (Livre XI §45-46).
+    /// RD-087 : Capacités Réactives &amp; Vulnérabilités des Boss Titans (Livre XII §49-50).
     /// Couvre les 9 mécaniques au niveau pur (TitanBossMechanics + TitanBossState) :
     /// mémoire cumulative + reset, balayage 3 cibles + À Terre, charge 10 cases,
     /// absorption 50% + coût 2 PA + refus sans PA, éclairs 3 cibles + Déstabilisé,

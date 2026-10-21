@@ -275,7 +275,7 @@ namespace Killtime.Core.Character
             sheet.UnlockedSpecializations.Add("Fibres Résilientes");
             sheet.UnlockedSpecializations.Add("Régénération Métabolique");
 
-            // Équipement officiel — dotation catalogue Armurerie/Marché (Livre VII) :
+            // Équipement officiel — dotation catalogue Armurerie/Marché (Livre VIII) :
             // variante irradiée (même aspect que l'ancien dotation, prefab réel).
             if (!ArmoryCatalog.GiveLoadoutItem(sheet, "Pistolet Léger Irradié", false))
             {

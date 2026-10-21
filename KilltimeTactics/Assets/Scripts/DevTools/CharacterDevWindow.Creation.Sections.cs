@@ -64,7 +64,7 @@ namespace Killtime.UI
             {
                 GUI.color = new Color(1f, 0.4f, 0.4f);
                 int cellCount = TitanFootprint.GetOccupiedCoordinates(new HexCoordinates(0, 0), _currentSheet.Footprint).Count;
-                GUILayout.Label($"⚠️ <b>Entité Colossale (Livre XI) :</b> Empreinte de {cellCount} hexagones. Nécessite une zone dégagée lors du spawn.", GUI.skin.box);
+                GUILayout.Label($"⚠️ <b>Entité Colossale (Livre XII) :</b> Empreinte de {cellCount} hexagones. Nécessite une zone dégagée lors du spawn.", GUI.skin.box);
                 GUI.color = Color.white;
             }
 

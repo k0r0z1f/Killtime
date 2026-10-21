@@ -19,7 +19,7 @@ namespace Killtime.Tactics.AI
     public partial class TacticalAIController : MonoBehaviour
     {
         // =========================================================================
-        // MANŒUVRES AVANCÉES PNJ & AUTOMATES (LIVRE XI §44 & §47 - RD-088)
+        // MANŒUVRES AVANCÉES PNJ & AUTOMATES (LIVRE XII §48 & §51 - RD-088)
         // =========================================================================
         private void CheckAndApplyHydraulicBite(TacticalUnit unit, TacticalUnitVisual visual)
         {
@@ -66,7 +66,7 @@ namespace Killtime.Tactics.AI
             if (actor?.Stats == null || !actor.Stats.IsAlive) return false;
             int ap = actor.Stats.CurrentActionPoints;
 
-            // 1. BANDIT #3 (Livre XI §44)
+            // 1. BANDIT #3 (Livre XII §48)
             bool isBandit3 = actor.Stats.HasSpecialization(LivreXISpecializations.TirPrepareInterruption)
                 || actor.Stats.HasSpecialization(LivreXISpecializations.PriseOtage)
                 || (actor.Stats.Name != null && (actor.Stats.Name.IndexOf("Bandit #3", StringComparison.OrdinalIgnoreCase) >= 0 || actor.Stats.Name.IndexOf("Bandit 3", StringComparison.OrdinalIgnoreCase) >= 0));
@@ -121,7 +121,7 @@ namespace Killtime.Tactics.AI
                 }
             }
 
-            // 2. ILLUMO (Livre XI §47)
+            // 2. ILLUMO (Livre XII §51)
             bool isIllumo = actor.Stats.HasSpecialization(LivreXISpecializations.CombustionSpontanee)
                 || actor.Stats.HasSpecialization(LivreXISpecializations.FouleeCendres)
                 || (actor.Stats.Name != null && actor.Stats.Name.IndexOf("Illumo", StringComparison.OrdinalIgnoreCase) >= 0);
@@ -192,7 +192,7 @@ namespace Killtime.Tactics.AI
                 }
             }
 
-            // 3. DRONES & MOLOSSES (Livre XI §47)
+            // 3. DRONES & MOLOSSES (Livre XII §51)
             bool isMolosse = actor.Stats.HasSpecialization(LivreXISpecializations.MorsureHydraulique)
                 || (actor.Stats.Name != null && actor.Stats.Name.IndexOf("Molosse", StringComparison.OrdinalIgnoreCase) >= 0);
 
@@ -296,7 +296,7 @@ namespace Killtime.Tactics.AI
                 }
             }
 
-            // 4. BOSS TITANS (Livre XI §45-46 - RD-087)
+            // 4. BOSS TITANS (Livre XII §49-50 - RD-087)
             if (TryExecuteTitanBossManeuver(actor, target, dist, visual)) return true;
 
             return false;

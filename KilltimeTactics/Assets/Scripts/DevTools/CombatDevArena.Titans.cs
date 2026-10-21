@@ -8,7 +8,7 @@ using Killtime.Core.Combat;
 
 namespace Killtime.Tactics
 {
-    // RD-196 : Titans multi-cases + boss 1-clic (Livres V §22.3, XI §45-46).
+    // RD-196 : Titans multi-cases + boss 1-clic (Livres V §22.3, XII §49-50).
     // Spawn générique Rosette7/Colossus19 + 3 boss du catalogue, 3 coups
     // Titanesques 1-clic (saisie 2 PA, piétinement 3 PA, souffle 3 PA),
     // vérification empreinte/périmètre et rechargement bossAI JSON.
@@ -55,7 +55,7 @@ namespace Killtime.Tactics
             return SpawnTitanUnit(sheet, footprint, at, isPlayer);
         }
 
-        /// <summary>Spawne un boss du Livre XI : 0 Bête, 1 Minulican, 2 Disciple.</summary>
+        /// <summary>Spawne un boss du Livre XII : 0 Bête, 1 Minulican, 2 Disciple.</summary>
         public TacticalUnit SpawnTitanBoss(int bossIndex, HexCoordinates at, bool isPlayer = false)
         {
             CharacterSheet sheet = bossIndex switch

@@ -38,9 +38,10 @@
     --font-mono: 'JetBrains Mono', monospace;
 
     /* Dimensions */
-    --sidebar-width: 300px;
+    /* Dimensions fluides : suivent le viewport, aucun seuil dur */
+    --sidebar-width: clamp(240px, 17vw, 340px);
     --topbar-height: 68px;
-    --inspector-width: 270px;
+    --inspector-width: clamp(220px, 15vw, 320px);
     
     /* Transitions */
     --transition-smooth: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
@@ -84,7 +85,7 @@ html, body {
     background-color: var(--bg-void);
     color: var(--text-primary);
     font-family: var(--font-body);
-    font-size: 15px;
+    font-size: clamp(15px, 0.5vw + 7px, 18px);
     line-height: 1.7;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
@@ -570,12 +571,15 @@ body::before {
     margin-left: var(--sidebar-width);
     margin-right: var(--inspector-width);
     flex: 1;
-    padding: 36px 48px 100px;
-    max-width: 1060px;
+    padding: clamp(24px, 3vh, 48px) clamp(18px, 3vw, 72px) 100px;
+    max-width: none;
     min-width: 0;
     width: 100%;
 }
 
+/* ============ FLUIDE : aucune colonne plafonnée ============ */
+/* Le contenu remplit l'espace dispo à toute taille, sans seuil.
+   La lisibilité est tenue par la taille de police fluide, pas par du vide. */
 .doc-header {
     margin-bottom: 34px;
     border-bottom: 1px solid var(--border-subtle);
@@ -643,7 +647,6 @@ body::before {
 .doc-subtitle, .doc-lead {
     font-size: 1.08rem;
     color: var(--text-secondary);
-    max-width: 860px;
     line-height: 1.7;
     margin-bottom: 24px;
 }
@@ -868,7 +871,7 @@ body::before {
 .formula-desc {
     font-size: 0.86rem;
     color: var(--text-secondary);
-    max-width: 500px;
+    max-width: min(640px, 45%);
     line-height: 1.55;
 }
 
@@ -1389,7 +1392,7 @@ table.codex-table tr:hover td, table.data-table tr:hover td {
     transform: translateY(-1px);
 }
 
-/* ================= LIVRE IX : OUTILS INTERACTIFS ================= */
+/* ================= LIVRE X : OUTILS INTERACTIFS ================= */
 .tool-section {
     background: var(--bg-surface);
     border: 1px solid var(--border-subtle);
@@ -2404,6 +2407,21 @@ table.codex-table tr:hover td, table.data-table tr:hover td {
     color: #fff;
     border-color: var(--ruby-danger);
     font-weight: 700;
+}
+
+/* ============ TYPO FLUIDE (sans seuil) ============ */
+.doc-title {
+    font-size: clamp(1.85rem, 0.8vw + 1.5rem, 2.9rem);
+}
+
+.doc-subtitle,
+.doc-lead {
+    font-size: clamp(1.02rem, 0.3vw + 0.85rem, 1.25rem);
+}
+
+.prose,
+.doc-page {
+    font-size: clamp(1rem, 0.25vw + 0.85rem, 1.18rem);
 }
 
 /* ================= RESPONSIVE ================= */

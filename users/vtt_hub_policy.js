@@ -57,7 +57,7 @@ const OP_PAYLOAD_LIMITS = {
   action_request: 16 * 1024,
   unit_claim: 4 * 1024,
   worldmap: 16 * 1024,
-  // RD-089 : un objet au sol = item complet (stats Livre VII), petit volume.
+  // RD-089 : un objet au sol = item complet (stats Livre VIII), petit volume.
   drop_weapon: 16 * 1024,
   pickup_weapon: 4 * 1024,
   kick_weapon: 4 * 1024,

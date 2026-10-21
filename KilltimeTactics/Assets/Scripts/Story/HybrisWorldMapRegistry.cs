@@ -48,7 +48,7 @@ namespace Killtime.Core.World
         {
             // --- I. PÔLE CENTRAL & TITAN ---
             { "kingston", new HybrisLocationData("kingston", "Kingston", LandmarkCategory.CentralHub, new HexCoordinates(-6, 3), new Vector2(0.30f, 0.56f), "Humain", "Capitale des Terres Centrales, siège de la World Police et point de départ.") },
-            { "Haliriel", new HybrisLocationData("Haliriel", "Falaises d'Haliriel", LandmarkCategory.TitanLair, new HexCoordinates(-9, 7), new Vector2(0.24f, 0.70f), "Faune Tellurique Légendaire", "Marqueur rouge austral : cratère et repaire de la Bête d'Hybris (Livre XI).") },
+            { "Haliriel", new HybrisLocationData("Haliriel", "Falaises d'Haliriel", LandmarkCategory.TitanLair, new HexCoordinates(-9, 7), new Vector2(0.24f, 0.70f), "Faune Tellurique Légendaire", "Marqueur rouge austral : cratère et repaire de la Bête d'Hybris (Livre XII).") },
 
             // --- II. ROYAUMES MAJEURS (1 à 8) ---
             { "1", new HybrisLocationData("1", "Aurora", LandmarkCategory.MajorKingdom, new HexCoordinates(5, -9), new Vector2(0.63f, 0.10f), "Humain", "Cité des pionniers et du savoir temporel, péninsule boréale.") },

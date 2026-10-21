@@ -42,7 +42,7 @@ namespace Killtime.Core.Character
         public int MovesThisTurn { get; private set; }
         public bool HasUsedSecondeRespiration { get; set; }
 
-        // Barrière ablative des champs de force portés (Livre VII §28.2) : absorbe
+        // Barrière ablative des champs de force portés (Livre VIII §32.2) : absorbe
         // les dégâts avant l'armure et la chair. Rechargée hors combat / en début de combat.
         public int MaxShieldHP { get; private set; }
         public int CurrentShieldHP { get; set; }

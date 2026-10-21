@@ -542,7 +542,7 @@ namespace Killtime.Tactics
 
         // =====================================================================
         // GRENADES : viser (case) -> lancer (main / lance-grenade) -> dispersion ->
-        // impact -> explosion + shrapnels + statuts (Livre VII §27.3, Livre V §20).
+        // impact -> explosion + shrapnels + statuts (Livre VIII §31.3, Livre V §20).
         // =====================================================================
 
 

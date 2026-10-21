@@ -19,10 +19,49 @@ namespace Killtime.Tactics.CombatUI
         private static void AddCareActions(List<CombatAction> actions, TacticalUnit actor, TacticalUnit target, CombatDevArena arena, bool isSelf, bool isEnemy, bool targetIsAlive)
         {
             // =========================================================================
-            // 3. TRAUMATOLOGIE & SOINS (LIVRE VII)
+            // 3. TRAUMATOLOGIE & SOINS (LIVRE VI)
             // =========================================================================
             if (targetIsAlive)
             {
+                // RD-205 (Livre VI §25) : Stabilisation d'un Agonisant au chevet —
+                // Premiers Soins au contact (3 PA, jet vs Difficulté 12) : succès =
+                // Agonisant → Inconscient stable (Saignement stoppé, plus de jet
+                // de moral en boucle). Échec = Agonisant persiste (réessayable).
+                // Pas d'auto-stabilisation : le geste exige un soignant au chevet.
+                if (target.Stats.ActiveStatus.HasFlag(StatusEffect.Agonisant) && actor != target)
+                {
+                    int stabCost = 3;
+                    int stabDC = 12;
+                    try
+                    {
+                        var cfg = Killtime.Core.Rules.CoreRulesConfig.Instance;
+                        if (cfg.StabilizationAPCost >= 1) stabCost = cfg.StabilizationAPCost;
+                        if (cfg.StabilizationDifficulty >= 1) stabDC = cfg.StabilizationDifficulty;
+                    }
+                    catch { /* défauts Codex */ }
+                    int stabCostLocal = stabCost;
+                    actions.Add(new CombatAction(
+                        $"🩹 Stabilisation Agonisant ({stabCost} PA)",
+                        $"Premiers Soins au chevet (Difficulté {stabDC}) : stabilise un allié Agonisant au contact → Inconscient stable (Saignement stoppé, moral verrouillé).",
+                        ActionCategory.TraumatologieEtSoins,
+                        stabCost,
+                        (act, tgt) => act != tgt && act.Stats.CurrentActionPoints >= stabCostLocal
+                            && act.CurrentCoords.DistanceTo(tgt.CurrentCoords) <= 1
+                            && tgt.Stats.ActiveStatus.HasFlag(StatusEffect.Agonisant),
+                        (act, tgt) =>
+                        {
+                            if (act.Stats.ConsumeActionPoints(stabCostLocal))
+                            {
+                                var stab = tgt.Stats.TryStabilize(act.Stats, new DiceRoller());
+                                var vis = tgt.GetComponent<TacticalUnitVisual>();
+                                vis?.SpawnFloatingText(stab.Succeeded ? "🩹 STABILISÉ" : "🩹 Stabilisation échouée", stab.Succeeded ? Color.green : Color.yellow);
+                                arena?.Log($"🩹 <b>{act.Stats.Name}</b> tente de stabiliser <b>{tgt.Stats.Name}</b> : {stab.Log}");
+                                arena?.RecordChronoSnapshot($"Stabilisation : {act.Stats.Name} -> {tgt.Stats.Name}");
+                            }
+                        }
+                    ));
+                }
+
                 // Chirurgie : Suture Réflexe (Livre III) — gestes médicaux d'urgence
                 // sur le front : les premiers soins passent de 3 PA à 2 PA.
                 // Kit de Chirurgie en poche (non consommé) : CON×3 + purge Empoisonne.
@@ -63,7 +102,7 @@ namespace Killtime.Tactics.CombatUI
                     }
                 ));
 
-                // Consommables marketplace Livre VII §28.3 : seringues + bandage (HealingAmount).
+                // Consommables marketplace Livre VIII §32.3 : seringues + bandage (HealingAmount).
                 // 1 PA, soi-même ou allié adjacent, consomme 1 dose du stock.
                 InventoryItem bestHeal = FindBestHealingConsumable(actor);
                 if (bestHeal != null)

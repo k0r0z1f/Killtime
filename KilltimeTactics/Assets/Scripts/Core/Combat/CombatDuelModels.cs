@@ -72,7 +72,7 @@ namespace Killtime.Core.Combat
         public int PreparationAttackBonus;
         public bool IsPreparationDefense;
         public int PreparationDefenseBonus;
-        // Bonus d'arme arcanotech au jet (ex: Deglazer +1ec, Livre VII §27.2).
+        // Bonus d'arme arcanotech au jet (ex: Deglazer +1ec, Livre VIII §31.2).
         // Additionné à AttackBaseMod au BeginDuel, tracé dans le log.
         public int WeaponBonusEc;
         // RD-036 Hauteur / contrebas (palier 1.5 m) : bonus/malus vertical

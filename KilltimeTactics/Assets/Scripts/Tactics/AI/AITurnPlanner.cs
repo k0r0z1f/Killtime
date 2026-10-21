@@ -8,7 +8,7 @@ namespace Killtime.Tactics.AI
     /// l'ordre verbatim de la boucle ExecuteAITurn d'origine :
     /// 1. Reddition 2. Déroute 3. Soutien médical 4. Soutien allié
     /// 5. Cible nulle (observation / patrouille / break) 6. Retraite
-    /// 7. Ralliement 8. Technique de combat 9. Manœuvre Livre XI
+    /// 7. Ralliement 8. Technique de combat 9. Manœuvre Livre XII
     /// 10. DuoTech auto 11. TEEP / dégagement 12. Grenade 13. Sort
     /// 14. Intimidation 15. Entretien 16. Balise laser 17. Charge
     /// 18. Frappe titanesque 19. Bousculade 20. Lancer d'arme 21. Flanking
@@ -33,7 +33,7 @@ namespace Killtime.Tactics.AI
         DuoTechAuto,            // 10. Duo-Tech auto (RD-105).
         TeepBreak,              // 11a. Rupture d'engagement au contact (ranged).
         DisengageStep,          // 11b. Dégagement au contact (ranged).
-        Grenade,                // 12. Grenades de zone (Livre VII §27.3).
+        Grenade,                // 12. Grenades de zone (Livre VIII §31.3).
         BestSpell,              // 13. Sort arcanotech rentable (Livre IV).
         Intimidation,           // 14. Intimidation & provocation (Livre III).
         SelfUpkeep,             // 15. Entretien & buffs personnels.
@@ -132,7 +132,7 @@ namespace Killtime.Tactics.AI
             if (snapshot.Posture == TacticalPosture.SupportAndHeal)
                 plan.Add(AIIntent.RallyWoundedAlly);
 
-            // 8-10. Registre joueur : techniques, Livre XI, Duo-Tech.
+            // 8-10. Registre joueur : techniques, Livre XII, Duo-Tech.
             plan.Add(AIIntent.CombatTechnique);
             plan.Add(AIIntent.LivreXIManeuver);
             plan.Add(AIIntent.DuoTechAuto);

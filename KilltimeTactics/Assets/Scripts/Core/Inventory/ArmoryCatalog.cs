@@ -5,7 +5,7 @@ using Killtime.Core.Character;
 namespace Killtime.Core.Inventory
 {
     /// <summary>
-    /// Catalogue exhaustif de l'Armurerie Killtime (Livre VII, Chap. 26-32).
+    /// Catalogue exhaustif de l'Armurerie Killtime (Livre VIII, Chap. 30-32).
     /// Source unique pour : Inventaire PJ (F1/F5), Marché, placeholders 3D.
     /// Données : JSON éditable (Resources/Data/Armory.json, override disque),
     /// repli codé en dur ci-dessous si aucun JSON. Éditeur : fenêtre Armurerie (F12).
@@ -611,8 +611,8 @@ namespace Killtime.Core.Inventory
             // Arcanotech (Nytharite impériale, Livres IV/VII/XI)
             AddGrenade("Grenade Nytharite F-31", "12D+4d10 - Blast3", 12, 4, 1.0f, 25000, "Arcanotech", "Plasma", 3, 3, "EnFeu,Destabilise", 0, "Prisme nytharite pure. Signature de la garde impériale.", ItemRarity.Legendaire);
             AddGrenade("Grenade Graviton G-0", "10D+3d10 - Blast2", 10, 3, 1.2f, 30000, "Arcanotech", "Graviton", 2, 0, "ATerre,Ralenti,Immobilise", 1, "Puits gravifique bref. Cloue au sol puis relâche.", ItemRarity.Legendaire);
-            AddGrenade("Grenade Stase Chrono T-0", "0D+1d10 - Blast2", 0, 1, 0.8f, 35000, "Arcanotech", "Stase", 2, 0, "Paralyse,ChronoFracture", 2, "Bulle de Fleuve figé 2 tours (Livre IX). Paralyse temporelle.", ItemRarity.Prototype);
-            AddGrenade("Grenade Pestilentielle Karkjiue", "6D+2d10 - Blast3 - Gaz", 6, 2, 1.0f, 18000, "Arcanotech", "Pestilentielle", 3, 0, "Empoisonne,Saignement", 3, "Spores de Karkjiue (Livre XI). Nuage persistant 3 tours.", ItemRarity.Legendaire);
+            AddGrenade("Grenade Stase Chrono T-0", "0D+1d10 - Blast2", 0, 1, 0.8f, 35000, "Arcanotech", "Stase", 2, 0, "Paralyse,ChronoFracture", 2, "Bulle de Fleuve figé 2 tours (Livre X). Paralyse temporelle.", ItemRarity.Prototype);
+            AddGrenade("Grenade Pestilentielle Karkjiue", "6D+2d10 - Blast3 - Gaz", 6, 2, 1.0f, 18000, "Arcanotech", "Pestilentielle", 3, 0, "Empoisonne,Saignement", 3, "Spores de Karkjiue (Livre XII). Nuage persistant 3 tours.", ItemRarity.Legendaire);
 
             // ===== 31.3c Lance-grenades (équiper en 2H, 3 PA / tir, +portée/précision) =====
             AddLauncher("M79 Thumper (1961)", "LG +12P +1Prec - 2H", 6f, 8000, 12, 1, "Fusil casse-buse 40mm coup par coup. Le classique du fantassin.", ItemRarity.Militaire, era: "Guerre Froide");
@@ -691,7 +691,7 @@ namespace Killtime.Core.Inventory
             Add("Holocarte Chiffrée", "Donnée", 0, 0.1f, 1, "1H", 0, ItemType.Misc, SkillType.Academie, "Divers & Quête", "Cell", "Preuve / quête. Valeur selon acheteur. Prix 0 = invendable au marché standard.", era: "Futuriste");
             Add("Clé Magnétique Générique", "Accès", 0, 0.1f, 1, "1H", 200, ItemType.Misc, SkillType.Subterfuge, "Divers & Quête", "Cell", "Ouvre portes civiles standard.", stackable: false, era: "Moderne");
             Add("Lingot de Troque", "Monnaie", 0, 2.2f, 1, "1H", 1000, ItemType.Misc, SkillType.Communication, "Divers & Quête", "Cell", "Revendable 1000 CE partout. Monnaie de troc.", stackable: true, era: "Poudre Noire");
-            Add("Trophée de Chasse", "Butin", 0, 3f, 1, "1H", 400, ItemType.Misc, SkillType.NatureSurvie, "Divers & Quête", "Ration", "Butin faune d'Hybris (Livre XI). Prix selon taxidermiste.", era: "Poudre Noire");
+            Add("Trophée de Chasse", "Butin", 0, 3f, 1, "1H", 400, ItemType.Misc, SkillType.NatureSurvie, "Divers & Quête", "Ration", "Butin faune d'Hybris (Livre XII). Prix selon taxidermiste.", era: "Poudre Noire");
             Add("Éclat de Nytharite Brut", "Composant", 0, 0.5f, 1, "1H", 3000, ItemType.Arcanotech, SkillType.Artisanat, "Divers & Quête", "Cell", "Composant sorts/objets. Base atelier (Livre IV).", ItemRarity.Elite, stackable: true, era: "Arcanotech");
 
             PatchLegacyGrenades();

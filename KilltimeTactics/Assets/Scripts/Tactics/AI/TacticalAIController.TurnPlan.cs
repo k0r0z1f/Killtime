@@ -262,7 +262,7 @@ namespace Killtime.Tactics.AI
 
                 case AIIntent.LivreXIManeuver:
                 {
-                    // 2c. MANŒUVRES AVANCÉES PNJ & AUTOMATES (Livre XI §44 & §47).
+                    // 2c. MANŒUVRES AVANCÉES PNJ & AUTOMATES (Livre XII §48 & §51).
                     if (TryExecuteLivreXIManeuver(unit, frame.Target, frame.Posture, frame.Dist, visual))
                     {
                         yield return new WaitForSeconds(_actionDelay);
@@ -322,7 +322,7 @@ namespace Killtime.Tactics.AI
 
                 case AIIntent.Grenade:
                 {
-                    // 4. GRENADES DE ZONE (Livre VII §27.3)
+                    // 4. GRENADES DE ZONE (Livre VIII §31.3)
                     if (TryThrowGrenadeAI(unit, frame.Posture))
                     {
                         float waitElapsed = 0f;

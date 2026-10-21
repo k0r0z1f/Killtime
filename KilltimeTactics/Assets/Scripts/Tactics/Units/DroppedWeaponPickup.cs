@@ -127,7 +127,7 @@ namespace Killtime.Tactics.Units
         }
 
         /// <summary>
-        /// Active colliders + Rigidbody avec masse réelle (poids fiche, Livre VII).
+        /// Active colliders + Rigidbody avec masse réelle (poids fiche, Livre VIII).
         /// Idempotent : réutilisable si l'objet est re-lâché.
         /// </summary>
         public void EnsureRealPhysics()

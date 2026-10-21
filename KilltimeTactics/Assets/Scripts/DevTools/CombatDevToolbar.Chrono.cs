@@ -21,7 +21,7 @@ namespace Killtime.UI
     {
         private void DrawChronomancyTab()
         {
-            GUILayout.Label("<b>⏳ Le Fleuve du Temps (Livre IX) — Sauvegardes & Rembobinage :</b>");
+            GUILayout.Label("<b>⏳ Le Fleuve du Temps (Livre X) — Sauvegardes & Rembobinage :</b>");
             GUILayout.Space(4);
 
             GUI.backgroundColor = new Color(0.2f, 0.85f, 1.0f);

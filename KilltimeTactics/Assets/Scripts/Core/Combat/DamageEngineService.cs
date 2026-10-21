@@ -360,13 +360,13 @@ namespace Killtime.Core.Combat
 
             int absorbed = Math.Min(totalArmor, rawDamage);
             int finalDamage = isThomasSymbioticImmune ? 0 : Math.Max(0, rawDamage - absorbed);
-            // Champs de force portés (Livre VII §28.2) : la barrière absorbe avant la
+            // Champs de force portés (Livre VIII §32.2) : la barrière absorbe avant la
             // chair — aucun choc traumatique tant qu'elle encaisse tout.
             int shieldRemainder = defender.AbsorbShield(finalDamage);
             int shieldAbsorbed = Math.Max(0, finalDamage - shieldRemainder);
             finalDamage = Math.Max(0, shieldRemainder);
 
-            // RD-087 (Livre XI §45-46) : réactions des Boss Titans aux dégâts
+            // RD-087 (Livre XII §49-50) : réactions des Boss Titans aux dégâts
             // élémentaires (Mémoire des Flammes, Absorption Thermique, Choc
             // Thermique) — avant application létale, tracé log. Inerte sans
             // spé boss ni dégât typé (simple expiration de fissure).

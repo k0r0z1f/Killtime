@@ -1,6 +1,6 @@
 {
   "version": 3,
-  "updated": "2026-10-20",
+  "updated": "2026-10-21",
   "activeId": "board-demo-hors-lore",
   "boards": [
     {
@@ -468,7 +468,7 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "ArmoryJson + ArmoryDevWindow",
-          "details": "121 items Livre VII exportés vers Resources/Data/Armory.json (enums en noms, patch legacy grenades appliqué). ArmoryCatalog charge override disque > Resources > repli codé. Fenêtre Armurerie F12 : filtre catégories + recherche, CRUD complet tous champs, validation, Sauvegarder override, Exporter Resources. Marché F4 affiche la source + Recharger."
+          "details": "121 items Livre VIII exportés vers Resources/Data/Armory.json (enums en noms, patch legacy grenades appliqué). ArmoryCatalog charge override disque > Resources > repli codé. Fenêtre Armurerie F12 : filtre catégories + recherche, CRUD complet tous champs, validation, Sauvegarder override, Exporter Resources. Marché F4 affiche la source + Recharger."
         },
         {
           "id": "RD-078",
@@ -608,7 +608,7 @@
         },
         {
           "id": "RD-087",
-          "title": "Capacités Réactives & Vulnérabilités des Boss Titans (Livre XI §45-46)",
+          "title": "Capacités Réactives & Vulnérabilités des Boss Titans (Livre XII §49-50)",
           "epic": "Véhicules/Titans",
           "status": "done",
           "priority": "medium",
@@ -624,7 +624,7 @@
         },
         {
           "id": "RD-088",
-          "title": "Manœuvres Avancées des PNJ & Automates (Livre XI §44 & §47)",
+          "title": "Manœuvres Avancées des PNJ & Automates (Livre XII §48 & §51)",
           "epic": "PNJ",
           "status": "done",
           "priority": "medium",
@@ -635,7 +635,7 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "TacticalAIController + BestiaryCatalog",
-          "details": "FAIT : Intégration tactique des PNJ spécialisés Livre XI. 1) Bandit #3 : Tir préparé en interruption (Overwatch 4 PA réservés pour tir réflexe dès rupture de couvert ou canalisation) + Prise d'otage (6 PA, arme sur tempe de cible adjacente à terre ou essoufflée, Immobilisé + Déstabilisé + registre LivreXIPNJState). 2) Illumo : Combustion spontanée sans jet projectile (4 PA, portée 18m / 9 hex, 5 bruts absorbés par bouclier puis chair + statut EnFeu 2 tours) + Foulée de cendres (2 PA, téléportation 6 cases via TeleportTo, aveuglement StatusEffect.Aveugle des ennemis adjacents au départ). 3) Drones & Molosses : Morsure hydraulique du molosse (contact, Immobilisé + 2 dégâts auto/tour résolus en début de tour personnel) + Flash aveuglant (2 PA, rayon 3 hex, statut Aveugle) + Balise d'appel réseau (3 PA, coordination télémétrique +1 PA escouade + alerte patrouille). Intégration complète BestiaryCatalog (spécialisations, registre d'état, 4 archétypes par défaut garantis) et TacticalAIController (IA militaire opérationnelle)."
+          "details": "FAIT : Intégration tactique des PNJ spécialisés Livre XII. 1) Bandit #3 : Tir préparé en interruption (Overwatch 4 PA réservés pour tir réflexe dès rupture de couvert ou canalisation) + Prise d'otage (6 PA, arme sur tempe de cible adjacente à terre ou essoufflée, Immobilisé + Déstabilisé + registre LivreXIPNJState). 2) Illumo : Combustion spontanée sans jet projectile (4 PA, portée 18m / 9 hex, 5 bruts absorbés par bouclier puis chair + statut EnFeu 2 tours) + Foulée de cendres (2 PA, téléportation 6 cases via TeleportTo, aveuglement StatusEffect.Aveugle des ennemis adjacents au départ). 3) Drones & Molosses : Morsure hydraulique du molosse (contact, Immobilisé + 2 dégâts auto/tour résolus en début de tour personnel) + Flash aveuglant (2 PA, rayon 3 hex, statut Aveugle) + Balise d'appel réseau (3 PA, coordination télémétrique +1 PA escouade + alerte patrouille). Intégration complète BestiaryCatalog (spécialisations, registre d'état, 4 archétypes par défaut garantis) et TacticalAIController (IA militaire opérationnelle)."
         },
         {
           "details": "FAIT (2026-10-06, TacticalAIController) : audit exhaustif de l'IA contre toutes les actions du menu joueur (CombatActionRegistry + CombatTechniqueRegistry + DuoTechRegistry). 10 bogues corrigés : RD-IA01 tour vide face au full-furtif → Observation active ; RD-IA02 posture SupportAndHeal sans mouvement → ralliement du blessé + guet après repli ; RD-IA03 réserve défensive écrasée à 1 (réglage 0-2 ignoré) ; RD-IA04 distances centre-à-centre fausses pour Titans (CanKillTargetThisTurn, recalcs TEEP/dégagement) ; RD-IA05 lutte sans règle de gabarit ; RD-IA06 sorts à l'aveugle (sans CdV, sans taxe focus, bloqués si arme à distance) ; RD-IA07 plan d'attaque sans furtivité/canalisation/EC/hauteur/canon entravé/PE config ; RD-IA08 tirs Ballistique fantômes sans arme + CdV insensible à la fumée ; RD-IA09 flanking et scores en Single/single au lieu des empreintes ; RD-IA10 pathing mêlée/tir dans le corps des Titans. Vérifié : fichier équilibré (lexeur C# : 0), 17 nouvelles méthodes équilibrées, diff +982/-62.",
@@ -1277,7 +1277,7 @@
           "id": "RD-205",
           "title": "Stabilisation Agonisant + convalescence + rations (Livre VI 25)",
           "epic": "Etats/DoT",
-          "status": "todo",
+          "status": "done",
           "priority": "medium",
           "order": 80,
           "scene": "",
@@ -1286,7 +1286,7 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "CharacterStats.Care + CombatActionRegistry.Care",
-          "details": "ECART LIVRE (verifie 2026-10-20) : 1) Stabilisation : Premiers Soins 3 PA au chevet, Difficulte 12 vers Agonisant passe Inconscient stable (actuellement aucun jet de stabilisation). 2) Convalescence : 1 nuit sure = CON + Endurance, magie/arcanotech accelere (repos campagne, hors-arene). 3) Rations/hydratation : items Meal Pack/Water Blob existent au catalogue sans effet - brancher bonus convalescence ou malus si negliges. Resurrection -1 EC (10-CON)j deja codee (RD-083), ne pas refaire.",
+          "details": "FAIT (2026-10-20) : 1) Stabilisation (Livre VI §25) : CharacterStats.TryStabilize pur — jet Premiers Soins du soignant au chevet vs Difficulté 12 (CoreRulesConfig StabilizationAPCost=3/StabilizationDifficulty=12, migration 0→défaut Codex) : succès = Agonisant levé + Saignement stoppé (pool purgé) + Inconscient + flag IsStabilized + moral verrouillé (plus de test/reddition en boucle : Inconscient coupe IsAlive) ; échec = Agonisant persiste (réessayable) ; non tentée si pas Agonisant/mort/sans soignant. 2) Convalescence hors-combat : ApplySafeNightRest pur — 1 nuit sûre = CON + rang Endurance, magie/arcanotech ×2 (ConvalescenceMagicMultiplier), réveille le stabilisé (Inconscient + IsStabilized levés), stoppe le Saignement, réarme le moral >28 %, ne lève jamais Souffrant (RD-083 intact). 3) Rations : Meal Pack / Water Blob (+ combo) reconnus par nom (IsMeal/WaterRationName, HasMeal/WaterRation inventaire lu sans consommation) — repu (repas+eau) +2, négligé (ni l'un ni l'autre) -3 plancher 0, partiel = base ; simple et réversible, aucun flag permanent. Branchés : CombatActionRegistry.Care (action 🩹 Stabilisation Agonisant au contact, allié uniquement, 3 PA + jet live + log/snapshot chrono), TacticalAIController.Support TryExecuteMedicalSupport (stabilise en priorité sur la suture, doctrines non-agressives), breakdown 'Stabilisé (Inconscient stable)'. Nouveau partial CharacterStats.Stabilization.cs (276 l.) + structs Stabilization/ConvalescenceResult ; fichiers <800 l. (max 566). Preuve : batchmode EditMode StabilizationConvalescenceTests 14/14 + SouffrantMajorCareTests 13/13 + MoraleCheatsTests 10/10 + DotCareCheatsTests 5/5 + suite complète 765/765 verts, exit 0, 0 erreur CS. Hygiène : ProjectSettings.asset restauré (define SENTIS réécrit par le headless), 0 artefact. Reste : contrôle visuel en jeu par l'utilisateur (stabiliser un Agonisant au contact, nuit de convalescence côté campagne).",
           "updated": "2026-10-20"
         },
         {
@@ -1528,7 +1528,7 @@
           "updated": "2026-10-18"
         },
         {
-          "details": "Terrain Munitions (Livre VII) : chargeurs RD-033 (jam sur critique adverse, désenrayer 1 PA), Deglazer +1ec RD-074, swap/ramassage/lancer RD-076 (1/1/2 PA, désarmement fait tomber), blindages/champs RD-078 (ablatif 10-50, malus +1/+2 PA central), outils RD-079 (cellules, kit entretien, masque, radio, balise). Protocole : vider un chargeur, forcer jam, swap, lancer, encaisser sous bouclier. Attendu : compteurs HUD/inventaire justes, refus sans PA. Sortie : écarts -> fix.",
+          "details": "Terrain Munitions (Livre VIII) : chargeurs RD-033 (jam sur critique adverse, désenrayer 1 PA), Deglazer +1ec RD-074, swap/ramassage/lancer RD-076 (1/1/2 PA, désarmement fait tomber), blindages/champs RD-078 (ablatif 10-50, malus +1/+2 PA central), outils RD-079 (cellules, kit entretien, masque, radio, balise). Protocole : vider un chargeur, forcer jam, swap, lancer, encaisser sous bouclier. Attendu : compteurs HUD/inventaire justes, refus sans PA. Sortie : écarts -> fix.",
           "epic": "Munitions",
           "id": "RD-172",
           "order": 1,
@@ -1672,7 +1672,7 @@
           "updated": "2026-10-18"
         },
         {
-          "details": "Terrain Véhicules & Titans (Livre V §22.3, XI §45-46) : véhicules RD-051 (embarquement 2 PA, écrasement, sous-systèmes, +100 lourde), Titans RD-052 (Rosette7/Colossus19, saisie/broyage, piétinement 3 PA, souffle 3 PA), boss RD-087 (bossAI JSON, réactions, IA TitanBoss). Protocole : embarquer/écraser, piétiner zone 7 hex, affronter chaque boss (touche B). Attendu : épave = débarquement forcé, 0 limbo 0 PV, réactions boss visibles. Sortie : écarts -> fix.",
+          "details": "Terrain Véhicules & Titans (Livre V §22.3, XII §49-50) : véhicules RD-051 (embarquement 2 PA, écrasement, sous-systèmes, +100 lourde), Titans RD-052 (Rosette7/Colossus19, saisie/broyage, piétinement 3 PA, souffle 3 PA), boss RD-087 (bossAI JSON, réactions, IA TitanBoss). Protocole : embarquer/écraser, piétiner zone 7 hex, affronter chaque boss (touche B). Attendu : épave = débarquement forcé, 0 limbo 0 PV, réactions boss visibles. Sortie : écarts -> fix.",
           "epic": "Véhicules/Titans",
           "id": "RD-181",
           "order": 10,
@@ -1688,7 +1688,7 @@
           "updated": "2026-10-18"
         },
         {
-          "details": "Terrain Nuit & PNJ (Livre XI §44/47) : nuit RD-053 (vue 4 cases, malus -1 sans lampe/thermique, lampe brise stealth, bruit attire patrouille) + PNJ RD-088 (otage bandit, combustion/foulée Illumo, morsure/flash/balise drones). Protocole : éteindre (nuit), allumer lampe, tirer (bruit), jouer otage + combustion. Attendu : portées bridées, convergence patrouille, statuts posés. Sortie : écarts -> fix.",
+          "details": "Terrain Nuit & PNJ (Livre XII §48/51) : nuit RD-053 (vue 4 cases, malus -1 sans lampe/thermique, lampe brise stealth, bruit attire patrouille) + PNJ RD-088 (otage bandit, combustion/foulée Illumo, morsure/flash/balise drones). Protocole : éteindre (nuit), allumer lampe, tirer (bruit), jouer otage + combustion. Attendu : portées bridées, convergence patrouille, statuts posés. Sortie : écarts -> fix.",
           "epic": "Lumière/Env",
           "id": "RD-182",
           "order": 11,
@@ -1923,8 +1923,8 @@
           "primitive": "",
           "pos": null,
           "scale": null,
-          "suggestedAsset": "livre_10.html + livre_9.html + livre_11.html + data/atlas_mondes.json + atlas_3d.html + hybris_history.html",
-          "details": "FAIT (2026-10-20) : zones d'étendue moyenne égale (~23 Gly de côté, exception Zone 02 dilatée), 3 galaxies référencées sur des milliards anonymes, Aurion-Hybris ~1 Gly (Hybris bord Z01), Empire fondé il y a 22 Ma sur vestiges Première Civilisation disparue (saturation Aurion ~-10 Ma, expansion tentaculaire, mondes intouchés dont Terre primitive non impliquée — retcon Origine Déportés), Disciples 2 générations (Terre = prototype divin ~-1 Ga balistique plasma ~c / Air-Feu-Eau = série ver + 5e Force, Feu & Eau dormants infiltrés, fiches Livre XI §46), Livre IX §34.3 trous de ver spatiaux, timeline +4 événements, embedded atlas resynchronisé."
+          "suggestedAsset": "livre_11.html + livre_10.html + livre_12.html + data/atlas_mondes.json + atlas_3d.html + hybris_history.html",
+          "details": "FAIT (2026-10-20) : zones d'étendue moyenne égale (~23 Gly de côté, exception Zone 02 dilatée), 3 galaxies référencées sur des milliards anonymes, Aurion-Hybris ~1 Gly (Hybris bord Z01), Empire fondé il y a 22 Ma sur vestiges Première Civilisation disparue (saturation Aurion ~-10 Ma, expansion tentaculaire, mondes intouchés dont Terre primitive non impliquée — retcon Origine Déportés), Disciples 2 générations (Terre = prototype divin ~-1 Ga balistique plasma ~c / Air-Feu-Eau = série ver + 5e Force, Feu & Eau dormants infiltrés, fiches Livre XII §50), Livre X §38.3 trous de ver spatiaux, timeline +4 événements, embedded atlas resynchronisé."
         }
       ]
     },
@@ -2590,7 +2590,7 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "Bestiary.json",
-          "details": "FAIT : Bestiaire 22 entrées Livre XI sérialisé (2 Sbires, 1 Civil, 1 Garde, 3 Bandits, 1 Élite, 1 Faune, 2 Automates, 3 Boss Titans, 8 Builds PNJ). Double-source JSON BestiaryCatalog (override persistentDataPath > Resources/Data/Bestiary.json). Fenêtre runtime BestiaryDevWindow (raccourcis B et F6) avec édition live (attributs, compétences, spés, équipement), validation des budgets Livre I, sauvegarde override disque et export éditeur. Spawn live direct (allié/ennemi) et instanciation de carte CombatDevArena avec validation d'empreinte multi-hex Rosette7 et anti-collision."
+          "details": "FAIT : Bestiaire 22 entrées Livre XII sérialisé (2 Sbires, 1 Civil, 1 Garde, 3 Bandits, 1 Élite, 1 Faune, 2 Automates, 3 Boss Titans, 8 Builds PNJ). Double-source JSON BestiaryCatalog (override persistentDataPath > Resources/Data/Bestiary.json). Fenêtre runtime BestiaryDevWindow (raccourcis B et F6) avec édition live (attributs, compétences, spés, équipement), validation des budgets Livre I, sauvegarde override disque et export éditeur. Spawn live direct (allié/ennemi) et instanciation de carte CombatDevArena avec validation d'empreinte multi-hex Rosette7 et anti-collision."
         },
         {
           "id": "RD-092",
@@ -2702,7 +2702,7 @@
           "id": "RD-207",
           "title": "Fondation Animation Rigging + Randomizer miniature",
           "epic": "Intégration",
-          "status": "todo",
+          "status": "done",
           "priority": "medium",
           "order": 13,
           "scene": "",
@@ -2711,8 +2711,8 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "com.unity.animation.rigging + TacticalUnitVisual",
-          "updated": "2026-10-20",
-          "details": "Installer package com.unity.animation.rigging, ajouter RigBuilder + Rig Layer sur prefab joueur (sans casser PlayerAnimator/BlendTree RD-025). Créer Tactics/Visual/MiniatureRandomizer.cs (<200 l.) : au spawn, Animator.speed = Random.Range(0.85, 1.15) + jitter poids constraints par instance (seed instance). Figer choix : figurines vivantes (défaut) vs plastique qui slide/hop/tilt. Preuve : batchmode 0 erreur CS, 2 clones même asset = allure/posture distinctes, fichiers <800 l."
+          "updated": "2026-10-21",
+          "details": "FAIT (2026-10-21) : package com.unity.animation.rigging ajoute au manifest (resolu builtin 6.6.0, import Runtime/Editor OK) + Tactics/Visual/MiniatureRandomizer.cs (165 l. <200 : Animator.speed = 0.85-1.15 seed par instance, jitter poids contraintes via reflexion no-op sans package, micro-pose modele Living yaw / Plastic tilt+hop, choix fige Living defaut, racine unite intacte) + hook 1 ligne dans TacticalUnitVisual.SetupAnimator (signature ConfigureAnimatorClips + GameObject, PlayerAnimator/BlendTree intouches). Preuve : batchmode EditMode MiniatureRandomizerTests 5/5 puis suite complete 770/770 verts, exit 0, 0 erreur CS (ProjectSettings.asset restaure, 0 artefact). Reste : controle visuel en jeu par l'utilisateur (2 clones meme asset = allure/posture distinctes). AMELIORATION (2026-10-21, demande user) : vrai constraint Rigging — Tactics/Visual/MiniatureLookRig.cs (116 l.) : MultiAimConstraint sur HumanBodyBones.Head vers LookTarget par instance (lateral ±1.5m, hauteur ±0.3m, poids 0.30+jitter 0.15), maintainOffset, axe Z ; regard coupé au K.O. et restauré au réveil (2 lignes hook TacticalUnitVisual) ; sans tête humanoïde = désactivé gracieux. Trouvé en test : Awake non rejoué sur AddComponent en EditMode → pattern EnsureBuilt/EnsureApplied explicite idempotent (runtime inchangé) + assertion seed exact. Preuve : LookRig 4/4 + Randomizer 6/6 + suite complète 775/775 verts, exit 0, 0 erreur CS. AMELIORATION 2 (2026-10-21) : regard qui suit l'ennemi — Update 0.4-0.7s seedé : LookTarget repositionné (monde) sur l'ennemi vivant visible le plus proche (camp opposé, furtifs ignorés via IsStealthed, repli point frontal sinon), buffer réutilisé sans alloc, coupé si mort ; + échelle uniforme 0.97-1.03 par instance (modèle seul). Preuve : LookRig 6/6 + Randomizer 7/7 + suite 778/778 verts, exit 0. VERIF 2 (2026-10-21) : 3 bogues latents corrigés — (1) ré-application empilante (yaw/échelle multiplicatifs, jitter contraintes qui dérivait, enfants Rig dupliqués sur rechargement) → pose de base capturée/sérialisée + restore, jitter une fois, réutilisation par nom, Apply public idempotent ; (2) NRE si parent LookTarget null → garde ; (3) extraction MiniatureSeeds.cs (pur) : fichiers 158/189/79 l. Preuve : LookRig 7/7 + Randomizer 8/8 + suite 780/780 verts, exit 0. VERIF 3 (2026-10-21, demande user 'quoi encore ?') : 1 vrai bogue prod trouvé — RigBuilder exige l'Animator sur le MÊME objet (GetComponent, vérifié source package) : avec Animator imbriqué (cas prefabs), le rig était inerte en jeu. Fix : builder sur animator.gameObject (LookRig + EnsureRigSetup(host)). Couverture nominale ajoutée : avatar humanoïde minimal via AvatarBuilder en test (layers, constraint, poids, SetAlive, non-duplication, builder-sur-Animator imbriqué). Preuve : LookRig 9/9 + suite 782/782 verts, exit 0."
         },
         {
           "id": "RD-208",
@@ -3201,7 +3201,7 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "atlas_mondes.html + data/atlas_mondes.json",
-          "details": "FAIT (2026-10-19) : 1) Complétion de data/atlas_mondes.json (v4, 111 entrées dans mondes[], 5 entités supra-planétaires, 30 relations, 47 marqueurs + 18 routes Hybris) à partir des Livres I/X/XI, atlas_3d.html, HybrisWorldMapRegistry.cs, HybrisWorldMapData.cs, Bestiary.json, hybris_history.html et des overviews de lore : 36 Zones Éliennes, 3 Galaxies (Principale, Aurion, Sans Étoiles), Mars/Lune/Stations Jupiter (Sol), Anneau débris Hybris, Ceinture Janus, Satellites Cléia, Bassins miniers Karkjiue, Starlight Voyager, Windfighters d'Haliriel, 7 régions, 25 pôles/royaumes/cités/lacs/ports (Hybris, Vardis, Cléia, Nefris, Karkjiue, Avaleur) et 29 espèces/tribus/boss/automates/entités avec affinage complet des 20 fiches espèces existantes. 2) Amélioration de atlas_mondes.html : bandeau KPI dynamique cliquable, filtres rapides par grande famille, filtre par monde hôte et statut, panneau inspecteur détaillé avec navigation parent/enfants, anti-collision des bulles Tech×Magie, et 4 nouvelles vues (Arbre Cosmique & Systèmes, Carte 2D interactive d'Hybris 47 marqueurs + Lieux, Matrice des Espèces & Bestiaire, Spectre Gravité & Atmosphères).",
+          "details": "FAIT (2026-10-19) : 1) Complétion de data/atlas_mondes.json (v4, 111 entrées dans mondes[], 5 entités supra-planétaires, 30 relations, 47 marqueurs + 18 routes Hybris) à partir des Livres I/XI/XII, atlas_3d.html, HybrisWorldMapRegistry.cs, HybrisWorldMapData.cs, Bestiary.json, hybris_history.html et des overviews de lore : 36 Zones Éliennes, 3 Galaxies (Principale, Aurion, Sans Étoiles), Mars/Lune/Stations Jupiter (Sol), Anneau débris Hybris, Ceinture Janus, Satellites Cléia, Bassins miniers Karkjiue, Starlight Voyager, Windfighters d'Haliriel, 7 régions, 25 pôles/royaumes/cités/lacs/ports (Hybris, Vardis, Cléia, Nefris, Karkjiue, Avaleur) et 29 espèces/tribus/boss/automates/entités avec affinage complet des 20 fiches espèces existantes. 2) Amélioration de atlas_mondes.html : bandeau KPI dynamique cliquable, filtres rapides par grande famille, filtre par monde hôte et statut, panneau inspecteur détaillé avec navigation parent/enfants, anti-collision des bulles Tech×Magie, et 4 nouvelles vues (Arbre Cosmique & Systèmes, Carte 2D interactive d'Hybris 47 marqueurs + Lieux, Matrice des Espèces & Bestiaire, Spectre Gravité & Atmosphères).",
           "updated": "2026-10-19"
         }
       ]

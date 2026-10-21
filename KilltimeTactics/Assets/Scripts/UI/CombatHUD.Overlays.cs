@@ -239,7 +239,7 @@ namespace Killtime.UI
             string subtitle = !string.IsNullOrEmpty(_turnManager?.CombatEndReason)
                 ? _turnManager.CombatEndReason
                 : (isVictory
-                    ? "Menace neutralisée. Télémétrie causale synchronisée avec les 11 Livres du Codex."
+                    ? "Menace neutralisée. Télémétrie causale synchronisée avec les 12 Livres du Codex."
                     : "L'escouade a succombé au combat. Données vitales archivées.");
 
             GUI.color = accent;

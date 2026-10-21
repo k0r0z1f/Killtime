@@ -3,7 +3,7 @@ using System.Collections.Generic;
 namespace Killtime.Core.Character
 {
     /// <summary>
-    /// États tactiques des Boss Titans (Livre XI §45-46 — RD-087).
+    /// États tactiques des Boss Titans (Livre XII §49-50 — RD-087).
     /// Pur C# testable (aucune dépendance Unity) : compteurs par combat,
     /// réinitialisés par <see cref="LivreXIPNJState.ClearCombatState"/>.
     /// Clés = références CharacterStats (comme LivreXIPNJState, RD-088).

@@ -9,13 +9,13 @@ using Killtime.Tactics.Grid;
 namespace Killtime.Core.Character
 {
     /// <summary>
-    /// Bestiaire Killtime Tactics — source unique JSON éditable (Livre XI).
+    /// Bestiaire Killtime Tactics — source unique JSON éditable (Livre XII).
     /// Fichier : Assets/Resources/Data/Bestiary.json ("Data/Bestiary" en Resources).
     /// Éditable à la main (UTF-8) puis rechargé en jeu via la fenêtre Bestiaire (touche B).
     /// Au runtime, un override JSON dans persistentDataPath/Bestiary.json (sauvegardé
     /// depuis la fenêtre) prend le pas sur le Resources embarqué.
     /// Format volontairement lisible : espèces/profils/skills en NOMS (pas d'ids
-    /// numériques), équipements en NOMS du catalogue d'armurerie (Livre VII).
+    /// numériques), équipements en NOMS du catalogue d'armurerie (Livre VIII).
     /// </summary>
 
     [Serializable]
@@ -43,7 +43,7 @@ namespace Killtime.Core.Character
     }
 
     /// <summary>
-    /// Réglages IA d'un Boss Titan (Livre XI §45-46 — RD-087 suite).
+    /// Réglages IA d'un Boss Titan (Livre XII §49-50 — RD-087 suite).
     /// Lus depuis Bestiary.json ("bossAI") ; null sur l'entrée = défauts moteur
     /// (consts <see cref="Killtime.Core.Combat.TitanBossMechanics"/>).
     /// Que des types simples (JsonUtility : pas de Dictionary).
@@ -126,7 +126,7 @@ namespace Killtime.Core.Character
     }
 
     /// <summary>
-    /// Spécialisations des PNJ & Automates militaires (Livre XI §44 & §47 - RD-088).
+    /// Spécialisations des PNJ & Automates militaires (Livre XII §48 & §51 - RD-088).
     /// </summary>
     public static class LivreXISpecializations
     {
@@ -140,7 +140,7 @@ namespace Killtime.Core.Character
     }
 
     /// <summary>
-    /// Registre d'états tactiques pour les manœuvres avancées PNJ & Automates (Livre XI - RD-088).
+    /// Registre d'états tactiques pour les manœuvres avancées PNJ & Automates (Livre XII - RD-088).
     /// </summary>
     public static class LivreXIPNJState
     {
@@ -623,7 +623,7 @@ namespace Killtime.Core.Character
             int sum8 = a.FOR + a.AGI + a.CON + a.RAP + a.INT + a.ERU + a.CHA + a.INS;
             var profile = ParseProfile(e.profile);
 
-            // Boss : budget libre (Livre XI) — on vérifie juste les bornes.
+            // Boss : budget libre (Livre XII) — on vérifie juste les bornes.
             if (profile == CharacterProfileType.PnjBoss)
             {
                 message = $"Boss (budget libre) : 8 attrs = {sum8}.";

@@ -295,7 +295,7 @@ namespace Killtime.UI
             DrawCatalogFilters(showAffordableToggle: false);
             var list = GetFilteredCatalog();
 
-            GUILayout.Label($"<b>Catalogue Livre VII : {list.Count} article(s)</b> <color=gray>(dotation directe, sans paiement)</color>");
+            GUILayout.Label($"<b>Catalogue Livre VIII : {list.Count} article(s)</b> <color=gray>(dotation directe, sans paiement)</color>");
             GUILayout.BeginHorizontal();
             GUILayout.Label($"<color=gray>Source : {ArmoryCatalog.LoadedFrom} — éditable via 🛠️ Armurerie (F12)</color>", RichLabel());
             if (GUILayout.Button("Recharger JSON", GUILayout.Width(110)))
@@ -454,7 +454,7 @@ namespace Killtime.UI
             _searchFilter = GUILayout.TextField(_searchFilter ?? "", GUILayout.ExpandWidth(true));
             GUILayout.EndHorizontal();
 
-            // 1. Filtrage par Ère Technologique (Livre VII §26-32)
+            // 1. Filtrage par Ère Technologique (Livre VIII §30-32)
             GUILayout.Label("<b>Ère Technologique :</b>");
             string[] eras = ArmoryCatalog.Eras;
             string[] eraOptions = new string[eras.Length + 1];

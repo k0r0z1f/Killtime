@@ -59,10 +59,10 @@
   - *Fournaise à Retardement* : Délimitation triangulaire autour d'un ennemi isolé pour implosion ciblée ($5$ bruts, Étourdi, $-2$ PA).
 - **Limite Causale** : $1$ technique Duo-Tech par combattant par round.
 
-### 5. Armurerie Complète, Balistique & Grenades (Livre VII)
+### 5. Armurerie Complète, Balistique & Grenades (Livre VIII)
 - **Notation DLPH Universelle** : Dégâts, Livres (poids), Portée (cases), Mains ($1$H / $2$H).
 - **Catalogue Intégral** : Épées métalliques, marteaux, haches, piques, arcs, épées laser, fusils laser (prefabs réels), armures légères/lourdes, générateurs de champ de force, trousses médicales et rations.
-- **Système Balistique de Grenades (Livre VII §27.3)** :
+- **Système Balistique de Grenades (Livre VIII §31.3)** :
   - Lancer main ($8$ cases, $2$ PA) vs Lance-grenades dédié ($20$ cases, $3$ PA).
   - Jet de précision Ballistique (SD $10$) avec dispersion hexagonale d'écart en cas d'échec.
   - Atténuation radiale du souffle ($-25\%$ par case, plancher à $25\%$) + éclats de shrapnels secondaires.
@@ -73,7 +73,7 @@
 - **Portée Balistique Magique** :
   $$\text{Portée de Base} = \text{MAG} + \text{Niveau d'Entraînement}$$
 
-### 7. Campagne Narrative, Éditeur Nodal & Overworld (Livres X & XI)
+### 7. Campagne Narrative, Éditeur Nodal & Overworld (Livres XI & XII)
 - **Éditeur de Graphe Nodal (Touche `F8`)** : Conception visuelle de scènes scénarisées en JSON pur, gestion des répliques, choix sous contrainte, défis de compétences opposés et conséquences conditionnelles.
 - **Lecteur de Scènes de Campagne (Touche `F7`)** : Exécution fluide avec transitions cinématiques plein écran, letterboxing et cartes de titre.
 - **Réseau de Secteurs d'Hybris (Touche `F12`)** : Carte planétaire hexagonale normée, calcul d'itinéraires Dijkstra en miles et jours de voyage, brouillard d'overworld et verrous d'exploration.
@@ -142,10 +142,10 @@ KilltimeTactics/
 │ │ ├── LucasCharacter.cs # Voie du Vide Calculant & Architecture Neurale
 │ │ ├── MinaCharacter.cs # Voie de l'Atavisme Cinétique & Éveil Primordial
 │ │ └── ThomasCharacter.cs# Voie de l'Ancre Inébranlable & Commandement
-│ ├── Chrono/ # Snapshots causals, calendrier d'Hybris, Fleuve du Temps (Livre IX)
+│ ├── Chrono/ # Snapshots causals, calendrier d'Hybris, Fleuve du Temps (Livre X)
 │ ├── Combat/ # Résolution duel aveugle, ciblage anatomique, Duo-Tech, grenades
 │ ├── Dice/ # Lanceur probabiliste, échelle de dés (d2 à 2d12+10)
-│ ├── Inventory/ # Catalogue d'armurerie Livre VII, presets et profils de grip
+│ ├── Inventory/ # Catalogue d'armurerie Livre VIII, presets et profils de grip
 │ ├── Rules/ # Configuration persistante des constantes du Codex
 │ └── World/ # Registre géographique officiel des secteurs d'Hybris
 ├── Tactics/ # Couche tactique Unity 3D

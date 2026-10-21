@@ -123,7 +123,7 @@ namespace Killtime.UI
         private void DrawArmorySection()
         {
             GUILayout.Space(8);
-            GUILayout.Label("<b>2. Armurerie complète (Livre VII) & Marché :</b>");
+            GUILayout.Label("<b>2. Armurerie complète (Livre VIII) & Marché :</b>");
             GUILayout.BeginVertical(GUI.skin.box);
             GUILayout.BeginHorizontal();
             GUILayout.Label($"Catalogue : <b>{Core.Inventory.ArmoryCatalog.All.Count} articles</b> • Solde : <b>{_currentSheet.CreditsCE} CE</b>", GUILayout.ExpandWidth(true));

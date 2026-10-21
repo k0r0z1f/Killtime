@@ -79,7 +79,7 @@ namespace Killtime.UI
             DrawHeroicSheetRow("Vance", VanceCharacter.DisplayTag, () => VanceCharacter.BuildHeroicSheet());
 
             GUILayout.Space(12);
-            GUILayout.Label("<b>Boss Titans du Livre XI (Gabarit Rosette7 / 7 Hexagones) :</b>");
+            GUILayout.Label("<b>Boss Titans du Livre XII (Gabarit Rosette7 / 7 Hexagones) :</b>");
             DrawTitanBossRow("La Bête d'Hybris", "Boss Primal • 4m (13 PA / Con 6)", () => TitanBossCatalog.BuildTheBeastSheet());
             DrawTitanBossRow("Disciple de Terre", "Missile Lithosphérique • 3m (Armure 6 / 45 Létal)", () => TitanBossCatalog.BuildDiscipleDeTerreSheet());
             DrawTitanBossRow("Le Minulican", "Loup Quantique du Néant (14 PA / Magie 9)", () => TitanBossCatalog.BuildMinulicanSheet());
