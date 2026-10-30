@@ -1523,6 +1523,76 @@ table.codex-table tr:hover td, table.data-table tr:hover td {
     align-items: end;
 }
 
+/* Menu déroulant personnalisé à options décrites : le bouton montre le choix,
+   le menu ouvert montre chaque option avec son effet (tooltip intégré). */
+.cs-dd {
+    position: relative;
+    flex: 1;
+    min-width: 0;
+}
+.cs-dd-btn {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    background: var(--bg-surface-elevated);
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    padding: 9px 12px;
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 0.86rem;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+.cs-dd-btn:hover, .cs-dd-btn:focus-visible {
+    border-color: var(--arcane-cyan);
+    box-shadow: 0 0 8px var(--arcane-cyan-glow);
+    outline: none;
+}
+.cs-dd-menu {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    width: 100%;
+    max-height: 280px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    z-index: 60;
+    background: var(--bg-surface-elevated);
+    border: 1px solid var(--arcane-cyan);
+    border-radius: 8px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6);
+    overflow-x: hidden;
+}
+.cs-dd-item {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    padding: 7px 10px;
+    cursor: pointer;
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    line-height: 1.35;
+    border-bottom: 1px solid var(--border-subtle);
+    overflow-wrap: break-word;
+}
+.cs-dd-item:last-child {
+    border-bottom: none;
+}
+.cs-dd-item strong {
+    color: var(--text-primary);
+    font-size: 0.82rem;
+}
+.cs-dd-item:hover {
+    background: rgba(0, 0, 0, 0.35);
+}
+.cs-dd-item.selected {
+    background: rgba(0, 0, 0, 0.35);
+    box-shadow: inset 2px 0 0 var(--arcane-cyan);
+}
+
 .tool-form-group {
     display: flex;
     flex-direction: column;
@@ -1638,18 +1708,66 @@ table.codex-table tr:hover td, table.data-table tr:hover td {
     outline: none;
 }
 
-/* Dé d'attribut intégré sous chaque caractéristique (Livre II §6.1) */
-.attr-die-wrap {
-    margin-top: 6px;
+/* Dé d'attribut intégré à gauche de chaque caractéristique (Livre II §6.1) */
+/* Effet tableau : chaque caractéristique = cellule, dé + sélecteur liés. */
+.tool-form-group:has(.attr-row) {
+    background: rgba(0, 0, 0, 0.22);
+    border: 1px solid var(--border-subtle);
+    border-radius: 10px;
+    padding: 8px;
+    margin-bottom: 0;
+}
+.tool-form-group:has(.attr-row) .tool-label {
+    color: var(--text-primary);
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+.attr-row {
     display: flex;
+    align-items: stretch;
+    gap: 0;
+    background: var(--bg-surface-elevated);
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    overflow: hidden;
+}
+.attr-die-wrap {
+    margin-top: 0;
+    display: flex;
+    align-items: center;
+    flex: 0 0 auto;
+    min-width: 62px;
     justify-content: center;
+    padding: 0 8px;
+    background: rgba(56, 189, 248, 0.08);
+    border-right: 1px solid var(--border-subtle);
+}
+.attr-row .attr-die {
+    min-width: 0;
+    text-align: center;
+    justify-content: center;
+    background: transparent;
+    border-color: transparent;
+    padding: 4px 2px;
+    white-space: nowrap;
+}
+.attr-die-wrap:has(.amber) {
+    background: rgba(245, 158, 11, 0.08);
 }
 
-/* Steppers de caractéristiques : pas besoin de toute la largeur de colonne. */
+/* Steppers de caractéristiques : le dé occupe la gauche, le stepper le reste. */
 .stepper-box:has(.stepper-val[id^="attr"]) {
-    width: 100%;
-    max-width: 170px;
-    margin: 0 auto;
+    width: auto;
+    flex: 1;
+    min-width: 0;
+    max-width: none;
+    margin: 0;
+}
+.attr-row .stepper-box:has(.stepper-val[id^="attr"]) {
+    flex: 1;
+    border: none;
+    border-radius: 0;
+    background: transparent;
 }
 
 /* Vitals Live Dashboard */

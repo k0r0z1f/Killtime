@@ -35,7 +35,7 @@
         "id": "pj_6b9fe396",
         "label": "Roger de Vardis",
         "customLabel": false,
-        "updatedAt": 1793352693685,
+        "updatedAt": 1793353597862,
         "data": {
           "v": 2,
           "name": "Roger de Vardis",
@@ -69,6 +69,47 @@
             "skMainsNues-2",
             "skEsquive-1"
           ]
+        }
+      },
+      {
+        "id": "pj_faf0ddf0",
+        "label": "Jambon",
+        "customLabel": true,
+        "updatedAt": 1793355959781,
+        "data": {
+          "v": 2,
+          "name": "Jambon",
+          "age": "212",
+          "sexe": "M",
+          "monde": "Hybris",
+          "race": "derek",
+          "gift": 1,
+          "profile": "hero",
+          "pillarMajor": "for",
+          "pillarMinor": "con",
+          "attributes": {
+            "for": "5",
+            "agi": "3",
+            "con": "4",
+            "rap": "3",
+            "int": "2",
+            "eru": "3",
+            "cha": "1",
+            "ins": "3",
+            "mag": "0"
+          },
+          "vision": "3",
+          "ouie": "6",
+          "enfance": "2",
+          "metier": "7",
+          "evenement": "11",
+          "ancrage": "",
+          "skills": [
+            "skMainsNues-1",
+            "skMainsNues-2",
+            "skTir-1"
+          ],
+          "_rev": 49
         }
       }
     ],

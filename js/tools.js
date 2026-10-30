@@ -114,24 +114,37 @@ function initCharacterSheet() {
         return DIE_LADDER[Math.min(DIE_LADDER.length - 1, i + Math.max(0, steps))];
     }
 
-    // Dés intégrés à chaque caractéristique (Livre II §6.1) : une pastille
-    // sous chaque stepper, mise à jour en temps réel avec la valeur.
+    // Dés intégrés à chaque caractéristique (Livre II §6.1) : pastille
+    // à gauche du stepper, mise à jour en temps réel avec la valeur.
     function ensureAttrDiceBadges() {
         for (const [k, el] of Object.entries(attrInputs)) {
             if (!el) continue;
             const group = el.closest('.tool-form-group');
-            if (!group || group.querySelector('[data-attr-die="' + k + '"]')) continue;
-            const wrap = document.createElement('div');
-            wrap.className = 'attr-die-wrap';
-            const badge = document.createElement('span');
-            badge.className = 'pill-badge ' + (k === 'mag' ? 'amber' : 'cyan') + ' attr-die';
-            badge.setAttribute('data-attr-die', k);
-            badge.title = 'Dé sans entraînement (Livre II §6.1)';
-            badge.textContent = '—';
-            wrap.appendChild(badge);
+            if (!group) continue;
+            let badge = group.querySelector('[data-attr-die="' + k + '"]');
+            let wrap = badge ? badge.closest('.attr-die-wrap') : null;
+            if (!badge) {
+                wrap = document.createElement('div');
+                wrap.className = 'attr-die-wrap';
+                badge = document.createElement('span');
+                badge.className = 'pill-badge ' + (k === 'mag' ? 'amber' : 'cyan') + ' attr-die';
+                badge.setAttribute('data-attr-die', k);
+                badge.title = 'Dé sans entraînement (Livre II §6.1)';
+                badge.textContent = '—';
+                wrap.appendChild(badge);
+            }
+            if (badge.closest('.attr-row')) continue;
             const stepper = group.querySelector('.stepper-box');
-            if (stepper && stepper.parentElement === group) stepper.after(wrap);
-            else group.appendChild(wrap);
+            if (!stepper) { group.appendChild(wrap); continue; }
+            let row = group.querySelector('.attr-row');
+            if (!row) {
+                row = document.createElement('div');
+                row.className = 'attr-row';
+                stepper.before(row);
+            }
+            if (stepper.parentElement !== row) row.appendChild(stepper);
+            if (wrap.parentElement !== row) row.appendChild(wrap);
+            row.insertBefore(wrap, stepper);
         }
     }
     function refreshAttrDiceBadges(eff) {
@@ -139,9 +152,9 @@ function initCharacterSheet() {
             const k = el.getAttribute('data-attr-die');
             if (!k || eff[k] === undefined) return;
             if (k === 'mag') {
-                el.textContent = eff.mag >= 5 ? 'Éveillé' : (eff.mag > 0 ? 'Éveillé partiel' : 'Dormante');
+                el.textContent = eff.mag >= 5 ? 'Éveillé' : (eff.mag > 0 ? 'Éveil partiel' : 'Dormante');
             } else {
-                el.textContent = '→ ' + dieForValue(eff[k]);
+                el.textContent = dieForValue(eff[k]);
             }
         });
         // Compat : supprime l'ancienne rangée de dés séparée si un vieux HTML la contient encore.
@@ -161,25 +174,53 @@ function initCharacterSheet() {
         return levels;
     }
 
-    // Caractéristique de base d'une compétence (pour le dé de départ).
-    function skillBaseAttr(skillName) {
+    // Score de base canon d'une compétence (Livre III §10.1) : moyenne de ses
+    // attributs associés, arrondie ; un seul attribut = sa valeur.
+    // 'vision'/'ouie' = sens 1d6 (Observation, Écoute, Ballistique).
+    function skillBaseScore(attrList, ext) {
+        const nums = attrList.map(k => ext[k]).filter(v => typeof v === 'number' && !isNaN(v));
+        if (!nums.length) return 0;
+        return Math.round(nums.reduce((a, b) => a + b, 0) / nums.length);
+    }
+
+    // Infos canon d'une compétence depuis sa première case (data-attrs).
+    function skillBaseInfo(skillName) {
         const el = document.querySelector('.skill-check[data-skill="' + skillName + '"]');
-        return el ? el.getAttribute('data-attr') : null;
+        if (!el) return { attrs: [], mag: false };
+        const raw = el.getAttribute('data-attrs') || el.getAttribute('data-attr') || '';
+        return {
+            attrs: raw.split(',').map(s => s.trim().toLowerCase()).filter(Boolean),
+            mag: el.hasAttribute('data-mag')
+        };
     }
 
     // Badges de dés par compétence (créateur) : dé de base → dé entraîné.
     function refreshSkillDice(eff) {
+        const ext = { ...eff };
+        ext.vision = parseInt(visionInput.value) || 3;
+        ext.ouie = parseInt(ouieInput.value) || 3;
         const byBase = {};
         document.querySelectorAll('.skill-check').forEach(cb => {
             const base = cb.id.replace(/-\d$/, '');
-            if (!byBase[base]) byBase[base] = { boxes: [], attr: cb.getAttribute('data-attr') };
+            if (!byBase[base]) {
+                const raw = cb.getAttribute('data-attrs') || cb.getAttribute('data-attr') || '';
+                byBase[base] = {
+                    boxes: [],
+                    attrs: raw.split(',').map(s => s.trim().toLowerCase()).filter(Boolean),
+                    mag: cb.hasAttribute('data-mag')
+                };
+            }
             if (cb.checked) byBase[base].boxes.push(cb);
         });
         for (const base in byBase) {
             const el = document.querySelector('.skill-die[data-skillref="' + base + '"]');
             if (!el) continue;
             const g = byBase[base];
-            const baseDie = (g.attr && eff[g.attr] !== undefined) ? dieForValue(eff[g.attr]) : '?';
+            let score = skillBaseScore(g.attrs, ext);
+            // Corps Augmenté (Livre III §11.1) : en offensif, un éveillé retient
+            // le meilleur entre sa MAG et la moyenne FOR/AGI.
+            if (g.mag && ext.mag > 0) score = Math.max(score, ext.mag);
+            const baseDie = dieForValue(score);
             const lvl = g.boxes.length;
             el.textContent = stepDie(baseDie, lvl);
             el.className = 'pill-badge skill-die ' + (lvl > 0 ? 'amber' : 'cyan');
@@ -204,9 +245,120 @@ function initCharacterSheet() {
             const opt = document.createElement('option');
             opt.value = String(i);
             opt.textContent = (i + 1) + '. ' + g;
+            opt.title = RACE_DATA[r].giftNotes[i] || '';
             giftSelect.appendChild(opt);
         });
         giftSelect.value = String(Math.min(Math.max(prev || 0, 0), 4));
+    }
+
+    // Menus déroulants à options décrites : fermé = le choix seul ; ouvert =
+    // chaque option avec son effet (tooltip intégré au choosing). Le <select>
+    // natif reste la source de vérité (caché) pour la sauvegarde et la synchro.
+    const descDropdowns = [];
+    function attachDescDropdown(selectEl, ddId, getItems) {
+        if (!selectEl || document.getElementById(ddId)) return null;
+        selectEl.style.display = 'none';
+        const wrap = document.createElement('div');
+        wrap.id = ddId;
+        wrap.className = 'cs-dd';
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'cs-dd-btn';
+        btn.setAttribute('aria-haspopup', 'listbox');
+        btn.setAttribute('aria-expanded', 'false');
+        const menu = document.createElement('div');
+        menu.className = 'cs-dd-menu';
+        menu.setAttribute('role', 'listbox');
+        menu.hidden = true;
+        wrap.appendChild(btn);
+        wrap.appendChild(menu);
+        selectEl.after(wrap);
+        const api = {
+            key: '',
+            open() { this.key = ''; this.render(); menu.hidden = false; btn.setAttribute('aria-expanded', 'true'); },
+            close() { menu.hidden = true; btn.setAttribute('aria-expanded', 'false'); },
+            render() {
+                const items = getItems();
+                if (!items.length) return;
+                const cur = String(selectEl.value);
+                let sel = items.findIndex(it => String(it.value) === cur);
+                if (sel < 0) sel = 0;
+                btn.innerHTML = '';
+                const label = document.createElement('span');
+                label.textContent = items[sel].label;
+                const caret = document.createElement('span');
+                caret.textContent = '▾';
+                caret.setAttribute('aria-hidden', 'true');
+                btn.appendChild(label);
+                btn.appendChild(caret);
+                btn.title = items[sel].desc || '';
+                const key = cur + ':' + items.length + ':' + items[0].label;
+                if (key === this.key && menu.childElementCount) return;
+                this.key = key;
+                menu.innerHTML = '';
+                items.forEach((it) => {
+                    const row = document.createElement('div');
+                    const isSel = String(it.value) === cur;
+                    row.className = 'cs-dd-item' + (isSel ? ' selected' : '');
+                    row.setAttribute('role', 'option');
+                    row.setAttribute('aria-selected', isSel ? 'true' : 'false');
+                    if (it.desc) row.title = it.desc;
+                    const n = document.createElement('strong');
+                    n.textContent = it.label;
+                    row.appendChild(n);
+                    if (it.desc) {
+                        const d = document.createElement('span');
+                        d.textContent = it.desc;
+                        row.appendChild(d);
+                    }
+                    row.addEventListener('click', () => {
+                        selectEl.value = String(it.value);
+                        this.key = '';
+                        this.close();
+                        updateCharacterCalculations();
+                        flushSync(); // choix discret : sauvegarde immédiate
+                    });
+                    menu.appendChild(row);
+                });
+            }
+        };
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (menu.hidden) {
+                for (const dd of descDropdowns) { if (dd !== api) { try { dd.close(); } catch (err) { /* ignore */ } } }
+                api.open();
+            } else api.close();
+        });
+        btn.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') api.close();
+            else if ((e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown') && menu.hidden) {
+                e.preventDefault();
+                for (const dd of descDropdowns) { if (dd !== api) { try { dd.close(); } catch (err) { /* ignore */ } } }
+                api.open();
+            }
+        });
+        document.addEventListener('click', (e) => { if (!wrap.contains(e.target)) api.close(); });
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') api.close(); });
+        descDropdowns.push(api);
+        return api;
+    }
+    function renderDescDropdowns() {
+        for (const dd of descDropdowns) {
+            try { dd.render(); } catch (e) { /* ignore */ }
+        }
+    }
+    function attachSheetDropdowns() {
+        attachDescDropdown(giftSelect, 'csDdGift', () => {
+            const r = currentRace();
+            return RACE_DATA[r].gifts.map((g, i) => ({ value: String(i), label: (i + 1) + '. ' + g, desc: RACE_DATA[r].giftNotes[i] || '' }));
+        });
+        attachDescDropdown(enfanceSelect, 'csDdEnfance', () =>
+            ENFANCES.map((e, i) => ({ value: String(i + 1), label: (i + 1) + '. ' + e.n, desc: e.d })));
+        attachDescDropdown(metierSelect, 'csDdMetier', () =>
+            METIERS.map((m, i) => ({ value: String(i + 1), label: (i + 1) + '. ' + m.n, desc: m.d })));
+        attachDescDropdown(evenementSelect, 'csDdEvenement', () =>
+            [{ value: '0', label: 'Aucun (optionnel)', desc: 'Pas d\u2019événement marquant.' }]
+                .concat(EVENEMENTS.map((e, i) => ({ value: String(i + 1), label: (i + 1) + '. ' + e.n, desc: e.d }))));
     }
 
     // ---- SYNCHRO TEMPS RÉEL + ONGLETS PERSONNAGES (multi-fiches) ----
@@ -268,6 +420,7 @@ function initCharacterSheet() {
     function buildDefaultData(name) {
         return {
             v: 2,
+            _rev: 1,
             name: name || 'Nouveau héros',
             age: '27',
             sexe: 'M',
@@ -290,7 +443,9 @@ function initCharacterSheet() {
     function updateActiveFromForm() {
         const tab = getActiveTab();
         if (!tab) return;
+        const prevRev = revOf(tab.data);
         tab.data = collectSheetData();
+        if (prevRev) tab.data._rev = prevRev; // l'incrément se fait dans doSync
         if (!tab.customLabel) tab.label = (tab.data.name || '').trim();
         tab.updatedAt = Date.now();
     }
@@ -376,7 +531,12 @@ function initCharacterSheet() {
     function mergeRosters(localTabs, serverTabs) {
         const byId = new Map();
         for (const t of serverTabs) if (sanitizeTab(t)) byId.set(t.id, t);
-        for (const t of localTabs) if (sanitizeTab(t)) byId.set(t.id, t); // le local gagne
+        // Conflit sur un même id : la révision la plus haute gagne (le local
+        // gagne à égalité) — un « Hb » serveur périmé ne ressuscite plus.
+        for (const t of localTabs) if (sanitizeTab(t)) {
+            const prev = byId.get(t.id);
+            if (!prev || revOf(t.data) >= revOf(prev.data)) byId.set(t.id, t);
+        }
         return [...byId.values()].slice(0, MAX_TABS);
     }
     async function pullServerRoster() {
@@ -605,7 +765,17 @@ function initCharacterSheet() {
     function scheduleSync() {
         if (suppressSync) return;
         if (syncTimer) clearTimeout(syncTimer);
-        syncTimer = setTimeout(doSync, 150);
+        // Fin de frappe détectée après 1,2 s d'inactivité : aucun sync
+        // (persist + broadcast) pendant qu'on tape, les calculs restent live.
+        syncTimer = setTimeout(doSync, 1200);
+    }
+    // Saisie terminée (blur, Entrée, sélection) : purge le debounce en attente.
+    function flushSync() {
+        if (suppressSync) return;
+        if (!syncTimer) return;
+        clearTimeout(syncTimer);
+        syncTimer = null;
+        doSync();
     }
     function doSync() {
         if (suppressSync) return;
@@ -614,13 +784,27 @@ function initCharacterSheet() {
             updateActiveFromForm();
             const tab = getActiveTab();
             if (!tab) return;
-            const json = JSON.stringify(tab.data);
+            const json = contentJson(tab.data);
             if (json === lastSyncJson) { persistRoster(); return; }
+            // Changement local réel : horloge de révision +1 (last-writer-wins
+            // entre fenêtres, et immunité contre les états périmés).
+            tab.data._rev = revOf(tab.data) + 1;
             lastSyncJson = json;
             persistRoster();
             renderTabs();
             broadcastTab();
         } catch (e) { /* ignore */ }
+    }
+    // Horloge de révision par fiche : chaque sauvegarde locale incrémente
+    // _rev. Une donnée entrante plus ancienne est ignorée — c'est ce qui
+    // empêche un état périmé (ex. « Hb ») d'écraser la frappe en cours,
+    // même avec une autre fenêtre restée sur l'ancien code (rev absente = 0).
+    function revOf(d) { return (d && typeof d._rev === 'number' && d._rev > 0) ? d._rev : 0; }
+    function contentJson(d) {
+        if (!d || typeof d !== 'object') return '';
+        const c = {};
+        for (const k of Object.keys(d)) if (k !== '_rev') c[k] = d[k];
+        return JSON.stringify(c);
     }
     function applyRemoteSheet(data, tabId) {
         if (!data || typeof data !== 'object') return;
@@ -628,6 +812,7 @@ function initCharacterSheet() {
             // Onglet non affiché édité ailleurs : stock mis à jour, formulaire inchangé.
             const tab = roster.tabs.find(t => t.id === tabId);
             if (tab) {
+                if (revOf(data) < revOf(tab.data)) return; // état périmé : ignoré
                 tab.data = data;
                 tab.updatedAt = Date.now();
                 if (!tab.customLabel) tab.label = (data.name || '').trim();
@@ -638,6 +823,8 @@ function initCharacterSheet() {
             renderTabs();
             return;
         }
+        const activeTab = getActiveTab();
+        if (activeTab && revOf(data) < revOf(activeTab.data)) return; // état périmé : ignoré
         suppressSync = true;
         try {
             const tab = getActiveTab();
@@ -646,7 +833,7 @@ function initCharacterSheet() {
                 tab.updatedAt = Date.now();
                 if (!tab.customLabel) tab.label = (data.name || '').trim();
             }
-            applySheetData(data);
+            applySheetData(data, { preserveFocused: true });
             try { lastSyncJson = JSON.stringify(collectSheetData()); } catch (e) { /* ignore */ }
             renderTabs();
         } finally {
@@ -655,10 +842,11 @@ function initCharacterSheet() {
     }
     function applyRemoteMeta(msg) {
         if (!msg || !Array.isArray(msg.tabsMeta)) return;
+        let changed = false;
         const metaById = new Map(msg.tabsMeta.map(m => [m.id, m]));
         for (const tab of roster.tabs) {
             const m = metaById.get(tab.id);
-            if (m && tab.label !== m.label) { tab.label = m.label; tab.customLabel = true; }
+            if (m && tab.label !== m.label) { tab.label = m.label; tab.customLabel = true; changed = true; }
         }
         // Suppression distante : on ne retire que les onglets plus vieux que la sauvegarde distante.
         for (let i = roster.tabs.length - 1; i >= 0; i--) {
@@ -666,11 +854,14 @@ function initCharacterSheet() {
             if (!metaById.has(tab.id) && (tab.updatedAt || 0) < (msg.savedAt || 0)) {
                 const wasActive = tab.id === activeTabId();
                 roster.tabs.splice(i, 1);
+                changed = true;
                 if (wasActive && msg.tabId && metaById.has(msg.tabId)) setActiveTabId(msg.tabId);
             }
         }
-        if (!getActiveTab() && roster.tabs.length) setActiveTabId(roster.tabs[0].id);
-        persistRoster();
+        if (!getActiveTab() && roster.tabs.length) { setActiveTabId(roster.tabs[0].id); changed = true; }
+        // Pas de persist si rien n'a changé : réécrire le roster ici renvoie
+        // un écho qui écrase la frappe en cours dans l'autre fenêtre.
+        if (changed) persistRoster();
         renderTabs();
     }
 
@@ -730,6 +921,7 @@ function initCharacterSheet() {
         if (raceNoteEl) raceNoteEl.textContent = rdata.note + ' | Magie : ' + rdata.magie;
         const giftNoteEl = document.getElementById('csGiftNote');
         if (giftNoteEl) giftNoteEl.textContent = rdata.giftNotes[giftIdx] || '';
+        renderDescDropdowns();
 
         const eff = {};
         for (const k of CORE8) eff[k] = vals[k];
@@ -847,10 +1039,28 @@ function initCharacterSheet() {
         }
 
         updateSkillsLimit(eff.eru);
+        refreshStepperTitles();
         scheduleSync();
     }
 
+    // Tasse les cases cochées vers les premières positions de chaque
+    // compétence : seul le nombre de cases compte (+1 palier par case),
+    // un trou (ex. case 2 cochée sans la 1) est refermé automatiquement.
+    function normalizeSkillBoxes() {
+        const groups = {};
+        document.querySelectorAll('.skill-check').forEach(cb => {
+            const base = cb.id.replace(/-\d$/, '');
+            (groups[base] = groups[base] || []).push(cb);
+        });
+        for (const base in groups) {
+            const boxes = groups[base].sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
+            const n = boxes.filter(cb => cb.checked).length;
+            boxes.forEach((cb, i) => { cb.checked = i < n; });
+        }
+    }
+
     function updateSkillsLimit(maxTrained) {
+        normalizeSkillBoxes();
         const checkboxes = document.querySelectorAll('.skill-check:checked');
         const countSpan = document.getElementById('trainedSkillsChecked');
         if (countSpan) countSpan.textContent = `${checkboxes.length} / ${maxTrained}`;
@@ -859,6 +1069,14 @@ function initCharacterSheet() {
         } else if (countSpan) {
             countSpan.style.color = 'var(--arcane-cyan)';
         }
+        // Survol des cases non cochées : prévient quand le quota est plein.
+        const fullMsg = checkboxes.length >= Math.max(1, maxTrained)
+            ? 'Entraînements gratuits pleins : ' + checkboxes.length + '/' + maxTrained + ' (Érudition). Décoche 1 case ailleurs pour en cocher ici. +1 ÉRU = +1 gratuit.'
+            : '';
+        document.querySelectorAll('.skill-check:not(:checked)').forEach(cb => {
+            if (fullMsg) cb.title = fullMsg;
+            else cb.removeAttribute('title');
+        });
     }
 
     // Piliers (Livre I §3) : changer de pilier ÉCHANGE les valeurs avec
@@ -981,8 +1199,51 @@ function initCharacterSheet() {
         const min = pillarMinorSelect ? pillarMinorSelect.value : null;
         if (profile !== 'sbire' && key === maj) return 'Pilier majeur verrouillé à ' + (profile === 'hero' ? 5 : 4) + ' — change le pilier pour modifier.';
         if (profile !== 'sbire' && key === min) return 'Pilier mineur verrouillé à 4 — change le pilier pour modifier.';
-        if (step > 0) return 'Plafond de création : 3 (Livre I §3).';
+        if (step > 0) {
+            const budgetMsg = budgetBlockReason(key, step);
+            if (budgetMsg) return budgetMsg;
+            return 'Plafond de création : 3 (Livre I §3).';
+        }
         return 'Minimum 1.';
+    }
+
+    // Budget total (Livre I §3) : un + qui ferait dépasser le total permis
+    // est bloqué avec la même bulle d'avertissement (retire 1 pt ailleurs).
+    // Magie hors budget : jamais bloquée ici (plafond 5 seul).
+    function budgetBlockReason(key, step) {
+        if (step <= 0 || !key || key === 'mag') return null;
+        const profile = profileSelect ? profileSelect.value : 'hero';
+        const valOf = (k) => parseInt(attrInputs[k] ? attrInputs[k].value : '0') || 0;
+        if (profile === 'sbire') {
+            const total = CORE8.reduce((s, k) => s + valOf(k), 0);
+            if (total + step > 12) return 'Budget plein : ' + total + '/12 (Sbire, Livre I §3). Retire 1 point ailleurs pour ajouter ici.';
+            return null;
+        }
+        const maj = pillarMajorSelect ? pillarMajorSelect.value : null;
+        const min = pillarMinorSelect ? pillarMinorSelect.value : null;
+        if (key === maj || key === min) return null;
+        const magVal = valOf('mag');
+        const secBudget = magVal > 0 ? 17 : 15;
+        const othersSum = CORE8.filter(k => k !== maj && k !== min).reduce((s, k) => s + valOf(k), 0);
+        if (othersSum + step > secBudget) {
+            return 'Budget plein : ' + othersSum + '/' + secBudget + ' en secondaires'
+                + (magVal > 0 ? ' (Éveil)' : ' (17 si Magie éveillée)')
+                + '. Retire 1 point ailleurs pour ajouter ici.';
+        }
+        return null;
+    }
+
+    // Survol des boutons + : le title natif prévient avant le clic quand
+    // le budget est déjà plein (complète la bulle affichée au clic bloqué).
+    function refreshStepperTitles() {
+        document.querySelectorAll('.stepper-btn[data-step="1"]').forEach(btn => {
+            const input = document.getElementById(btn.getAttribute('data-target'));
+            if (!input) return;
+            const key = Object.keys(attrInputs).find(k => attrInputs[k] === input);
+            const msg = budgetBlockReason(key, 1);
+            if (msg) btn.title = msg;
+            else btn.removeAttribute('title');
+        });
     }
 
     // Stepper buttons (+/-)
@@ -996,21 +1257,46 @@ function initCharacterSheet() {
                 let min = parseInt(input.getAttribute('min')) || 0;
                 let max = parseInt(input.getAttribute('max')) || 10;
                 let nextVal = Math.min(max, Math.max(min, current + step));
-                if (nextVal === current) showStepBlockTip(btn, stepBlockReason(input, step));
+                if (nextVal === current) {
+                    showStepBlockTip(btn, stepBlockReason(input, step));
+                    return;
+                }
+                const key = Object.keys(attrInputs).find(k => attrInputs[k] === input);
+                const budgetMsg = budgetBlockReason(key, step);
+                if (budgetMsg) {
+                    showStepBlockTip(btn, budgetMsg);
+                    refreshStepperTitles();
+                    return;
+                }
                 input.value = nextVal;
                 updateCharacterCalculations();
             }
         });
     });
 
-    // Skill checkboxes (plafond = ÉRU effective, Livre I Étape 5)
+    // Skill checkboxes (plafond = ÉRU effective, Livre I Étape 5) : une case
+    // cochée au-delà du quota est refusée avec la bulle d'avertissement.
     document.querySelectorAll('.skill-check').forEach(cb => {
         cb.addEventListener('change', () => {
             const eru = parseInt(attrInputs.eru.value) || 1;
-            updateSkillsLimit(Math.max(1, eru));
-            scheduleSync();
+            const max = Math.max(1, eru);
+            if (cb.checked && document.querySelectorAll('.skill-check:checked').length > max) {
+                cb.checked = false;
+                const n = document.querySelectorAll('.skill-check:checked').length;
+                showStepBlockTip(cb, 'Entraînements gratuits pleins : ' + n + '/' + max + ' (Érudition). Décoche 1 case ailleurs pour en cocher ici. +1 ÉRU = +1 gratuit.');
+                updateSkillsLimit(max);
+                return;
+            }
+            updateCharacterCalculations();
         });
     });
+    // Sauvegarde quand la saisie est terminée (blur / Entrée / sélection),
+    // jamais pendant la frappe : flush immédiat du debounce en attente.
+    // Enregistré après les handlers ci-dessus pour purger leur timer.
+    for (const el of [nameInput, ageInput, sexeSelect, mondeInput, ancrageInput, visionInput, ouieInput, enfanceSelect, metierSelect, evenementSelect, giftSelect, raceSelect, profileSelect, pillarMajorSelect, pillarMinorSelect]) {
+        if (el) el.addEventListener('change', flushSync);
+    }
+    document.querySelectorAll('.skill-check').forEach(cb => cb.addEventListener('change', flushSync));
 
     // Sens : tirage 1d6 clampé au minimum racial (Livre I Étape 4).
     function clampSenses() {
@@ -1119,31 +1405,36 @@ function initCharacterSheet() {
         return data;
     }
 
-    function applySheetData(data) {
-        if (data.name !== undefined && nameInput) nameInput.value = data.name;
-        if (data.age !== undefined && ageInput) ageInput.value = data.age;
-        if (data.sexe !== undefined && sexeSelect) sexeSelect.value = data.sexe;
-        if (data.monde !== undefined && mondeInput) mondeInput.value = data.monde;
-        if (data.race) raceSelect.value = resolveRace(data.race);
-        if (data.profile) profileSelect.value = data.profile;
-        if (data.pillarMajor && pillarMajorSelect) pillarMajorSelect.value = data.pillarMajor;
-        if (data.pillarMinor && pillarMinorSelect) pillarMinorSelect.value = data.pillarMinor;
+    // opts.preserveFocused : ne jamais écraser le champ en cours d'édition
+    // (voies distantes uniquement). La frappe locale gagne toujours.
+    function applySheetData(data, opts) {
+        const focused = (opts && opts.preserveFocused) ? document.activeElement : null;
+        function setVal(el, v) { if (el && el !== focused) el.value = v; }
+        if (data.name !== undefined) setVal(nameInput, data.name);
+        if (data.age !== undefined) setVal(ageInput, data.age);
+        if (data.sexe !== undefined) setVal(sexeSelect, data.sexe);
+        if (data.monde !== undefined) setVal(mondeInput, data.monde);
+        if (data.race) setVal(raceSelect, resolveRace(data.race));
+        if (data.profile) setVal(profileSelect, data.profile);
+        if (data.pillarMajor) setVal(pillarMajorSelect, data.pillarMajor);
+        if (data.pillarMinor) setVal(pillarMinorSelect, data.pillarMinor);
         refreshPillarOptions();
         syncPillarPrev();
         if (data.attributes) {
             for (const [k, v] of Object.entries(data.attributes)) {
-                if (attrInputs[k]) attrInputs[k].value = v;
+                if (attrInputs[k]) setVal(attrInputs[k], v);
             }
         }
         updateGiftOptions(false);
-        if ((data.gift === 0 || data.gift) && giftSelect) giftSelect.value = String(data.gift);
-        if (data.vision !== undefined && visionInput) visionInput.value = data.vision;
-        if (data.ouie !== undefined && ouieInput) ouieInput.value = data.ouie;
-        if (data.enfance && enfanceSelect) enfanceSelect.value = String(data.enfance);
-        if (data.metier && metierSelect) metierSelect.value = String(data.metier);
-        if ((data.evenement === 0 || data.evenement) && evenementSelect) evenementSelect.value = String(data.evenement);
-        if (data.ancrage !== undefined && ancrageInput) ancrageInput.value = data.ancrage;
+        if (data.gift === 0 || data.gift) setVal(giftSelect, String(data.gift));
+        if (data.vision !== undefined) setVal(visionInput, data.vision);
+        if (data.ouie !== undefined) setVal(ouieInput, data.ouie);
+        if (data.enfance) setVal(enfanceSelect, String(data.enfance));
+        if (data.metier) setVal(metierSelect, String(data.metier));
+        if (data.evenement === 0 || data.evenement) setVal(evenementSelect, String(data.evenement));
+        if (data.ancrage !== undefined) setVal(ancrageInput, data.ancrage);
         document.querySelectorAll('.skill-check').forEach(cb => {
+            if (cb === focused) return;
             const base = cb.id.replace(/-\d$/, '');
             cb.checked = !!(data.skills && (data.skills.includes(cb.id)
                 // Compat anciennes sauvegardes (1 case par compétence = niveau 1).
@@ -1160,9 +1451,14 @@ function initCharacterSheet() {
         const rdata = RACE_DATA[d.race];
         const skillLevels = getSkillLevels();
         const trainedSkills = Object.entries(skillLevels).map(([name, lvl]) => {
-            const a = skillBaseAttr(name);
-            const base = (a && d.attributes[a] !== undefined) ? dieForValue(+d.attributes[a]) : '?';
-            return `${name} +${lvl} (${stepDie(base, lvl)})`;
+            const info = skillBaseInfo(name);
+            const ext = {};
+            for (const k of Object.keys(d.attributes)) ext[k] = +d.attributes[k] || 0;
+            ext.vision = +d.vision || 3;
+            ext.ouie = +d.ouie || 3;
+            let score = skillBaseScore(info.attrs, ext);
+            if (info.mag && ext.mag > 0) score = Math.max(score, ext.mag);
+            return `${name} +${lvl} (${stepDie(dieForValue(score), lvl)})`;
         }).join(', ') || 'Aucune';
         const enfTxt = d.enfance ? histTxt(ENFANCES, d.enfance) : '—';
         const metTxt = d.metier ? histTxt(METIERS, d.metier) : '—';
@@ -1321,6 +1617,7 @@ function initCharacterSheet() {
     // Peuplement initial des selects (piliers, dons, historique), puis premier calcul.
     populateStaticSelects();
     ensureAttrDiceBadges();
+    attachSheetDropdowns(); // dons + enfance/métier/événement : menus descriptifs
     updateGiftOptions(false);
     if (giftSelect) giftSelect.value = '3'; // Réseau Colonial : défaut = exemple Roger canon
     applyRogerDefaultSkills(); // Tir, Esquive, Médecine (écrasé par la sauvegarde éventuelle ci-dessous)
@@ -1366,9 +1663,12 @@ function initCharacterSheet() {
         syncChannel.onmessage = (ev) => {
             const msg = ev && ev.data;
             if (!msg || msg.source === syncId) return;
-            if (msg.tabsMeta) applyRemoteMeta(msg);
+            // Données d'abord : applyRemoteMeta persiste le roster — il doit
+            // voir les données fraîches, sinon il réécrit l'ancien état et
+            // l'écho écrase la frappe en cours dans l'autre fenêtre.
             if (msg.data && msg.tabId) applyRemoteSheet(msg.data, msg.tabId);
             else if (msg.data) applyRemoteSheet(msg.data, null); // compat ancien protocole
+            if (msg.tabsMeta) applyRemoteMeta(msg);
         };
     }
     window.addEventListener('storage', (e) => {
@@ -1380,20 +1680,36 @@ function initCharacterSheet() {
             lastRosterJson = e.newValue;
             suppressSync = true;
             try {
+                // Sauvegarde notre version de l'onglet actif : si l'écriture
+                // reçue est périmée (autre fenêtre en retard), on la restaure.
+                const mine = getActiveTab();
+                const myTab = mine ? { id: mine.id, label: mine.label, customLabel: mine.customLabel, updatedAt: mine.updatedAt, data: mine.data } : null;
                 roster = parsed;
                 if (!getActiveTab()) setActiveTabId(roster.tabs[0].id);
                 const t = getActiveTab();
-                if (t && t.data) {
-                    applySheetData(t.data);
-                    try { lastSyncJson = JSON.stringify(collectSheetData()); } catch (err2) { /* ignore */ }
+                if (myTab && t && t.id === myTab.id && revOf(t.data) < revOf(myTab.data)) {
+                    const idx = roster.tabs.findIndex(x => x.id === myTab.id);
+                    if (idx >= 0) roster.tabs[idx] = myTab;
+                }
+                const t2 = getActiveTab();
+                if (t2 && t2.data) {
+                    const incoming = contentJson(t2.data);
+                    // Si l'onglet affiché n'a pas changé, ne pas réécrire le
+                    // formulaire : réassigner les <input> déplace le curseur
+                    // et mange la frappe en cours.
+                    if (incoming && incoming !== lastSyncJson) {
+                        applySheetData(t2.data, { preserveFocused: true });
+                        try { lastSyncJson = JSON.stringify(collectSheetData()); } catch (err2) { /* ignore */ }
+                    }
                 }
                 renderTabs();
             } finally { suppressSync = false; }
             return;
         }
-        if (e.key !== SYNC_KEY || !e.newValue) return;
-        if (e.newValue === lastSyncJson) return;
-        try { applyRemoteSheet(JSON.parse(e.newValue), null); } catch (err) { /* ignore */ }
+        // Branche SYNC_KEY volontairement supprimée : chaque persist écrit
+        // aussi ROSTER_KEY (traité ci-dessus). L'ancien écho SYNC_KEY
+        // réappliquait un état périmé et écrasait la frappe en cours.
+        // SYNC_KEY reste écrit pour le bouton « Charger la Sauvegarde ».
     });
     // Connexion : transfert du local vers le serveur, puis autosave.
     // Déconnexion : retour au local seul.

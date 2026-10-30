@@ -16,7 +16,7 @@
         rel="stylesheet">
 
     <!-- Stylesheet partagée -->
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css?v=8">
 
     <!-- Feuille de styles partagée de l'authentification -->
     <link rel="stylesheet" href="users/auth.css">
@@ -218,7 +218,8 @@
                                         Dégâts</span></a></li>
                             <li><a href="livre_1.html#chap-5" class="nav-item-link"><span>5. Progression & XP</span></a>
                             </li>
-                            <li><a href="livre_1.html#chap-fiche" class="nav-item-link"><span>Fiche de PJ Prototype</span></a>
+                            <li><a href="livre_1.html#chap-fiche" class="nav-item-link"><span>Fiche de PJ
+                                        Prototype</span></a>
                             </li>
                         </ul>
                     </div>
@@ -368,10 +369,14 @@
                         <ul class="nav-items-list">
                             <li><a href="livre_7.html" class="nav-item-link"><span>Livre VII (Fichier Dédié)</span><span
                                         class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_7.html#chap-27" class="nav-item-link"><span>27. Principes &amp; Procédure</span></a></li>
-                            <li><a href="livre_7.html#chap-28" class="nav-item-link"><span>28. Enfances (d6)</span></a></li>
-                            <li><a href="livre_7.html#chap-29" class="nav-item-link"><span>29. Métiers (d12)</span></a></li>
-                            <li><a href="livre_7.html#chap-30" class="nav-item-link"><span>30. Événement &amp; Ancrage</span></a></li>
+                            <li><a href="livre_7.html#chap-27" class="nav-item-link"><span>27. Principes &amp;
+                                        Procédure</span></a></li>
+                            <li><a href="livre_7.html#chap-28" class="nav-item-link"><span>28. Enfances (d6)</span></a>
+                            </li>
+                            <li><a href="livre_7.html#chap-29" class="nav-item-link"><span>29. Métiers (d12)</span></a>
+                            </li>
+                            <li><a href="livre_7.html#chap-30" class="nav-item-link"><span>30. Événement &amp;
+                                        Ancrage</span></a></li>
                         </ul>
                     </div>
                     <!-- LIVRE VIII -->
@@ -417,7 +422,8 @@
                                         (XP=PA)</span><span class="nav-item-badge badge-live">Actif</span></a></li>
                             <li><a href="#chap-36" class="nav-item-link"><span>36. Lanceur Polyédrique &
                                         Critiques</span><span class="nav-item-badge badge-live">Actif</span></a></li>
-                            <li><a href="#chap-37" class="nav-item-link"><span>37. Résolveur de Challenges</span><span class="nav-item-badge badge-live">Actif</span></a></li>
+                            <li><a href="#chap-37" class="nav-item-link"><span>37. Résolveur de Challenges</span><span
+                                        class="nav-item-badge badge-live">Actif</span></a></li>
                             <li><a href="#chap-38" class="nav-item-link"><span>38. Simulateur de
                                         Chronotrames</span><span class="nav-item-badge badge-live">Actif</span></a></li>
                         </ul>
@@ -494,8 +500,8 @@
                             </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="livre_12.html" class="nav-item-link"><span>Livre XII (Fichier Dédié)</span><span
-                                        class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_12.html" class="nav-item-link"><span>Livre XII (Fichier
+                                        Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
                             <li><a href="livre_12.html#chap-48" class="nav-item-link"><span>48. Typologie &amp;
                                         Calibrage</span></a></li>
                             <li><a href="livre_12.html#chap-49" class="nav-item-link"><span>49. Humanoïdes &amp;
@@ -583,7 +589,8 @@
                                         <option value="taurien">Taurien (Sylvestre, Magie Normale, sens min 3)</option>
                                         <option value="cleien">Cléien (Magie Inhérente, sens min 4)</option>
                                         <option value="mikyai">Mikyai (Écailles renforcées, sens min 3)</option>
-                                        <option value="vardien">Vardien / Frontalier (Volonté d'acier, sens min 3)</option>
+                                        <option value="vardien">Vardien / Frontalier (Volonté d'acier, sens min 3)
+                                        </option>
                                     </select>
                                 </div>
                                 <div class="tool-form-group">
@@ -622,10 +629,14 @@
                             <!-- PILIERS + DON RACIAL (Livre I §2.2 et §3) -->
                             <div class="pillars-row" id="csPillarsRow" style="margin-top: 15px;">
                                 <div class="tool-form-group">
-                                    <label class="tool-label" for="csPillarMajor">Pilier Majeur (5 Héros / 4 Élite)</label>
+                                    <label class="tool-label" for="csPillarMajor">Pilier Majeur (5 Héros / 4
+                                        Élite)</label>
                                     <select id="csPillarMajor" class="tool-select"></select>
                                 </div>
-                                <button type="button" id="csBtnSwapPillars" class="tool-btn secondary" title="Échanger pilier majeur et mineur (valeurs échangées, budget conservé)" aria-label="Échanger pilier majeur et mineur" style="padding: 8px 12px; font-size: 1.1rem;">⇄</button>
+                                <button type="button" id="csBtnSwapPillars" class="tool-btn secondary"
+                                    title="Échanger pilier majeur et mineur (valeurs échangées, budget conservé)"
+                                    aria-label="Échanger pilier majeur et mineur"
+                                    style="padding: 8px 12px; font-size: 1.1rem;">⇄</button>
                                 <div class="tool-form-group">
                                     <label class="tool-label" for="csPillarMinor">Pilier Mineur (4)</label>
                                     <select id="csPillarMinor" class="tool-select"></select>
@@ -662,7 +673,8 @@
                                     </div>
                                 </div>
                                 <div class="tool-form-group">
-                                    <label class="tool-label" for="csEvenement">Événement Marquant (d12, optionnel)</label>
+                                    <label class="tool-label" for="csEvenement">Événement Marquant (d12,
+                                        optionnel)</label>
                                     <div style="display: flex; gap: 6px;">
                                         <select id="csEvenement" class="tool-select" style="flex: 1;"></select>
                                         <button class="tool-btn secondary" id="csBtnEvenement" type="button"
@@ -671,7 +683,8 @@
                                 </div>
                             </div>
                             <div class="tool-form-group" style="margin-top: 10px;">
-                                <label class="tool-label" for="csAncrage">Ancrage (époque + monde, 3 réponses : origine, liens, fuite/désir)</label>
+                                <label class="tool-label" for="csAncrage">Ancrage (époque + monde, 3 réponses : origine,
+                                    liens, fuite/désir)</label>
                                 <input type="text" id="csAncrage" class="tool-input"
                                     placeholder="Ex: [E2] Frontière Chaude — doit tout à sa sœur disparue ; fuit les collecteurs de dettes, cherche la Voûte Céleste.">
                             </div>
@@ -780,7 +793,7 @@
                             </div>
 
                             <!-- SPÉCIAL : MAGIE & SENS -->
-                            <div class="tool-grid-3" style="margin-top: 15px;">
+                            <div class="tool-grid-2" style="margin-top: 15px;">
                                 <div class="tool-form-group">
                                     <label class="tool-label" for="attrMag">Magie (5e Force éveillée)</label>
                                     <div class="stepper-box">
@@ -827,35 +840,66 @@
                                     style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
                                     <span
                                         style="font-family: var(--font-mono); font-size: 0.8rem; font-weight: 700; color: var(--text-primary);">
-                                        Compétences de Base Entraînées (+1 niveau de dé permanent)
+                                        Compétences de Base Entraînées (+1 niveau de dé permanent, 27 bases Livre III)
                                     </span>
                                     <span class="pill-badge cyan" id="trainedSkillsChecked">0 / 3</span>
                                 </div>
                                 <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 12px;">
                                     Selon la règle officielle (Livre I, Étape 5), vous bénéficiez
                                     d'<strong>entraînements
-                                        gratuits = votre Érudition</strong> (<span id="vitalTrainedCount">3</span>, 3 cases par compétence) : 1 case = +1 palier, plafond +3. <strong>+1 ÉRU = +1 gratuit</strong>.
+                                        gratuits = votre Érudition</strong> (<span id="vitalTrainedCount">3</span>) : 1
+                                    case = +1 palier, plafond +3. <strong>+1 ÉRU = +1 gratuit</strong>.
                                     <br><strong>Progression organique (Livre I §5) :</strong> en jeu, chaque
                                     <strong>réussite</strong> coche 1 case dans la compétence utilisée (piste = base :
                                     3 → 3 cases, 5 → 5 cases). Piste pleine = <strong>+1 XP lié</strong>. Entraînement
                                     5 XP liés/libre (10 si croisé). <strong>XP total = dépensés (gratuits
                                         exclus).</strong>
                                 </p>
-                                                                    <div class="tool-grid-4" style="font-size: 0.82rem;">
-                                        <label style="display: flex; align-items: center; gap: 4px;"><input type="checkbox" class="skill-check" id="skMainsNues-1" data-skill="Mains Nues" data-attr="for"><input type="checkbox" class="skill-check" id="skMainsNues-2" data-skill="Mains Nues" data-attr="for"><input type="checkbox" class="skill-check" id="skMainsNues-3" data-skill="Mains Nues" data-attr="for"> Mains Nues (FOR) <span class="pill-badge amber skill-die" data-skillref="skMainsNues">1d10</span></label>
-                                        <label style="display: flex; align-items: center; gap: 4px;"><input type="checkbox" class="skill-check" id="skMelee-1" data-skill="Armes de Mêlée" data-attr="for"><input type="checkbox" class="skill-check" id="skMelee-2" data-skill="Armes de Mêlée" data-attr="for"><input type="checkbox" class="skill-check" id="skMelee-3" data-skill="Armes de Mêlée" data-attr="for"> Mêlée (FOR) <span class="pill-badge cyan skill-die" data-skillref="skMelee">1d6</span></label>
-                                        <label style="display: flex; align-items: center; gap: 4px;"><input type="checkbox" class="skill-check" id="skTir-1" data-skill="Armes à Distance / Tir" data-attr="agi"><input type="checkbox" class="skill-check" id="skTir-2" data-skill="Armes à Distance / Tir" data-attr="agi"><input type="checkbox" class="skill-check" id="skTir-3" data-skill="Armes à Distance / Tir" data-attr="agi"> Tir & Viseur (AGI) <span class="pill-badge amber skill-die" data-skillref="skTir">1d6</span></label>
-                                        <label style="display: flex; align-items: center; gap: 4px;"><input type="checkbox" class="skill-check" id="skEsquive-1" data-skill="Esquive Tactique" data-attr="agi"><input type="checkbox" class="skill-check" id="skEsquive-2" data-skill="Esquive Tactique" data-attr="agi"><input type="checkbox" class="skill-check" id="skEsquive-3" data-skill="Esquive Tactique" data-attr="agi"> Esquive (AGI) <span class="pill-badge amber skill-die" data-skillref="skEsquive">1d6</span></label>
-                                        <label style="display: flex; align-items: center; gap: 4px;"><input type="checkbox" class="skill-check" id="skParade-1" data-skill="Parade / Bouclier" data-attr="for"><input type="checkbox" class="skill-check" id="skParade-2" data-skill="Parade / Bouclier" data-attr="for"><input type="checkbox" class="skill-check" id="skParade-3" data-skill="Parade / Bouclier" data-attr="for"> Parade (FOR/AGI) <span class="pill-badge cyan skill-die" data-skillref="skParade">1d6</span></label>
-                                        <label style="display: flex; align-items: center; gap: 4px;"><input type="checkbox" class="skill-check" id="skAthletisme-1" data-skill="Athlétisme & Escalade" data-attr="for"><input type="checkbox" class="skill-check" id="skAthletisme-2" data-skill="Athlétisme & Escalade" data-attr="for"><input type="checkbox" class="skill-check" id="skAthletisme-3" data-skill="Athlétisme & Escalade" data-attr="for"> Athlétisme (FOR) <span class="pill-badge cyan skill-die" data-skillref="skAthletisme">1d6</span></label>
-                                        <label style="display: flex; align-items: center; gap: 4px;"><input type="checkbox" class="skill-check" id="skDiscretion-1" data-skill="Discrétion & Infiltration" data-attr="agi"><input type="checkbox" class="skill-check" id="skDiscretion-2" data-skill="Discrétion & Infiltration" data-attr="agi"><input type="checkbox" class="skill-check" id="skDiscretion-3" data-skill="Discrétion & Infiltration" data-attr="agi"> Discrétion (AGI) <span class="pill-badge cyan skill-die" data-skillref="skDiscretion">1d4</span></label>
-                                        <label style="display: flex; align-items: center; gap: 4px;"><input type="checkbox" class="skill-check" id="skPilotage-1" data-skill="Pilotage & Conduite" data-attr="rap"><input type="checkbox" class="skill-check" id="skPilotage-2" data-skill="Pilotage & Conduite" data-attr="rap"><input type="checkbox" class="skill-check" id="skPilotage-3" data-skill="Pilotage & Conduite" data-attr="rap"> Pilotage (RAP) <span class="pill-badge cyan skill-die" data-skillref="skPilotage">1d4</span></label>
-                                        <label style="display: flex; align-items: center; gap: 4px;"><input type="checkbox" class="skill-check" id="skMedecine-1" data-skill="Médecine & Soins d’Urgence" data-attr="eru"><input type="checkbox" class="skill-check" id="skMedecine-2" data-skill="Médecine & Soins d’Urgence" data-attr="eru"><input type="checkbox" class="skill-check" id="skMedecine-3" data-skill="Médecine & Soins d’Urgence" data-attr="eru"> Médecine (ÉRU) <span class="pill-badge amber skill-die" data-skillref="skMedecine">1d6</span></label>
-                                        <label style="display: flex; align-items: center; gap: 4px;"><input type="checkbox" class="skill-check" id="skArcanes-1" data-skill="Arcanes & 5e Force" data-attr="eru"><input type="checkbox" class="skill-check" id="skArcanes-2" data-skill="Arcanes & 5e Force" data-attr="eru"><input type="checkbox" class="skill-check" id="skArcanes-3" data-skill="Arcanes & 5e Force" data-attr="eru"> Arcanes (ÉRU/MAG) <span class="pill-badge cyan skill-die" data-skillref="skArcanes">1d4</span></label>
-                                        <label style="display: flex; align-items: center; gap: 4px;"><input type="checkbox" class="skill-check" id="skPiratage-1" data-skill="Piratage & Informatique" data-attr="int"><input type="checkbox" class="skill-check" id="skPiratage-2" data-skill="Piratage & Informatique" data-attr="int"><input type="checkbox" class="skill-check" id="skPiratage-3" data-skill="Piratage & Informatique" data-attr="int"> Piratage (INT) <span class="pill-badge cyan skill-die" data-skillref="skPiratage">1d2</span></label>
-                                        <label style="display: flex; align-items: center; gap: 4px;"><input type="checkbox" class="skill-check" id="skPersuasion-1" data-skill="Persuasion & Tromperie" data-attr="cha"><input type="checkbox" class="skill-check" id="skPersuasion-2" data-skill="Persuasion & Tromperie" data-attr="cha"><input type="checkbox" class="skill-check" id="skPersuasion-3" data-skill="Persuasion & Tromperie" data-attr="cha"> Négociation (CHA) <span class="pill-badge cyan skill-die" data-skillref="skPersuasion">1d2</span></label>
-                                        <label style="display: flex; align-items: center; gap: 4px;"><input type="checkbox" class="skill-check" id="skSurvie-1" data-skill="Survie & Pistage" data-attr="ins"><input type="checkbox" class="skill-check" id="skSurvie-2" data-skill="Survie & Pistage" data-attr="ins"><input type="checkbox" class="skill-check" id="skSurvie-3" data-skill="Survie & Pistage" data-attr="ins"> Survie (INS) <span class="pill-badge cyan skill-die" data-skillref="skSurvie">1d4</span></label>
-                                    </div>
+                                <h5 style="margin: 4px 0 8px; font-family: var(--font-mono); font-size: 0.78rem; color: var(--arcane-cyan); text-transform: uppercase;">Arbre de la Force — Livre III §11.1</h5>
+                                <div class="tool-grid-4" style="font-size: 0.82rem;">
+                                    <label style="display: flex; align-items: center; gap: 4px;" title="Livre III §11.1 — base = moyenne FOR/AGI ; MAG en offensif si éveillé (Corps Augmenté)"><input type="checkbox" class="skill-check" id="skMainsNues-1" data-skill="Mains Nues" data-attrs="for,agi" data-mag><input type="checkbox" class="skill-check" id="skMainsNues-2" data-skill="Mains Nues" data-attrs="for,agi" data-mag><input type="checkbox" class="skill-check" id="skMainsNues-3" data-skill="Mains Nues" data-attrs="for,agi" data-mag> Mains Nues (FOR/AGI) <span class="pill-badge cyan skill-die" data-skillref="skMainsNues">—</span></label>
+                                    <label style="display: flex; align-items: center; gap: 4px;" title="Livre III §11.1 — base = moyenne FOR/AGI"><input type="checkbox" class="skill-check" id="skManiement-1" data-skill="Maniement d'Arme" data-attrs="for,agi"><input type="checkbox" class="skill-check" id="skManiement-2" data-skill="Maniement d'Arme" data-attrs="for,agi"><input type="checkbox" class="skill-check" id="skManiement-3" data-skill="Maniement d'Arme" data-attrs="for,agi"> Maniement d'Arme (FOR/AGI) <span class="pill-badge cyan skill-die" data-skillref="skManiement">—</span></label>
+                                    <label style="display: flex; align-items: center; gap: 4px;" title="Livre III §11.1 — base = moyenne CON/FOR/AGI"><input type="checkbox" class="skill-check" id="skAthletisme-1" data-skill="Athlétisme" data-attrs="con,for,agi"><input type="checkbox" class="skill-check" id="skAthletisme-2" data-skill="Athlétisme" data-attrs="con,for,agi"><input type="checkbox" class="skill-check" id="skAthletisme-3" data-skill="Athlétisme" data-attrs="con,for,agi"> Athlétisme (CON/FOR/AGI) <span class="pill-badge cyan skill-die" data-skillref="skAthletisme">—</span></label>
+                                    <label style="display: flex; align-items: center; gap: 4px;" title="Livre III §11.1 — base = FOR"><input type="checkbox" class="skill-check" id="skDefense-1" data-skill="Défense Corporelle" data-attrs="for"><input type="checkbox" class="skill-check" id="skDefense-2" data-skill="Défense Corporelle" data-attrs="for"><input type="checkbox" class="skill-check" id="skDefense-3" data-skill="Défense Corporelle" data-attrs="for"> Défense Corporelle (FOR) <span class="pill-badge cyan skill-die" data-skillref="skDefense">—</span></label>
+                                </div>
+                                <h5 style="margin: 14px 0 8px; font-family: var(--font-mono); font-size: 0.78rem; color: var(--arcane-cyan); text-transform: uppercase;">Arbre de l'Agilité — Livre III §11.2</h5>
+                                <div class="tool-grid-4" style="font-size: 0.82rem;">
+                                    <label style="display: flex; align-items: center; gap: 4px;" title="Livre III §11.2 — base = moyenne AGI/RAP"><input type="checkbox" class="skill-check" id="skAcrobatie-1" data-skill="Acrobatie" data-attrs="agi,rap"><input type="checkbox" class="skill-check" id="skAcrobatie-2" data-skill="Acrobatie" data-attrs="agi,rap"><input type="checkbox" class="skill-check" id="skAcrobatie-3" data-skill="Acrobatie" data-attrs="agi,rap"> Acrobatie (AGI/RAP) <span class="pill-badge cyan skill-die" data-skillref="skAcrobatie">—</span></label>
+                                    <label style="display: flex; align-items: center; gap: 4px;" title="Livre III §11.2 — base = moyenne AGI/INT"><input type="checkbox" class="skill-check" id="skDiscretion-1" data-skill="Discrétion" data-attrs="agi,int"><input type="checkbox" class="skill-check" id="skDiscretion-2" data-skill="Discrétion" data-attrs="agi,int"><input type="checkbox" class="skill-check" id="skDiscretion-3" data-skill="Discrétion" data-attrs="agi,int"> Discrétion (AGI/INT) <span class="pill-badge cyan skill-die" data-skillref="skDiscretion">—</span></label>
+                                    <label style="display: flex; align-items: center; gap: 4px;" title="Livre III §11.2 — base = moyenne AGI/RAP/INS"><input type="checkbox" class="skill-check" id="skEsquive-1" data-skill="Esquive" data-attrs="agi,rap,ins"><input type="checkbox" class="skill-check" id="skEsquive-2" data-skill="Esquive" data-attrs="agi,rap,ins"><input type="checkbox" class="skill-check" id="skEsquive-3" data-skill="Esquive" data-attrs="agi,rap,ins"> Esquive (AGI/RAP/INS) <span class="pill-badge cyan skill-die" data-skillref="skEsquive">—</span></label>
+                                    <label style="display: flex; align-items: center; gap: 4px;" title="Livre III §11.2 — base = AGI"><input type="checkbox" class="skill-check" id="skPercantes-1" data-skill="Armes Perçantes & Fines" data-attrs="agi"><input type="checkbox" class="skill-check" id="skPercantes-2" data-skill="Armes Perçantes & Fines" data-attrs="agi"><input type="checkbox" class="skill-check" id="skPercantes-3" data-skill="Armes Perçantes & Fines" data-attrs="agi"> Armes Perçantes & Fines (AGI) <span class="pill-badge cyan skill-die" data-skillref="skPercantes">—</span></label>
+                                    <label style="display: flex; align-items: center; gap: 4px;" title="Livre III §11.2 — base = moyenne AGI/Vision"><input type="checkbox" class="skill-check" id="skTir-1" data-skill="Ballistique / Tir" data-attrs="agi,vision"><input type="checkbox" class="skill-check" id="skTir-2" data-skill="Ballistique / Tir" data-attrs="agi,vision"><input type="checkbox" class="skill-check" id="skTir-3" data-skill="Ballistique / Tir" data-attrs="agi,vision"> Ballistique / Tir (AGI/Vision) <span class="pill-badge cyan skill-die" data-skillref="skTir">—</span></label>
+                                    <label style="display: flex; align-items: center; gap: 4px;" title="Livre III §11.2 — base = moyenne AGI/RAP"><input type="checkbox" class="skill-check" id="skPilotage-1" data-skill="Conduite & Pilotage" data-attrs="agi,rap"><input type="checkbox" class="skill-check" id="skPilotage-2" data-skill="Conduite & Pilotage" data-attrs="agi,rap"><input type="checkbox" class="skill-check" id="skPilotage-3" data-skill="Conduite & Pilotage" data-attrs="agi,rap"> Conduite & Pilotage (AGI/RAP) <span class="pill-badge cyan skill-die" data-skillref="skPilotage">—</span></label>
+                                    <label style="display: flex; align-items: center; gap: 4px;" title="Livre III §11.2 — base = moyenne AGI/INT"><input type="checkbox" class="skill-check" id="skSubterfuge-1" data-skill="Subterfuge Manuel" data-attrs="agi,int"><input type="checkbox" class="skill-check" id="skSubterfuge-2" data-skill="Subterfuge Manuel" data-attrs="agi,int"><input type="checkbox" class="skill-check" id="skSubterfuge-3" data-skill="Subterfuge Manuel" data-attrs="agi,int"> Subterfuge Manuel (AGI/INT) <span class="pill-badge cyan skill-die" data-skillref="skSubterfuge">—</span></label>
+                                </div>
+                                <h5 style="margin: 14px 0 8px; font-family: var(--font-mono); font-size: 0.78rem; color: var(--arcane-cyan); text-transform: uppercase;">Arbre de la Constitution — Livre III §11.3</h5>
+                                <div class="tool-grid-4" style="font-size: 0.82rem;">
+                                    <label style="display: flex; align-items: center; gap: 4px;" title="Livre III §11.3 — base = moyenne CON/FOR"><input type="checkbox" class="skill-check" id="skEndurance-1" data-skill="Endurance Physique" data-attrs="con,for"><input type="checkbox" class="skill-check" id="skEndurance-2" data-skill="Endurance Physique" data-attrs="con,for"><input type="checkbox" class="skill-check" id="skEndurance-3" data-skill="Endurance Physique" data-attrs="con,for"> Endurance Physique (CON/FOR) <span class="pill-badge cyan skill-die" data-skillref="skEndurance">—</span></label>
+                                    <label style="display: flex; align-items: center; gap: 4px;" title="Livre III §11.3 — base = CON"><input type="checkbox" class="skill-check" id="skCardio-1" data-skill="Cardio" data-attrs="con"><input type="checkbox" class="skill-check" id="skCardio-2" data-skill="Cardio" data-attrs="con"><input type="checkbox" class="skill-check" id="skCardio-3" data-skill="Cardio" data-attrs="con"> Cardio (CON) <span class="pill-badge cyan skill-die" data-skillref="skCardio">—</span></label>
+                                    <label style="display: flex; align-items: center; gap: 4px;" title="Livre III §11.3 — base = CON"><input type="checkbox" class="skill-check" id="skImmunite-1" data-skill="Système Immunitaire" data-attrs="con"><input type="checkbox" class="skill-check" id="skImmunite-2" data-skill="Système Immunitaire" data-attrs="con"><input type="checkbox" class="skill-check" id="skImmunite-3" data-skill="Système Immunitaire" data-attrs="con"> Système Immunitaire (CON) <span class="pill-badge cyan skill-die" data-skillref="skImmunite">—</span></label>
+                                </div>
+                                <h5 style="margin: 14px 0 8px; font-family: var(--font-mono); font-size: 0.78rem; color: var(--arcane-cyan); text-transform: uppercase;">Arbre de l'Intelligence & Érudition — Livre III §12.1</h5>
+                                <div class="tool-grid-4" style="font-size: 0.82rem;">
+                                    <label style="display: flex; align-items: center; gap: 4px;" title="Livre III §12.1 — base = moyenne ÉRU/INT"><input type="checkbox" class="skill-check" id="skAcademie-1" data-skill="Académie" data-attrs="eru,int"><input type="checkbox" class="skill-check" id="skAcademie-2" data-skill="Académie" data-attrs="eru,int"><input type="checkbox" class="skill-check" id="skAcademie-3" data-skill="Académie" data-attrs="eru,int"> Académie (ÉRU/INT) <span class="pill-badge cyan skill-die" data-skillref="skAcademie">—</span></label>
+                                    <label style="display: flex; align-items: center; gap: 4px;" title="Livre III §12.1 — base = ÉRU"><input type="checkbox" class="skill-check" id="skPremiersSoins-1" data-skill="Premiers Soins" data-attrs="eru"><input type="checkbox" class="skill-check" id="skPremiersSoins-2" data-skill="Premiers Soins" data-attrs="eru"><input type="checkbox" class="skill-check" id="skPremiersSoins-3" data-skill="Premiers Soins" data-attrs="eru"> Premiers Soins (ÉRU) <span class="pill-badge cyan skill-die" data-skillref="skPremiersSoins">—</span></label>
+                                    <label style="display: flex; align-items: center; gap: 4px;" title="Livre III §12.1 — base = moyenne ÉRU/INT"><input type="checkbox" class="skill-check" id="skMedecineAv-1" data-skill="Médecine Avancée" data-attrs="eru,int"><input type="checkbox" class="skill-check" id="skMedecineAv-2" data-skill="Médecine Avancée" data-attrs="eru,int"><input type="checkbox" class="skill-check" id="skMedecineAv-3" data-skill="Médecine Avancée" data-attrs="eru,int"> Médecine Avancée (ÉRU/INT) <span class="pill-badge cyan skill-die" data-skillref="skMedecineAv">—</span></label>
+                                    <label style="display: flex; align-items: center; gap: 4px;" title="Livre III §12.1 — base = moyenne INT/ÉRU"><input type="checkbox" class="skill-check" id="skIngenierie-1" data-skill="Ingénierie & Arcanotech" data-attrs="int,eru"><input type="checkbox" class="skill-check" id="skIngenierie-2" data-skill="Ingénierie & Arcanotech" data-attrs="int,eru"><input type="checkbox" class="skill-check" id="skIngenierie-3" data-skill="Ingénierie & Arcanotech" data-attrs="int,eru"> Ingénierie & Arcanotech (INT/ÉRU) <span class="pill-badge cyan skill-die" data-skillref="skIngenierie">—</span></label>
+                                    <label style="display: flex; align-items: center; gap: 4px;" title="Livre III §12.1 — base = INT"><input type="checkbox" class="skill-check" id="skStrategie-1" data-skill="Penser / Stratégie" data-attrs="int"><input type="checkbox" class="skill-check" id="skStrategie-2" data-skill="Penser / Stratégie" data-attrs="int"><input type="checkbox" class="skill-check" id="skStrategie-3" data-skill="Penser / Stratégie" data-attrs="int"> Penser / Stratégie (INT) <span class="pill-badge cyan skill-die" data-skillref="skStrategie">—</span></label>
+                                </div>
+                                <h5 style="margin: 14px 0 8px; font-family: var(--font-mono); font-size: 0.78rem; color: var(--arcane-cyan); text-transform: uppercase;">Arbre du Charisme — Livre III §12.2</h5>
+                                <div class="tool-grid-4" style="font-size: 0.82rem;">
+                                    <label style="display: flex; align-items: center; gap: 4px;" title="Livre III §12.2 — base = moyenne CHA/INT"><input type="checkbox" class="skill-check" id="skCommunication-1" data-skill="Communication" data-attrs="cha,int"><input type="checkbox" class="skill-check" id="skCommunication-2" data-skill="Communication" data-attrs="cha,int"><input type="checkbox" class="skill-check" id="skCommunication-3" data-skill="Communication" data-attrs="cha,int"> Communication (CHA/INT) <span class="pill-badge cyan skill-die" data-skillref="skCommunication">—</span></label>
+                                    <label style="display: flex; align-items: center; gap: 4px;" title="Livre III §12.2 — base = moyenne CHA/FOR"><input type="checkbox" class="skill-check" id="skIntimidation-1" data-skill="Intimidation" data-attrs="cha,for"><input type="checkbox" class="skill-check" id="skIntimidation-2" data-skill="Intimidation" data-attrs="cha,for"><input type="checkbox" class="skill-check" id="skIntimidation-3" data-skill="Intimidation" data-attrs="cha,for"> Intimidation (CHA/FOR) <span class="pill-badge cyan skill-die" data-skillref="skIntimidation">—</span></label>
+                                    <label style="display: flex; align-items: center; gap: 4px;" title="Livre III §12.2 — base = moyenne CHA/INT"><input type="checkbox" class="skill-check" id="skLeadership-1" data-skill="Leadership" data-attrs="cha,int"><input type="checkbox" class="skill-check" id="skLeadership-2" data-skill="Leadership" data-attrs="cha,int"><input type="checkbox" class="skill-check" id="skLeadership-3" data-skill="Leadership" data-attrs="cha,int"> Leadership (CHA/INT) <span class="pill-badge cyan skill-die" data-skillref="skLeadership">—</span></label>
+                                </div>
+                                <h5 style="margin: 14px 0 8px; font-family: var(--font-mono); font-size: 0.78rem; color: var(--arcane-cyan); text-transform: uppercase;">Arbre de l'Instinct — Livre III §12.3</h5>
+                                <div class="tool-grid-4" style="font-size: 0.82rem;">
+                                    <label style="display: flex; align-items: center; gap: 4px;" title="Livre III §12.3 — base = moyenne Vision/Ouïe"><input type="checkbox" class="skill-check" id="skObservation-1" data-skill="Observation" data-attrs="vision,ouie"><input type="checkbox" class="skill-check" id="skObservation-2" data-skill="Observation" data-attrs="vision,ouie"><input type="checkbox" class="skill-check" id="skObservation-3" data-skill="Observation" data-attrs="vision,ouie"> Observation (Vision/Ouïe) <span class="pill-badge cyan skill-die" data-skillref="skObservation">—</span></label>
+                                    <label style="display: flex; align-items: center; gap: 4px;" title="Livre III §12.3 — base = Ouïe"><input type="checkbox" class="skill-check" id="skEcoute-1" data-skill="Écoute" data-attrs="ouie"><input type="checkbox" class="skill-check" id="skEcoute-2" data-skill="Écoute" data-attrs="ouie"><input type="checkbox" class="skill-check" id="skEcoute-3" data-skill="Écoute" data-attrs="ouie"> Écoute (Ouïe) <span class="pill-badge cyan skill-die" data-skillref="skEcoute">—</span></label>
+                                    <label style="display: flex; align-items: center; gap: 4px;" title="Livre III §12.3 — base = moyenne INT/INS"><input type="checkbox" class="skill-check" id="skIntuition-1" data-skill="Intuition" data-attrs="int,ins"><input type="checkbox" class="skill-check" id="skIntuition-2" data-skill="Intuition" data-attrs="int,ins"><input type="checkbox" class="skill-check" id="skIntuition-3" data-skill="Intuition" data-attrs="int,ins"> Intuition (INT/INS) <span class="pill-badge cyan skill-die" data-skillref="skIntuition">—</span></label>
+                                    <label style="display: flex; align-items: center; gap: 4px;" title="Livre III §12.3 — base = moyenne INS/INT/ÉRU"><input type="checkbox" class="skill-check" id="skSurvie-1" data-skill="Nature & Survie" data-attrs="ins,int,eru"><input type="checkbox" class="skill-check" id="skSurvie-2" data-skill="Nature & Survie" data-attrs="ins,int,eru"><input type="checkbox" class="skill-check" id="skSurvie-3" data-skill="Nature & Survie" data-attrs="ins,int,eru"> Nature & Survie (INS/INT/ÉRU) <span class="pill-badge cyan skill-die" data-skillref="skSurvie">—</span></label>
+                                    <label style="display: flex; align-items: center; gap: 4px;" title="Livre III §12.3 — base = moyenne INS/INT"><input type="checkbox" class="skill-check" id="skArtisanat-1" data-skill="Artisanat / Connaissance" data-attrs="ins,int"><input type="checkbox" class="skill-check" id="skArtisanat-2" data-skill="Artisanat / Connaissance" data-attrs="ins,int"><input type="checkbox" class="skill-check" id="skArtisanat-3" data-skill="Artisanat / Connaissance" data-attrs="ins,int"> Artisanat / Connaissance (INS/INT) <span class="pill-badge cyan skill-die" data-skillref="skArtisanat">—</span></label>
+                                </div>
                             </div>
 
                             <!-- DASHBOARD VITAL EN DIRECT -->
@@ -948,7 +992,8 @@
                                     </svg>
                                     Importer JSON
                                 </button>
-                                <input type="file" id="csFileImport" accept="application/json,.json" style="display: none;">
+                                <input type="file" id="csFileImport" accept="application/json,.json"
+                                    style="display: none;">
                                 <button class="tool-btn secondary" data-popout="fiche_pj.html"
                                     title="Ouvrir la fiche PJ seule dans une fenêtre détachée (synchro auto en direct)">
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -1577,7 +1622,7 @@
 
     <!-- Scripts partagés et interactifs -->
     <script src="js/codex.js"></script>
-    <script src="js/tools.js"></script>
+    <script src="js/tools.js?v=9"></script>
 
     <!-- Scripts Authentification -->
     <script src="users/user_store.js"></script>

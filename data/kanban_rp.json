@@ -951,6 +951,54 @@
           "suggestedAsset": "livre_9.html#chap-34",
           "updated": "2026-10-30",
           "details": "FAIT 2026-10-30 — Bloc Compétences de Base Entraînées déplacé entre caractéristiques et section 2 (ordre : attributs → compétences → métriques → budget → boutons). Mêmes IDs, JS inchangé (requêtes runtime). Fichiers : livre_9.html, fiche_pj.html."
+        },
+        {
+          "id": "RP-060",
+          "title": "Fiche PJ : menus déroulants descriptifs (don, enfance, métier, événement)",
+          "epic": "Outillage — Fiche PJ",
+          "status": "done",
+          "priority": "medium",
+          "order": 59,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "fiche_pj.html",
+          "updated": "2026-10-30",
+          "details": "FAIT (2026-10-30) : les selects natifs Don racial / Enfance / Métier / Événement sont remplacés par des menus déroulants personnalisés — fermé = choix seul, ouvert = chaque option avec son effet mécanique (tooltip intégré). Clic = sélection + sauvegarde immédiate, Échap/clic ailleurs = fermeture, molette contenue dans la liste (overscroll-behavior). Correctifs synchro au passage : sauvegarde seulement en fin de frappe (1,2 s ou blur/Entrée), horloge _rev last-writer-wins entre fenêtres, champ en cours d'édition jamais écrasé, balise auth.js refermée (bouton connexion de retour)."
+        },
+        {
+          "id": "RP-061",
+          "title": "Créateur chap. 34 : aide à la saisie (tooltips budget, dés à gauche, cases tassées)",
+          "epic": "Livre VIII — Outils Web",
+          "status": "done",
+          "priority": "medium",
+          "order": 60,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "fiche_pj.html",
+          "updated": "2026-10-30",
+          "details": "FAIT 2026-10-30 — (1) Bulle d'avertissement quand un + dépasserait le budget (secondaires pleines 15/15 ou 17/17 éveillé, sbire 12/12) + title préventif au survol. (2) Pastille de dé déplacée à gauche du stepper (effet tableau : cellule liée dé + sélecteur, titres de caractéristiques renforcés). (3) Vision et Ouïe sur la même ligne (grille 2 colonnes). (4) Cases d'entraînement : quota ÉRU bloquant avec bulle, palier de dé MAJ en direct à chaque case, cases tassées vers les premières positions. Fichiers : js/tools.js, css/style.css, fiche_pj.html + livre_9.html."
+        },
+        {
+          "id": "RP-062",
+          "title": "Créateur chap. 34 : 27 compétences alignées sur le Livre III",
+          "epic": "Livre VIII — Outils Web",
+          "status": "done",
+          "priority": "medium",
+          "order": 61,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "fiche_pj.html",
+          "updated": "2026-10-30",
+          "details": "FAIT 2026-10-30 — La grille (13 noms partiellement inventés) devient les 27 compétences de base canon groupées par arbre (§11.1–12.3) : Mêlée→Maniement d'Arme, Parade→Défense Corporelle, Médecine→Premiers Soins + Médecine Avancée, Arcanes/Piratage/Négociation retirées (Livre IV ou spécialisations §13). Dé de base = moyenne des attributs associés arrondie (§10.1, vérifiée sur les 3 exemples du livre), sens Vision/Ouïe inclus, Corps Augmenté Mains Nues (§11.1). Vieilles sauvegardes : cases d'anciennes compétences ignorées au chargement. Fichiers : fiche_pj.html + livre_9.html (grilles), js/tools.js (skillBaseScore/skillBaseInfo, refreshSkillDice, export)."
         }
       ]
     }
