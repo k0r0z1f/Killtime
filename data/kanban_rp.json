@@ -188,7 +188,7 @@
           "id": "RP-012",
           "title": "Relire chap. 10. Architecture & Typologie",
           "epic": "Livre III — Compétences",
-          "status": "done",
+          "status": "doing",
           "priority": "medium",
           "order": 11,
           "scene": "",
@@ -198,13 +198,13 @@
           "scale": null,
           "suggestedAsset": "livre_3.html#chap-10",
           "updated": "2026-10-30",
-          "details": "FAIT 2026-10-30 — Ton MJ accueillant appliqué (phrases courtes, 2e personne, exemples concrets, modèle = préface index.html) : lead, calcul rang/piste/entrainements/montée d'attribut, 5 cartes typologie, callout parade. Mécaniques strictement intactes (moyenne, -1 niveau non-pure, Tirage + PA + malus, 5/10 XP). Fichier : livre_3.html."
+          "details": "FAIT 2026-10-30 (ton MJ) — Relecture mécaniques : EN COURS, 1re passe utilisateur 2026-10-30. Ton appliqué : lead, calcul rang/piste/entrainements/montée d'attribut, 5 cartes typologie, callout parade. Mécaniques à confirmer : moyenne, -1 niveau non-pure, Tirage + PA + malus, 5/10 XP. Fichier : livre_3.html."
         },
         {
           "id": "RP-013",
           "title": "Relire chap. 11. Arbres Physiques (FOR, AGI, CON)",
           "epic": "Livre III — Compétences",
-          "status": "done",
+          "status": "doing",
           "priority": "medium",
           "order": 12,
           "scene": "",
@@ -214,13 +214,13 @@
           "scale": null,
           "suggestedAsset": "livre_3.html#chap-11",
           "updated": "2026-10-30",
-          "details": "FAIT 2026-10-30 — Ton MJ accueillant appliqué : intros FOR/AGI/CON, callout Corps Augmenté, 4 actions Force en 2e personne. Mécaniques intactes (MAG>0, MAG vs FOR/AGI, +1/entraînement, D12 exemple, défense en FOR/AGI). Fichier : livre_3.html."
+          "details": "FAIT 2026-10-30 (ton MJ) — Relecture mécaniques : EN COURS, 1re passe utilisateur 2026-10-30. Ton appliqué : intros FOR/AGI/CON, callout Corps Augmenté, 4 actions Force. Mécaniques à confirmer : MAG>0, MAG vs FOR/AGI, +1/entraînement, D12 exemple, défense en FOR/AGI. Fichier : livre_3.html."
         },
         {
           "id": "RP-014",
           "title": "Relire chap. 12. Arbres Mentaux & Sociaux",
           "epic": "Livre III — Compétences",
-          "status": "done",
+          "status": "doing",
           "priority": "medium",
           "order": 13,
           "scene": "",
@@ -230,13 +230,13 @@
           "scale": null,
           "suggestedAsset": "livre_3.html#chap-12",
           "updated": "2026-10-30",
-          "details": "FAIT 2026-10-30 — Ton MJ accueillant appliqué : intros INT/ÉRU, CHA, INS/SAG en 2e personne. Tables et mécaniques intactes. Fichier : livre_3.html."
+          "details": "FAIT 2026-10-30 (ton MJ) — Relecture mécaniques : EN COURS, 1re passe utilisateur 2026-10-30. Ton appliqué : intros INT/ÉRU, CHA, INS/SAG. Tables à confirmer. Fichier : livre_3.html."
         },
         {
           "id": "RP-015",
           "title": "Relire chap. 13. Compendium Spécialisations",
           "epic": "Livre III — Compétences",
-          "status": "done",
+          "status": "doing",
           "priority": "medium",
           "order": 14,
           "scene": "",
@@ -246,7 +246,7 @@
           "scale": null,
           "suggestedAsset": "livre_3.html#chap-13",
           "updated": "2026-10-30",
-          "details": "FAIT 2026-10-30 — Ton MJ accueillant appliqué : lead, signature et encart Livre IV. Coûts 5/10 XP et table des spécialisations intacts. Fichier : livre_3.html."
+          "details": "FAIT 2026-10-30 (ton MJ) — Relecture mécaniques : EN COURS, 1re passe utilisateur 2026-10-30. Ton appliqué : lead, signature, encart Livre IV. Coûts 5/10 XP et table à confirmer. Fichier : livre_3.html."
         },
         {
           "id": "RP-016",
@@ -1015,6 +1015,22 @@
           "suggestedAsset": "livre_1.html",
           "updated": "2026-10-30",
           "details": "Le Livre I est ratissé côté mécaniques — reste la passe finale côté lecteur. Checklist : [ ] ton MJ accueillant (phrases courtes, 2e personne, exemples concrets, modèle = préface index.html) ; [ ] aucun jargon cosmique sans explication ; [ ] infos mécaniques strictement intactes (budgets, formules, paliers) ; [ ] orthographe/typo FR ; [ ] liens internes + ancres OK. DONE = relu + reformulé, mécaniques inchangées — ajouter date + initiales ici."
+        },
+        {
+          "id": "RP-064",
+          "title": "Livre II : reformulation lecteur + QA finale + défis hors combat",
+          "epic": "Livre II — Dés & Épreuves",
+          "status": "todo",
+          "priority": "high",
+          "order": 63,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "livre_2.html",
+          "updated": "2026-10-30",
+          "details": "Reste Livre II, comme Livre I (RP-063). Checklist : [ ] ton MJ accueillant (phrases courtes, 2e personne, exemples concrets, modèle = préface index.html) ; [ ] aucun jargon sans explication ; [ ] infos mécaniques strictement intactes ; [ ] re-vérifier mécaniques de défi hors combat (chap. 9, livre_2.html#chap-9) ; [ ] dernier QA (orthographe/typo FR, liens + ancres OK). DONE = relu + reformulé + défis hors combat confirmés — ajouter date + initiales ici."
         }
       ]
     }
