@@ -999,6 +999,22 @@
           "suggestedAsset": "fiche_pj.html",
           "updated": "2026-10-30",
           "details": "FAIT 2026-10-30 — La grille (13 noms partiellement inventés) devient les 27 compétences de base canon groupées par arbre (§11.1–12.3) : Mêlée→Maniement d'Arme, Parade→Défense Corporelle, Médecine→Premiers Soins + Médecine Avancée, Arcanes/Piratage/Négociation retirées (Livre IV ou spécialisations §13). Dé de base = moyenne des attributs associés arrondie (§10.1, vérifiée sur les 3 exemples du livre), sens Vision/Ouïe inclus, Corps Augmenté Mains Nues (§11.1). Vieilles sauvegardes : cases d'anciennes compétences ignorées au chargement. Fichiers : fiche_pj.html + livre_9.html (grilles), js/tools.js (skillBaseScore/skillBaseInfo, refreshSkillDice, export)."
+        },
+        {
+          "id": "RP-063",
+          "title": "Livre I : reformulation lecteur + assurance qualité finale",
+          "epic": "Livre I — Bases & Création",
+          "status": "todo",
+          "priority": "high",
+          "order": 62,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "livre_1.html",
+          "updated": "2026-10-30",
+          "details": "Le Livre I est ratissé côté mécaniques — reste la passe finale côté lecteur. Checklist : [ ] ton MJ accueillant (phrases courtes, 2e personne, exemples concrets, modèle = préface index.html) ; [ ] aucun jargon cosmique sans explication ; [ ] infos mécaniques strictement intactes (budgets, formules, paliers) ; [ ] orthographe/typo FR ; [ ] liens internes + ancres OK. DONE = relu + reformulé, mécaniques inchangées — ajouter date + initiales ici."
         }
       ]
     }
