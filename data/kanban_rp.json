@@ -198,7 +198,7 @@
           "scale": null,
           "suggestedAsset": "livre_3.html#chap-10",
           "updated": "2026-10-30",
-          "details": "FAIT 2026-10-30 (ton MJ) — Relecture mécaniques : EN COURS, 1re passe utilisateur 2026-10-30. Ton appliqué : lead, calcul rang/piste/entrainements/montée d'attribut, 5 cartes typologie, callout parade. Mécaniques à confirmer : moyenne, -1 niveau non-pure, Tirage + PA + malus, 5/10 XP. Fichier : livre_3.html."
+          "details": "Passe 2026-10-30 (1er check) — FAIT : règle 2 niveaux, max 3 entraînements, rule-refs croisés (Livre I/II/V/VI), reformulation total dé+PA-malus, carte Hybride sans +1 XP. RESTE : QA final + ton lecteur + vérif rude mécaniques."
         },
         {
           "id": "RP-013",
@@ -214,7 +214,7 @@
           "scale": null,
           "suggestedAsset": "livre_3.html#chap-11",
           "updated": "2026-10-30",
-          "details": "FAIT 2026-10-30 (ton MJ) — Relecture mécaniques : EN COURS, 1re passe utilisateur 2026-10-30. Ton appliqué : intros FOR/AGI/CON, callout Corps Augmenté, 4 actions Force. Mécaniques à confirmer : MAG>0, MAG vs FOR/AGI, +1/entraînement, D12 exemple, défense en FOR/AGI. Fichier : livre_3.html."
+          "details": "Passe 2026-10-30 (1er check) — FAIT : Corps Augmenté RETIRÉ (pas de règle générale, pas de trace Killtime/Unity en sysrp), §11.1 en arbres hiérarchiques, spés Unity génériques importées (Mains Nues, Maniement, Athlétisme 100%, Défense), Bloquer notée commune. RESTE : QA final + ton lecteur + vérif rude mécaniques."
         },
         {
           "id": "RP-014",
@@ -230,7 +230,7 @@
           "scale": null,
           "suggestedAsset": "livre_3.html#chap-12",
           "updated": "2026-10-30",
-          "details": "FAIT 2026-10-30 (ton MJ) — Relecture mécaniques : EN COURS, 1re passe utilisateur 2026-10-30. Ton appliqué : intros INT/ÉRU, CHA, INS/SAG. Tables à confirmer. Fichier : livre_3.html."
+          "details": "Passe 2026-10-30 (1er check) — FAIT : §12.1/12.2/12.3 en arbres hiérarchiques, spés Unity génériques importées (Chirurgie, Apothicaire, Surfréquence, Analyse de Faille, Tromper, Négocier, Intimider, Mener, Vigilance, Sens du Danger, Chasseur, Sphère de Résonance, Affûtage). Book-only gardées. RESTE : QA final + ton lecteur + vérif rude mécaniques."
         },
         {
           "id": "RP-015",
@@ -246,7 +246,7 @@
           "scale": null,
           "suggestedAsset": "livre_3.html#chap-13",
           "updated": "2026-10-30",
-          "details": "FAIT 2026-10-30 (ton MJ) — Relecture mécaniques : EN COURS, 1re passe utilisateur 2026-10-30. Ton appliqué : lead, signature, encart Livre IV. Coûts 5/10 XP et table à confirmer. Fichier : livre_3.html."
+          "details": "Passe 2026-10-30 (1er check) — FAIT : compendium repensé = 1 ligne par spé (achat à part entière), indentée sous sa mère, note prérequis avant tableau ; lignes Épée/Marteau/Hache/Éclaireurs alignées Unity. Conflits noms à trancher : Paume de Brum'korath, Acier de Maître d'Hybris. RESTE : QA final + ton lecteur + vérif rude mécaniques spés."
         },
         {
           "id": "RP-016",

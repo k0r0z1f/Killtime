@@ -218,7 +218,8 @@
                                         Dégâts</span></a></li>
                             <li><a href="livre_1.html#chap-5" class="nav-item-link"><span>5. Progression & XP</span></a>
                             </li>
-                            <li><a href="livre_1.html#chap-fiche" class="nav-item-link"><span>Fiche de PJ Prototype</span></a>
+                            <li><a href="livre_1.html#chap-fiche" class="nav-item-link"><span>Fiche de PJ
+                                        Prototype</span></a>
                             </li>
                         </ul>
                     </div>
@@ -367,10 +368,14 @@
                         <ul class="nav-items-list">
                             <li><a href="livre_7.html" class="nav-item-link"><span>Livre VII (Fichier Dédié)</span><span
                                         class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_7.html#chap-27" class="nav-item-link"><span>27. Principes &amp; Procédure</span></a></li>
-                            <li><a href="livre_7.html#chap-28" class="nav-item-link"><span>28. Enfances (d6)</span></a></li>
-                            <li><a href="livre_7.html#chap-29" class="nav-item-link"><span>29. Métiers (d12)</span></a></li>
-                            <li><a href="livre_7.html#chap-30" class="nav-item-link"><span>30. Événement &amp; Ancrage</span></a></li>
+                            <li><a href="livre_7.html#chap-27" class="nav-item-link"><span>27. Principes &amp;
+                                        Procédure</span></a></li>
+                            <li><a href="livre_7.html#chap-28" class="nav-item-link"><span>28. Enfances (d6)</span></a>
+                            </li>
+                            <li><a href="livre_7.html#chap-29" class="nav-item-link"><span>29. Métiers (d12)</span></a>
+                            </li>
+                            <li><a href="livre_7.html#chap-30" class="nav-item-link"><span>30. Événement &amp;
+                                        Ancrage</span></a></li>
                         </ul>
                     </div>
                     <!-- LIVRE VIII -->
@@ -496,8 +501,8 @@
                             </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="livre_12.html" class="nav-item-link"><span>Livre XII (Fichier Dédié)</span><span
-                                        class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_12.html" class="nav-item-link"><span>Livre XII (Fichier
+                                        Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
                             <li><a href="livre_12.html#chap-48" class="nav-item-link"><span>48. Typologie &amp;
                                         Calibrage</span></a></li>
                             <li><a href="livre_12.html#chap-49" class="nav-item-link"><span>49. Humanoïdes &amp;
@@ -548,49 +553,73 @@
                     </h2>
 
                     <p class="lead">
-                        Vos compétences partent de vos attributs. Vous avez deux étages :
-                        la <strong>compétence de base</strong>, c'est votre fondation large.
-                        La <strong>spécialisation</strong>, c'est votre truc en plus — ce qui
+                        Chaque compétence part d'un ou plusieurs attributs. Elle fonctionne sur deux niveaux :
+                        la <strong>compétence de base</strong>, votre fondation large, celle que tout le monde partage.
+                        Et la <strong>spécialisation</strong>, votre truc en plus — ce qui
                         vous donne des effets que les autres n'ont pas.
                     </p>
 
                     <h3>10.1 Calcul du Rang de Base</h3>
                     <p>
-                        Pour trouver votre score de base, faites simple : prenez la
-                        <strong>moyenne de vos attributs liés</strong>, arrondie au plus proche.
+                        Pour trouver votre score de base, prenez la
+                        <strong><a class="rule-ref" href="livre_2.html#chap-6"
+                                data-tip="Base = moyenne des attributs liés : 1-2 +0 (d2), 3-4 +1 (d4), 5-6 +2 (d6), 7-8 +3 (d8), 9-10 +4 (d10) (Livre II §6.1).">moyenne
+                                de vos attributs liés</a></strong>, arrondie vers le haut.
                         Un seul attribut lié ? Gardez sa valeur telle quelle.
-                        <br><strong>Exception — Corps Augmenté :</strong> si vous frappez à <em>Mains
-                            Nues</em> et que vous êtes éveillé (MAG &gt; 0), vous pouvez prendre votre
-                        Magie à la place de votre Force. On garde la meilleure des deux.
-                        Détail au §11.1.
                     </p>
                     <ul>
-                        <li><em>Exemple 1 :</em> <strong>Maniement des armes de contact (FOR, AGI)</strong>. Vous avez Force
-                            5 et Agilité 3, la moyenne fait (5 + 3) / 2 = <strong>4</strong> → <strong>+1 niveau de
-                                dé</strong> (Dé associé sans entraînement : <strong>1d4</strong>).
+                        <li><em>Exemple 1 :</em> <strong>Maniement des armes de contact (FOR, AGI)</strong>. Vous avez
+                            Force
+                            5 et Agilité 4, la moyenne fait (5 + 4) / 2 = 4.5, arrondi à <strong>5</strong> → <strong><a
+                                    class="rule-ref" href="livre_2.html#chap-6"
+                                    data-tip="Niveau de dé : chaque cran monte le dé — d2 ➔ d4 ➔ d6 ➔ d8 ➔ d10 ➔ d12 (§6.1).">+2
+                                    niveaux de
+                                    dé</a></strong> (Dé associé sans entraînement : <strong>1d6</strong>).
                         </li>
-                        <li><em>Exemple 2 :</em> <strong>Premiers Soins (ÉRU)</strong>. Vous avez Érudition 3, votre score de
-                            base est <strong>3</strong> → <strong>+1 niveau</strong> (Dé associé :
-                            <strong>1d4</strong>). Votre piste de progression : <strong>3 cases</strong> (Livre I §5).
+                        <li><em>Exemple 2 :</em> <strong>Premiers Soins (ÉRU)</strong>. Vous avez un niveau d'Érudition
+                            de <strong>3</strong> → <strong>+1 niveau</strong> (Dé associé :
+                            <strong>1d4</strong>). Votre piste de progression : <strong>3 cases</strong> (<a
+                                class="rule-ref" href="livre_1.html#chap-5"
+                                data-tip="Progression : 1 réussite = 1 case. Piste pleine = +1 XP lié, piste à zéro (§5.1-5.2).">Livre
+                                I §5</a>).
                         </li>
-                        <li><em>Exemple 3 :</em> <strong>Athlétisme (CON, FOR, AGI)</strong>. Vous avez Con 4, For 5, Agi 3,
-                            la moyenne fait (4 + 5 + 3) / 3 = <strong>4</strong> → <strong>+1 niveau</strong> (Dé associé
+                        <li><em>Exemple 3 :</em> <strong>Athlétisme (CON, FOR, AGI)</strong>. Vous avez Con 4, For 5,
+                            Agi 3,
+                            la moyenne fait (4 + 5 + 3) / 3 = <strong>4</strong> → <strong>+1 niveau</strong> (Dé
+                            associé
                             : <strong>1d4</strong>).
                         </li>
                     </ul>
                     <p>
-                        <strong>Votre progression (Livre I §5) :</strong> votre rang de base fixe aussi la
-                        <strong>taille de votre piste</strong> : base 3 → 3 cases, base 5 → 5 cases. Chaque
-                        <strong>réussite</strong> avec la compétence coche 1 case. Piste pleine ? Vous gagnez +1 XP
-                        <strong>lié</strong>, puis la piste repart à zéro. Vous le dépensez au coût normal, ou en
-                        croisé <strong>×2</strong>.
-                        <br><strong>Vos entraînements gratuits :</strong> c'est votre <strong>Érudition</strong> qui les donne
+                        <strong>Votre progression (<a class="rule-ref" href="livre_1.html#chap-5"
+                                data-tip="Progression : 1 réussite = 1 case. Piste pleine = +1 XP lié, piste à zéro (§5.1-5.2).">Livre
+                                I §5</a>) :</strong> votre rang de base fixe aussi la
+                        <strong>taille de votre <a class="rule-ref" href="livre_1.html#chap-5"
+                                data-tip="Piste de progression : autant de cases que votre base — base 3 → 3 cases, base 5 → 5 cases (§5.1).">piste</a></strong>
+                        : base 3 → 3 cases, base 5 → 5 cases. Chaque
+                        <strong>réussite</strong> avec la compétence coche 1 case. Piste pleine ? Vous gagnez +1 <a
+                            class="rule-ref" href="livre_1.html#sec-5-2"
+                            data-tip="XP lié : une piste remplie = 1 XP réservé à sa compétence (§5.2).">XP lié</a>,
+                        puis la piste repart à zéro. Vous le dépensez au coût normal, ou en
+                        <a class="rule-ref" href="livre_1.html#sec-5-3"
+                            data-tip="Coût croisé ×2 : dépenser l'XP d'une autre compétence coûte double (§5.3).">croisé
+                            <strong>×2</strong></a>.
+                        <br><strong>Vos <a class="rule-ref" href="livre_1.html#sec-etape-5"
+                                data-tip="Entraînements gratuits : ton rang d'Érudition = autant de compétences montées d'un palier de dé (Étape 5).">entraînements
+                                gratuits</a> :</strong> c'est votre <strong><a class="rule-ref"
+                                href="livre_1.html#sec-etape-5"
+                                data-tip="Érudition : ton score donne autant d'entraînements gratuits (ÉRU 3 → 3 gratuits) (Étape 5).">Érudition</a></strong>
+                        qui les
+                        donne
                         (ÉRU 3 → 3 gratuits, +1 ÉRU = +1 gratuit). Ils coûtent 0 XP et restent
-                        <strong>hors de votre total</strong>.
-                        <br><strong>Monter un attribut en jeu :</strong> vous pouvez monter chaque attribut seul, au tarif
-                        <code>N ➔ N+1 = (N+1) XP</code> (4 ➔ 5 = 5 XP, 9 ➔ 10 =
-                        10 XP, max 10). Votre rang de base est recalculé tout de suite, avec la taille de vos futures pistes.
-                        Si c'est l'Érudition qui monte, vous gagnez +1 gratuit permanent.
+                        <strong><a class="rule-ref" href="livre_1.html#sec-5-4"
+                                data-tip="XP Total : tout l'XP investi depuis le début, hors réserves et hors entraînements gratuits (§5.4).">hors
+                                de votre total</a></strong>.
+                        <br><strong>Maximum 3 <a class="rule-ref" href="livre_2.html#chap-6"
+                                data-tip="Entraînement : +1 palier de dé chacun, max +3 par compétence, 5 XP (10 si croisé) (§6.1).">entraînements
+                                par compétence</a> :</strong> vous ne pouvez jamais dépasser 3,
+                        gratuits et achetés confondus. Ce sont les 3 cases de votre fiche. Chaque entraînement donne
+                        <strong>+1 niveau de dé</strong>.
                     </p>
 
                     <h3>10.2 Les 5 Catégories Fonctionnelles d'Action</h3>
@@ -611,7 +640,7 @@
                         <div class="spec-card">
                             <div class="spec-card-title">Utilitaire</div>
                             <p>Vous grimpez, vous réparez, vous soignez, vous passez sans bruit.
-                                Hors combat direct.</p>
+                                Pas pour frapper ni parer.</p>
                             <div class="spec-card-footer"><span class="tag-pill cyan">Technique / Déplacement</span>
                             </div>
                         </div>
@@ -625,7 +654,7 @@
                             <div class="spec-card-title">Hybride</div>
                             <p>Vous faites deux choses en une. Exemple : vous frappez et, en même temps,
                                 vous impressionnez ou vous faites reculer.</p>
-                            <div class="spec-card-footer"><span class="tag-pill cyan">Polyvalent (+1 XP)</span></div>
+                            <div class="spec-card-footer"><span class="tag-pill cyan">Polyvalent</span></div>
                         </div>
                     </div>
 
@@ -638,15 +667,28 @@
                             Règle Cruciale : La Défense Non-Exclusive
                         </div>
                         <div class="callout-body">
-                            Vous pouvez parer avec une compétence défensive. Pas de souci.
-                            <br>Mais si votre compétence n'est <strong>pas 100 % défensive</strong> — par exemple vous parez
-                            avec <em>Maniement d'Arme</em> ou <em>Mains Nues</em> — vous prenez <strong>-1 niveau
-                                de dé</strong> sur la parade.
-                            <br>Vous avez la <strong>spécialisation dédiée</strong> ? Le malus disparaît. <em>Spécialisation Épée</em>
-                            avec une épée, <em>Arts Martiaux</em> à mains nues, <em>Bloquer</em> au bouclier : vous parez à plein dé
+                            Vous pouvez parer avec une <a class="rule-ref" href="livre_2.html#chap-7"
+                                data-tip="Duel à l'aveugle : attaquant et défenseur lancent en secret, dé + PA − malus. Seul le vainqueur coche (§7.3).">compétence
+                                défensive</a>. Pas de souci.
+                            <br>Mais si votre compétence n'est <strong>pas 100 % défensive</strong> — par exemple vous
+                            parez
+                            avec <em>Maniement d'Arme</em> ou <em>Mains Nues</em> — vous prenez <strong><a
+                                    class="rule-ref" href="livre_2.html#chap-6"
+                                    data-tip="Niveau de dé : chaque cran monte le dé — d2 ➔ d4 ➔ d6 ➔ d8 ➔ d10 ➔ d12 (§6.1).">-1
+                                    niveau
+                                    de dé</a></strong> sur la parade.
+                            <br>Vous avez la <strong><a class="rule-ref" href="#chap-13"
+                                    data-tip="Spécialisation : 5 XP banque liée/libre, 10 XP croisé. Annule le malus de parade non-exclusive (§13).">spécialisation
+                                    dédiée</a></strong> ? Le malus disparaît.
+                            <em>Spécialisation Épée</em>
+                            avec une épée, <em>Arts Martiaux</em> à mains nues, <em>Bloquer</em> au bouclier : vous
+                            parez à plein dé
                             (ex: <em>Bloquer</em> ou <em>Maniement de l'épée</em>).
-                            <br>Et pour le total, c'est simple : <strong>Tirage du dé + PA + malus de situation</strong>.
-                            Pas de +1 offert, pas de bonus de carac ajouté.
+                            <br>Et pour compter les points, une seule formule : <strong>ce que donne votre dé
+                                + les <a class="rule-ref" href="livre_1.html#chap-4"
+                                    data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a>
+                                que vous misez − les malus du moment</strong> (obscurité, blessure, portée...).
+                            Vos attributs ont déjà servi à choisir le dé : ils ne s'ajoutent pas une deuxième fois.
                         </div>
                     </div>
 
@@ -663,22 +705,6 @@
                         et vous tenez debout en armure lourde.
                     </p>
 
-                    <div class="callout arcane" style="margin-bottom: 20px;">
-                        <div class="callout-header">
-                            <strong>Règle Générale : Corps Augmenté (Mains Nues offensives, MAG &gt; 0)</strong>
-                        </div>
-                        <div class="callout-body">
-                            Vous êtes éveillé (Magie &gt; 0) ? Votre corps est chargé en 5e Force.
-                            En attaque à <strong>mains nues</strong>, vous pouvez prendre votre <strong>Magie</strong>
-                            à la place de votre moyenne FOR / AGI. On garde la meilleure des deux, jamais de malus.
-                            Vos <strong>entraînements Mains Nues</strong> ajoutent +1 niveau chacun par-dessus.<br>
-                            <em>Exemple :</em> MAG 5 (<strong>+2 niveaux</strong>) + 3 entraînements = <strong>5
-                                niveaux</strong> depuis le d2 → <strong>D12</strong> en attaque.<br>
-                            En <strong>défense</strong>, ça ne change rien : vous parez toujours en FOR / AGI.
-                            La magie fixe votre dé, puis le total fait <strong>Tirage + PA + malus de situation</strong>.
-                        </div>
-                    </div>
-
                     <div class="table-container">
                         <table class="codex-table">
                             <thead>
@@ -692,30 +718,56 @@
                             <tbody>
                                 <tr>
                                     <td><strong>Mains Nues</strong></td>
-                                    <td>Force ou (Force, Agilité) — <em>Corps Augmenté : MAG devient la référence en
-                                            offensif si éveillé</em></td>
+                                    <td>Force, Agilité</td>
                                     <td>Offensif, Défensif, Utilitaire</td>
-                                    <td>Arts Martiaux, Agripper, Frapper, Étrangler</td>
+                                    <td><strong>Arts Martiaux</strong> — parade sans malus, refoulement
+                                        <br>↳ Enchaînement Fluide → Frappe Téléportée → Déphasage Cinétique
+                                        <br>↳ Onde Tellurique → Brise-Blindage → Paume de Brum'korath
+                                        <br>↳ Balayage Rotatif → Clé d'Articulation → Rupture Ligamentaire
+                                        <br><strong>Perforation de Silicate</strong> → Fracture Sismique → Cœur
+                                        d'Adamas
+                                        <br>Agripper, Frapper, Étrangler
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td><strong>Maniement d'Arme</strong> (Tranchantes / Contondantes)</td>
                                     <td>Force, Agilité</td>
                                     <td>Offensif, Défensif</td>
-                                    <td><strong>Spécialisation Épée</strong>, <strong>Armes Contondantes</strong>
-                                        (Marteau, Masse, Gourdin, Fléau), Hache de guerre, Zweihander</td>
+                                    <td><strong>Spécialisation Épée</strong>
+                                        <br>↳ Riposte Éclair → Tranchant Tempétueux → Lame de Ligne Temporelle Zéro
+                                        <br>↳ Garde Haute Impériale → Lame Miroir → Dôme de Parade
+                                        <br><strong>Fente de Rupture</strong> → Pointe Chirurgicale → Transpercement
+                                        Traversant → Fissure Causal
+                                        <br><strong>Bloquer</strong> <em>(commune avec Défense Corporelle)</em> → Mur
+                                        de Bouclier → Heurt de Bouclier → Forteresse Impénétrable
+                                        <br><strong>Armes Contondantes</strong> (Marteau, Masse, Gourdin, Fléau) →
+                                        Marteau de Guerre
+                                        <br>↳ Écrasement Osseux → Brise-Crâne → Cataclysme de Fer
+                                        <br>↳ Onde de Faille → Onde Sismique Réverbérante
+                                        <br><strong>Hache de guerre</strong>
+                                        <br>↳ Fente du Bûcheron → Brise-Garde → Exécution du Bourreau
+                                        <br>↳ Croc de Désarmement → Arrache-Bouclier
+                                        <br>Zweihander
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td><strong>Athlétisme</strong></td>
                                     <td>Constitution, Force, Agilité</td>
                                     <td>Utilitaire</td>
-                                    <td><strong>Course d'Endurance</strong> (Second Souffle, Cœur de Marathon),
-                                        <strong>Franchissement</strong> (Escalade Assurée, Nage de Combat)</td>
+                                    <td><strong>Course d'Endurance</strong> → Second Souffle → Cœur de Marathon
+                                        <br><strong>Franchissement</strong> → Escalade Assurée → Nage de Combat
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td><strong>Défense Corporelle</strong></td>
                                     <td>Force</td>
                                     <td>Défensif</td>
-                                    <td><strong>Bloquer</strong>, Protéger, Armures Lourdes</td>
+                                    <td><strong>Bloquer</strong> <em>(commune avec Maniement d'Arme — voir
+                                            ci-dessus)</em>
+                                        <br><strong>Bouclier Vivant</strong> → Interposition Réflexe → Dévier le
+                                        Calibre → Mur Inébranlable
+                                        <br>Protéger, Armures Lourdes
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -723,14 +775,31 @@
 
                     <h4>Actions Physiques de Force & Difficultés Associées</h4>
                     <ul>
-                        <li><strong>Courir / Nager</strong> : vous courez, vous nagez — facile (1–3) la plupart du temps.
-                            Si ça devient dur (difficulté 5+, courant, bourbier), lancez votre Force.</li>
-                        <li><strong>Pousser / Soulever</strong> : vous poussez une herse, vous soulevez une poutre. Si quelqu'un
-                            s'oppose, faites un duel Force contre Force.</li>
-                        <li><strong>Agripper</strong> : vous attrapez quelqu'un — duel Force contre sa Défense. Réussi ?
-                            Il est immobilisé.</li>
-                        <li><strong>Porter une Armure Lourde</strong> : il faut la Force demandée pour la porter. En dessous ?
-                            Faites une épreuve de Force toutes les 10 minutes, sinon vous vous épuisez.</li>
+                        <li><strong>Courir / Nager</strong> : vous courez, vous nagez — facile (1–3) la plupart du
+                            temps.
+                            Si ça devient dur (<a class="rule-ref" href="livre_2.html#chap-7"
+                                data-tip="Difficulté : 1-3 facile, 5+ exige un jet, 12+ héroïque, 18+ cosmique (§7.1).">difficulté
+                                5+</a>, courant, bourbier), lancez votre Force.</li>
+                        <li><strong>Pousser / Soulever</strong> : vous poussez une herse, vous soulevez une poutre. Si
+                            quelqu'un
+                            s'oppose, faites un <a class="rule-ref" href="livre_2.html#chap-7"
+                                data-tip="Duel à l'aveugle : chacun lance son dé + PA, le meilleur gagne. Seul le vainqueur coche (§7.3).">duel
+                                Force contre Force</a>.</li>
+                        <li><strong>Agripper</strong> : vous attrapez quelqu'un — <a class="rule-ref"
+                                href="livre_2.html#chap-7"
+                                data-tip="Duel à l'aveugle : chacun lance son dé + PA, le meilleur gagne. Seul le vainqueur coche (§7.3).">duel
+                                Force contre sa Défense</a>. Réussi ?
+                            Il est <a class="rule-ref" href="livre_6.html#sec-24-1"
+                                data-tip="Immobilisé : impossible de faire la moindre action de mouvement (§24.1).">immobilisé</a>.
+                        </li>
+                        <li><strong>Porter une Armure Lourde</strong> : il faut la Force demandée pour la porter. En
+                            dessous ?
+                            Faites une <a class="rule-ref" href="livre_2.html#chap-7"
+                                data-tip="Épreuve : lance ton dé de compétence + PA − malus contre le seuil du MJ (§7.1).">épreuve
+                                de Force</a> toutes les 10 minutes, sinon vous vous <a class="rule-ref"
+                                href="livre_1.html#sec-4-2"
+                                data-tip="Essoufflement : 1 point = des PA d'urgence ; ne part pas tout seul, action dédiée pour souffler (§4.2).">épuisez</a>.
+                        </li>
                     </ul>
 
                     <!-- ARBRE DE L'AGILITÉ -->
@@ -767,20 +836,47 @@
                                     <td><strong>Esquive</strong></td>
                                     <td>Agilité, Rapidité ou Instinct</td>
                                     <td>Défensif Pur</td>
-                                    <td>Esquive acrobatique, Roulade d'évitement, Dérobée</td>
+                                    <td><strong>Roulade de Décrochage</strong>
+                                        <br>↳ Reprise d'Appui → Ombre Évasive → Pas Déphasé
+                                        <br>↳ Esquive Réactive → Contre-Poussée
+                                        <br><strong>Acrobatie d'Évitement</strong> → Saut Périlleux → Vrille
+                                        Balistique
+                                        <br>Dérobée
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td><strong>Armes Perçantes & Fines</strong></td>
                                     <td>Agilité</td>
                                     <td>Offensif, Défensif</td>
-                                    <td><strong>Escrime</strong>, Rapière, Dague, Lance</td>
+                                    <td><strong>Escrime</strong>
+                                        <br>↳ Riposte à l'Estoc → Fleuret Éclair → Frappe Fantôme
+                                        <br>↳ Désarmement Fleuret → Entaille Précise
+                                        <br><strong>Frappe Jugulaire</strong> → Hémorragie Profonde → Asphyxie
+                                        Sanguine → Tranche-Artère Silencieux
+                                        <br><strong>Arme de Hast</strong>
+                                        <br>↳ Arrêt de Charge → Mur de Piques → Phalange d'Acier
+                                        <br>↳ Fauchage Latéral → Crochet de Hallebarde
+                                        <br>Rapière, Dague, Lance
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td><strong>Ballistique / Tir</strong></td>
                                     <td>Agilité ou (Agilité, Vision)</td>
                                     <td>Offensif</td>
-                                    <td><strong>Spécialisation Fusil 1 main / Pistolet</strong>, Fusil de précision,
-                                        Fusil d'assaut, Armes Lourdes</td>
+                                    <td><strong>Pistolet & Tir Rapide</strong>
+                                        <br>↳ Dégainé Réflexe → Akimbo Assaut → Trait d'Orichalque
+                                        <br>↳ Balle dans le Genou → Tir de Neutralisation
+                                        <br><strong>Fusil de Précision</strong>
+                                        <br>↳ Visée Millimétrique → Perforation Hyper-Véloce → Tir à Travers les
+                                        Parois
+                                        <br>↳ Tir de Suppression → Calibre Anti-Matériel
+                                        <br><strong>Grenadier d'Assaut</strong> → Calcul Balistique → Dégoupillage
+                                        Éclair → Souffle Thermobarique
+                                        <br><strong>Tir à l'Arc</strong>
+                                        <br>↳ Flèche Perforante → Tir en Cloche → Pluie d'Acier
+                                        <br>↳ Tir Instinctif → Chasseur Silencieux
+                                        <br>Fusil d'assaut, Armes Lourdes
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td><strong>Conduite & Pilotage</strong></td>
@@ -820,20 +916,29 @@
                                     <td><strong>Endurance Physique</strong></td>
                                     <td>Constitution, Force</td>
                                     <td>Utilitaire, Défensif</td>
-                                    <td><strong>Condition de Fer</strong> (Dur à Cuire, Mur de Chair), <strong>Trempe de
-                                            Fer</strong> (Ignorer la Douleur, Esprit de Granit)</td>
+                                    <td><strong>Condition de Fer</strong> → Dur à Cuire → Mur de Chair
+                                        <br><strong>Trempe de Fer</strong> → Ignorer la Douleur → Esprit de Granit
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td><strong>Cardio</strong></td>
                                     <td>Constitution</td>
                                     <td>Utilitaire</td>
-                                    <td>Apnée prolongée, Récupération d'essoufflement, Sprint continu</td>
+                                    <td><strong>Seconde Respiration</strong> → Rechargement Anaérobie → Poumons
+                                        d'Acier → Cœur de Berserker
+                                        <br><strong>Poussée Cardiovasculaire</strong> → Redline Stabilisé →
+                                        Injection d'Adrénaline
+                                        <br>Apnée prolongée, Récupération d'essoufflement, Sprint continu
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td><strong>Système Immunitaire</strong></td>
                                     <td>Constitution</td>
                                     <td>Défensif</td>
-                                    <td>Résistance aux Maladies, Résistance aux Toxines & Poisons</td>
+                                    <td><strong>Immunité Toxique</strong> → Neutralisation des Poisons → Filtrage
+                                        des Gaz de Guerre → Sang Antidote Universel
+                                        <br>Résistance aux Maladies, Résistance aux Toxines & Poisons
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -879,21 +984,30 @@
                                     <td><strong>Médecine Avancée</strong></td>
                                     <td>Érudition, Intelligence</td>
                                     <td>Utilitaire</td>
-                                    <td><strong>Chirurgie</strong>, Traitement des infections,
-                                        <strong>Apothicaire</strong>, Pharmacologie
+                                    <td><strong>Chirurgie</strong> → Diagnostic Vital → Suture Réflexe → Greffe
+                                        d'Urgence
+                                        <br><strong>Apothicaire de Guerre</strong> → Stimulant Neuro-Accélérateur →
+                                        Sérum Antidote → Cocktail Panacée
+                                        <br>Traitement des infections, Pharmacologie
                                     </td>
                                 </tr>
                                 <tr>
                                     <td><strong>Ingénierie & Arcanotech</strong></td>
                                     <td>Intelligence, Érudition</td>
                                     <td>Utilitaire</td>
-                                    <td>Réparation de réacteurs, Cristallographie Nytharite, Piratage</td>
+                                    <td><strong>Surfréquence Nytharite</strong> → Stabilisateur de Flux → Décharge
+                                        Harmonique → Résonance Infinie
+                                        <br>Réparation de réacteurs, Cristallographie Nytharite, Piratage
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td><strong>Penser / Stratégie</strong></td>
                                     <td>Intelligence</td>
                                     <td>Utilitaire, Défensif</td>
-                                    <td>Tactique de combat, Analyse des points faibles, Anticipation</td>
+                                    <td><strong>Analyse de Faille</strong> → Tir Coordonné → Prédiction de Retraite
+                                        → Échec et Mat
+                                        <br>Anticipation
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -921,21 +1035,30 @@
                                     <td><strong>Communication</strong></td>
                                     <td>Charisme, Intelligence</td>
                                     <td>Social</td>
-                                    <td><strong>Tromper</strong>, <strong>Négocier</strong>, <strong>Charmer</strong>,
-                                        <strong>Interroger</strong>, <strong>Provoquer</strong>
+                                    <td><strong>Tromper</strong> → Feinte Oratoire → Faux Signalement → Mascarade
+                                        Totale
+                                        <br><strong>Négocier</strong> → Marché Noir Impérial → Cessez-le-Feu →
+                                        Rachat d'Allégeance
+                                        <br><strong>Charmer</strong>, Interroger, Provoquer
                                     </td>
                                 </tr>
                                 <tr>
                                     <td><strong>Intimidation</strong></td>
                                     <td>Charisme (ou Charisme, Force)</td>
                                     <td>Social, Offensif</td>
-                                    <td>Soumission psychologique, Menace de mort, Regard de fer</td>
+                                    <td><strong>Intimider</strong> → Rugissement de Terreur → Regard de Prédateur →
+                                        Paralysie Psychologique
+                                        <br>Soumission psychologique, Menace de mort, Regard de fer
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td><strong>Leadership</strong></td>
                                     <td>Charisme, Intelligence</td>
                                     <td>Social, Utilitaire</td>
-                                    <td><strong>Mener des troupes</strong>, Ralliement moral, Coordination de feu</td>
+                                    <td><strong>Mener (Commandement)</strong> → En avant ! → Tenir la Ligne ! →
+                                        Galvanisation des Héros
+                                        <br>Mener des troupes, Ralliement moral, Coordination de feu
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -963,14 +1086,10 @@
                                     <td><strong>Observation</strong></td>
                                     <td>Vision, Ouïe</td>
                                     <td>Utilitaire, Défensif</td>
-                                    <td>Détection des embuscades, Repérage de détails, Vigilance,
-                                        <strong>Vigilance Réflexe</strong> (immunise contre la surprise, réaction
-                                        défensive conservée en embuscade) ➔ <strong>Œil de Lynx</strong> (+2 aux
-                                        duels de détection du brouillard, §21.4 du Livre V) ➔
-                                        <strong>Détection Thermique</strong> (+2 au duel, voit jusqu'à moitié
-                                        portée même derrière un mur plein) ➔ <strong>Perception Panoramique
-                                        360°</strong> (immunité aux embuscades, bonus de surprise permanent —
-                                        le combat voit déjà à 360°, sans angle mort)</td>
+                                    <td><strong>Vigilance Réflexe</strong> → Œil de Lynx → Détection Thermique →
+                                        Perception Panoramique 360°
+                                        <br>Détection des embuscades, Repérage de détails, Vigilance
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td><strong>Écoute</strong></td>
@@ -982,8 +1101,12 @@
                                     <td><strong>Intuition</strong></td>
                                     <td>Intelligence, Instinct</td>
                                     <td>Utilitaire, Défensif</td>
-                                    <td><strong>Sens du Danger</strong> (Premiers Réflexes, Clairvoyance du Vétéran),
-                                        <strong>Instinct du Chasseur</strong> (Pistage, Piégeur)</td>
+                                    <td><strong>Sens du Danger</strong> → Premiers Réflexes → Clairvoyance du
+                                        Vétéran
+                                        <br><strong>Instinct du Chasseur</strong> → Pistage → Piégeur
+                                        <br><strong>Sphère de Résonance</strong> → Écho Myotatique → Champ Prédictif
+                                        → Omniprésence Synaptique
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td><strong>Nature & Survie</strong></td>
@@ -995,7 +1118,10 @@
                                     <td><strong>Artisanat / Connaissance</strong></td>
                                     <td>Sagesse, Intelligence</td>
                                     <td>Utilitaire</td>
-                                    <td>Fabriquer, Forger, Sculpter, Enseigner</td>
+                                    <td><strong>Affûtage de Précision</strong> → Fil Monomoléculaire → Blindage
+                                        Trempé → Acier de Maître d'Hybris
+                                        <br>Fabriquer, Forger, Sculpter, Enseigner
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -1008,9 +1134,22 @@
                     </h2>
 
                     <p class="lead">
-                        Vous voulez une spécialisation ? Ça coûte <strong>5 XP de la bonne banque (ou du libre)</strong>,
-                        <strong>10 XP depuis une autre banque</strong> (Livre I §5.3). En échange, vous gagnez
-                        des effets précis — et vous parez sans malus avec cette approche.
+                        Vous voulez une spécialisation ? Ça coûte <strong><a class="rule-ref"
+                                href="livre_1.html#sec-5-3"
+                                data-tip="Spécialisation : 5 XP de la bonne banque ou du libre, au tarif normal (§5.3).">5
+                                XP de la bonne banque (ou du
+                                libre)</a></strong>,
+                        <strong><a class="rule-ref" href="livre_1.html#sec-5-3"
+                                data-tip="Coût croisé ×2 : dépenser l'XP d'une autre compétence coûte double (§5.3).">10
+                                XP depuis une autre banque</a></strong> (<a class="rule-ref" href="livre_1.html#sec-5-3"
+                            data-tip="Dépenser son XP : dans sa compétence au tarif normal, ×2 en croisé, libre partout (§5.3).">Livre
+                            I §5.3</a>). En échange, vous gagnez
+                        des effets précis — et vous <a class="rule-ref" href="#chap-10"
+                            data-tip="Parade pure = plein dé. Sinon −1 niveau, annulé par la spécialisation dédiée (§10).">parez
+                            sans malus</a> avec cette approche.
+                        <br>Chaque ligne ci-dessous est une spécialisation à part entière : vous les achetez une par
+                        une, chacune au même tarif. Lisez l'indentation : une spécialisation indentée (↳)
+                        a pour prérequis celle qu'elle pointe — sa mère, juste au-dessus dans sa branche.
                     </p>
 
                     <div class="table-container">
@@ -1026,50 +1165,406 @@
                             <tbody>
                                 <tr>
                                     <td><strong>Maniement de l'Épée</strong></td>
-                                    <td>Armes Tranchantes (FOR, AGI)</td>
+                                    <td>Maniement d'Arme (FOR, AGI)</td>
                                     <td>Offensif, Défensif</td>
-                                    <td>Permet de <strong>contre-attaquer les actions offensives</strong> en réaction
-                                        (avec un malus de 1 sur la riposte). Pas de malus de défense non-exclusive.</td>
+                                    <td>Vous parez sans malus et vous <strong>contre-attaquez en réaction</strong>.
+                                    </td>
                                 </tr>
                                 <tr>
-                                    <td><strong>Marteau de Guerre</strong></td>
-                                    <td>Maniement d'Arme — <em>spécialisation Armes Contondantes</em> (FOR, AGI)</td>
+                                    <td style="padding-left:2em;">↳ <strong>Riposte Éclair</strong></td>
+                                    <td>Maniement d'Arme (FOR, AGI)</td>
+                                    <td>Offensif, Défensif</td>
+                                    <td>Votre riposte ne prend aucun malus.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:3.5em;">↳ <strong>Tranchant Tempétueux</strong></td>
+                                    <td>Maniement d'Arme (FOR, AGI)</td>
+                                    <td>Offensif, Défensif</td>
+                                    <td>+2 dégâts sur vos ripostes réussies.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:5em;">↳ <strong>Lame de Ligne Temporelle Zéro</strong></td>
+                                    <td>Maniement d'Arme (FOR, AGI)</td>
+                                    <td>Offensif, Défensif</td>
+                                    <td>Sur critique en parade,
+                                        vous annulez l'attaque et renvoyez tous les dégâts.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:2em;">↳ <strong>Garde Haute Impériale</strong></td>
+                                    <td>Maniement d'Arme (FOR, AGI)</td>
+                                    <td>Offensif, Défensif</td>
+                                    <td>+2 en parade contre frappes
+                                        lourdes et tirs ciblés.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:3.5em;">↳ <strong>Lame Miroir</strong></td>
+                                    <td>Maniement d'Arme (FOR, AGI)</td>
+                                    <td>Offensif, Défensif</td>
+                                    <td>Vous parez les tirs laser au
+                                        contact (Delta ≥ 0).
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:5em;">↳ <strong>Dôme de Parade</strong></td>
+                                    <td>Maniement d'Arme (FOR, AGI)</td>
+                                    <td>Offensif, Défensif</td>
+                                    <td>Vous parez pour un allié adjacent.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Armes Contondantes</strong></td>
+                                    <td>Maniement d'Arme (FOR, AGI)</td>
+                                    <td>Offensif, Défensif</td>
+                                    <td>Maîtrise du choc (Marteau, Masse, Gourdin, Fléau) : vous parez sans malus.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:2em;">↳ <strong>Marteau de Guerre</strong></td>
+                                    <td>Maniement d'Arme (FOR, AGI)</td>
                                     <td>Offensif</td>
-                                    <td>Sur réussite nette : <strong>La cible tombe à terre</strong>, reçoit <strong>+2
-                                            Dégâts</strong> et inflige des <strong>Dégâts Absolus</strong> (ignore
-                                        l'armure non énergétique).</td>
+                                    <td>Sur succès net, la cible <a class="rule-ref"
+                                                href="livre_6.html#sec-24-1"
+                                                data-tip="À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.">tombe
+                                                à terre</a>, +2 dégâts, dégâts convertis en <a class="rule-ref"
+                                                href="livre_6.html#chap-23"
+                                                data-tip="Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).">Absolus</a>.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:3.5em;">↳ <strong>Écrasement Osseux</strong></td>
+                                    <td>Maniement d'Arme (FOR, AGI)</td>
+                                    <td>Offensif</td>
+                                    <td>+3 dégâts contre armure lourde.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:5em;">↳ <strong>Brise-Crâne</strong></td>
+                                    <td>Maniement d'Arme (FOR, AGI)</td>
+                                    <td>Offensif</td>
+                                    <td>Visée Tête sans malus, applique <a class="rule-ref"
+                                                href="livre_6.html#sec-24-1"
+                                                data-tip="Sonné : aucune action. La créature tombe immédiatement à terre.">Sonné</a>
+                                        et <a class="rule-ref"
+                                                href="livre_6.html#sec-24-1"
+                                                data-tip="Étourdi : −1 ec sur tous les jets.">Étourdi</a>.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:6.5em;">↳ <strong>Cataclysme de Fer</strong></td>
+                                    <td>Maniement d'Arme (FOR, AGI)</td>
+                                    <td>Offensif</td>
+                                    <td>+5 dégâts, onde qui renverse les
+                                        unités adjacentes.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:3.5em;">↳ <strong>Onde de Faille</strong></td>
+                                    <td>Maniement d'Arme (FOR, AGI)</td>
+                                    <td>Offensif</td>
+                                    <td>Zone de terrain difficile sur 2 cases.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:5em;">↳ <strong>Onde Sismique Réverbérante</strong></td>
+                                    <td>Maniement d'Arme (FOR, AGI)</td>
+                                    <td>Offensif</td>
+                                    <td><a class="rule-ref"
+                                                href="livre_6.html#sec-24-1"
+                                                data-tip="Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).">Déstabilisé</a>
+                                        dans un rayon de 2 cases.</td>
                                 </tr>
                                 <tr>
                                     <td><strong>Hache de Guerre</strong></td>
                                     <td>Maniement d'Arme (FOR, AGI)</td>
                                     <td>Offensif, Défensif</td>
-                                    <td>Sur réussite nette : <strong>+2 Dégâts</strong> (+3 contre armure lourde,
-                                        +4 avec Brise-Garde, +5 avec Exécution du Bourreau). Croc de Désarmement
-                                        désarme sur Delta &ge; 3.</td>
+                                    <td>Sur succès net : <strong>+2 dégâts</strong>.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:2em;">↳ <strong>Fente du Bûcheron</strong></td>
+                                    <td>Maniement d'Arme (FOR, AGI)</td>
+                                    <td>Offensif, Défensif</td>
+                                    <td>+3 dégâts contre armure lourde.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:3.5em;">↳ <strong>Brise-Garde</strong></td>
+                                    <td>Maniement d'Arme (FOR, AGI)</td>
+                                    <td>Offensif, Défensif</td>
+                                    <td>+4 dégâts, <a class="rule-ref"
+                                                href="livre_6.html#sec-24-1"
+                                                data-tip="À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.">À
+                                                Terre</a> sur Delta ≥ 2.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:5em;">↳ <strong>Exécution du Bourreau</strong></td>
+                                    <td>Maniement d'Arme (FOR, AGI)</td>
+                                    <td>Offensif, Défensif</td>
+                                    <td>+5 dégâts, dégâts convertis en
+                                        <a class="rule-ref"
+                                                href="livre_6.html#chap-23"
+                                                data-tip="Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).">Absolus</a>
+                                        sur critique.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:2em;">↳ <strong>Croc de Désarmement</strong></td>
+                                    <td>Maniement d'Arme (FOR, AGI)</td>
+                                    <td>Offensif, Défensif</td>
+                                    <td>Désarme sur Delta ≥ 3.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:3.5em;">↳ <strong>Arrache-Bouclier</strong></td>
+                                    <td>Maniement d'Arme (FOR, AGI)</td>
+                                    <td>Offensif, Défensif</td>
+                                    <td>Une parade adverse limite (-1 ou 0)
+                                        devient une touche franche.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Fente de Rupture</strong></td>
+                                    <td>Maniement d'Arme (FOR, AGI)</td>
+                                    <td>Offensif</td>
+                                    <td>Estoc dans les défauts du blindage : +1 PA à l'assaut pour ignorer 2 points
+                                        d'armure.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:2em;">↳ <strong>Pointe Chirurgicale</strong></td>
+                                    <td>Maniement d'Arme (FOR, AGI)</td>
+                                    <td>Offensif</td>
+                                    <td>Ignore 3 points d'armure en
+                                        frappe ciblée.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:3.5em;">↳ <strong>Transpercement Traversant</strong></td>
+                                    <td>Maniement d'Arme (FOR, AGI)</td>
+                                    <td>Offensif</td>
+                                    <td>Ignore 4 points d'armure et
+                                        blesse aussi l'ennemi juste derrière.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:5em;">↳ <strong>Fissure Causal</strong></td>
+                                    <td>Maniement d'Arme (FOR, AGI)</td>
+                                    <td>Offensif</td>
+                                    <td>Statut Chrono-Fracture,
+                                        draine 2 PA adverses.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Bloquer</strong></td>
+                                    <td>Maniement d'Arme / Défense Corporelle (FOR, AGI / FOR)</td>
+                                    <td>Défensif</td>
+                                    <td>Bouclier ou garde hermétique : vous parez sans malus. Valable des deux côtés.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:2em;">↳ <strong>Mur de Bouclier</strong></td>
+                                    <td>Maniement d'Arme / Défense Corporelle (FOR, AGI / FOR)</td>
+                                    <td>Défensif</td>
+                                    <td>Absorbe 3 dégâts de plus au blocage.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:3.5em;">↳ <strong>Heurt de Bouclier</strong></td>
+                                    <td>Maniement d'Arme / Défense Corporelle (FOR, AGI / FOR)</td>
+                                    <td>Défensif</td>
+                                    <td>Après un blocage, 4 dégâts et
+                                        repousse d'1 case.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:5em;">↳ <strong>Forteresse Impénétrable</strong></td>
+                                    <td>Maniement d'Arme / Défense Corporelle (FOR, AGI / FOR)</td>
+                                    <td>Défensif</td>
+                                    <td>Immunité aux critiques, au
+                                        <a class="rule-ref"
+                                                href="livre_6.html#sec-24-1"
+                                                data-tip="Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).">Déstabilisé</a>
+                                        et à <a class="rule-ref"
+                                                href="livre_6.html#sec-24-1"
+                                                data-tip="À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.">À
+                                                Terre</a> pendant la garde.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Bouclier Vivant</strong></td>
+                                    <td>Défense Corporelle (FOR)</td>
+                                    <td>Défensif</td>
+                                    <td>Vous interposez votre corps pour un allié adjacent.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:2em;">↳ <strong>Interposition Réflexe</strong></td>
+                                    <td>Défense Corporelle (FOR)</td>
+                                    <td>Défensif</td>
+                                    <td>Coûte 1 PA au lieu de 2.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:3.5em;">↳ <strong>Dévier le Calibre</strong></td>
+                                    <td>Défense Corporelle (FOR)</td>
+                                    <td>Défensif</td>
+                                    <td>Dégâts interceptés divisés par
+                                        deux.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:5em;">↳ <strong>Mur Inébranlable</strong></td>
+                                    <td>Défense Corporelle (FOR)</td>
+                                    <td>Défensif</td>
+                                    <td>Vous encaissez les grenades sans
+                                        refoulement ni Déstabilisé.</td>
                                 </tr>
                                 <tr>
                                     <td><strong>Arme de Hast</strong></td>
                                     <td>Armes Perçantes (AGI)</td>
                                     <td>Offensif</td>
-                                    <td>Piques et hallebardes à 2 cases sans malus d'allonge. Arrêt de Charge
-                                        <strong>ignore 2 points d'armure</strong> (3 avec Mur de Piques, 4 avec
-                                        Phalange d'Acier). Fauchage fait chuter À Terre sur Delta &ge; 2.
-                                    </td>
+                                    <td>Piques et hallebardes à 2 cases sans malus d'allonge.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:2em;">↳ <strong>Arrêt de Charge</strong></td>
+                                    <td>Armes Perçantes (AGI)</td>
+                                    <td>Offensif</td>
+                                    <td>Ignore 2 points d'armure.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:3.5em;">↳ <strong>Mur de Piques</strong></td>
+                                    <td>Armes Perçantes (AGI)</td>
+                                    <td>Offensif</td>
+                                    <td>Ignore 3 et repousse d'1 case.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:5em;">↳ <strong>Phalange d'Acier</strong></td>
+                                    <td>Armes Perçantes (AGI)</td>
+                                    <td>Offensif</td>
+                                    <td>Ignore 4 et blesse aussi l'ennemi
+                                        derrière.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:2em;">↳ <strong>Fauchage Latéral</strong></td>
+                                    <td>Armes Perçantes (AGI)</td>
+                                    <td>Offensif</td>
+                                    <td><a class="rule-ref"
+                                            href="livre_6.html#sec-24-1"
+                                            data-tip="À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.">À
+                                            Terre</a> sur Delta ≥ 2.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:3.5em;">↳ <strong>Crochet de Hallebarde</strong></td>
+                                    <td>Armes Perçantes (AGI)</td>
+                                    <td>Offensif</td>
+                                    <td>Désarmer ou mettre À Terre sur
+                                        Delta ≥ 2.</td>
                                 </tr>
                                 <tr>
                                     <td><strong>Tir à l'Arc</strong></td>
-                                    <td>Projectiles (AGI)</td>
+                                    <td>Ballistique (AGI)</td>
                                     <td>Offensif</td>
-                                    <td>Arcs et arbalètes <strong>silencieux</strong> (+2 cases de portée). Flèche
-                                        Perforante ignore 2 points d'armure, Tir en Cloche ignore le couvert
-                                        partiel, Pluie d'Acier blesse une seconde cible adjacente.</td>
+                                    <td>Arcs et arbalètes <strong>silencieux</strong> (+2 cases de portée).</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:2em;">↳ <strong>Flèche Perforante</strong></td>
+                                    <td>Ballistique (AGI)</td>
+                                    <td>Offensif</td>
+                                    <td>Ignore 2 points d'armure.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:3.5em;">↳ <strong>Tir en Cloche</strong></td>
+                                    <td>Ballistique (AGI)</td>
+                                    <td>Offensif</td>
+                                    <td>Ignore le couvert partiel, +4 cases
+                                        de portée.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:5em;">↳ <strong>Pluie d'Acier</strong></td>
+                                    <td>Ballistique (AGI)</td>
+                                    <td>Offensif</td>
+                                    <td>Blesse une seconde cible adjacente.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:2em;">↳ <strong>Tir Instinctif</strong></td>
+                                    <td>Ballistique (AGI)</td>
+                                    <td>Offensif</td>
+                                    <td>Votre premier tir du tour coûte 1 PA
+                                        de moins.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:3.5em;">↳ <strong>Chasseur Silencieux</strong></td>
+                                    <td>Ballistique (AGI)</td>
+                                    <td>Offensif</td>
+                                    <td>Abattre un isolé ne donne pas
+                                        l'alerte ; +2 en Discrétion après un tir réussi.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Fusil de Précision</strong></td>
+                                    <td>Ballistique (AGI)</td>
+                                    <td>Offensif</td>
+                                    <td>Tir longue portée : +4 cases, critique facilité.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:2em;">↳ <strong>Visée Millimétrique</strong></td>
+                                    <td>Ballistique (AGI)</td>
+                                    <td>Offensif</td>
+                                    <td>+2 en visée chirurgicale si vous
+                                        n'avez pas bougé.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:3.5em;">↳ <strong>Perforation Hyper-Véloce</strong></td>
+                                    <td>Ballistique (AGI)</td>
+                                    <td>Offensif</td>
+                                    <td>Ignore 4 points d'armure.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:5em;">↳ <strong>Tir à Travers les Parois</strong></td>
+                                    <td>Ballistique (AGI)</td>
+                                    <td>Offensif</td>
+                                    <td>Cible derrière un couvert
+                                        total à -2 seulement.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:2em;">↳ <strong>Tir de Suppression</strong></td>
+                                    <td>Ballistique (AGI)</td>
+                                    <td>Offensif</td>
+                                    <td><a class="rule-ref"
+                                            href="livre_6.html#sec-24-1"
+                                            data-tip="Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).">Déstabilisé</a>
+                                        et draine 1 PA défensif.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:3.5em;">↳ <strong>Calibre Anti-Matériel</strong></td>
+                                    <td>Ballistique (AGI)</td>
+                                    <td>Offensif</td>
+                                    <td>+4 dégâts contre véhicules et
+                                        structures.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Grenadier d'Assaut</strong></td>
+                                    <td>Ballistique (AGI)</td>
+                                    <td>Offensif</td>
+                                    <td>Explosifs : dispersion réduite, +2 cases de lancer.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:2em;">↳ <strong>Calcul Balistique</strong></td>
+                                    <td>Ballistique (AGI)</td>
+                                    <td>Offensif</td>
+                                    <td>Dispersion réduite d'1 case de
+                                        plus (minimum 0).</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:3.5em;">↳ <strong>Dégoupillage Éclair</strong></td>
+                                    <td>Ballistique (AGI)</td>
+                                    <td>Offensif</td>
+                                    <td>Lancer coûte 1 PA de moins.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:5em;">↳ <strong>Souffle Thermobarique</strong></td>
+                                    <td>Ballistique (AGI)</td>
+                                    <td>Offensif</td>
+                                    <td>Rayon du souffle +1 case.</td>
                                 </tr>
                                 <tr>
                                     <td><strong>Course d'Endurance</strong></td>
                                     <td>Athlétisme (CON, FOR, AGI)</td>
                                     <td>Utilitaire</td>
-                                    <td>Le premier déplacement du tour coûte <strong>1 PA de moins</strong>.
-                                        Second Souffle : Reprendre son Souffle efface <strong>2 ESS</strong>.
+                                    <td>Le premier déplacement du tour coûte <strong>1 <a class="rule-ref"
+                                                href="livre_1.html#chap-4"
+                                                data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a>
+                                            de moins</strong>.
+                                        Second Souffle : Reprendre son Souffle efface <strong>2 <a class="rule-ref"
+                                                href="livre_1.html#sec-4-2"
+                                                data-tip="Essoufflement : 1 point = des PA d'urgence ; ne part pas tout seul, action dédiée pour souffler (§4.2).">ESS</a></strong>.
                                         Cœur de Marathon : Souffle d'Urgence à <strong>+3 PA</strong>.</td>
                                 </tr>
                                 <tr>
@@ -1084,52 +1579,372 @@
                                     <td><strong>Condition de Fer</strong></td>
                                     <td>Endurance Physique (CON, FOR)</td>
                                     <td>Utilitaire, Défensif</td>
-                                    <td><strong>+1 PV</strong> au début de chaque tour si blessé. Dur à Cuire :
-                                        <strong>+2 Encaissement</strong>. Mur de Chair : +2 Encaissement et
-                                        <strong>+1 Armure</strong> naturelle.
+                                    <td><strong>+1 PV</strong> au début de votre tour si blessé et conscient.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:2em;">↳ <strong>Dur à Cuire</strong></td>
+                                    <td>Endurance Physique (CON, FOR)</td>
+                                    <td>Utilitaire, Défensif</td>
+                                    <td><strong><a class="rule-ref" href="livre_1.html#sec-4-1"
+                                                data-tip="Encaissement = CON × 2 : ce que ton corps encaisse en un coup sans traumatisme (§4.1).">+2
+                                                Encaissement</a></strong> (choc traumatique).</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:3.5em;">↳ <strong>Mur de Chair</strong></td>
+                                    <td>Endurance Physique (CON, FOR)</td>
+                                    <td>Utilitaire, Défensif</td>
+                                    <td><a class="rule-ref" href="livre_1.html#sec-4-1"
+                                            data-tip="Encaissement = CON × 2 : ce que ton corps encaisse en un coup sans traumatisme (§4.1).">+2
+                                            Encaissement</a> et
+                                        <strong>+1 Armure</strong> naturelle permanente.
                                     </td>
                                 </tr>
                                 <tr>
                                     <td><strong>Trempe de Fer</strong></td>
                                     <td>Endurance Physique (CON, FOR)</td>
                                     <td>Défensif</td>
-                                    <td>Déstabilisé réduit à <strong>-1</strong>. Ignorer la Douleur annule le
-                                        malus d'À Terre en attaque. Esprit de Granit ignore
-                                        <strong>Étourdi</strong>.
+                                    <td><a class="rule-ref" href="livre_6.html#sec-24-1"
+                                            data-tip="Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).">Déstabilisé</a>
+                                        réduit à <strong>-1</strong> sur tous vos jets.
                                     </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:2em;">↳ <strong>Ignorer la Douleur</strong></td>
+                                    <td>Endurance Physique (CON, FOR)</td>
+                                    <td>Défensif</td>
+                                    <td>Le malus d'<a class="rule-ref" href="livre_6.html#sec-24-1"
+                                            data-tip="À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.">À
+                                            Terre</a> en attaque est ignoré.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:3.5em;">↳ <strong>Esprit de Granit</strong></td>
+                                    <td>Endurance Physique (CON, FOR)</td>
+                                    <td>Défensif</td>
+                                    <td>Le malus d'<strong><a class="rule-ref" href="livre_6.html#sec-24-1"
+                                                data-tip="Étourdi : −1 ec sur tous les jets.">Étourdi</a></strong> est ignoré.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Seconde Respiration</strong></td>
+                                    <td>Cardio (CON)</td>
+                                    <td>Utilitaire</td>
+                                    <td>1 fois par combat : reprendre son souffle coûte 0 PA et efface 2 points
+                                        d'essoufflement.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:2em;">↳ <strong>Rechargement Anaérobie</strong></td>
+                                    <td>Cardio (CON)</td>
+                                    <td>Utilitaire</td>
+                                    <td>Efface 3 points d'essoufflement
+                                        au lieu de 2.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:3.5em;">↳ <strong>Poumons d'Acier</strong></td>
+                                    <td>Cardio (CON)</td>
+                                    <td>Utilitaire</td>
+                                    <td>Efface 4 points et donne +1 PA
+                                        immédiat.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:5em;">↳ <strong>Cœur de Berserker</strong></td>
+                                    <td>Cardio (CON)</td>
+                                    <td>Utilitaire</td>
+                                    <td>Utilisable 2 fois par combat,
+                                        immunité au <a class="rule-ref" href="livre_6.html#sec-24-1"
+                                            data-tip="Ralenti : toute action coûte le double de PA.">Ralenti</a>.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Poussée Cardiovasculaire</strong></td>
+                                    <td>Cardio (CON)</td>
+                                    <td>Utilitaire</td>
+                                    <td>Vous forcez 1 PA d'action en prenant 1 point d'essoufflement.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:2em;">↳ <strong>Redline Stabilisé</strong></td>
+                                    <td>Cardio (CON)</td>
+                                    <td>Utilitaire</td>
+                                    <td>Plafond d'essoufflement sans
+                                        Ralenti.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:3.5em;">↳ <strong>Injection d'Adrénaline</strong></td>
+                                    <td>Cardio (CON)</td>
+                                    <td>Utilitaire</td>
+                                    <td>La poussée donne +2 PA au lieu
+                                        de +1 par point engagé.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Immunité Toxique</strong></td>
+                                    <td>Système Immunitaire (CON)</td>
+                                    <td>Défensif</td>
+                                    <td>Immunité complète au statut <a class="rule-ref"
+                                            href="livre_6.html#sec-24-1bis"
+                                            data-tip="Empoisonné : PV directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.">Empoisonné</a>.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:2em;">↳ <strong>Neutralisation des Poisons</strong></td>
+                                    <td>Système Immunitaire (CON)</td>
+                                    <td>Défensif</td>
+                                    <td>Dégâts des toxines divisés par deux.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:3.5em;">↳ <strong>Filtrage des Gaz de Guerre</strong></td>
+                                    <td>Système Immunitaire (CON)</td>
+                                    <td>Défensif</td>
+                                    <td>Immunité aux lacrymogènes
+                                        et neurotoxiques.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:5em;">↳ <strong>Sang Antidote Universel</strong></td>
+                                    <td>Système Immunitaire (CON)</td>
+                                    <td>Défensif</td>
+                                    <td>Immunise les alliés à moins
+                                        de 2 cases contre gaz et toxines.</td>
                                 </tr>
                                 <tr>
                                     <td><strong>Sens du Danger</strong></td>
                                     <td>Intuition (INT, INS)</td>
                                     <td>Utilitaire</td>
-                                    <td>L'Instinct compte dans la <strong>base d'Initiative</strong>. Premiers
-                                        Réflexes : <strong>+1 palier</strong> au dé d'Initiative. Clairvoyance du
-                                        Vétéran : immunité aux <strong>embuscades</strong>.</td>
+                                    <td>L'Instinct compte dans la <strong><a class="rule-ref"
+                                                href="livre_1.html#sec-4-3"
+                                                data-tip="Initiative : meilleur score entre Rapidité, Agilité et Intelligence, converti en dé (§4.3).">base
+                                                d'Initiative</a></strong> (avec Rapidité, Agilité, Intelligence).
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:2em;">↳ <strong>Premiers Réflexes</strong></td>
+                                    <td>Intuition (INT, INS)</td>
+                                    <td>Utilitaire</td>
+                                    <td><strong>+1 palier</strong> au dé
+                                        d'Initiative.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:3.5em;">↳ <strong>Clairvoyance du Vétéran</strong></td>
+                                    <td>Intuition (INT, INS)</td>
+                                    <td>Utilitaire</td>
+                                    <td>Immunité totale aux <strong><a class="rule-ref" href="livre_5.html#chap-21-4"
+                                                data-tip="Embuscade : sans Vigilance, pas de réaction défensive. Détection au brouillard (§21.4).">embuscades</a></strong>
+                                        et aux attaques de dos.</td>
                                 </tr>
                                 <tr>
                                     <td><strong>Instinct du Chasseur</strong></td>
                                     <td>Intuition (INT, INS)</td>
                                     <td>Utilitaire</td>
-                                    <td>Piste fraîche sans épreuve. Pistage : <strong>+2 en NatureSurvie</strong>.
-                                        Piégeur : pièges de campagne qui <strong>Immobilisent</strong>.</td>
+                                    <td>Piste fraîche sans épreuve ; estime nombre, poids et allure de la proie.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:2em;">↳ <strong>Pistage</strong></td>
+                                    <td>Intuition (INT, INS)</td>
+                                    <td>Utilitaire</td>
+                                    <td><strong>+2 en NatureSurvie</strong>
+                                        pour pister, même sur sol dur ou sans lune.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:3.5em;">↳ <strong>Piégeur</strong></td>
+                                    <td>Intuition (INT, INS)</td>
+                                    <td>Utilitaire</td>
+                                    <td>Pose et détecte les pièges de campagne ; les
+                                        proies prises sont <strong><a class="rule-ref"
+                                                href="livre_6.html#sec-24-1"
+                                                data-tip="Immobilisé : impossible de faire la moindre action de mouvement (§24.1).">Immobilisées</a></strong>.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Sphère de Résonance</strong></td>
+                                    <td>Intuition (INT, INS)</td>
+                                    <td>Utilitaire, Défensif</td>
+                                    <td>Immunité aux attaques de dos et embuscades dans un rayon de 3 cases.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:2em;">↳ <strong>Écho Myotatique</strong></td>
+                                    <td>Intuition (INT, INS)</td>
+                                    <td>Utilitaire, Défensif</td>
+                                    <td>Ajuste votre mise de +1 PA en
+                                        défense au duel à l'aveugle.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:3.5em;">↳ <strong>Champ Prédictif</strong></td>
+                                    <td>Intuition (INT, INS)</td>
+                                    <td>Utilitaire, Défensif</td>
+                                    <td>Anticipe la zone visée : +2 en
+                                        esquive.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:5em;">↳ <strong>Omniprésence Synaptique</strong></td>
+                                    <td>Intuition (INT, INS)</td>
+                                    <td>Utilitaire, Défensif</td>
+                                    <td>Révèle les mises de PA et PE adverses
+                                        avant votre défense.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Affûtage de Précision</strong></td>
+                                    <td>Artisanat (SAG, INT)</td>
+                                    <td>Utilitaire</td>
+                                    <td>+1 dégât brut aux 3 prochaines attaques réussies avec l'arme affûtée.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:2em;">↳ <strong>Fil Monomoléculaire</strong></td>
+                                    <td>Artisanat (SAG, INT)</td>
+                                    <td>Utilitaire</td>
+                                    <td>+2 dégâts bruts permanents aux
+                                        armes blanches.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:3.5em;">↳ <strong>Blindage Trempé</strong></td>
+                                    <td>Artisanat (SAG, INT)</td>
+                                    <td>Utilitaire</td>
+                                    <td>+1 absorption permanente aux
+                                        armures métalliques.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:5em;">↳ <strong>Acier de Maître d'Hybris</strong></td>
+                                    <td>Artisanat (SAG, INT)</td>
+                                    <td>Utilitaire</td>
+                                    <td>L'arme ne s'émousse jamais ; critique
+                                        dès 11 ou 12 au dé.</td>
                                 </tr>
                                 <tr>
                                     <td><strong>Vigilance Réflexe</strong></td>
                                     <td>Observation (VUE, INS)</td>
                                     <td>Utilitaire, Défensif</td>
                                     <td>Immunise contre l'effet de surprise, réaction défensive conservée en
-                                        embuscade. <strong>Œil de Lynx : +2</strong> aux duels de détection du
-                                        brouillard (Livre V §21.4). <strong>Détection Thermique : +2</strong> au
-                                        duel, voit jusqu'à <strong>moitié portée</strong> même derrière un mur
-                                        plein. <strong>Perception Panoramique 360° :</strong> immunité aux
-                                        embuscades, bonus de surprise permanent.</td>
+                                        <a class="rule-ref" href="livre_5.html#chap-21-4"
+                                            data-tip="Embuscade : sans Vigilance, pas de réaction défensive. Détection au brouillard (§21.4).">embuscade</a>.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:2em;">↳ <strong>Œil de Lynx</strong></td>
+                                    <td>Observation (VUE, INS)</td>
+                                    <td>Utilitaire, Défensif</td>
+                                    <td><strong>+2</strong> aux duels de
+                                        détection du
+                                        brouillard (<a class="rule-ref" href="livre_5.html#chap-21-4"
+                                            data-tip="Brouillard de Guerre : détection asymétrique, duels d'Observation contre Discrétion (§21.4).">Livre
+                                            V §21.4</a>).</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:3.5em;">↳ <strong>Détection Thermique</strong></td>
+                                    <td>Observation (VUE, INS)</td>
+                                    <td>Utilitaire, Défensif</td>
+                                    <td><strong>+2</strong> au duel, révèle les
+                                        unités camouflées et invisibles à travers les parois légères.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:5em;">↳ <strong>Perception Panoramique 360°</strong></td>
+                                    <td>Observation (VUE, INS)</td>
+                                    <td>Utilitaire, Défensif</td>
+                                    <td>Immunité aux
+                                        embuscades, bonus de surprise permanent (le combat voit à 360°).</td>
                                 </tr>
                                 <tr>
                                     <td><strong>Pistolet & Tir Rapide</strong></td>
-                                    <td>Projectiles (AGI)</td>
+                                    <td>Ballistique (AGI)</td>
                                     <td>Offensif</td>
-                                    <td>Sur réussite nette : La cible est <strong>Ralentie</strong> pour 1 tour. Sur un
-                                        résultat de 5 ou 6 sur le dé : <strong>La cible tombe au sol</strong>.</td>
+                                    <td>Sur réussite nette : la cible est <strong><a class="rule-ref"
+                                                href="livre_6.html#sec-24-1"
+                                                data-tip="Ralenti : toute action coûte le double de PA.">Ralentie</a></strong>
+                                        pour 1 tour. Sur 5 ou 6 au dé : la cible <strong><a class="rule-ref"
+                                                href="livre_6.html#sec-24-1"
+                                                data-tip="À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.">tombe
+                                                au sol</a></strong>.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:2em;">↳ <strong>Dégainé Réflexe</strong></td>
+                                    <td>Ballistique (AGI)</td>
+                                    <td>Offensif</td>
+                                    <td>Votre premier tir du tour coûte
+                                        1 PA de moins.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:3.5em;">↳ <strong>Akimbo Assaut</strong></td>
+                                    <td>Ballistique (AGI)</td>
+                                    <td>Offensif</td>
+                                    <td>Deux pistolets sur la même cible pour
+                                        3 PA.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:5em;">↳ <strong>Trait d'Orichalque</strong></td>
+                                    <td>Ballistique (AGI)</td>
+                                    <td>Offensif</td>
+                                    <td>Ignore le couvert partiel,
+                                        transperce 2 cibles alignées.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:2em;">↳ <strong>Balle dans le Genou</strong></td>
+                                    <td>Ballistique (AGI)</td>
+                                    <td>Offensif</td>
+                                    <td>Visée Jambes sans malus,
+                                        Ralenti garanti.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:3.5em;">↳ <strong>Tir de Neutralisation</strong></td>
+                                    <td>Ballistique (AGI)</td>
+                                    <td>Offensif</td>
+                                    <td>Visée Bras Droit, désarme sur
+                                        Delta ≥ 1.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Roulade de Décrochage</strong></td>
+                                    <td>Esquive (AGI)</td>
+                                    <td>Défensif</td>
+                                    <td>Sur esquive réussie (Delta ≥ 2) : 1 case de recul gratuit.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:2em;">↳ <strong>Reprise d'Appui</strong></td>
+                                    <td>Esquive (AGI)</td>
+                                    <td>Défensif</td>
+                                    <td>+1 PA de réserve au tour suivant
+                                        après une esquive parfaite.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:3.5em;">↳ <strong>Ombre Évasive</strong></td>
+                                    <td>Esquive (AGI)</td>
+                                    <td>Défensif</td>
+                                    <td>On ne peut plus vous cibler jusqu'à
+                                        votre prochain tour.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:5em;">↳ <strong>Pas Déphasé</strong></td>
+                                    <td>Esquive (AGI)</td>
+                                    <td>Défensif</td>
+                                    <td>Téléportation de 2 cases sur esquive
+                                        réussie.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:2em;">↳ <strong>Esquive Réactive</strong></td>
+                                    <td>Esquive (AGI)</td>
+                                    <td>Défensif</td>
+                                    <td>Le Ralenti ne double plus votre
+                                        coût d'esquive.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:3.5em;">↳ <strong>Contre-Poussée</strong></td>
+                                    <td>Esquive (AGI)</td>
+                                    <td>Défensif</td>
+                                    <td>Repousse l'assaillant d'1 case après
+                                        une esquive au contact.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Acrobatie d'Évitement</strong></td>
+                                    <td>Esquive (AGI)</td>
+                                    <td>Défensif</td>
+                                    <td>Voltige : tranchées et demi-couverts sans PA.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:2em;">↳ <strong>Saut Périlleux</strong></td>
+                                    <td>Esquive (AGI)</td>
+                                    <td>Défensif</td>
+                                    <td>Barricades et mi-hauteurs sans
+                                        coût de mouvement.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:3.5em;">↳ <strong>Vrille Balistique</strong></td>
+                                    <td>Esquive (AGI)</td>
+                                    <td>Défensif</td>
+                                    <td>+2 en esquive contre fusils et
+                                        grenades.</td>
                                 </tr>
                                 <tr>
                                     <td><strong>Armes Lourdes (Canons)</strong></td>
@@ -1142,62 +1957,418 @@
                                     <td><strong>Escrime / Rapière</strong></td>
                                     <td>Armes Perçantes (AGI)</td>
                                     <td>Offensif, Défensif</td>
-                                    <td>Annule la pénalité de visée chirurgicale vers les points vitaux légers (bras,
-                                        cou, jugulaire).</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Arts Martiaux</strong></td>
-                                    <td>Mains Nues (FOR, AGI, RAP)</td>
-                                    <td>Offensif, Défensif</td>
-                                    <td>Permet d'utiliser l'Agilité ou la Force pour parer à mains nues sans pénalité.
-                                        <strong>Immunité Canon Entravé :</strong> autorise les frappes au pied (kicks,
-                                        coups de genou) à plein dé tout en tenant une arme longue en main. Sur choc
-                                        traumatique, coup critique ou différentiel net &ge; 4, déclenche le
-                                        <strong>Refoulement (Push-Kick)</strong> qui repousse la cible d'un mètre
-                                        (Distance = 2), brisant l'enclavement au contact.
+                                    <td>Lame rapide : visée chirurgicale des membres sans malus, parade sans malus.
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td><strong>Médecine & Chirurgie</strong></td>
-                                    <td>Académie / Soins (ÉRU, INT)</td>
+                                    <td style="padding-left:2em;">↳ <strong>Riposte à l'Estoc</strong></td>
+                                    <td>Armes Perçantes (AGI)</td>
+                                    <td>Offensif, Défensif</td>
+                                    <td>Contre-attaque immédiate pour 1 PA de
+                                        réaction.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:3.5em;">↳ <strong>Fleuret Éclair</strong></td>
+                                    <td>Armes Perçantes (AGI)</td>
+                                    <td>Offensif, Défensif</td>
+                                    <td>+2 en initiative réflexe, 1 parade
+                                        gratuite par tour.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:5em;">↳ <strong>Frappe Fantôme</strong></td>
+                                    <td>Armes Perçantes (AGI)</td>
+                                    <td>Offensif, Défensif</td>
+                                    <td>Ignore la défense active si la cible
+                                        a déjà dépensé des PA.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:2em;">↳ <strong>Désarmement Fleuret</strong></td>
+                                    <td>Armes Perçantes (AGI)</td>
+                                    <td>Offensif, Défensif</td>
+                                    <td>Désarmer sur Delta ≥ 2.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:3.5em;">↳ <strong>Entaille Précise</strong></td>
+                                    <td>Armes Perçantes (AGI)</td>
+                                    <td>Offensif, Défensif</td>
+                                    <td>-2 aux attaques de la cible
+                                        pendant 2 tours.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Frappe Jugulaire</strong></td>
+                                    <td>Armes Perçantes (AGI)</td>
+                                    <td>Offensif</td>
+                                    <td>Gorge et carotides : sur Delta ≥ 3, <a class="rule-ref"
+                                            href="livre_6.html#sec-24-1bis"
+                                            data-tip="Saignement : PV directs en début de tour, puis −1/tour. Tout soin le stoppe (§24.1bis).">Saignement</a>
+                                        (résiduels = vos entraînements).</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:2em;">↳ <strong>Hémorragie Profonde</strong></td>
+                                    <td>Armes Perçantes (AGI)</td>
+                                    <td>Offensif</td>
+                                    <td>Résiduels doublés chaque tour.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:3.5em;">↳ <strong>Asphyxie Sanguine</strong></td>
+                                    <td>Armes Perçantes (AGI)</td>
+                                    <td>Offensif</td>
+                                    <td>Ajoute <a class="rule-ref"
+                                            href="livre_6.html#sec-24-1bis"
+                                            data-tip="Asphyxie : PV + drain de 1 PA par tour. Soin : désobstruction (premiers soins + kit).">Asphyxie</a>
+                                        (drain 1 PA/tour).</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:5em;">↳ <strong>Tranche-Artère Silencieux</strong></td>
+                                    <td>Armes Perçantes (AGI)</td>
+                                    <td>Offensif</td>
+                                    <td>Dégâts nets au-delà de
+                                        l'Encaissement = mort instantanée, sans bruit.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Arts Martiaux</strong></td>
+                                    <td>Mains Nues (FOR, AGI)</td>
+                                    <td>Offensif, Défensif</td>
+                                    <td>Vous parez sans malus, <a class="rule-ref" href="livre_6.html#sec-24-1"
+                                            data-tip="Canon Entravé : arme longue + ennemi adjacent = −2 au tir (annulable pour +1 PA de visée).">immunité
+                                            Canon Entravé</a>. Sur choc traumatique ou Delta ≥ 4 : refoulement d'1
+                                        case.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:2em;">↳ <strong>Enchaînement Fluide</strong></td>
+                                    <td>Mains Nues (FOR, AGI)</td>
+                                    <td>Offensif, Défensif</td>
+                                    <td>Votre 2e attaque du tour coûte 1
+                                        PA de moins.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:3.5em;">↳ <strong>Frappe Téléportée</strong></td>
+                                    <td>Mains Nues (FOR, AGI)</td>
+                                    <td>Offensif, Défensif</td>
+                                    <td>1 case gratuite vers l'ennemi
+                                        avant la frappe (si 2+ PA).</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:5em;">↳ <strong>Déphasage Cinétique</strong></td>
+                                    <td>Mains Nues (FOR, AGI)</td>
+                                    <td>Offensif, Défensif</td>
+                                    <td>Sur <a class="rule-ref" href="livre_2.html#chap-8"
+                                            data-tip="Critique : ton dé affiche son max (6 sur d6, 8 sur d8). Second jet sur la table (§8.1).">critique</a>,
+                                        ignore parade et contre-attaques.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:2em;">↳ <strong>Onde Tellurique</strong></td>
+                                    <td>Mains Nues (FOR, AGI)</td>
+                                    <td>Offensif, Défensif</td>
+                                    <td>Sur critique, <a class="rule-ref"
+                                                href="livre_6.html#sec-24-1"
+                                                data-tip="Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).">Déstabilisé</a>
+                                        aux ennemis adjacents.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:3.5em;">↳ <strong>Brise-Blindage</strong></td>
+                                    <td>Mains Nues (FOR, AGI)</td>
+                                    <td>Offensif, Défensif</td>
+                                    <td>Vos frappes ignorent 2 d'armure.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:5em;">↳ <strong>Paume de Brum'korath</strong></td>
+                                    <td>Mains Nues (FOR, AGI)</td>
+                                    <td>Offensif, Défensif</td>
+                                    <td>Sur critique, choc traumatique
+                                        + projette de 3 cases.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:2em;">↳ <strong>Balayage Rotatif</strong></td>
+                                    <td>Mains Nues (FOR, AGI)</td>
+                                    <td>Offensif, Défensif</td>
+                                    <td><a class="rule-ref"
+                                                href="livre_6.html#sec-24-1"
+                                                data-tip="À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.">À
+                                                Terre</a> sur Delta ≥ 2.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:3.5em;">↳ <strong>Clé d'Articulation</strong></td>
+                                    <td>Mains Nues (FOR, AGI)</td>
+                                    <td>Offensif, Défensif</td>
+                                    <td>Au contact, <a class="rule-ref"
+                                                href="livre_6.html#sec-24-1"
+                                                data-tip="Immobilisé : impossible de faire la moindre action de mouvement (§24.1).">Immobilisé</a>
+                                        + 3 dégâts sans armure.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:5em;">↳ <strong>Rupture Ligamentaire</strong></td>
+                                    <td>Mains Nues (FOR, AGI)</td>
+                                    <td>Offensif, Défensif</td>
+                                    <td>Paralysé 1 tour si la cible est
+                                        Déstabilisée.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Perforation de Silicate</strong></td>
+                                    <td>Mains Nues (FOR, AGI)</td>
+                                    <td>Offensif</td>
+                                    <td>Anti-blindage : ignore 2 d'armure, dégâts <a class="rule-ref"
+                                            href="livre_6.html#chap-23"
+                                            data-tip="Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).">Absolus</a>
+                                        contre carapaces de pierre.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:2em;">↳ <strong>Fracture Sismique</strong></td>
+                                    <td>Mains Nues (FOR, AGI)</td>
+                                    <td>Offensif</td>
+                                    <td>Ignore 3, détruit les couverts
+                                        rocheux adjacents.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:3.5em;">↳ <strong>Cœur d'Adamas</strong></td>
+                                    <td>Mains Nues (FOR, AGI)</td>
+                                    <td>Offensif</td>
+                                    <td>Ignore 4, <a class="rule-ref"
+                                                href="livre_6.html#sec-24-1"
+                                                data-tip="Sonné : aucune action. La créature tombe immédiatement à terre.">Sonné</a>
+                                        sur Delta ≥ 2.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Chirurgie</strong></td>
+                                    <td>Médecine Avancée (ÉRU, INT)</td>
                                     <td>Utilitaire</td>
-                                    <td>Permet de soigner les blessures critiques d'organes vitaux (estomac, poumons) et
-                                        de stopper les dégâts résiduels de saignement.</td>
+                                    <td>Referme les blessures critiques et lève l'état <a class="rule-ref"
+                                            href="livre_6.html#sec-24-3"
+                                            data-tip="Souffrant : seul un soin unique ≥ CON×2 le lève. Les soins ordinaires ne le lèvent jamais.">Souffrant</a>.
+                                        Soigne aussi les dégâts résiduels de <a class="rule-ref"
+                                            href="livre_6.html#sec-24-1bis"
+                                            data-tip="Saignement : PV directs en début de tour, puis −1/tour. Tout soin le stoppe (§24.1bis).">saignement</a>.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:2em;">↳ <strong>Diagnostic Vital</strong></td>
+                                    <td>Médecine Avancée (ÉRU, INT)</td>
+                                    <td>Utilitaire</td>
+                                    <td>Vous lisez PV, seuils et armure exacts d'une
+                                        unité examinée.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:3.5em;">↳ <strong>Suture Réflexe</strong></td>
+                                    <td>Médecine Avancée (ÉRU, INT)</td>
+                                    <td>Utilitaire</td>
+                                    <td>Les premiers soins d'urgence passent
+                                        de 3 à 2 PA.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:5em;">↳ <strong>Greffe d'Urgence</strong></td>
+                                    <td>Médecine Avancée (ÉRU, INT)</td>
+                                    <td>Utilitaire</td>
+                                    <td>Restaure un membre détruit ou amputé
+                                        en plein combat.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Apothicaire de Guerre</strong></td>
+                                    <td>Médecine Avancée (ÉRU, INT)</td>
+                                    <td>Utilitaire</td>
+                                    <td>Vous composez des stimulants (Antidouleurs, Speed) sans laboratoire.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:2em;">↳ <strong>Stimulant Neuro-Accélérateur</strong></td>
+                                    <td>Médecine Avancée (ÉRU, INT)</td>
+                                    <td>Utilitaire</td>
+                                    <td>Stimulant Rapide (+3 PA de
+                                        mouvement) pendant 4 heures.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:3.5em;">↳ <strong>Sérum Antidote</strong></td>
+                                    <td>Médecine Avancée (ÉRU, INT)</td>
+                                    <td>Utilitaire</td>
+                                    <td>Purge toutes les
+                                        altérations biologiques d'un allié au contact.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:5em;">↳ <strong>Cocktail Panacée</strong></td>
+                                    <td>Médecine Avancée (ÉRU, INT)</td>
+                                    <td>Utilitaire</td>
+                                    <td>Soigne 15 PV et immunise contre tous
+                                        les états pendant 3 tours.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Surfréquence Nytharite</strong></td>
+                                    <td>Ingénierie & Arcanotech (INT, ÉRU)</td>
+                                    <td>Utilitaire</td>
+                                    <td>2 PA : double la puissance d'une arme laser ou d'un champ de force pendant
+                                        1 tour.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:2em;">↳ <strong>Stabilisateur de Flux</strong></td>
+                                    <td>Ingénierie & Arcanotech (INT, ÉRU)</td>
+                                    <td>Utilitaire</td>
+                                    <td>Plus aucun risque d'endommager
+                                        ou de jammer l'équipement.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:3.5em;">↳ <strong>Décharge Harmonique</strong></td>
+                                    <td>Ingénierie & Arcanotech (INT, ÉRU)</td>
+                                    <td>Utilitaire</td>
+                                    <td>+3 dégâts d'énergie pure à
+                                        toutes vos attaques du tour.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:5em;">↳ <strong>Résonance Infinie</strong></td>
+                                    <td>Ingénierie & Arcanotech (INT, ÉRU)</td>
+                                    <td>Utilitaire</td>
+                                    <td>Surfréquence maintenue 3 tours
+                                        sans recharge.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Analyse de Faille</strong></td>
+                                    <td>Penser / Stratégie (INT)</td>
+                                    <td>Utilitaire, Défensif</td>
+                                    <td>2 PA : votre prochain coup (ou celui d'un allié) ignore
+                                        l'<a class="rule-ref" href="livre_1.html#sec-4-1"
+                                            data-tip="Encaissement = CON × 2 : ce que ton corps encaisse en un coup sans traumatisme (§4.1).">encaissement</a>
+                                        adverse.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:2em;">↳ <strong>Tir Coordonné</strong></td>
+                                    <td>Penser / Stratégie (INT)</td>
+                                    <td>Utilitaire, Défensif</td>
+                                    <td>+2 à l'attaque pour tous les alliés
+                                        contre la cible analysée.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:3.5em;">↳ <strong>Prédiction de Retraite</strong></td>
+                                    <td>Penser / Stratégie (INT)</td>
+                                    <td>Utilitaire, Défensif</td>
+                                    <td>La cible ne profite d'aucun couvert à
+                                        son prochain tour.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:5em;">↳ <strong>Échec et Mat</strong></td>
+                                    <td>Penser / Stratégie (INT)</td>
+                                    <td>Utilitaire, Défensif</td>
+                                    <td>Toute attaque réussie contre
+                                        la cible analysée devient un critique.</td>
                                 </tr>
                                 <tr>
                                     <td><strong>Tromper</strong></td>
                                     <td>Communication (CHA, INT)</td>
                                     <td>Social</td>
-                                    <td>Permet de duper un adversaire ou un PNJ par une épreuve sociale opposée à son
+                                    <td>Dupez un adversaire ou un PNJ par une <a class="rule-ref"
+                                            href="livre_2.html#chap-7"
+                                            data-tip="Épreuve opposée : les deux lancent en aveugle, dé + PA − malus. Égalité = statu quo (§7.3).">épreuve
+                                            sociale opposée</a> à son
                                         Intuition/Instinct.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:2em;">↳ <strong>Feinte Oratoire</strong></td>
+                                    <td>Communication (CHA, INT)</td>
+                                    <td>Social</td>
+                                    <td>1 PA : un ennemi tourne le dos jusqu'au tour
+                                        suivant.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:3.5em;">↳ <strong>Faux Signalement</strong></td>
+                                    <td>Communication (CHA, INT)</td>
+                                    <td>Social</td>
+                                    <td>Disperse les renforts ennemis hors du
+                                        champ de bataille.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:5em;">↳ <strong>Mascarade Totale</strong></td>
+                                    <td>Communication (CHA, INT)</td>
+                                    <td>Social</td>
+                                    <td>Traversez les zones ennemies sans
+                                        hostilité.</td>
                                 </tr>
                                 <tr>
                                     <td><strong>Négocier</strong></td>
                                     <td>Communication (CHA)</td>
                                     <td>Social</td>
-                                    <td>Permet de réduire les prix des marchandises impériales de 10% à 50% et de
-                                        remporter des débats contradictoires.</td>
+                                    <td>Réduit de 10 % à 50 % le prix des équipements.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:2em;">↳ <strong>Marché Noir Impérial</strong></td>
+                                    <td>Communication (CHA)</td>
+                                    <td>Social</td>
+                                    <td>Achète prototypes et rareté Légendaire.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:3.5em;">↳ <strong>Cessez-le-Feu</strong></td>
+                                    <td>Communication (CHA)</td>
+                                    <td>Social</td>
+                                    <td>Suspend les attaques ennemies
+                                        pendant 1 tour pour parlementer.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:5em;">↳ <strong>Rachat d'Allégeance</strong></td>
+                                    <td>Communication (CHA)</td>
+                                    <td>Social</td>
+                                    <td>Convertit un sbire ennemi en allié pour
+                                        le combat.</td>
                                 </tr>
                                 <tr>
                                     <td><strong>Intimider</strong></td>
-                                    <td>Communication (CHA, FOR)</td>
+                                    <td>Intimidation (CHA, FOR)</td>
                                     <td>Social, Offensif</td>
-                                    <td>Effraie et soumet des cibles. En combat, peut forcer un sbire (*Petite Merde*) à
-                                        fuir sur un différentiel net de 3+.</td>
+                                    <td>Sur Delta ≥ 3, force un sbire à fuir le champ de bataille.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:2em;">↳ <strong>Rugissement de Terreur</strong></td>
+                                    <td>Intimidation (CHA, FOR)</td>
+                                    <td>Social, Offensif</td>
+                                    <td><a class="rule-ref"
+                                            href="livre_6.html#sec-24-1"
+                                            data-tip="Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).">Déstabilisé</a>
+                                        à tous les ennemis à moins de 3 cases.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:3.5em;">↳ <strong>Regard de Prédateur</strong></td>
+                                    <td>Intimidation (CHA, FOR)</td>
+                                    <td>Social, Offensif</td>
+                                    <td>La cible ne peut attaquer que
+                                        vous.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:5em;">↳ <strong>Paralysie Psychologique</strong></td>
+                                    <td>Intimidation (CHA, FOR)</td>
+                                    <td>Social, Offensif</td>
+                                    <td>Paralysé 1 tour si la Volonté de
+                                        la cible est sous votre Charisme.</td>
                                 </tr>
                                 <tr>
                                     <td><strong>Charmer</strong></td>
                                     <td>Communication (CHA)</td>
                                     <td>Social</td>
-                                    <td>Gagne la confiance immédiate d'un PNJ non hostile. Accorde un avantage de +1 EC
+                                    <td>Gagne la confiance immédiate d'un PNJ non hostile. Accorde un avantage de +1 <a
+                                            class="rule-ref" href="livre_2.html#chap-6"
+                                            data-tip="EC : on teste toujours une compétence précise, jamais un attribut brut (§6).">EC</a>
                                         sur les interactions sociales ultérieures.</td>
                                 </tr>
                                 <tr>
                                     <td><strong>Mener (Commandement)</strong></td>
                                     <td>Leadership (CHA, INT)</td>
                                     <td>Social, Utilitaire</td>
-                                    <td>Dépense 2 PA pour conférer <strong>+1 PA ou +1 EC</strong> à tous les alliés
-                                        situés à moins de 3 cases lors du tour en cours.</td>
+                                    <td>Dépense 2 <a class="rule-ref" href="livre_1.html#chap-4"
+                                            data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a> :
+                                        +1 PA réflexe à tous les alliés à moins de 3 cases.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:2em;">↳ <strong>En avant !</strong></td>
+                                    <td>Leadership (CHA, INT)</td>
+                                    <td>Social, Utilitaire</td>
+                                    <td>+2 PA de déplacement à deux
+                                        alliés désignés.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:3.5em;">↳ <strong>Tenir la Ligne !</strong></td>
+                                    <td>Leadership (CHA, INT)</td>
+                                    <td>Social, Utilitaire</td>
+                                    <td>+3 à l'encaissement des alliés proches
+                                        pendant 1 tour.</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:5em;">↳ <strong>Galvanisation des Héros</strong></td>
+                                    <td>Leadership (CHA, INT)</td>
+                                    <td>Social, Utilitaire</td>
+                                    <td>+2 PA à toute l'escouade et purge
+                                        des altérations mentales.</td>
                                 </tr>
                             </tbody>
                         </table>
