@@ -188,7 +188,7 @@
           "id": "RP-012",
           "title": "Relire chap. 10. Architecture & Typologie",
           "epic": "Livre III — Compétences",
-          "status": "todo",
+          "status": "done",
           "priority": "medium",
           "order": 11,
           "scene": "",
@@ -197,14 +197,14 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "livre_3.html#chap-10",
-          "updated": "2026-10-20",
-          "details": "Vérification humaine — livre_3.html#chap-10. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
+          "updated": "2026-10-30",
+          "details": "FAIT 2026-10-30 — Ton MJ accueillant appliqué (phrases courtes, 2e personne, exemples concrets, modèle = préface index.html) : lead, calcul rang/piste/entrainements/montée d'attribut, 5 cartes typologie, callout parade. Mécaniques strictement intactes (moyenne, -1 niveau non-pure, Tirage + PA + malus, 5/10 XP). Fichier : livre_3.html."
         },
         {
           "id": "RP-013",
           "title": "Relire chap. 11. Arbres Physiques (FOR, AGI, CON)",
           "epic": "Livre III — Compétences",
-          "status": "todo",
+          "status": "done",
           "priority": "medium",
           "order": 12,
           "scene": "",
@@ -213,14 +213,14 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "livre_3.html#chap-11",
-          "updated": "2026-10-20",
-          "details": "Vérification humaine — livre_3.html#chap-11. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
+          "updated": "2026-10-30",
+          "details": "FAIT 2026-10-30 — Ton MJ accueillant appliqué : intros FOR/AGI/CON, callout Corps Augmenté, 4 actions Force en 2e personne. Mécaniques intactes (MAG>0, MAG vs FOR/AGI, +1/entraînement, D12 exemple, défense en FOR/AGI). Fichier : livre_3.html."
         },
         {
           "id": "RP-014",
           "title": "Relire chap. 12. Arbres Mentaux & Sociaux",
           "epic": "Livre III — Compétences",
-          "status": "todo",
+          "status": "done",
           "priority": "medium",
           "order": 13,
           "scene": "",
@@ -229,14 +229,14 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "livre_3.html#chap-12",
-          "updated": "2026-10-20",
-          "details": "Vérification humaine — livre_3.html#chap-12. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
+          "updated": "2026-10-30",
+          "details": "FAIT 2026-10-30 — Ton MJ accueillant appliqué : intros INT/ÉRU, CHA, INS/SAG en 2e personne. Tables et mécaniques intactes. Fichier : livre_3.html."
         },
         {
           "id": "RP-015",
           "title": "Relire chap. 13. Compendium Spécialisations",
           "epic": "Livre III — Compétences",
-          "status": "todo",
+          "status": "done",
           "priority": "medium",
           "order": 14,
           "scene": "",
@@ -245,8 +245,8 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "livre_3.html#chap-13",
-          "updated": "2026-10-20",
-          "details": "Vérification humaine — livre_3.html#chap-13. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
+          "updated": "2026-10-30",
+          "details": "FAIT 2026-10-30 — Ton MJ accueillant appliqué : lead, signature et encart Livre IV. Coûts 5/10 XP et table des spécialisations intacts. Fichier : livre_3.html."
         },
         {
           "id": "RP-016",
