@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "source": "RD-023 — Liste des clips requis valides game design. Familles : Idle, Marche, Course, Visée, Tir, Blessé, Mort (+ Transitions, Utilitaire). Audit du 2026-09-30 : 17 FBX sous Assets/Resources/Animations + 4 overrides Male + Roundkick.fbx à la racine Resources + 2 modèles (mina, Soldier in equipment). Référentiel game design : Livres I/VI (attributs, 16 états), V (tour 10s, duel aveugle, couvert), VIII (armurerie DLPH, grenades §31.3), IV (5e Force, sorts).",
+  "source": "RD-023 — Liste des clips requis valides game design. Familles : Idle, Marche, Course, Visée, Tir, Blessé, Mort (+ Transitions, Utilitaire). Audit du 2026-09-30 : 17 FBX sous Assets/Resources/Animations + 4 overrides Male + Roundkick.fbx à la racine Resources + 2 modèles (mina, Soldier in equipment). Référentiel game design : Livres I/VI (attributs, 16 états), V (tour 10s, duel aveugle, couvert), VIII (armurerie DLPH, grenades §32.3), IV (5e Force, sorts).",
   "updated": "2026-09-30",
   "families": [
     "Idle",
@@ -163,7 +163,7 @@
       "genderVariants": "—",
       "status": "missing",
       "priority": "medium",
-      "gameDesignRef": "Livre VIII §31.3 : lancer main 8 cases / 2 PA vs lance-grenades 20 cases / 3 PA, jet Ballistique SD 10 + dispersion",
+      "gameDesignRef": "Livre VIII §32.3 : lancer main 8 cases / 2 PA vs lance-grenades 20 cases / 3 PA, jet Ballistique SD 10 + dispersion",
       "codeRef": "TacticalUnitVisual.TriggerGrenadeThrow() => fallback Roundkick (main) ou Firing Rifle (lanceur)",
       "fallback": "Roundkick (coup de pied pour un lancer : lisible mais faux)",
       "action": "RD-024 : produire 1 geste de lancer (lever de bras + projection). RD-025 : état + trigger."

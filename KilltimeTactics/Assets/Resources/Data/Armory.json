@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "source": "Arsenal Killtime Livre VIII §30-32 — export automatique de ArmoryCatalog.cs. Fichier éditable (UTF-8) ; un override persistentDataPath/Armory.json ou la fenêtre Armurerie (M) prend le pas. Re-générable via tools/export_armory.py.",
+  "source": "Arsenal Killtime Livre VIII §31-33 — export automatique de ArmoryCatalog.cs. Fichier éditable (UTF-8) ; un override persistentDataPath/Armory.json ou la fenêtre Armurerie (M) prend le pas. Re-générable via tools/export_armory.py.",
   "items": [
     {
       "name": "Épée Métal Courte",

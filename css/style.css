@@ -634,6 +634,66 @@ body::before {
     border-color: rgba(16, 185, 129, 0.3);
 }
 
+/* Onglets personnages — créateur de fiche (Livre IX chap. 34 + fiche_pj). */
+.cs-tabs-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 12px;
+    margin-bottom: 14px;
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid var(--border-subtle);
+    border-radius: 10px;
+}
+
+.cs-tabs-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+}
+
+.cs-tab {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--border-subtle);
+    background: var(--bg-surface-elevated);
+    color: var(--text-secondary);
+    cursor: pointer;
+    max-width: 220px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.cs-tab:hover {
+    border-color: var(--arcane-cyan);
+    color: var(--text-primary);
+}
+
+.cs-tab.active {
+    background: rgba(56, 189, 248, 0.15);
+    border-color: var(--arcane-cyan);
+    color: var(--arcane-cyan);
+}
+
+.cs-tabs-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+}
+
+.cs-tabs-btn {
+    padding: 5px 10px !important;
+    font-size: 0.75rem !important;
+}
+
 .doc-title {
     font-family: var(--font-title);
     font-size: 2.2rem;
@@ -1455,6 +1515,14 @@ table.codex-table tr:hover td, table.data-table tr:hover td {
     gap: 12px;
 }
 
+/* Rangée piliers : majeur | ⇄ | mineur | don racial. */
+.pillars-row {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr 1fr;
+    gap: 12px;
+    align-items: end;
+}
+
 .tool-form-group {
     display: flex;
     flex-direction: column;
@@ -1568,6 +1636,20 @@ table.codex-table tr:hover td, table.data-table tr:hover td {
     background: transparent;
     border: none;
     outline: none;
+}
+
+/* Dé d'attribut intégré sous chaque caractéristique (Livre II §6.1) */
+.attr-die-wrap {
+    margin-top: 6px;
+    display: flex;
+    justify-content: center;
+}
+
+/* Steppers de caractéristiques : pas besoin de toute la largeur de colonne. */
+.stepper-box:has(.stepper-val[id^="attr"]) {
+    width: 100%;
+    max-width: 170px;
+    margin: 0 auto;
 }
 
 /* Vitals Live Dashboard */
@@ -2436,7 +2518,7 @@ table.codex-table tr:hover td, table.data-table tr:hover td {
     .main-content { margin-left: 0; padding: 24px 18px 60px; }
     .mobile-toggle-btn { display: flex; }
     .doc-title { font-size: 1.85rem; }
-    .pillars-grid, .cards-grid-3, .cards-grid-2, .tool-grid-2, .tool-grid-3, .tool-grid-4 { grid-template-columns: 1fr; }
+    .pillars-grid, .cards-grid-3, .cards-grid-2, .tool-grid-2, .tool-grid-3, .tool-grid-4, .pillars-row { grid-template-columns: 1fr; }
     .vitals-dashboard { grid-template-columns: repeat(2, 1fr); }
     .crit-effects-grid { grid-template-columns: 1fr; }
     .sheet-stats-grid { grid-template-columns: repeat(2, 1fr); }
@@ -2448,4 +2530,52 @@ table.codex-table tr:hover td, table.data-table tr:hover td {
     .vitals-dashboard { grid-template-columns: 1fr; }
     .sheet-stats-grid { grid-template-columns: 1fr; }
     .topbar-site-link span { display: none; }
+}
+
+/* ==========================================================================
+   RULE-REF — renvoi vers une règle du codex (tooltip + lien).
+   Usage : <a class="rule-ref" href="#sec-24-1" data-tip="Résumé court">Terme</a>
+   Survol = résumé en tooltip, clic = ancre vers la règle complète.
+   Opt-in par élément : inerte sur les livres non convertis.
+   ========================================================================== */
+.rule-ref {
+    font-style: italic;
+    color: var(--text-accent);
+    text-decoration: underline dotted;
+    text-underline-offset: 3px;
+    position: relative;
+    cursor: help;
+}
+.rule-ref:hover,
+.rule-ref:focus-visible {
+    color: var(--text-gold);
+}
+.rule-ref::after {
+    content: attr(data-tip);
+    position: absolute;
+    left: 50%;
+    bottom: 130%;
+    transform: translateX(-50%) translateY(4px);
+    min-width: 220px;
+    max-width: 320px;
+    padding: 10px 12px;
+    background: var(--bg-surface-elevated);
+    border: 1px solid var(--border-glow);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-style: normal;
+    font-size: 0.85rem;
+    line-height: 1.45;
+    text-align: left;
+    white-space: normal;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s ease, transform 0.15s ease;
+    z-index: 50;
+}
+.rule-ref:hover::after,
+.rule-ref:focus-visible::after {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
 }

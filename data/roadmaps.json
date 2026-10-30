@@ -608,7 +608,7 @@
         },
         {
           "id": "RD-087",
-          "title": "Capacités Réactives & Vulnérabilités des Boss Titans (Livre XII §49-50)",
+          "title": "Capacités Réactives & Vulnérabilités des Boss Titans (Livre XII §50-51)",
           "epic": "Véhicules/Titans",
           "status": "done",
           "priority": "medium",
@@ -624,7 +624,7 @@
         },
         {
           "id": "RD-088",
-          "title": "Manœuvres Avancées des PNJ & Automates (Livre XII §48 & §51)",
+          "title": "Manœuvres Avancées des PNJ & Automates (Livre XII §49 & §52)",
           "epic": "PNJ",
           "status": "done",
           "priority": "medium",
@@ -1672,7 +1672,7 @@
           "updated": "2026-10-18"
         },
         {
-          "details": "Terrain Véhicules & Titans (Livre V §22.3, XII §49-50) : véhicules RD-051 (embarquement 2 PA, écrasement, sous-systèmes, +100 lourde), Titans RD-052 (Rosette7/Colossus19, saisie/broyage, piétinement 3 PA, souffle 3 PA), boss RD-087 (bossAI JSON, réactions, IA TitanBoss). Protocole : embarquer/écraser, piétiner zone 7 hex, affronter chaque boss (touche B). Attendu : épave = débarquement forcé, 0 limbo 0 PV, réactions boss visibles. Sortie : écarts -> fix.",
+          "details": "Terrain Véhicules & Titans (Livre V §22.3, XII §50-51) : véhicules RD-051 (embarquement 2 PA, écrasement, sous-systèmes, +100 lourde), Titans RD-052 (Rosette7/Colossus19, saisie/broyage, piétinement 3 PA, souffle 3 PA), boss RD-087 (bossAI JSON, réactions, IA TitanBoss). Protocole : embarquer/écraser, piétiner zone 7 hex, affronter chaque boss (touche B). Attendu : épave = débarquement forcé, 0 limbo 0 PV, réactions boss visibles. Sortie : écarts -> fix.",
           "epic": "Véhicules/Titans",
           "id": "RD-181",
           "order": 10,
@@ -1688,7 +1688,7 @@
           "updated": "2026-10-18"
         },
         {
-          "details": "Terrain Nuit & PNJ (Livre XII §48/51) : nuit RD-053 (vue 4 cases, malus -1 sans lampe/thermique, lampe brise stealth, bruit attire patrouille) + PNJ RD-088 (otage bandit, combustion/foulée Illumo, morsure/flash/balise drones). Protocole : éteindre (nuit), allumer lampe, tirer (bruit), jouer otage + combustion. Attendu : portées bridées, convergence patrouille, statuts posés. Sortie : écarts -> fix.",
+          "details": "Terrain Nuit & PNJ (Livre XII §49/52) : nuit RD-053 (vue 4 cases, malus -1 sans lampe/thermique, lampe brise stealth, bruit attire patrouille) + PNJ RD-088 (otage bandit, combustion/foulée Illumo, morsure/flash/balise drones). Protocole : éteindre (nuit), allumer lampe, tirer (bruit), jouer otage + combustion. Attendu : portées bridées, convergence patrouille, statuts posés. Sortie : écarts -> fix.",
           "epic": "Lumière/Env",
           "id": "RD-182",
           "order": 11,
@@ -1924,7 +1924,7 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "livre_11.html + livre_10.html + livre_12.html + data/atlas_mondes.json + atlas_3d.html + hybris_history.html",
-          "details": "FAIT (2026-10-20) : zones d'étendue moyenne égale (~23 Gly de côté, exception Zone 02 dilatée), 3 galaxies référencées sur des milliards anonymes, Aurion-Hybris ~1 Gly (Hybris bord Z01), Empire fondé il y a 22 Ma sur vestiges Première Civilisation disparue (saturation Aurion ~-10 Ma, expansion tentaculaire, mondes intouchés dont Terre primitive non impliquée — retcon Origine Déportés), Disciples 2 générations (Terre = prototype divin ~-1 Ga balistique plasma ~c / Air-Feu-Eau = série ver + 5e Force, Feu & Eau dormants infiltrés, fiches Livre XII §50), Livre X §38.3 trous de ver spatiaux, timeline +4 événements, embedded atlas resynchronisé."
+          "details": "FAIT (2026-10-20) : zones d'étendue moyenne égale (~23 Gly de côté, exception Zone 02 dilatée), 3 galaxies référencées sur des milliards anonymes, Aurion-Hybris ~1 Gly (Hybris bord Z01), Empire fondé il y a 22 Ma sur vestiges Première Civilisation disparue (saturation Aurion ~-10 Ma, expansion tentaculaire, mondes intouchés dont Terre primitive non impliquée — retcon Origine Déportés), Disciples 2 générations (Terre = prototype divin ~-1 Ga balistique plasma ~c / Air-Feu-Eau = série ver + 5e Force, Feu & Eau dormants infiltrés, fiches Livre XII §51), Livre X §39.3 trous de ver spatiaux, timeline +4 événements, embedded atlas resynchronisé."
         }
       ]
     },

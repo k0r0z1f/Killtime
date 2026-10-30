@@ -113,6 +113,34 @@ function parseBody(req) {
     });
 }
 
+function parseCookies(req) {
+    const out = {};
+    const header = req.headers && req.headers.cookie;
+    if (!header) return out;
+    for (const part of header.split(';')) {
+        const idx = part.indexOf('=');
+        if (idx === -1) continue;
+        const k = part.slice(0, idx).trim();
+        const v = part.slice(idx + 1).trim();
+        if (k) { try { out[k] = decodeURIComponent(v); } catch (e) { out[k] = v; } }
+    }
+    return out;
+}
+
+function getSessionUserId(req) {
+    // Jeton posé au login/register : 'srv_' + base64('userId:timestamp').
+    // Vérifié contre users.json à chaque appel.
+    try {
+        const token = parseCookies(req).codex_auth_token || '';
+        if (!token.startsWith('srv_')) return null;
+        const decoded = Buffer.from(token.slice(4), 'base64').toString('utf8');
+        const userId = decoded.split(':')[0];
+        if (!userId) return null;
+        const users = loadUsers();
+        return users.some(u => u.id === userId) ? userId : null;
+    } catch (e) { return null; }
+}
+
 /* ---------- HTTPS JSON helper (native, zero dep) ---------- */
 function httpsRequest(url, options = {}) {
     return new Promise((resolve, reject) => {
@@ -393,6 +421,65 @@ const server = http.createServer(async (req, res) => {
         if (req.method === 'POST') {
             const cookie = `codex_auth_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax`;
             return sendJson(res, 200, { success: true }, cookie);
+        }
+        return sendJson(res, 405, { error: 'Méthode non autorisée.' });
+    }
+
+    /* ================================================================
+       FICHES PERSONNAGES — sauvegarde serveur par utilisateur
+       ----------------------------------------------------------------
+       GET /api/characters : relit les onglets stockés (user.characters).
+       PUT /api/characters : remplace user.characters par les onglets
+       envoyés. Le client transfère son local vers ici à la connexion,
+       puis pousse en autosave tant que la session est active.
+       Auth : cookie srv_ (cf. login). Sans serveur, le client reste
+       en mode "local seul" (localStorage).
+       ================================================================ */
+    if (isRoute('/api/characters')) {
+        const sessionUserId = getSessionUserId(req);
+        if (!sessionUserId) {
+            return sendJson(res, 401, { error: 'Connexion requise.' });
+        }
+        const users = loadUsers();
+        const user = users.find(u => u.id === sessionUserId);
+        if (!user) {
+            return sendJson(res, 401, { error: 'Session invalide.' });
+        }
+        if (req.method === 'GET') {
+            const tabs = Array.isArray(user.characters) ? user.characters : [];
+            return sendJson(res, 200, { success: true, tabs });
+        }
+        if (req.method === 'PUT' || req.method === 'POST') {
+            try {
+                const body = await parseBody(req);
+                if (!body || !Array.isArray(body.tabs)) {
+                    return sendJson(res, 400, { error: 'tabs[] manquant.' });
+                }
+                if (body.tabs.length > 24) {
+                    return sendJson(res, 413, { error: 'Trop d\'onglets (max 24).' });
+                }
+                const json = JSON.stringify(body.tabs);
+                if (json.length > 512 * 1024) {
+                    return sendJson(res, 413, { error: 'Payload trop volumineux.' });
+                }
+                for (const t of body.tabs) {
+                    if (!t || typeof t.id !== 'string' || typeof t.data !== 'object' || !t.data) {
+                        return sendJson(res, 400, { error: 'Format d\'onglet invalide.' });
+                    }
+                }
+                user.characters = body.tabs.map(t => ({
+                    id: String(t.id).slice(0, 64),
+                    label: typeof t.label === 'string' ? t.label.slice(0, 40) : '',
+                    customLabel: !!t.customLabel,
+                    updatedAt: Number(t.updatedAt) || Date.now(),
+                    data: t.data
+                }));
+                saveUsers(users);
+                console.log(`[Characters] sauvegarde serveur : ${user.username} (${user.characters.length} fiche(s)).`);
+                return sendJson(res, 200, { success: true, tabs: user.characters.length });
+            } catch (e) {
+                return sendJson(res, 400, { error: e.message });
+            }
         }
         return sendJson(res, 405, { error: 'Méthode non autorisée.' });
     }

@@ -30,7 +30,48 @@
     "role": "Joueur",
     "provider": "google",
     "createdAt": "2026-09-10T20:30:40.383Z",
-    "characters": [],
+    "characters": [
+      {
+        "id": "pj_6b9fe396",
+        "label": "Roger de Vardis",
+        "customLabel": false,
+        "updatedAt": 1793352693685,
+        "data": {
+          "v": 2,
+          "name": "Roger de Vardis",
+          "age": "27",
+          "sexe": "M",
+          "monde": "Frontière Chaude",
+          "race": "humain",
+          "gift": 3,
+          "profile": "hero",
+          "pillarMajor": "for",
+          "pillarMinor": "con",
+          "attributes": {
+            "for": "5",
+            "agi": "3",
+            "con": "4",
+            "rap": "3",
+            "int": "2",
+            "eru": "3",
+            "cha": "1",
+            "ins": "3",
+            "mag": "0"
+          },
+          "vision": "4",
+          "ouie": "3",
+          "enfance": "1",
+          "metier": "1",
+          "evenement": "0",
+          "ancrage": "",
+          "skills": [
+            "skMainsNues-1",
+            "skMainsNues-2",
+            "skEsquive-1"
+          ]
+        }
+      }
+    ],
     "providerId": "107385058550040028334",
     "avatar": "https://lh3.googleusercontent.com/a/ACg8ocLmfeepQG8Hy2zuFCMqTse66JrMQgU1XyjWVRioNn0c43WYP_Ez=s96-c"
   },
