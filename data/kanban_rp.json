@@ -348,7 +348,7 @@
           "id": "RP-022",
           "title": "Relire chap. 20. Le Tour de 10s & Économie des PA",
           "epic": "Livre V — Combat Tactique",
-          "status": "todo",
+          "status": "done",
           "priority": "high",
           "order": 21,
           "scene": "",
@@ -357,14 +357,14 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "livre_5.html#chap-20",
-          "updated": "2026-10-20",
-          "details": "Vérification humaine — livre_5.html#chap-20. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
+          "updated": "2026-10-30",
+          "details": "FAIT 2026-10-30 — Passe agent : ton MJ (intro chap 20 + 20.1-20.7, 2e personne, exemples concrets), 12 ancres sec-20-1..20-7, rule-refs croisés (PA, Essoufflement, Initiative, duel aveugle, états LVI), barème réactions lié §§20.4-20.7, encadré duel aveugle en wide (fix 45 %). Fichiers : livre_5.html, css/style.css (.formula-box.wide)."
         },
         {
           "id": "RP-023",
           "title": "Relire chap. 21. Déplacements & Poursuites",
           "epic": "Livre V — Combat Tactique",
-          "status": "todo",
+          "status": "done",
           "priority": "high",
           "order": 22,
           "scene": "",
@@ -373,14 +373,14 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "livre_5.html#chap-21",
-          "updated": "2026-10-20",
-          "details": "Vérification humaine — livre_5.html#chap-21. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
+          "updated": "2026-10-30",
+          "details": "FAIT 2026-10-30 — Passe agent : ton MJ (intro chap 21 + 21.1-21.5), ancres sec-21-1/21-2, rule-refs (épreuves Athlétisme, initiative, couvert §21.3, Observation/Discrétion §21.4, synchro §21.5), 3 encadrés en wide (ligne de mire, vision 360, séquence Duo-Tech). États Duo-Tech liés (Immobilisé, Ralenti, Étourdi, À Terre, Saignement, En Feu, Asphyxie). Fichiers : livre_5.html, css/style.css."
         },
         {
           "id": "RP-024",
           "title": "Relire chap. 22. Localisation & Véhicules",
           "epic": "Livre V — Combat Tactique",
-          "status": "todo",
+          "status": "done",
           "priority": "high",
           "order": 23,
           "scene": "",
@@ -389,8 +389,8 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "livre_5.html#chap-22",
-          "updated": "2026-10-20",
-          "details": "Vérification humaine — livre_5.html#chap-22. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
+          "updated": "2026-10-30",
+          "details": "FAIT 2026-10-30 — Passe agent : ton MJ (intro chap 22 + 22.1-22.3), ancres sec-22-1/22-2/22-3, rule-refs (visée, épreuve, Encaissement CON×2, Déstabilisé, critique, En Feu §24.1bis), table Canon Entravé + callout Refoulement liés. Fichiers : livre_5.html."
         },
         {
           "id": "RP-025",

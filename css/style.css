@@ -935,6 +935,12 @@ body::before {
     line-height: 1.55;
 }
 
+/* Encadrés à long descriptif (ex. Livre V : duel aveugle, ligne de mire) :
+   le texte prend toute la largeur au lieu d'être écrasé à 45 %. */
+.formula-box.wide .formula-desc {
+    max-width: 100%;
+}
+
 /* ================= TABLES ================= */
 .table-container {
     width: 100%;
