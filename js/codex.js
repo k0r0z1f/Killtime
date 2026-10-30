@@ -141,6 +141,51 @@ document.addEventListener('DOMContentLoaded', () => {
    une fenêtre popup centrée. Les deux fiches sont synchronisées en temps
    réel (BroadcastChannel + localStorage, même origine, dans les deux sens).
    ========================================================================== */
+/* ==========================================================================
+   8. TOOLTIP RULE-REF — niveau body (pas de rognage dans les tableaux).
+   Le tooltip CSS (.rule-ref::after) est rogné par .table-container
+   (overflow-x: auto). Ici on affiche un div fixe au niveau body, positionné
+   depuis le rectangle de l'ancre, avec bascule haut/bas et cadrage viewport.
+   ========================================================================== */
+document.addEventListener('DOMContentLoaded', () => {
+    const refs = document.querySelectorAll('.rule-ref[data-tip]');
+    if (!refs.length) return;
+    document.documentElement.classList.add('has-js-tip');
+
+    const tip = document.createElement('div');
+    tip.className = 'codex-tip';
+    tip.hidden = true;
+    document.body.appendChild(tip);
+
+    const place = (anchor) => {
+        tip.textContent = anchor.getAttribute('data-tip');
+        tip.hidden = false;
+        const r = anchor.getBoundingClientRect();
+        const w = Math.min(300, window.innerWidth - 16);
+        tip.style.maxWidth = w + 'px';
+        const h = tip.offsetHeight;
+        let top = r.top - h - 10; // au-dessus par défaut
+        if (top < 8) top = r.bottom + 10; // pas la place : en dessous
+        let left = r.left + r.width / 2 - tip.offsetWidth / 2;
+        left = Math.max(8, Math.min(left, window.innerWidth - tip.offsetWidth - 8));
+        tip.style.top = Math.max(8, top) + 'px';
+        tip.style.left = left + 'px';
+    };
+    const hide = () => { tip.hidden = true; };
+
+    refs.forEach(a => {
+        a.addEventListener('mouseenter', () => {
+            if (!window.matchMedia('(hover: hover)').matches) return;
+            place(a);
+        });
+        a.addEventListener('mouseleave', hide);
+        a.addEventListener('focus', () => place(a));
+        a.addEventListener('blur', hide);
+        a.addEventListener('click', hide);
+    });
+    window.addEventListener('scroll', hide, { capture: true, passive: true });
+    window.addEventListener('resize', hide);
+});
 document.addEventListener('DOMContentLoaded', () => {
     // Boutons déclaratifs : ouvrent l'URL dans une fenêtre détachée centrée.
     document.querySelectorAll('[data-popout]').forEach(btn => {

@@ -2697,3 +2697,25 @@ table.codex-table tr:hover td, table.data-table tr:hover td {
     opacity: 1;
     transform: translateX(-50%) translateY(0);
 }
+
+/* Quand le tooltip JS (codex.js §8, niveau body) prend le relais, on coupe
+   le tooltip CSS : il serait doublé — et rogné dans les tableaux
+   (.table-container a overflow-x: auto). */
+.has-js-tip .rule-ref::after {
+    display: none;
+}
+.codex-tip {
+    position: fixed;
+    z-index: 200;
+    max-width: 300px;
+    padding: 10px 12px;
+    background: var(--bg-surface-elevated);
+    border: 1px solid var(--border-glow);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-size: 0.85rem;
+    line-height: 1.45;
+    text-align: left;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    pointer-events: none;
+}

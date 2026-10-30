@@ -252,7 +252,7 @@
           "id": "RP-016",
           "title": "Relire chap. 14. Physique de la 5e Force",
           "epic": "Livre IV — 5e Force & Magie",
-          "status": "todo",
+          "status": "doing",
           "priority": "medium",
           "order": 15,
           "scene": "",
@@ -261,14 +261,14 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "livre_4.html#chap-14",
-          "updated": "2026-10-20",
-          "details": "Vérification humaine — livre_4.html#chap-14. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
+          "updated": "2026-10-30",
+          "details": "Passe 2026-10-30 (1er check) — FAIT : organe interne (fini le capteur cristal), lore sang/poitrine/cuivre + nœud sous-sternal, cristaux = organes des moteurs §15, magitek = Hybris (Empire : autres techs), saturation/anti-magie (l'organe décroche), telemetry Moteurs. RESTE : QA final + ton lecteur + vérif rude mécaniques."
         },
         {
           "id": "RP-017",
           "title": "Relire chap. 15. Moteurs Magiques & Nytharite",
           "epic": "Livre IV — 5e Force & Magie",
-          "status": "todo",
+          "status": "doing",
           "priority": "medium",
           "order": 16,
           "scene": "",
@@ -277,14 +277,14 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "livre_4.html#chap-15",
-          "updated": "2026-10-20",
-          "details": "Vérification humaine — livre_4.html#chap-15. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
+          "updated": "2026-10-30",
+          "details": "Passe 2026-10-30 (1er check) — FAIT : intro rescopée Hybris (pods/patrouilleurs locaux), Empire hors-magitek sans détails, 4 cartes moteurs en ton MJ. Mécaniques inchangées. RESTE : QA final + ton lecteur."
         },
         {
           "id": "RP-018",
           "title": "Relire chap. 16. Voies Arcaniques & Portée",
           "epic": "Livre IV — 5e Force & Magie",
-          "status": "todo",
+          "status": "doing",
           "priority": "medium",
           "order": 17,
           "scene": "",
@@ -293,14 +293,14 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "livre_4.html#chap-16",
-          "updated": "2026-10-20",
-          "details": "Vérification humaine — livre_4.html#chap-16. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
+          "updated": "2026-10-30",
+          "details": "Passe 2026-10-30 (1er check) — FAIT : portée = MAG + MAG×E (tranches de MAG cases), Menna 5+(5×2)=15, malus 1 à 20 cases ; §16.1 trois compétences (MAG,INT) + branches vers §19.4 ; rule-ref portée/entraînement/niveau. DIVERGENCE Unity : code en MAG+Entr (Menna 7) — à réaligner (sysrp seulement pour l'instant). RESTE : QA final + ton lecteur."
         },
         {
           "id": "RP-019",
           "title": "Relire chap. 17. Évolution Psychique (6 Stades)",
           "epic": "Livre IV — 5e Force & Magie",
-          "status": "todo",
+          "status": "doing",
           "priority": "medium",
           "order": 18,
           "scene": "",
@@ -309,14 +309,14 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "livre_4.html#chap-17",
-          "updated": "2026-10-20",
-          "details": "Vérification humaine — livre_4.html#chap-17. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
+          "updated": "2026-10-30",
+          "details": "Passe 2026-10-30 (1er check) — FAIT : ton MJ (stades, télékinésie, pyro/création), liens internes §§, fardeau cinétique RETIRÉ (2 occurrences), tables 6 stades intactes. RESTE : QA final + ton lecteur + vérif rude mécaniques."
         },
         {
           "id": "RP-020",
           "title": "Relire chap. 18. Liens & Résonance",
           "epic": "Livre IV — 5e Force & Magie",
-          "status": "todo",
+          "status": "doing",
           "priority": "medium",
           "order": 19,
           "scene": "",
@@ -325,14 +325,14 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "livre_4.html#chap-18",
-          "updated": "2026-10-20",
-          "details": "Vérification humaine — livre_4.html#chap-18. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
+          "updated": "2026-10-30",
+          "details": "Passe 2026-10-30 (1er check) — FAIT : lien à deux ou en groupe, 1 seul télépathe requis ; tissage hors combat (4h type Livre I §5 + épreuve Télépathie Delta≥2 + 5 XP chacun, arrivant paie seul, raté = lendemain après repos) ; comms inaudibles aux ennemis ; rupture = mort/relâchement. RESTE : QA final + ton lecteur."
         },
         {
           "id": "RP-021",
           "title": "Relire chap. 19. Atelier de Création (XP=PA)",
           "epic": "Livre IV — 5e Force & Magie",
-          "status": "todo",
+          "status": "doing",
           "priority": "medium",
           "order": 20,
           "scene": "",
@@ -341,8 +341,8 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "livre_4.html#chap-19",
-          "updated": "2026-10-20",
-          "details": "Vérification humaine — livre_4.html#chap-19. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
+          "updated": "2026-10-30",
+          "details": "Passe 2026-10-30 (1er check) — FAIT : 10 nouveaux effets (teinte 1, zone brut 4, soins 2, portée+ 2, purge 2, armure 3, bouclier 3, social 1, recul 2, malus 2), Réaction +2 (XP et PA), 6 exemples chiffrés vérifiés ; §19.4 compendium 46 spés génériques Unity (12 branches) + note Livre III technique ; branches héros RETIRÉES (hors sysrp). RESTE : QA final + ton lecteur + vérif rude mécaniques."
         },
         {
           "id": "RP-022",
