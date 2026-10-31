@@ -1225,8 +1225,8 @@
     },
     {
      "id": "RP-082",
-     "title": "JSON-ifier le Livre VIII (données + contenu, comme Livre I)",
-     "epic": "Livre VIII — Outils Web",
+     "title": "Brancher les outils du Livre IX sur les JSON (page statique)",
+     "epic": "Livre IX — Outils Web",
      "status": "todo",
      "priority": "medium",
      "order": 53,
@@ -1236,13 +1236,13 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_9.html",
-     "details": "Comme Livre I : extraire data/livre_N.json (données règles + sections/blocs/refs), rendre via JS (factoriser js/livre_1.js en moteur générique), squelettiser le HTML, fidélité vérifiée par diff. But : source unique + traductions. Fichier : livre_9.html."
+     "details": "Décision 2026-10-31 : livre_9.html RESTE statique (5 ateliers liés par js/tools.js via getElementById — squelettisation = risque sans gain, règles déjà en JSON Livres I–VIII). À la place : brancher les outils sur les JSON — créateur ← data/livre_1.json (RACE_DATA, cf. RP-074) + livre_7.json (enfances/métiers/événements), lanceur ← livre_2.json (paliers, critiques), atelier sorts ← livre_4.json (modules, XP=PA), défis ← livre_2.json, clairsentience : externaliser les tiers codés en dur. Vérif exigée : test navigateur des 5 ateliers (le harnais Node ne couvre que le rendu statique). Fichiers : livre_9.html (inchangé), js/tools.js."
     },
     {
      "id": "RP-083",
-     "title": "JSON-ifier le Livre IX (données + contenu, comme Livre I)",
-     "epic": "Livre IX — Temps & MJ",
-     "status": "todo",
+     "title": "JSON-ifier le Livre X (données + contenu, comme Livre I)",
+     "epic": "Livre X — Temps & MJ",
+     "status": "done",
      "priority": "medium",
      "order": 54,
      "scene": "",
@@ -1251,7 +1251,7 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_10.html",
-     "details": "Comme Livre I : extraire data/livre_N.json (données règles + sections/blocs/refs), rendre via JS (factoriser js/livre_1.js en moteur générique), squelettiser le HTML, fidélité vérifiée par diff. But : source unique + traductions. Fichier : livre_10.html."
+     "details": "FAIT 2026-10-31 (titre kanban corrige : Livre X, pas IX) — data/livre_10.json (sens temporel, 3 piliers, théorème de l'ancre, 4 distorsions, 8 échelons clairsentience + lookup, 4 lois, 2 techniques d'anticipation, bloc mecaniques + 5 sections (entête in-article + 4 chapitres)), livre_10.html squelettisé. Aucune extension moteur nécessaire. Vérifié : fidélité + rendu JS réel OK."
     },
     {
      "id": "RP-084",

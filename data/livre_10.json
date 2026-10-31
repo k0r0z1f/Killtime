@@ -1,0 +1,618 @@
+{
+ "livre": "X",
+ "titre": "Temps & Causalité",
+ "version": 1,
+ "updated": "2026-10-31",
+ "source": "livre_10.html",
+ "entete_html": "",
+ "sections": [
+  {
+   "id": "entete",
+   "symbole": null,
+   "titre": null,
+   "blocs": [
+    {
+     "type": "html",
+     "html": "\n\n                    <div class=\"doc-badge-row\">\n                        <span class=\"doc-badge-pill\">\n                            <svg width=\"12\" height=\"12\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\"\n                                stroke-width=\"2\">\n                                <circle cx=\"12\" cy=\"12\" r=\"10\" />\n                                <polyline points=\"12 6 12 12 14 14\" />\n                            </svg>\n                            Livre X — Chrono-Physique & Causalité\n                        </span>\n                        <span class=\"doc-badge-pill accent\">Physique Temporelle & Clairsentience</span>\n                        <span class=\"doc-badge-pill live\">Système Validé</span>\n                    </div>\n\n                    <h1 class=\"doc-title\">Livre X : Voyage Temporel, Chrono-Physique&nbsp;& Causalité</h1>\n                    <p class=\"doc-lead\">\n                        Le temps n'est pas une ligne inerte gravée dans la pierre, ni une suite infinie de paradoxes\n                        sans issue. C'est un <strong>fleuve massif et visqueux</strong>, doté d'une inertie formidable,\n                        d'une résistance à l'entropie et de carrefours inévitables. Ce livre dévoile les lois\n                        universelles de la causalité, le théorème de la propagation vers l'avant, l'effet papillon\n                        inversé et les huit échelons cognitifs de la clairsentience.\n                    </p>\n\n                    <hr class=\"doc-divider\">\n\n                    <!-- ================= CHAPITRE 20 ================= -->\n                    "
+    }
+   ]
+  },
+  {
+   "id": "chap-39",
+   "symbole": "Chapitre 39.",
+   "titre": "Le Fleuve du Temps & Les Lois de la Causalité",
+   "blocs": [
+    {
+     "type": "html",
+     "html": "\n\n                    <p>\n                        Dans la mécanique de notre univers, le temps est appréhendé non pas comme une abstraction\n                        mathématique, mais comme un flux hydrodynamique subquantique : <strong>Le Fleuve du\n                            Temps</strong>. Tout être vivant et tout objet macroscopique y est immergé. Modifier le\n                        passé ou percevoir l'avenir répond à des contraintes physiques implacables qui interdisent la\n                        magie du paradoxe gratuit.\n                    </p>\n\n                    <div class=\"callout temporal\">\n                        <div class=\"callout-header\">\n                            <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\"\n                                stroke-width=\"2\">\n                                <circle cx=\"12\" cy=\"12\" r=\"10\" />\n                                <polyline points=\"12 6 12 12 14 14\" />\n                            </svg>\n                            Axiome Premier : L'Inertie Causalité\n                        </div>\n                        <div class=\"callout-body\">\n                            « Le tissu spatio-temporel refuse d'être déchiré par un simple caprice. Lorsqu'une variable\n                            est modifiée dans le flux, le fleuve génère une force de rappel causale immédiate. Tenter de\n                            nager à contre-courant brise le voyageur ; épouser le courant et façonner la berge en aval\n                            forge l'éternité. »\n                        </div>\n                    </div>\n\n                    <h3>39.1 L'Illusion de la Boucle Arrière vs La Propagation vers l'Avant</h3>\n                    <p>\n                        Dans les systèmes temporels naïfs, une entité confrontée à l'extinction ou à la défaite tente de\n                        « tricher avec les mathématiques » : elle construit un dispositif pour envoyer un projectile, un\n                        message d'avertissement ou un esprit vers l'arrière, à contre-courant du fleuve. C'est ce que\n                        notre physique qualifie de <strong>Boucle Arrière (Backward Loop)</strong>.\n                    </p>\n                    <p>\n                        La physique du Système RP établit que la boucle arrière est une impasse entropique :\n                    </p>\n\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "sens_temporel"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <h3>39.2 L'Effet Papillon Inversé (The Reverse Butterfly Effect)</h3>\n                    <p>\n                        Dans les modèles temporels classiques, un battement d'ailes de papillon dans le passé déclenche\n                        un ouragan à l'autre bout du monde des siècles plus tard (chaos divergent). Dans notre univers\n                        de jeu, les grands architectes exploitent le phénomène inverse : <strong>L'Effet Papillon\n                            Inversé</strong>.\n                    </p>\n\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "theoreme_ancre"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <p>\n                        Pour qu'une ancre temporelle survive à plus d'un millénaire de friction, elle doit s'appuyer sur\n                        <strong>trois piliers fondamentaux</strong> :\n                    </p>\n\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "piliers_transmission"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <h3>39.3 Les Trous de Ver Spatiaux (Raccourci Autorisé)</h3>\n                    <p>\n                        Ni la Boucle Arrière ni la dérive balistique ne sont les seuls vecteurs : la\n                        <strong>Cinquième Force</strong> permet de coudre deux points <strong>contemporains</strong> de\n                        l'espace par un <strong>trou de ver purement spatial</strong>. Les deux bouches restant sur le\n                        même front causal, le transit est quasi-instantané <strong>sans remonter le Fleuve</strong> :\n                        aucune friction, aucun paradoxe — c'est un raccourci, pas un voyage temporel. C'est par ce\n                        vecteur de seconde génération (relais sub-spatiaux, têtes de pont ancrées dans la 5e Force)\n                        que l'Empire projette ses Disciples Air, Feu et Eau, là où le prototype de Terre, œuvre\n                        solitaire pré-impériale, dut encore traverser l'espace à ~c.\n                    </p>\n\n                    <!-- ================= CHAPITRE 21 ================= -->\n                    "
+    }
+   ]
+  },
+  {
+   "id": "chap-40",
+   "symbole": "Chapitre 40.",
+   "titre": "Topologie des Chronotrames & Goulots d'Étranglement",
+   "blocs": [
+    {
+     "type": "html",
+     "html": "\n\n                    <p>\n                        L'univers ne tolère pas une prolifération anarchique de réalités parallèles infinies. Les lois\n                        de conservation de la Cinquième Force imposent que les branches temporelles divergentes se\n                        résorbent ou se reconnectent aux événements fondateurs.\n                    </p>\n\n                    <h3>40.1 Les Goulots d'Étranglement Causals (Causal Bottlenecks)</h3>\n                    <p>\n                        Un <strong>goulot d'étranglement causal</strong> est un événement de convergence cosmique\n                        absolue. Quelles que soient les micro-décisions prises en amont par des individus, la gravité du\n                        destin courbe les chronotrames pour les forcer à traverser ce carrefour précis.\n                    </p>\n\n                    <div class=\"callout warning\">\n                        <div class=\"callout-header\">\n                            <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\"\n                                stroke-width=\"2\">\n                                <path\n                                    d=\"M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z\" />\n                                <line x1=\"12\" y1=\"9\" x2=\"12\" y2=\"13\" />\n                                <line x1=\"12\" y1=\"17\" x2=\"12.01\" y2=\"17\" />\n                            </svg>\n                            Règle du Maître de Jeu : L'Inaltérabilité du Goulot\n                        </div>\n                        <div class=\"callout-body\">\n                            Les joueurs ne peuvent pas empêcher un goulot temporel d'arriver (ex: la chute d'une\n                            capitale, l'effondrement d'un bouclier planétaire, la fuite obligatoire vers un sanctuaire).\n                            En revanche, <strong>la préparation, l'état physique et psychologique, et les armes qu'ils\n                                apportent dans le goulot</strong> déterminent s'ils en sortiront broyés ou transformés\n                            en demi-dieux.\n                        </div>\n                    </div>\n\n                    <h3>40.2 Le Rôle du Goulot : Forger l'Esprit au lieu de Donner des Armes</h3>\n                    <p>\n                        L'erreur classique des voyageurs temporels est de chercher à transmettre une arme magique ou un\n                        canon laser surpuissant à travers le temps. Une arme peut être volée, copiée ou confisquée par\n                        l'adversaire.\n                    </p>\n                    <p>\n                        Ce que lègue une chronotrame maîtresse dans un goulot temporel, c'est <strong>du temps\n                            d'arrêt</strong> :\n                    </p>\n                    <ul>\n                        <li><strong>La halte forcée :</strong> Offrir à des fuyards traqués l'espace de silence et\n                            d'obscurité nécessaire pour cesser de réagir par panique animale.</li>\n                        <li><strong>L'intégration des traumatismes :</strong> Donner les jours ou les semaines de recul\n                            indispensables pour souder les esprits, maîtriser la Cinquième Force et dompter les\n                            instincts primaires.</li>\n                        <li><strong>La révélation structurante :</strong> Découvrir la trace irréfutable de leurs\n                            propres prédécesseurs, transformant le désespoir de l'inconnu en certitude\n                            d'accomplissement.</li>\n                    </ul>\n\n                    <h3>40.3 Paradoxes & Tolérance du Tissu Temporel (Variance 0.0001%)</h3>\n                    <p>\n                        Contrairement aux récits fantastiques où tuer son propre grand-père efface le voyageur dans un\n                        flash de lumière blanche, le continuum de notre système réagit avec une <strong>friction\n                            visqueuse</strong> :\n                    </p>\n\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "distorsions_temporelles"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <!-- ================= CHAPITRE 22 ================= -->\n                    "
+    }
+   ]
+  },
+  {
+   "id": "chap-41",
+   "symbole": "Chapitre 41.",
+   "titre": "Clairsentience & Prémonition (L'Échelle des 8 Échelons)",
+   "blocs": [
+    {
+     "type": "html",
+     "html": "\n\n                    <p>\n                        La <strong>Clairsentience</strong> est la manifestation cognitive la plus subtile et la plus\n                        exigeante de la Cinquième Force. Elle ne repose pas sur une formule magique bruyante, mais sur\n                        la capacité du cortex cérébral à capter les ondes de probabilité qui se propagent le long du\n                        fleuve temporel.\n                    </p>\n\n                    <div class=\"callout success\">\n                        <div class=\"callout-header\">\n                            <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\"\n                                stroke-width=\"2\">\n                                <circle cx=\"12\" cy=\"12\" r=\"10\" />\n                                <polyline points=\"12 6 12 12 14 14\" />\n                            </svg>\n                            Neuro-Physique de la Vision\n                        </div>\n                        <div class=\"callout-body\">\n                            La clairsentience naît au carrefour du <strong>Réseau par Défaut (DMN)</strong> et de\n                            l'activation des noyaux profonds de résonance arcanique. Lorsque le sujet cesse de fixer son\n                            attention sur l'immédiat sensoriel, son esprit « dérive » dans l'épaisseur du temps,\n                            percevant aussi bien l'écho sédimenté du passé que la courbure gravitationnelle du futur.\n                        </div>\n                    </div>\n\n                    <h3>41.1 La Grille Complète des 8 Échelons d'Évolution</h3>\n                    <p>\n                        Chaque individu doté du potentiel de prescience progresse à travers huit paliers distincts,\n                        documentés par les maîtres de la chrono-analyse :\n                    </p>\n\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "echelons_clairsentience"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <h3>41.2 Utilisation Tactique en Combat : Anticiper le Coup</h3>\n                    <p>\n                        En affrontement armé, un personnage possédant au moins l'<strong>Échelon 3</strong> de\n                        Clairsentience peut dépenser des Points d'Action pour deviner la prochaine manœuvre ennemie :\n                    </p>\n\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "techniques_anticipation"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <!-- ================= CHAPITRE 23 ================= -->\n                    "
+    }
+   ]
+  },
+  {
+   "id": "chap-42",
+   "symbole": "Chapitre 42.",
+   "titre": "Mécaniques Chronales en Jeu de Rôle",
+   "blocs": [
+    {
+     "type": "html",
+     "html": "\n\n                    <p>\n                        Intégrer le voyage dans le temps et la causalité dans une campagne de jeu de rôle est l'un des\n                        défis les plus redoutables pour un Maître de Jeu. Ce chapitre fournit les outils concrets pour\n                        structurer des intrigues temporelles rigoureuses, fascinantes et sans paradoxes destructeurs.\n                    </p>\n\n                    <h3>42.1 Les Reliques Témoins & Capsules Temporelles</h3>\n                    <p>\n                        Une <strong>capsule temporelle scellée</strong> est un objet mécanique ou minéral conçu pour\n                        traverser les âges en mode fermé. Pour qu'une relique serve de preuve irréfutable aux joueurs\n                        qu'une chronotrame antérieure s'est déjà déroulée, elle doit respecter la règle des trois\n                        empreintes :\n                    </p>\n                    <ol>\n                        <li><strong>L'Empreinte Biométrique Intemporelle :</strong> Le coffre ou la console n'accepte\n                            que l'ADN d'un membre précis de la table, avec une marge d'erreur inférieure à\n                            <code>0.0001%</code>.\n                        </li>\n                        <li><strong>Le Journal de Bord Fermé :</strong> Les écrits ou holocubes stockés ne contiennent\n                            pas l'avenir de manière omnisciente, mais <strong>l'historique des erreurs passées</strong>\n                            commises par la première itération des héros.</li>\n                        <li><strong>Le Reliquaire Physique :</strong> Les ossements ou l'équipement brisé d'un compagnon\n                            mort il y a 1 700 ans, gisant là où les joueurs se trouvent actuellement. C'est le choc\n                            psychologique qui brise le doute métaphysique.</li>\n                    </ol>\n\n                    <div class=\"callout temporal\">\n                        <div class=\"callout-header\">\n                            <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\"\n                                stroke-width=\"2\">\n                                <circle cx=\"12\" cy=\"12\" r=\"10\" />\n                                <polyline points=\"12 6 12 12 14 14\" />\n                            </svg>\n                            La Méthode des Graphes Temporels pour le MJ\n                        </div>\n                        <div class=\"callout-body\">\n                            Ne préparez jamais une aventure temporelle sous forme de script linéaire. Dessinez un\n                            <strong>Graphe Acyclique Dirigé (DAG)</strong> : chaque nœud est un événement inévitable\n                            (Goulot), et les flèches représentent les différentes manières dont les joueurs peuvent y\n                            parvenir. Peu importe le chemin qu'ils empruntent, ils frapperont le nœud suivant, mais avec\n                            des ressources, des alliances et des états psychologiques radicalement différents.\n                        </div>\n                    </div>\n\n                    <h3>42.2 Synthèse des Lois Temporelles du Système RP</h3>\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "lois_temporelles"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <div class=\"codex-signature\">\n                        <div class=\"sig-meta\">\n                            <strong>LIVRE X DU CODEX UNIVERSEL</strong><br>\n                            Chrono-Physique, Topologie des Chronotrames & Clairsentience<br>\n                            <em>Approuvé par les observateurs de la trame temporelle et les maîtres de\n                                l'arcanotech.</em>\n                        </div>\n                        <div class=\"sig-stamp\">\n                            <span class=\"stamp-title\">CAUSALITÉ VÉRIFIÉE</span>\n                            <span class=\"stamp-date\">VARIANCE : 0.0001% // STABLE</span>\n                        </div>\n                    </div>\n\n                    <!-- PAGINATION ENTRE LIVRES -->\n                    <div class=\"chapter-pagination\">\n                        <a href=\"livre_9.html\" class=\"pagination-btn\">\n                            <div>\n                                <div class=\"pagination-label\">Livre Précédent</div>\n                                <div class=\"pagination-title\">← Livre IX : Outils Web Interactifs</div>\n                            </div>\n                        </a>\n                        <a href=\"livre_11.html\" class=\"pagination-btn\">\n                            <div>\n                                <div class=\"pagination-label\">Livre Suivant</div>\n                                <div class=\"pagination-title\">Livre XI : Atlas des Mondes →</div>\n                            </div>\n                        </a>\n                    </div>\n\n                "
+    }
+   ]
+  }
+ ],
+ "donnees": {
+  "sens_temporel": {
+   "type": "cartes",
+   "grille": 2,
+   "cartes": [
+    {
+     "titre": "<span>La Boucle Arrière (Impasse)</span>\n                                <span class=\"pill-badge ruby\">Instabilité Critique</span>",
+     "top": false,
+     "monde": "Chrono-Physique // Rétro-Injection",
+     "corps_html": "Envoyer de l'information ou de la matière vers le passé engendre un cisaillement\n                                temporel. La distorsion accumulée consomme exponentiellement l'énergie du signal jusqu'à\n                                l'effondrement en singularité locale ou en boucle fermée stérile où la cause s'annule\n                                elle-même. Le voyageur est broyé par la friction du continuum.",
+     "pieds": [
+      {
+       "ton": "ruby",
+       "texte": "Divergence Incontrôlable"
+      },
+      {
+       "ton": "amber",
+       "texte": "Érosion Synaptique"
+      }
+     ]
+    },
+    {
+     "titre": "<span>La Propagation vers l'Avant</span>\n                                <span class=\"pill-badge cyan\">Stabilité Absolue</span>",
+     "top": false,
+     "monde": "Chrono-Physique // Vecteur Naturel",
+     "corps_html": "Au lieu de lutter contre le courant, les véritables bâtisseurs temporels acceptent\n                                l'exil dans le passé, s'y ancrent physiquement, et <strong>propagent une onde causale\n                                    vers l'avant</strong> à travers les siècles d'entropie naturelle. En plantant des\n                                graines dans l'argile du passé, ils laissent le temps broyer leurs ennemis et mûrir leur\n                                triomphe.",
+     "pieds": [
+      {
+       "ton": "cyan",
+       "texte": "Convergence Causalité"
+      },
+      {
+       "ton": "green",
+       "texte": "Tolérance 100%"
+      }
+     ]
+    }
+   ]
+  },
+  "theoreme_ancre": {
+   "type": "formule",
+   "etiquette_tag": "div",
+   "etiquette_classe": "formula-label",
+   "etiquette_html": "Théorème de l'Ancre Causalité Descendante",
+   "math_html": "<span class=\"hl-cyan\">Stabilité Causalité</span> = (<span class=\"hl-gold\">Masse\n                                Inerte</span> × <span class=\"hl-gold\">Temps Décantation</span>) / <span\n                                class=\"hl-ruby\">&Delta; Perturbation</span> &ge; 0.9999",
+   "desc_html": "Une ancre physique (un journal scellé, un sanctuaire enfoui sous la roche, une tradition\n                            culturelle tribale vivante) déposée avec une perturbation minime dans le passé voit son\n                            impact se solidifier avec les siècles. L'entropie élimine les remous chaotiques et ne\n                            conserve que la trajectoire maîtresse voulue.",
+   "contenu": false
+  },
+  "piliers_transmission": {
+   "type": "table",
+   "colonnes": [
+    "Pilier de Transmission",
+    "Support Physique",
+    "Mécanisme de Préservation",
+    "Résistance à l'Entropie"
+   ],
+   "lignes": [
+    [
+     "<strong>L'Ancre Minérale</strong>",
+     "Roche ignée, crypte d'obsidienne, carcasse métallique scellée",
+     "Inertie géologique absolue. Ne dépend d'aucun observateur ; sa présence physique\n                                        prouve la matérialité de l'avertissement.",
+     "<span class=\"table-badge cyan\">Millénaire (Inaltérable)</span>"
+    ],
+    [
+     "<strong>Le Courant Vivant</strong>",
+     "Peuple indigène, lignée biologique, rituels oraux codés",
+     "Transmission culturelle et linguistique. La pierre s'érode, mais un mythe répété\n                                        de génération en génération s'adapte et survit.",
+     "<span class=\"table-badge green\">Dynamique & Résilient</span>"
+    ],
+    [
+     "<strong>La Capsule Biométrique</strong>",
+     "Noyau d'IA dormante, verrou génétique ADN à tolérance 0.0001%",
+     "Système clos en stase totale. L'automate ne s'éveille qu'à la microseconde\n                                        exacte où l'empreinte génétique désignée pose la main dessus.",
+     "<span class=\"table-badge amber\">Précision Chirurgicale</span>"
+    ]
+   ],
+   "classe": "data-table"
+  },
+  "distorsions_temporelles": {
+   "type": "table",
+   "colonnes": [
+    "Niveau de Distorsion",
+    "Écart Temporel / Déviation",
+    "Effet sur le Monde",
+    "Conséquence sur le Voyageur (PJ)"
+   ],
+   "lignes": [
+    [
+     "<span class=\"table-badge green\">Zone Neutre</span>",
+     "Variance &le; 0.0001% (micro-détails)",
+     "Absorption par l'inertie du fleuve. Aucun changement macroscopique.",
+     "Aucune séquelle."
+    ],
+    [
+     "<span class=\"table-badge cyan\">Onde Mineure</span>",
+     "Modification d'une vie locale ou d'un lieu secondaire",
+     "Les souvenirs oscillent. Les livres d'histoire se réécrivent imperceptiblement.",
+     "Migraines chronales (-1 PA au 1er tour de chaque scène pendant 24h)."
+    ],
+    [
+     "<span class=\"table-badge amber\">Tension Majeure</span>",
+     "Altération d'une faction ou retard d'une bataille",
+     "Décalage de plusieurs mois sur les événements mondiaux. Dérive de phase.",
+     "Épreuve de Sagesse (Difficile 18) sous peine de perdre 1 Dé de Constitution\n                                        temporairement."
+    ],
+    [
+     "<span class=\"table-badge ruby\">Rupture Causalité</span>",
+     "Tentative de destruction d'un Goulot d'Étranglement",
+     "Rejet violent du tissu spatio-temporel. Effondrement de la zone en bulle de\n                                        stase.",
+     "Dégâts Absolus égaux à <code>Constitution &times; 3</code> et bannissement\n                                        dimensionnel."
+    ]
+   ],
+   "classe": "data-table"
+  },
+  "echelons_clairsentience": {
+   "type": "table",
+   "colonnes": [
+    "Échelon",
+    "Dénomination",
+    "Capacités & Manifestations",
+    "Limites & Coût Cognitif"
+   ],
+   "lignes": [
+    [
+     "<strong>1</strong>",
+     "<span class=\"table-badge cyan\">Entrée</span><br>Visions Inconscientes",
+     "Reçoit des flashs spontanés d'images, d'émotions ou d'odeurs sans aucun contrôle\n                                        volontaire (ex: sentiment de mort imminente, flash d'un visage).",
+     "Aucune maîtrise. Visions disjointes, fragmentées et imprévisibles. Ne peut être\n                                        activé à volonté."
+    ],
+    [
+     "<strong>2</strong>",
+     "<span class=\"table-badge cyan\">Basique</span><br>Visions Partielles Passé/Futur",
+     "Perçoit des bribes furtives du passé d'un objet touché ou du futur immédiat\n                                        (quelques secondes), souvent sans rapport avec la situation en cours.",
+     "Netteté floue. Difficulté à distinguer une réminiscence personnelle d'une vision\n                                        externe."
+    ],
+    [
+     "<strong>3</strong>",
+     "<span class=\"table-badge cyan\">Intermédiaire</span><br>Visions Dirigées",
+     "Peut se focaliser délibérément sur une personne, une porte ou un carrefour pour\n                                        sonder ce qui s'y est produit ou ce qui va s'y jouer dans l'heure.",
+     "Nécessite 1 minute d'immobilité et de concentration totale. Portée limitée au\n                                        contexte immédiat."
+    ],
+    [
+     "<strong>4</strong>",
+     "<span class=\"table-badge green\">Avancé</span><br>Prédictions Précises Court\n                                        Terme",
+     "Visions d'une netteté cristalline à l'échelle de quelques heures à quelques\n                                        jours. <strong>Bonus tactique en jeu :</strong> +2 à l'Initiative et +1 Dé en\n                                        Esquive lors du premier tour d'embuscade.",
+     "Difficulté à maîtriser la portée globale de la vision ; risque de biais\n                                        d'interprétation émotionnelle."
+    ],
+    [
+     "<strong>5</strong>",
+     "<span class=\"table-badge green\">Maîtrise</span><br>Rétro & Précognition Étendue",
+     "Perçoit des événements historiques oubliés ou des trajectoires futures majeures\n                                        sur des mois voire des années entières.",
+     "Épuisement mental sévère. Les souvenirs personnels commencent à se mélanger avec\n                                        les souvenirs perçus."
+    ],
+    [
+     "<strong>6</strong>",
+     "<span class=\"table-badge amber\">Expert</span><br>Arborescence des Futurs",
+     "Visualise en simultané les <strong>multiples branches probabilistes</strong>\n                                        d'un événement. Voit chaque choix et son issue directe pour une cible donnée.",
+     "Saturation cognitive (Analysis Paralysis). Le sujet peut hésiter face à\n                                        l'infinité des embranchements (-2 PA d'hésitation si échec d'un test d'Int)."
+    ],
+    [
+     "<strong>7</strong>",
+     "<span class=\"table-badge amber\">Élite</span><br>Feuilletage & Glissement\n                                        Temporel",
+     "Perçoit plusieurs chronotrames concurrentes superposées (Temporal Layering).\n                                        Identifie la micro-variable précise à modifier pour faire basculer une réalité\n                                        dans une autre.",
+     "Instabilité psychique extrême. Le sujet a l'impression de vivre dans plusieurs\n                                        réalités à la fois. Risque de dissociation d'identité."
+    ],
+    [
+     "<strong>8</strong>",
+     "<span class=\"table-badge ruby\">Suprême</span><br>Vision Temporelle Infinie",
+     "Omniprésence chronale. Accès instantané à l'infinité du spectre temporel (passé,\n                                        présent, futur et réalités fantômes) pour tout être ou particule de l'univers.",
+     "<strong>Rupture du lien présent.</strong> Le sujet cesse d'appartenir au monde\n                                        mortel. Son corps s'effondre dans le coma si la vision dépasse 10 secondes."
+    ]
+   ],
+   "classe": "data-table"
+  },
+  "techniques_anticipation": {
+   "type": "cartes",
+   "grille": 2,
+   "cartes": [
+    {
+     "titre": "<span>Lecture d'Impact Prédictive</span>\n                                <span class=\"pill-badge cyan\">2 PA // Réaction</span>",
+     "top": false,
+     "monde": "Clairsentience // Échelon 3+",
+     "corps_html": "Dès qu'un ennemi déclare une attaque contre le prescient, celui-ci peut dépenser\n                                <strong>2 PA</strong> pour entrevoir la trajectoire du coup 0.5 seconde avant son\n                                exécution. Il gagne <strong>+1 Palier de Dé en Esquive ou Parade</strong> contre cette\n                                attaque spécifique.",
+     "pieds": [
+      {
+       "ton": "cyan",
+       "texte": "Déclenchement Réactif"
+      },
+      {
+       "ton": "green",
+       "texte": "Consomme 2 PA"
+      }
+     ]
+    },
+    {
+     "titre": "<span>Verrouillage Probabiliste</span>\n                                <span class=\"pill-badge amber\">3 PA // Action Principale</span>",
+     "top": false,
+     "monde": "Clairsentience // Échelon 6+",
+     "corps_html": "Le prescient analyse les six prochaines trajectoires de déplacement de la cible. Il\n                                désigne une case précise : si la cible s'y déplace ou y reste, toutes les attaques\n                                alliées contre elle bénéficient d'une <strong>réduction de difficulté de -4</strong>\n                                jusqu'au tour suivant.",
+     "pieds": [
+      {
+       "ton": "amber",
+       "texte": "Contrôle Tactique"
+      },
+      {
+       "ton": "ruby",
+       "texte": "Difficulté Réduite -4"
+      }
+     ]
+    }
+   ]
+  },
+  "lois_temporelles": {
+   "type": "table",
+   "colonnes": [
+    "Loi Fondamentale",
+    "Principe Mécanique",
+    "Application Table de Jeu"
+   ],
+   "lignes": [
+    [
+     "<strong>1. Vecteur Aval</strong>",
+     "Le temps s'écoule naturellement vers l'avant. Tout retour arrière coûte\n                                        100&times; plus d'énergie.",
+     "Les PJ ne « rechargent » pas une sauvegarde. Leurs erreurs passées sont gravées\n                                        ; ils doivent corriger le futur."
+    ],
+    [
+     "<strong>2. Ancrage Inversé</strong>",
+     "Une ancre discrète semée dans le passé mûrit et se renforce au fil des siècles.",
+     "Les PJ peuvent planquer un objet dans un sanctuaire désert au chapitre 1 et le\n                                        retrouver intact 1 000 ans plus tard au chapitre 10."
+    ],
+    [
+     "<strong>3. Inaltérabilité du Goulot</strong>",
+     "Les carrefours du destin sont inévitables ; seul change l'état des acteurs qui\n                                        le traversent.",
+     "L'Empire attaquera toujours la cité à minuit. La question est : les PJ\n                                        auront-ils réparé le générateur à temps ?"
+    ],
+    [
+     "<strong>4. Résistance Synaptique</strong>",
+     "Sonder l'infinité des futurs inflige de la fatigue cognitive et du stress\n                                        mental.",
+     "Utiliser la Clairsentience au-delà de l'Échelon 4 consomme des PA et impose des\n                                        malus de concentration prolongée."
+    ]
+   ],
+   "classe": "data-table"
+  }
+ },
+ "tableaux": {
+  "piliers_transmission": {
+   "colonnes": [
+    "Pilier de Transmission",
+    "Support Physique",
+    "Mécanisme de Préservation",
+    "Résistance à l'Entropie"
+   ]
+  },
+  "distorsions_temporelles": {
+   "colonnes": [
+    "Niveau de Distorsion",
+    "Écart Temporel / Déviation",
+    "Effet sur le Monde",
+    "Conséquence sur le Voyageur (PJ)"
+   ]
+  },
+  "echelons_clairsentience": {
+   "colonnes": [
+    "Échelon",
+    "Dénomination",
+    "Capacités & Manifestations",
+    "Limites & Coût Cognitif"
+   ]
+  },
+  "lois_temporelles": {
+   "colonnes": [
+    "Loi Fondamentale",
+    "Principe Mécanique",
+    "Application Table de Jeu"
+   ]
+  }
+ },
+ "mecaniques": {
+  "note": "Genere depuis livre_10.html (motif RP-075/Livre II). Source unique : regenerer.",
+  "sens_temporel": [
+   {
+    "sens": "La Boucle Arrière (Impasse) Instabilité Critique",
+    "texte": "Envoyer de l'information ou de la matière vers le passé engendre un cisaillement temporel. La distorsion accumulée consomme exponentiellement l'énergie du signal jusqu'à l'effondrement en singularité locale ou en boucle fermée stérile où la cause s'annule elle-même. Le voyageur est broyé par la friction du continuum.",
+    "verdicts": [
+     "Divergence Incontrôlable",
+     "Érosion Synaptique"
+    ]
+   },
+   {
+    "sens": "La Propagation vers l'Avant Stabilité Absolue",
+    "texte": "Au lieu de lutter contre le courant, les véritables bâtisseurs temporels acceptent l'exil dans le passé, s'y ancrent physiquement, et propagent une onde causale vers l'avant à travers les siècles d'entropie naturelle. En plantant des graines dans l'argile du passé, ils laissent le temps broyer leurs ennemis et mûrir leur triomphe.",
+    "verdicts": [
+     "Convergence Causalité",
+     "Tolérance 100%"
+    ]
+   }
+  ],
+  "piliers_transmission": [
+   {
+    "pilier": "L'Ancre Minérale",
+    "support": "Roche ignée, crypte d'obsidienne, carcasse métallique scellée",
+    "mecanisme": "Inertie géologique absolue. Ne dépend d'aucun observateur ; sa présence physique prouve la matérialité de l'avertissement.",
+    "resistance": "Millénaire (Inaltérable)"
+   },
+   {
+    "pilier": "Le Courant Vivant",
+    "support": "Peuple indigène, lignée biologique, rituels oraux codés",
+    "mecanisme": "Transmission culturelle et linguistique. La pierre s'érode, mais un mythe répété de génération en génération s'adapte et survit.",
+    "resistance": "Dynamique & Résilient"
+   },
+   {
+    "pilier": "La Capsule Biométrique",
+    "support": "Noyau d'IA dormante, verrou génétique ADN à tolérance 0.0001%",
+    "mecanisme": "Système clos en stase totale. L'automate ne s'éveille qu'à la microseconde exacte où l'empreinte génétique désignée pose la main dessus.",
+    "resistance": "Précision Chirurgicale"
+   }
+  ],
+  "theoreme_ancre": {
+   "etiquette": "Théorème de l'Ancre Causalité Descendante",
+   "formule": "Stabilité Causalité = (Masse Inerte × Temps Décantation) / Δ Perturbation ≥ 0.9999",
+   "texte": "Une ancre physique (un journal scellé, un sanctuaire enfoui sous la roche, une tradition culturelle tribale vivante) déposée avec une perturbation minime dans le passé voit son impact se solidifier avec les siècles. L'entropie élimine les remous chaotiques et ne conserve que la trajectoire maîtresse voulue."
+  },
+  "distorsions_temporelles": [
+   {
+    "niveau": "Zone Neutre",
+    "ecart": "Variance ≤ 0.0001% (micro-détails)",
+    "effet_monde": "Absorption par l'inertie du fleuve. Aucun changement macroscopique.",
+    "consequence": "Aucune séquelle."
+   },
+   {
+    "niveau": "Onde Mineure",
+    "ecart": "Modification d'une vie locale ou d'un lieu secondaire",
+    "effet_monde": "Les souvenirs oscillent. Les livres d'histoire se réécrivent imperceptiblement.",
+    "consequence": "Migraines chronales (-1 PA au 1er tour de chaque scène pendant 24h)."
+   },
+   {
+    "niveau": "Tension Majeure",
+    "ecart": "Altération d'une faction ou retard d'une bataille",
+    "effet_monde": "Décalage de plusieurs mois sur les événements mondiaux. Dérive de phase.",
+    "consequence": "Épreuve de Sagesse (Difficile 18) sous peine de perdre 1 Dé de Constitution temporairement."
+   },
+   {
+    "niveau": "Rupture Causalité",
+    "ecart": "Tentative de destruction d'un Goulot d'Étranglement",
+    "effet_monde": "Rejet violent du tissu spatio-temporel. Effondrement de la zone en bulle de stase.",
+    "consequence": "Dégâts Absolus égaux à Constitution × 3 et bannissement dimensionnel."
+   }
+  ],
+  "echelons_clairsentience": [
+   {
+    "echelon": 1,
+    "denomination": "EntréeVisions Inconscientes",
+    "capacites": "Reçoit des flashs spontanés d'images, d'émotions ou d'odeurs sans aucun contrôle volontaire (ex: sentiment de mort imminente, flash d'un visage).",
+    "limites": "Aucune maîtrise. Visions disjointes, fragmentées et imprévisibles. Ne peut être activé à volonté."
+   },
+   {
+    "echelon": 2,
+    "denomination": "BasiqueVisions Partielles Passé/Futur",
+    "capacites": "Perçoit des bribes furtives du passé d'un objet touché ou du futur immédiat (quelques secondes), souvent sans rapport avec la situation en cours.",
+    "limites": "Netteté floue. Difficulté à distinguer une réminiscence personnelle d'une vision externe."
+   },
+   {
+    "echelon": 3,
+    "denomination": "IntermédiaireVisions Dirigées",
+    "capacites": "Peut se focaliser délibérément sur une personne, une porte ou un carrefour pour sonder ce qui s'y est produit ou ce qui va s'y jouer dans l'heure.",
+    "limites": "Nécessite 1 minute d'immobilité et de concentration totale. Portée limitée au contexte immédiat."
+   },
+   {
+    "echelon": 4,
+    "denomination": "AvancéPrédictions Précises Court Terme",
+    "capacites": "Visions d'une netteté cristalline à l'échelle de quelques heures à quelques jours. Bonus tactique en jeu : +2 à l'Initiative et +1 Dé en Esquive lors du premier tour d'embuscade.",
+    "limites": "Difficulté à maîtriser la portée globale de la vision ; risque de biais d'interprétation émotionnelle."
+   },
+   {
+    "echelon": 5,
+    "denomination": "MaîtriseRétro & Précognition Étendue",
+    "capacites": "Perçoit des événements historiques oubliés ou des trajectoires futures majeures sur des mois voire des années entières.",
+    "limites": "Épuisement mental sévère. Les souvenirs personnels commencent à se mélanger avec les souvenirs perçus."
+   },
+   {
+    "echelon": 6,
+    "denomination": "ExpertArborescence des Futurs",
+    "capacites": "Visualise en simultané les multiples branches probabilistes d'un événement. Voit chaque choix et son issue directe pour une cible donnée.",
+    "limites": "Saturation cognitive (Analysis Paralysis). Le sujet peut hésiter face à l'infinité des embranchements (-2 PA d'hésitation si échec d'un test d'Int)."
+   },
+   {
+    "echelon": 7,
+    "denomination": "ÉliteFeuilletage & Glissement Temporel",
+    "capacites": "Perçoit plusieurs chronotrames concurrentes superposées (Temporal Layering). Identifie la micro-variable précise à modifier pour faire basculer une réalité dans une autre.",
+    "limites": "Instabilité psychique extrême. Le sujet a l'impression de vivre dans plusieurs réalités à la fois. Risque de dissociation d'identité."
+   },
+   {
+    "echelon": 8,
+    "denomination": "SuprêmeVision Temporelle Infinie",
+    "capacites": "Omniprésence chronale. Accès instantané à l'infinité du spectre temporel (passé, présent, futur et réalités fantômes) pour tout être ou particule de l'univers.",
+    "limites": "Rupture du lien présent. Le sujet cesse d'appartenir au monde mortel. Son corps s'effondre dans le coma si la vision dépasse 10 secondes."
+   }
+  ],
+  "echelons_par_numero": {
+   "1": {
+    "echelon": 1,
+    "denomination": "EntréeVisions Inconscientes",
+    "capacites": "Reçoit des flashs spontanés d'images, d'émotions ou d'odeurs sans aucun contrôle volontaire (ex: sentiment de mort imminente, flash d'un visage).",
+    "limites": "Aucune maîtrise. Visions disjointes, fragmentées et imprévisibles. Ne peut être activé à volonté."
+   },
+   "2": {
+    "echelon": 2,
+    "denomination": "BasiqueVisions Partielles Passé/Futur",
+    "capacites": "Perçoit des bribes furtives du passé d'un objet touché ou du futur immédiat (quelques secondes), souvent sans rapport avec la situation en cours.",
+    "limites": "Netteté floue. Difficulté à distinguer une réminiscence personnelle d'une vision externe."
+   },
+   "3": {
+    "echelon": 3,
+    "denomination": "IntermédiaireVisions Dirigées",
+    "capacites": "Peut se focaliser délibérément sur une personne, une porte ou un carrefour pour sonder ce qui s'y est produit ou ce qui va s'y jouer dans l'heure.",
+    "limites": "Nécessite 1 minute d'immobilité et de concentration totale. Portée limitée au contexte immédiat."
+   },
+   "4": {
+    "echelon": 4,
+    "denomination": "AvancéPrédictions Précises Court Terme",
+    "capacites": "Visions d'une netteté cristalline à l'échelle de quelques heures à quelques jours. Bonus tactique en jeu : +2 à l'Initiative et +1 Dé en Esquive lors du premier tour d'embuscade.",
+    "limites": "Difficulté à maîtriser la portée globale de la vision ; risque de biais d'interprétation émotionnelle."
+   },
+   "5": {
+    "echelon": 5,
+    "denomination": "MaîtriseRétro & Précognition Étendue",
+    "capacites": "Perçoit des événements historiques oubliés ou des trajectoires futures majeures sur des mois voire des années entières.",
+    "limites": "Épuisement mental sévère. Les souvenirs personnels commencent à se mélanger avec les souvenirs perçus."
+   },
+   "6": {
+    "echelon": 6,
+    "denomination": "ExpertArborescence des Futurs",
+    "capacites": "Visualise en simultané les multiples branches probabilistes d'un événement. Voit chaque choix et son issue directe pour une cible donnée.",
+    "limites": "Saturation cognitive (Analysis Paralysis). Le sujet peut hésiter face à l'infinité des embranchements (-2 PA d'hésitation si échec d'un test d'Int)."
+   },
+   "7": {
+    "echelon": 7,
+    "denomination": "ÉliteFeuilletage & Glissement Temporel",
+    "capacites": "Perçoit plusieurs chronotrames concurrentes superposées (Temporal Layering). Identifie la micro-variable précise à modifier pour faire basculer une réalité dans une autre.",
+    "limites": "Instabilité psychique extrême. Le sujet a l'impression de vivre dans plusieurs réalités à la fois. Risque de dissociation d'identité."
+   },
+   "8": {
+    "echelon": 8,
+    "denomination": "SuprêmeVision Temporelle Infinie",
+    "capacites": "Omniprésence chronale. Accès instantané à l'infinité du spectre temporel (passé, présent, futur et réalités fantômes) pour tout être ou particule de l'univers.",
+    "limites": "Rupture du lien présent. Le sujet cesse d'appartenir au monde mortel. Son corps s'effondre dans le coma si la vision dépasse 10 secondes."
+   }
+  },
+  "lois_temporelles": [
+   {
+    "numero": 1,
+    "loi": "Vecteur Aval",
+    "principe": "Le temps s'écoule naturellement vers l'avant. Tout retour arrière coûte 100× plus d'énergie.",
+    "application": "Les PJ ne « rechargent » pas une sauvegarde. Leurs erreurs passées sont gravées ; ils doivent corriger le futur."
+   },
+   {
+    "numero": 2,
+    "loi": "Ancrage Inversé",
+    "principe": "Une ancre discrète semée dans le passé mûrit et se renforce au fil des siècles.",
+    "application": "Les PJ peuvent planquer un objet dans un sanctuaire désert au chapitre 1 et le retrouver intact 1 000 ans plus tard au chapitre 10."
+   },
+   {
+    "numero": 3,
+    "loi": "Inaltérabilité du Goulot",
+    "principe": "Les carrefours du destin sont inévitables ; seul change l'état des acteurs qui le traversent.",
+    "application": "L'Empire attaquera toujours la cité à minuit. La question est : les PJ auront-ils réparé le générateur à temps ?"
+   },
+   {
+    "numero": 4,
+    "loi": "Résistance Synaptique",
+    "principe": "Sonder l'infinité des futurs inflige de la fatigue cognitive et du stress mental.",
+    "application": "Utiliser la Clairsentience au-delà de l'Échelon 4 consomme des PA et impose des malus de concentration prolongée."
+   }
+  ],
+  "techniques_anticipation": [
+   {
+    "nom": "Lecture d'Impact Prédictive",
+    "cout_pa": 2,
+    "action": "Réaction",
+    "texte": "Dès qu'un ennemi déclare une attaque contre le prescient, celui-ci peut dépenser 2 PA pour entrevoir la trajectoire du coup 0.5 seconde avant son exécution. Il gagne +1 Palier de Dé en Esquive ou Parade contre cette attaque spécifique.",
+    "effets": [
+     "Déclenchement Réactif",
+     "Consomme 2 PA"
+    ]
+   },
+   {
+    "nom": "Verrouillage Probabiliste",
+    "cout_pa": 3,
+    "action": "Action Principale",
+    "texte": "Le prescient analyse les six prochaines trajectoires de déplacement de la cible. Il désigne une case précise : si la cible s'y déplace ou y reste, toutes les attaques alliées contre elle bénéficient d'une réduction de difficulté de -4 jusqu'au tour suivant.",
+    "effets": [
+     "Contrôle Tactique",
+     "Difficulté Réduite -4"
+    ]
+   }
+  ]
+ }
+}
