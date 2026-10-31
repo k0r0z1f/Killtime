@@ -111,7 +111,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // 6. Scrollspy automatique pour surligner les ancres actives
-    window.addEventListener('scroll', () => {
+    // (panneau droit + menu lateral gauche).
+    const updateSpy = () => {
         const headings = document.querySelectorAll('h2[id], section[id]');
         let currentId = '';
         headings.forEach(heading => {
@@ -130,8 +131,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     link.style.borderLeftColor = 'var(--arcane-cyan)';
                 }
             });
+            const page = location.pathname.split('/').pop();
+            document.querySelectorAll('.nav-items-list .nav-item-link').forEach(link => {
+                const href = link.getAttribute('href') || '';
+                const ici = href === '#' + currentId || href === page + '#' + currentId;
+                link.classList.toggle('active', ici);
+            });
         }
-    }, { passive: true });
+    };
+    window.addEventListener('scroll', updateSpy, { passive: true });
+    window.addEventListener('hashchange', updateSpy);
+    updateSpy();
 });
 
 /* ==========================================================================
