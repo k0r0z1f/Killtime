@@ -1,0 +1,805 @@
+{
+ "livre": "VIII",
+ "titre": "Arsenal",
+ "version": 1,
+ "updated": "2026-10-31",
+ "source": "livre_8.html",
+ "entete_html": "",
+ "sections": [
+  {
+   "id": "entete",
+   "symbole": null,
+   "titre": null,
+   "blocs": [
+    {
+     "type": "html",
+     "html": "\n\n                    <div class=\"doc-badge-row\">\n                        <span class=\"doc-badge-pill\">\n                            <svg width=\"12\" height=\"12\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\"\n                                stroke-width=\"2\">\n                                <polygon points=\"12 2 2 7 12 12 22 7 12 2\" />\n                                <polyline points=\"2 17 12 22 22 17\" />\n                                <polyline points=\"2 12 12 17 22 12\" />\n                            </svg>\n                            Livre VIII — Armement & Équipement\n                        </span>\n                        <span class=\"doc-badge-pill accent\">Nomenclature DLPH & Arcanotech</span>\n                        <span class=\"doc-badge-pill live\">Système Validé</span>\n                    </div>\n\n                    <h1 class=\"doc-title\">Livre VIII : Arsenal&nbsp;& Arcanotech</h1>\n                    <p class=\"doc-lead\">\n                        Notre système transcende les frontières temporelles. Du duel à l'épée bâtarde en acier forgé\n                        jusqu'au combat en combinaison pressurisée sous le feu des lasers de confinement, chaque arme et\n                        armure obéit à la même <strong>métrologie universelle</strong>. Ce livre détaille la\n                        nomenclature standard (Dégâts, Poids, Portée, Mains), les épées laser 3D à 6D, les fusils laser\n                        à longue portée dont le dévastateur <em>Deglazer</em>, les champs de force personnels et la\n                        pharmacopée de combat impériale.\n                    </p>\n\n                    <hr class=\"doc-divider\">\n\n                    <!-- ================= CHAPITRE 30 ================= -->\n                    "
+    }
+   ]
+  },
+  {
+   "id": "chap-31",
+   "symbole": "Chapitre 31.",
+   "titre": "Nomenclature Universelle & Armement Traditionnel",
+   "blocs": [
+    {
+     "type": "html",
+     "html": "\n\n                    <p>\n                        Pour assurer une lisibilité instantanée en jeu quel que soit l'époque ou le monde visité, tout\n                        équipement offensif est décrit selon le standard <strong>D-L-P-H</strong> :\n                    </p>\n\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "code_dlph"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <h3>31.1 Épées & Armes de Poing en Métal</h3>\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "armes_lames"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <h3>31.2 Armes Concasseuses, Haches & Armes d'Hast</h3>\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "armes_choc_hast"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <!-- ================= CHAPITRE 31 ================= -->\n                    "
+    }
+   ]
+  },
+  {
+   "id": "chap-32",
+   "symbole": "Chapitre 32.",
+   "titre": "Épées Laser & Fusils Arcanotech",
+   "blocs": [
+    {
+     "type": "html",
+     "html": "\n\n                    <p>\n                        L'armement arcanotech et énergétique combine les principes de la Cinquième Force et la\n                        miniaturisation des circuits à résonance de nytharite.\n                    </p>\n\n                    <h3>32.1 Les Épées Laser de Confinement Plasma</h3>\n                    <p>\n                        Une épée laser projette un arc de plasma stabilisé par un champ magnétique compact. La lame\n                        tranche la matière solide en ignorant la résistance physique ordinaire et ne subit jamais\n                        d'usure ni d'émoussement.\n                    </p>\n\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "epees_laser"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <h3>32.2 Fusils Laser & L'Arsenal à Distance</h3>\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "fusils_laser"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <h3>32.3 Grenades & Munitions Explosives</h3>\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "grenades"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <!-- ================= CHAPITRE 32 ================= -->\n                    "
+    }
+   ]
+  },
+  {
+   "id": "chap-33",
+   "symbole": "Chapitre 33.",
+   "titre": "Blindages, Champs de Force & Pharmacopée Tactique",
+   "blocs": [
+    {
+     "type": "html",
+     "html": "\n\n                    <p>\n                        Pour survivre aux tirs laser et aux frappes énergétiques, la technologie offre trois lignes de\n                        protection complémentaires : armures légères flexibles, cuirasses lourdes motorisées et\n                        boucliers de diffraction arcanique.\n                    </p>\n\n                    <h3>33.1 Armures Corporelles : Légères vs Lourdes</h3>\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "armures"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <h3>33.2 Champs de Force Personnels & Combinaisons Spatiales</h3>\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "champs_force"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <h3>33.3 Pharmacopée Tactique & Consommables Médicaux</h3>\n                    <p>\n                        Dans les situations d'urgence extrême, les stimulants chimiques et seringues arcaniques font la\n                        différence entre la survie et le trépas.\n                    </p>\n\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "pharmacie"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <div class=\"codex-signature\">\n                        <div class=\"sig-meta\">\n                            <strong>LIVRE VIII DU CODEX UNIVERSEL</strong><br>\n                            Arsenal Multiversel, Spécifications DLPH & Arcanotech Impériale<br>\n                            <em>Catalogue officiel d'équipement pour toutes les classes de combattants.</em>\n                        </div>\n                        <div class=\"sig-stamp\">\n                            <span class=\"stamp-title\">ARSENAL CERTIFIÉ</span>\n                            <span class=\"stamp-date\">CRÉDITS IMPÉRIAUX // HOMOLOGUÉ</span>\n                        </div>\n                    </div>\n\n                    <!-- PAGINATION ENTRE LIVRES -->\n                    <div class=\"chapter-pagination\">\n                        <a href=\"livre_7.html\" class=\"pagination-btn\">\n                            <div>\n                                <div class=\"pagination-label\">Livre Précédent</div>\n                                <div class=\"pagination-title\">← Livre VII : Historiques &amp; Passés</div>\n                            </div>\n                        </a>\n                        <a href=\"livre_9.html\" class=\"pagination-btn\">\n                            <div>\n                                <div class=\"pagination-label\">Livre Suivant</div>\n                                <div class=\"pagination-title\">Livre IX : Outils Web Interactifs →</div>\n                            </div>\n                        </a>\n                    </div>\n\n                "
+    }
+   ]
+  }
+ ],
+ "donnees": {
+  "code_dlph": {
+   "type": "formule",
+   "etiquette_tag": "div",
+   "etiquette_classe": "formula-label",
+   "etiquette_html": "Code Universel d'Arme (DLPH)",
+   "math_html": "<span class=\"hl-ruby\">[D] Dégâts</span> &nbsp;—&nbsp; <span class=\"hl-gold\">[L] Livres\n                                (Poids)</span> &nbsp;—&nbsp; <span class=\"hl-cyan\">[P] Portée (m/cases)</span>\n                            &nbsp;—&nbsp; <span class=\"hl-emerald\">[H] Maniement (1H / 2H)</span>",
+   "desc_html": "<strong>D :</strong> Dégâts de base ajoutés au jet d'attaque. &bull;\n                            <strong>L :</strong> Poids en livres impériales (1 livre &asymp; 0.45 kg). &bull;\n                            <strong>P :</strong> Portée opérationnelle en mètres (1 case = 1 mètre). &bull;\n                            <strong>H :</strong> 1H (une main) ou 2H (deux mains obligatoires).",
+   "contenu": false
+  },
+  "armes_lames": {
+   "type": "table",
+   "colonnes": [
+    "Désignation de l'Arme",
+    "Code DLPH",
+    "Prix Moyen (Crédits CE)",
+    "Type Historique / Profil"
+   ],
+   "lignes": [
+    [
+     "<strong>Épée Métal Courte</strong>",
+     "<span class=\"table-badge cyan\">3D - 3L - 1P - 1H</span>",
+     "~500 CE",
+     "Glaive, Arming Sword, Ulfberht"
+    ],
+    [
+     "<strong>Épée Métal Standard</strong>",
+     "<span class=\"table-badge cyan\">4D - 3L - 1P - 1H</span>",
+     "~750 CE",
+     "Épée bâtarde, Katana traditionnel"
+    ],
+    [
+     "<strong>Épée Métal Supérieure</strong>",
+     "<span class=\"table-badge cyan\">5D - 3L - 1P - 1H</span>",
+     "~1 000 CE",
+     "Acier replié de maître, Katana affûté"
+    ],
+    [
+     "<strong>Épée Métal Longue (2H)</strong>",
+     "<span class=\"table-badge green\">4D - 5L - 1P - 2H</span>",
+     "~1 000 CE",
+     "Longsword, Claymore d'assaut"
+    ],
+    [
+     "<strong>Épée Métal de Guerre (2H)</strong>",
+     "<span class=\"table-badge green\">5D - 5L - 1P - 2H</span>",
+     "~1 250 CE",
+     "Zweihänder de ligne, Flamberge"
+    ],
+    [
+     "<strong>Épée Lourde de Brèche (2H)</strong>",
+     "<span class=\"table-badge green\">6D - 5L - 1P - 2H</span>",
+     "~1 500 CE",
+     "Espadon géant, acier lourd renforcé"
+    ],
+    [
+     "<strong>Grand Espadon Maître</strong>",
+     "<span class=\"table-badge amber\">7D - 6L - 2P - 2H</span>",
+     "~3 000 CE",
+     "Allonge 2 cases, frappe dévastatrice"
+    ]
+   ],
+   "classe": "data-table"
+  },
+  "armes_choc_hast": {
+   "type": "table",
+   "colonnes": [
+    "Arme",
+    "Code DLPH",
+    "Prix Moyen",
+    "Effet & Remarques"
+   ],
+   "lignes": [
+    [
+     "<strong>Gourdin / Matraque</strong>",
+     "2D - 3L - 1P - 1H",
+     "~50 CE",
+     "Arme improvisée contondante."
+    ],
+    [
+     "<strong>Hache de Bataille</strong>",
+     "3-4D - 4L - 1P - 1H",
+     "~600 CE",
+     "Pénétration osseuse supérieure."
+    ],
+    [
+     "<strong>Marteau Métal Lourd</strong>",
+     "6D - 5L - 1P - 2H",
+     "~5 000 CE",
+     "Broyeur de blindages métalliques."
+    ],
+    [
+     "<strong>Pique & Hallebarde</strong>",
+     "4D - 6L - 2P - 2H",
+     "~800 CE",
+     "Allonge tactique de 2 mètres, arrêt de charge."
+    ],
+    [
+     "<strong>Arc Composite Renforcé</strong>",
+     "5D - 2L - 500P - 2H",
+     "~1 000 CE",
+     "Portée 500m, perforation à longue distance."
+    ]
+   ],
+   "classe": "data-table"
+  },
+  "epees_laser": {
+   "type": "table",
+   "colonnes": [
+    "Modèle d'Épée Laser",
+    "Code DLPH",
+    "Prix Impérial (CE)",
+    "Propriétés Tactiques"
+   ],
+   "lignes": [
+    [
+     "<strong>Épée Laser Standard 3D</strong>",
+     "<span class=\"table-badge cyan\">3D - 1L - 1P - 1H</span>",
+     "~6 000 CE",
+     "Ultra-légère (1 livre), dégainement quasi instantané."
+    ],
+    [
+     "<strong>Épée Laser Militaire 4D</strong>",
+     "<span class=\"table-badge cyan\">4D - 1L - 1P - 1H</span>",
+     "~20 000 CE",
+     "Équipement d'officier de la garde impériale."
+    ],
+    [
+     "<strong>Épée Laser Commando 5D</strong>",
+     "<span class=\"table-badge amber\">5D - 1L - 1P - 1H</span>",
+     "~40 000 CE",
+     "Puissance chirurgicale à une main, coupe l'acier."
+    ],
+    [
+     "<strong>Épée Laser Deux Mains 4D</strong>",
+     "<span class=\"table-badge cyan\">4D - 2L - 1P - 2H</span>",
+     "~18 000 CE",
+     "Faisceau large, excellente assise de parade (+1)."
+    ],
+    [
+     "<strong>Épée Laser Lourde 5D</strong>",
+     "<span class=\"table-badge amber\">5D - 2L - 1P - 2H</span>",
+     "~35 000 CE",
+     "Générateur double chambre, perforation lourde."
+    ],
+    [
+     "<strong>Épée Laser Suprême 6D</strong>",
+     "<span class=\"table-badge ruby\">6D - 2L - 1P - 2H</span>",
+     "~60 000 CE",
+     "Arc plasmique dense, inflige des brûlures résiduelles."
+    ],
+    [
+     "<strong>Sabre Long à Allonge 4D</strong>",
+     "<span class=\"table-badge cyan\">4D - 3L - 2P - 1H</span>",
+     "~75 000 CE",
+     "Portée 2 mètres à une main, régulateur cinétique."
+    ],
+    [
+     "<strong>Grand Sabre de Brèche 5D</strong>",
+     "<span class=\"table-badge amber\">5D - 4L - 2P - 2H</span>",
+     "~80 000 CE",
+     "Conçu pour découper les portes de sas de vaisseaux."
+    ],
+    [
+     "<strong>Espadon Laser Titan 6D</strong>",
+     "<span class=\"table-badge ruby\">6D - 4L - 2P - 2H</span>",
+     "~100 000 CE",
+     "Le summum du corps-à-corps énergétique impérial."
+    ]
+   ],
+   "classe": "data-table"
+  },
+  "fusils_laser": {
+   "type": "cartes",
+   "grille": 2,
+   "cartes": [
+    {
+     "titre": "<span>Gamme des Fusils Laser Standard</span>\n                                <span class=\"pill-badge cyan\">Tir Précis</span>",
+     "top": false,
+     "corps_brut": "\n                            <ul style=\"padding-left: 15px; margin: 10px 0; font-size: 0.9em;\">\n                                <li><strong>Fusil Laser Léger :</strong> <code>3D - 2L - 500P - 1H</code> (10 000 CE).\n                                    Pistolet lourd compact.</li>\n                                <li><strong>Fusil Laser de Précision :</strong> <code>4D - 2L - 750P - 1H</code> (25 000\n                                    CE). Visée optique intégrée.</li>\n                                <li><strong>Fusil d'Assaut Laser :</strong> <code>4D - 3L - 500P - 2H</code> (20 000\n                                    CE). Cadence soutenue.</li>\n                                <li><strong>Fusil de Sniper Lourd :</strong> <code>5D - 4L - 1000P - 2H</code> (50 000\n                                    CE). Portée 1 kilomètre.</li>\n                            </ul>\n                            <div class=\"callout arcane\" style=\"margin-top: 10px; font-size: 0.85em;\">\n                                <strong>Balistique des Faisceaux Laser :</strong> Le tir produit un trait lumineux instantané et continu. En cas de touche, l'énergie thermique est absorbée par la cible ; en cas d'échec, le faisceau s'écrase sur le sol ou les parois en gerbe d'étincelles thermiques. Au contact direct (Distance = 1 case), les fusils laser sont assujettis à la condition <em>Canon Entravé</em> (Livre V, §22.2).\n                            </div>\n                        ",
+     "pieds": []
+    },
+    {
+     "titre": "<span>Le Fusil « Deglazer »</span>\n                                <span class=\"pill-badge ruby\">+1 ec // 7D Létal</span>",
+     "top": false,
+     "monde": "Arcanotech de Guerre // 200 000 CE",
+     "corps_brut": "\n                            <div class=\"formula-math\" style=\"font-size: 1.1em; margin: 10px 0;\">\n                                <span class=\"hl-cyan\">+1 ec</span> &nbsp;—&nbsp; <span class=\"hl-gold\">7D - 4L - 1000P -\n                                    2H</span>\n                            </div>\n                            <p style=\"font-size: 0.9em;\">\n                                Arme d'élite légendaire. Le <em>Deglazer</em> tire un rayon focalisé à travers un prisme\n                                de nytharite pure. Il confère un <strong>bonus matériel situationnel de +1 au total du jet (+1\n                                    ec)</strong> — ce n'est pas un modificateur de caractéristique (les mods carac restent interdits) — et inflige <strong>7 Dégâts de base</strong> jusqu'à 1 kilomètre de\n                                distance !\n                            </p>\n                        ",
+     "pieds": []
+    }
+   ]
+  },
+  "grenades": {
+   "type": "table",
+   "colonnes": [
+    "Type de Grenade",
+    "Puissance d'Impact",
+    "Code DLPH",
+    "Prix Unitaire (CE)"
+   ],
+   "lignes": [
+    [
+     "<strong>Grenade Légère 1d10</strong>",
+     "10 + 1d10 dégâts de zone",
+     "10D - 0.5L - 30P - 1H",
+     "2 000 CE"
+    ],
+    [
+     "<strong>Grenade Tactique 2d10</strong>",
+     "10 + 2d10 dégâts de zone",
+     "10D - 0.5L - 30P - 1H",
+     "3 500 CE"
+    ],
+    [
+     "<strong>Grenade à Fragmentation 3d10</strong>",
+     "10 + 3d10 dégâts de zone",
+     "10D - 0.5L - 30P - 1H",
+     "5 000 CE"
+    ],
+    [
+     "<strong>Grenade de Brèche 4d10</strong>",
+     "10 + 4d10 dégâts de zone",
+     "10D - 1.0L - 30P - 1H",
+     "6 500 CE"
+    ],
+    [
+     "<strong>Grenade Thermobarrique 5d10</strong>",
+     "10 + 5d10 dégâts de zone",
+     "10D - 1.0L - 30P - 1H",
+     "7 500 CE"
+    ]
+   ],
+   "classe": "data-table"
+  },
+  "armures": {
+   "type": "cartes",
+   "grille": 2,
+   "cartes": [
+    {
+     "titre": "<span>Armures Légères (0 PA Malus)</span>\n                                <span class=\"pill-badge green\">Mobilité Totale</span>",
+     "top": false,
+     "corps_brut": "\n                            <p style=\"font-size: 0.9em;\">\n                                Conçues en fibres balistiques et polymères souples. Elles n'imposent <strong>aucun malus\n                                    en PA</strong> sur les actions ou déplacements.\n                            </p>\n                            <ul style=\"padding-left: 15px; font-size: 0.9em;\">\n                                <li><strong>Armure Légère 1 :</strong> Protection 1 point &bull; 2 000 CE</li>\n                                <li><strong>Armure Légère 2 :</strong> Protection 2 points &bull; 5 000 CE</li>\n                                <li><strong>Armure Légère 3 :</strong> Protection 3 points &bull; 12 000 CE</li>\n                                <li><strong>Armure Légère 4 :</strong> Protection 4 points &bull; 20 000 CE</li>\n                            </ul>\n                        ",
+     "pieds": []
+    },
+    {
+     "titre": "<span>Armures Lourdes (Malus PA)</span>\n                                <span class=\"pill-badge ruby\">Blindage Renforcé</span>",
+     "top": false,
+     "corps_brut": "\n                            <p style=\"font-size: 0.9em;\">\n                                Plaques de céramo-métal et exosquelettes. Elles absorbent des chocs extrêmes mais leur\n                                inertie impose un <strong>surcoût permanent en PA</strong> !\n                            </p>\n                            <ul style=\"padding-left: 15px; font-size: 0.9em;\">\n                                <li><strong>Armure Lourde 3 (1 PA) :</strong> Prot 3 &bull; 8 000 CE</li>\n                                <li><strong>Armure Lourde 4 (1 PA) :</strong> Prot 4 &bull; 12 000 CE</li>\n                                <li><strong>Armure Lourde 5 (1 PA) :</strong> Prot 5 &bull; 20 000 CE</li>\n                                <li><strong>Armure Lourde 6 (2 PA) :</strong> Prot 6 &bull; 50 000 CE</li>\n                                <li><strong>Armure Lourde 7 (2 PA) :</strong> Prot 7 &bull; 90 000 CE</li>\n                                <li><strong>Armure Lourde 7 Optimisée (1 PA) :</strong> Prot 7 &bull; ~125 000 CE</li>\n                            </ul>\n                        ",
+     "pieds": []
+    }
+   ]
+  },
+  "champs_force": {
+   "type": "table",
+   "colonnes": [
+    "Équipement Énergétique",
+    "Niveau & Protection",
+    "Prix Impérial (CE)",
+    "Particularités Opérationnelles"
+   ],
+   "lignes": [
+    [
+     "<strong>Champ de Force Personnel 1</strong>",
+     "Barrière de 10 PV absorbants",
+     "75 000 CE",
+     "Absorbe les dégâts avant la chair ; zéro encombrement en PA."
+    ],
+    [
+     "<strong>Champ de Force Personnel 2</strong>",
+     "Barrière de 20 PV absorbants",
+     "125 000 CE",
+     "Recharge automatique hors combat après 1 minute."
+    ],
+    [
+     "<strong>Champ de Force Personnel 3</strong>",
+     "Barrière de 30 PV absorbants",
+     "150 000 CE",
+     "Protection contre les radiations et le vide spatial."
+    ],
+    [
+     "<strong>Champ de Force Personnel 4</strong>",
+     "Barrière de 40 PV absorbants",
+     "200 000 CE",
+     "Modèle d'élite de la flotte impériale."
+    ],
+    [
+     "<strong>Champ de Force Personnel 5</strong>",
+     "Barrière de 50 PV absorbants",
+     "250 000 CE",
+     "Forteresse cinétique portable impénétrable."
+    ],
+    [
+     "<strong>Spacesuit Léger 2-3</strong>",
+     "Blindage 2 à 3 &bull; 0 PA",
+     "50 000 à 90 000 CE",
+     "Survie en environnement hostile et gravité zéro."
+    ],
+    [
+     "<strong>Spacesuit Lourd 3-6</strong>",
+     "Blindage 3 à 6 &bull; 1 à 2 PA",
+     "75 000 à 750 000 CE",
+     "Blindage mécha lourd pour opérations planétaires extrêmes."
+    ]
+   ],
+   "classe": "data-table"
+  },
+  "pharmacie": {
+   "type": "cartes",
+   "grille": 2,
+   "cartes": [
+    {
+     "titre": "<span>Stimulants & Régulateurs</span>\n                                <span class=\"pill-badge amber\">Dopage Tactique</span>",
+     "top": false,
+     "corps_tag": "ul",
+     "corps_attrs": " style=\"padding-left: 15px; margin: 10px 0; font-size: 0.9em;\"",
+     "corps_html": "<li>\n                                    <strong>Antidouleurs (8 tabs &bull; 500 CE) :</strong><br>\n                                    Durée 2 heures. Confère <strong>+5 au seuil de Dégâts Maximum (Létal)</strong> et\n                                    <strong>+2 à la Capacité d'Encaissement</strong> ! Permet de continuer à combattre\n                                    au-delà de ses limites physiologiques normales.\n                                </li>\n                                <li style=\"margin-top: 10px;\">\n                                    <strong>Speed (4 tabs &bull; 500 CE) :</strong><br>\n                                    Durée 4 heures. Place immédiatement le sujet sous l'état bénéfique <strong>Rapide\n                                        (+3 PA pour les déplacements à chaque tour)</strong> !\n                                </li>",
+     "pieds": []
+    },
+    {
+     "titre": "<span>Seringues d'Urgence & Rations</span>\n                                <span class=\"pill-badge cyan\">Restauration</span>",
+     "top": false,
+     "corps_tag": "ul",
+     "corps_attrs": " style=\"padding-left: 15px; margin: 10px 0; font-size: 0.9em;\"",
+     "corps_html": "<li><strong>Seringue de soins 5 PV :</strong> 900 CE &bull; Injection 1 PA.</li>\n                                <li><strong>Seringue de soins 10 PV :</strong> 2 000 CE &bull; Injection 1 PA.</li>\n                                <li><strong>Seringue de soins 20 PV :</strong> 5 000 CE &bull; Injection 1 PA.</li>\n                                <li><strong>Seringue de soins généralisée 10 PV :</strong> 2 500 CE &bull; Soigne\n                                    l'ensemble des membres blessés.</li>\n                                <li><strong>Rations & Hydratation :</strong> Meal Pack (10 CE), Meal Pack + Water (15\n                                    CE), Water Blob 1L (5 CE).</li>",
+     "pieds": []
+    }
+   ]
+  }
+ },
+ "tableaux": {
+  "armes_lames": {
+   "colonnes": [
+    "Désignation de l'Arme",
+    "Code DLPH",
+    "Prix Moyen (Crédits CE)",
+    "Type Historique / Profil"
+   ]
+  },
+  "armes_choc_hast": {
+   "colonnes": [
+    "Arme",
+    "Code DLPH",
+    "Prix Moyen",
+    "Effet & Remarques"
+   ]
+  },
+  "epees_laser": {
+   "colonnes": [
+    "Modèle d'Épée Laser",
+    "Code DLPH",
+    "Prix Impérial (CE)",
+    "Propriétés Tactiques"
+   ]
+  },
+  "grenades": {
+   "colonnes": [
+    "Type de Grenade",
+    "Puissance d'Impact",
+    "Code DLPH",
+    "Prix Unitaire (CE)"
+   ]
+  },
+  "champs_force": {
+   "colonnes": [
+    "Équipement Énergétique",
+    "Niveau & Protection",
+    "Prix Impérial (CE)",
+    "Particularités Opérationnelles"
+   ]
+  }
+ },
+ "mecaniques": {
+  "note": "Genere depuis livre_8.html (motif RP-075/Livre II). Source unique : regenerer.",
+  "code_dlph": {
+   "etiquette": "Code Universel d'Arme (DLPH)",
+   "segments": [
+    {
+     "lettre": "D",
+     "signification": "Dégâts"
+    },
+    {
+     "lettre": "L",
+     "signification": "Livres (Poids)"
+    },
+    {
+     "lettre": "P",
+     "signification": "Portée (m/cases)"
+    },
+    {
+     "lettre": "H",
+     "signification": "Maniement (1H / 2H)"
+    }
+   ],
+   "texte": "D : Dégâts de base ajoutés au jet d'attaque. • L : Poids en livres impériales (1 livre ≈ 0.45 kg). • P : Portée opérationnelle en mètres (1 case = 1 mètre). • H : 1H (une main) ou 2H (deux mains obligatoires)."
+  },
+  "armes_lames": [
+   {
+    "designation": "Épée Métal Courte",
+    "dlph": "3D - 3L - 1P - 1H",
+    "prix_ce": 500,
+    "prix_texte": "~500 CE",
+    "profil": "Glaive, Arming Sword, Ulfberht"
+   },
+   {
+    "designation": "Épée Métal Standard",
+    "dlph": "4D - 3L - 1P - 1H",
+    "prix_ce": 750,
+    "prix_texte": "~750 CE",
+    "profil": "Épée bâtarde, Katana traditionnel"
+   },
+   {
+    "designation": "Épée Métal Supérieure",
+    "dlph": "5D - 3L - 1P - 1H",
+    "prix_ce": 1000,
+    "prix_texte": "~1 000 CE",
+    "profil": "Acier replié de maître, Katana affûté"
+   },
+   {
+    "designation": "Épée Métal Longue (2H)",
+    "dlph": "4D - 5L - 1P - 2H",
+    "prix_ce": 1000,
+    "prix_texte": "~1 000 CE",
+    "profil": "Longsword, Claymore d'assaut"
+   },
+   {
+    "designation": "Épée Métal de Guerre (2H)",
+    "dlph": "5D - 5L - 1P - 2H",
+    "prix_ce": 1250,
+    "prix_texte": "~1 250 CE",
+    "profil": "Zweihänder de ligne, Flamberge"
+   },
+   {
+    "designation": "Épée Lourde de Brèche (2H)",
+    "dlph": "6D - 5L - 1P - 2H",
+    "prix_ce": 1500,
+    "prix_texte": "~1 500 CE",
+    "profil": "Espadon géant, acier lourd renforcé"
+   },
+   {
+    "designation": "Grand Espadon Maître",
+    "dlph": "7D - 6L - 2P - 2H",
+    "prix_ce": 3000,
+    "prix_texte": "~3 000 CE",
+    "profil": "Allonge 2 cases, frappe dévastatrice"
+   }
+  ],
+  "armes_choc_hast": [
+   {
+    "designation": "Gourdin / Matraque",
+    "dlph": "2D - 3L - 1P - 1H",
+    "prix_ce": 50,
+    "prix_texte": "~50 CE",
+    "profil": "Arme improvisée contondante."
+   },
+   {
+    "designation": "Hache de Bataille",
+    "dlph": "3-4D - 4L - 1P - 1H",
+    "prix_ce": 600,
+    "prix_texte": "~600 CE",
+    "profil": "Pénétration osseuse supérieure."
+   },
+   {
+    "designation": "Marteau Métal Lourd",
+    "dlph": "6D - 5L - 1P - 2H",
+    "prix_ce": 5000,
+    "prix_texte": "~5 000 CE",
+    "profil": "Broyeur de blindages métalliques."
+   },
+   {
+    "designation": "Pique & Hallebarde",
+    "dlph": "4D - 6L - 2P - 2H",
+    "prix_ce": 800,
+    "prix_texte": "~800 CE",
+    "profil": "Allonge tactique de 2 mètres, arrêt de charge."
+   },
+   {
+    "designation": "Arc Composite Renforcé",
+    "dlph": "5D - 2L - 500P - 2H",
+    "prix_ce": 1000,
+    "prix_texte": "~1 000 CE",
+    "profil": "Portée 500m, perforation à longue distance."
+   }
+  ],
+  "epees_laser": [
+   {
+    "designation": "Épée Laser Standard 3D",
+    "dlph": "3D - 1L - 1P - 1H",
+    "prix_ce": 6000,
+    "prix_texte": "~6 000 CE",
+    "profil": "Ultra-légère (1 livre), dégainement quasi instantané."
+   },
+   {
+    "designation": "Épée Laser Militaire 4D",
+    "dlph": "4D - 1L - 1P - 1H",
+    "prix_ce": 20000,
+    "prix_texte": "~20 000 CE",
+    "profil": "Équipement d'officier de la garde impériale."
+   },
+   {
+    "designation": "Épée Laser Commando 5D",
+    "dlph": "5D - 1L - 1P - 1H",
+    "prix_ce": 40000,
+    "prix_texte": "~40 000 CE",
+    "profil": "Puissance chirurgicale à une main, coupe l'acier."
+   },
+   {
+    "designation": "Épée Laser Deux Mains 4D",
+    "dlph": "4D - 2L - 1P - 2H",
+    "prix_ce": 18000,
+    "prix_texte": "~18 000 CE",
+    "profil": "Faisceau large, excellente assise de parade (+1)."
+   },
+   {
+    "designation": "Épée Laser Lourde 5D",
+    "dlph": "5D - 2L - 1P - 2H",
+    "prix_ce": 35000,
+    "prix_texte": "~35 000 CE",
+    "profil": "Générateur double chambre, perforation lourde."
+   },
+   {
+    "designation": "Épée Laser Suprême 6D",
+    "dlph": "6D - 2L - 1P - 2H",
+    "prix_ce": 60000,
+    "prix_texte": "~60 000 CE",
+    "profil": "Arc plasmique dense, inflige des brûlures résiduelles."
+   },
+   {
+    "designation": "Sabre Long à Allonge 4D",
+    "dlph": "4D - 3L - 2P - 1H",
+    "prix_ce": 75000,
+    "prix_texte": "~75 000 CE",
+    "profil": "Portée 2 mètres à une main, régulateur cinétique."
+   },
+   {
+    "designation": "Grand Sabre de Brèche 5D",
+    "dlph": "5D - 4L - 2P - 2H",
+    "prix_ce": 80000,
+    "prix_texte": "~80 000 CE",
+    "profil": "Conçu pour découper les portes de sas de vaisseaux."
+   },
+   {
+    "designation": "Espadon Laser Titan 6D",
+    "dlph": "6D - 4L - 2P - 2H",
+    "prix_ce": 100000,
+    "prix_texte": "~100 000 CE",
+    "profil": "Le summum du corps-à-corps énergétique impérial."
+   }
+  ],
+  "grenades": [
+   {
+    "type": "Grenade Légère 1d10",
+    "puissance": "10 + 1d10 dégâts de zone",
+    "dlph": "10D - 0.5L - 30P - 1H",
+    "prix_ce": 2000,
+    "prix_texte": "2 000 CE"
+   },
+   {
+    "type": "Grenade Tactique 2d10",
+    "puissance": "10 + 2d10 dégâts de zone",
+    "dlph": "10D - 0.5L - 30P - 1H",
+    "prix_ce": 3500,
+    "prix_texte": "3 500 CE"
+   },
+   {
+    "type": "Grenade à Fragmentation 3d10",
+    "puissance": "10 + 3d10 dégâts de zone",
+    "dlph": "10D - 0.5L - 30P - 1H",
+    "prix_ce": 5000,
+    "prix_texte": "5 000 CE"
+   },
+   {
+    "type": "Grenade de Brèche 4d10",
+    "puissance": "10 + 4d10 dégâts de zone",
+    "dlph": "10D - 1.0L - 30P - 1H",
+    "prix_ce": 6500,
+    "prix_texte": "6 500 CE"
+   },
+   {
+    "type": "Grenade Thermobarrique 5d10",
+    "puissance": "10 + 5d10 dégâts de zone",
+    "dlph": "10D - 1.0L - 30P - 1H",
+    "prix_ce": 7500,
+    "prix_texte": "7 500 CE"
+   }
+  ],
+  "fusils_laser": [
+   {
+    "modele": "Gamme des Fusils Laser Standard Tir Précis",
+    "monde": "",
+    "prix_ce": null,
+    "texte": ""
+   },
+   {
+    "modele": "Le Fusil « Deglazer » +1 ec // 7D Létal",
+    "monde": "Arcanotech de Guerre // 200 000 CE",
+    "prix_ce": 200000,
+    "texte": ""
+   }
+  ],
+  "armures": [
+   {
+    "categorie": "Armures Légères (0 PA Malus) Mobilité Totale",
+    "malus_pa": 0,
+    "texte": ""
+   },
+   {
+    "categorie": "Armures Lourdes (Malus PA) Blindage Renforcé",
+    "malus_pa": null,
+    "texte": ""
+   }
+  ],
+  "champs_force": [
+   {
+    "equipement": "Champ de Force Personnel 1",
+    "protection_pv": 10,
+    "protection": "Barrière de 10 PV absorbants",
+    "prix_ce": 75000,
+    "prix_texte": "75 000 CE",
+    "particularites": "Absorbe les dégâts avant la chair ; zéro encombrement en PA."
+   },
+   {
+    "equipement": "Champ de Force Personnel 2",
+    "protection_pv": 20,
+    "protection": "Barrière de 20 PV absorbants",
+    "prix_ce": 125000,
+    "prix_texte": "125 000 CE",
+    "particularites": "Recharge automatique hors combat après 1 minute."
+   },
+   {
+    "equipement": "Champ de Force Personnel 3",
+    "protection_pv": 30,
+    "protection": "Barrière de 30 PV absorbants",
+    "prix_ce": 150000,
+    "prix_texte": "150 000 CE",
+    "particularites": "Protection contre les radiations et le vide spatial."
+   },
+   {
+    "equipement": "Champ de Force Personnel 4",
+    "protection_pv": 40,
+    "protection": "Barrière de 40 PV absorbants",
+    "prix_ce": 200000,
+    "prix_texte": "200 000 CE",
+    "particularites": "Modèle d'élite de la flotte impériale."
+   },
+   {
+    "equipement": "Champ de Force Personnel 5",
+    "protection_pv": 50,
+    "protection": "Barrière de 50 PV absorbants",
+    "prix_ce": 250000,
+    "prix_texte": "250 000 CE",
+    "particularites": "Forteresse cinétique portable impénétrable."
+   },
+   {
+    "equipement": "Spacesuit Léger 2-3",
+    "protection_pv": null,
+    "protection": "Blindage 2 à 3 • 0 PA",
+    "prix_ce": 90000,
+    "prix_texte": "50 000 à 90 000 CE",
+    "particularites": "Survie en environnement hostile et gravité zéro."
+   },
+   {
+    "equipement": "Spacesuit Lourd 3-6",
+    "protection_pv": null,
+    "protection": "Blindage 3 à 6 • 1 à 2 PA",
+    "prix_ce": 750000,
+    "prix_texte": "75 000 à 750 000 CE",
+    "particularites": "Blindage mécha lourd pour opérations planétaires extrêmes."
+   }
+  ],
+  "pharmacie": [
+   {
+    "categorie": "Stimulants & Régulateurs Dopage Tactique",
+    "texte": "Antidouleurs (8 tabs • 500 CE) : Durée 2 heures. Confère +5 au seuil de Dégâts Maximum (Létal) et +2 à la Capacité d'Encaissement ! Permet de continuer à combattre au-delà de ses limites physiologiques normales. Speed (4 tabs • 500 CE) : Durée 4 heures. Place immédiatement le sujet sous l'état bénéfique Rapide (+3 PA pour les déplacements à chaque tour) !"
+   },
+   {
+    "categorie": "Seringues d'Urgence & Rations Restauration",
+    "texte": "Seringue de soins 5 PV : 900 CE • Injection 1 PA. Seringue de soins 10 PV : 2 000 CE • Injection 1 PA. Seringue de soins 20 PV : 5 000 CE • Injection 1 PA. Seringue de soins généralisée 10 PV : 2 500 CE • Soigne l'ensemble des membres blessés. Rations & Hydratation : Meal Pack (10 CE), Meal Pack + Water (15 CE), Water Blob 1L (5 CE)."
+   }
+  ]
+ }
+}

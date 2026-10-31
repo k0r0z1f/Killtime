@@ -1210,9 +1210,9 @@
     },
     {
      "id": "RP-081",
-     "title": "JSON-ifier le Livre VII (données + contenu, comme Livre I)",
-     "epic": "Livre VII — Arsenal",
-     "status": "todo",
+     "title": "JSON-ifier le Livre VIII (données + contenu, comme Livre I)",
+     "epic": "Livre VIII — Arsenal",
+     "status": "done",
      "priority": "medium",
      "order": 52,
      "scene": "",
@@ -1221,7 +1221,7 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_8.html",
-     "details": "Comme Livre I : extraire data/livre_N.json (données règles + sections/blocs/refs), rendre via JS (factoriser js/livre_1.js en moteur générique), squelettiser le HTML, fidélité vérifiée par diff. But : source unique + traductions. Fichier : livre_8.html."
+     "details": "FAIT 2026-10-31 (titre kanban corrige : Livre VIII, pas VII) — data/livre_8.json (code DLPH 4 segments, 21 armes + prix CE parsés, 5 grenades, fusils laser + Deglazer, armures malus PA, 7 champs de force, pharmacie, bloc mecaniques + 4 sections (entête in-article + 3 chapitres)), livre_8.html squelettisé. Aucune extension moteur nécessaire. Vérifié : fidélité + rendu JS réel OK."
     },
     {
      "id": "RP-082",
