@@ -520,6 +520,14 @@
                 es.addEventListener('table-message', (ev) => {
                     try { this.onTablePush(JSON.parse(ev.data)); } catch (e) {}
                 });
+                // Voix live des tables : la signalisation SDP/ICE et l'état du
+                // salon transitent aussi en SSE. Redispatchés en événements
+                // window (consommés par js/tables-voice.js sur tables.html).
+                for (const vt of ['voice-signal', 'voice-presence', 'voice-mute', 'voice-reset']) {
+                    es.addEventListener(vt, (ev) => {
+                        try { window.dispatchEvent(new CustomEvent('codex:' + vt, { detail: JSON.parse(ev.data) })); } catch (e) {}
+                    });
+                }
                 es.onerror = () => {
                     try { es.close(); } catch (e) {}
                     if (this.tablesES === es) this.tablesES = null;

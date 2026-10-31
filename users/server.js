@@ -1623,6 +1623,38 @@ async function handleRequest(req, res, isAdminListener) {
             }
         }
     }
+    // Voix live : pousse un événement voix aux membres connectés de la table.
+    // onlyUserId : ciblé (signalisation SDP/ICE) ; sinon broadcast table.
+    // Seule la signalisation vocale est bloquée aux mutés (un muté ne
+    // reçoit plus le vocal) ; les événements de contrôle (presence, mute,
+    // reset) restent visibles pour que chacun suive l'état.
+    function tableVoicePeersPayload(doc, st) {
+        const out = [];
+        for (const [uid, p] of st.peers) {
+            const m = doc.members.find(x => x && x.userId === uid);
+            out.push({ userId: uid, username: (m && m.username) || (p && p.username) || '?', muted: st.muted.has(uid), joinedAt: (p && p.joinedAt) || 0 });
+        }
+        out.sort((a, b) => a.username.localeCompare(b.username, 'fr'));
+        return out;
+    }
+    function sseNotifyVoice(doc, event, obj, onlyUserId) {
+        if (!doc || !event || sseSubs.size === 0) return;
+        const data = JSON.stringify(Object.assign({ tableId: doc.id, tableName: doc.name }, obj || {}));
+        const st = tableVoiceState(doc.id);
+        for (const sub of [...sseSubs]) {
+            try {
+                if (!sub || !sub.res) { sseSubs.delete(sub); continue; }
+                if (onlyUserId && sub.userId !== onlyUserId) continue;
+                if (!onlyUserId && !tableRoleOf(doc, sub.userId) && !isAdminEmail(sub.email)) continue;
+                // Signalisation vocale (offer/answer/ice) : jamais livrée à
+                // un muté — un joueur muté ne reçoit plus le vocal.
+                if (event === 'voice-signal' && st.muted.has(sub.userId)) continue;
+                sub.res.write('event: ' + event + '\ndata: ' + data + '\n\n');
+            } catch (e) {
+                try { sseSubs.delete(sub); } catch (_) {}
+            }
+        }
+    }
     function tableSummary(doc, user) {
         const role = (user && isAdminEmail(user.email)) ? 'admin' : tableRoleOf(doc, user && user.id);
         return {
@@ -2094,6 +2126,129 @@ async function handleRequest(req, res, isAdminListener) {
             return sendJson(res, 200, { success: true });
         }
 
+        /* ------------------------------------------------------------
+           VOIX LIVE — signalisation WebRTC (REST + SSE), média en P2P.
+           Inspiré du VTTVoiceManager KT : VAD/PTT/continu + volumes côté
+           client, autorité serveur pour mute/reset. Le serveur ne voit
+           jamais l'audio : il relaie l'offre/réponse/ICE au destinataire.
+           Un joueur muté pour la voix ne reçoit plus le vocal (ni signal
+           ni média) ; seul un reset pour tout le monde rouvre.
+           État éphémère (mémoire) : peers + muted par table.
+           ------------------------------------------------------------ */
+        // GET /api/tables/:id/voice — qui est en voix + qui est muté.
+        if (parts.length === 2 && parts[1] === 'voice') {
+            if (req.method !== 'GET') return sendJson(res, 405, { error: 'Méthode non autorisée.' });
+            if (!isMember) return sendJson(res, 403, { error: 'Table réservée à ses membres.' });
+            const st = tableVoiceState(doc.id);
+            return sendJson(res, 200, {
+                success: true,
+                inVoice: st.peers.has(myId),
+                iAmMuted: st.muted.has(myId),
+                peers: tableVoicePeersPayload(doc, st),
+            });
+        }
+
+        // POST /api/tables/:id/voice-join | voice-leave — entrer/sortir.
+        if (parts.length === 2 && (parts[1] === 'voice-join' || parts[1] === 'voice-leave')) {
+            if (req.method !== 'POST') return sendJson(res, 405, { error: 'Méthode non autorisée.' });
+            if (!isMember) return sendJson(res, 403, { error: 'Table réservée à ses membres.' });
+            const st = tableVoiceState(doc.id);
+            if (parts[1] === 'voice-join') {
+                if (st.muted.has(myId)) return sendJson(res, 403, { error: 'Vous êtes muté pour la voix : demandez au MJ un reset.', code: 'voice_muted' });
+                if (st.peers.size >= Math.max(2, Math.min(24, doc.maxMembers || 12))) {
+                    return sendJson(res, 403, { error: 'Salon vocal plein.' });
+                }
+                st.peers.set(myId, { username: me.username, joinedAt: Date.now() });
+                sseNotifyVoice(doc, 'voice-presence', { peers: tableVoicePeersPayload(doc, st), joined: myId });
+                console.log(`[Tables] ${me.username} rejoint la voix (${doc.id}).`);
+            } else {
+                st.peers.delete(myId);
+                sseNotifyVoice(doc, 'voice-presence', { peers: tableVoicePeersPayload(doc, st), left: myId });
+            }
+            return sendJson(res, 200, { success: true, peers: tableVoicePeersPayload(doc, st) });
+        }
+
+        // POST /api/tables/:id/voice-signal — relais SDP/ICE ciblé.
+        if (parts.length === 2 && parts[1] === 'voice-signal') {
+            if (req.method !== 'POST') return sendJson(res, 405, { error: 'Méthode non autorisée.' });
+            if (!isMember) return sendJson(res, 403, { error: 'Table réservée à ses membres.' });
+            const st = tableVoiceState(doc.id);
+            if (!st.peers.has(myId)) return sendJson(res, 403, { error: 'Rejoignez d’abord le salon vocal.' });
+            if (st.muted.has(myId)) return sendJson(res, 403, { error: 'Vous êtes muté : émission vocale coupée.', code: 'voice_muted' });
+            try {
+                const body = await parseBody(req);
+                if (body && JSON.stringify(body).length > 32768) {
+                    return sendJson(res, 413, { error: 'Signal trop volumineux.' });
+                }
+                const toUserId = String((body && body.toUserId) || '').slice(0, 64);
+                const kind = String((body && body.kind) || '');
+                const target = doc.members.find(m => m && m.userId === toUserId);
+                if (!target) return sendJson(res, 404, { error: 'Destinataire non membre de la table.' });
+                if (!st.peers.has(toUserId)) return sendJson(res, 404, { error: 'Destinataire hors du salon vocal.' });
+                // Règle centrale : un joueur muté ne reçoit plus le vocal.
+                if (st.muted.has(toUserId)) {
+                    return sendJson(res, 403, { error: target.username + ' est muté : vocal non livré.', code: 'voice_muted' });
+                }
+                let data = null;
+                if (tablesVoicePolicy) {
+                    data = tablesVoicePolicy.sanitizeSignal(kind, body && body.data);
+                    if (data === null) return sendJson(res, 400, { error: 'Signal invalide (kind offer|answer|ice, taille limitée).' });
+                } else {
+                    if (!['offer', 'answer', 'ice'].includes(kind) || typeof (body && body.data) !== 'string') {
+                        return sendJson(res, 400, { error: 'Signal invalide.' });
+                    }
+                    data = String(body.data).slice(0, 16384);
+                    if (!data) return sendJson(res, 400, { error: 'Signal vide.' });
+                }
+                sseNotifyVoice(doc, 'voice-signal', { fromUserId: myId, fromName: me.username, kind, data }, toUserId);
+                return sendJson(res, 200, { success: true });
+            } catch (e) {
+                return sendJson(res, 400, { error: e.message });
+            }
+        }
+
+        // POST /api/tables/:id/voice-mute — muter (soi : micro ; MJ/helper :
+        // n'importe qui, exclusion vocale : ne reçoit plus le vocal).
+        if (parts.length === 2 && parts[1] === 'voice-mute') {
+            if (req.method !== 'POST') return sendJson(res, 405, { error: 'Méthode non autorisée.' });
+            if (!isMember) return sendJson(res, 403, { error: 'Table réservée à ses membres.' });
+            try {
+                const body = await parseBody(req);
+                const targetId = String((body && body.userId) || myId).slice(0, 64);
+                const muted = !!(body && body.muted);
+                const target = doc.members.find(m => m && m.userId === targetId);
+                if (!target) return sendJson(res, 404, { error: 'Membre introuvable.' });
+                const manager = (myRole === 'admin') || tableCanManage(doc, me);
+                if (targetId !== myId && !manager) {
+                    return sendJson(res, 403, { error: 'Seul le MJ / helper peut muter un autre joueur.' });
+                }
+                const st = tableVoiceState(doc.id);
+                if (muted) st.muted.set(targetId, { by: myId, at: Date.now() });
+                else st.muted.delete(targetId);
+                sseNotifyVoice(doc, 'voice-mute', { userId: targetId, username: target.username, muted, by: myId });
+                console.log(`[Tables] voix ${doc.id} : ${target.username} ${muted ? 'muté' : 'démuté'} par ${me.username}.`);
+                return sendJson(res, 200, { success: true, peers: tableVoicePeersPayload(doc, st) });
+            } catch (e) {
+                return sendJson(res, 400, { error: e.message });
+            }
+        }
+
+        // POST /api/tables/:id/voice-reset — reset pour tout le monde
+        // (MJ/helper) : vide la liste des mutés voix, tout le monde reçoit
+        // à nouveau le vocal.
+        if (parts.length === 2 && parts[1] === 'voice-reset') {
+            if (req.method !== 'POST') return sendJson(res, 405, { error: 'Méthode non autorisée.' });
+            if (!isMember) return sendJson(res, 403, { error: 'Table réservée à ses membres.' });
+            if (!((myRole === 'admin') || tableCanManage(doc, me))) {
+                return sendJson(res, 403, { error: 'Reset vocal réservé au MJ / helper.' });
+            }
+            const st = tableVoiceState(doc.id);
+            st.muted.clear();
+            sseNotifyVoice(doc, 'voice-reset', { by: myId, peers: tableVoicePeersPayload(doc, st) });
+            console.log(`[Tables] voix ${doc.id} : reset pour tout le monde (par ${me.username}).`);
+            return sendJson(res, 200, { success: true, peers: tableVoicePeersPayload(doc, st) });
+        }
+
         return sendJson(res, 404, { error: 'Route tables inconnue.' });
     }
 
@@ -2540,6 +2695,28 @@ try {
     vttPolicy = require('./vtt_hub_policy.js');
 } catch (e) {
     console.warn('[VTT] vtt_hub_policy.js introuvable : garde-fous GM réduits.');
+}
+
+// Voix live des tables de groupe (sysRP, inspiré du VTTVoiceManager KT) :
+// signalisation REST + SSE, média P2P WebRTC (le serveur ne voit jamais
+// l'audio). Mémoire seule (éphémère) : tableId -> { peers, muted }.
+// Un joueur muté pour la voix ne reçoit plus le vocal ; seul un reset
+// pour tout le monde (MJ/helper) rouvre.
+const tableVoice = new Map(); // tableId -> { peers: Map(userId -> {username, joinedAt}), muted: Map(userId -> {by, at}) }
+let tablesVoicePolicy = null;
+try {
+    tablesVoicePolicy = require('./tables_voice.js');
+} catch (e) {
+    console.warn('[Tables] tables_voice.js introuvable : garde-fous voix réduits.');
+}
+function tableVoiceState(tableId) {
+    const id = String(tableId || '').toLowerCase();
+    let st = tableVoice.get(id);
+    if (!st) {
+        st = { peers: new Map(), muted: new Map() };
+        tableVoice.set(id, st);
+    }
+    return st;
 }
 
 function vttGenClientId() {
