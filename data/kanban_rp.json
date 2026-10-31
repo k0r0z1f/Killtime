@@ -1482,7 +1482,7 @@
      "id": "RP-099",
      "title": "Markdown-ifier le Livre II (textes en content/, JSON genere)",
      "epic": "Livre II — Dés & Épreuves",
-     "status": "todo",
+     "status": "done",
      "priority": "medium",
      "order": 70,
      "scene": "",
@@ -1491,7 +1491,7 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "content/livre_2/",
-     "details": "Apres RP-098 (Livre I, pattern). Extraire textes en content/livre_2/**.md via tools/build_livres.py --extract 2, --build 2, --check OK, JSON identique. Champs mecaniques restent en JSON."
+     "details": "FAIT 2026-10-31 — 10 blocs (chap-6..9) extraits en content/livre_2/sections/**.md, tools/build_livres.py generalise (--extract N quelconque), build -> data/livre_2.json identique a l octet, check OK. Pattern RP-098."
     },
     {
      "id": "RP-100",

@@ -23,10 +23,10 @@ python3 tools/build_livres.py --check 1
 - `md` : Markdown converti en HTML au build (titres, gras, listes ;
   le HTML brut inline passe a travers).
 
-## Perimetre pilote (Livre I)
+## Perimetre
 
-- `livre_1/especes/*.md` : les 6 descriptions d'especes.
-- `livre_1/sections/*/*.md` : tous les blocs HTML des 6 sections (brut verbatim).
+- `livre_1/especes/*.md` : les 6 descriptions d'especes (Livre I).
+- `livre_N/sections/*/*.md` : tous les blocs HTML des sections (brut verbatim).
 - Champs mecaniques (couts, seuils, dons, stats) : restent en JSON, pas de `.md`.
 - Les blocs `ref` (cartes, tables, formules) ne sont pas des textes :
   ils restent generes depuis les donnees JSON.

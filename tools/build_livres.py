@@ -164,23 +164,21 @@ def main():
     elif opt == '--check':
         return cmd_check(n)
     else:
-        if n == '1':
-            ids = especes_ids(n)
-            d = charger_json(n)
-            secs = [(s['id'], len(s['blocs'])) for s in d['sections']]
+        d = charger_json(n)
+        secs = [(s['id'], len(s['blocs'])) for s in d['sections']]
+        print('sections : %s' % secs)
+        cibles = []
+        if 'especes' in d:
+            ids = [e['id'] for e in d['especes']]
             print('especes : %s' % ids)
-            print('sections : %s' % secs)
-            cibles = [('especes.%s.description' % e, 'especes/%s.md' % e, 'raw') for e in ids]
-            # sections : tous les blocs html (brut verbatim) ; les refs restent en JSON
-            for s in d['sections']:
-                for i, b in enumerate(s['blocs']):
-                    if b.get('type') == 'html':
-                        cibles.append(('sections.%s.blocs.%d.html' % (s['id'], i),
-                                       'sections/%s/bloc-%02d.md' % (s['id'], i), 'raw'))
-            cmd_extract(n, cibles)
-        else:
-            print('extraction pilote limitee au livre 1 pour l instant')
-            return 2
+            cibles += [('especes.%s.description' % e, 'especes/%s.md' % e, 'raw') for e in ids]
+        # sections : tous les blocs html (brut verbatim) ; les refs restent en JSON
+        for s in d['sections']:
+            for i, b in enumerate(s['blocs']):
+                if b.get('type') == 'html':
+                    cibles.append(('sections.%s.blocs.%d.html' % (s['id'], i),
+                                   'sections/%s/bloc-%02d.md' % (s['id'], i), 'raw'))
+        cmd_extract(n, cibles)
     return 0
 
 
