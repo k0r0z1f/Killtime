@@ -125,40 +125,60 @@
      "top": false,
      "monde": null,
      "corps_html": "Vous frappez, vous bousculez, vous ouvrez un passage. C'est pour blesser\n                                ou déstabiliser en face.",
-     "pied_ton": "ruby",
-     "pied_texte": "Attaque / Déstabilisation"
+     "pieds": [
+      {
+       "ton": "ruby",
+       "texte": "Attaque / Déstabilisation"
+      }
+     ]
     },
     {
      "titre": "Défensif",
      "top": false,
      "monde": null,
      "corps_html": "Vous parez, vous esquivez, vous encaissez. C'est pour rester debout\n                                quand ça arrive.",
-     "pied_ton": "emerald",
-     "pied_texte": "Parade / Esquive"
+     "pieds": [
+      {
+       "ton": "emerald",
+       "texte": "Parade / Esquive"
+      }
+     ]
     },
     {
      "titre": "Utilitaire",
      "top": false,
      "monde": null,
      "corps_html": "Vous grimpez, vous réparez, vous soignez, vous passez sans bruit.\n                                Pas pour frapper ni parer.",
-     "pied_ton": "cyan",
-     "pied_texte": "Technique / Déplacement"
+     "pieds": [
+      {
+       "ton": "cyan",
+       "texte": "Technique / Déplacement"
+      }
+     ]
     },
     {
      "titre": "Social",
      "top": false,
      "monde": null,
      "corps_html": "Vous parlez, vous négociez, vous intimidez. Pour obtenir quelque chose\n                                de quelqu'un qui réfléchit.",
-     "pied_ton": "amber",
-     "pied_texte": "Influence / Débat"
+     "pieds": [
+      {
+       "ton": "amber",
+       "texte": "Influence / Débat"
+      }
+     ]
     },
     {
      "titre": "Hybride",
      "top": false,
      "monde": null,
      "corps_html": "Vous faites deux choses en une. Exemple : vous frappez et, en même temps,\n                                vous impressionnez ou vous faites reculer.",
-     "pied_ton": "cyan",
-     "pied_texte": "Polyvalent"
+     "pieds": [
+      {
+       "ton": "cyan",
+       "texte": "Polyvalent"
+      }
+     ]
     }
    ]
   },

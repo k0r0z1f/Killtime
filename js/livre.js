@@ -35,7 +35,7 @@
                 return cell('td', c);
             }).join('') + '</tr>';
         }).join('');
-        return '<div class="table-container"><table class="codex-table">' +
+        return '<div class="table-container"' + (t.extra || '') + '><table class="codex-table">' +
             thead(t.colonnes) + '<tbody>' + rows + '</tbody></table></div>';
     }
 
@@ -45,18 +45,24 @@
                 (k.monde ? '<div class="spec-card-world">' + k.monde + '</div>' : '');
             var head = k.top === false ? title
                 : '<div class="spec-card-top">' + title + '</div>';
-            var foot = (k.pied_ton && k.pied_texte)
-                ? '<div class="spec-card-footer"><span class="tag-pill ' + k.pied_ton + '">' +
-                  k.pied_texte + '</span></div>'
-                : '';
+            var pieds = (k.pieds || []).map(function (p) {
+            return '<span class="tag-pill ' + p.ton + '">' + p.texte + '</span>';
+        }).join('');
+        var foot = pieds ? '<div class="spec-card-footer">' + pieds + '</div>' : '';
             return '<div class="spec-card">' + head +
                 '<p>' + k.corps_html + '</p>' + foot + '</div>';
-        }).join('');
-        return '<div class="cards-grid-' + (c.grille || 3) + '">' + cards + '</div>';
+        });
+        var seps = c.seps || [];
+        var body = cards[0] || '';
+        for (var i = 1; i < cards.length; i++) {
+            body += (seps[i - 1] || '') + cards[i];
+        }
+        return '<div class="cards-grid-' + (c.grille || 3) + '"' + (c.extra || '') + '>' +
+            (c.prefix || '') + body + (c.suffix || '') + '</div>';
     }
 
     function renderFormule(f) {
-        return '<div class="formula-box"><span class="formula-badge">' + f.badge +
+        return '<div class="formula-box"' + (f.extra || '') + '><span class="formula-badge">' + f.badge +
             '</span><div class="formula-content"><div class="formula-math">' + f.math_html +
             '</div><div class="formula-desc">' + f.desc_html + '</div></div></div>';
     }

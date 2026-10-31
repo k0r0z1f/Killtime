@@ -1,0 +1,2056 @@
+{
+ "livre": "IV",
+ "titre": "5e Force & Magie",
+ "version": 1,
+ "updated": "2026-10-31",
+ "source": "livre_4.html",
+ "entete_html": "\n                    <div class=\"doc-meta-tags\">\n                        <span class=\"pill-badge cyan\">\n                            <svg width=\"12\" height=\"12\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\"\n                                stroke-width=\"2\">\n                                <polygon\n                                    points=\"12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2\" />\n                            </svg>\n                            Livre IV — Arcanotech & Psyché\n                        </span>\n                        <span class=\"pill-badge amber\">La Cinquième Force</span>\n                        <span class=\"pill-badge ruby\">Atelier XP = PA</span>\n                    </div>\n\n                    <h1 class=\"doc-title\">Livre IV : La Cinquième Force&nbsp;& La Magie</h1>\n                    <p class=\"doc-subtitle\">\n                        Tu veux lancer un sort, faire flotter un pod, ou entendre ce que pense le garde de\n                        l'autre côté de la porte ? Ce livre t'explique comment. Pas besoin de tout comprendre\n                        d'un coup : prends ce dont tu as besoin pour ta prochaine séance.\n                    </p>\n                ",
+ "sections": [
+  {
+   "id": "chap-14",
+   "symbole": "14.",
+   "titre": "Physique de la Cinquième Force & Résonance",
+   "blocs": [
+    {
+     "type": "html",
+     "html": "\n\n                    <p class=\"lead\">\n                        Ici, la magie n'est pas un miracle. C'est une énergie comme une autre, présente\n                        partout autour de toi. Tu ne la vois pas. Mais si tu portes l'organe, tu peux\n                        l'appeler et t'en servir. Comme tu lèverais un bras.\n                    </p>\n\n                    <h3 id=\"sec-14-1\">14.1 L'Organe Interne & la Résonance</h3>\n                    <p>\n                        Si tu lances à mains nues, c'est que tu portes l'organe en toi : la magie\n                        y dort, dans ton sang, dans ta poitrine, jusqu'à ce que tu l'appelles.\n                        C'est lui qui permet de manier les arcanes sans machine.\n                    </p>\n                    <p>\n                        Les guérisseurs le décrivent comme un nœud de vaisseaux et de nerfs sous le\n                        sternum, gros comme un poing fermé. Au repos, tu l'oublies. Quand tu forces,\n                        il chauffe et tu as un goût de cuivre dans la bouche.\n                        Certains naissent sans — ils ne manieront jamais les arcanes eux-mêmes.\n                        Mais les machines magitek le peuvent à leur place : un cristal bien taillé\n                        lance sans organe (<a class=\"rule-ref\" href=\"#chap-15\"\n                            data-tip=\"Moteur Magique : un cristal au centre, des anneaux autour, ça vole des mois (§15).\">§15</a>).\n                    </p>\n                    <ul>\n                        <li><strong>Résonance :</strong> Tu appelles, ton organe se met à vibrer juste.\n                            Tant qu'il vibre juste, il amplifie l'énergie autour de toi et tu peux la\n                            diriger : poussée, chaleur, mur invisible.</li>\n                        <li><strong>Les cristaux animent les machines :</strong> un cristal de nytharite,\n                            c'est l'organe d'un moteur (<a class=\"rule-ref\" href=\"#chap-15\"\n                                data-tip=\"Moteur Magique : un cristal au centre, des anneaux autour, ça vole des mois (§15).\">§15</a>).\n                            Le tailler, le régler : un métier technique\n                            (<a class=\"rule-ref\" href=\"livre_3.html#chap-12\"\n                                data-tip=\"Arbre Érudition : la compétence Ingénierie & Arcanotech (INT, ÉRU) (§12).\">Livre\n                                III §12</a>).</li>\n                    </ul>\n\n                    <div class=\"callout arcane\" id=\"sec-14-2\">\n                        <div class=\"callout-header\">\n                            <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\"\n                                stroke-width=\"2\">\n                                <circle cx=\"12\" cy=\"12\" r=\"10\" />\n                                <path d=\"M12 2a10 10 0 0 0 0 20v-2a8 8 0 0 1 0-16V2z\" />\n                            </svg>\n                            Vulnérabilités & Champs Anti-Magie\n                        </div>\n                        <div class=\"callout-body\">\n                            Deux choses peuvent te couper l'herbe sous le pied. Prévois-les :<br>\n                            1. <strong>La Saturation / <a class=\"rule-ref\" href=\"livre_1.html#sec-4-2\"\n                                    data-tip=\"Essoufflement : 1 point = des PA d'urgence ; ne part pas tout seul, action dédiée pour souffler (§4.2).\">Échauffement\n                                    Arcanique</a> :</strong> Tu pousses trop sans laisser\n                            retomber ? Ça chauffe. C'est toi ou ton moteur qui encaissez le trop-plein.<br>\n                            2. <strong>Les Champs d'Interférence Destructifs (Anti-Magie) :</strong> Certaines\n                            fréquences\n                            brouillent la résonance. Quand ça arrive, ton organe décroche — ton sort s'éteint —\n                            et les moteurs calent. Net.\n                        </div>\n                    </div>\n\n                    <!-- ================= CHAPITRE 15 ================= -->\n                    "
+    }
+   ]
+  },
+  {
+   "id": "chap-15",
+   "symbole": "15.",
+   "titre": "Moteurs Magiques & Ingénierie Arcanique",
+   "blocs": [
+    {
+     "type": "html",
+     "html": "\n\n                    <p>\n                        Sur Hybris, les pods flottent sans bruit au-dessus du sol. Dedans : un\n                        <strong>Moteur Magique (*Magical Engine*)</strong>, la magitek d'ici — un petit\n                        bloc avec un cristal au centre. Transports des cités, patrouilleurs, modules\n                        d'assaut : tout ce qui vole sur Hybris en porte un. Ailleurs, l'Empire utilise\n                        d'autres technologies pour manier les arcanes et les forces de l'univers.\n                    </p>\n\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "moteur_nytharite"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <!-- ================= CHAPITRE 16 ================= -->\n                    "
+    }
+   ]
+  },
+  {
+   "id": "chap-16",
+   "symbole": "16.",
+   "titre": "Voies Arcaniques, Éléments & Portée des Sorts",
+   "blocs": [
+    {
+     "type": "html",
+     "html": "\n\n                    <p>\n                        Pour lancer un sort toi-même, il te faut une chose : l'attribut <strong>Magie\n                            (MAG)</strong>. Ensuite tu choisis ton canal. Il y en a trois familles.\n                        Choisis celle qui ressemble à ton perso, et lance-toi :\n                    </p>\n\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "voies_arcaniques"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <!-- FORMULE DE PORTÉE MAGIQUE -->\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "portee_sorts"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <h3 id=\"sec-16-1\">16.1 Tes trois compétences de magie</h3>\n                    <p>\n                        Chaque voie est une compétence à part entière. Comme au\n                        <a class=\"rule-ref\" href=\"livre_3.html#chap-10\"\n                            data-tip=\"Rang de base : moyenne des attributs liés, arrondie vers le haut (§10).\">Livre III\n                            §10</a>,\n                        ta base vaut la\n                        <a class=\"rule-ref\" href=\"livre_2.html#chap-6\"\n                            data-tip=\"Base = moyenne des attributs liés : 1-2 +0 (d2), 3-4 +1 (d4), 5-6 +2 (d6), 7-8 +3 (d8), 9-10 +4 (d10) (Livre II §6.1).\">moyenne</a>\n                        de tes attributs liés, arrondie vers le haut : (MAG + INT) / 2.\n                        Exemple : MAG 5 et INT 3 → base 4. Ensuite, chaque\n                        <a class=\"rule-ref\" href=\"livre_2.html#chap-6\"\n                            data-tip=\"Entraînement : +1 palier de dé chacun, max +3 par compétence, 5 XP (10 si croisé) (§6.1).\">entraînement</a>\n                        te fait monter d'un palier de dé.\n                        <br>La dernière colonne liste les branches que tu peux acheter : le détail est au\n                        <a class=\"rule-ref\" href=\"#sec-19-4\"\n                            data-tip=\"Compendium : 12 branches arcaniques génériques, même tarif qu'au Livre III (§19.4).\">§19.4</a>.\n                    </p>\n\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "magies"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <div class=\"callout arcane\">\n                        <div class=\"callout-header\">\n                            <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\"\n                                stroke-width=\"2\">\n                                <polyline points=\"22 12 18 12 15 21 9 3 6 12 2 12\" />\n                            </svg>\n                            Exemple de Portée & Malus de Distance\n                        </div>\n                        <div class=\"callout-body\">\n                            Prends Menna. Elle a <strong>5 en Magie</strong>, 1 entraînement en Magie et 1 entraînement\n                            en\n                            Magie de Feu.<br>\n                            <strong>Sa portée :</strong> 5 + (5 × 2) = <strong>15 cases</strong> (le premier\n                            rang est offert).<br>\n                            Sa cible est à <strong>20 cases</strong> ? Compte par tranches de 5 (sa MAG) :\n                            [1-15 : 0 malus], [16-20 : -1], [21-25 : -2].\n                            Elle lance avec un <strong>malus de 1</strong> (1 palier de dé en moins).\n                        </div>\n                    </div>\n\n                    <!-- ================= CHAPITRE 17 ================= -->\n                    "
+    }
+   ]
+  },
+  {
+   "id": "chap-17",
+   "symbole": "17.",
+   "titre": "Paliers d'Évolution des Disciplines Psychiques",
+   "blocs": [
+    {
+     "type": "html",
+     "html": "\n\n                    <p class=\"lead\">\n                        Tes pouvoirs de l'esprit grandissent avec toi. Au début, tu captes juste ce qui traîne\n                        en surface. Plus tu t'entraînes, plus tu vas loin. Jusqu'à déplacer la matière ou\n                        prendre les commandes. Voici le chemin, palier par palier.\n                    </p>\n\n                    <!-- LES 6 STADES DE LA TÉLÉPATHIE -->\n                    <h3 id=\"sec-17-1\">17.1 Télépathie : Les 6 Stades Neuronaux</h3>\n                    <p>\n                        Lis le tableau comme une <a class=\"rule-ref\" href=\"livre_1.html#chap-5\"\n                            data-tip=\"Progression : 1 réussite = 1 case. Piste pleine = +1 XP lié, piste à zéro (§5.1-5.2).\">progression</a>.\n                        Tu commences en haut, tu débloques vers le bas.\n                        Chaque stade garde ce que le précédent savait faire.\n                    </p>\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "stades_neuronaux"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <!-- TÉLÉKINÉSIE & SPATIAL CALCULUS -->\n                    <h3 id=\"sec-17-2\">17.2 Télékinésie : Le Calcul Spatial (*Spatial Calculus*)</h3>\n                    <p>\n                        Tu ne pousses pas l'objet. Tu dis à la gravité autour de lui de changer d'avis.\n                        Concretement, ça donne ça quand tu progresses :\n                    </p>\n                    <ul>\n                        <li><strong>Entrée (Objets Légers) :</strong> Tu bouges un stylo, une dague, des clés.\n                            Il faut voir l'objet et rester concentré.</li>\n                        <li><strong>Basique (Multi-Objets) :</strong> Tu fais flotter plusieurs petits objets\n                            en même temps, devant toi.</li>\n                        <li><strong>Intermédiaire (Masses Lourdes) :</strong> Tu soulèves un meuble, une caisse\n                            d'armes, même un adversaire. Ça tire si tu tiens longtemps.</li>\n                        <li><strong>Avancé (Précision Chirurgicale) :</strong> Tu démontes un mécanisme à distance.\n                            Exemple : tu bloques le percuteur d'un pistolet sans le toucher.</li>\n                        <li><strong>Maîtrise (Barrières de Force) :</strong> Tu lèves un mur invisible qui arrête\n                            les tirs physiques.</li>\n                        <li><strong>Élite (Manipulation Gravitationnelle) :</strong> Tu inverses la gravité sous\n                            une escouade, ou tu compresses la matière (<a class=\"rule-ref\" href=\"livre_6.html#chap-23\"\n                                data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">ça\n                                ignore l'armure</a>).</li>\n                    </ul>\n\n                    <!-- PYROCINÉSIE & VITALITÉ CINÉTIQUE -->\n                    <h3 id=\"sec-17-3\">17.3 Pyrocinésie & Magie de Création</h3>\n                    <p>\n                        Deux autres façons de jouer avec l'énergie. Choisis selon ton style : frapper fort,\n                        ou créer vite.\n                    </p>\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "pyro_creation"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <!-- ================= CHAPITRE 18 ================= -->\n                    "
+    }
+   ]
+  },
+  {
+   "id": "chap-18",
+   "symbole": "18.",
+   "titre": "Liens Télépathiques & Résonance Symbiotique",
+   "blocs": [
+    {
+     "type": "html",
+     "html": "\n\n                    <p>\n                        Tu joues souvent avec les mêmes partenaires ? Vous vous entraînez ensemble ? Alors\n                        tu peux tisser un <strong>Lien Télépathique Permanent (*Telepathic Bond*)</strong> —\n                        à deux ou en groupe. Un seul de vous a besoin d'être\n                        <a class=\"rule-ref\" href=\"#sec-19-4\" data-tip=\"Télépathie : spécialisation de l'Esprit, écoute et lien silencieux (§19.4).\">télépathe</a> :\n                        c'est lui qui tient le lien, les autres s'y accordent par l'entraînement.\n                    </p>\n                    <p>\n                        Pour le tisser, en dehors du combat : 4 heures d'entraînement ensemble, comme\n                        entre compagnons (<a class=\"rule-ref\" href=\"livre_1.html#chap-5\" data-tip=\"Entraînement entre compagnons : 4 heures d'exercices avec un camarade pendant les moments calmes (§5).\">Livre I §5</a>),\n                        puis le télépathe fait une\n                        <a class=\"rule-ref\" href=\"livre_2.html#chap-7\" data-tip=\"Épreuve : lance ton dé de compétence + PA − malus contre le seuil du MJ (§7.1).\">épreuve</a>\n                        de Télépathie, Delta ≥ 2. Raté ? On réessaie le lendemain, après un repos\n                        (d'habitude le matin).\n                        Réussi ? Chacun paie <strong>5 <a class=\"rule-ref\" href=\"livre_1.html#sec-5-3\" data-tip=\"Dépenser son XP : dans sa compétence au tarif normal, ×2 en croisé, libre partout (§5.3).\">XP</a></strong>,\n                        télépathe compris — même tarif qu'une spécialisation. Un nouveau membre plus tard :\n                        même épreuve, et lui seul paie les 5 XP.\n                    </p>\n                    <p>\n                        Une fois tissé, ça change tout en combat :\n                    </p>\n                    <ul>\n                        <li><strong>Communication Instantanée :</strong> Vous parlez en pensée. Tactiques, alertes,\n                            idées : ça part direct, <strong>sans consommer de <a class=\"rule-ref\"\n                                    href=\"livre_1.html#chap-4\"\n                                    data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a>\n                                de parole</strong> en\n                            combat. Et les ennemis n'entendent rien : le MJ joue comme s'il ne captait pas\n                            vos tactiques.</li>\n                        <li><strong>Synchronisation Tactique :</strong> Tant que tu es à moins de 3 cases d'un autre\n                            membre du lien, vous vous couvrez et vous gagnez chacun <strong>+1 <a class=\"rule-ref\" href=\"livre_2.html#chap-6\"\n                                    data-tip=\"EC : on teste toujours une compétence précise, jamais un attribut brut (§6).\">EC</a></strong>.\n                        </li>\n                        <li><strong>Ancrage Thermodynamique :</strong> Tu <a class=\"rule-ref\" href=\"#sec-14-2\"\n                                data-tip=\"Saturation : trop d'énergie non dissipée = surcharge pour toi ou ton moteur (§14).\">surchauffes</a>\n                            ? Un autre membre du lien absorbe une partie du trop-plein et te stabilise.</li>\n                    </ul>\n                    <p>\n                        Le lien ne casse pas : ni la distance, ni l'anti-magie ne le tuent (il dort, c'est\n                        tout). Il s'éteint à la mort d'un membre, ou si le télépathe le relâche volontairement.\n                    </p>\n\n                    <!-- ================= CHAPITRE 19 ================= -->\n                    "
+    }
+   ]
+  },
+  {
+   "id": "chap-19",
+   "symbole": "19.",
+   "titre": "Atelier de Création Modulaire de Pouvoirs",
+   "blocs": [
+    {
+     "type": "html",
+     "html": "\n\n                    <p class=\"lead\">\n                        Pas envie de piocher dans une liste ? Fabrique ton sort toi-même. Tu choisis les briques,\n                        tu paies en <a class=\"rule-ref\" href=\"livre_1.html#sec-5-3\"\n                            data-tip=\"Dépenser son XP : dans sa compétence au tarif normal, ×2 en croisé, libre partout (§5.3).\">XP</a>,\n                        et tu sais tout de suite combien ça te coûtera en jeu.\n                    </p>\n\n                    <!-- RÈGLE D'OR XP = PA -->\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "regle_or_creation"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <h3 id=\"sec-19-1\">19.1 Fiche Technique d'un Pouvoir</h3>\n                    <p>\n                        Pour chaque pouvoir que tu crées, remplis ces rubriques avec ton MJ :\n                    </p>\n                    <ul>\n                        <li><strong>Nom :</strong> Le titre de ta technique (Gratuit).</li>\n                        <li><strong>Description :</strong> À quoi ça ressemble, ce que ça fait comme bruit\n                            (Gratuit).</li>\n                        <li><strong>Attribut Associé :</strong> D'où vient l'XP. Souvent Magie, mais ça peut être\n                            Force pour une technique de corps à corps ou Agilité pour un tir (Gratuit).</li>\n                        <li><strong>Type de Pouvoir :</strong> Offensif, Défensif, Social ou Utilitaire (Gratuit).</li>\n                        <li><strong>Coût en PA & Type d'Action :</strong> Ça découle de ton total d'effets\n                            (Action Principale, Réaction, etc.) (Gratuit). Un pouvoir lancé en\n                            <strong>Réaction</strong> coûte <strong>+2</strong> (XP et PA — la\n                            <a class=\"rule-ref\" href=\"#sec-19-regle\" data-tip=\"Règle d'or : 1 XP dépensé à la création = 1 PA pour lancer en combat (§19).\">règle d'or</a>\n                            porte sur le total : un blast à 4 XP lancé en réaction coûte 6 PA).</li>\n                        <li><strong>Mécanique & Effets :</strong> Tes briques choisies dans le catalogue\n                            juste en dessous (Payant en XP).</li>\n                    </ul>\n\n                    <h3 id=\"sec-19-2\">19.2 Catalogue Officiel des Effets Achetables</h3>\n                    <p>\n                        Pioche ce qu'il te faut. Chaque brique a son prix. Tu additionnes, et tu as ton <a\n                            class=\"rule-ref\" href=\"#sec-19-regle\"\n                            data-tip=\"Règle d'or : 1 XP dépensé à la création = 1 PA pour lancer en combat (§19).\">coût</a>.\n                    </p>\n\n                    <!-- EFFETS OFFENSIFS -->\n                    <h4>Effets Offensifs (Attaques & Neutralisation)</h4>\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "modules_offensifs"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <!-- EFFETS DÉFENSIFS & UTILITAIRES -->\n                    <h4>Effets Défensifs & Utilitaires</h4>\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "modules_defensifs_utilitaires"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <!-- EFFETS SOCIAUX -->\n                    <h4>Effets Sociaux (Parole & Influence)</h4>\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "modules_sociaux"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <div class=\"callout vital\" id=\"sec-19-hybride\">\n                        <div class=\"callout-header\">\n                            <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\"\n                                stroke-width=\"2\">\n                                <polyline points=\"16 18 22 12 16 6\" />\n                                <polyline points=\"8 6 2 12 8 18\" />\n                            </svg>\n                            Règle des Pouvoirs Hybrides\n                        </div>\n                        <div class=\"callout-body\">\n                            Tu peux mélanger les catégories. Exemple : un blast qui frappe et te met en\n                            <a class=\"rule-ref\" href=\"livre_6.html#chap-24\"\n                                data-tip=\"Survolté : +1 ec sur tous les tests, +3 PA par tour (§24).\"><em>Survolté</em></a>\n                            en même temps.<br>\n                            <strong>Surcoût :</strong> <strong>+1 XP par catégorie en plus</strong>. Bonne nouvelle :\n                            cet XP-là ne compte pas dans le coût en PA en combat.\n                        </div>\n                    </div>\n\n                    <h3 id=\"sec-19-3\">19.3 Exemples Officiels de Sortilèges Conçus</h3>\n                    <p>\n                        Six sorts prêts à jouer, pour voir comment ça se monte. Copie la méthode pour les tiens.\n                    </p>\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "sorts_exemples"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <h3 id=\"sec-19-4\">19.4 Compendium des Spécialisations Arcanes</h3>\n\n                    <p class=\"lead\">\n                        Tu veux un tour précis au lieu d'un sort maison ? Prends une spécialisation. Ça coûte\n                        <strong><a class=\"rule-ref\" href=\"livre_1.html#sec-5-3\"\n                                data-tip=\"Spécialisation : 5 XP de la bonne banque ou du libre, au tarif normal (§5.3).\">5\n                                XP de la bonne banque (ou du\n                                libre)</a></strong>,\n                        <strong><a class=\"rule-ref\" href=\"livre_1.html#sec-5-3\"\n                                data-tip=\"Coût croisé ×2 : dépenser l'XP d'une autre compétence coûte double (§5.3).\">10\n                                XP depuis une autre banque</a></strong> (<a class=\"rule-ref\" href=\"livre_1.html#sec-5-3\"\n                            data-tip=\"Dépenser son XP : dans sa compétence au tarif normal, ×2 en croisé, libre partout (§5.3).\">Livre\n                            I §5.3</a>). Même tarif qu'au\n                        <a class=\"rule-ref\" href=\"livre_3.html#chap-13\"\n                            data-tip=\"Compendium : chaque ligne est une spécialisation à part entière, même tarif (§13).\">Livre\n                            III §13</a>.\n                        <br>Chaque ligne ci-dessous est une spécialisation à part entière : tu les achètes une par\n                        une, chacune au même tarif. Lis l'indentation : une spécialisation indentée (↳)\n                        a pour prérequis celle qu'elle pointe — sa mère, juste au-dessus dans sa branche.\n                    </p>\n\n                    <div class=\"callout arcane\">\n                        <div class=\"callout-header\">\n                            <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\"\n                                stroke-width=\"2\">\n                                <circle cx=\"12\" cy=\"12\" r=\"10\" />\n                                <polyline points=\"12 6 12 12 14 14\" />\n                            </svg>\n                            Où est la partie technique ? (Livre III)\n                        </div>\n                        <div class=\"callout-body\">\n                            Dans le Livre III, cherche <a class=\"rule-ref\" href=\"livre_3.html#chap-12\"\n                                data-tip=\"Arbre Érudition : la compétence Ingénierie & Arcanotech (INT, ÉRU) (§12).\">«\n                                Ingénierie &amp; Arcanotech »</a>\n                            (arbre Érudition, §12) et <a class=\"rule-ref\" href=\"livre_3.html#chap-13\"\n                                data-tip=\"Surfréquence Nytharite : double la puissance d'une arme laser ou d'un champ pendant 1 tour (§13).\">«\n                                Surfréquence Nytharite »</a>\n                            (compendium, §13) : c'est la partie atelier — tu répares et tu règles moteurs et\n                            cristaux. Ici, c'est la partie sorts : tu lances, sans cristal en poche — les\n                            cristaux bossent dans les moteurs, pas dans tes mains.\n                        </div>\n                    </div>\n\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "specialisations_arcanes"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <div class=\"codex-signature\">\n                        <div class=\"sig-meta\">\n                            <strong>LIVRE IV DU CODEX UNIVERSEL</strong><br>\n                            Ta magie, tes moteurs, tes pouvoirs maison<br>\n                            <em>Teste, note ce qui marche à ta table — et bon jeu.</em>\n                        </div>\n                        <div class=\"sig-stamp\">\n                            <span class=\"stamp-title\">NYTHARITE CALIBRÉE</span>\n                            <span class=\"stamp-date\">RÉSONANCE : 100% // OPÉRATIONNELLE</span>\n                        </div>\n                    </div>\n\n                    <!-- PAGINATION ENTRE LIVRES -->\n                    <div class=\"chapter-pagination\">\n                        <a href=\"livre_3.html\" class=\"pagination-btn\">\n                            <div>\n                                <div class=\"pagination-label\">Livre Précédent</div>\n                                <div class=\"pagination-title\">← Livre III : Arbres de Compétences</div>\n                            </div>\n                        </a>\n                        <a href=\"livre_5.html\" class=\"pagination-btn\">\n                            <div>\n                                <div class=\"pagination-label\">Livre Suivant</div>\n                                <div class=\"pagination-title\">Livre V : Combat Tactique →</div>\n                            </div>\n                        </a>\n                    </div>\n\n                "
+    }
+   ]
+  }
+ ],
+ "donnees": {
+  "moteur_nytharite": {
+   "type": "cartes",
+   "grille": 2,
+   "cartes": [
+    {
+     "titre": "1. Chambre de Résonance du Cœur",
+     "top": false,
+     "monde": null,
+     "corps_html": "C'est le cœur du moteur. Un cristal de nytharite taillé dans le bon sens.\n                                Tu l'allumes, il vibre, et il donne l'énergie de base. Sans carburant.",
+     "pieds": [
+      {
+       "ton": "cyan",
+       "texte": "Génération Primaire"
+      }
+     ]
+    },
+    {
+     "titre": "2. Stabilisateurs de Champ",
+     "top": false,
+     "monde": null,
+     "corps_html": "Des anneaux autour du cœur. Ils prennent l'énergie brute et la tournent dans la\n                                bonne direction. C'est eux qui font que ton pod tourne proprement au lieu de\n                                partir en travers.",
+     "pieds": [
+      {
+       "ton": "emerald",
+       "texte": "Vecteur & Contrôle"
+      }
+     ]
+    },
+    {
+     "titre": "3. Nœuds d'Infusion Élémentaire",
+     "top": false,
+     "monde": null,
+     "corps_html": "Des injecteurs qui donnent un goût à l'énergie. Exemple : tu veux flotter sans\n                                frotter ? Tu mets du <strong>vecteur Air</strong>. Tu veux aller vite ? Tu mets\n                                du <strong>vecteur Feu</strong>.",
+     "pieds": [
+      {
+       "ton": "amber",
+       "texte": "Air (Portance) / Feu\n                                    (Poussée)"
+      }
+     ]
+    },
+    {
+     "titre": "4. Recyclage d'Énergie Dynamique",
+     "top": false,
+     "monde": null,
+     "corps_html": "Un circuit qui récupère ce qui part en trop. Rien ne se perd. Ton pod peut\n                                tourner des mois sans passer à l'atelier.",
+     "pieds": [
+      {
+       "ton": "cyan",
+       "texte": "Rendement Quasi-Infini"
+      }
+     ]
+    }
+   ]
+  },
+  "voies_arcaniques": {
+   "type": "table",
+   "colonnes": [
+    "Voie Arcanique",
+    "Éléments & Canaux Disponibles",
+    "Types d'Action Typiques",
+    "Caractéristiques Principales"
+   ],
+   "lignes": [
+    [
+     "<strong>Magie Élémentale</strong>",
+     "Feu, Air, Eau, Terre, Foudre, Glace",
+     "Offensif, Défensif, Utilitaire",
+     "Manifestations thermodynamiques tangibles : flammes, blasts de vent, gel, arcs\n                                        électriques."
+    ],
+    [
+     "<strong>Magie Primale</strong>",
+     "Corps, Manipulation, Destruction, Ombre, Lumière, Poison",
+     "Offensif, Utilitaire",
+     "Altération biologique, pourrissement, éclairs aveuglants, <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-1bis\"\n                                            data-tip=\"Dégâts Résiduels : PV directs qui baissent de 1 par tour. Seul un soin les stoppe (§24.1bis).\">dégâts\n                                            résiduels</a>\n                                        toxiques."
+    ],
+    [
+     "<strong>Magie de l'Esprit (Psyché)</strong>",
+     "<a class=\"rule-ref\" href=\"#sec-17-1\"\n                                            data-tip=\"Télépathie : 6 stades, de la lecture de surface jusqu'à la possession (§17.1).\">Télépathie</a>,\n                                        <a class=\"rule-ref\" href=\"#sec-17-2\"\n                                            data-tip=\"Télékinésie : 6 paliers, des objets légers jusqu'à la gravité inversée (§17.2).\">Télékinésie</a>,\n                                        <a class=\"rule-ref\" href=\"livre_10.html#chap-41\"\n                                            data-tip=\"Clairsentience : 8 échelons de perception, détaillés dans le Livre X (§41).\">Clairsentience</a>",
+     "Offensif, Défensif, Social, Utilitaire",
+     "Manipulation spatiale pure, lecture et réécriture de la pensée, calcul\n                                        géométrique de la gravité."
+    ]
+   ]
+  },
+  "portee_sorts": {
+   "type": "formule",
+   "badge": "Règle de Portée des Sorts",
+   "math_html": "Portée = <span class=\"hl-cyan\">Rang de Magie</span> + (<span class=\"hl-cyan\">Rang de\n                                    Magie</span> ×\n                                <span class=\"hl-gold\"><a class=\"rule-ref\" href=\"livre_2.html#chap-6\"\n                                        data-tip=\"Entraînement : +1 palier de dé chacun, max +3 par compétence, 5 XP (10 si croisé) (§6.1).\">Entraînements</a></span>)",
+   "desc_html": "Ton premier rang est offert : même sans entraînement acheté, tu portes à\n                                MAG cases. Chaque entraînement ajoute un nouveau multiple.\n                                Tu lances un <em>Projectile Magique</em> ? Il porte sans malus jusqu'à sa portée\n                                de base en cases. Plus loin, chaque tranche de MAG cases te coûte\n                                <strong>1 <a class=\"rule-ref\" href=\"livre_2.html#chap-6\"\n                                        data-tip=\"Niveau de dé : chaque cran monte le dé — d2 ➔ d4 ➔ d6 ➔ d8 ➔ d10 ➔ d12 (§6.1).\">niveau\n                                        de dé</a></strong> en moins sur ton jet.",
+   "extra": " id=\"sec-16-portee\""
+  },
+  "magies": {
+   "type": "table",
+   "colonnes": [
+    "Compétence de Base",
+    "Attributs Liés",
+    "Type",
+    "Spécialisations Disponibles"
+   ],
+   "lignes": [
+    [
+     "<strong>Magie Élémentale</strong>",
+     "Magie, Intelligence",
+     "Offensif, Défensif, Utilitaire",
+     "<strong>Incinération Pyrocinétique</strong> → Flamme Bleue → Fournaise\n                                        Déferlante → Nova Thermique\n                                        <br><strong>Aéromancie</strong> → Lame de Vent → Tempête de Lames\n                                        <br>↳ Courant Porteur\n                                        <br><strong>Hydromancie</strong> → Étreinte Abyssale → Raz-de-Marée\n                                        <br>↳ Brume Aveuglante\n                                        <br><strong>Géomancie</strong> → Poing Tellurique → Séisme Localisé\n                                        <br>↳ Peau de Pierre"
+    ],
+    [
+     "<strong>Magie Primale</strong>",
+     "Magie, Intelligence",
+     "Offensif, Utilitaire",
+     "<strong>Barricade de Racines</strong> → Épines de Granit → Bastion Vivant →\n                                        Mur d'Orichalque Végétal\n                                        <br><strong>Vignes Constrictrices</strong> → Étau Végétal → Moisson Sanguine\n                                        → Étranglement Toxique\n                                        <br><strong>Catalyse Tissulaire</strong> → Surcroît Vital → Bouclier Végétal\n                                        → Transfusion Symbiotique\n                                        <br><strong>Champ de Ronces</strong> → Ronces Neurotoxiques →\n                                        Enchevêtrement Explosif\n                                        <br><strong>Greffe Cinétique</strong> → Osmose d'Escouade → Frappe\n                                        Symbiotique"
+    ],
+    [
+     "<strong>Magie de l'Esprit</strong>",
+     "Magie, Intelligence",
+     "Offensif, Défensif, Social, Utilitaire",
+     "<strong>Télékinésie</strong> → Projection d'Objets → Barrière Cinétique →\n                                        Fissure Gravifique\n                                        <br><strong>Télépathie</strong> → Lien Empathique → Sondage de Surface →\n                                        Injonction Impérieuse\n                                        <br><strong>Clairvoyance</strong> → Œil Distant → Prescience du Danger →\n                                        Champ de Prescience"
+    ]
+   ]
+  },
+  "stades_neuronaux": {
+   "type": "table",
+   "colonnes": [
+    "Stade Neuronal",
+    "Région Cérébrale Cible",
+    "Capacités & Pouvoirs Débloqués",
+    "Limites & Contraintes"
+   ],
+   "lignes": [
+    [
+     "<strong>Stade 1 : Lecture de Surface</strong>",
+     "Réseau du Mode par Défaut (DMN)",
+     "Perçoit les pensées errantes, rêveries, sentiments immédiats et distractions de\n                                        la cible sans effort soutenu.",
+     "Purement réceptif. Impossible de lire les pensées actives ou de modifier quoi\n                                        que ce soit."
+    ],
+    [
+     "<strong>Stade 2 : Accès Profond & Émotions</strong>",
+     "Cortex Préfrontal & Lobe Temporal",
+     "Lit les pensées actives, les processus de décision, les sous-entendus\n                                        émotionnels et les souvenirs sensoriels récents.",
+     "Toujours observationnel. Ne peut pas altérer les pensées ou implanter d'idées."
+    ],
+    [
+     "<strong>Stade 3 : Accès Mémoriel & Suggestion</strong>",
+     "Hippocampe & Circuits de Mémoire",
+     "Explore les souvenirs stockés. Peut envoyer de brèves suggestions pour orienter\n                                        subtilement l'humeur ou le choix de la cible.",
+     "Suggestions éphémères. Si l'ordre heurte la survie de la cible, il est rejeté."
+    ],
+    [
+     "<strong>Stade 4 : Édition Mémorielle</strong>",
+     "Voies Synaptiques Récentes",
+     "Modifie des souvenirs récents (moins de 24h), crée de fausses associations\n                                        d'idées, altère temporairement l'état émotionnel.",
+     "Limité aux détails récents. Les croyances profondément ancrées résistent à\n                                        l'édition."
+    ],
+    [
+     "<strong>Stade 5 : Réécriture Complète</strong>",
+     "Circuits Cognitifs Intégrés",
+     "Réécrit des pans entiers de mémoire, efface des souvenirs clés, scénarise et\n                                        dicte les réactions émotionnelles de la cible.",
+     "Requiert une concentration continue. Draine l'énergie mentale à chaque tour\n                                        d'application."
+    ],
+    [
+     "<strong>Stade 6 : Contrôle Neural & Possession</strong>",
+     "Tronc Cérébral & Cortex Moteur",
+     "<strong>Possession corporelle totale</strong> : le télépathe contrôle les\n                                        mouvements, ressent à travers les sens de la cible et reconfigure sa\n                                        personnalité.",
+     "Épuisement extrême. Risque de dissociation et instabilité psychologique pour le\n                                        télépathe."
+    ]
+   ]
+  },
+  "pyro_creation": {
+   "type": "cartes",
+   "grille": 2,
+   "cartes": [
+    {
+     "titre": "Pyrocinésie & Thermodynamique",
+     "top": false,
+     "monde": null,
+     "corps_html": "Tu chauffes la matière de l'intérieur. D'abord tu tiédis un objet. Puis tu fais\n                                une boule de feu, tu lèves un écran de chaleur, et tout en haut tu changes\n                                l'état de la matière d'un coup : <strong>contrôle moléculaire thermique</strong>\n                                (ça fond ou ça s'évapore).",
+     "pieds": [
+      {
+       "ton": "ruby",
+       "texte": "Offensif / Dégâts Résiduels"
+      }
+     ]
+    },
+    {
+     "titre": "Vitalité Cinétique & Création Primale",
+     "top": false,
+     "monde": null,
+     "corps_html": "Tu mélanges terre, eau, vent et feu à l'instinct. Ça sort vite et fort, et tu peux\n                                même faire apparaître de la matière. Revers : ton corps chauffe. Prévois de quoi\n                                refroidir.",
+     "pieds": [
+      {
+       "ton": "emerald",
+       "texte": "Organique / Dynamique"
+      }
+     ]
+    }
+   ]
+  },
+  "regle_or_creation": {
+   "type": "formule",
+   "badge": "La Règle d'Or de Création",
+   "math_html": "<span class=\"hl-gold\">Coût de Création (XP)</span> = <span class=\"hl-cyan\">Coût\n                                    d'Activation (PA)</span>",
+   "desc_html": "1 XP dépensé = 1 <a class=\"rule-ref\" href=\"livre_1.html#chap-4\"\n                                    data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a>\n                                pour lancer en combat. Tu montes un pouvoir à 6 XP ?\n                                Il te coûtera 6 PA à table. Fais le calcul avec ton MJ, sans prise de tête.",
+   "extra": " id=\"sec-19-regle\""
+  },
+  "modules_offensifs": {
+   "type": "table",
+   "colonnes": [
+    "Coût (XP / PA)",
+    "Effet Modulaire Acheté",
+    "Propriétés & Cumul"
+   ],
+   "lignes": [
+    [
+     "<span class=\"pill-badge cyan\">1 point</span>",
+     "<strong>Teinte élémentaire</strong> : donne un type à tes dégâts (feu, froid,\n                                        foudre, vent, eau, terre…)",
+     "Déclenche <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Résistances : certaines espèces ignorent ou subissent plus selon le type (§23.4).\">résistances et vulnérabilités</a> : contourne les unes, exploite les autres"
+    ],
+    [
+     "<span class=\"pill-badge cyan\">1 point</span>",
+     "<strong>+1 à l'<a class=\"rule-ref\" href=\"livre_2.html#chap-7\"\n                                                data-tip=\"Épreuve : lance ton dé de compétence + PA − malus contre le seuil du MJ (§7.1).\">Épreuve</a>\n                                            Offensive</strong>",
+     "Cumulable (*stackable*)"
+    ],
+    [
+     "<span class=\"pill-badge cyan\">1 point</span>",
+     "<strong>+2 Dégâts</strong> directs",
+     "Cumulable (*stackable*)"
+    ],
+    [
+     "<span class=\"pill-badge cyan\">1 point</span>",
+     "La cible perd <strong>2 <a class=\"rule-ref\" href=\"livre_1.html#chap-4\"\n                                                data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a></strong>\n                                        (reportable au tour suivant)",
+     "Cumulable"
+    ],
+    [
+     "<span class=\"pill-badge cyan\">1 point</span>",
+     "La cible est <strong>Débalancée</strong> pour 1 tour",
+     "Durée cumulable"
+    ],
+    [
+     "<span class=\"pill-badge amber\">2 points</span>",
+     "La cible <strong>tombe au sol</strong> (<a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À\n                                            terre</a>)",
+     "Effet immédiat"
+    ],
+    [
+     "<span class=\"pill-badge amber\">2 points</span>",
+     "La cible <strong>recule d'1 case</strong> (repoussée loin de toi)",
+     "Cumulable (+1 case par achat)"
+    ],
+    [
+     "<span class=\"pill-badge amber\">2 points</span>",
+     "La cible prend <strong>-1 à sa prochaine <a class=\"rule-ref\" href=\"livre_2.html#chap-7\" data-tip=\"Épreuve : lance ton dé de compétence + PA − malus contre le seuil du MJ (§7.1).\">épreuve</a></strong>",
+     "Cumulable (-1 par achat)"
+    ],
+    [
+     "<span class=\"pill-badge amber\">3 points</span>",
+     "La cible subit <strong>2 <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1bis\"\n                                                data-tip=\"Dégâts Résiduels : PV directs qui baissent de 1 par tour. Seul un soin les stoppe (§24.1bis).\">Dégâts\n                                                Résiduels</a></strong> continus",
+     "Dégressif par tour (-1/tour)"
+    ],
+    [
+     "<span class=\"pill-badge amber\">3 points</span>",
+     "La cible est <strong><a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                                data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).\">Déstabilisée</a></strong>\n                                        pour 1 tour (-2 EC)",
+     "Durée cumulable"
+    ],
+    [
+     "<span class=\"pill-badge amber\">3 points</span>",
+     "La cible est <strong><a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                                data-tip=\"Immobilisé : impossible de faire la moindre action de mouvement (§24.1).\">Immobilisée</a></strong>\n                                        pour 1 tour",
+     "Durée cumulable"
+    ],
+    [
+     "<span class=\"pill-badge amber\">3 points</span>",
+     "<strong>+1 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\"\n                                                data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">Dégât\n                                                Absolu</a></strong> à toutes les créatures à 1 case de zone",
+     "Zone & bonus cumulables"
+    ],
+    [
+     "<span class=\"pill-badge ruby\">4 points</span>",
+     "La cible est <strong><a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                                data-tip=\"Ralenti : toute action coûte le double de PA.\">Ralentie</a></strong>\n                                        (toute action coûte double PA)",
+     "Durée cumulable"
+    ],
+    [
+     "<span class=\"pill-badge ruby\">4 points</span>",
+     "Ton sort frappe <strong>1 case de rayon de plus</strong> (dégâts aussi)",
+     "Zone & bonus cumulables"
+    ],
+    [
+     "<span class=\"pill-badge ruby\">6 points</span>",
+     "La cible subit <strong>3 <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1bis\"\n                                                data-tip=\"Dégâts Résiduels : PV directs qui baissent de 1 par tour. Seul un soin les stoppe (§24.1bis).\">Dégâts\n                                                Résiduels</a></strong> continus",
+     "Dégressif par tour"
+    ],
+    [
+     "<span class=\"pill-badge ruby\">7 points</span>",
+     "La cible est <strong><a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                                data-tip=\"Paralysé : aucune action ni réaction, incapacité totale (§24.1).\">Paralysée</a></strong>\n                                        pour 1 tour (incapacité totale)",
+     "Durée cumulable"
+    ],
+    [
+     "<span class=\"pill-badge ruby\">8 points</span>",
+     "La cible est <strong><a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                                data-tip=\"Sonné : aucune action. La créature tombe immédiatement à terre.\">Sonnée</a></strong>\n                                        pour 1 tour (paralysée et chute au sol)",
+     "Durée cumulable"
+    ],
+    [
+     "<span class=\"pill-badge ruby\">10 points</span>",
+     "La cible subit <strong>4 <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1bis\"\n                                                data-tip=\"Dégâts Résiduels : PV directs qui baissent de 1 par tour. Seul un soin les stoppe (§24.1bis).\">Dégâts\n                                                Résiduels</a></strong> continus",
+     "Dégressif par tour"
+    ]
+   ]
+  },
+  "modules_defensifs_utilitaires": {
+   "type": "table",
+   "colonnes": [
+    "Coût (XP / PA)",
+    "Effet Modulaire Acheté",
+    "Type"
+   ],
+   "lignes": [
+    [
+     "<span class=\"pill-badge cyan\">1 point</span>",
+     "<strong>+1 à l'<a class=\"rule-ref\" href=\"livre_2.html#chap-7\"\n                                                data-tip=\"Épreuve : lance ton dé de compétence + PA − malus contre le seuil du MJ (§7.1).\">Épreuve</a>\n                                            Défensive ou Utilitaire</strong>",
+     "Cumulable"
+    ],
+    [
+     "<span class=\"pill-badge amber\">2 points</span>",
+     "Tu <strong>rends 4 PV</strong> à un allié (ou à toi)",
+     "Cumulable (+4 PV par achat)"
+    ],
+    [
+     "<span class=\"pill-badge amber\">2 points</span>",
+     "Ton sort porte <strong>+MAG cases plus loin</strong>",
+     "Cumulable"
+    ],
+    [
+     "<span class=\"pill-badge amber\">2 points</span>",
+     "Tu <strong>dissipes 1 état préjudiciable</strong> sur un allié (ou sur toi)",
+     "Effet immédiat"
+    ],
+    [
+     "<span class=\"pill-badge amber\">3 points</span>",
+     "<strong>+2 Résistance Résiduelle</strong> (absorption bonus directe sur le\n                                        calcul des blessures)",
+     "Défensif"
+    ],
+    [
+     "<span class=\"pill-badge amber\">3 points</span>",
+     "<strong>+2 armure naturelle</strong> pendant 1 tour (toi ou un allié)",
+     "Durée cumulable"
+    ],
+    [
+     "<span class=\"pill-badge amber\">3 points</span>",
+     "<strong>Bouclier : absorbe 4 dégâts</strong> avant de céder",
+     "Cumulable (+4 par achat)"
+    ],
+    [
+     "<span class=\"pill-badge amber\">3 points</span>",
+     "État <strong><a class=\"rule-ref\" href=\"livre_6.html#chap-24\"\n                                                data-tip=\"Rapide : +3 PA réservés aux déplacements à chaque tour (§24).\">Rapide</a></strong>\n                                        pour 1 tour (+3 PA dédiés au déplacement)",
+     "Utilitaire"
+    ],
+    [
+     "<span class=\"pill-badge ruby\">4 points</span>",
+     "État <strong><a class=\"rule-ref\" href=\"livre_6.html#chap-24\"\n                                                data-tip=\"Survolté : +1 ec sur tous les tests, +3 PA par tour (§24).\">Survolté</a></strong>\n                                        pour 1 tour (+1 EC, +3 PA)",
+     "Utilitaire / Buff"
+    ],
+    [
+     "<span class=\"pill-badge ruby\">7 points</span>",
+     "État <strong><a class=\"rule-ref\" href=\"livre_6.html#chap-24\"\n                                                data-tip=\"En Transe : +2 ec sur tous les jets, +5 PA par tour (§24).\">En\n                                                Transe</a></strong> pour 1 tour (+2 EC, +5 PA)",
+     "Utilitaire / Buff Majeur"
+    ],
+    [
+     "<span class=\"pill-badge ruby\">7 points</span>",
+     "État <strong><a class=\"rule-ref\" href=\"livre_6.html#chap-24\"\n                                                data-tip=\"En Vol : déplacement aérien libre, coût de déplacement réduit de moitié (§24).\">En\n                                                Vol</a></strong> pour 1 tour (déplacement tridimensionnel à\n                                        demi-coût)",
+     "Utilitaire arcanique"
+    ],
+    [
+     "<span class=\"pill-badge ruby\">8 points</span>",
+     "État <strong><a class=\"rule-ref\" href=\"livre_6.html#chap-24\"\n                                                data-tip=\"Accéléré : toute action de déplacement coûte la moitié des PA (§24).\">Accéléré</a></strong>\n                                        pour 1 tour (tout déplacement coûte moitié PA)",
+     "Utilitaire"
+    ],
+    [
+     "<span class=\"pill-badge ruby\">9 points</span>",
+     "État <strong><a class=\"rule-ref\" href=\"livre_6.html#chap-24\"\n                                                data-tip=\"Lévitation : déplacement aérien libre sans effort, coût réduit de moitié (§24).\">Lévitation</a></strong>\n                                        sans effort pour 1 tour",
+     "Magie seulement"
+    ]
+   ]
+  },
+  "modules_sociaux": {
+   "type": "table",
+   "colonnes": [
+    "Coût (XP / PA)",
+    "Effet Modulaire Acheté",
+    "Type"
+   ],
+   "lignes": [
+    [
+     "<span class=\"pill-badge cyan\">1 point</span>",
+     "<strong>+1 à l'<a class=\"rule-ref\" href=\"livre_2.html#chap-7\" data-tip=\"Épreuve : lance ton dé de compétence + PA − malus contre le seuil du MJ (§7.1).\">Épreuve</a> Sociale</strong>",
+     "Cumulable"
+    ]
+   ]
+  },
+  "sorts_exemples": {
+   "type": "cartes",
+   "grille": 2,
+   "cartes": [
+    {
+     "titre": "<span>Ralentissement Gravitationnel</span>\n                                <span class=\"pill-badge cyan\">3 PA // Action Principale</span>",
+     "top": false,
+     "monde": "Magie Utilitaire // Attribut : Magie",
+     "corps_html": "<em>« L'air devient lourd et tout se fige autour de ta cible.\n                                    »</em><br><br>\n                                Tu changes la gravité sur sa case. Tu fais ton <a class=\"rule-ref\"\n                                    href=\"livre_2.html#chap-7\"\n                                    data-tip=\"Épreuve : lance ton dé de compétence + PA − malus contre le seuil du MJ (§7.1).\">épreuve</a>\n                                de Magie\n                                avec <strong>+1 au jet</strong> (1 pt). Si tu réussis, elle <strong>perd 4 Points\n                                    d'Action</strong> (2 pts), reportables au tour suivant.",
+     "pieds": [
+      {
+       "ton": "cyan",
+       "texte": "Coût Création : 3 XP"
+      },
+      {
+       "ton": "amber",
+       "texte": "Coût Combat : 3 PA"
+      }
+     ]
+    },
+    {
+     "titre": "<span>Écrasement de Matière</span>\n                                <span class=\"pill-badge ruby\">3 PA // Action Principale</span>",
+     "top": false,
+     "monde": "Magie Offensive // Attribut : Magie",
+     "corps_html": "<em>« Tu resserres la gravité sur un membre. La matière cède.\n                                    »</em><br><br>\n                                Tu vises une partie du corps et tu lances ton épreuve avec <strong>+1 au\n                                    résultat</strong> (1 pt). Si tu réussis, tu infliges <strong>2 <a class=\"rule-ref\"\n                                        href=\"livre_6.html#chap-23\"\n                                        data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">Dégâts\n                                        Absolus</a></strong> qui ignorent la Constitution et le blindage (2\n                                pts).",
+     "pieds": [
+      {
+       "ton": "ruby",
+       "texte": "Coût Création : 3 XP"
+      },
+      {
+       "ton": "amber",
+       "texte": "Coût Combat : 3 PA"
+      }
+     ]
+    },
+    {
+     "titre": "<span>Souffle de Braise</span>\n                                <span class=\"pill-badge ruby\">6 PA // Action Principale</span>",
+     "top": false,
+     "monde": "Magie Offensive // Attribut : Magie",
+     "corps_html": "<em>« Tu craches un cône de flammes qui lèchent tout le rang d'en face.\n                                    »</em><br><br>\n                                Fais ton épreuve normalement. Si tu réussis, tu infliges <strong>+2 Dégâts</strong>\n                                (1 pt) de <strong>teinte feu</strong> (1 pt, <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Résistances : certaines espèces ignorent ou subissent plus selon le type (§23.4).\">gare aux résistances</a>)\n                                sur <strong>1 case de rayon de plus</strong> (4 pts).",
+     "pieds": [
+      {
+       "ton": "ruby",
+       "texte": "Coût Création : 6 XP"
+      },
+      {
+       "ton": "amber",
+       "texte": "Coût Combat : 6 PA"
+      }
+     ]
+    },
+    {
+     "titre": "<span>Suture de Sève</span>\n                                <span class=\"pill-badge cyan\">4 PA // Action Principale</span>",
+     "top": false,
+     "monde": "Magie Utilitaire // Attribut : Magie",
+     "corps_html": "<em>« Tu poses les mains, la plaie se referme en fils verts.\n                                    »</em><br><br>\n                                Touche un allié (ou toi) : il récupère <strong>4 PV</strong> (2 pts) et tu\n                                <strong>dissipes 1 état préjudiciable</strong> (2 pts). Pas de jet : ça marche,\n                                point.",
+     "pieds": [
+      {
+       "ton": "cyan",
+       "texte": "Coût Création : 4 XP"
+      },
+      {
+       "ton": "amber",
+       "texte": "Coût Combat : 4 PA"
+      }
+     ]
+    },
+    {
+     "titre": "<span>Injonction Douce</span>\n                                <span class=\"pill-badge cyan\">3 PA // Action Principale</span>",
+     "top": false,
+     "monde": "Magie Sociale-Offensive (Hybride) // Attribut : Magie",
+     "corps_html": "<em>« Ta voix se fait miel et la garde baisse.\n                                    »</em><br><br>\n                                Fais ton <a class=\"rule-ref\" href=\"livre_2.html#chap-7\" data-tip=\"Épreuve : lance ton dé de compétence + PA − malus contre le seuil du MJ (§7.1).\">épreuve</a> sociale avec\n                                <strong>+1 au jet</strong> (1 pt). Si tu réussis, ta cible prend <strong>-1 à sa\n                                    prochaine épreuve</strong> (2 pts). Hybride oblige : <strong>+1 XP</strong> de\n                                surcoût à la création, qui ne compte pas dans les PA.",
+     "pieds": [
+      {
+       "ton": "cyan",
+       "texte": "Coût Création : 4 XP"
+      },
+      {
+       "ton": "amber",
+       "texte": "Coût Combat : 3 PA"
+      }
+     ]
+    },
+    {
+     "titre": "<span>Mur Réflexe</span>\n                                <span class=\"pill-badge ruby\">5 PA // Réaction</span>",
+     "top": false,
+     "monde": "Magie Défensive // Attribut : Magie",
+     "corps_html": "<em>« Le coup part et le mur est déjà là.\n                                    »</em><br><br>\n                                En réaction à une attaque : tu lèves un <strong>bouclier qui absorbe\n                                    4 dégâts</strong> (3 pts). Le lancer hors de ton tour coûte <strong>+2</strong>\n                                (règle des réactions).",
+     "pieds": [
+      {
+       "ton": "ruby",
+       "texte": "Coût Création : 5 XP"
+      },
+      {
+       "ton": "amber",
+       "texte": "Coût Combat : 5 PA"
+      }
+     ]
+    }
+   ],
+   "prefix": "\n                        <!-- POUVOIR 1 -->\n                        ",
+   "seps": [
+    "\n\n                        <!-- POUVOIR 2 -->\n                        ",
+    "\n\n                        <!-- POUVOIR 3 -->\n                        ",
+    "\n\n                        <!-- POUVOIR 4 -->\n                        ",
+    "\n\n                        <!-- POUVOIR 5 -->\n                        ",
+    "\n\n                        <!-- POUVOIR 6 -->\n                        "
+   ]
+  },
+  "specialisations_arcanes": {
+   "type": "table",
+   "colonnes": [
+    "Spécialisation",
+    "Compétence (Attributs)",
+    "Type",
+    "Effets & Règles Arcaniques"
+   ],
+   "lignes": [
+    [
+     "<strong>Barricade de Racines</strong>",
+     "Magie Primale (MAG, INT)",
+     "Défensif, Utilitaire",
+     "Tu fais jaillir un <a class=\"rule-ref\" href=\"livre_5.html#chap-21-3\"\n                                            data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§21.3).\">Couvert\n                                            3/4</a> sur un hexagone à 4 cases. Instantané."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:2em;\"",
+      "html": "↳ <strong>Épines de Granit</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Défensif",
+     "Ta barricade blesse : 3 dégâts de lacération à tout ennemi qui la franchit."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Bastion Vivant</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Défensif",
+     "Ta barricade encaisse : elle absorbe 25 PV avant de céder."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:5em;\"",
+      "html": "↳ <strong>Mur d'Orichalque Végétal</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Défensif",
+     "Ta barricade couvre 3 cases contiguës et devient un Couvert Total\n                                        indestructible."
+    ],
+    [
+     "<strong>Vignes Constrictrices</strong>",
+     "Magie Primale (MAG, INT)",
+     "Offensif, Utilitaire",
+     "À 4 cases, ta cible est <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Immobilisé : impossible de faire la moindre action de mouvement (§24.1).\">Immobilisée</a>."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:2em;\"",
+      "html": "↳ <strong>Étau Végétal</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Offensif",
+     "En plus d'Immobilisé, ta cible subit <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-1bis\"\n                                            data-tip=\"Asphyxie : PV + drain de 1 PA par tour. Soin : désobstruction (premiers soins + kit).\">Asphyxie</a>\n                                        : elle perd aussi 1 PA par tour."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Moisson Sanguine</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Offensif, Utilitaire",
+     "Tu draines 3 PV par tour à ta cible entravée et tu te soignes d'autant."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:5em;\"",
+      "html": "↳ <strong>Étranglement Toxique</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Offensif",
+     "Ta cible entravée devient <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Paralysé : aucune action ni réaction, incapacité totale (§24.1).\">Paralysée</a>\n                                        et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1bis\"\n                                            data-tip=\"Empoisonné : PV directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonnée</a>\n                                        en continu."
+    ],
+    [
+     "<strong>Catalyse Tissulaire</strong>",
+     "Magie Primale (MAG, INT)",
+     "Utilitaire",
+     "Tu touches un allié adjacent : il récupère 5 PV et tu dissipes <a\n                                            class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).\">Déstabilisé</a>\n                                        et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Étourdi : −1 ec sur tous les jets.\">Étourdi</a>."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:2em;\"",
+      "html": "↳ <strong>Surcroît Vital</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Utilitaire",
+     "Tu soignes 10 PV au lieu de 5 et tu purges aussi le <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-1bis\"\n                                            data-tip=\"Saignement : PV directs en début de tour, puis −1/tour. Tout soin le stoppe (§24.1bis).\">Saignement</a>."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Bouclier Végétal</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Défensif",
+     "Ton allié soigné gagne +3 d'armure naturelle d'écorce pendant 2 tours."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:5em;\"",
+      "html": "↳ <strong>Transfusion Symbiotique</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Utilitaire",
+     "Tu relèves un allié tombé au contact : il revient avec la moitié de ses PV\n                                        max (<a class=\"rule-ref\" href=\"livre_6.html#chap-25\"\n                                            data-tip=\"Résurrection : ramener un allié tombé suit la règle du §25, avec un prix (Livre VI).\">règle\n                                            de résurrection</a>)."
+    ],
+    [
+     "<strong>Champ de Ronces</strong>",
+     "Magie Primale (MAG, INT)",
+     "Offensif, Utilitaire",
+     "Zone d'1 case de rayon : <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Ralenti : toute action coûte le double de PA.\">Ralenti</a> et 3\n                                        dégâts par case franchie."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:2em;\"",
+      "html": "↳ <strong>Ronces Neurotoxiques</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Offensif",
+     "Zone de 2 cases : <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1bis\"\n                                            data-tip=\"Empoisonné : PV directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonné</a>\n                                        et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Ralenti : toute action coûte le double de PA.\">Ralenti</a>."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Enchevêtrement Explosif</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Offensif",
+     "Tu fais exploser les ronces : 8 dégâts de zone à tous ceux qui sont dedans."
+    ],
+    [
+     "<strong>Greffe Cinétique</strong>",
+     "Magie Primale (MAG, INT)",
+     "Utilitaire",
+     "Au contact, tu donnes ton bonus de déplacement à un allié (+2 PA de\n                                        mouvement)."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:2em;\"",
+      "html": "↳ <strong>Osmose d'Escouade</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Utilitaire",
+     "Même bonus, mais à tous tes alliés à moins de 2 cases."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Frappe Symbiotique</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Offensif, Utilitaire",
+     "Un allié adjacent attaque avec ton dé de Magie Primale."
+    ],
+    [
+     "<strong>Incinération Pyrocinétique</strong>",
+     "Magie Élémentale (MAG, INT)",
+     "Offensif",
+     "Tu projettes un jet de flammes : 6 dégâts de brûlure et l'état <a\n                                            class=\"rule-ref\" href=\"livre_6.html#sec-24-1bis\"\n                                            data-tip=\"En Feu : 2 PV/tour (bouclier d'abord), puis −1/tour. Il faut l'éteindre (§24.1bis).\">En\n                                            Feu</a>."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:2em;\"",
+      "html": "↳ <strong>Flamme Bleue</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Offensif",
+     "Ton incinération ignore totalement l'armure physique balistique."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Fournaise Déferlante</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Offensif",
+     "Ton souffle embrase un cône de 3 hexagones adjacents."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:5em;\"",
+      "html": "↳ <strong>Nova Thermique</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Offensif",
+     "Tu exploses : 12 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\"\n                                            data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">dégâts\n                                            absolus</a> dans un rayon de 2 cases."
+    ],
+    [
+     "<strong>Aéromancie</strong>",
+     "Magie Élémentale (MAG, INT)",
+     "Offensif, Utilitaire",
+     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\"\n                                            data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2\n                                            PA</a> : rafale à 4 cases — tu refoules ta cible d'1 case et elle prend -1 à\n                                        sa prochaine attaque."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:2em;\"",
+      "html": "↳ <strong>Lame de Vent</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Offensif",
+     "Ta rafale inflige 4 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\"\n                                            data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">dégâts\n                                            Absolus</a> et ignore le couvert partiel."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:2em;\"",
+      "html": "↳ <strong>Courant Porteur</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Utilitaire",
+     "Tu déplaces un allié consentant d'1 case : 0 PA, pas d'attaque\n                                        d'opportunité."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Tempête de Lames</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Offensif",
+     "Zone de 2 cases de rayon : 8 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\"\n                                            data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">dégâts\n                                            Absolus</a> et cibles <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À\n                                            Terre</a>."
+    ],
+    [
+     "<strong>Hydromancie</strong>",
+     "Magie Élémentale (MAG, INT)",
+     "Offensif, Utilitaire",
+     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\"\n                                            data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2\n                                            PA</a> : jet à 4 cases — 3 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\"\n                                            data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">dégâts\n                                            Absolus</a> et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Ralenti : toute action coûte le double de PA.\">Ralenti</a> pendant\n                                        1 tour."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:2em;\"",
+      "html": "↳ <strong>Étreinte Abyssale</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Offensif, Utilitaire",
+     "Cible à 4 cases : <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Immobilisé : impossible de faire la moindre action de mouvement (§24.1).\">Immobilisée</a>\n                                        pendant 1 tour (Delta ≥ 2 requis contre PJ/PNJ majeur)."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:2em;\"",
+      "html": "↳ <strong>Brume Aveuglante</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Défensif, Utilitaire",
+     "Nappe sur 1 hexagone pendant 1 tour : -2 à toutes les attaques effectuées à\n                                        travers."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Raz-de-Marée</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Offensif",
+     "Ligne de 3 cases : 8 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\"\n                                            data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">dégâts\n                                            Absolus</a> et cibles <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À\n                                            Terre</a>."
+    ],
+    [
+     "<strong>Géomancie</strong>",
+     "Magie Élémentale (MAG, INT)",
+     "Offensif, Utilitaire",
+     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\"\n                                            data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2\n                                            PA</a> : secousse à 4 cases — <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).\">Déstabilisé</a>\n                                        pendant 1 tour."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:2em;\"",
+      "html": "↳ <strong>Poing Tellurique</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Offensif",
+     "Cible à 2 cases : 4 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\"\n                                            data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">dégâts\n                                            Absolus</a> et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À\n                                            Terre</a> sur Delta ≥ 2."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:2em;\"",
+      "html": "↳ <strong>Peau de Pierre</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Défensif",
+     "Toi ou un allié au contact : +2 armure naturelle pendant 2 tours."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Séisme Localisé</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Offensif, Utilitaire",
+     "Zone de 2 cases de rayon : 8 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\"\n                                            data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">dégâts\n                                            Absolus</a>, cibles <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À\n                                            Terre</a>, terrain difficile pendant 2 tours."
+    ],
+    [
+     "<strong>Télékinésie</strong>",
+     "Magie de l'Esprit (MAG, INT)",
+     "Utilitaire",
+     "Tu déplaces des objets à distance ou tu projettes des ennemis (décrite au\n                                        <a class=\"rule-ref\" href=\"#sec-17-2\"\n                                            data-tip=\"Télékinésie : 6 paliers, des objets légers jusqu'à la gravité inversée (§17.2).\">§17.2</a>)."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:2em;\"",
+      "html": "↳ <strong>Projection d'Objets</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Offensif",
+     "Tu projettes un bloc ou une caisse : 6 dégâts contondants jusqu'à 6 cases."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Barrière Cinétique</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Défensif",
+     "Tu arrêtes tous les projectiles physiques et grenades pendant 1 tour."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:5em;\"",
+      "html": "↳ <strong>Fissure Gravifique</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Offensif, Utilitaire",
+     "Tu ouvres un puits de gravité : il attire tous les ennemis dans un rayon de\n                                        3 cases et les projette <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À\n                                            Terre</a>."
+    ],
+    [
+     "<strong>Télépathie</strong>",
+     "Magie de l'Esprit (MAG, INT)",
+     "Social, Utilitaire",
+     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\"\n                                            data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2\n                                            PA</a> : lien silencieux avec un allié consentant à 6 cases pendant 1 tour,\n                                        +1 en Intuition contre les mensonges (les 6 stades sont au\n                                        <a class=\"rule-ref\" href=\"#sec-17-1\"\n                                            data-tip=\"Télépathie : 6 stades, de la lecture de surface jusqu'à la possession (§17.1).\">§17.1</a>)."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:2em;\"",
+      "html": "↳ <strong>Lien Empathique</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Utilitaire",
+     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\"\n                                            data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2\n                                            PA</a> : tu purges <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).\">Déstabilisé</a>\n                                        d'un allié à 3 cases et tu lui rends 1 PA."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Sondage de Surface</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Social, Utilitaire",
+     "Tu lis les intentions immédiates d'une cible consentante ou d'un sbire\n                                        (Delta ≥ 2 requis contre PJ/PNJ majeur)."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:5em;\"",
+      "html": "↳ <strong>Injonction Impérieuse</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Social",
+     "Tu imposes un ordre simple à un sbire (lâcher son arme, fuir, rester\n                                        immobile 1 tour). Contre un PJ/PNJ majeur : Delta ≥ 3."
+    ],
+    [
+     "<strong>Clairvoyance</strong>",
+     "Magie de l'Esprit (MAG, INT)",
+     "Utilitaire",
+     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\"\n                                            data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2\n                                            PA</a> : tu perçois à travers une paroi légère et tu gagnes +2 en\n                                        Observation pendant 1 tour."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:2em;\"",
+      "html": "↳ <strong>Œil Distant</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Utilitaire",
+     "Tu projettes ta perception jusqu'à 6 cases sans ligne de vue (immobile, 1\n                                        tour)."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Prescience du Danger</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Défensif",
+     "En cas d'<a class=\"rule-ref\" href=\"livre_5.html#chap-21-4\"\n                                            data-tip=\"Embuscade : sans Vigilance, pas de réaction défensive. Détection au brouillard (§21.4).\">embuscade</a>,\n                                        tu gardes une réaction défensive à -1 au lieu d'aucune."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:5em;\"",
+      "html": "↳ <strong>Champ de Prescience</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Défensif, Utilitaire",
+     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\"\n                                            data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">3\n                                            PA</a> : tous tes alliés à 2 cases gagnent +2 en Esquive pendant 1 tour."
+    ]
+   ]
+  }
+ },
+ "tableaux": {
+  "voies_arcaniques": {
+   "colonnes": [
+    "Voie Arcanique",
+    "Éléments & Canaux Disponibles",
+    "Types d'Action Typiques",
+    "Caractéristiques Principales"
+   ]
+  },
+  "magies": {
+   "colonnes": [
+    "Compétence de Base",
+    "Attributs Liés",
+    "Type",
+    "Spécialisations Disponibles"
+   ]
+  },
+  "stades_neuronaux": {
+   "colonnes": [
+    "Stade Neuronal",
+    "Région Cérébrale Cible",
+    "Capacités & Pouvoirs Débloqués",
+    "Limites & Contraintes"
+   ]
+  },
+  "modules_offensifs": {
+   "colonnes": [
+    "Coût (XP / PA)",
+    "Effet Modulaire Acheté",
+    "Propriétés & Cumul"
+   ]
+  },
+  "modules_defensifs_utilitaires": {
+   "colonnes": [
+    "Coût (XP / PA)",
+    "Effet Modulaire Acheté",
+    "Type"
+   ]
+  },
+  "modules_sociaux": {
+   "colonnes": [
+    "Coût (XP / PA)",
+    "Effet Modulaire Acheté",
+    "Type"
+   ]
+  },
+  "specialisations_arcanes": {
+   "colonnes": [
+    "Spécialisation",
+    "Compétence (Attributs)",
+    "Type",
+    "Effets & Règles Arcaniques"
+   ]
+  }
+ },
+ "mecaniques": {
+  "note": "Genere depuis livre_4.html (motif RP-075/Livre II). Source unique : regenerer.",
+  "voies": [
+   {
+    "voie": "Magie Élémentale",
+    "elements_canaux": "Feu, Air, Eau, Terre, Foudre, Glace",
+    "actions_typiques": "Offensif, Défensif, Utilitaire",
+    "caracteristiques": "Manifestations thermodynamiques tangibles : flammes, blasts de vent, gel, arcs électriques."
+   },
+   {
+    "voie": "Magie Primale",
+    "elements_canaux": "Corps, Manipulation, Destruction, Ombre, Lumière, Poison",
+    "actions_typiques": "Offensif, Utilitaire",
+    "caracteristiques": "Altération biologique, pourrissement, éclairs aveuglants, dégâts résiduels toxiques."
+   },
+   {
+    "voie": "Magie de l'Esprit (Psyché)",
+    "elements_canaux": "Télépathie, Télékinésie, Clairsentience",
+    "actions_typiques": "Offensif, Défensif, Social, Utilitaire",
+    "caracteristiques": "Manipulation spatiale pure, lecture et réécriture de la pensée, calcul géométrique de la gravité."
+   }
+  ],
+  "voies_par_nom": {
+   "Magie Élémentale": {
+    "voie": "Magie Élémentale",
+    "elements_canaux": "Feu, Air, Eau, Terre, Foudre, Glace",
+    "actions_typiques": "Offensif, Défensif, Utilitaire",
+    "caracteristiques": "Manifestations thermodynamiques tangibles : flammes, blasts de vent, gel, arcs électriques."
+   },
+   "Magie Primale": {
+    "voie": "Magie Primale",
+    "elements_canaux": "Corps, Manipulation, Destruction, Ombre, Lumière, Poison",
+    "actions_typiques": "Offensif, Utilitaire",
+    "caracteristiques": "Altération biologique, pourrissement, éclairs aveuglants, dégâts résiduels toxiques."
+   },
+   "Magie de l'Esprit (Psyché)": {
+    "voie": "Magie de l'Esprit (Psyché)",
+    "elements_canaux": "Télépathie, Télékinésie, Clairsentience",
+    "actions_typiques": "Offensif, Défensif, Social, Utilitaire",
+    "caracteristiques": "Manipulation spatiale pure, lecture et réécriture de la pensée, calcul géométrique de la gravité."
+   }
+  },
+  "magies": [
+   {
+    "magie": "Magie Élémentale",
+    "attributs": "Magie, Intelligence",
+    "type": "Offensif, Défensif, Utilitaire",
+    "specialisations": "Incinération Pyrocinétique → Flamme Bleue → Fournaise Déferlante → Nova Thermique Aéromancie → Lame de Vent → Tempête de Lames ↳ Courant Porteur Hydromancie → Étreinte Abyssale → Raz-de-Marée ↳ Brume Aveuglante Géomancie → Poing Tellurique → Séisme Localisé ↳ Peau de Pierre"
+   },
+   {
+    "magie": "Magie Primale",
+    "attributs": "Magie, Intelligence",
+    "type": "Offensif, Utilitaire",
+    "specialisations": "Barricade de Racines → Épines de Granit → Bastion Vivant → Mur d'Orichalque Végétal Vignes Constrictrices → Étau Végétal → Moisson Sanguine → Étranglement Toxique Catalyse Tissulaire → Surcroît Vital → Bouclier Végétal → Transfusion Symbiotique Champ de Ronces → Ronces Neurotoxiques → Enchevêtrement Explosif Greffe Cinétique → Osmose d'Escouade → Frappe Symbiotique"
+   },
+   {
+    "magie": "Magie de l'Esprit",
+    "attributs": "Magie, Intelligence",
+    "type": "Offensif, Défensif, Social, Utilitaire",
+    "specialisations": "Télékinésie → Projection d'Objets → Barrière Cinétique → Fissure Gravifique Télépathie → Lien Empathique → Sondage de Surface → Injonction Impérieuse Clairvoyance → Œil Distant → Prescience du Danger → Champ de Prescience"
+   }
+  ],
+  "stades_neuronaux": [
+   {
+    "stade": "Stade 1 : Lecture de Surface",
+    "region": "Réseau du Mode par Défaut (DMN)",
+    "capacites": "Perçoit les pensées errantes, rêveries, sentiments immédiats et distractions de la cible sans effort soutenu.",
+    "limites": "Purement réceptif. Impossible de lire les pensées actives ou de modifier quoi que ce soit."
+   },
+   {
+    "stade": "Stade 2 : Accès Profond & Émotions",
+    "region": "Cortex Préfrontal & Lobe Temporal",
+    "capacites": "Lit les pensées actives, les processus de décision, les sous-entendus émotionnels et les souvenirs sensoriels récents.",
+    "limites": "Toujours observationnel. Ne peut pas altérer les pensées ou implanter d'idées."
+   },
+   {
+    "stade": "Stade 3 : Accès Mémoriel & Suggestion",
+    "region": "Hippocampe & Circuits de Mémoire",
+    "capacites": "Explore les souvenirs stockés. Peut envoyer de brèves suggestions pour orienter subtilement l'humeur ou le choix de la cible.",
+    "limites": "Suggestions éphémères. Si l'ordre heurte la survie de la cible, il est rejeté."
+   },
+   {
+    "stade": "Stade 4 : Édition Mémorielle",
+    "region": "Voies Synaptiques Récentes",
+    "capacites": "Modifie des souvenirs récents (moins de 24h), crée de fausses associations d'idées, altère temporairement l'état émotionnel.",
+    "limites": "Limité aux détails récents. Les croyances profondément ancrées résistent à l'édition."
+   },
+   {
+    "stade": "Stade 5 : Réécriture Complète",
+    "region": "Circuits Cognitifs Intégrés",
+    "capacites": "Réécrit des pans entiers de mémoire, efface des souvenirs clés, scénarise et dicte les réactions émotionnelles de la cible.",
+    "limites": "Requiert une concentration continue. Draine l'énergie mentale à chaque tour d'application."
+   },
+   {
+    "stade": "Stade 6 : Contrôle Neural & Possession",
+    "region": "Tronc Cérébral & Cortex Moteur",
+    "capacites": "Possession corporelle totale : le télépathe contrôle les mouvements, ressent à travers les sens de la cible et reconfigure sa personnalité.",
+    "limites": "Épuisement extrême. Risque de dissociation et instabilité psychologique pour le télépathe."
+   }
+  ],
+  "nb_stades": 6,
+  "portee_sorts": {
+   "formule": "Portée = Rang de Magie + (Rang de Magie × Entraînements)",
+   "texte": "Ton premier rang est offert : même sans entraînement acheté, tu portes à MAG cases. Chaque entraînement ajoute un nouveau multiple. Tu lances un Projectile Magique ? Il porte sans malus jusqu'à sa portée de base en cases. Plus loin, chaque tranche de MAG cases te coûte 1 niveau de dé en moins sur ton jet."
+  },
+  "moteur_nytharite": [
+   {
+    "composant": "1. Chambre de Résonance du Cœur",
+    "texte": "C'est le cœur du moteur. Un cristal de nytharite taillé dans le bon sens. Tu l'allumes, il vibre, et il donne l'énergie de base. Sans carburant.",
+    "role": "Génération Primaire"
+   },
+   {
+    "composant": "2. Stabilisateurs de Champ",
+    "texte": "Des anneaux autour du cœur. Ils prennent l'énergie brute et la tournent dans la bonne direction. C'est eux qui font que ton pod tourne proprement au lieu de partir en travers.",
+    "role": "Vecteur & Contrôle"
+   },
+   {
+    "composant": "3. Nœuds d'Infusion Élémentaire",
+    "texte": "Des injecteurs qui donnent un goût à l'énergie. Exemple : tu veux flotter sans frotter ? Tu mets du vecteur Air. Tu veux aller vite ? Tu mets du vecteur Feu.",
+    "role": "Air (Portance) / Feu (Poussée)"
+   },
+   {
+    "composant": "4. Recyclage d'Énergie Dynamique",
+    "texte": "Un circuit qui récupère ce qui part en trop. Rien ne se perd. Ton pod peut tourner des mois sans passer à l'atelier.",
+    "role": "Rendement Quasi-Infini"
+   }
+  ],
+  "pyro_creation": [
+   {
+    "titre": "Pyrocinésie & Thermodynamique",
+    "texte": "Tu chauffes la matière de l'intérieur. D'abord tu tiédis un objet. Puis tu fais une boule de feu, tu lèves un écran de chaleur, et tout en haut tu changes l'état de la matière d'un coup : contrôle moléculaire thermique (ça fond ou ça s'évapore)."
+   },
+   {
+    "titre": "Vitalité Cinétique & Création Primale",
+    "texte": "Tu mélanges terre, eau, vent et feu à l'instinct. Ça sort vite et fort, et tu peux même faire apparaître de la matière. Revers : ton corps chauffe. Prévois de quoi refroidir."
+   }
+  ],
+  "regle_or_creation": {
+   "formule": "Coût de Création (XP) = Coût d'Activation (PA)",
+   "texte": "1 XP dépensé = 1 PA pour lancer en combat. Tu montes un pouvoir à 6 XP ? Il te coûtera 6 PA à table. Fais le calcul avec ton MJ, sans prise de tête."
+  },
+  "modules": {
+   "offensifs": [
+    {
+     "cout": "1 point",
+     "effet": "Teinte élémentaire : donne un type à tes dégâts (feu, froid, foudre, vent, eau, terre…)",
+     "type": "Déclenche résistances et vulnérabilités : contourne les unes, exploite les autres"
+    },
+    {
+     "cout": "1 point",
+     "effet": "+1 à l'Épreuve Offensive",
+     "type": "Cumulable (*stackable*)"
+    },
+    {
+     "cout": "1 point",
+     "effet": "+2 Dégâts directs",
+     "type": "Cumulable (*stackable*)"
+    },
+    {
+     "cout": "1 point",
+     "effet": "La cible perd 2 PA (reportable au tour suivant)",
+     "type": "Cumulable"
+    },
+    {
+     "cout": "1 point",
+     "effet": "La cible est Débalancée pour 1 tour",
+     "type": "Durée cumulable"
+    },
+    {
+     "cout": "2 points",
+     "effet": "La cible tombe au sol (À terre)",
+     "type": "Effet immédiat"
+    },
+    {
+     "cout": "2 points",
+     "effet": "La cible recule d'1 case (repoussée loin de toi)",
+     "type": "Cumulable (+1 case par achat)"
+    },
+    {
+     "cout": "2 points",
+     "effet": "La cible prend -1 à sa prochaine épreuve",
+     "type": "Cumulable (-1 par achat)"
+    },
+    {
+     "cout": "3 points",
+     "effet": "La cible subit 2 Dégâts Résiduels continus",
+     "type": "Dégressif par tour (-1/tour)"
+    },
+    {
+     "cout": "3 points",
+     "effet": "La cible est Déstabilisée pour 1 tour (-2 EC)",
+     "type": "Durée cumulable"
+    },
+    {
+     "cout": "3 points",
+     "effet": "La cible est Immobilisée pour 1 tour",
+     "type": "Durée cumulable"
+    },
+    {
+     "cout": "3 points",
+     "effet": "+1 Dégât Absolu à toutes les créatures à 1 case de zone",
+     "type": "Zone & bonus cumulables"
+    },
+    {
+     "cout": "4 points",
+     "effet": "La cible est Ralentie (toute action coûte double PA)",
+     "type": "Durée cumulable"
+    },
+    {
+     "cout": "4 points",
+     "effet": "Ton sort frappe 1 case de rayon de plus (dégâts aussi)",
+     "type": "Zone & bonus cumulables"
+    },
+    {
+     "cout": "6 points",
+     "effet": "La cible subit 3 Dégâts Résiduels continus",
+     "type": "Dégressif par tour"
+    },
+    {
+     "cout": "7 points",
+     "effet": "La cible est Paralysée pour 1 tour (incapacité totale)",
+     "type": "Durée cumulable"
+    },
+    {
+     "cout": "8 points",
+     "effet": "La cible est Sonnée pour 1 tour (paralysée et chute au sol)",
+     "type": "Durée cumulable"
+    },
+    {
+     "cout": "10 points",
+     "effet": "La cible subit 4 Dégâts Résiduels continus",
+     "type": "Dégressif par tour"
+    }
+   ],
+   "defensifs_utilitaires": [
+    {
+     "cout": "1 point",
+     "effet": "+1 à l'Épreuve Défensive ou Utilitaire",
+     "type": "Cumulable"
+    },
+    {
+     "cout": "2 points",
+     "effet": "Tu rends 4 PV à un allié (ou à toi)",
+     "type": "Cumulable (+4 PV par achat)"
+    },
+    {
+     "cout": "2 points",
+     "effet": "Ton sort porte +MAG cases plus loin",
+     "type": "Cumulable"
+    },
+    {
+     "cout": "2 points",
+     "effet": "Tu dissipes 1 état préjudiciable sur un allié (ou sur toi)",
+     "type": "Effet immédiat"
+    },
+    {
+     "cout": "3 points",
+     "effet": "+2 Résistance Résiduelle (absorption bonus directe sur le calcul des blessures)",
+     "type": "Défensif"
+    },
+    {
+     "cout": "3 points",
+     "effet": "+2 armure naturelle pendant 1 tour (toi ou un allié)",
+     "type": "Durée cumulable"
+    },
+    {
+     "cout": "3 points",
+     "effet": "Bouclier : absorbe 4 dégâts avant de céder",
+     "type": "Cumulable (+4 par achat)"
+    },
+    {
+     "cout": "3 points",
+     "effet": "État Rapide pour 1 tour (+3 PA dédiés au déplacement)",
+     "type": "Utilitaire"
+    },
+    {
+     "cout": "4 points",
+     "effet": "État Survolté pour 1 tour (+1 EC, +3 PA)",
+     "type": "Utilitaire / Buff"
+    },
+    {
+     "cout": "7 points",
+     "effet": "État En Transe pour 1 tour (+2 EC, +5 PA)",
+     "type": "Utilitaire / Buff Majeur"
+    },
+    {
+     "cout": "7 points",
+     "effet": "État En Vol pour 1 tour (déplacement tridimensionnel à demi-coût)",
+     "type": "Utilitaire arcanique"
+    },
+    {
+     "cout": "8 points",
+     "effet": "État Accéléré pour 1 tour (tout déplacement coûte moitié PA)",
+     "type": "Utilitaire"
+    },
+    {
+     "cout": "9 points",
+     "effet": "État Lévitation sans effort pour 1 tour",
+     "type": "Magie seulement"
+    }
+   ],
+   "sociaux": [
+    {
+     "cout": "1 point",
+     "effet": "+1 à l'Épreuve Sociale",
+     "type": "Cumulable"
+    }
+   ]
+  },
+  "sorts_exemples": [
+   {
+    "nom": "Ralentissement Gravitationnel",
+    "cout_pa": 3,
+    "action": "Action Principale",
+    "magie": "Magie Utilitaire // Attribut : Magie",
+    "effet": "« L'air devient lourd et tout se fige autour de ta cible. » Tu changes la gravité sur sa case. Tu fais ton épreuve de Magie avec +1 au jet (1 pt). Si tu réussis, elle perd 4 Points d'Action (2 pts), reportables au tour suivant.",
+    "couts": [
+     "cyan Coût Création : 3 XP",
+     "amber Coût Combat : 3 PA"
+    ]
+   },
+   {
+    "nom": "Écrasement de Matière",
+    "cout_pa": 3,
+    "action": "Action Principale",
+    "magie": "Magie Offensive // Attribut : Magie",
+    "effet": "« Tu resserres la gravité sur un membre. La matière cède. » Tu vises une partie du corps et tu lances ton épreuve avec +1 au résultat (1 pt). Si tu réussis, tu infliges 2 Dégâts Absolus qui ignorent la Constitution et le blindage (2 pts).",
+    "couts": [
+     "ruby Coût Création : 3 XP",
+     "amber Coût Combat : 3 PA"
+    ]
+   },
+   {
+    "nom": "Souffle de Braise",
+    "cout_pa": 6,
+    "action": "Action Principale",
+    "magie": "Magie Offensive // Attribut : Magie",
+    "effet": "« Tu craches un cône de flammes qui lèchent tout le rang d'en face. » Fais ton épreuve normalement. Si tu réussis, tu infliges +2 Dégâts (1 pt) de teinte feu (1 pt, gare aux résistances) sur 1 case de rayon de plus (4 pts).",
+    "couts": [
+     "ruby Coût Création : 6 XP",
+     "amber Coût Combat : 6 PA"
+    ]
+   },
+   {
+    "nom": "Suture de Sève",
+    "cout_pa": 4,
+    "action": "Action Principale",
+    "magie": "Magie Utilitaire // Attribut : Magie",
+    "effet": "« Tu poses les mains, la plaie se referme en fils verts. » Touche un allié (ou toi) : il récupère 4 PV (2 pts) et tu dissipes 1 état préjudiciable (2 pts). Pas de jet : ça marche, point.",
+    "couts": [
+     "cyan Coût Création : 4 XP",
+     "amber Coût Combat : 4 PA"
+    ]
+   },
+   {
+    "nom": "Injonction Douce",
+    "cout_pa": 3,
+    "action": "Action Principale",
+    "magie": "Magie Sociale-Offensive (Hybride) // Attribut : Magie",
+    "effet": "« Ta voix se fait miel et la garde baisse. » Fais ton épreuve sociale avec +1 au jet (1 pt). Si tu réussis, ta cible prend -1 à sa prochaine épreuve (2 pts). Hybride oblige : +1 XP de surcoût à la création, qui ne compte pas dans les PA.",
+    "couts": [
+     "cyan Coût Création : 4 XP",
+     "amber Coût Combat : 3 PA"
+    ]
+   },
+   {
+    "nom": "Mur Réflexe",
+    "cout_pa": 5,
+    "action": "Réaction",
+    "magie": "Magie Défensive // Attribut : Magie",
+    "effet": "« Le coup part et le mur est déjà là. » En réaction à une attaque : tu lèves un bouclier qui absorbe 4 dégâts (3 pts). Le lancer hors de ton tour coûte +2 (règle des réactions).",
+    "couts": [
+     "ruby Coût Création : 5 XP",
+     "amber Coût Combat : 5 PA"
+    ]
+   }
+  ],
+  "specialisations_arcanes": [
+   {
+    "nom": "Barricade de Racines",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Défensif, Utilitaire",
+    "effets": "Tu fais jaillir un Couvert 3/4 sur un hexagone à 4 cases. Instantané."
+   },
+   {
+    "nom": "↳ Épines de Granit",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Défensif",
+    "effets": "Ta barricade blesse : 3 dégâts de lacération à tout ennemi qui la franchit."
+   },
+   {
+    "nom": "↳ Bastion Vivant",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Défensif",
+    "effets": "Ta barricade encaisse : elle absorbe 25 PV avant de céder."
+   },
+   {
+    "nom": "↳ Mur d'Orichalque Végétal",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Défensif",
+    "effets": "Ta barricade couvre 3 cases contiguës et devient un Couvert Total indestructible."
+   },
+   {
+    "nom": "Vignes Constrictrices",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Offensif, Utilitaire",
+    "effets": "À 4 cases, ta cible est Immobilisée."
+   },
+   {
+    "nom": "↳ Étau Végétal",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "En plus d'Immobilisé, ta cible subit Asphyxie : elle perd aussi 1 PA par tour."
+   },
+   {
+    "nom": "↳ Moisson Sanguine",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Offensif, Utilitaire",
+    "effets": "Tu draines 3 PV par tour à ta cible entravée et tu te soignes d'autant."
+   },
+   {
+    "nom": "↳ Étranglement Toxique",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "Ta cible entravée devient Paralysée et Empoisonnée en continu."
+   },
+   {
+    "nom": "Catalyse Tissulaire",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Tu touches un allié adjacent : il récupère 5 PV et tu dissipes Déstabilisé et Étourdi."
+   },
+   {
+    "nom": "↳ Surcroît Vital",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Tu soignes 10 PV au lieu de 5 et tu purges aussi le Saignement."
+   },
+   {
+    "nom": "↳ Bouclier Végétal",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Défensif",
+    "effets": "Ton allié soigné gagne +3 d'armure naturelle d'écorce pendant 2 tours."
+   },
+   {
+    "nom": "↳ Transfusion Symbiotique",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Tu relèves un allié tombé au contact : il revient avec la moitié de ses PV max (règle de résurrection)."
+   },
+   {
+    "nom": "Champ de Ronces",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Offensif, Utilitaire",
+    "effets": "Zone d'1 case de rayon : Ralenti et 3 dégâts par case franchie."
+   },
+   {
+    "nom": "↳ Ronces Neurotoxiques",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "Zone de 2 cases : Empoisonné et Ralenti."
+   },
+   {
+    "nom": "↳ Enchevêtrement Explosif",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "Tu fais exploser les ronces : 8 dégâts de zone à tous ceux qui sont dedans."
+   },
+   {
+    "nom": "Greffe Cinétique",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Au contact, tu donnes ton bonus de déplacement à un allié (+2 PA de mouvement)."
+   },
+   {
+    "nom": "↳ Osmose d'Escouade",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Même bonus, mais à tous tes alliés à moins de 2 cases."
+   },
+   {
+    "nom": "↳ Frappe Symbiotique",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Offensif, Utilitaire",
+    "effets": "Un allié adjacent attaque avec ton dé de Magie Primale."
+   },
+   {
+    "nom": "Incinération Pyrocinétique",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "Tu projettes un jet de flammes : 6 dégâts de brûlure et l'état En Feu."
+   },
+   {
+    "nom": "↳ Flamme Bleue",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "Ton incinération ignore totalement l'armure physique balistique."
+   },
+   {
+    "nom": "↳ Fournaise Déferlante",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "Ton souffle embrase un cône de 3 hexagones adjacents."
+   },
+   {
+    "nom": "↳ Nova Thermique",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "Tu exploses : 12 dégâts absolus dans un rayon de 2 cases."
+   },
+   {
+    "nom": "Aéromancie",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Offensif, Utilitaire",
+    "effets": "Dépense 2 PA : rafale à 4 cases — tu refoules ta cible d'1 case et elle prend -1 à sa prochaine attaque."
+   },
+   {
+    "nom": "↳ Lame de Vent",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "Ta rafale inflige 4 dégâts Absolus et ignore le couvert partiel."
+   },
+   {
+    "nom": "↳ Courant Porteur",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Tu déplaces un allié consentant d'1 case : 0 PA, pas d'attaque d'opportunité."
+   },
+   {
+    "nom": "↳ Tempête de Lames",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "Zone de 2 cases de rayon : 8 dégâts Absolus et cibles À Terre."
+   },
+   {
+    "nom": "Hydromancie",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Offensif, Utilitaire",
+    "effets": "Dépense 2 PA : jet à 4 cases — 3 dégâts Absolus et Ralenti pendant 1 tour."
+   },
+   {
+    "nom": "↳ Étreinte Abyssale",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Offensif, Utilitaire",
+    "effets": "Cible à 4 cases : Immobilisée pendant 1 tour (Delta ≥ 2 requis contre PJ/PNJ majeur)."
+   },
+   {
+    "nom": "↳ Brume Aveuglante",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Défensif, Utilitaire",
+    "effets": "Nappe sur 1 hexagone pendant 1 tour : -2 à toutes les attaques effectuées à travers."
+   },
+   {
+    "nom": "↳ Raz-de-Marée",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "Ligne de 3 cases : 8 dégâts Absolus et cibles À Terre."
+   },
+   {
+    "nom": "Géomancie",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Offensif, Utilitaire",
+    "effets": "Dépense 2 PA : secousse à 4 cases — Déstabilisé pendant 1 tour."
+   },
+   {
+    "nom": "↳ Poing Tellurique",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "Cible à 2 cases : 4 dégâts Absolus et À Terre sur Delta ≥ 2."
+   },
+   {
+    "nom": "↳ Peau de Pierre",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Défensif",
+    "effets": "Toi ou un allié au contact : +2 armure naturelle pendant 2 tours."
+   },
+   {
+    "nom": "↳ Séisme Localisé",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Offensif, Utilitaire",
+    "effets": "Zone de 2 cases de rayon : 8 dégâts Absolus, cibles À Terre, terrain difficile pendant 2 tours."
+   },
+   {
+    "nom": "Télékinésie",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Tu déplaces des objets à distance ou tu projettes des ennemis (décrite au §17.2)."
+   },
+   {
+    "nom": "↳ Projection d'Objets",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Offensif",
+    "effets": "Tu projettes un bloc ou une caisse : 6 dégâts contondants jusqu'à 6 cases."
+   },
+   {
+    "nom": "↳ Barrière Cinétique",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Défensif",
+    "effets": "Tu arrêtes tous les projectiles physiques et grenades pendant 1 tour."
+   },
+   {
+    "nom": "↳ Fissure Gravifique",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Offensif, Utilitaire",
+    "effets": "Tu ouvres un puits de gravité : il attire tous les ennemis dans un rayon de 3 cases et les projette À Terre."
+   },
+   {
+    "nom": "Télépathie",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Social, Utilitaire",
+    "effets": "Dépense 2 PA : lien silencieux avec un allié consentant à 6 cases pendant 1 tour, +1 en Intuition contre les mensonges (les 6 stades sont au §17.1)."
+   },
+   {
+    "nom": "↳ Lien Empathique",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Dépense 2 PA : tu purges Déstabilisé d'un allié à 3 cases et tu lui rends 1 PA."
+   },
+   {
+    "nom": "↳ Sondage de Surface",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Social, Utilitaire",
+    "effets": "Tu lis les intentions immédiates d'une cible consentante ou d'un sbire (Delta ≥ 2 requis contre PJ/PNJ majeur)."
+   },
+   {
+    "nom": "↳ Injonction Impérieuse",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Social",
+    "effets": "Tu imposes un ordre simple à un sbire (lâcher son arme, fuir, rester immobile 1 tour). Contre un PJ/PNJ majeur : Delta ≥ 3."
+   },
+   {
+    "nom": "Clairvoyance",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Dépense 2 PA : tu perçois à travers une paroi légère et tu gagnes +2 en Observation pendant 1 tour."
+   },
+   {
+    "nom": "↳ Œil Distant",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Tu projettes ta perception jusqu'à 6 cases sans ligne de vue (immobile, 1 tour)."
+   },
+   {
+    "nom": "↳ Prescience du Danger",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Défensif",
+    "effets": "En cas d'embuscade, tu gardes une réaction défensive à -1 au lieu d'aucune."
+   },
+   {
+    "nom": "↳ Champ de Prescience",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Défensif, Utilitaire",
+    "effets": "Dépense 3 PA : tous tes alliés à 2 cases gagnent +2 en Esquive pendant 1 tour."
+   }
+  ],
+  "specialisations_par_nom": {
+   "Barricade de Racines": {
+    "nom": "Barricade de Racines",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Défensif, Utilitaire",
+    "effets": "Tu fais jaillir un Couvert 3/4 sur un hexagone à 4 cases. Instantané."
+   },
+   "↳ Épines de Granit": {
+    "nom": "↳ Épines de Granit",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Défensif",
+    "effets": "Ta barricade blesse : 3 dégâts de lacération à tout ennemi qui la franchit."
+   },
+   "↳ Bastion Vivant": {
+    "nom": "↳ Bastion Vivant",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Défensif",
+    "effets": "Ta barricade encaisse : elle absorbe 25 PV avant de céder."
+   },
+   "↳ Mur d'Orichalque Végétal": {
+    "nom": "↳ Mur d'Orichalque Végétal",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Défensif",
+    "effets": "Ta barricade couvre 3 cases contiguës et devient un Couvert Total indestructible."
+   },
+   "Vignes Constrictrices": {
+    "nom": "Vignes Constrictrices",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Offensif, Utilitaire",
+    "effets": "À 4 cases, ta cible est Immobilisée."
+   },
+   "↳ Étau Végétal": {
+    "nom": "↳ Étau Végétal",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "En plus d'Immobilisé, ta cible subit Asphyxie : elle perd aussi 1 PA par tour."
+   },
+   "↳ Moisson Sanguine": {
+    "nom": "↳ Moisson Sanguine",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Offensif, Utilitaire",
+    "effets": "Tu draines 3 PV par tour à ta cible entravée et tu te soignes d'autant."
+   },
+   "↳ Étranglement Toxique": {
+    "nom": "↳ Étranglement Toxique",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "Ta cible entravée devient Paralysée et Empoisonnée en continu."
+   },
+   "Catalyse Tissulaire": {
+    "nom": "Catalyse Tissulaire",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Tu touches un allié adjacent : il récupère 5 PV et tu dissipes Déstabilisé et Étourdi."
+   },
+   "↳ Surcroît Vital": {
+    "nom": "↳ Surcroît Vital",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Tu soignes 10 PV au lieu de 5 et tu purges aussi le Saignement."
+   },
+   "↳ Bouclier Végétal": {
+    "nom": "↳ Bouclier Végétal",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Défensif",
+    "effets": "Ton allié soigné gagne +3 d'armure naturelle d'écorce pendant 2 tours."
+   },
+   "↳ Transfusion Symbiotique": {
+    "nom": "↳ Transfusion Symbiotique",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Tu relèves un allié tombé au contact : il revient avec la moitié de ses PV max (règle de résurrection)."
+   },
+   "Champ de Ronces": {
+    "nom": "Champ de Ronces",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Offensif, Utilitaire",
+    "effets": "Zone d'1 case de rayon : Ralenti et 3 dégâts par case franchie."
+   },
+   "↳ Ronces Neurotoxiques": {
+    "nom": "↳ Ronces Neurotoxiques",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "Zone de 2 cases : Empoisonné et Ralenti."
+   },
+   "↳ Enchevêtrement Explosif": {
+    "nom": "↳ Enchevêtrement Explosif",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "Tu fais exploser les ronces : 8 dégâts de zone à tous ceux qui sont dedans."
+   },
+   "Greffe Cinétique": {
+    "nom": "Greffe Cinétique",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Au contact, tu donnes ton bonus de déplacement à un allié (+2 PA de mouvement)."
+   },
+   "↳ Osmose d'Escouade": {
+    "nom": "↳ Osmose d'Escouade",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Même bonus, mais à tous tes alliés à moins de 2 cases."
+   },
+   "↳ Frappe Symbiotique": {
+    "nom": "↳ Frappe Symbiotique",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Offensif, Utilitaire",
+    "effets": "Un allié adjacent attaque avec ton dé de Magie Primale."
+   },
+   "Incinération Pyrocinétique": {
+    "nom": "Incinération Pyrocinétique",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "Tu projettes un jet de flammes : 6 dégâts de brûlure et l'état En Feu."
+   },
+   "↳ Flamme Bleue": {
+    "nom": "↳ Flamme Bleue",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "Ton incinération ignore totalement l'armure physique balistique."
+   },
+   "↳ Fournaise Déferlante": {
+    "nom": "↳ Fournaise Déferlante",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "Ton souffle embrase un cône de 3 hexagones adjacents."
+   },
+   "↳ Nova Thermique": {
+    "nom": "↳ Nova Thermique",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "Tu exploses : 12 dégâts absolus dans un rayon de 2 cases."
+   },
+   "Aéromancie": {
+    "nom": "Aéromancie",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Offensif, Utilitaire",
+    "effets": "Dépense 2 PA : rafale à 4 cases — tu refoules ta cible d'1 case et elle prend -1 à sa prochaine attaque."
+   },
+   "↳ Lame de Vent": {
+    "nom": "↳ Lame de Vent",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "Ta rafale inflige 4 dégâts Absolus et ignore le couvert partiel."
+   },
+   "↳ Courant Porteur": {
+    "nom": "↳ Courant Porteur",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Tu déplaces un allié consentant d'1 case : 0 PA, pas d'attaque d'opportunité."
+   },
+   "↳ Tempête de Lames": {
+    "nom": "↳ Tempête de Lames",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "Zone de 2 cases de rayon : 8 dégâts Absolus et cibles À Terre."
+   },
+   "Hydromancie": {
+    "nom": "Hydromancie",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Offensif, Utilitaire",
+    "effets": "Dépense 2 PA : jet à 4 cases — 3 dégâts Absolus et Ralenti pendant 1 tour."
+   },
+   "↳ Étreinte Abyssale": {
+    "nom": "↳ Étreinte Abyssale",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Offensif, Utilitaire",
+    "effets": "Cible à 4 cases : Immobilisée pendant 1 tour (Delta ≥ 2 requis contre PJ/PNJ majeur)."
+   },
+   "↳ Brume Aveuglante": {
+    "nom": "↳ Brume Aveuglante",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Défensif, Utilitaire",
+    "effets": "Nappe sur 1 hexagone pendant 1 tour : -2 à toutes les attaques effectuées à travers."
+   },
+   "↳ Raz-de-Marée": {
+    "nom": "↳ Raz-de-Marée",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "Ligne de 3 cases : 8 dégâts Absolus et cibles À Terre."
+   },
+   "Géomancie": {
+    "nom": "Géomancie",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Offensif, Utilitaire",
+    "effets": "Dépense 2 PA : secousse à 4 cases — Déstabilisé pendant 1 tour."
+   },
+   "↳ Poing Tellurique": {
+    "nom": "↳ Poing Tellurique",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "Cible à 2 cases : 4 dégâts Absolus et À Terre sur Delta ≥ 2."
+   },
+   "↳ Peau de Pierre": {
+    "nom": "↳ Peau de Pierre",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Défensif",
+    "effets": "Toi ou un allié au contact : +2 armure naturelle pendant 2 tours."
+   },
+   "↳ Séisme Localisé": {
+    "nom": "↳ Séisme Localisé",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Offensif, Utilitaire",
+    "effets": "Zone de 2 cases de rayon : 8 dégâts Absolus, cibles À Terre, terrain difficile pendant 2 tours."
+   },
+   "Télékinésie": {
+    "nom": "Télékinésie",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Tu déplaces des objets à distance ou tu projettes des ennemis (décrite au §17.2)."
+   },
+   "↳ Projection d'Objets": {
+    "nom": "↳ Projection d'Objets",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Offensif",
+    "effets": "Tu projettes un bloc ou une caisse : 6 dégâts contondants jusqu'à 6 cases."
+   },
+   "↳ Barrière Cinétique": {
+    "nom": "↳ Barrière Cinétique",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Défensif",
+    "effets": "Tu arrêtes tous les projectiles physiques et grenades pendant 1 tour."
+   },
+   "↳ Fissure Gravifique": {
+    "nom": "↳ Fissure Gravifique",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Offensif, Utilitaire",
+    "effets": "Tu ouvres un puits de gravité : il attire tous les ennemis dans un rayon de 3 cases et les projette À Terre."
+   },
+   "Télépathie": {
+    "nom": "Télépathie",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Social, Utilitaire",
+    "effets": "Dépense 2 PA : lien silencieux avec un allié consentant à 6 cases pendant 1 tour, +1 en Intuition contre les mensonges (les 6 stades sont au §17.1)."
+   },
+   "↳ Lien Empathique": {
+    "nom": "↳ Lien Empathique",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Dépense 2 PA : tu purges Déstabilisé d'un allié à 3 cases et tu lui rends 1 PA."
+   },
+   "↳ Sondage de Surface": {
+    "nom": "↳ Sondage de Surface",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Social, Utilitaire",
+    "effets": "Tu lis les intentions immédiates d'une cible consentante ou d'un sbire (Delta ≥ 2 requis contre PJ/PNJ majeur)."
+   },
+   "↳ Injonction Impérieuse": {
+    "nom": "↳ Injonction Impérieuse",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Social",
+    "effets": "Tu imposes un ordre simple à un sbire (lâcher son arme, fuir, rester immobile 1 tour). Contre un PJ/PNJ majeur : Delta ≥ 3."
+   },
+   "Clairvoyance": {
+    "nom": "Clairvoyance",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Dépense 2 PA : tu perçois à travers une paroi légère et tu gagnes +2 en Observation pendant 1 tour."
+   },
+   "↳ Œil Distant": {
+    "nom": "↳ Œil Distant",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Tu projettes ta perception jusqu'à 6 cases sans ligne de vue (immobile, 1 tour)."
+   },
+   "↳ Prescience du Danger": {
+    "nom": "↳ Prescience du Danger",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Défensif",
+    "effets": "En cas d'embuscade, tu gardes une réaction défensive à -1 au lieu d'aucune."
+   },
+   "↳ Champ de Prescience": {
+    "nom": "↳ Champ de Prescience",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Défensif, Utilitaire",
+    "effets": "Dépense 3 PA : tous tes alliés à 2 cases gagnent +2 en Esquive pendant 1 tour."
+   }
+  },
+  "nb_specialisations": 46
+ }
+}

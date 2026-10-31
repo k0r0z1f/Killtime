@@ -1152,7 +1152,7 @@
      "id": "RP-077",
      "title": "JSON-ifier le Livre IV (données + contenu, comme Livre I)",
      "epic": "Livre IV — 5e Force & Magie",
-     "status": "todo",
+     "status": "done",
      "priority": "medium",
      "order": 48,
      "scene": "",
@@ -1161,7 +1161,7 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_4.html",
-     "details": "Comme Livre I : extraire data/livre_N.json (données règles + sections/blocs/refs), rendre via JS (factoriser js/livre_1.js en moteur générique), squelettiser le HTML, fidélité vérifiée par diff. But : source unique + traductions. Fichier : livre_4.html."
+     "details": "FAIT 2026-10-31 — data/livre_4.json (3 voies, 3 magies, 6 stades neuronaux, moteur nytharite 4 composants, portée + règle d'or XP=PA, 32 modules d'atelier, 6 sorts exemples, 46 spécialisations, bloc mecaniques par id + entête et 6 sections), livre_4.html squelettisé (data-livre, lxContenu, ancres sec-16-portee/sec-19-regle préservées via extra). Moteur générique étendu : attributs extra, commentaires inter-cartes, pieds multi-spans. Vérifié : fidélité 6 sections + entête, rendu JS réel OK."
     },
     {
      "id": "RP-078",

@@ -59,24 +59,42 @@ def parse_table(div):
     return ths, rows
 
 def parse_cartes(div, grille):
-    cards, p = [], 0
+    cards, seps, p = [], [], 0
+    spans = []
     while True:
         i = div.find('<div class="spec-card">', p)
         if i < 0:
             break
         bloc, p = balanced(div, i)
+        spans.append((i, bloc))
+    assert spans
+    open_end = div.index('>') + 1
+    pre = div[open_end:spans[0][0]]
+    suf = div[p:div.rfind('</div>')]
+    for k in range(len(spans) - 1):
+        between = div[spans[k][0] + len(spans[k][1]):spans[k + 1][0]]
+        seps.append(between if between.strip() else '')
+    for i, (pos, bloc) in enumerate(spans):
         mt = re.search(r'<div class="spec-card-title">(.*?)</div>', bloc, re.S)
         mw = re.search(r'<div class="spec-card-world">(.*?)</div>', bloc, re.S)
         mp = re.search(r'<p>(.*?)</p>', bloc, re.S)
-        mf = re.search(r'class="tag-pill (\w+)">(.*?)</span>', bloc, re.S)
+        mf = re.search(r'<div class="spec-card-footer">(.*?)</div>', bloc, re.S)
+        pieds = [{'ton': a.strip(), 'texte': b.strip()} for a, b in
+                 re.findall(r'class="tag-pill (\w+)">(.*?)</span>', mf.group(1), re.S)] if mf else []
         cards.append({
             'titre': mt.group(1).strip() if mt else '',
             'top': '<div class="spec-card-top">' in bloc,
             'monde': mw.group(1).strip() if mw else None,
             'corps_html': mp.group(1).strip() if mp else '',
-            'pied_ton': mf.group(1) if mf else None,
-            'pied_texte': mf.group(2).strip() if mf else None})
-    return {'type': 'cartes', 'grille': grille, 'cartes': cards}
+            'pieds': pieds})
+    out = {'type': 'cartes', 'grille': grille, 'cartes': cards}
+    if pre.strip():
+        out['prefix'] = pre
+    if any(s for s in seps):
+        out['seps'] = seps
+    if suf.strip():
+        out['suffix'] = suf
+    return out
 
 def parse_formule(div):
     badge = re.search(r'<span class="formula-badge">(.*?)</span>', div, re.S).group(1).strip()
@@ -97,7 +115,7 @@ def cell(tag, c):
 def render_table(t):
     th = '<thead><tr>' + ''.join(cell('th', c) for c in t['colonnes']) + '</tr></thead>'
     rows = ''.join('<tr>' + ''.join(cell('td', c) for c in r) + '</tr>' for r in t['lignes'])
-    return '<div class="table-container"><table class="codex-table">' + th + '<tbody>' + rows + '</tbody></table></div>'
+    return '<div class="table-container"' + t.get('extra', '') + '><table class="codex-table">' + th + '<tbody>' + rows + '</tbody></table></div>'
 
 def render_cartes(c):
     out = []
@@ -105,13 +123,19 @@ def render_cartes(c):
         title = ('<div class="spec-card-title">' + k['titre'] + '</div>' +
                  ('<div class="spec-card-world">' + k['monde'] + '</div>' if k['monde'] else ''))
         head = title if k.get('top') is False else '<div class="spec-card-top">' + title + '</div>'
-        foot = ('<div class="spec-card-footer"><span class="tag-pill ' + k['pied_ton'] + '">' +
-                k['pied_texte'] + '</span></div>' if (k['pied_ton'] and k['pied_texte']) else '')
+        pieds = ''.join('<span class="tag-pill ' + p['ton'] + '">' + p['texte'] + '</span>'
+                        for p in k.get('pieds', []))
+        foot = '<div class="spec-card-footer">' + pieds + '</div>' if pieds else ''
         out.append('<div class="spec-card">' + head + '<p>' + k['corps_html'] + '</p>' + foot + '</div>')
-    return '<div class="cards-grid-' + str(c.get('grille') or 3) + '">' + ''.join(out) + '</div>'
+    seps = c.get('seps') or []
+    body = out[0] if out else ''
+    for i, card in enumerate(out[1:]):
+        body += (seps[i] if i < len(seps) else '') + card
+    return ('<div class="cards-grid-' + str(c.get('grille') or 3) + '"' + c.get('extra', '') + '>' +
+            c.get('prefix', '') + body + c.get('suffix', '') + '</div>')
 
 def render_formule(f):
-    return ('<div class="formula-box"><span class="formula-badge">' + f['badge'] +
+    return ('<div class="formula-box"' + f.get('extra', '') + '><span class="formula-badge">' + f['badge'] +
             '</span><div class="formula-content"><div class="formula-math">' + f['math_html'] +
             '</div><div class="formula-desc">' + f['desc_html'] + '</div></div></div>')
 
@@ -202,14 +226,16 @@ def main():
     donnees, tableaux, counters = {}, {}, {'t': 0, 'c': 0, 'f': 0}
     for cid, sym, titre, body in sections:
         blocs, pos = [], 0
+        pat = re.compile(r'<div class="(?:table-container|cards-grid-(\d)|formula-box)"([^>]*)>')
         while True:
-            cand = [(body.find('<div class="table-container">', pos), 'table'),
-                    (body.find('<div class="cards-grid-', pos), 'cartes'),
-                    (body.find('<div class="formula-box">', pos), 'formule')]
-            cand = [(i, k) for i, k in cand if i >= 0]
-            if not cand:
+            m = pat.search(body, pos)
+            if not m:
                 break
-            idx, kind = min(cand)
+            idx = m.start()
+            extra = m.group(2) or ''
+            grille = int(m.group(1)) if m.group(1) else None
+            kind = 'table' if 'table-container' in m.group(0) else (
+                'cartes' if 'cards-grid' in m.group(0) else 'formule')
             if body[pos:idx].strip():
                 blocs.append({'type': 'html', 'html': body[pos:idx]})
             if kind == 'table':
@@ -217,11 +243,9 @@ def main():
                 name = renames.get('t%d' % counters['t'], 'table%d' % counters['t'])
                 bloc, pos = balanced(body, idx)
                 cols, rows = parse_table(bloc)
-                donnees[name] = {'type': 'table', 'colonnes': cols, 'lignes': rows}
+                entry = {'type': 'table', 'colonnes': cols, 'lignes': rows}
                 tableaux[name] = {'colonnes': cols}
             elif kind == 'cartes':
-                m = re.match(r'<div class="cards-grid-(\d)">', body[idx:])
-                grille = int(m.group(1))
                 counters['c'] += 1
                 name = renames.get('c%d' % counters['c'], 'cartes%d' % counters['c'])
                 bloc, pos = balanced(body, idx)
@@ -230,12 +254,15 @@ def main():
                     blocs.append({'type': 'html', 'html': bloc})
                     counters['c'] -= 1
                     continue
-                donnees[name] = parse_cartes(bloc, grille)
+                entry = parse_cartes(bloc, grille)
             else:
                 counters['f'] += 1
                 name = renames.get('f%d' % counters['f'], 'formule%d' % counters['f'])
                 bloc, pos = balanced(body, idx)
-                donnees[name] = parse_formule(bloc)
+                entry = parse_formule(bloc)
+            if extra.strip():
+                entry['extra'] = extra
+            donnees[name] = entry
             blocs.append({'type': 'ref', 'cible': name})
         if body[pos:].strip():
             blocs.append({'type': 'html', 'html': body[pos:]})
