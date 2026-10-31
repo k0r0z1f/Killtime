@@ -28,6 +28,8 @@
   let tabEditing = null; // boardId en cours de renommage, ou 'new'
   let lastDiskSnap = '';
   let searchTimer = null;
+  const REQUIRED_PERM = 'kanban.roadmaps';
+  let readOnly = false; // true sauf admin connecté : kanban toujours sync serveur
 
   /* ---------- préserve position (scroll window + colonnes) pendant les re-rendus ---------- */
   function captureScroll() {
@@ -93,6 +95,28 @@
     }
   }
 
+  /* ---------- accès : lecture seule sauf admin connecté ---------- */
+  // Les joueurs ne modifient jamais le kanban, ni sur disque ni en local :
+  // affichage toujours synchronisé avec le serveur. Seul un admin connecté édite.
+  let accessReason = 'non connecté';
+  async function checkAccess() {
+    let lastErr = '';
+    for (let attempt = 0; attempt < 3; attempt++) {
+      if (attempt) await new Promise(r => setTimeout(r, 600 * attempt));
+      try {
+        const res = await fetch('/api/auth/me', { cache: 'no-store', headers: { 'ngrok-skip-browser-warning': 'true' } });
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.user && ((data.user.permissions || []).includes(REQUIRED_PERM) || data.user.isAdmin)) return { ro: false, why: '' };
+          return { ro: true, why: 'connecté sans droit d’écriture' };
+        }
+        if (res.status === 401 || res.status === 403) return { ro: true, why: res.status === 401 ? 'non connecté' : 'session invalide' };
+        lastErr = 'HTTP ' + res.status;
+      } catch (e) { lastErr = (e && e.message) || 'réseau'; }
+    }
+    return { ro: true, why: 'serveur injoignable (' + lastErr + ')' };
+  }
+  function denyEdit() { toast('Lecture seule — modifications réservées à l’administrateur.'); }
   /* ---------- autosave ---------- */
   function setSaveState(mode, label) {
     els.rmSaveState.classList.remove('saving', 'saved', 'local');
@@ -157,6 +181,7 @@
   }
 
   function commit(label) {
+    if (readOnly) { denyEdit(); return; }
     persistLocal();
     els.inspDirty.textContent = 'oui (local)';
     if (diskMode === 'local') {
@@ -292,6 +317,8 @@
   }
 
   async function load() {
+    const acc = await checkAccess(); readOnly = acc.ro; accessReason = acc.why;
+    if (readOnly) { try { document.body.classList.add('ro'); } catch (e) {} }
     const local = readLocalDoc();
     let disk = null;
     try { disk = await fetchDiskDoc(); }
@@ -307,7 +334,7 @@
       lastDiskSnap = diskSnap;
 
       const localSnap = (local && local.store) ? snapBoards(local.store) : null;
-      const hasUnpushedLocalEdits = local && local.baseDiskSnap && local.baseDiskSnap === diskSnap && localSnap && localSnap !== diskSnap;
+      const hasUnpushedLocalEdits = !readOnly && local && local.baseDiskSnap && local.baseDiskSnap === diskSnap && localSnap && localSnap !== diskSnap;
 
       if (hasUnpushedLocalEdits) {
         adoptStore(local.store);
@@ -334,7 +361,7 @@
       els.inspDirty.textContent = 'non';
       syncViewControls();
       render();
-      setSaveState('', 'À jour avec le disque • ' + nowHM());
+      setSaveState('', (readOnly ? 'Lecture seule (' + accessReason + ') • ' : 'À jour avec le disque • ') + nowHM());
       return;
     }
 
@@ -347,10 +374,10 @@
       store.boards = [{ id: 'board-1', name: 'Roadmap 1', desc: '', tasks: [] }];
       store.activeId = 'board-1';
     }
-    els.inspDirty.textContent = local ? 'oui (local)' : 'non';
+    els.inspDirty.textContent = (local && !readOnly) ? 'oui (local)' : 'non';
     syncViewControls();
     render();
-    setSaveState('', local ? 'Hors-ligne — modifs locales' : 'Prêt — autosave actif');
+    setSaveState('', readOnly ? (local ? 'Hors-ligne — lecture seule (' + accessReason + ')' : 'Lecture seule (' + accessReason + ')') : (local ? 'Hors-ligne — modifs locales' : 'Prêt — autosave actif'));
   }
 
   // Revalidation NON-destructive quand on revient sur l'onglet (git pull entre-temps).
@@ -494,6 +521,7 @@
     els.rmTabs.appendChild(add);
   }
   function finishAdd(name, fromBlur) {
+    if (readOnly) { denyEdit(); return; }
     name = (name || '').trim();
     if (!name) {
       if (!fromBlur) toast('Nom vide — roadmap non créée');
@@ -508,6 +536,7 @@
     toast('Roadmap « ' + name + ' » créée');
   }
   function finishRename(id, name) {
+    if (readOnly) { denyEdit(); return; }
     name = (name || '').trim();
     const b = store.boards.find((x) => x.id === id);
     tabEditing = null;
@@ -578,6 +607,7 @@
       b.addEventListener('click', (e) => {
         e.stopPropagation();
         const act = b.dataset.act;
+        if (readOnly) { denyEdit(); return; }
         if (act === 'edit') openModal(t.id);
         else if (act === 'del') delTask(t.id);
         else if (act === 'left') moveTask(t.id, -1);
@@ -592,6 +622,7 @@
   /* ---------- drag & drop (pointer, souris + tactile) ---------- */
   let drag = null;
   function dragStart(e, id, cardElmt) {
+    if (readOnly) return;
     if (view().sort !== 'manual') { toast('Repassez en « Tri : manuel » pour réordonner'); return; }
     if (filtersActive()) { toast('Effacez les filtres pour réordonner'); return; }
     e.preventDefault();
@@ -867,6 +898,7 @@
   }
 
   function quickAdd(status, title) {
+    if (readOnly) { denyEdit(); return; }
     title = (title || '').trim();
     if (!title) return;
     const b = board();
@@ -923,6 +955,7 @@
   }
 
   function openModal(id, presetStatus) {
+    if (readOnly) { denyEdit(); return; }
     const arr = tasks();
     const t = id ? arr.find((x) => x.id === id) : null;
     createdInModal = !t;
@@ -1081,7 +1114,12 @@
       if (diskMode === 'local') exportJson();
       else toast(els.rmSaveLabel.textContent);
     });
-    document.addEventListener('keydown', (e) => {
+  
+  // Session changée après chargement (login/logout sans reload) : re-synchroniser
+  // avec le serveur plutôt que rester figé dans l'ancien mode.
+  window.addEventListener('codex:auth:login', () => location.reload());
+  window.addEventListener('codex:auth:logout', () => location.reload());
+  document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
         if (tabEditing) { tabEditing = null; renderTabs(); return; }
         if (els.rmBackdrop.classList.contains('open')) closeModal(false);

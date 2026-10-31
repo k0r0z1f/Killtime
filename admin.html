@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>Administration — Killtime Codex (local uniquement)</title>
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: #0d1117; color: #e6edf3; line-height: 1.5; }
+  .wrap { max-width: 960px; margin: 0 auto; padding: 24px 16px 64px; }
+  h1 { font-size: 1.3rem; margin: 0 0 4px; }
+  .sub { color: #8b949e; font-size: .85rem; margin-bottom: 20px; }
+  .card { background: #161b22; border: 1px solid #30363d; border-radius: 10px;
+    padding: 16px; margin-bottom: 16px; }
+  .card h2 { font-size: 1rem; margin: 0 0 12px; color: #f0b429; }
+  table { width: 100%; border-collapse: collapse; font-size: .85rem; }
+  th, td { text-align: left; padding: 8px 6px; border-bottom: 1px solid #21262d; }
+  th { color: #8b949e; font-weight: 600; }
+  .badge { display: inline-block; padding: 1px 8px; border-radius: 20px; font-size: .75rem;
+    border: 1px solid #30363d; }
+  .badge.admin { color: #f0b429; border-color: #9e6a03; background: rgba(240,180,41,.08); }
+  .badge.user { color: #7ee787; border-color: #1a7f37; }
+  button { background: #21262d; color: #e6edf3; border: 1px solid #30363d; border-radius: 6px;
+    padding: 6px 12px; font-size: .82rem; cursor: pointer; }
+  button:hover { background: #30363d; }
+  button.primary { background: #1f6feb; border-color: #1f6feb; }
+  button.primary:hover { background: #388bfd; }
+  button.danger { color: #ffa198; border-color: #8c1515; }
+  button.danger:hover { background: rgba(248,81,73,.15); }
+  button:disabled { opacity: .5; cursor: default; }
+  input[type=text], input[type=password], input[type=email] { background: #0d1117; color: #e6edf3;
+    border: 1px solid #30363d; border-radius: 6px; padding: 7px 10px; font-size: .85rem; width: 100%; }
+  .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .row input { flex: 1; min-width: 200px; }
+  .kv { display: grid; grid-template-columns: auto 1fr; gap: 4px 16px; font-size: .85rem; }
+  .kv dt { color: #8b949e; } .kv dd { margin: 0; font-family: monospace; word-break: break-all; }
+  .ok { color: #7ee787; } .ko { color: #ffa198; } .warn { color: #f0b429; }
+  .hint { background: rgba(240,180,41,.08); border: 1px solid #9e6a03; border-radius: 10px;
+    padding: 16px; margin-bottom: 16px; }
+  .hint a { color: #79c0ff; }
+  [hidden] { display: none !important; }
+  .perm-check { display: inline-flex; align-items: center; gap: 6px; background: #0d1117;
+    border: 1px solid #30363d; border-radius: 6px; padding: 6px 10px; font-size: .8rem;
+    margin: 0 6px 6px 0; cursor: pointer; }
+  .perm-check input { accent-color: #1f6feb; }
+  select.role-select { background: #0d1117; color: #e6edf3; border: 1px solid #30363d;
+    border-radius: 6px; padding: 5px 8px; font-size: .8rem; max-width: 170px; }
+  .role-row { border: 1px solid #30363d; border-radius: 8px; padding: 10px 12px; margin-bottom: 8px; }
+  .chip { display: inline-flex; align-items: center; gap: 6px; background: #0d1117;
+    border: 1px solid #30363d; border-radius: 20px; padding: 3px 6px 3px 12px;
+    font-size: .8rem; font-family: monospace; margin: 0 6px 6px 0; }
+  .chip button { padding: 1px 8px; font-size: .75rem; }
+  #msg { position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%);
+    background: #161b22; border: 1px solid #30363d; border-radius: 8px;
+    padding: 10px 18px; font-size: .85rem; max-width: 90vw; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Administration du site</h1>
+  <div class="sub">Interface locale — écouteur 127.0.0.1 uniquement, jamais exposée sur le site public (qui répond 404). Non indexée.</div>
+
+  <div class="hint" id="remoteHint" hidden>
+    Cette page doit être ouverte <strong>sur le serveur lui-même</strong> via l'écouteur local
+    (<span id="localUrl"></span>). Depuis le site public, l'administration n'existe pas (404).
+  </div>
+
+  <div class="card" id="loginCard" hidden>
+    <h2>Connexion administrateur</h2>
+    <div class="row">
+      <input type="text" id="loginId" placeholder="Identifiant ou e-mail" autocomplete="username">
+      <input type="password" id="loginPass" placeholder="Mot de passe" autocomplete="current-password">
+      <button class="primary" id="loginBtn" type="button">Se connecter</button>
+    </div>
+    <p class="sub" style="margin:10px 0 0">Utilisez le <strong>compte local</strong> (ex. <code>AlexisLacasse</code>). Les comptes Google / Discord / GitHub n'ont <strong>pas de mot de passe</strong> : connectez-vous avec eux sur le site, pas ici.<br>Compte reconnu admin = e-mail dans <code>ADMIN_EMAILS</code> (.env). Le rôle est recalculé par le serveur à chaque réponse.</p>
+  </div>
+
+  <div id="adminZone" hidden>
+    <div class="card">
+      <h2>État</h2>
+      <dl class="kv" id="statusKv"></dl>
+    </div>
+
+    <div class="card">
+      <h2>Accès administrateurs (allowlist)</h2>
+      <div id="chips"></div>
+      <div class="row">
+        <input type="email" id="newAdminEmail" placeholder="ajouter un e-mail admin…">
+        <button id="addAdminBtn" type="button">Ajouter</button>
+      </div>
+      <p class="sub" style="margin:10px 0 0">Persisté dans <code>.env</code> (<code>ADMIN_EMAILS</code>), appliqué immédiatement sans redémarrage.</p>
+    </div>
+
+    <div class="card">
+      <h2>Utilisateurs (<span id="userCount">0</span>)</h2>
+      <div id="pwdResult" class="hint" hidden></div>
+      <table>
+        <thead><tr><th>Usager</th><th>E-mail</th><th>Fournisseur</th><th>Rôle effectif</th><th>Fiches</th><th></th></tr></thead>
+        <tbody id="userRows"></tbody>
+      </table>
+      <div class="row" style="margin-top:12px">
+        <input type="text" id="newPwd" placeholder="nouveau mot de passe (vide = généré)…" autocomplete="off">
+      </div>
+    </div>
+
+    <div class="card" id="rolesCard" hidden>
+      <h2>Rôles & accès</h2>
+      <div id="rolesMsg" class="sub" style="margin:0 0 12px"></div>
+      <div id="rolesList"></div>
+      <h3 style="font-size:.9rem;margin:14px 0 8px">Créer / modifier un rôle</h3>
+      <div class="row">
+        <input type="text" id="roleName" placeholder="Nom du rôle…" maxlength="40">
+        <input type="text" id="roleDesc" placeholder="Description…" maxlength="200">
+      </div>
+      <div id="permChecks" style="margin:10px 0"></div>
+      <div class="row">
+        <button id="roleSaveBtn" class="primary" type="button">Enregistrer</button>
+        <button id="roleCancelBtn" type="button" hidden>Annuler</button>
+      </div>
+      <p class="sub" style="margin:10px 0 0">Chaque accès est un trigger : coché = accordé. On ne peut accorder que ses propres accès (sauf allowlist). Pensez à cocher « Accès page admin » si le rôle doit ouvrir cette page.</p>
+    </div>
+
+    <div class="card">
+      <h2>Autres</h2>
+      <div class="row">
+        <a id="exportLink" href="/api/admin/export-users"><button type="button">Sauvegarde users.json</button></a>
+        <button id="logoutBtn" type="button">Déconnexion</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="msg" hidden></div>
+
+<script>
+(function () {
+  const $ = (id) => document.getElementById(id);
+  const msg = (t, ms = 3500) => {
+    const m = $('msg'); m.textContent = t; m.hidden = false;
+    clearTimeout(m._t); m._t = setTimeout(() => { m.hidden = true; }, ms);
+  };
+  async function api(path, opts = {}) {
+    const res = await fetch(path, {
+      credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/json' },
+      ...opts
+    });
+    if (res.status === 404) throw new Error('404');
+    let data = null;
+    try { data = await res.json(); } catch (e) {}
+    if (!res.ok) throw new Error((data && data.error) || ('HTTP ' + res.status));
+    return data;
+  }
+
+  let me = null;
+  let catalog = [];
+  let rolesList = null; // null = sans droit roles.manage
+  let editingRoleId = null;
+
+  async function boot() {
+    try {
+      const st = await api('/api/admin/status');
+      me = st.admin;
+      catalog = st.catalog || [];
+      renderStatus(st);
+      renderPermChecks([]);
+      await loadUsers();
+      await loadRoles();
+      $('loginCard').hidden = true;
+      $('adminZone').hidden = false;
+    } catch (e) {
+      if (String(e.message) === '404') {
+        // Pas sur l'écouteur admin (site public, :8000, ou file://) : indiquer la voie locale.
+        const port = '3100';
+        const url = 'http://127.0.0.1:' + port + '/admin.html';
+        $('localUrl').innerHTML = '<a href="' + url + '">' + url + '</a>';
+        $('remoteHint').hidden = false;
+        $('loginCard').hidden = true;
+      } else {
+        $('loginCard').hidden = false;
+        if (e.message && !/Failed to fetch|NetworkError/.test(e.message)) msg(e.message);
+      }
+    }
+  }
+
+  function renderStatus(st) {
+    const kv = $('statusKv');
+    const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;');
+    kv.innerHTML =
+      '<dt>Connecté</dt><dd>' + esc(st.admin.username) + ' (' + esc(st.admin.email) + ')</dd>' +
+      '<dt>Heure serveur</dt><dd>' + esc(st.serverTime) + '</dd>' +
+      '<dt>Uptime</dt><dd>' + esc(Math.floor(st.uptimeSec / 3600)) + 'h ' + esc(Math.floor(st.uptimeSec % 3600 / 60)) + 'm</dd>' +
+      '<dt>Mes accès</dt><dd>' + ((st.admin.permissions || []).map(esc).join(', ') || 'aucun') + '</dd>' +
+      '<dt>Comptes</dt><dd>' + esc(st.users) + ' — admins : ' + esc(st.adminEmails.length) + '</dd>' +
+      '<dt>Tables VTT</dt><dd>' + esc(st.rooms) + '</dd>' +
+      '<dt>Écritures protégées</dt><dd>' + st.protectedWrites.map(function (w) { return esc(w.route) + ' → ' + esc(w.perm); }).join('<br>') + '</dd>' +
+      '<dt>OAuth configuré</dt><dd>Google <span class="' + (st.env.google ? 'ok">oui' : 'ko">non') + '</span> · ' +
+      'Discord <span class="' + (st.env.discord ? 'ok">oui' : 'ko">non') + '</span> · ' +
+      'GitHub <span class="' + (st.env.github ? 'ok">oui' : 'ko">non') + '</span> · ' +
+      'callback <span class="' + (st.env.callbackBase ? 'ok">oui' : 'ko">non') + '</span></dd>';
+    renderChips(st.adminEmails);
+  }
+
+  function renderChips(list) {
+    const box = $('chips'); box.innerHTML = '';
+    if (!list.length) box.innerHTML = '<span class="warn">Aucun admin — ajoutez votre e-mail ci-dessous.</span>';
+    list.forEach((email) => {
+      const c = document.createElement('span');
+      c.className = 'chip';
+      const self = me && me.email && me.email.toLowerCase() === email;
+      c.innerHTML = '<span></span>';
+      c.firstChild.textContent = email + (self ? ' (vous)' : '');
+      const b = document.createElement('button');
+      b.type = 'button'; b.textContent = 'retirer'; b.className = 'danger';
+      b.disabled = !!self;
+      b.title = self ? 'Impossible de retirer votre propre accès ici' : 'Retirer cet admin';
+      b.addEventListener('click', () => setAdmin(email, false));
+      c.appendChild(b);
+      box.appendChild(c);
+    });
+  }
+
+  async function setAdmin(email, on) {
+    try {
+      const r = await api('/api/admin/set-admin', { method: 'POST', body: JSON.stringify({ email, admin: on }) });
+      renderChips(r.adminEmails);
+      msg(on ? 'Admin ajouté : ' + email : 'Admin retiré : ' + email);
+    } catch (e) { msg('Erreur : ' + e.message); }
+  }
+
+  async function loadUsers() {
+    try {
+      const r = await api('/api/admin/users');
+      $('userCount').textContent = r.users.length;
+      const tb = $('userRows'); tb.innerHTML = '';
+      r.users.forEach((u) => {
+        const tr = document.createElement('tr');
+        const self = me && me.id === u.id;
+        const cells = [
+          u.username + (self ? ' (vous)' : ''),
+          u.email, u.provider,
+          '<span class="badge ' + (u.isAdmin ? 'admin' : 'user') + '">' + u.role + '</span><br>',
+          String(u.characters), ''
+        ];
+        cells.forEach((html, i) => {
+          const td = document.createElement('td');
+          if (i < 5) td.textContent = html.replace(/<[^>]*>/g, '');
+          else td.innerHTML = html;
+          if (i === 3) td.innerHTML = html;
+          tr.appendChild(td);
+        });
+        const actions = tr.lastChild;
+        const tBtn = document.createElement('button');
+        tBtn.type = 'button';
+        tBtn.textContent = u.isAdmin ? (self ? 'admin (vous)' : 'rétrograder') : 'promouvoir admin';
+        tBtn.disabled = !!self;
+        tBtn.addEventListener('click', () => setAdmin(u.email, !u.isAdmin).then(loadUsers));
+        actions.appendChild(tBtn);
+        actions.appendChild(document.createTextNode(' '));
+        if (u.provider === 'local') {
+          const pBtn = document.createElement('button');
+          pBtn.type = 'button'; pBtn.textContent = 'mot de passe';
+          pBtn.title = 'Définir un nouveau mot de passe (champ sous le tableau, vide = généré)';
+          pBtn.addEventListener('click', async () => {
+            const pwd = ($('newPwd') || {}).value || '';
+            const label = pwd ? 'Définir ce mot de passe pour ' + u.username + ' ?' : 'Générer un mot de passe pour ' + u.username + ' ?';
+            if (!confirm(label)) return;
+            try {
+              const r = await api('/api/admin/reset-password', { method: 'POST', body: JSON.stringify({ id: u.id, password: pwd || undefined }) });
+              const box = $('pwdResult');
+              if (r.tempPassword) {
+                box.innerHTML = 'Nouveau mot de passe pour <strong></strong> : <code></code> — copiez-le, il ne sera plus affiché.';
+                box.querySelector('strong').textContent = r.username;
+                box.querySelector('code').textContent = r.tempPassword;
+              } else {
+                box.innerHTML = 'Mot de passe mis à jour pour <strong></strong>.';
+                box.querySelector('strong').textContent = r.username;
+              }
+              box.hidden = false;
+              const inp = $('newPwd'); if (inp) inp.value = '';
+              msg('Mot de passe réinitialisé.');
+            } catch (e) { msg('Erreur : ' + e.message); }
+          });
+          actions.appendChild(pBtn);
+          actions.appendChild(document.createTextNode(' '));
+        }
+        if (!self) {
+          const dBtn = document.createElement('button');
+          dBtn.type = 'button'; dBtn.textContent = 'supprimer'; dBtn.className = 'danger';
+          dBtn.addEventListener('click', async () => {
+            if (!confirm('Supprimer ' + u.username + ' (' + u.email + ') ?')) return;
+            try {
+              await api('/api/admin/delete-user', { method: 'POST', body: JSON.stringify({ id: u.id }) });
+              msg('Utilisateur supprimé.');
+              loadUsers();
+            } catch (e) { msg('Erreur : ' + e.message); }
+          });
+          actions.appendChild(dBtn);
+        }
+        const roleTd = tr.children[3];
+        if (rolesList && !u.isAdmin) {
+          const sel = document.createElement('select');
+          sel.className = 'role-select';
+          sel.title = 'Assigner un rôle';
+          const opt0 = document.createElement('option');
+          opt0.value = ''; opt0.textContent = '— Joueur —';
+          sel.appendChild(opt0);
+          rolesList.forEach((r) => {
+            const o = document.createElement('option');
+            o.value = r.id; o.textContent = r.name + (r.builtin ? ' (sys)' : '');
+            if (u.roleId === r.id) o.selected = true;
+            sel.appendChild(o);
+          });
+          sel.disabled = !!self;
+          sel.addEventListener('change', async () => {
+            try {
+              await api('/api/admin/assign', { method: 'POST', body: JSON.stringify({ userId: u.id, roleId: sel.value || null }) });
+              msg('Rôle mis à jour.');
+              loadUsers();
+            } catch (e) { msg('Erreur : ' + e.message); loadUsers(); }
+          });
+          roleTd.appendChild(sel);
+        }
+        tb.appendChild(tr);
+      });
+    } catch (e) { msg('Erreur : ' + e.message); }
+  }
+
+  function renderPermChecks(selected) {
+    const box = $('permChecks'); box.innerHTML = '';
+    catalog.forEach((p) => {
+      const lab = document.createElement('label');
+      lab.className = 'perm-check';
+      const cb = document.createElement('input');
+      cb.type = 'checkbox'; cb.value = p.id;
+      cb.checked = (selected || []).indexOf(p.id) >= 0;
+      lab.appendChild(cb);
+      lab.appendChild(document.createTextNode(p.label));
+      box.appendChild(lab);
+    });
+  }
+  function selectedPerms() {
+    return Array.from(document.querySelectorAll('#permChecks input:checked')).map((c) => c.value);
+  }
+
+  async function loadRoles() {
+    const card = $('rolesCard');
+    try {
+      const r = await api('/api/admin/roles');
+      rolesList = r.roles;
+      card.hidden = false;
+      $('rolesMsg').textContent = '';
+      const box = $('rolesList'); box.innerHTML = '';
+      rolesList.forEach((role) => {
+        const div = document.createElement('div');
+        div.className = 'role-row';
+        const perms = (role.permissions || []).map((pid) => {
+          const found = catalog.find((c) => c.id === pid);
+          return found ? found.label : pid;
+        }).join(', ') || 'aucun accès';
+        div.innerHTML = '<strong></strong> <span class="badge">' + role.users + ' user(s)</span>' +
+          (role.builtin ? ' <span class="badge admin">système</span>' : '') +
+          '<div class="sub" style="margin:4px 0"></div>' +
+          '<div style="font-size:.8rem;color:#8b949e"></div>';
+        div.querySelector('strong').textContent = role.name;
+        div.querySelector('.sub').textContent = role.desc || '';
+        div.lastChild.textContent = 'Accès : ' + perms;
+        if (!role.builtin) {
+          const row = document.createElement('div');
+          row.className = 'row'; row.style.marginTop = '8px';
+          const eb = document.createElement('button');
+          eb.type = 'button'; eb.textContent = 'modifier';
+          eb.addEventListener('click', () => {
+            editingRoleId = role.id;
+            $('roleName').value = role.name;
+            $('roleDesc').value = role.desc || '';
+            renderPermChecks(role.permissions || []);
+            $('roleCancelBtn').hidden = false;
+          });
+          const db = document.createElement('button');
+          db.type = 'button'; db.textContent = 'supprimer'; db.className = 'danger';
+          db.addEventListener('click', async () => {
+            if (!confirm('Supprimer le rôle « ' + role.name + ' » ? (les assignations retombent à Joueur)')) return;
+            try {
+              await api('/api/admin/role/delete', { method: 'POST', body: JSON.stringify({ id: role.id }) });
+              msg('Rôle supprimé.');
+              editingRoleId = null;
+              await loadRoles(); await loadUsers();
+            } catch (e) { msg('Erreur : ' + e.message); }
+          });
+          row.appendChild(eb); row.appendChild(db);
+          div.appendChild(row);
+        }
+        box.appendChild(div);
+      });
+    } catch (e) {
+      rolesList = null;
+      card.hidden = false;
+      $('rolesList').innerHTML = '';
+      $('rolesMsg').textContent = 'Section rôles réservée (permission roles.manage manquante).';
+    }
+  }
+
+  $('loginBtn').addEventListener('click', async () => {
+    const identifier = $('loginId').value.trim();
+    const password = $('loginPass').value;
+    if (!identifier || !password) { msg('Identifiant et mot de passe requis.'); return; }
+    try {
+      const r = await api('/api/auth/login', { method: 'POST', body: JSON.stringify({ identifier, password }) });
+      if (!r.user.isAdmin) { msg('Connecté, mais ce compte n\u2019est pas administrateur.'); return; }
+      boot();
+    } catch (e) { msg('Erreur : ' + e.message); }
+  });
+  $('roleSaveBtn').addEventListener('click', async () => {
+    const name = $('roleName').value.trim();
+    if (!name) { msg('Nom de rôle requis.'); return; }
+    try {
+      await api('/api/admin/role/save', { method: 'POST', body: JSON.stringify({
+        id: editingRoleId, name, desc: $('roleDesc').value.trim(), permissions: selectedPerms() }) });
+      msg(editingRoleId ? 'Rôle mis à jour.' : 'Rôle créé.');
+      editingRoleId = null;
+      $('roleName').value = ''; $('roleDesc').value = '';
+      renderPermChecks([]);
+      $('roleCancelBtn').hidden = true;
+      await loadRoles(); await loadUsers();
+    } catch (e) { msg('Erreur : ' + e.message); }
+  });
+  $('roleCancelBtn').addEventListener('click', () => {
+    editingRoleId = null;
+    $('roleName').value = ''; $('roleDesc').value = '';
+    renderPermChecks([]);
+    $('roleCancelBtn').hidden = true;
+  });
+  $('addAdminBtn').addEventListener('click', async () => {
+    const email = $('newAdminEmail').value.trim();
+    if (!email.includes('@')) { msg('E-mail invalide.'); return; }
+    await setAdmin(email, true);
+    $('newAdminEmail').value = '';
+    loadUsers();
+  });
+  $('logoutBtn').addEventListener('click', async () => {
+    try { await api('/api/auth/logout', { method: 'POST' }); } catch (e) {}
+    location.reload();
+  });
+
+  boot();
+})();
+</script>
+</body>
+</html>

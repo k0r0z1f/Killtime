@@ -944,7 +944,13 @@
                 transition: none !important;
             }
         }
-    </style>
+    
+    /* Lecture seule (non-admin) : aucune affordance de modification. */
+    body.ro #rmAdd, body.ro #rmImport, body.ro #rmImportBtn, body.ro #rmReset,
+    body.ro [data-qa], body.ro [data-qa-btn],
+    body.ro .rm-card-actions, body.ro .rm-grip, body.ro .rm-tab-add, body.ro .edit { display: none !important; }
+    body.ro .rm-card { cursor: default; }
+</style>
 </head>
 
 <body>
@@ -1380,7 +1386,7 @@
     <script src="js/codex.js"></script>
     <script src="users/user_store.js"></script>
     <script src="users/auth.js"></script>
-    <script src="js/roadmap.js?v=3.2"></script>
+    <script src="js/roadmap.js?v=3.4"></script>
 </body>
 
 </html>

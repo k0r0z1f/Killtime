@@ -1,0 +1,38 @@
+{
+  "roles": [
+    {
+      "id": "architecte",
+      "name": "Architecte",
+      "desc": "Accès total (rôle système, non supprimable).",
+      "builtin": true,
+      "permissions": [
+        "admin.access",
+        "users.manage",
+        "roles.manage",
+        "kanban.roadmaps",
+        "kanban.revue-rp",
+        "kanban.narratif",
+        "kanban.financement",
+        "atlas.write"
+      ]
+    },
+    {
+      "id": "joueur",
+      "name": "Joueur",
+      "desc": "Aucun accès de gestion.",
+      "builtin": true,
+      "permissions": []
+    },
+    {
+      "id": "collaborateur-kt",
+      "name": "Collaborateur KT",
+      "desc": "Acces kanban KT",
+      "permissions": [
+        "kanban.roadmaps"
+      ]
+    }
+  ],
+  "assignments": {
+    "usr_mtvzf3lr": "collaborateur-kt"
+  }
+}

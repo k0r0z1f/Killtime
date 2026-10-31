@@ -34,6 +34,144 @@ const GITHUB_CLIENT_ID      = process.env.GITHUB_CLIENT_ID || '';
 const GITHUB_CLIENT_SECRET  = process.env.GITHUB_CLIENT_SECRET || '';
 const OAUTH_CALLBACK_BASE   = (process.env.OAUTH_CALLBACK_BASE || '').replace(/\/+$/, '');
 
+/* ---------- Administration (rôles serveur + page locale) ----------
+   Seule source de vérité : les e-mails listés dans .env (ADMIN_EMAILS,
+   séparés par des virgules). Le client ne peut jamais s'attribuer un
+   rôle : le serveur recalcule role/isAdmin à chaque réponse.
+   La page admin tourne sur un 2e écouteur lié à 127.0.0.1 uniquement
+   (jamais exposé par ngrok qui ne relaie que le port public). */
+const ADMIN_PORT = parseInt(process.env.ADMIN_PORT || '3100', 10);
+const ADMIN_BIND = process.env.ADMIN_BIND || '127.0.0.1';
+function getAdminEmails() {
+    return String(process.env.ADMIN_EMAILS || '').split(',')
+        .map(s => s.trim().toLowerCase()).filter(Boolean);
+}
+function isAdminEmail(email) {
+    const e = String(email || '').trim().toLowerCase();
+    return !!e && getAdminEmails().includes(e);
+}
+function toSafeUser(user) {
+    const { saltHex, passwordHashHex, ...rest } = user;
+    const admin = isAdminEmail(user.email);
+    return { ...rest, role: roleNameFor(user), roleId: roleIdFor(user), isAdmin: admin, permissions: getUserPermissions(user) };
+}
+function getSessionUser(req) {
+    const id = getSessionUserId(req);
+    if (!id) return null;
+    return loadUsers().find(u => u.id === id) || null;
+}
+function checkAdmin(req) {
+    const u = getSessionUser(req);
+    if (!u) return { status: 401, error: 'Connexion requise.' };
+    if (!isAdminEmail(u.email)) return { status: 403, error: 'Réservé à l’administrateur du site.' };
+    return { user: u };
+}
+function requirePerm(req, perm) {
+    const u = getSessionUser(req);
+    if (!u) return { status: 401, error: 'Connexion requise.' };
+    if (!getUserPermissions(u).includes(perm)) return { status: 403, error: 'Permission requise : ' + perm + '.' };
+    return { user: u };
+}
+function isLoopbackHost(req) {
+    try {
+        const host = String(req.headers.host || '').split(':')[0].replace(/^\[|\]$/g, '').toLowerCase();
+        return host === 'localhost' || host === '127.0.0.1' || host === '::1';
+    } catch (e) { return false; }
+}
+function persistAdminEmails(list) {
+    const clean = [...new Set(list.map(s => String(s).trim().toLowerCase()).filter(s => s.includes('@')))];
+    let lines = [];
+    try { if (fs.existsSync(ENV_PATH)) lines = fs.readFileSync(ENV_PATH, 'utf-8').split('\n'); } catch (e) {}
+    lines = lines.filter(l => !/^\s*ADMIN_EMAILS\s*=/.test(l));
+    lines.push('ADMIN_EMAILS=' + clean.join(','));
+    fs.writeFileSync(ENV_PATH, lines.join('\n'));
+    process.env.ADMIN_EMAILS = clean.join(',');
+    return clean;
+}
+// Écritures disque : une permission par kanban (les clients replient en
+// localStorage sur 401/403, sans erreur visible).
+const WRITE_GUARDS = [
+    { route: '/api/roadmaps', perm: 'kanban.roadmaps' },
+    { route: '/api/roadmap', perm: 'kanban.roadmaps' },
+    { route: '/api/kanban-rp', perm: 'kanban.revue-rp' },
+    { route: '/api/kanban-narratif', perm: 'kanban.narratif' },
+    { route: '/api/financement', perm: 'kanban.financement' },
+    { route: '/api/atlas-mondes', perm: 'atlas.write' }
+];
+
+/* ---------- RBAC : rôles + permissions (triggers) ----------
+   ADMIN_EMAILS (.env) = super-admins : toutes les permissions, toujours.
+   Les autres droits passent par des rôles créés dans la page admin
+   (stockés dans users/roles.json) et assignés aux utilisateurs. */
+const PERMISSIONS = [
+    { id: 'admin.access', label: 'Accès page admin' },
+    { id: 'kanban.roadmaps', label: 'Écrire kanban Tactics (roadmaps)' },
+    { id: 'kanban.revue-rp', label: 'Écrire revue Système RP' },
+    { id: 'kanban.narratif', label: 'Écrire projet narratif' },
+    { id: 'kanban.financement', label: 'Écrire financement' },
+    { id: 'atlas.write', label: 'Écrire atlas des mondes' },
+    { id: 'users.manage', label: 'Gérer utilisateurs (liste, suppression, reset mot de passe)' },
+    { id: 'roles.manage', label: 'Gérer rôles (créer, permissions, assignation)' }
+];
+const ALL_PERMS = PERMISSIONS.map(p => p.id);
+const ROLES_PATH = path.join(__dirname, 'roles.json');
+function defaultRolesDoc() {
+    return {
+        roles: [
+            { id: 'architecte', name: 'Architecte', desc: 'Accès total (rôle système, non supprimable).', builtin: true, permissions: ALL_PERMS.slice() },
+            { id: 'joueur', name: 'Joueur', desc: 'Aucun accès de gestion.', builtin: true, permissions: [] }
+        ],
+        assignments: {}
+    };
+}
+function loadRoles() {
+    try {
+        if (!fs.existsSync(ROLES_PATH)) {
+            const doc = defaultRolesDoc();
+            fs.writeFileSync(ROLES_PATH, JSON.stringify(doc, null, 2));
+            return doc;
+        }
+        const doc = JSON.parse(fs.readFileSync(ROLES_PATH, 'utf-8'));
+        if (!doc || !Array.isArray(doc.roles)) return defaultRolesDoc();
+        if (!doc.assignments || typeof doc.assignments !== 'object') doc.assignments = {};
+        let migrated = false;
+        doc.roles.forEach(r => {
+            if (Array.isArray(r.permissions) && r.permissions.includes('config.write')) {
+                r.permissions = [...new Set(r.permissions.filter(p => p !== 'config.write').concat(LEGACY_KANBAN_PERMS))];
+                migrated = true;
+            }
+        });
+        if (migrated) { try { fs.writeFileSync(ROLES_PATH, JSON.stringify(doc, null, 2)); } catch (e) {} }
+        return doc;
+    } catch (e) { return defaultRolesDoc(); }
+}
+const LEGACY_KANBAN_PERMS = ['kanban.roadmaps', 'kanban.revue-rp', 'kanban.narratif', 'kanban.financement', 'atlas.write'];
+function saveRoles(doc) {
+    try { if (fs.existsSync(ROLES_PATH)) fs.copyFileSync(ROLES_PATH, ROLES_PATH + '.bak'); } catch (e) {}
+    fs.writeFileSync(ROLES_PATH, JSON.stringify(doc, null, 2));
+}
+function getUserPermissions(user) {
+    if (!user) return [];
+    if (isAdminEmail(user.email)) return ALL_PERMS.slice();
+    const doc = loadRoles();
+    const rid = doc.assignments[user.id];
+    const role = doc.roles.find(r => r.id === rid);
+    if (!role || !Array.isArray(role.permissions)) return [];
+    return role.permissions.filter(p => ALL_PERMS.includes(p));
+}
+function roleIdFor(user) {
+    if (!user) return 'joueur';
+    if (isAdminEmail(user.email)) return 'architecte';
+    const doc = loadRoles();
+    const rid = doc.assignments[user.id];
+    return doc.roles.some(r => r.id === rid) ? rid : 'joueur';
+}
+function roleNameFor(user) {
+    const doc = loadRoles();
+    const r = doc.roles.find(x => x.id === roleIdFor(user));
+    return r ? r.name : 'Joueur';
+}
+
 const PORT = process.env.PORT || 3000;
 const DB_PATH = path.join(__dirname, 'users.json');
 const PUBLIC_DIR = path.join(__dirname, '..');
@@ -258,7 +396,7 @@ function serveStatic(req, res, pathname) {
     });
 }
 
-const server = http.createServer(async (req, res) => {
+async function handleRequest(req, res, isAdminListener) {
     setCors(req, res);
 
     if (req.method === 'OPTIONS') {
@@ -283,7 +421,7 @@ const server = http.createServer(async (req, res) => {
         if (req.method === 'POST') {
             try {
                 const body = await parseBody(req);
-                const { username, email, password, role } = body;
+                const { username, email, password } = body;
 
                 if (!username || !email || !password) {
                     return sendJson(res, 400, { error: 'Champs requis manquants.' });
@@ -309,7 +447,7 @@ const server = http.createServer(async (req, res) => {
                     email: email.trim().toLowerCase(),
                     saltHex: salt,
                     passwordHashHex: hash,
-                    role: role || 'Joueur',
+                    role: isAdminEmail(email) ? 'Architecte' : 'Joueur',
                     provider: 'local',
                     createdAt: new Date().toISOString(),
                     characters: []
@@ -321,7 +459,7 @@ const server = http.createServer(async (req, res) => {
                 const token = 'srv_' + Buffer.from(`${newUser.id}:${Date.now()}`).toString('base64');
                 const cookie = `codex_auth_token=${token}; Path=/; Max-Age=604800; SameSite=Lax`;
 
-                const { saltHex, passwordHashHex, ...safeUser } = newUser;
+                const safeUser = toSafeUser(newUser);
                 return sendJson(res, 200, { success: true, user: safeUser }, cookie);
             } catch (e) {
                 return sendJson(res, 400, { error: e.message });
@@ -356,7 +494,7 @@ const server = http.createServer(async (req, res) => {
                 const token = 'srv_' + Buffer.from(`${user.id}:${Date.now()}`).toString('base64');
                 const cookie = `codex_auth_token=${token}; Path=/; Max-Age=604800; SameSite=Lax`;
 
-                const { saltHex, passwordHashHex, ...safeUser } = user;
+                const safeUser = toSafeUser(user);
                 return sendJson(res, 200, { success: true, user: safeUser }, cookie);
             } catch (e) {
                 return sendJson(res, 400, { error: e.message });
@@ -408,7 +546,7 @@ const server = http.createServer(async (req, res) => {
                 const token = 'srv_' + Buffer.from(`${user.id}:${Date.now()}`).toString('base64');
                 const cookie = `codex_auth_token=${token}; Path=/; Max-Age=604800; SameSite=Lax`;
 
-                const { saltHex, passwordHashHex, ...safeUser } = user;
+                const safeUser = toSafeUser(user);
                 return sendJson(res, 200, { success: true, user: safeUser }, cookie);
             } catch (e) {
                 return sendJson(res, 400, { error: e.message });
@@ -421,6 +559,15 @@ const server = http.createServer(async (req, res) => {
         if (req.method === 'POST') {
             const cookie = `codex_auth_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax`;
             return sendJson(res, 200, { success: true }, cookie);
+        }
+        return sendJson(res, 405, { error: 'Méthode non autorisée.' });
+    }
+
+    if (isRoute('/api/auth/me')) {
+        if (req.method === 'GET') {
+            const u = getSessionUser(req);
+            if (!u) return sendJson(res, 401, { error: 'Connexion requise.' });
+            return sendJson(res, 200, { success: true, user: toSafeUser(u) });
         }
         return sendJson(res, 405, { error: 'Méthode non autorisée.' });
     }
@@ -600,7 +747,7 @@ const server = http.createServer(async (req, res) => {
                 const cookie = `codex_auth_token=${token}; Path=/; Max-Age=604800; SameSite=Lax`;
 
                 // Encoder les infos user pour que le client les récupère
-                const { saltHex, passwordHashHex, ...safeUser } = user;
+                const safeUser = toSafeUser(user);
                 const userParam = encodeURIComponent(Buffer.from(JSON.stringify(safeUser)).toString('base64'));
 
                 console.log(`[OAuth Google] Connexion réussie pour ${user.username}, redirection vers ${returnPath}`);
@@ -723,7 +870,7 @@ const server = http.createServer(async (req, res) => {
 
                 const token = 'srv_' + Buffer.from(`${user.id}:${Date.now()}`).toString('base64');
                 const cookie = `codex_auth_token=${token}; Path=/; Max-Age=604800; SameSite=Lax`;
-                const { saltHex, passwordHashHex, ...safeUser } = user;
+                const safeUser = toSafeUser(user);
                 const userParam = encodeURIComponent(Buffer.from(JSON.stringify(safeUser)).toString('base64'));
 
                 console.log(`[OAuth Discord] Connexion réussie pour ${user.username}, redirection vers ${returnPath}`);
@@ -868,7 +1015,7 @@ const server = http.createServer(async (req, res) => {
 
                 const token = 'srv_' + Buffer.from(`${user.id}:${Date.now()}`).toString('base64');
                 const cookie = `codex_auth_token=${token}; Path=/; Max-Age=604800; SameSite=Lax`;
-                const { saltHex, passwordHashHex, ...safeUser } = user;
+                const safeUser = toSafeUser(user);
                 const userParam = encodeURIComponent(Buffer.from(JSON.stringify(safeUser)).toString('base64'));
 
                 console.log(`[OAuth GitHub] Connexion réussie pour ${user.username}, redirection vers ${returnPath}`);
@@ -937,6 +1084,19 @@ const server = http.createServer(async (req, res) => {
             });
         }
         return sendJson(res, 405, { error: 'Méthode non autorisée.' });
+    }
+
+    /* ================================================================
+       ÉCRITURES DISQUE — session admin exigée (401 sans login, 403 si non-admin).
+       Les clients kanban replient en localStorage sur 401/403, sans erreur visible.
+       ================================================================ */
+    if ((req.method === 'PUT' || req.method === 'POST')) {
+        const g = WRITE_GUARDS.find(g => isRoute(g.route));
+        if (g) {
+            const u = getSessionUser(req);
+            if (!u) return sendJson(res, 401, { error: 'Connexion requise.' });
+            if (!getUserPermissions(u).includes(g.perm)) return sendJson(res, 403, { error: 'Permission requise : ' + g.perm + '.' });
+        }
     }
 
     /* ================================================================
@@ -1215,12 +1375,249 @@ const server = http.createServer(async (req, res) => {
         return sendJson(res, 405, { error: 'Méthode non autorisée.' });
     }
 
+    /* ================================================================
+       ADMIN LOCAL — page + API, jamais servies par l'écouteur public.
+       L'écouteur public répond 404 (ne révèle pas l'existence).
+       L'écouteur admin (127.0.0.1:ADMIN_PORT) ne sert QUE ceci.
+       ================================================================ */
+    const isAdminPath = cleanPath === '/admin.html' || cleanPath === '/admin' || cleanPath.startsWith('/api/admin');
+    if (isAdminPath && !isAdminListener) {
+        res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
+        return res.end('Fichier introuvable.');
+    }
+    if (isAdminListener) {
+        if ((cleanPath === '/admin.html' || cleanPath === '/admin') && (req.method === 'GET' || req.method === 'HEAD')) {
+            if (!isLoopbackHost(req)) {
+                res.writeHead(403, { 'Content-Type': 'text/plain; charset=utf-8' });
+                return res.end('Accès réservé à la machine locale.');
+            }
+            return serveStatic(req, res, '/admin.html');
+        }
+        if (cleanPath === '/api/admin/status' && req.method === 'GET') {
+            const adm = requirePerm(req, 'admin.access');
+            if (adm.status) return sendJson(res, adm.status, { error: adm.error });
+            const users = loadUsers();
+            return sendJson(res, 200, {
+                success: true,
+                admin: toSafeUser(adm.user),
+                serverTime: new Date().toISOString(),
+                uptimeSec: Math.floor(process.uptime()),
+                node: process.version,
+                ports: { public: PORT, admin: ADMIN_PORT },
+                users: users.length,
+                adminEmails: getAdminEmails(),
+                rooms: vttRooms.size,
+                env: {
+                    google: !!(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET),
+                    discord: !!(process.env.DISCORD_CLIENT_ID && process.env.DISCORD_CLIENT_SECRET),
+                    github: !!(process.env.GITHUB_CLIENT_ID && process.env.GITHUB_CLIENT_SECRET),
+                    callbackBase: !!OAUTH_CALLBACK_BASE
+                },
+                protectedWrites: WRITE_GUARDS,
+                catalog: PERMISSIONS
+            });
+        }
+        if (cleanPath === '/api/admin/users' && req.method === 'GET') {
+            const adm = requirePerm(req, 'users.manage');
+            if (adm.status) return sendJson(res, adm.status, { error: adm.error });
+            const list = loadUsers().map(u => {
+                const s = toSafeUser(u);
+                return {
+                    id: s.id, username: s.username, email: s.email,
+                    provider: s.provider || 'local', role: s.role, roleId: s.roleId,
+                    isAdmin: s.isAdmin, permissions: s.permissions,
+                    createdAt: s.createdAt,
+                    characters: Array.isArray(u.characters) ? u.characters.length : 0
+                };
+            });
+            return sendJson(res, 200, { success: true, users: list });
+        }
+        if (cleanPath === '/api/admin/set-admin' && (req.method === 'POST' || req.method === 'PUT')) {
+            const adm = checkAdmin(req);
+            if (adm.status) return sendJson(res, adm.status, { error: adm.error });
+            try {
+                const body = await parseBody(req);
+                const email = String((body && body.email) || '').trim().toLowerCase();
+                if (!email.includes('@')) return sendJson(res, 400, { error: 'E-mail invalide.' });
+                let list = getAdminEmails();
+                if (body.admin && !list.includes(email)) list.push(email);
+                if (!body.admin) list = list.filter(e => e !== email);
+                const updated = persistAdminEmails(list);
+                console.log(`[Admin] allowlist : ${updated.join(', ') || '(vide)'}`);
+                return sendJson(res, 200, { success: true, adminEmails: updated });
+            } catch (e) {
+                return sendJson(res, 400, { error: e.message });
+            }
+        }
+        if (cleanPath === '/api/admin/roles' && req.method === 'GET') {
+            const adm = requirePerm(req, 'roles.manage');
+            if (adm.status) return sendJson(res, adm.status, { error: adm.error });
+            const doc = loadRoles();
+            const counts = {};
+            Object.values(doc.assignments).forEach(rid => { counts[rid] = (counts[rid] || 0) + 1; });
+            return sendJson(res, 200, { success: true, catalog: PERMISSIONS,
+                roles: doc.roles.map(r => ({ id: r.id, name: r.name, desc: r.desc || '',
+                    builtin: !!r.builtin, permissions: r.permissions || [], users: counts[r.id] || 0 })) });
+        }
+        if (cleanPath === '/api/admin/role/save' && (req.method === 'POST' || req.method === 'PUT')) {
+            const adm = requirePerm(req, 'roles.manage');
+            if (adm.status) return sendJson(res, adm.status, { error: adm.error });
+            try {
+                const body = await parseBody(req);
+                const name = String((body && body.name) || '').trim().slice(0, 40);
+                if (!name) return sendJson(res, 400, { error: 'Nom requis.' });
+                const doc = loadRoles();
+                // Anti-escalade : on ne peut accorder que ses propres permissions (sauf allowlist).
+                const grantable = isAdminEmail(adm.user.email) ? ALL_PERMS : getUserPermissions(adm.user);
+                const perms = [...new Set((Array.isArray(body.permissions) ? body.permissions : [])
+                    .filter(x => ALL_PERMS.includes(x) && grantable.includes(x)))];
+                const id = String((body && body.id) || '').trim();
+                if (id) {
+                    const role = doc.roles.find(r => r.id === id);
+                    if (!role) return sendJson(res, 404, { error: 'Rôle introuvable.' });
+                    if (role.builtin) return sendJson(res, 400, { error: 'Rôle système non modifiable.' });
+                    role.name = name;
+                    role.desc = String((body && body.desc) || '').trim().slice(0, 200);
+                    role.permissions = perms;
+                    console.log(`[Admin] rôle modifié : ${role.id} (${perms.join(', ') || 'aucune'})`);
+                } else {
+                    let slug = name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+                        .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 32) || ('role-' + Date.now().toString(36));
+                    let n = 1; const base = slug;
+                    while (doc.roles.some(r => r.id === slug)) slug = base + '-' + (++n);
+                    doc.roles.push({ id: slug, name, desc: String((body && body.desc) || '').trim().slice(0, 200), permissions: perms });
+                    console.log(`[Admin] rôle créé : ${slug} (${perms.join(', ') || 'aucune'})`);
+                }
+                saveRoles(doc);
+                return sendJson(res, 200, { success: true });
+            } catch (e) {
+                return sendJson(res, 400, { error: e.message });
+            }
+        }
+        if (cleanPath === '/api/admin/role/delete' && (req.method === 'POST' || req.method === 'DELETE')) {
+            const adm = requirePerm(req, 'roles.manage');
+            if (adm.status) return sendJson(res, adm.status, { error: adm.error });
+            try {
+                const body = await parseBody(req);
+                const id = String((body && body.id) || '');
+                const doc = loadRoles();
+                const role = doc.roles.find(r => r.id === id);
+                if (!role) return sendJson(res, 404, { error: 'Rôle introuvable.' });
+                if (role.builtin) return sendJson(res, 400, { error: 'Rôle système non supprimable.' });
+                doc.roles = doc.roles.filter(r => r.id !== id);
+                Object.keys(doc.assignments).forEach(uid => { if (doc.assignments[uid] === id) delete doc.assignments[uid]; });
+                saveRoles(doc);
+                console.log(`[Admin] rôle supprimé : ${id}`);
+                return sendJson(res, 200, { success: true });
+            } catch (e) {
+                return sendJson(res, 400, { error: e.message });
+            }
+        }
+        if (cleanPath === '/api/admin/assign' && (req.method === 'POST' || req.method === 'PUT')) {
+            const adm = requirePerm(req, 'roles.manage');
+            if (adm.status) return sendJson(res, adm.status, { error: adm.error });
+            try {
+                const body = await parseBody(req);
+                const userId = String((body && body.userId) || '');
+                const roleId = String((body && body.roleId) || '');
+                const users = loadUsers();
+                const target = users.find(u => u.id === userId);
+                if (!target) return sendJson(res, 404, { error: 'Utilisateur introuvable.' });
+                if (target.id === adm.user.id && !isAdminEmail(adm.user.email)) return sendJson(res, 400, { error: 'Impossible de modifier votre propre rôle.' });
+                const doc = loadRoles();
+                if (roleId) {
+                    const role = doc.roles.find(r => r.id === roleId);
+                    if (!role) return sendJson(res, 404, { error: 'Rôle introuvable.' });
+                    const grantable = isAdminEmail(adm.user.email) ? ALL_PERMS : getUserPermissions(adm.user);
+                    const missing = (role.permissions || []).filter(x => !grantable.includes(x));
+                    if (missing.length) return sendJson(res, 403, { error: 'Rôle hors de votre portée : ' + missing.join(', ') });
+                    doc.assignments[userId] = roleId;
+                } else {
+                    delete doc.assignments[userId];
+                }
+                saveRoles(doc);
+                console.log(`[Admin] rôle ${roleId || 'joueur (retiré)'} assigné à ${target.username}`);
+                return sendJson(res, 200, { success: true, roleId: roleId || null });
+            } catch (e) {
+                return sendJson(res, 400, { error: e.message });
+            }
+        }
+        if (cleanPath === '/api/admin/delete-user' && (req.method === 'POST' || req.method === 'DELETE')) {
+            const adm = requirePerm(req, 'users.manage');
+            if (adm.status) return sendJson(res, adm.status, { error: adm.error });
+            try {
+                const body = await parseBody(req);
+                const id = String((body && body.id) || '');
+                const users = loadUsers();
+                const target = users.find(u => u.id === id);
+                if (!target) return sendJson(res, 404, { error: 'Utilisateur introuvable.' });
+                if (target.id === adm.user.id) return sendJson(res, 400, { error: 'Impossible de supprimer votre propre compte.' });
+                saveUsers(users.filter(u => u.id !== id));
+                console.log(`[Admin] utilisateur supprimé : ${target.username} (${target.email})`);
+                return sendJson(res, 200, { success: true, users: users.length - 1 });
+            } catch (e) {
+                return sendJson(res, 400, { error: e.message });
+            }
+        }
+        if (cleanPath === '/api/admin/reset-password' && (req.method === 'POST' || req.method === 'PUT')) {
+            const adm = requirePerm(req, 'users.manage');
+            if (adm.status) return sendJson(res, adm.status, { error: adm.error });
+            try {
+                const body = await parseBody(req);
+                const id = String((body && body.id) || '');
+                const users = loadUsers();
+                const target = users.find(u => u.id === id);
+                if (!target) return sendJson(res, 404, { error: 'Utilisateur introuvable.' });
+                if (target.provider !== 'local') return sendJson(res, 400, { error: 'Compte ' + target.provider + ' (OAuth) : aucun mot de passe à réinitialiser.' });
+                let newPass = String((body && body.password) || '');
+                let generated = false;
+                if (!newPass) {
+                    newPass = crypto.randomBytes(12).toString('base64url');
+                    generated = true;
+                }
+                if (newPass.length < 6) return sendJson(res, 400, { error: '6 caractères minimum.' });
+                const saltBuffer = crypto.randomBytes(16);
+                target.saltHex = saltBuffer.toString('hex');
+                target.passwordHashHex = hashPassword(newPass, saltBuffer);
+                saveUsers(users);
+                console.log(`[Admin] mot de passe réinitialisé : ${target.username} (${target.email})`);
+                const out = { success: true, username: target.username };
+                if (generated) out.tempPassword = newPass;
+                return sendJson(res, 200, out);
+            } catch (e) {
+                return sendJson(res, 400, { error: e.message });
+            }
+        }
+        if (cleanPath === '/api/admin/export-users' && req.method === 'GET') {
+            const adm = requirePerm(req, 'users.manage');
+            if (adm.status) return sendJson(res, adm.status, { error: adm.error });
+            res.writeHead(200, {
+                'Content-Type': 'application/json; charset=utf-8',
+                'Content-Disposition': 'attachment; filename="users-backup.json"'
+            });
+            return res.end(JSON.stringify(loadUsers(), null, 2));
+        }
+        res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
+        return res.end('Fichier introuvable.');
+    }
+
     if (req.method === 'GET' || req.method === 'HEAD') {
         return serveStatic(req, res, parsedUrl.pathname);
     }
 
     res.writeHead(405, { 'Content-Type': 'text/plain; charset=utf-8' });
     res.end('Méthode non autorisée.');
+}
+
+const server = http.createServer((req, res) => {
+    handleRequest(req, res, false).catch(() => {
+        try { sendJson(res, 500, { error: 'Erreur interne.' }); } catch (_) {}
+    });
+});
+const adminServer = http.createServer((req, res) => {
+    handleRequest(req, res, true).catch(() => {
+        try { sendJson(res, 500, { error: 'Erreur interne.' }); } catch (_) {}
+    });
 });
 
 /* ==========================================================================
@@ -2249,4 +2646,7 @@ setInterval(() => {
 
 server.listen(PORT, () => {
     console.log(`[Codex Auth Engine] Serveur actif sur http://localhost:${PORT}`);
+});
+adminServer.listen(ADMIN_PORT, ADMIN_BIND, () => {
+    console.log(`[Codex Admin] Interface locale sur http://${ADMIN_BIND}:${ADMIN_PORT}/admin.html (non exposée)`);
 });
