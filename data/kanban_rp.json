@@ -982,6 +982,21 @@
           "primitive": "",
           "suggestedAsset": "tables.html",
           "details": "Page tables.html + js/tables.js + API REST persistée (data/tables/table_<id>.json). Fait : chat public, MPs MJ<->joueur, images URL/upload, amis (demandes/acceptation), annuaire + mot de passe optionnel, avatars, envoi restreint sendto/dontsendto personnel + héritage (répondre = re-muter, bouton reset Tout le monde), présence LAN, SSE push + pastille + popups auto-dismiss, gestion (inviter/rôles/exclure/renommer/supprimer/liens d'invitation). Vérifié : curl (401/403/404/409/413), stub DOM, E2E navigateur réel (2 comptes). DONE 2026-10-31."
+        },
+        {
+          "id": "RP-066",
+          "title": "Tables de groupe : voix live WebRTC (mute + reset global) — livré",
+          "epic": "Outils Web (Livre IX)",
+          "status": "done",
+          "priority": "high",
+          "order": 37,
+          "scene": "",
+          "placeholderId": "",
+          "pos": null,
+          "scale": null,
+          "primitive": "",
+          "suggestedAsset": "tables.html",
+          "details": "Salon vocal mesh P2P par table (js/tables-voice.js + users/tables_voice.js + routes /api/tables/:id/voice*). Fait : VAD/PTT/continu, passe-haut 80Hz, limiteur, gains + volumes par joueur, muet/sourdine, mute MJ (mute = ne recoit plus le vocal), reset vocal MJ pour tout le monde, pastille qui-parle dans membres + panneau voix en tete de table, repli sondage sans SSE, anti-glare offreur. Verifie : node:test 11/11, curl (join/mute 200, signal vers mute 403, reset MJ 200 puis signal 200, reset non-MJ 403), SSE live (mute/reset/signal recus, signal bloque aux mutes). DONE 2026-10-31."
         }
       ]
     }
