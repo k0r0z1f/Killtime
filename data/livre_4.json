@@ -177,7 +177,6 @@
     {
      "titre": "1. Chambre de Résonance du Cœur",
      "top": false,
-     "monde": null,
      "corps_html": "C'est le cœur du moteur. Un cristal de nytharite taillé dans le bon sens.\n                                Tu l'allumes, il vibre, et il donne l'énergie de base. Sans carburant.",
      "pieds": [
       {
@@ -189,7 +188,6 @@
     {
      "titre": "2. Stabilisateurs de Champ",
      "top": false,
-     "monde": null,
      "corps_html": "Des anneaux autour du cœur. Ils prennent l'énergie brute et la tournent dans la\n                                bonne direction. C'est eux qui font que ton pod tourne proprement au lieu de\n                                partir en travers.",
      "pieds": [
       {
@@ -201,7 +199,6 @@
     {
      "titre": "3. Nœuds d'Infusion Élémentaire",
      "top": false,
-     "monde": null,
      "corps_html": "Des injecteurs qui donnent un goût à l'énergie. Exemple : tu veux flotter sans\n                                frotter ? Tu mets du <strong>vecteur Air</strong>. Tu veux aller vite ? Tu mets\n                                du <strong>vecteur Feu</strong>.",
      "pieds": [
       {
@@ -213,7 +210,6 @@
     {
      "titre": "4. Recyclage d'Énergie Dynamique",
      "top": false,
-     "monde": null,
      "corps_html": "Un circuit qui récupère ce qui part en trop. Rien ne se perd. Ton pod peut\n                                tourner des mois sans passer à l'atelier.",
      "pieds": [
       {
@@ -255,7 +251,9 @@
   },
   "portee_sorts": {
    "type": "formule",
-   "badge": "Règle de Portée des Sorts",
+   "etiquette_tag": "span",
+   "etiquette_classe": "formula-badge",
+   "etiquette_html": "Règle de Portée des Sorts",
    "math_html": "Portée = <span class=\"hl-cyan\">Rang de Magie</span> + (<span class=\"hl-cyan\">Rang de\n                                    Magie</span> ×\n                                <span class=\"hl-gold\"><a class=\"rule-ref\" href=\"livre_2.html#chap-6\"\n                                        data-tip=\"Entraînement : +1 palier de dé chacun, max +3 par compétence, 5 XP (10 si croisé) (§6.1).\">Entraînements</a></span>)",
    "desc_html": "Ton premier rang est offert : même sans entraînement acheté, tu portes à\n                                MAG cases. Chaque entraînement ajoute un nouveau multiple.\n                                Tu lances un <em>Projectile Magique</em> ? Il porte sans malus jusqu'à sa portée\n                                de base en cases. Plus loin, chaque tranche de MAG cases te coûte\n                                <strong>1 <a class=\"rule-ref\" href=\"livre_2.html#chap-6\"\n                                        data-tip=\"Niveau de dé : chaque cran monte le dé — d2 ➔ d4 ➔ d6 ➔ d8 ➔ d10 ➔ d12 (§6.1).\">niveau\n                                        de dé</a></strong> en moins sur ton jet.",
    "extra": " id=\"sec-16-portee\""
@@ -343,7 +341,6 @@
     {
      "titre": "Pyrocinésie & Thermodynamique",
      "top": false,
-     "monde": null,
      "corps_html": "Tu chauffes la matière de l'intérieur. D'abord tu tiédis un objet. Puis tu fais\n                                une boule de feu, tu lèves un écran de chaleur, et tout en haut tu changes\n                                l'état de la matière d'un coup : <strong>contrôle moléculaire thermique</strong>\n                                (ça fond ou ça s'évapore).",
      "pieds": [
       {
@@ -355,7 +352,6 @@
     {
      "titre": "Vitalité Cinétique & Création Primale",
      "top": false,
-     "monde": null,
      "corps_html": "Tu mélanges terre, eau, vent et feu à l'instinct. Ça sort vite et fort, et tu peux\n                                même faire apparaître de la matière. Revers : ton corps chauffe. Prévois de quoi\n                                refroidir.",
      "pieds": [
       {
@@ -368,7 +364,9 @@
   },
   "regle_or_creation": {
    "type": "formule",
-   "badge": "La Règle d'Or de Création",
+   "etiquette_tag": "span",
+   "etiquette_classe": "formula-badge",
+   "etiquette_html": "La Règle d'Or de Création",
    "math_html": "<span class=\"hl-gold\">Coût de Création (XP)</span> = <span class=\"hl-cyan\">Coût\n                                    d'Activation (PA)</span>",
    "desc_html": "1 XP dépensé = 1 <a class=\"rule-ref\" href=\"livre_1.html#chap-4\"\n                                    data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a>\n                                pour lancer en combat. Tu montes un pouvoir à 6 XP ?\n                                Il te coûtera 6 PA à table. Fais le calcul avec ton MJ, sans prise de tête.",
    "extra": " id=\"sec-19-regle\""

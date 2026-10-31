@@ -123,7 +123,6 @@
     {
      "titre": "Offensif",
      "top": false,
-     "monde": null,
      "corps_html": "Vous frappez, vous bousculez, vous ouvrez un passage. C'est pour blesser\n                                ou déstabiliser en face.",
      "pieds": [
       {
@@ -135,7 +134,6 @@
     {
      "titre": "Défensif",
      "top": false,
-     "monde": null,
      "corps_html": "Vous parez, vous esquivez, vous encaissez. C'est pour rester debout\n                                quand ça arrive.",
      "pieds": [
       {
@@ -147,7 +145,6 @@
     {
      "titre": "Utilitaire",
      "top": false,
-     "monde": null,
      "corps_html": "Vous grimpez, vous réparez, vous soignez, vous passez sans bruit.\n                                Pas pour frapper ni parer.",
      "pieds": [
       {
@@ -159,7 +156,6 @@
     {
      "titre": "Social",
      "top": false,
-     "monde": null,
      "corps_html": "Vous parlez, vous négociez, vous intimidez. Pour obtenir quelque chose\n                                de quelqu'un qui réfléchit.",
      "pieds": [
       {
@@ -171,7 +167,6 @@
     {
      "titre": "Hybride",
      "top": false,
-     "monde": null,
      "corps_html": "Vous faites deux choses en une. Exemple : vous frappez et, en même temps,\n                                vous impressionnez ou vous faites reculer.",
      "pieds": [
       {

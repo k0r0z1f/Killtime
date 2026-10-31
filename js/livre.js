@@ -35,7 +35,7 @@
                 return cell('td', c);
             }).join('') + '</tr>';
         }).join('');
-        return '<div class="table-container"' + (t.extra || '') + '><table class="codex-table">' +
+        return '<div class="table-container"' + (t.extra || '') + '><table class="' + (t.classe || 'codex-table') + '">' +
             thead(t.colonnes) + '<tbody>' + rows + '</tbody></table></div>';
     }
 
@@ -45,12 +45,15 @@
                 (k.monde ? '<div class="spec-card-world">' + k.monde + '</div>' : '');
             var head = k.top === false ? title
                 : '<div class="spec-card-top">' + title + '</div>';
+            var ctag = k.corps_tag || 'p';
+            var corps = ('corps_html' in k || 'corps_tag' in k)
+                ? '<' + ctag + (k.corps_attrs || '') + '>' + (k.corps_html || '') + '</' + ctag + '>'
+                : '';
             var pieds = (k.pieds || []).map(function (p) {
             return '<span class="tag-pill ' + p.ton + '">' + p.texte + '</span>';
         }).join('');
         var foot = pieds ? '<div class="spec-card-footer">' + pieds + '</div>' : '';
-            return '<div class="spec-card">' + head +
-                '<p>' + k.corps_html + '</p>' + foot + '</div>';
+            return '<div class="spec-card">' + head + corps + foot + '</div>';
         });
         var seps = c.seps || [];
         var body = cards[0] || '';
@@ -62,9 +65,14 @@
     }
 
     function renderFormule(f) {
-        return '<div class="formula-box"' + (f.extra || '') + '><span class="formula-badge">' + f.badge +
-            '</span><div class="formula-content"><div class="formula-math">' + f.math_html +
-            '</div><div class="formula-desc">' + f.desc_html + '</div></div></div>';
+        var tag = f.etiquette_tag || 'span';
+        var label = '<' + tag + ' class="' + (f.etiquette_classe || 'formula-badge') + '">' +
+            (f.etiquette_html !== undefined ? f.etiquette_html : (f.badge || '')) + '</' + tag + '>';
+        return '<div class="formula-box"' + (f.extra || '') + '>' + label +
+            (((f.contenu === undefined || f.contenu) ? '<div class="formula-content">' : '') +
+            '<div class="formula-math">' + f.math_html +
+            '</div><div class="formula-desc">' + f.desc_html + '</div>' +
+            ((f.contenu === undefined || f.contenu) ? '</div>' : '')) + '</div>';
     }
 
     function renderRef(b, d) {

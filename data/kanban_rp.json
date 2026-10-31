@@ -1167,7 +1167,7 @@
      "id": "RP-078",
      "title": "JSON-ifier le Livre V (données + contenu, comme Livre I)",
      "epic": "Livre V — Combat Tactique",
-     "status": "todo",
+     "status": "done",
      "priority": "medium",
      "order": 49,
      "scene": "",
@@ -1176,7 +1176,7 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_5.html",
-     "details": "Comme Livre I : extraire data/livre_N.json (données règles + sections/blocs/refs), rendre via JS (factoriser js/livre_1.js en moteur générique), squelettiser le HTML, fidélité vérifiée par diff. But : source unique + traductions. Fichier : livre_5.html."
+     "details": "FAIT 2026-10-31 — data/livre_5.json (économie PA, coûts PA en listes, essoufflement, 7 formules tactiques, assaut groupé, couvert malus 0/-1/-2, 9 duo-techs coûts+ND parsés, déviation anatomique, 5 manœuvres contact, 5 calibres, zones véhicules, bloc mecaniques + entête in-article et 3 sections), livre_5.html squelettisé. Moteur étendu : tables data-table, étiquettes formula-label, formules sans wrapper, corps de cartes p/ul. Vérifié : fidélité + rendu JS réel OK ; III–IV régénérés sans régression."
     },
     {
      "id": "RP-079",

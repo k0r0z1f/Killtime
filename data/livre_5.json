@@ -1,0 +1,1071 @@
+{
+ "livre": "V",
+ "titre": "Combat Tactique",
+ "version": 1,
+ "updated": "2026-10-31",
+ "source": "livre_5.html",
+ "entete_html": "",
+ "sections": [
+  {
+   "id": "entete",
+   "symbole": null,
+   "titre": null,
+   "blocs": [
+    {
+     "type": "html",
+     "html": "\n\n                    <div class=\"doc-badge-row\">\n                        <span class=\"doc-badge-pill\">\n                            <svg width=\"12\" height=\"12\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\"\n                                stroke-width=\"2\">\n                                <path d=\"M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z\" />\n                                <polyline points=\"14 2 14 8 20 8\" />\n                            </svg>\n                            Livre V — Combat & Manœuvres\n                        </span>\n                        <span class=\"doc-badge-pill accent\">Tactique 10s & Localisation</span>\n                        <span class=\"doc-badge-pill live\">Système Validé</span>\n                    </div>\n\n                    <h1 class=\"doc-title\">Livre V : Combat Tactique&nbsp;& Déplacements</h1>\n                    <p class=\"doc-lead\">\n                        Tu entres en combat : tu as 10 secondes pour agir. Tu avances, tu frappes,\n                        tu te protèges — tout passe par tes <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">Points d'Action (PA)</a>.\n                        Tu n'as plus de PA ? Tu forces sur ton <a class=\"rule-ref\" href=\"livre_1.html#sec-4-2\" data-tip=\"Essoufflement : 1 point = des PA d'urgence ; ne part pas tout seul, action dédiée pour souffler (§4.2).\">Essoufflement</a>.\n                        Tu vises bien ? Tu touches où ça fait mal : bras, tête, jambes.\n                        À pied ou aux commandes d'un blindé, le réflexe est le même : décider vite, dépenser juste.\n                    </p>\n\n                    <hr class=\"doc-divider\">\n\n                    <!-- ================= CHAPITRE 24 ================= -->\n                    "
+    }
+   ]
+  },
+  {
+   "id": "chap-20",
+   "symbole": "Chapitre 20.",
+   "titre": "Le Tour de 10 Secondes & L'Économie des Points d'Action",
+   "blocs": [
+    {
+     "type": "html",
+     "html": "\n\n                    <p>\n                        Un round dure <strong>10 secondes</strong>. À l'intérieur, chacun joue à son tour,\n                        dans l'ordre d'<a class=\"rule-ref\" href=\"livre_1.html#sec-4-3\" data-tip=\"Initiative : meilleur score entre Rapidité, Agilité et Intelligence, converti en dé (§4.3).\">initiative</a>. Quand c'est ton tour, tu dépenses tes <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a> : tu avances,\n                        tu frappes, tu pares, tu ajustes ton tir, tu lances un sort.\n                        <strong>Tu récupères tous tes PA au début de ton propre tour</strong>\n                        (remise au maximum, sans cumul). Pas de recharge globale au début du round.\n                    </p>\n\n                    <div class=\"callout temporal\">\n                        <div class=\"callout-header\">\n                            <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\"\n                                stroke-width=\"2\">\n                                <circle cx=\"12\" cy=\"12\" r=\"10\" />\n                                <polyline points=\"12 6 12 12 14 14\" />\n                            </svg>\n                            Séquence Fondamentale du Tour de Combat\n                        </div>\n                        <div class=\"callout-body\">\n                            <ol style=\"margin-bottom: 0;\">\n                                <li><strong>Initiative (une seule fois) :</strong> Jet d'<a class=\"rule-ref\" href=\"livre_1.html#sec-4-3\" data-tip=\"Initiative : meilleur score entre Rapidité, Agilité et Intelligence, converti en dé (§4.3).\">initiative</a> basé sur la\n                                    compétence <em>Rapidité d'exécution</em>. L'ordre reste fixe pour tout le combat.</li>\n                                <li><strong>Début du tour personnel :</strong> Quand son initiative arrive, le combattant\n                                    <strong>récupère l'intégralité de sa réserve de <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a> (remise au maximum, sans cumul)</strong>.\n                                    Il peut alors en premier lieu <strong>reprendre son souffle</strong> (1 <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a> dépensé = 1 point d'<a class=\"rule-ref\" href=\"livre_1.html#sec-4-2\" data-tip=\"Essoufflement : 1 point = des PA d'urgence ; ne part pas tout seul, action dédiée pour souffler (§4.2).\">essoufflement</a> effacé).</li>\n                                <li><strong>Actions & Réactions :</strong> Le combattant agit (action principale, déplacements),\n                                    puis les autres peuvent dépenser leurs propres PA / PE en réactions (parades,\n                                    esquives, interruptions) même hors de leur tour.</li>\n                                <li><strong>Itération :</strong> Passer au combattant suivant dans l'ordre d'initiative.\n                                    Chaque combattant ne récupère ses PA qu'au <strong>début de son propre tour</strong>,\n                                    jamais au début du round global.</li>\n                            </ol>\n                        </div>\n                    </div>\n\n                    <h3 id=\"sec-20-1\">20.1 L'Économie des Points d'Action : 1 PA = +1 au Résultat</h3>\n                    <p>\n                        Tes <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a> ne paient pas que tes actions. Tu peux aussi les mettre directement dans ton jet :\n                        <strong>1 <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a> dépensé = +1 au résultat</strong>. Tu veux assurer ton coup ? Tu rajoutes des <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a>.\n                        Tu veux garder de quoi parer derrière ? Tu en gardes.\n                    </p>\n\n                    <div class=\"formula-box wide\">\n                        <div class=\"formula-label\">Duel Aveugle : Déclarations Masquées puis Révélation Simultanée</div>\n                        <div class=\"formula-math\">\n                            <span class=\"hl-cyan\">Mise Attaquant</span> (PA + PE, cachée) &nbsp;vs&nbsp; <span\n                                class=\"hl-ruby\">Mise Défenseur</span> (PA + PE, cachée) &nbsp;➔&nbsp; Révélation simultanée\n                        </div>\n                        <div class=\"formula-desc\">\n                            <strong>Axiome de Confrontation :</strong> L'attaque oppose une compétence offensive (<em>Maniement d'Arme</em>, <em>Ballistique</em>, <em>Mains Nues</em>) à une compétence défensive (<em>Esquive</em>, <em>Défense Corporelle</em>) ou à une cible sans défense, en <a class=\"rule-ref\" href=\"livre_2.html#chap-7\" data-tip=\"Duel à l'aveugle : chacun lance son dé + PA, le meilleur gagne. Seul le vainqueur coche (§7.3).\">duel à l'aveugle</a>.<br>\n                            Chaque <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a> engagé confère <strong>+1 point direct</strong> au résultat du jet respectif, chaque PE (<a class=\"rule-ref\" href=\"livre_1.html#sec-4-2\" data-tip=\"Essoufflement : 1 point = des PA d'urgence ; ne part pas tout seul, action dédiée pour souffler (§4.2).\">Essoufflement</a>, plafond Constitution) <strong>+1 point direct</strong> — et les deux mises sont <strong>déclarées à l'aveugle avant tout jet</strong>. Aucun résultat n'est révélé avant que les deux camps aient engagé leur mise. La séquence se déroule impérativement en 3 temps :<br>\n                            <strong>1. Déclaration de l'Attaquant :</strong> L'attaquant désigne sa cible, annonce son action (compétence + zone visée) et engage sa mise : coût de base du coup (2\n                            PA standard, ou 3 PA pour annuler le malus de visée) + PA bonus et/ou PE déclarés (débités aussitôt, +1 / PA, +1 / PE). <em>Exemple : Mains Nues +2 <a class=\"rule-ref\" href=\"livre_2.html#chap-6\" data-tip=\"Entraînement : +1 palier de dé chacun, max +3 par compétence, 5 XP (10 si croisé) (§6.1).\">entraînements</a>, FOR 5 = +2 <a class=\"rule-ref\" href=\"livre_2.html#chap-6\" data-tip=\"Niveau de dé : chaque cran monte le dé — d2 ➔ d4 ➔ d6 ➔ d8 ➔ d10 ➔ d12 (§6.1).\">niveaux</a> → 4 niveaux depuis d2 (d2 ➔ d4 ➔ d6 ➔ d8 ➔ <strong>d10</strong>), mise cachée +2 PA.</em> Le résultat reste <strong>caché</strong>.<br>\n                            <strong>2. Déclaration Aveugle de la Cible :</strong> La cible déclare <strong>sans avoir vu ni le jet ni la mise de l'attaquant</strong> si elle engage une défense active ou si elle reste passive :\n                            <ul>\n                                <li><strong>Défense Active (Habituelle) :</strong> Le défenseur annonce sa compétence défensive (<em>Esquive</em> ou <em>Parade / Défense Corporelle</em>, avec malus d'1 <a class=\"rule-ref\" href=\"livre_2.html#chap-6\" data-tip=\"Niveau de dé : chaque cran monte le dé — d2 ➔ d4 ➔ d6 ➔ d8 ➔ d10 ➔ d12 (§6.1).\">niveau de dé</a> si paré à l'arme sans spé Épée) et engage sa mise : coût de base de réaction (1 PA) + PA bonus et/ou PE déclarés (débités aussitôt). <em>Exemple : Esquive 1 <a class=\"rule-ref\" href=\"livre_2.html#chap-6\" data-tip=\"Entraînement : +1 palier de dé chacun, max +3 par compétence, 5 XP (10 si croisé) (§6.1).\">entraînement</a>, AGI 5 = +2 niveaux → 3 niveaux depuis d2 (d2 ➔ d4 ➔ d6 ➔ <strong>d8</strong>), mise cachée +1 PA.</em></li>\n                                <li><strong>Défense Passive (Choix Tactique) :</strong> Le défenseur <strong>décide de ne pas se défendre</strong> (pour préserver ses PA ou s'il est surpris). Il ne consomme aucun PA ni PE, ne lance aucun dé, son score de défense est égal à <strong>0</strong>, et l'attaque touche automatiquement avec la marge totale du jet attaquant !</li>\n                            </ul> S'il veut réagir mais n'a aucun PA pour payer la réaction de base\n                            (0 PA), il ne peut réagir activement : il subit une pénalité réflexe de -2.<br>\n                            <strong>3. Révélation Simultanée & Résolution Normale :</strong> Les deux dés sont lancés <strong>ensemble</strong> avec les mises déclarées, puis révélés en même temps. Le différentiel net\n                            (Attaque finale − Défense finale) détermine la touche chirurgicale et les dégâts réels, exactement comme prévu (blocage si négatif, déviation si 0, touche + différentiel en dégâts si positif, puis armure, <a class=\"rule-ref\" href=\"livre_6.html#sec-23-2\" data-tip=\"Encaissement = CON × 2 : seuil comparé aux dégâts du coup (§23.2).\">encaissement</a> et états).\n                        </div>\n                    </div>\n\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "economie_pa"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <h3 id=\"sec-20-2\">20.2 L'Essoufflement : Dépasser ses Limites</h3>\n                    <p>\n                        Tu n'as plus de <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a> mais tu dois parer, sinon tu prends le coup ?\n                        Tu forces. Tu prends des <a class=\"rule-ref\" href=\"livre_1.html#sec-4-2\" data-tip=\"Essoufflement : 1 point = des PA d'urgence ; ne part pas tout seul, action dédiée pour souffler (§4.2).\"><strong>Points d'Essoufflement</strong></a>.\n                        Ça te sauve maintenant, et tu récupères en reprenant ton souffle à ton prochain tour.\n                    </p>\n\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "essoufflement"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <h3 id=\"sec-20-3\">20.3 Barème des Coûts en Points d'Action Types</h3>\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "couts_pa"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <div class=\"callout temporal\">\n                        <div class=\"callout-header\">\n                            <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\"\n                                stroke-width=\"2\">\n                                <circle cx=\"12\" cy=\"12\" r=\"10\" />\n                                <polyline points=\"12 6 12 12 14 14\" />\n                            </svg>\n                            Barème des Réactions (Hors de son Tour)\n                        </div>\n                        <div class=\"callout-body\">\n                            <ul style=\"margin-bottom: 0;\">\n                                <li><strong>Parade / Esquive réactive :</strong> coût de base de réaction (<strong>1 <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a></strong>) + mises aveugles (<a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a> bonus / PE). Sans <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a> : réflexe à -2.</li>\n                                <li><strong>Guet / Overwatch :</strong> <strong>2 <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a></strong> payés pendant son propre tour (arme à distance requise) : réserve <strong>1 tir automatique en <a class=\"rule-ref\" href=\"livre_2.html#chap-7\" data-tip=\"Duel à l'aveugle : chacun lance son dé + PA, le meilleur gagne. Seul le vainqueur coche (§7.3).\">duel aveugle</a></strong> dans le rayon de l'arme, consommé au premier déclenchement, expiré au prochain tour personnel, annulé si <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"Étourdi : −1 ec sur tous les jets.\">Étourdi</a> / <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"Paralysé : aucune action ni réaction, incapacité totale (§24.1).\">Paralysé</a>.</li>\n                                <li><strong>Opportunité / Désengagement (<a class=\"rule-ref\" href=\"#sec-20-4\" data-tip=\"Opportunité : quitter le contact expose à frappe, poursuite, blocage ou balayage (§20.4).\">§20.4</a>) :</strong> quitter le <strong>contact (≤ 1 case)</strong> expose à <strong>1 réaction par voisin ennemi</strong> au contact (1/round chacun) : <strong>Frappe gratuite</strong>, <strong>Poursuite</strong> (1 <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a>, suit d'1 case), <strong>Blocage</strong> (1 <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a>, annule le pas, sans grapple, <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a> remboursés), <strong>Balayage</strong> (gratuit, Jambes). <strong>Décrochage</strong> (1 <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a>) ou <strong>spé esquive</strong> (Roulade de Décrochage, Acrobatie d'Évitement) : aucun déclenchement.</li>\n                                <li><strong>Garde du corps / Interception (<a class=\"rule-ref\" href=\"#sec-20-5\" data-tip=\"Garde du corps : au contact d'un allié attaqué, prend le coup à sa place pour 1 PA (§20.5).\">§20.5</a>, RD-032) :</strong> coût de réaction (<strong>1 <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a></strong>) : s'interposer au contact (distance ≤ 1 case) pour <strong>prendre le coup à la place d'un allié</strong> visé par une attaque (Tenir la Ligne). Le <a class=\"rule-ref\" href=\"livre_2.html#chap-7\" data-tip=\"Duel à l'aveugle : chacun lance son dé + PA, le meilleur gagne. Seul le vainqueur coche (§7.3).\">duel</a> est réorienté vers le protecteur qui encaisse avec son armure et ses compétences défensives.</li>\n                                <li><strong>Lutte / Grapple & Traînée (<a class=\"rule-ref\" href=\"#sec-20-6\" data-tip=\"Lutte : 2 PA au contact, duel Athlétisme vs Athlétisme. Succès = Immobilisé, puis traînée ou étranglement (§20.6).\">§20.6</a>, RD-039) :</strong> coût <strong>2 <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a></strong> au contact (distance ≤ 1 case) : <strong><a class=\"rule-ref\" href=\"livre_2.html#chap-7\" data-tip=\"Épreuve opposée : les deux lancent en aveugle, dé + PA − malus. Égalité = statu quo (§7.3).\">duel opposé aveugle</a> Athlétisme vs Athlétisme</strong>. Succès = cible <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"Immobilisé : impossible de faire la moindre action de mouvement (§24.1).\"><strong>Immobilisée</strong></a>. Permet ensuite la <strong>traînée de corps</strong> (2 <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a>, 1 case) et l'<strong>étranglement</strong> (2 <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a>, <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1bis\" data-tip=\"Asphyxie : PV + drain de 1 PA par tour. Soin : désobstruction (premiers soins + kit).\">Asphyxie</a>). Dégagement en duel opposé (2 <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a>) ou relâchement volontaire (0 <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a>).</li>\n                                <li><strong>Charge & Sprint (<a class=\"rule-ref\" href=\"#sec-20-7\" data-tip=\"Charge : 3+ cases au contact = +2 dégâts mêlée, −1 défense 1 tour. Sprint bloque le tir (§20.7).\">§20.7</a>, RD-038) :</strong> assaut d'approche de <strong>3+ cases</strong> au contact : <strong>+2 dégâts</strong> sur l'attaque de mêlée consécutive, <strong>-1 défense</strong> jusqu'au prochain tour personnel. Tout déplacement de 3+ cases (sprint) <strong>bloque le tir</strong> pour le reste du tour en cours.</li>\n                            </ul>\n                        </div>\n                    </div>\n\n                    <h3 id=\"sec-20-4\">20.4 Attaques d'Opportunité & Désengagement (RD-031)</h3>\n                    <p>\n                        Tu es au <strong>contact (1 case ou moins)</strong> et tu veux partir ?\n                        Chaque ennemi que tu lâches gagne <strong>1 réaction d'opportunité</strong>.\n                        Tu restes collé, tu tournes autour : rien ne se passe.\n                        Tu recules d'une case : ça déclenche.\n                        Frapper puis fuir, c'est le hit-and-run : sans retrait propre, tu prends une riposte.\n                    </p>\n\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "opportunite"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <ul>\n                        <li><strong>🗡️ Frappe d'opportunité (0 <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a>, défaut) :</strong> coup de mêlée réflexe en <a class=\"rule-ref\" href=\"livre_2.html#chap-7\" data-tip=\"Duel à l'aveugle : chacun lance son dé + PA, le meilleur gagne. Seul le vainqueur coche (§7.3).\">duel\n                            aveugle</a> auto (compétence de l'arme de contact, sinon Mains Nues). Consomme l'unique\n                            réaction du round.</li>\n                        <li><strong>👣 Poursuite (1 <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a>) :</strong> au lieu de frapper, suit le fuyard d'<strong>1 case</strong>\n                            (case libérée) en réaction à son déplacement. Sans attaque, sans grapple. Le suivi ne\n                            provoque aucune réaction <strong>d'opportunité</strong> à son tour (pas de ping-pong ;\n                            un <strong>guet</strong> adverse peut toujours tirer sur l'arrivée, RD-030).</li>\n                        <li><strong>🛡️ Blocage (1 <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a>) :</strong> <a class=\"rule-ref\" href=\"livre_2.html#chap-7\" data-tip=\"Épreuve opposée : les deux lancent en aveugle, dé + PA − malus. Égalité = statu quo (§7.3).\">duel opposé aveugle</a> <strong>Athlétisme vs\n                            Athlétisme</strong> (mises à 0). Victoire du bloqueur = le <strong>pas est annulé</strong>,\n                            sans grapple permanent : le fuyard reste sur sa case et <strong>ses <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a> de déplacement\n                            sont remboursés</strong> (intégral s'il n'a pas bougé, prorata sinon). Échec = réaction\n                            et <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a> dépensés, le fuyard passe.</li>\n                        <li><strong>🦵 Balayage (0 <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a>, variante) :</strong> frappe gratuite visant les\n                            <strong>Jambes</strong> : <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\"><strong>À Terre</strong></a> + <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"Ralenti : toute action coûte le double de PA.\"><strong>Ralenti</strong></a> en cas de choc traumatique,\n                            au lieu de dégâts maximaux. Idéal pour clouer un fuyard.</li>\n                    </ul>\n\n                    <ul>\n                        <li><strong>💨 Décrochage (1 <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a>, <a class=\"rule-ref\" href=\"#sec-22-2\" data-tip=\"Décrochage : recule d'1 case pour 1 PA, rompt le Canon Entravé et ne provoque rien (§22.2).\">Livre V §22.2</a>) :</strong> retrait propre payé pendant son tour :\n                            le <strong>prochain déplacement</strong> ne provoque aucune réaction (frappe, poursuite,\n                            blocage, balayage). Expire au prochain tour personnel si inutilisé. L'IA l'utilise pour\n                            ses replis quand ses <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a> le permettent.</li>\n                        <li><strong>Exemption esquive :</strong> les spécialisations <strong>Roulade de Décrochage</strong>\n                            (et branches) et <strong>Acrobatie d'Évitement</strong> permettent de quitter le contact\n                            <strong>sans provoquer</strong> — base du hit-and-run des duellistes.</li>\n                        <li><strong>Budget :</strong> 1 réaction d'opportunité par round et par combattant, rechargée au\n                            début de son tour personnel. Annulée si <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"Étourdi : −1 ec sur tous les jets.\">Étourdi</a> / <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"Paralysé : aucune action ni réaction, incapacité totale (§24.1).\">Paralysé</a> / <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"Sonné : aucune action. La créature tombe immédiatement à terre.\">Sonné</a> / <a class=\"rule-ref\" href=\"livre_6.html#sec-24-3\" data-tip=\"Inconscient : aucune action ni réaction. Réveil par secousse vigoureuse (1 PA) ou premiers soins.\">Inconscient</a> (même\n                            assiette que le guet). Tué en cours de trajet par une frappe : le déplacement s'interrompt\n                            sur la case atteinte.</li>\n                    </ul>\n\n                    <h3 id=\"sec-20-5\">20.5 Garde du Corps & Interception d'Allié (RD-032)</h3>\n                    <p>\n                        Ton pote se fait attaquer juste à côté de toi — à <strong>1 case ou moins</strong>.\n                        Tu as la technique <strong>Mener : Tenir la Ligne !</strong> ou la spé\n                        <strong>Garde du corps</strong> ? Tu peux te jeter devant et\n                        <strong>prendre le coup à sa place</strong>.\n                    </p>\n\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "garde_corps"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <ul>\n                        <li><strong>🛡️ Prise de coup réflexe (1 <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a> réaction) :</strong> dès qu'un ennemi déclare une\n                            attaque contre un allié adjacent, le protecteur qualifié (spé <em>Tenir la Ligne</em>,\n                            donneur du bonus de blindage d'escouade ou garde du corps désigné) peut dépenser 1 <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a>\n                            et sa réaction du round pour absorber l'offensive.</li>\n                        <li><strong>Posture préventive (0 PA) :</strong> pendant son propre tour, le protecteur peut\n                            désigner un allié adjacent via le menu contextuel pour en faire son protégé prioritaire.</li>\n                        <li><strong>Résolution du duel :</strong> l'attaque touche le protecteur. La base de réaction\n                            étant déjà payée lors de l'interposition, le protecteur peut engager ses mises défensives\n                            (ou absorber en encaissement passif). L'allié ciblé initialement n'encourt aucun dégât.</li>\n                        <li><strong>Restrictions :</strong> impossible si le protecteur est neutralisé (<a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"Étourdi : −1 ec sur tous les jets.\">Étourdi</a>, <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"Paralysé : aucune action ni réaction, incapacité totale (§24.1).\">Paralysé</a>,\n                            <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"Sonné : aucune action. La créature tombe immédiatement à terre.\">Sonné</a>, <a class=\"rule-ref\" href=\"livre_6.html#sec-24-3\" data-tip=\"Inconscient : aucune action ni réaction. Réveil par secousse vigoureuse (1 PA) ou premiers soins.\">Inconscient</a>), s'il a déjà dépensé sa réaction ce round, s'il manque de <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a> (1 <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a> de base,\n                            2 <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a> sous <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"Ralenti : toute action coûte le double de PA.\">Ralenti</a>), ou si la distance dépasse 1 mètre (1 case).</li>\n                    </ul>\n\n                    <h3 id=\"sec-20-6\">20.6 Lutte, Grapple & Traînée de Corps (RD-039)</h3>\n                    <p>\n                        Pas besoin d'être spécialiste pour attraper quelqu'un. Au contact —\n                        <strong>1 case ou moins</strong> — tu peux ceinturer, clouer sur place,\n                        traîner ou étrangler. La <em>Clé d'Articulation</em> (Livre III, Mains Nues),\n                        c'est autre chose : une technique de spécialiste. Ici, c'est la lutte simple, ouverte à tous.\n                    </p>\n\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "lutte"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <ul>\n                        <li><strong>🥋 Prise au Corps-à-Corps (2 <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a>, contact) :</strong> <a class=\"rule-ref\" href=\"livre_2.html#chap-7\" data-tip=\"Épreuve opposée : les deux lancent en aveugle, dé + PA − malus. Égalité = statu quo (§7.3).\">duel opposé aveugle</a>\n                            <strong>Athlétisme</strong> (ou Mains Nues) de l'assaillant contre <strong>Athlétisme</strong>\n                            (ou Défense Corporelle) du défenseur. Victoire de l'assaillant (Diff ≥ 0) = la cible est saisie\n                            et subit l'état <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"Immobilisé : impossible de faire la moindre action de mouvement (§24.1).\"><strong>Immobilisé 1 tour</strong></a> (-2 esquive active, déplacement impossible).\n                            En cas d'échec (Diff &lt; 0), la prise est esquivée ou repoussée.</li>\n                        <li><strong>🔓 Se Libérer de la Prise (2 <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a>) :</strong> la victime saisie peut tenter de briser\n                            l'étreinte lors de son propre tour via un <a class=\"rule-ref\" href=\"livre_2.html#chap-7\" data-tip=\"Épreuve opposée : les deux lancent en aveugle, dé + PA − malus. Égalité = statu quo (§7.3).\">duel opposé aveugle</a> (meilleure compétence entre\n                            Athlétisme, Mains Nues et Acrobatie vs Athlétisme du grappler). Victoire = l'état <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"Immobilisé : impossible de faire la moindre action de mouvement (§24.1).\">Immobilisé</a>\n                            est immédiatement dissipé et la prise est rompue.</li>\n                        <li><strong>🥋 Relâcher la Prise (0 PA) :</strong> le grappler peut rompre volontairement son étreinte\n                            à tout moment pendant son tour, libérant la cible de son immobilisation. Tout déplacement\n                            individuel du grappler rompt automatiquement la prise.</li>\n                        <li><strong>🤼 Traîner le corps (2 PA, 1 case) :</strong> le porteur recule ou pivote vers une case libre\n                            adjacente (coût 2 PA) et tire la victime saisie (ou tout allié/ennemi immobilisé, inconscient ou à terre)\n                            dans la case qu'il vient de libérer. Les deux combattants avancent de concert sans déclencher de réaction\n                            d'opportunité, préservant la distance de contact et le verrou de lutte.</li>\n                        <li><strong>🫁 Étranglement (2 <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a>, contact) :</strong> compression de la gorge sur cible saisie ou immobilisée\n                            (<a class=\"rule-ref\" href=\"livre_2.html#chap-7\" data-tip=\"Épreuve opposée : les deux lancent en aveugle, dé + PA − malus. Égalité = statu quo (§7.3).\">duel opposé</a> <strong>Athlétisme vs Endurance Physique</strong>). Victoire = 2+ dégâts ignorant\n                            l'armure au cou (trachée) + application du statut <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1bis\" data-tip=\"Asphyxie : PV + drain de 1 PA par tour. Soin : désobstruction (premiers soins + kit).\"><strong>Asphyxie pendant 2 tours</strong></a>\n                            (drain d'1 <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a> de réserve par tour et pool de 2 dégâts résiduels dégressifs).</li>\n                        <li><strong>Rupture automatique :</strong> la lutte est immédiatement rompue si le grappler ou la victime\n                            meurt, tombe <a class=\"rule-ref\" href=\"livre_6.html#sec-24-3\" data-tip=\"Inconscient : aucune action ni réaction. Réveil par secousse vigoureuse (1 PA) ou premiers soins.\">inconsciente</a>, est <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"Sonné : aucune action. La créature tombe immédiatement à terre.\">sonnée</a>, <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"Paralysé : aucune action ni réaction, incapacité totale (§24.1).\">paralysée</a> ou <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"Étourdi : −1 ec sur tous les jets.\">étourdie</a>.</li>\n                    </ul>\n\n                    <h3 id=\"sec-20-7\">20.7 Charge d'Assaut, Sprint & Verrouillage du Tir (RD-038)</h3>\n                    <p>\n                        Tu prends de l'élan — <strong>3 cases ou plus d'affilée</strong> — et tu arrives lancé.\n                        Ton coup tape plus fort, mais tu arrives déséquilibré. C'est ça, la\n                        <strong>Charge</strong> et le <strong>Sprint</strong> : plus d'impact, moins de garde.\n                    </p>\n\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "charge_sprint"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <ul>\n                        <li><strong>⚡ Impact de Charge (+2 dégâts) :</strong> le bonus s'applique aux dégâts de l'attaque\n                            de contact (mêlée, mains nues, arme blanche ou contondante). Il est consommé dès la résolution de la frappe.\n                            Il n'augmente pas les tirs à distance.</li>\n                        <li><strong>🛡️ Exposition défensive (-1 défense jusqu'au prochain tour) :</strong> le chargeur s'expose\n                            en brisant sa garde pour maximiser son élan. Tout <a class=\"rule-ref\" href=\"livre_2.html#chap-7\" data-tip=\"Duel à l'aveugle : chacun lance son dé + PA, le meilleur gagne. Seul le vainqueur coche (§7.3).\">duel</a> où il se défend (parade, esquive active ou réflexe)\n                            subit un malus de <strong>-1</strong>. Ce malus persiste pendant le reste de son tour et durant les tours\n                            adverses, jusqu'au début de son propre tour personnel suivant (recalage à <code>ResetTurn</code>).</li>\n                        <li><strong>🏃 Verrouillage du Tir (« Sprint bloque tir ce tour ») :</strong> courir à pleine vitesse\n                            (3 cases ou plus) rompt la posture de visée. Toute arme à distance (pistolets, fusils, arcs,\n                            armes de jet) est neutralisée pour le reste du tour en cours. La frappe au corps-à-corps reste\n                            pleinement accessible.</li>\n                        <li><strong>🧭 Pathfinder & Exécution :</strong> l'algorithme <code>HexPathfinder</code> calcule\n                            les trajectoires d'assaut vers les flancs libres de la cible (<code>FindChargePath</code>).\n                            L'action contextuelle <strong>⚡ Charge au contact</strong> permet d'enchaîner en un clic\n                            la course d'approche et la frappe chirurgicale au Torse.</li>\n                    </ul>\n\n                    <!-- ================= CHAPITRE 25 ================= -->\n                    "
+    }
+   ]
+  },
+  {
+   "id": "chap-21",
+   "symbole": "Chapitre 21.",
+   "titre": "Déplacements, Poursuites & Attaques de Groupe",
+   "blocs": [
+    {
+     "type": "html",
+     "html": "\n\n                    <p>\n                        Compte <strong>1 case = 1 mètre</strong>. Chaque pas coûte des <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a>.\n                        Tu avances trop loin sans garder de quoi parer ? Tu offres une contre-attaque.\n                        Bouge, mais garde toujours de quoi te défendre.\n                    </p>\n\n                    <h3 id=\"sec-21-1\">21.1 La Règle de Course & Poursuite : « Se Sauver en Combat »</h3>\n                    <p>\n                        Tu veux semer un ou plusieurs ennemis ? Ce n'est pas juste courir.\n                        C'est un <strong>concours d'Athlétisme sous pression</strong> : toi contre chacun d'eux.\n                        Chacun lance son <a class=\"rule-ref\" href=\"livre_2.html#chap-7\" data-tip=\"Épreuve : lance ton dé de compétence + PA − malus contre le seuil du MJ (§7.1).\">épreuve</a> d'Athlétisme, <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a> et <a class=\"rule-ref\" href=\"livre_1.html#sec-4-2\" data-tip=\"Essoufflement : 1 point = des PA d'urgence ; ne part pas tout seul, action dédiée pour souffler (§4.2).\">essoufflement</a> injectés autorisés.\n                    </p>\n\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "poursuite"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <ul>\n                        <li><strong>Sur chaque réussite de la proie contre un poursuivant :</strong> La proie maintient\n                            la distance et ne peut pas être approchée à moins de <strong>1 case</strong> par ce\n                            poursuivant, même si la vitesse brute de celui-ci aurait dû l'amener plus loin (ex: Proie\n                            fait 15, Poursuivant fait 7 : le poursuivant reste bloqué à distance).</li>\n                        <li><strong>Sur une faillite de la proie :</strong> Le poursuivant gagne du terrain et réduit la\n                            distance.</li>\n                        <li><strong>Règle d'Arrêt aux 4 Faillites :</strong> Dès que le total cumulé de faillites de la\n                            proie contre l'ensemble des poursuivants atteint <strong>4</strong>, la proie est\n                            définitivement rattrapée et acculée.</li>\n                    </ul>\n\n                    <h3 id=\"sec-21-2\">21.2 Les Attaques Combinées de Groupe</h3>\n                    <p>\n                        Face à une défense trop dure ou une grosse bête, frappez ensemble.\n                        À deux ou plus, vous synchronisez vos coups pour passer là où un seul n'y arriverait pas.\n                    </p>\n\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "assaut_groupe"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <h3 id=\"chap-21-3\">21.3 Couvert, Visibilité & Ligne de Mire</h3>\n                    <p>\n                        Tu n'es pas toujours une cible facile. Un muret, une barricade, un pilier :\n                        ça cache une partie de toi <strong>pour celui qui te vise</strong>.\n                        Le couvert dépend toujours de l'angle : tu peux être à découvert pour un tireur\n                        et invisible pour un autre.\n                    </p>\n\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "couvert"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <div class=\"formula-box wide\">\n                        <div class=\"formula-label\">Lecture Humaine de la Ligne de Mire : Meilleur Coin ➔ Ce Que Tu Vois ➔ Couvert</div>\n                        <div class=\"formula-math\">\n                            <span class=\"hl-cyan\">Meilleur coin</span> &nbsp;➔&nbsp; <span class=\"hl-gold\">Ce que tu vois</span> &nbsp;➔&nbsp; <span class=\"hl-emerald\">Surface visible</span> &nbsp;➔&nbsp; <span class=\"hl-ruby\">Couvert</span>\n                        </div>\n                        <div class=\"formula-desc\">\n                            Le personnage occupe <strong>toute sa case</strong> : il se penche toujours du bon côté\n                            pour tirer, jamais « du centre ».<br>\n                            <strong>1. Prends ton meilleur coin :</strong> mets ton œil au <strong>coin de ta\n                            case</strong> qui voit le mieux la cible. Si un seul coin passe, c'est celui-là qui\n                            compte.<br>\n                            <strong>2. Regarde à hauteur de table :</strong> baisse-toi à hauteur des figurines et\n                            vise la silhouette adverse, des pieds au sommet de la tête (1,8 m). Tout ce qui est\n                            entre compte pour de vrai : <strong>muret (genoux, 0,7 m), barricade (ventre, 1,2 m),\n                            mur (caché, 2,2 m), piliers, caisses, mobilier</strong> — même si la case est marquée\n                            à découvert — et le <strong>relief</strong> lui-même : une crête masque aussi bien\n                            qu'un mur.<br>\n                            <strong>3. Combien tu en vois :</strong> <strong>tout le corps</strong> ➔ à découvert\n                            (<strong>0</strong>) ; <strong>la moitié cachée</strong> (jambes derrière un muret, flanc\n                            derrière un coin de mur) ➔ moitié couvert (<strong>-1</strong>) ;\n                            <strong>il ne dépasse qu'une tête, une épaule, une main</strong> (torse caché par une\n                            barricade, deux obstacles en enfilade) ➔ trois-quarts couvert (<strong>-2</strong>) ;\n                            <strong>rien ne dépasse</strong> ➔ couvert total, <strong>attaque directe\n                            impossible</strong>.<br>\n                            En cas de doute : moitié = ça cache jusqu'à la taille, trois-quarts = ça cache jusqu'au\n                            cou.<br>\n                            <strong>Au contact (distance ≤ 1 case)</strong>, les combattants se voient : le couvert est\n                            <strong>ignoré</strong>.\n                        </div>\n                    </div>\n\n                    <ul>\n                        <li><strong>Malus d'attaque, pas bonus de défense :</strong> le -1 / -2 s'applique au\n                            <strong>total d'attaque</strong> (comme le malus de visée anatomique), annoncé en Phase 1\n                            du <a class=\"rule-ref\" href=\"livre_2.html#chap-7\" data-tip=\"Duel à l'aveugle : chacun lance son dé + PA, le meilleur gagne. Seul le vainqueur coche (§7.3).\">duel aveugle</a> (<a class=\"rule-ref\" href=\"#sec-20-1\" data-tip=\"Duel aveugle : mises cachées attaquant puis défenseur, révélation simultanée (§20.1).\">§20.1</a>) et tracé dans le journal de combat. Le jet de défense du défenseur\n                            n'est pas modifié.</li>\n                        <li><strong>Cumul tactique :</strong> couvert, punition de visée (-1 ou +1 <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a>), <a class=\"rule-ref\" href=\"#sec-22-2\" data-tip=\"Canon Entravé : arme longue + ennemi adjacent = −2 au tir, visée précise pour +1 PA (§22.2).\">Canon Entravé</a>\n                            (-2) et mises aveugles (<a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a> / PE) se cumulent. <em>Exemple : un tir à 6 cases sur une cible\n                            aux trois-quarts couverte en visant la tête part à <strong>-3 avant mises</strong>\n                            (-2 couvert, -1 visée).</em></li>\n                        <li><strong>Couvert total :</strong> l'attaque est <strong>refusée avant tout jet et sans\n                            coût</strong> (ni <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a> de base, ni mise engagée). Seules issues : <strong>se déplacer</strong>\n                            pour retrouver une ligne de mire, contourner l'obstacle, ou passer par un effet de zone.</li>\n                        <li><strong>Effets de zone (grenades, souffles) :</strong> le souffle contourne les obstacles :\n                            le couvert <strong>réduit les dégâts</strong> au lieu d'interdire (muret -2, barricade haute\n                            -3, mur -4 et bloque les éclats). Un tir lobé (mortier) ignore les couverts partiels. Voir\n                            <a class=\"rule-ref\" href=\"livre_8.html#chap-32\" data-tip=\"Armes à zone et munitions : le souffle contourne le couvert, dégâts réduits (§32.3).\">Livre VIII §32.3</a>.</li>\n                    </ul>\n\n                    <div class=\"callout temporal\">\n                        <div class=\"callout-header\">\n                            <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\"\n                                stroke-width=\"2\">\n                                <circle cx=\"12\" cy=\"12\" r=\"10\" />\n                                <polyline points=\"12 6 12 12 14 14\" />\n                            </svg>\n                            Exemple de Table : Tir sous Couvert\n                        </div>\n                        <div class=\"callout-body\">\n                            Mina (Ballistique) vise un garde à 5 cases, accroupi derrière un muret (moitié visible) :\n                            son total d'attaque subit <strong>-1 de couvert</strong>, déclaré en Phase 1 puis révélé\n                            avec les mises. Si le garde recule derrière un pilier (couvert total), le tir devient\n                            <strong>impossible</strong> : Mina doit se déplacer, changer de cible, ou demander un tir\n                            de mortier à son allié.\n                        </div>\n                    </div>\n\n                    <h3 id=\"chap-21-4\">21.4 Brouillard de Guerre Asymétrique</h3>\n                    <p>\n                        Tu ne vois que ce que ton perso voit. Une case hors de vue reste dans le noir.\n                        Un ennemi non repéré est <strong>invisible et impossible à viser</strong> —\n                        jusqu'à ton jet d'<a class=\"rule-ref\" href=\"livre_3.html#chap-12\" data-tip=\"Observation : repérer un indice, un danger, un ennemi camouflé. Duel vs Discrétion (§12).\">Observation</a> ou son tir bruyant qui le trahit.\n                        Le MJ, lui, voit tout : c'est lui l'arbitre.\n                    </p>\n\n                    <div class=\"formula-box wide\">\n                        <div class=\"formula-label\">Vision à 360°, limitée seulement par l'environnement</div>\n                        <div class=\"formula-math\">\n                            <span class=\"hl-emerald\">360° tout autour</span> &nbsp;➔&nbsp; <span class=\"hl-cyan\">Le décor décide</span> &nbsp;➔&nbsp; <span class=\"hl-gold\">Mur plein = obscurité</span>\n                        </div>\n                        <div class=\"formula-desc\">\n                            <strong>1. Pas de dos :</strong> en combat, un personnage voit à <strong>360° autour de\n                            lui</strong>. Pas de cône frontal, pas d'angle mort : attaquer « par-derrière » ne donne\n                            aucun bonus.<br>\n                            <strong>2. Pas de limite chiffrée :</strong> tu vois <strong>aussi loin que le décor le\n                            permet</strong>. Pas de courte ou longue portée. Seuls l'<strong>environnement et la\n                            météo</strong> t'arrêtent : mur, pilier, relief, nuit, fumée, tempête, pluie. Le MJ annonce\n                            en début d'affrontement ce qui bouche la vue, et le change quand la situation change.<br>\n                            <strong>3. Tes yeux ne sont pas des jumelles :</strong> Vision et Ouïe ne prolongent jamais\n                            la vue. Ils servent à <strong>repérer</strong> : jet d'<a class=\"rule-ref\" href=\"livre_3.html#chap-12\" data-tip=\"Observation : repérer un indice, un danger, un ennemi camouflé. Duel vs Discrétion (§12).\"><strong>Observation</strong></a>\n                            (Vision + Instinct), jet d'<strong>Écoute</strong> (Ouïe + Instinct), <a class=\"rule-ref\" href=\"livre_3.html#chap-11\" data-tip=\"Discrétion : se cacher, se déplacer sans bruit. S'oppose à l'Observation (§11).\">Discrétion</a> adverse\n                            et révélation au bruit (ci-dessous).<br>\n                            <strong>4. Murs et contact :</strong> un mur plein (<a class=\"rule-ref\" href=\"#chap-21-3\" data-tip=\"Couvert total : cible non visible pour l'attaquant — attaque directe impossible (§21.3).\"><strong>couvert total</strong></a>, §21.3)\n                            entre l'observateur et la case la plonge dans l'obscurité ; murets et barricades\n                            (moitié, trois-quarts) restent visibles. <strong>Au contact (≤ 1 case), on se voit\n                            toujours.</strong>\n                        </div>\n                    </div>\n\n                    <ul>\n                        <li><strong>Ennemi non détecté = invisible :</strong> silhouette masquée, aucun ciblage\n                            possible (tir, grenade ciblée, sort mono-cible). Seuls les effets de zone aveugles\n                            restent envisageables, sans bonus.</li>\n                        <li><strong>Observation active (1 <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a>) :</strong> <a class=\"rule-ref\" href=\"livre_2.html#chap-7\" data-tip=\"Épreuve opposée : les deux lancent en aveugle, dé + PA − malus. Égalité = statu quo (§7.3).\">duel opposé</a> <strong>Observation</strong>\n                            (observateur) vs <strong>Discrétion</strong> (cible) : <strong>-1 par case</strong>\n                            au-delà du contact, <strong>-1 / -2 / -4</strong> selon le couvert\n                            (moitié, trois-quarts, total — un couvert total rend l'observation\n                            <strong>impossible</strong>). Réussite ➔ cible <strong>révélée jusqu'à la fin du round\n                            suivant</strong>.                             Spécialités : <strong>Œil de Lynx +2</strong> au duel,\n                            <strong>Détection Thermique +2</strong> et devine une présence juste derrière un mur\n                            plein tout proche.</li>\n                        <li><strong>Tir bruyant = révélé :</strong> tout tir à distance (Ballistique, grenade,\n                            sort offensif — <strong>la mêlée reste silencieuse</strong>) révèle le tireur aux\n                            ennemis situés dans son <strong>rayon d'Ouïe</strong>, jusqu'à la <strong>fin du round\n                            suivant</strong>, sauf mur plein entre les deux.</li>\n                    </ul>\n\n                    <div class=\"callout temporal\">\n                        <div class=\"callout-header\">\n                            <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\"\n                                stroke-width=\"2\">\n                                <circle cx=\"12\" cy=\"12\" r=\"10\" />\n                                <polyline points=\"12 6 12 12 14 14\" />\n                            </svg>\n                            Exemple de Table : Repérage sous Brouillard\n                        </div>\n                        <div class=\"callout-body\">\n                            Par météo claire, Lucas ne voit pas le tireur embusqué à 9 cases :\n                            un pilier (<a class=\"rule-ref\" href=\"#chap-21-3\" data-tip=\"Couvert total : cible non visible pour l'attaquant — attaque directe impossible (§21.3).\">couvert total</a>) barre sa ligne de mire ➔ obscurité. Il dépense\n                            <strong>1 <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a></strong> en Observation active, mais à travers un couvert total\n                            l'observation est <strong>impossible</strong> : <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a> perdu. Le tireur riposte au fusil :\n                            <strong>tir bruyant</strong>, mais le pilier fait toujours mur plein entre eux ➔\n                            toujours invisible. Lucas contourne alors le pilier : le tireur passe à découvert\n                            devant lui ➔ <strong>automatiquement visible</strong>, sans aucun jet.\n                        </div>\n                    </div>\n\n                    <h3 id=\"chap-21-5\">21.5 Duo-Tech : Résonance Dyadique (Règles de Table)</h3>\n                    <p>\n                        Tu connais Lucas et Mina ? Lui calcule froid, elle frappe vite et chaud.\n                        Ensemble, ils font un <strong>Duo-Tech : une seule action à deux</strong>.\n                        Pas besoin de dessiner quoi que ce soit : vous lancez chacun une\n                        <a class=\"rule-ref\" href=\"livre_2.html#chap-7\" data-tip=\"Épreuve : lance ton dé de compétence + PA − malus contre le seuil du MJ (§7.1).\"><strong>épreuve de carac de base</strong></a> pour voir si vous êtes synchros (§21.5.2).\n                    </p>\n\n                    <div class=\"formula-box wide\">\n                        <div class=\"formula-label\">Séquence du Duo-Tech en 3 Temps</div>\n                        <div class=\"formula-math\">\n                            <span class=\"hl-cyan\">1. Condition + Déclaration + Paiement immédiat</span> &nbsp;➔&nbsp;\n                            <span class=\"hl-gold\">2. Double épreuve de synchro (carac de base vs ND)</span> &nbsp;➔&nbsp;\n                            <span class=\"hl-ruby\">3. Parfaite / Semi / Ratée</span>\n                        </div>\n                        <div class=\"formula-desc\">\n                            <strong>1. Condition & déclaration :</strong> le MJ valide la condition de placement du\n                            Duo-Tech visé (alignement, isolement, couloir vide…). Déclarable <strong>à tout moment\n                            pendant le tour personnel de l'un des deux partenaires</strong>, même après avoir déjà\n                            agi. L'initiateur paie <strong>1 <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a> de départ + son coût de rôle</strong>, le partenaire\n                            paie <strong>son coût de rôle immédiatement</strong> — même s'il n'a pas encore joué ce\n                            round. Pas assez de <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a> d'un côté = déclaration refusée, aucun débit.<br>\n                            <strong>Action unique :</strong> le Duo-Tech ne consomme l'action principale de personne.\n                            <strong>Limite : 1 Duo-Tech par personnage par round</strong>, initiateur ou partenaire.\n                            Une fois payé, le duo reste <strong>armé sans expiration</strong> jusqu'à exécution ou\n                            annulation — <strong><a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a> perdus dans les deux cas</strong>, aucun remboursement.<br>\n                            <strong>2. Synchronisation</strong> (§21.5.2) : les deux partenaires lancent leur épreuve\n                            simultanément.<br>\n                            <strong>3. Résolution :</strong> les deux réussissent ➔ <strong>Parfaite</strong> ; un seul\n                            ➔ <strong>Semi-succès</strong> (effet dégradé, décrit par le MJ selon qui a raté) ;\n                            aucun ➔ <strong>Ratée</strong> (<a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a> perdus, rien ne se produit).\n                        </div>\n                    </div>\n\n                    <p>\n                        <strong>Épreuve de synchronisation (remplace tout dessin).</strong> Chaque partenaire lance\n                        le <strong>dé de sa caractéristique de base</strong> attachée à son rôle —\n                        <strong>rôle Cinétique : Agilité</strong>, <strong>rôle Calcul : Intelligence</strong>\n                        (le MJ assigne les rôles pour tout autre binôme) — convertie en dé selon les paliers du\n                        <a class=\"rule-ref\" href=\"livre_2.html#chap-6\" data-tip=\"Base = moyenne des attributs liés : 1-2 +0 (d2), 3-4 +1 (d4), 5-6 +2 (d6), 7-8 +3 (d8), 9-10 +4 (d10) (Livre II §6.1).\">Livre II §6.1</a> (<strong>sans entraînement</strong> : 1-2 ➔ d2, 3-4 ➔ d4, 5-6 ➔ d6, 7-8 ➔ d8,\n                        9-10 ➔ d10).\n                    </p>\n\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "synchro_duo"
+    },
+    {
+     "type": "ref",
+     "cible": "duo_techs"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <ul>\n                        <li><strong>🔥 Sillage Igné :</strong> <em>Parfaite</em> — Mina dash gratuitement le long de\n                            la ligne (arrivée = case libre la plus proche si occupée) : <strong>4 dégâts</strong> par\n                            cible traversée + <strong>3 feu + <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1bis\" data-tip=\"En Feu : 2 PV/tour (bouclier d'abord), puis −1/tour. Il faut l'éteindre (§24.1bis).\">En Feu</a></strong>. <em>Semi</em> — dash + 4 + 1, et Mina\n                            encaisse <strong>2 dégâts</strong> (exposée au bout de la ligne). <em>Ratée</em> — PA\n                            perdus, Mina reste sur place.</li>\n                        <li><strong>🪢 Lacet de Nytharite :</strong> <em>Parfaite</em> — cible\n                            <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"Immobilisé : impossible de faire la moindre action de mouvement (§24.1).\"><strong>Immobilisée 1 tour</strong></a>, 0 dégât. <em>Semi</em> —\n                            <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"Ralenti : toute action coûte le double de PA.\"><strong>Ralenti 1 tour</strong></a> (coûts doublés). <em>Ratée</em> — la cible glisse hors du\n                            lasso.</li>\n                        <li><strong>♨️ Fournaise à Retardement :</strong> <em>Parfaite</em> — <strong>5 dégâts +\n                            <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"Étourdi : −1 ec sur tous les jets.\">Étourdi</a> 1 tour + −2 <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a></strong>. <em>Semi</em> — 3 dégâts, sans <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"Étourdi : −1 ec sur tous les jets.\">Étourdi</a>. <em>Ratée</em> —\n                            implosion éventée.</li>\n                        <li><strong>❄️ Trempe Inversée :</strong> <em>Parfaite</em> — cibles\n                            <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"Ralenti : toute action coûte le double de PA.\"><strong>Ralenties 1 tour</strong></a> et armures fissurées (<strong>−2 absorption</strong>\n                            jusqu'à la fin du round suivant). <em>Semi</em> — <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"Ralenti : toute action coûte le double de PA.\">Ralenti</a> seul. <em>Ratée</em> — le gel\n                            ne prend pas.</li>\n                        <li><strong>🛤️ Railgun Artisanale :</strong> <em>Parfaite</em> — <strong>8 perforants</strong>\n                            (ignore la moitié de l'armure) sur la cible dure. <em>Semi</em> — 5 dégâts, armure\n                            normale. <em>Ratée</em> — le couloir se referme.</li>\n                        <li><strong>✖️ Cisaille Entropique :</strong> <em>Parfaite</em> — <strong>5 dégâts +\n                            <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1bis\" data-tip=\"Saignement : PV directs en début de tour, puis −1/tour. Tout soin le stoppe (§24.1bis).\">Saignement</a></strong> sur chaque cible à l'intersection. <em>Semi</em> — 3 dégâts.\n                            <em>Ratée</em> — les branches se désynchronisent.</li>\n                        <li><strong>⧉ Parallaxe :</strong> <em>Parfaite</em> — la cible <strong>ne peut pas se\n                            défendre</strong> (score 0, comme une défense passive §20.1) contre la frappe conjointe\n                            à <strong>4 dégâts</strong>. <em>Semi</em> — défense à <strong>−2</strong>. <em>Ratée</em> —\n                            la cible esquive entre les deux temps.</li>\n                        <li><strong>🌫️ Mirage à Deux Temps :</strong> <em>Parfaite</em> — Mina se replace de\n                            <strong>3 cases gratuites</strong> + gagne <strong>une réaction défensive\n                            gratuite</strong> (0 PA) valable jusqu'à son prochain tour. <em>Semi</em> — replacement\n                            seul. <em>Ratée</em> — la pré-vision se brouille.</li>\n                        <li><strong>⬆️ Uppercut Thermobarique :</strong> <em>Parfaite</em> — <strong>7 dégâts + <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À\n                            Terre</a></strong>. <em>Semi</em> — 4 dégâts. <em>Ratée</em> — <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a> perdus\n                            <strong>+ 1 <a class=\"rule-ref\" href=\"livre_1.html#sec-4-2\" data-tip=\"Essoufflement : 1 point = des PA d'urgence ; ne part pas tout seul, action dédiée pour souffler (§4.2).\">Essoufflement</a> chacun</strong> (le whiff punit).</li>\n                    </ul>\n\n                    <div class=\"callout emerald\">\n                        <div class=\"callout-header\">\n                            Côté MJ : garder les Duo-Tech équilibrés\n                        </div>\n                        <div class=\"callout-body\">\n                            Sauf précision, les dégâts Duo-Tech sont <strong>directs</strong> (ils ignorent l'armure).\n                            Tu les résous comme une <a class=\"rule-ref\" href=\"livre_3.html#chap-13\" data-tip=\"Clé : manœuvre signature qui dépasse l'Encaissement et déclenche l'arbre à 0 PV (§13).\">Clé</a> (Livre III) : si le total dépasse l'<a class=\"rule-ref\" href=\"livre_6.html#sec-23-2\" data-tip=\"Encaissement = CON × 2 : seuil comparé aux dégâts du coup (§23.2).\">Encaissement</a>, tu appliques\n                            l'arbre à 0 PV (<a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Seuils vitales : Encaissement CON×2, Létal CON×5, Miracle (§23).\">Livre VI</a>). Le vrai prix, ce n'est pas le ND : c'est l'<strong>addition des PA</strong>.\n                            Compte 5 à 11 PA à deux : ça vide ~70% de vos réserves (héros typique : 11 PA) et vous laisse\n                            sans réaction derrière — c'est votre fenêtre de vulnérabilité. Ajoute les\n                            <strong>conditions de placement</strong> (alignement, isolement, couloir vide, opposition) :\n                            aucun Duo-Tech ne passe partout, tout le temps.\n                        </div>\n                    </div>\n\n                    <!-- ================= CHAPITRE 26 ================= -->\n                    "
+    }
+   ]
+  },
+  {
+   "id": "chap-22",
+   "symbole": "Chapitre 22.",
+   "titre": "Localisation Anatomique & Combat de Véhicules",
+   "blocs": [
+    {
+     "type": "html",
+     "html": "\n\n                    <p>\n                        Ici, pas de jauge de PV abstraite. Chaque coup touche un endroit précis —\n                        bras, tête, jambes — avec un effet direct. Tu vises, tu touches, et le corps <a class=\"rule-ref\" href=\"livre_6.html#sec-23-2\" data-tip=\"Encaissement = CON × 2 : seuil comparé aux dégâts du coup (§23.2).\">encaisse</a> ou casse.\n                    </p>\n\n                    <h3 id=\"sec-22-1\">22.1 Cible Visée & Le Différentiel de Touche</h3>\n                    <p>\n                        Tu peux viser où tu veux : cœur, yeux, poumons, tête, bras, jambes.\n                        Annonce-le avant de lancer :\n                    </p>\n                    <p>\n                        <strong>Rappel officiel :</strong> le total d'attaque comme de défense vaut <strong>Tirage du dé de compétence + <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a> injectés + malus situationnels</strong>. <strong>Aucun modificateur de caractéristique n'est ajouté</strong> — les caractéristiques ont déjà fixé le dé via le rang de compétence.\n                    </p>\n                    <ul>\n                        <li><strong>Punition de Visée :</strong> Viser un point précis impose <strong>-1 de\n                                punition</strong> sur l'<a class=\"rule-ref\" href=\"livre_2.html#chap-7\" data-tip=\"Épreuve : lance ton dé de compétence + PA − malus contre le seuil du MJ (§7.1).\">épreuve</a> (ou la dépense préalable de <strong>1 <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a></strong> pour\n                            annuler la punition).</li>\n                        <li><strong>Différentiel Positif (Attaque &gt; Défense) :</strong> L'attaque frappe exactement\n                            la partie visée. Le différentiel s'ajoute directement aux dégâts !</li>\n                        <li><strong>Différentiel Égal à 0 (Attaque = Défense) :</strong> Le coup porte, mais la visée\n                            dévie à cause du réflexe défensif. L'attaque inflige ses dégâts de base sur une <strong>zone\n                                aléatoire adjacente</strong> déterminée au dé (ex: 1d4 ou 1d6).</li>\n                        <li><strong>Différentiel Négatif :</strong> Si le total de l'attaque plus les dégâts de l'arme\n                            reste inférieur ou égal à la parade, le coup est <strong>parfaitement bloqué</strong> (aucun\n                            dégât).</li>\n                    </ul>\n\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "deviation_anatomique"
+    },
+    {
+     "type": "ref",
+     "cible": "visee"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <h3 id=\"sec-22-2\">22.2 La Condition « Canon Entravé » & Combat Rapproché à l'Arme Longue</h3>\n                    <p>\n                        Tu as un fusil, une carabine ou une arme longue (portée &gt; 1, ou à deux mains)\n                        et un ennemi te colle à 1 case ? Ton canon est trop long pour viser tranquille.\n                        C'est le <strong>« Canon Entravé »</strong> :\n                    </p>\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "manoeuvres_contact"
+    },
+    {
+     "type": "html",
+     "html": "\n                    <div class=\"callout vital\">\n                        <div class=\"callout-header\">\n                            <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\">\n                                <path d=\"M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z\" />\n                            </svg>\n                            Mécanique de Refoulement (Push-Kick / Knockback)\n                        </div>\n                        <div class=\"callout-body\">\n                            Tout combattant maîtrisant la spécialisation <em>Arts Martiaux</em> qui délivre une frappe à mains nues réussissant avec dépassement de l'<a class=\"rule-ref\" href=\"livre_6.html#sec-23-2\" data-tip=\"Encaissement = CON × 2 : seuil comparé aux dégâts du coup (§23.2).\">Encaissement</a> adverse, sur coup <a class=\"rule-ref\" href=\"livre_2.html#chap-8\" data-tip=\"Critique : ton dé affiche son max (6 sur d6, 8 sur d8). Second jet sur la table (§8.1).\">critique</a> ou différentiel net &ge; 4, repousse physiquement la cible d'<strong>1 case en arrière</strong>. Si la case arrière est occupée ou bloquée par un obstacle infranchissable, la cible heurte la paroi et subit immédiatement l'état <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).\"><strong>Déstabilisé</strong></a>.\n                        </div>\n                    </div>\n\n                    <h3 id=\"sec-22-3\">22.3 Combat Impliquant des Véhicules</h3>\n                    <p>\n                        Charrette, tank, speeder ou croiseur : même règle pour tous.\n                        Tu vises une zone du véhicule, tu l'abîmes, et tu vois ce qui lâche.\n                    </p>\n\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "vehicules_zones"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <h4>Échelle des Calibres & Seuils de Blindage</h4>\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "calibres_blindage"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <div class=\"codex-signature\">\n                        <div class=\"sig-meta\">\n                            <strong>LIVRE V DU CODEX UNIVERSEL</strong><br>\n                            Combat Tactique, Séquence de Round, Localisation & Engins Motorisés<br>\n                            <em>À toi de jouer : annonce ta mise, dépense tes PA, révèle avec ton adversaire — et bon combat.</em>\n                        </div>\n                        <div class=\"sig-stamp\">\n                            <span class=\"stamp-title\">COMBAT ENGAGÉ</span>\n                            <span class=\"stamp-date\">TOUR : 10 SECONDES // VALIDÉ</span>\n                        </div>\n                    </div>\n\n                    <!-- PAGINATION ENTRE LIVRES -->\n                    <div class=\"chapter-pagination\">\n                        <a href=\"livre_4.html\" class=\"pagination-btn\">\n                            <div>\n                                <div class=\"pagination-label\">Livre Précédent</div>\n                                <div class=\"pagination-title\">← Livre IV : 5e Force & Magie</div>\n                            </div>\n                        </a>\n                        <a href=\"livre_6.html\" class=\"pagination-btn\">\n                            <div>\n                                <div class=\"pagination-label\">Livre Suivant</div>\n                                <div class=\"pagination-title\">Livre VI : Santé, États & Blessures →</div>\n                            </div>\n                        </a>\n                    </div>\n\n                "
+    }
+   ]
+  }
+ ],
+ "donnees": {
+  "economie_pa": {
+   "type": "cartes",
+   "grille": 3,
+   "cartes": [
+    {
+     "titre": "<span>Actions Principales</span>\n                                <span class=\"pill-badge ruby\">1 / Tour (Défaut)</span>",
+     "top": false,
+     "monde": "Offensif // Temps Fort",
+     "corps_html": "Chaque combattant dispose d'<strong>une action principale par tour</strong>. Les\n                                manœuvres offensives (frapper, tirer, trancher, sort offensif) sont presque\n                                exclusivement des actions principales.<br><br>\n                                <strong>Règle de Maîtrise Exceptionnelle :</strong> Un personnage ayant une compétence\n                                offensive à <strong>2d6 ou plus</strong> (2d6, 2d8, 2d10, 2d12) débloque une <strong>2e\n                                    action principale par tour</strong> avec cette compétence ! Il peut la jouer après\n                                sa 1re action et après le tour d'un autre combattant.",
+     "pieds": [
+      {
+       "ton": "ruby",
+       "texte": "Attaque Majeure"
+      },
+      {
+       "ton": "cyan",
+       "texte": "Double Action à 2d6+"
+      }
+     ]
+    },
+    {
+     "titre": "<span>Réactions & Défenses</span>\n                                <span class=\"pill-badge cyan\">1 / Tour (Réactif)</span>",
+     "top": false,
+     "monde": "Défensif // Interruption",
+     "corps_html": "Chaque combattant a droit à <strong>une réaction par tour</strong> en réponse à une\n                                offensive ennemie. Une réaction est soit une parade, soit une esquive, soit une manœuvre\n                                non-offensive d'urgence.<br><br>\n                                <strong>Déclaration Aveugle (Règle Normale) :</strong> Chaque camp déclare sa mise (<a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a> bonus + PE) <strong>avant tout jet, sans voir ni le tirage ni la mise adverse</strong> : l'attaquant annonce le premier, puis le défenseur déclare à l'aveugle. Les deux dés sont ensuite lancés et révélés simultanément. Il ne s'agit pas d'une exception, mais du déroulement standard du <a class=\"rule-ref\" href=\"livre_2.html#chap-7\" data-tip=\"Duel à l'aveugle : chacun lance son dé + PA, le meilleur gagne. Seul le vainqueur coche (§7.3).\">duel</a> !",
+     "pieds": [
+      {
+       "ton": "cyan",
+       "texte": "Esquive / Parade"
+      },
+      {
+       "ton": "green",
+       "texte": "Mise Aveugle"
+      }
+     ]
+    },
+    {
+     "titre": "<span>Guet / Overwatch</span>\n                                <span class=\"pill-badge amber\">2 PA (Réservés)</span>",
+     "top": false,
+     "monde": "Réactif // Tir Réservé",
+     "corps_html": "Pendant son propre tour, un combattant armé d'une <strong>arme à distance</strong>\n                                peut dépenser <strong>2 PA</strong> pour se mettre en <strong>guet</strong> : il réserve\n                                un tir de réaction couvrant le <strong>rayon de son arme</strong> (cône à 360°, sans\n                                facing).<br><br>\n                                <strong>Déclenchement :</strong> dès qu'un ennemi agit dans le rayon pendant le tour\n                                adverse, le guetteur lâche <strong>un tir automatique en <a class=\"rule-ref\" href=\"livre_2.html#chap-7\" data-tip=\"Duel à l'aveugle : chacun lance son dé + PA, le meilleur gagne. Seul le vainqueur coche (§7.3).\">duel aveugle</a></strong>\n                                (<em>Ballistique</em> vs <em>Esquive</em>, mises à 0, défense adverse automatique),\n                                puis le guet est <strong>consommé</strong> (1 tir par guet). Le tir est gratuit : les\n                                2 <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a> ont été payés à la pose.<br><br>\n                                <strong>Fin du guet :</strong> au début du prochain tour personnel du guetteur\n                                (utilisé ou non). <strong>Annulé</strong> si le guetteur est <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"Étourdi : −1 ec sur tous les jets.\"><strong>Étourdi</strong></a>,\n                                <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"Paralysé : aucune action ni réaction, incapacité totale (§24.1).\"><strong>Paralysé</strong></a>, <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"Sonné : aucune action. La créature tombe immédiatement à terre.\">Sonné</a> ou <a class=\"rule-ref\" href=\"livre_6.html#sec-24-3\" data-tip=\"Inconscient : aucune action ni réaction. Réveil par secousse vigoureuse (1 PA) ou premiers soins.\">Inconscient</a>. Une cible en <a class=\"rule-ref\" href=\"#chap-21-3\" data-tip=\"Couvert total : cible non visible pour l'attaquant — attaque directe impossible (§21.3).\">couvert total</a> ne peut\n                                pas être prise pour cible.",
+     "pieds": [
+      {
+       "ton": "amber",
+       "texte": "2 PA"
+      },
+      {
+       "ton": "cyan",
+       "texte": "Duel Aveugle Auto"
+      }
+     ]
+    }
+   ]
+  },
+  "essoufflement": {
+   "type": "table",
+   "colonnes": [
+    "Mécanique d'Essoufflement",
+    "Règle & Conditions",
+    "Effet Table de Jeu"
+   ],
+   "lignes": [
+    [
+     "<strong>Prise d'Essoufflement</strong>",
+     "Quand les <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a> sont épuisés, le joueur peut prendre 1 à N points d'<a class=\"rule-ref\" href=\"livre_1.html#sec-4-2\" data-tip=\"Essoufflement : 1 point = des PA d'urgence ; ne part pas tout seul, action dédiée pour souffler (§4.2).\">essoufflement</a>.",
+     "Chaque point d'essoufflement agit comme +1 PA temporaire sur l'action ou la\n                                        réaction en cours, <strong>déclaré à l'aveugle</strong> au même titre que les <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a>\n                                        (mise cachée jusqu'à la révélation simultanée)."
+    ],
+    [
+     "<strong>Plafond Maximal</strong>",
+     "Le total d'essoufflement accumulé <strong>ne peut jamais dépasser la valeur de\n                                            Constitution</strong> du personnage.",
+     "Si le plafond est atteint, le personnage est au bord de l'asphyxie et ne peut\n                                        plus forcer."
+    ],
+    [
+     "<strong>Reprendre son Souffle</strong>",
+     "Action de début de son propre tour (quand son initiative arrive). Le joueur dépense des PA pour effacer de\n                                        l'essoufflement (maximum Constitution).",
+     "1 PA dépensé à reprendre son souffle = 1 point d'essoufflement effacé\n                                        immédiatement."
+    ],
+    [
+     "<strong>Choc Traumatique (&gt; 2 &times; Constitution)</strong>",
+     "Quand les dégâts accumulés sur une même zone dépassent le double de la\n                                        Constitution.",
+     "Le personnage gagne <strong>+1 <a class=\"rule-ref\" href=\"livre_1.html#sec-4-2\" data-tip=\"Essoufflement : 1 point = des PA d'urgence ; ne part pas tout seul, action dédiée pour souffler (§4.2).\">Essoufflement</a> automatique</strong> et doit\n                                        réussir une <a class=\"rule-ref\" href=\"livre_2.html#chap-7\" data-tip=\"Épreuve : lance ton dé de compétence + PA − malus contre le seuil du MJ (§7.1).\">épreuve</a> de Constitution sous peine de s'effondrer."
+    ]
+   ],
+   "classe": "data-table"
+  },
+  "couts_pa": {
+   "type": "cartes",
+   "grille": 3,
+   "cartes": [
+    {
+     "titre": "<span>Coût : 1 PA</span>\n                                <span class=\"pill-badge green\">Micro-Action</span>",
+     "top": false,
+     "corps_tag": "ul",
+     "corps_attrs": " style=\"padding-left: 15px; margin: 10px 0; font-size: 0.9em;\"",
+     "corps_html": "<li>Se déplacer de 1 case (1 mètre).</li>\n                                <li>Dégainer ou ranger une arme.</li>\n                                <li>Recharger une arme à feu ou un carquois.</li>\n                                <li>Ouvrir ou claquer une porte.</li>\n                                <li><strong>Préparation d'Action :</strong> Dépenser 1 PA pour se préparer confère\n                                    <strong>+2 au jet</strong> de l'action ou défense suivante.\n                                </li>\n                                <li>Annuler la punition d'une visée précise.</li>",
+     "pieds": []
+    },
+    {
+     "titre": "<span>Manœuvres Mobiles</span>\n                                <span class=\"pill-badge amber\">+1 PA Extra</span>",
+     "top": false,
+     "corps_tag": "ul",
+     "corps_attrs": " style=\"padding-left: 15px; margin: 10px 0; font-size: 0.9em;\"",
+     "corps_html": "<li><strong>La Charge & le Sprint (<a class=\"rule-ref\" href=\"#sec-20-7\" data-tip=\"Charge : 3+ cases au contact = +2 dégâts mêlée, −1 défense 1 tour. Sprint bloque le tir (§20.7).\">RD-038</a>) :</strong> Déplacement d'assaut d'au moins\n                                    <strong>3 cases</strong> menant au contact direct. Confère <strong>+2 dégâts</strong>\n                                    d'impact cinétique sur la frappe de mêlée consécutive, mais expose l'assaillant avec\n                                    <strong>-1 en défense jusqu'au prochain tour personnel</strong>. Tout déplacement\n                                    de 3+ cases (sprint) <strong>bloque le tir</strong> pour le reste du tour en cours.</li>\n                                <li><strong>Le GetAway (Dégagement) :</strong> Action principale (attaque ou parade)\n                                    immédiatement suivie d'un déplacement de fuite coûtant <strong>+1 PA\n                                        supplémentaire</strong>.</li>\n                                <li><strong>Parler en combat :</strong> 2 phrases courtes (~30 mots) sont gratuites par\n                                    round. Chaque phrase additionnelle coûte <strong>1 PA</strong>.</li>",
+     "pieds": []
+    },
+    {
+     "titre": "<span>Action en Progression</span>\n                                <span class=\"pill-badge cyan\">Multi-Tours</span>",
+     "top": false,
+     "corps_attrs": " style=\"font-size: 0.9em; margin-top: 8px;\"",
+     "corps_html": "Un combattant peut préparer un coup dévastateur en étalant son effort sur plusieurs\n                                temps (ex: ajuster posément le tir avec 3 PA au tour 1 pour lâcher une frappe\n                                surpuissante au tour 2).<br><br>\n                                <em>Attention :</em> S'il est attaqué pendant sa progression, il défend avec une\n                                <strong>punition de progression de -1</strong>.",
+     "pieds": []
+    }
+   ]
+  },
+  "opportunite": {
+   "type": "formule",
+   "etiquette_tag": "div",
+   "etiquette_classe": "formula-label",
+   "etiquette_html": "Les 4 réactions au contact rompu (1 par combattant et par round)",
+   "math_html": "<span class=\"hl-cyan\">Frappe (0 PA)</span> vs <span class=\"hl-ruby\">Poursuite (1 PA)</span> vs <span class=\"hl-gold\">Blocage (1 PA)</span> vs <span class=\"hl-cyan\">Balayage (0 PA)</span>",
+   "desc_html": "La posture de réaction se choisit pendant son propre tour (0 PA, persistante).\n                            La frappe et le balayage sont <strong>gratuits</strong> (réaction seule, duel aveugle\n                            automatique, mises à 0, défense adverse automatique).",
+   "contenu": false
+  },
+  "garde_corps": {
+   "type": "formule",
+   "etiquette_tag": "div",
+   "etiquette_classe": "formula-label",
+   "etiquette_html": "Interception d'allié (1 réaction du round, contact direct)",
+   "math_html": "<span class=\"hl-cyan\">Coût : 1 PA (réaction)</span> + <span class=\"hl-gold\">Contact ≤ 1 case</span> ➔ <span class=\"hl-ruby\">Redirection du coup sur le protecteur</span>",
+   "desc_html": "Le protecteur dépense 1 <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a> et consomme son unique réaction du round. Le <a class=\"rule-ref\" href=\"livre_2.html#chap-7\" data-tip=\"Duel à l'aveugle : chacun lance son dé + PA, le meilleur gagne. Seul le vainqueur coche (§7.3).\">duel</a> d'attaque est\n                            instantanément réorienté vers lui : il devient le défenseur légitime et encaisse la frappe\n                            avec sa propre armure, son seuil d'<a class=\"rule-ref\" href=\"livre_6.html#sec-23-2\" data-tip=\"Encaissement = CON × 2 : seuil comparé aux dégâts du coup (§23.2).\">encaissement</a> et ses capacités défensives.",
+   "contenu": false
+  },
+  "lutte": {
+   "type": "formule",
+   "etiquette_tag": "div",
+   "etiquette_classe": "formula-label",
+   "etiquette_html": "Manœuvres de Lutte au Corps-à-Corps (Coût : 2 PA, contact)",
+   "math_html": "<span class=\"hl-cyan\">Prise (2 PA)</span> ➔ <span class=\"hl-gold\">Immobilisé (duel opposé)</span> ➔ <span class=\"hl-ruby\">Étranglement (Asphyxie) / Traînée (1 case / 2 PA)</span>",
+   "desc_html": "La tentative de prise engage un <a class=\"rule-ref\" href=\"livre_2.html#chap-7\" data-tip=\"Épreuve opposée : les deux lancent en aveugle, dé + PA − malus. Égalité = statu quo (§7.3).\">duel opposé aveugle</a> <strong>Athlétisme vs Athlétisme</strong> (mises masquées <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a>/PE autorisées).\n                            En cas de succès de l'attaquant, la cible subit l'état <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"Immobilisé : impossible de faire la moindre action de mouvement (§24.1).\"><strong>Immobilisé</strong></a> et le lien d'étreinte est enregistré.\n                            La victime peut tenter de se libérer à son tour via un <a class=\"rule-ref\" href=\"livre_2.html#chap-7\" data-tip=\"Épreuve opposée : les deux lancent en aveugle, dé + PA − malus. Égalité = statu quo (§7.3).\">duel opposé</a>, ou le grappler peut relâcher l'emprise gratuitement (0 <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a>).",
+   "contenu": false
+  },
+  "charge_sprint": {
+   "type": "formule",
+   "etiquette_tag": "div",
+   "etiquette_classe": "formula-label",
+   "etiquette_html": "Règles de Charge & Sprint (RD-038, Seuil : 3+ cases)",
+   "math_html": "<span class=\"hl-cyan\">Assaut 3+ cases</span> ➔ <span class=\"hl-gold\">+2 Dégâts Frappe Mêlée</span> &amp; <span class=\"hl-ruby\">-1 Défense (1 tour)</span> | <span class=\"hl-amber\">Tir Bloqué</span>",
+   "desc_html": "Parcourir 3 cases ou plus confère immédiatement <strong>+2 dégâts d'impact</strong> sur la première\n                            attaque de contact (mains nues ou arme de mêlée) délivrée lors du même tour. En contrepartie,\n                            le déséquilibre de l'assaut impose une pénalité de <strong>-1 sur tous les jets de défense</strong>\n                            jusqu'au début du prochain tour personnel. L'inertie de course empêche toute visée stable :\n                            <strong>le sprint bloque tout tir à distance pour le reste du tour</strong>.",
+   "contenu": false
+  },
+  "poursuite": {
+   "type": "formule",
+   "etiquette_tag": "div",
+   "etiquette_classe": "formula-label",
+   "etiquette_html": "Mécanique de la Proie et du Poursuivant",
+   "math_html": "<span class=\"hl-cyan\">Épreuve Athlétisme (Proie)</span> vs <span class=\"hl-ruby\">Épreuve\n                                Athlétisme (Poursuivant)</span>",
+   "desc_html": "La proie lance son <a class=\"rule-ref\" href=\"livre_2.html#chap-7\" data-tip=\"Épreuve : lance ton dé de compétence + PA − malus contre le seuil du MJ (§7.1).\">épreuve</a> d'Athlétisme (avec injection possible de <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a> et d'<a class=\"rule-ref\" href=\"livre_1.html#sec-4-2\" data-tip=\"Essoufflement : 1 point = des PA d'urgence ; ne part pas tout seul, action dédiée pour souffler (§4.2).\">essoufflement</a>)\n                            et note son résultat. Chaque poursuivant lance à son tour son <a class=\"rule-ref\" href=\"livre_2.html#chap-7\" data-tip=\"Épreuve : lance ton dé de compétence + PA − malus contre le seuil du MJ (§7.1).\">épreuve</a>.",
+   "contenu": false
+  },
+  "assaut_groupe": {
+   "type": "table",
+   "colonnes": [
+    "Paramètre",
+    "Règle Tactique",
+    "Exemple d'Application"
+   ],
+   "lignes": [
+    [
+     "<strong>Synchronisation</strong>",
+     "Tous les participants doivent <strong>déléguer et caler leur <a class=\"rule-ref\" href=\"livre_1.html#sec-4-3\" data-tip=\"Initiative : meilleur score entre Rapidité, Agilité et Intelligence, converti en dé (§4.3).\">initiative</a> sur\n                                            celle du membre le plus lent</strong> du groupe.",
+     "Un bretteur rapide (Ini 3) attend son compagnon en armure lourde (Ini 1) pour\n                                        frapper à l'unisson à l'Initiative 1."
+    ],
+    [
+     "<strong>Sommation des Rangs</strong>",
+     "Chaque participant effectue son <a class=\"rule-ref\" href=\"livre_2.html#chap-7\" data-tip=\"Épreuve : lance ton dé de compétence + PA − malus contre le seuil du MJ (§7.1).\">épreuve</a>. Les résultats totaux\n                                        <strong>s'additionnent face à l'unique défense</strong> de la cible !",
+     "Attaquant A (12.5) + Attaquant B (10.5) = <strong>23 total</strong> face à une\n                                        parade ennemie de 10.5. Différentiel massif de <strong>+12.5</strong> !"
+    ],
+    [
+     "<strong>Dépassement d'Armure</strong>",
+     "Alors que deux attaques séparées auraient pu rebondir individuellement contre\n                                        l'armure et la Constitution, l'attaque combinée pulvérise les défenses.",
+     "Séparés : 1.5 dégât infligé. Ensemble : <strong>10.5 dégâts réels</strong>\n                                        traversant l'armure !"
+    ]
+   ],
+   "classe": "data-table"
+  },
+  "couvert": {
+   "type": "table",
+   "colonnes": [
+    "Niveau de Couvert",
+    "Silhouette vue par l'attaquant",
+    "Effet sur l'attaque directe",
+    "Exemples"
+   ],
+   "lignes": [
+    [
+     "<strong>À découvert</strong>",
+     "Cible entièrement visible",
+     "<strong>0</strong> — aucun malus",
+     "Plaine, rue dégagée, arène ouverte."
+    ],
+    [
+     "<strong>À moitié couvert</strong>",
+     "Cible à moitié visible",
+     "<strong>-1</strong> au total d'attaque",
+     "Muret bas, caisse, capot de véhicule, coin de mur."
+    ],
+    [
+     "<strong>Aux trois-quarts couvert</strong>",
+     "Seul un quart de la cible dépasse",
+     "<strong>-2</strong> au total d'attaque",
+     "Barricade haute, palissade, deux murets ou plus sur la trajectoire."
+    ],
+    [
+     "<strong>Couvert total</strong>",
+     "Cible non visible pour l'attaquant",
+     "<strong>Attaque directe impossible</strong> (aucun <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a> dépensé)",
+     "Mur plein, pilier massif, paroi blindée barrant la ligne de mire."
+    ]
+   ],
+   "classe": "data-table"
+  },
+  "synchro_duo": {
+   "type": "formule",
+   "etiquette_tag": "div",
+   "etiquette_classe": "formula-label",
+   "etiquette_html": "Total de Synchro (par Partenaire)",
+   "math_html": "<span class=\"hl-cyan\">Dé de caractéristique</span> + <span class=\"hl-gold\">PA injectés (+1 / PA)</span> + <span class=\"hl-ruby\">malus d'états</span> &nbsp;➔&nbsp; vs <strong>ND Synchro du Duo-Tech</strong>",
+   "desc_html": "<strong>Aucun modificateur de caractéristique ajouté</strong> (axiome du Livre II) ; les\n                            <strong>malus d'états</strong> (<a class=\"rule-ref\" href=\"livre_6.html#chap-24\" data-tip=\"États : 16 conditions (À Terre, Étourdi, Ralenti, Immobilisé...) et leurs effets (§24).\">Livre VI</a>) s'appliquent normalement. Un\n                            <strong>maximum naturel</strong> sur le dé vaut <strong>succès automatique</strong> de ce\n                            partenaire. <em>Exception assumée :</em> la synchro teste une caractéristique nue, sans\n                            compétence — aucune compétence ne remplace le fait d'être en phase, et la synchro ne\n                            s'entraîne pas (aucune case de progression cochée, <a class=\"rule-ref\" href=\"livre_1.html#chap-5\" data-tip=\"Progression : 1 réussite = 1 case. Piste pleine = +1 XP lié, piste à zéro (§5.1-5.2).\">Livre I §5</a>).\n                            Prévoyez <strong>1 à 2 <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a> injectés</strong> par partenaire : le ND est calibré pour.",
+   "contenu": false
+  },
+  "duo_techs": {
+   "type": "table",
+   "colonnes": [
+    "Duo-Tech",
+    "Condition de Placement",
+    "Coûts (Cinétique + Calcul + départ)",
+    "ND Synchro (Caracs)"
+   ],
+   "lignes": [
+    [
+     "<strong>🔥 Sillage Igné</strong>",
+     "2 à 4 ennemis alignés",
+     "3 + 4 + 1 = <strong>8 PA</strong>",
+     "<span class=\"pill-badge amber\">5</span> (AGI + INT)"
+    ],
+    [
+     "<strong>🪢 Lacet de Nytharite</strong>",
+     "Cible ayant bougé ce round",
+     "2 + 2 + 1 = <strong>5 PA</strong>",
+     "<span class=\"pill-badge amber\">5</span> (AGI + INT)"
+    ],
+    [
+     "<strong>♨️ Fournaise à Retardement</strong>",
+     "Ennemi isolé (rien à ≤ 2 cases)",
+     "3 + 3 + 1 = <strong>7 PA</strong>",
+     "<span class=\"pill-badge amber\">5</span> (AGI + INT)"
+    ],
+    [
+     "<strong>❄️ Trempe Inversée</strong>",
+     "Ennemis groupés (≤ 2 cases d'un point)",
+     "4 + 4 + 1 = <strong>9 PA</strong>",
+     "<span class=\"pill-badge amber\">6</span> (AGI + INT)"
+    ],
+    [
+     "<strong>🛤️ Railgun Artisanale</strong>",
+     "Couloir vide de 4+ cases, 1 cible dure au bout",
+     "5 + 5 + 1 = <strong>11 PA</strong>",
+     "<span class=\"pill-badge ruby\">7</span> (FOR + INT)"
+    ],
+    [
+     "<strong>✖️ Cisaille Entropique</strong>",
+     "Deux axes ennemis qui se croisent (X)",
+     "4 + 4 + 1 = <strong>9 PA</strong>",
+     "<span class=\"pill-badge amber\">6</span> (AGI + INT)"
+    ],
+    [
+     "<strong>⧉ Parallaxe</strong>",
+     "Partenaires opposés à 180° autour de la cible",
+     "3 + 2 + 1 = <strong>6 PA</strong>",
+     "<span class=\"pill-badge amber\">5</span> (AGI + INT)"
+    ],
+    [
+     "<strong>🌫️ Mirage à Deux Temps</strong>",
+     "Aucune (défensif)",
+     "2 + 1 + 1 = <strong>4 PA</strong>",
+     "<span class=\"pill-badge cyan\">4</span> (AGI + INT)"
+    ],
+    [
+     "<strong>⬆️ Uppercut Thermobarique</strong>",
+     "Cible entravée (étourdie, ralentie ou gelée) à ≤ 50% PV",
+     "4 + 4 + 1 = <strong>9 PA</strong>",
+     "<span class=\"pill-badge amber\">6</span> (FOR + INT)"
+    ]
+   ],
+   "classe": "data-table"
+  },
+  "deviation_anatomique": {
+   "type": "table",
+   "colonnes": [
+    "Tirage Dé",
+    "Déviation Haute (Tête / Torse)",
+    "Déviation Membres",
+    "Conséquence Médicale"
+   ],
+   "lignes": [
+    [
+     "<strong>1</strong>",
+     "<strong>Yeux / Visage</strong>",
+     "Épaule / Clavicule",
+     "Cécité partielle, hémorragie faciale, désorientation."
+    ],
+    [
+     "<strong>2</strong>",
+     "<strong>Cou / Trachée</strong>",
+     "Bras Droit (Porteur d'arme)",
+     "Risque d'asphyxie, perte d'essoufflement immédiate."
+    ],
+    [
+     "<strong>3</strong>",
+     "<strong>Tête / Boîte Crânienne</strong>",
+     "Bras Gauche (Bouclier)",
+     "Commotion, <a class=\"rule-ref\" href=\"livre_2.html#chap-7\" data-tip=\"Épreuve : lance ton dé de compétence + PA − malus contre le seuil du MJ (§7.1).\">épreuve</a> de Constitution pour rester conscient."
+    ],
+    [
+     "<strong>4</strong>",
+     "<strong>Poumons / Cœur</strong>",
+     "Abdomen / Côtes",
+     "Dégâts massifs, perforation, incapacité respiratoire."
+    ],
+    [
+     "<strong>5-6</strong>",
+     "<strong>Torse / Dos</strong>",
+     "Cuisse / Genou / Jambe",
+     "<a class=\"rule-ref\" href=\"livre_6.html#sec-23-2\" data-tip=\"Encaissement = CON × 2 : seuil comparé aux dégâts du coup (§23.2).\">Encaissement</a> standard, perte de motricité si jambe brisée."
+    ]
+   ],
+   "classe": "data-table"
+  },
+  "visee": {
+   "type": "formule",
+   "etiquette_tag": "div",
+   "etiquette_classe": "formula-label",
+   "etiquette_html": "Formule Complète des Dégâts Réels",
+   "math_html": "<span class=\"hl-ruby\">Dégâts Subis</span> = (Dégâts Arme + <a class=\"rule-ref\" href=\"livre_2.html#chap-6\" data-tip=\"Entraînement : +1 palier de dé chacun, max +3 par compétence, 5 XP (10 si croisé) (§6.1).\" style=\"color:inherit\">Bonus Entraînement</a> + <span\n                                class=\"hl-cyan\">&Delta; Touche</span>) &minus; <span class=\"hl-gold\">Constitution</span>\n                            &minus; <span class=\"hl-emerald\">Armure</span>",
+   "desc_html": "Si le total final est inférieur ou égal à zéro, le corps du personnage <strong>encaisse le\n                                choc</strong> grâce à sa musculature et son blindage sans subir de blessure\n                            incapacitante.",
+   "contenu": false
+  },
+  "manoeuvres_contact": {
+   "type": "table",
+   "colonnes": [
+    "Manœuvre Tactique au Contact",
+    "Coût en PA",
+    "Compétence",
+    "Résolution Mécanique & Impact"
+   ],
+   "lignes": [
+    [
+     "<strong>Tir en Rétention</strong>",
+     "2 PA",
+     "Ballistique",
+     "<strong>Malus net de -2</strong> au jet. En cas de parade adverse réussie (Diff &lt; 0), l'arme est déviée."
+    ],
+    [
+     "<strong>Tir Visé de Rétention</strong>",
+     "3 PA",
+     "Ballistique",
+     "Dépense <strong>+1 PA</strong> pour annuler le malus de Canon Entravé et autoriser la visée d'un membre."
+    ],
+    [
+     "<strong>Coup de Crosse / Canon</strong>",
+     "2 PA",
+     "Maniement d'Arme (<em>spé. Armes Contondantes</em>)",
+     "Dégâts réduits (3-4 PV). Si les dégâts dépassent l'<a class=\"rule-ref\" href=\"livre_6.html#sec-23-2\" data-tip=\"Encaissement = CON × 2 : seuil comparé aux dégâts du coup (§23.2).\">Encaissement</a> (CON &times; 2), la cible subit l'état <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).\"><em>Déstabilisé</em></a>."
+    ],
+    [
+     "<strong>Frappe Martiale (Arts Martiaux)</strong>",
+     "2 PA",
+     "Mains Nues",
+     "<strong>Exemption totale :</strong> kick ou coup de genou à plein dé sans malus. Déclenche le <em>Refoulement</em> sur choc ou <a class=\"rule-ref\" href=\"livre_2.html#chap-8\" data-tip=\"Critique : ton dé affiche son max (6 sur d6, 8 sur d8). Second jet sur la table (§8.1).\">critique</a>."
+    ],
+    [
+     "<strong>Décrochage (Recul)</strong>",
+     "1 PA",
+     "Mouvement",
+     "Recule d'1 case (Distance = 2). Rompt immédiatement la condition <em>Canon Entravé</em>."
+    ]
+   ],
+   "classe": "data-table"
+  },
+  "vehicules_zones": {
+   "type": "cartes",
+   "grille": 2,
+   "cartes": [
+    {
+     "titre": "<span>Zones Essentielles</span>\n                                <span class=\"pill-badge ruby\">Vitales</span>",
+     "top": false,
+     "monde": "Cockpit // Moteur // Cadre // Rails",
+     "corps_html": "La destruction des points de vie d'une zone essentielle <strong>met immédiatement hors\n                                    service le véhicule</strong> (explosion, panne motrice complète ou écrasement\n                                catastrophique).",
+     "pieds": [
+      {
+       "ton": "ruby",
+       "texte": "Destruction Véhicule"
+      }
+     ]
+    },
+    {
+     "titre": "<span>Zones Superficielles</span>\n                                <span class=\"pill-badge cyan\">Systèmes Auxiliaires</span>",
+     "top": false,
+     "monde": "Guidon // Canons // Passagers // Queue",
+     "corps_html": "La destruction d'une zone superficielle désactive uniquement l'usage de l'équipement lié\n                                (perte des freins, enrayement de la tourelle laser, dépressurisation d'un pod latéral).",
+     "pieds": [
+      {
+       "ton": "cyan",
+       "texte": "Perte Fonctionnelle"
+      }
+     ]
+    }
+   ]
+  },
+  "calibres_blindage": {
+   "type": "table",
+   "colonnes": [
+    "Palier de Points de Vie",
+    "Catégorie d'Armement Capable d'Endommager",
+    "Exemples Typiques de Véhicules"
+   ],
+   "lignes": [
+    [
+     "<strong>1 à 10 PV</strong>",
+     "Mains nues, armes de jet légères, flèches, pistolets",
+     "<strong>Vélo :</strong> Guidon (Sup 4pv), Cadre (Ess 6pv), Pédalier (Ess 3pv),\n                                        Roues (Ess 2pv)."
+    ],
+    [
+     "<strong>11 à 50 PV</strong>",
+     "Armes de contact lourdes (marteau, hache), explosifs légers",
+     "<strong>Charrette :</strong> Conducteur (Ess 30pv), Passagers (Sup 40pv), Roues\n                                        (Ess 15pv)."
+    ],
+    [
+     "<strong>51 à 1 000 PV</strong>",
+     "Armes de siège, canons de char, explosifs moyens",
+     "<strong>Jet :</strong> Cockpit (Ess 100pv), Moteurs (Sup 90pv), Ailes (Ess\n                                        100pv).<br><strong>Tank :</strong> Canon (Sup 500pv), Corps (Ess 1000pv),\n                                        Chenilles (Ess 300pv)."
+    ],
+    [
+     "<strong>1 001 à 10 000 PV</strong>",
+     "Armes lourdes de vaisseaux spatiaux, lasers arcaniques, torpilles",
+     "<strong>Porte-avions :</strong> Contrôle (Ess 3000pv), Decks (Sup 6000pv),\n                                        Flancs (Ess 6000pv).<br><strong>Croiseur Spatial (Aeschylus) :</strong> Coque\n                                        (Ess 8000pv), Moteurs (Ess 4000pv), Pods & Lasers (Sup 2000pv)."
+    ],
+    [
+     "<strong>10 001+ PV</strong>",
+     "Armement nucléaire, frappe orbitale de Cinquième Force",
+     "Stations spatiales orbitales, forteresses continentales, mégastructures."
+    ]
+   ],
+   "classe": "data-table"
+  }
+ },
+ "tableaux": {
+  "essoufflement": {
+   "colonnes": [
+    "Mécanique d'Essoufflement",
+    "Règle & Conditions",
+    "Effet Table de Jeu"
+   ]
+  },
+  "assaut_groupe": {
+   "colonnes": [
+    "Paramètre",
+    "Règle Tactique",
+    "Exemple d'Application"
+   ]
+  },
+  "couvert": {
+   "colonnes": [
+    "Niveau de Couvert",
+    "Silhouette vue par l'attaquant",
+    "Effet sur l'attaque directe",
+    "Exemples"
+   ]
+  },
+  "duo_techs": {
+   "colonnes": [
+    "Duo-Tech",
+    "Condition de Placement",
+    "Coûts (Cinétique + Calcul + départ)",
+    "ND Synchro (Caracs)"
+   ]
+  },
+  "deviation_anatomique": {
+   "colonnes": [
+    "Tirage Dé",
+    "Déviation Haute (Tête / Torse)",
+    "Déviation Membres",
+    "Conséquence Médicale"
+   ]
+  },
+  "manoeuvres_contact": {
+   "colonnes": [
+    "Manœuvre Tactique au Contact",
+    "Coût en PA",
+    "Compétence",
+    "Résolution Mécanique & Impact"
+   ]
+  },
+  "calibres_blindage": {
+   "colonnes": [
+    "Palier de Points de Vie",
+    "Catégorie d'Armement Capable d'Endommager",
+    "Exemples Typiques de Véhicules"
+   ]
+  }
+ },
+ "mecaniques": {
+  "note": "Genere depuis livre_5.html (motif RP-075/Livre II). Source unique : regenerer.",
+  "economie_pa": [
+   {
+    "titre": "Actions Principales 1 / Tour (Défaut)",
+    "texte": "Chaque combattant dispose d'une action principale par tour. Les manœuvres offensives (frapper, tirer, trancher, sort offensif) sont presque exclusivement des actions principales. Règle de Maîtrise Exceptionnelle : Un personnage ayant une compétence offensive à 2d6 ou plus (2d6, 2d8, 2d10, 2d12) débloque une 2e action principale par tour avec cette compétence ! Il peut la jouer après sa 1re action et après le tour d'un autre combattant."
+   },
+   {
+    "titre": "Réactions & Défenses 1 / Tour (Réactif)",
+    "texte": "Chaque combattant a droit à une réaction par tour en réponse à une offensive ennemie. Une réaction est soit une parade, soit une esquive, soit une manœuvre non-offensive d'urgence. Déclaration Aveugle (Règle Normale) : Chaque camp déclare sa mise (PA bonus + PE) avant tout jet, sans voir ni le tirage ni la mise adverse : l'attaquant annonce le premier, puis le défenseur déclare à l'aveugle. Les deux dés sont ensuite lancés et révélés simultanément. Il ne s'agit pas d'une exception, mais du déroulement standard du duel !"
+   },
+   {
+    "titre": "Guet / Overwatch 2 PA (Réservés)",
+    "texte": "Pendant son propre tour, un combattant armé d'une arme à distance peut dépenser 2 PA pour se mettre en guet : il réserve un tir de réaction couvrant le rayon de son arme (cône à 360°, sans facing). Déclenchement : dès qu'un ennemi agit dans le rayon pendant le tour adverse, le guetteur lâche un tir automatique en duel aveugle (Ballistique vs Esquive, mises à 0, défense adverse automatique), puis le guet est consommé (1 tir par guet). Le tir est gratuit : les 2 PA ont été payés à la pose. Fin du guet : au début du prochain tour personnel du guetteur (utilisé ou non). Annulé si le guetteur est Étourdi, Paralysé, Sonné ou Inconscient. Une cible en couvert total ne peut pas être prise pour cible."
+   }
+  ],
+  "couts_pa": [
+   {
+    "titre": "Coût : 1 PA Micro-Action",
+    "actions": [
+     "Se déplacer de 1 case (1 mètre).",
+     "Dégainer ou ranger une arme.",
+     "Recharger une arme à feu ou un carquois.",
+     "Ouvrir ou claquer une porte.",
+     "Préparation d'Action : Dépenser 1 PA pour se préparer confère +2 au jet de l'action ou défense suivante.",
+     "Annuler la punition d'une visée précise."
+    ]
+   },
+   {
+    "titre": "Manœuvres Mobiles +1 PA Extra",
+    "actions": [
+     "La Charge & le Sprint (RD-038) : Déplacement d'assaut d'au moins 3 cases menant au contact direct. Confère +2 dégâts d'impact cinétique sur la frappe de mêlée consécutive, mais expose l'assaillant avec -1 en défense jusqu'au prochain tour personnel. Tout déplacement de 3+ cases (sprint) bloque le tir pour le reste du tour en cours.",
+     "Le GetAway (Dégagement) : Action principale (attaque ou parade) immédiatement suivie d'un déplacement de fuite coûtant +1 PA supplémentaire.",
+     "Parler en combat : 2 phrases courtes (~30 mots) sont gratuites par round. Chaque phrase additionnelle coûte 1 PA."
+    ]
+   },
+   {
+    "titre": "Action en Progression Multi-Tours",
+    "actions": [
+     "Un combattant peut préparer un coup dévastateur en étalant son effort sur plusieurs temps (ex: ajuster posément le tir avec 3 PA au tour 1 pour lâcher une frappe surpuissante au tour 2). Attention : S'il est attaqué pendant sa progression, il défend avec une punition de progression de -1."
+    ]
+   }
+  ],
+  "essoufflement": [
+   {
+    "mecanique": "Prise d'Essoufflement",
+    "regle": "Quand les PA sont épuisés, le joueur peut prendre 1 à N points d'essoufflement.",
+    "effet": "Chaque point d'essoufflement agit comme +1 PA temporaire sur l'action ou la réaction en cours, déclaré à l'aveugle au même titre que les PA (mise cachée jusqu'à la révélation simultanée)."
+   },
+   {
+    "mecanique": "Plafond Maximal",
+    "regle": "Le total d'essoufflement accumulé ne peut jamais dépasser la valeur de Constitution du personnage.",
+    "effet": "Si le plafond est atteint, le personnage est au bord de l'asphyxie et ne peut plus forcer."
+   },
+   {
+    "mecanique": "Reprendre son Souffle",
+    "regle": "Action de début de son propre tour (quand son initiative arrive). Le joueur dépense des PA pour effacer de l'essoufflement (maximum Constitution).",
+    "effet": "1 PA dépensé à reprendre son souffle = 1 point d'essoufflement effacé immédiatement."
+   },
+   {
+    "mecanique": "Choc Traumatique (> 2 × Constitution)",
+    "regle": "Quand les dégâts accumulés sur une même zone dépassent le double de la Constitution.",
+    "effet": "Le personnage gagne +1 Essoufflement automatique et doit réussir une épreuve de Constitution sous peine de s'effondrer."
+   }
+  ],
+  "opportunite": {
+   "etiquette": "Les 4 réactions au contact rompu (1 par combattant et par round)",
+   "formule": "Frappe (0 PA) vs Poursuite (1 PA) vs Blocage (1 PA) vs Balayage (0 PA)",
+   "texte": "La posture de réaction se choisit pendant son propre tour (0 PA, persistante). La frappe et le balayage sont gratuits (réaction seule, duel aveugle automatique, mises à 0, défense adverse automatique).",
+   "options": [
+    {
+     "option": "Frappe",
+     "cout_pa": 0
+    },
+    {
+     "option": "Poursuite",
+     "cout_pa": 1
+    },
+    {
+     "option": "Blocage",
+     "cout_pa": 1
+    },
+    {
+     "option": "Balayage",
+     "cout_pa": 0
+    }
+   ]
+  },
+  "garde_corps": {
+   "etiquette": "Interception d'allié (1 réaction du round, contact direct)",
+   "formule": "Coût : 1 PA (réaction) + Contact ≤ 1 case ➔ Redirection du coup sur le protecteur",
+   "texte": "Le protecteur dépense 1 PA et consomme son unique réaction du round. Le duel d'attaque est instantanément réorienté vers lui : il devient le défenseur légitime et encaisse la frappe avec sa propre armure, son seuil d'encaissement et ses capacités défensives."
+  },
+  "lutte": {
+   "etiquette": "Manœuvres de Lutte au Corps-à-Corps (Coût : 2 PA, contact)",
+   "formule": "Prise (2 PA) ➔ Immobilisé (duel opposé) ➔ Étranglement (Asphyxie) / Traînée (1 case / 2 PA)",
+   "texte": "La tentative de prise engage un duel opposé aveugle Athlétisme vs Athlétisme (mises masquées PA/PE autorisées). En cas de succès de l'attaquant, la cible subit l'état Immobilisé et le lien d'étreinte est enregistré. La victime peut tenter de se libérer à son tour via un duel opposé, ou le grappler peut relâcher l'emprise gratuitement (0 PA)."
+  },
+  "charge_sprint": {
+   "etiquette": "Règles de Charge & Sprint (RD-038, Seuil : 3+ cases)",
+   "formule": "Assaut 3+ cases ➔ +2 Dégâts Frappe Mêlée & -1 Défense (1 tour) | Tir Bloqué",
+   "texte": "Parcourir 3 cases ou plus confère immédiatement +2 dégâts d'impact sur la première attaque de contact (mains nues ou arme de mêlée) délivrée lors du même tour. En contrepartie, le déséquilibre de l'assaut impose une pénalité de -1 sur tous les jets de défense jusqu'au début du prochain tour personnel. L'inertie de course empêche toute visée stable : le sprint bloque tout tir à distance pour le reste du tour."
+  },
+  "poursuite": {
+   "etiquette": "Mécanique de la Proie et du Poursuivant",
+   "formule": "Épreuve Athlétisme (Proie) vs Épreuve Athlétisme (Poursuivant)",
+   "texte": "La proie lance son épreuve d'Athlétisme (avec injection possible de PA et d'essoufflement) et note son résultat. Chaque poursuivant lance à son tour son épreuve."
+  },
+  "synchro_duo": {
+   "etiquette": "Total de Synchro (par Partenaire)",
+   "formule": "Dé de caractéristique + PA injectés (+1 / PA) + malus d'états ➔ vs ND Synchro du Duo-Tech",
+   "texte": "Aucun modificateur de caractéristique ajouté (axiome du Livre II) ; les malus d'états (Livre VI) s'appliquent normalement. Un maximum naturel sur le dé vaut succès automatique de ce partenaire. Exception assumée : la synchro teste une caractéristique nue, sans compétence — aucune compétence ne remplace le fait d'être en phase, et la synchro ne s'entraîne pas (aucune case de progression cochée, Livre I §5). Prévoyez 1 à 2 PA injectés par partenaire : le ND est calibré pour."
+  },
+  "visee": {
+   "etiquette": "Formule Complète des Dégâts Réels",
+   "formule": "Dégâts Subis = (Dégâts Arme + Bonus Entraînement + Δ Touche) − Constitution − Armure",
+   "texte": "Si le total final est inférieur ou égal à zéro, le corps du personnage encaisse le choc grâce à sa musculature et son blindage sans subir de blessure incapacitante."
+  },
+  "assaut_groupe": [
+   {
+    "parametre": "Synchronisation",
+    "regle": "Tous les participants doivent déléguer et caler leur initiative sur celle du membre le plus lent du groupe.",
+    "exemple": "Un bretteur rapide (Ini 3) attend son compagnon en armure lourde (Ini 1) pour frapper à l'unisson à l'Initiative 1."
+   },
+   {
+    "parametre": "Sommation des Rangs",
+    "regle": "Chaque participant effectue son épreuve. Les résultats totaux s'additionnent face à l'unique défense de la cible !",
+    "exemple": "Attaquant A (12.5) + Attaquant B (10.5) = 23 total face à une parade ennemie de 10.5. Différentiel massif de +12.5 !"
+   },
+   {
+    "parametre": "Dépassement d'Armure",
+    "regle": "Alors que deux attaques séparées auraient pu rebondir individuellement contre l'armure et la Constitution, l'attaque combinée pulvérise les défenses.",
+    "exemple": "Séparés : 1.5 dégât infligé. Ensemble : 10.5 dégâts réels traversant l'armure !"
+   }
+  ],
+  "couvert": [
+   {
+    "niveau": "À découvert",
+    "visibilite": "Cible entièrement visible",
+    "malus_attaque": 0,
+    "effet": "0 — aucun malus",
+    "exemples": "Plaine, rue dégagée, arène ouverte."
+   },
+   {
+    "niveau": "À moitié couvert",
+    "visibilite": "Cible à moitié visible",
+    "malus_attaque": -1,
+    "effet": "-1 au total d'attaque",
+    "exemples": "Muret bas, caisse, capot de véhicule, coin de mur."
+   },
+   {
+    "niveau": "Aux trois-quarts couvert",
+    "visibilite": "Seul un quart de la cible dépasse",
+    "malus_attaque": -2,
+    "effet": "-2 au total d'attaque",
+    "exemples": "Barricade haute, palissade, deux murets ou plus sur la trajectoire."
+   },
+   {
+    "niveau": "Couvert total",
+    "visibilite": "Cible non visible pour l'attaquant",
+    "malus_attaque": null,
+    "effet": "Attaque directe impossible (aucun PA dépensé)",
+    "exemples": "Mur plein, pilier massif, paroi blindée barrant la ligne de mire."
+   }
+  ],
+  "duo_techs": [
+   {
+    "nom": "🔥 Sillage Igné",
+    "condition": "2 à 4 ennemis alignés",
+    "couts": "3 + 4 + 1 = 8 PA",
+    "cout_total_pa": 8,
+    "nd": 5,
+    "caracs": "AGI + INT"
+   },
+   {
+    "nom": "🪢 Lacet de Nytharite",
+    "condition": "Cible ayant bougé ce round",
+    "couts": "2 + 2 + 1 = 5 PA",
+    "cout_total_pa": 5,
+    "nd": 5,
+    "caracs": "AGI + INT"
+   },
+   {
+    "nom": "♨️ Fournaise à Retardement",
+    "condition": "Ennemi isolé (rien à ≤ 2 cases)",
+    "couts": "3 + 3 + 1 = 7 PA",
+    "cout_total_pa": 7,
+    "nd": 5,
+    "caracs": "AGI + INT"
+   },
+   {
+    "nom": "❄️ Trempe Inversée",
+    "condition": "Ennemis groupés (≤ 2 cases d'un point)",
+    "couts": "4 + 4 + 1 = 9 PA",
+    "cout_total_pa": 9,
+    "nd": 6,
+    "caracs": "AGI + INT"
+   },
+   {
+    "nom": "🛤️ Railgun Artisanale",
+    "condition": "Couloir vide de 4+ cases, 1 cible dure au bout",
+    "couts": "5 + 5 + 1 = 11 PA",
+    "cout_total_pa": 11,
+    "nd": 7,
+    "caracs": "FOR + INT"
+   },
+   {
+    "nom": "✖️ Cisaille Entropique",
+    "condition": "Deux axes ennemis qui se croisent (X)",
+    "couts": "4 + 4 + 1 = 9 PA",
+    "cout_total_pa": 9,
+    "nd": 6,
+    "caracs": "AGI + INT"
+   },
+   {
+    "nom": "⧉ Parallaxe",
+    "condition": "Partenaires opposés à 180° autour de la cible",
+    "couts": "3 + 2 + 1 = 6 PA",
+    "cout_total_pa": 6,
+    "nd": 5,
+    "caracs": "AGI + INT"
+   },
+   {
+    "nom": "🌫️ Mirage à Deux Temps",
+    "condition": "Aucune (défensif)",
+    "couts": "2 + 1 + 1 = 4 PA",
+    "cout_total_pa": 4,
+    "nd": 4,
+    "caracs": "AGI + INT"
+   },
+   {
+    "nom": "⬆️ Uppercut Thermobarique",
+    "condition": "Cible entravée (étourdie, ralentie ou gelée) à ≤ 50% PV",
+    "couts": "4 + 4 + 1 = 9 PA",
+    "cout_total_pa": 9,
+    "nd": 6,
+    "caracs": "FOR + INT"
+   }
+  ],
+  "nb_duo_techs": 9,
+  "deviation_anatomique": [
+   {
+    "tirage": [
+     1,
+     1
+    ],
+    "haute": "Yeux / Visage",
+    "membres": "Épaule / Clavicule",
+    "consequence": "Cécité partielle, hémorragie faciale, désorientation."
+   },
+   {
+    "tirage": [
+     2,
+     2
+    ],
+    "haute": "Cou / Trachée",
+    "membres": "Bras Droit (Porteur d'arme)",
+    "consequence": "Risque d'asphyxie, perte d'essoufflement immédiate."
+   },
+   {
+    "tirage": [
+     3,
+     3
+    ],
+    "haute": "Tête / Boîte Crânienne",
+    "membres": "Bras Gauche (Bouclier)",
+    "consequence": "Commotion, épreuve de Constitution pour rester conscient."
+   },
+   {
+    "tirage": [
+     4,
+     4
+    ],
+    "haute": "Poumons / Cœur",
+    "membres": "Abdomen / Côtes",
+    "consequence": "Dégâts massifs, perforation, incapacité respiratoire."
+   },
+   {
+    "tirage": [
+     5,
+     6
+    ],
+    "haute": "Torse / Dos",
+    "membres": "Cuisse / Genou / Jambe",
+    "consequence": "Encaissement standard, perte de motricité si jambe brisée."
+   }
+  ],
+  "manoeuvres_contact": [
+   {
+    "manoeuvre": "Tir en Rétention",
+    "cout_pa": 2,
+    "competence": "Ballistique",
+    "resolution": "Malus net de -2 au jet. En cas de parade adverse réussie (Diff < 0), l'arme est déviée."
+   },
+   {
+    "manoeuvre": "Tir Visé de Rétention",
+    "cout_pa": 3,
+    "competence": "Ballistique",
+    "resolution": "Dépense +1 PA pour annuler le malus de Canon Entravé et autoriser la visée d'un membre."
+   },
+   {
+    "manoeuvre": "Coup de Crosse / Canon",
+    "cout_pa": 2,
+    "competence": "Maniement d'Arme (spé. Armes Contondantes)",
+    "resolution": "Dégâts réduits (3-4 PV). Si les dégâts dépassent l'Encaissement (CON × 2), la cible subit l'état Déstabilisé."
+   },
+   {
+    "manoeuvre": "Frappe Martiale (Arts Martiaux)",
+    "cout_pa": 2,
+    "competence": "Mains Nues",
+    "resolution": "Exemption totale : kick ou coup de genou à plein dé sans malus. Déclenche le Refoulement sur choc ou critique."
+   },
+   {
+    "manoeuvre": "Décrochage (Recul)",
+    "cout_pa": 1,
+    "competence": "Mouvement",
+    "resolution": "Recule d'1 case (Distance = 2). Rompt immédiatement la condition Canon Entravé."
+   }
+  ],
+  "calibres_blindage": [
+   {
+    "palier_pv": [
+     1,
+     10
+    ],
+    "palier_texte": "1 à 10 PV",
+    "armement": "Mains nues, armes de jet légères, flèches, pistolets",
+    "exemples": "Vélo : Guidon (Sup 4pv), Cadre (Ess 6pv), Pédalier (Ess 3pv), Roues (Ess 2pv)."
+   },
+   {
+    "palier_pv": [
+     11,
+     50
+    ],
+    "palier_texte": "11 à 50 PV",
+    "armement": "Armes de contact lourdes (marteau, hache), explosifs légers",
+    "exemples": "Charrette : Conducteur (Ess 30pv), Passagers (Sup 40pv), Roues (Ess 15pv)."
+   },
+   {
+    "palier_pv": [
+     51,
+     1000
+    ],
+    "palier_texte": "51 à 1 000 PV",
+    "armement": "Armes de siège, canons de char, explosifs moyens",
+    "exemples": "Jet : Cockpit (Ess 100pv), Moteurs (Sup 90pv), Ailes (Ess 100pv).Tank : Canon (Sup 500pv), Corps (Ess 1000pv), Chenilles (Ess 300pv)."
+   },
+   {
+    "palier_pv": [
+     1001,
+     10000
+    ],
+    "palier_texte": "1 001 à 10 000 PV",
+    "armement": "Armes lourdes de vaisseaux spatiaux, lasers arcaniques, torpilles",
+    "exemples": "Porte-avions : Contrôle (Ess 3000pv), Decks (Sup 6000pv), Flancs (Ess 6000pv).Croiseur Spatial (Aeschylus) : Coque (Ess 8000pv), Moteurs (Ess 4000pv), Pods & Lasers (Sup 2000pv)."
+   },
+   {
+    "palier_pv": [
+     10001,
+     null
+    ],
+    "palier_texte": "10 001+ PV",
+    "armement": "Armement nucléaire, frappe orbitale de Cinquième Force",
+    "exemples": "Stations spatiales orbitales, forteresses continentales, mégastructures."
+   }
+  ],
+  "vehicules_zones": [
+   {
+    "zone": "Zones Essentielles Vitales",
+    "effet": "La destruction des points de vie d'une zone essentielle met immédiatement hors service le véhicule (explosion, panne motrice complète ou écrasement catastrophique)."
+   },
+   {
+    "zone": "Zones Superficielles Systèmes Auxiliaires",
+    "effet": "La destruction d'une zone superficielle désactive uniquement l'usage de l'équipement lié (perte des freins, enrayement de la tourelle laser, dépressurisation d'un pod latéral)."
+   }
+  ]
+ }
+}
