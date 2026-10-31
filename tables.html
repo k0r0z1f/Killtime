@@ -61,11 +61,33 @@
         .tb-row { display: flex; gap: 6px; }
         .tb-row input { flex: 1; min-width: 0; }
         #tbMessages { display: flex; flex-direction: column; gap: 8px; max-height: 55vh; overflow-y: auto; padding: 4px; }
+        #tbMessages.tb-dragover, #tbComposer.tb-dragover { outline: 2px dashed var(--arcane-cyan); outline-offset: -4px; }
+        #tbUploadState { margin: 4px 0 8px; }
+        .tb-uploading { display: inline-block; font-size: 12px; font-weight: 700; color: var(--arcane-cyan);
+            background: var(--arcane-cyan-glow); border: 1px solid var(--arcane-cyan); border-radius: 99px;
+            padding: 3px 12px; margin-right: 6px; animation: tbPulse 1.6s ease-in-out infinite; }
+        @keyframes tbPulse { 0%, 100% { opacity: 1; } 50% { opacity: .55; } }
+        .tb-uploading .tb-dots span { animation: tbBlink 1.2s infinite; }
+        .tb-uploading .tb-dots span:nth-child(2) { animation-delay: .2s; }
+        .tb-uploading .tb-dots span:nth-child(3) { animation-delay: .4s; }
+        @keyframes tbBlink { 0%, 100% { opacity: .2; } 50% { opacity: 1; } }
         .tb-msg { background: var(--bg-canvas); border: 1px solid var(--border-subtle); border-radius: 10px; padding: 8px 10px; font-size: 13px; }
         .tb-msg.priv { border-color: rgba(251,191,36,.5); }
         .tb-msg .head { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; font-size: 11px; color: var(--text-muted); font-family: var(--font-mono); margin-bottom: 4px; }
         .tb-msg .who { font-weight: 800; color: var(--text-primary); font-family: var(--font-body); font-size: 12px; }
         .tb-msg img { max-width: 100%; max-height: 320px; border-radius: 8px; margin-top: 6px; display: block; }
+        .tb-pdf { display: inline-flex; align-items: center; gap: 6px; margin-top: 6px; background: var(--bg-surface);
+            border: 1px solid var(--arcane-cyan); color: var(--text-primary); border-radius: 9px;
+            padding: 7px 12px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: var(--font-body); }
+        .tb-pdf:hover { background: var(--arcane-cyan-glow); }
+        .tb-pdf span { font-weight: 400; font-size: 11px; color: var(--text-muted); font-family: var(--font-mono); }
+        .tb-attach { display: inline-flex; align-items: center; gap: 6px; margin-top: 6px; background: var(--bg-canvas);
+            border: 1px dashed var(--arcane-cyan); color: var(--text-primary); border-radius: 9px;
+            padding: 7px 12px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: var(--font-body); }
+        .tb-attach:hover { background: var(--arcane-cyan-glow); }
+        .tb-attach:disabled { opacity: .6; cursor: wait; }
+        .tb-audio { width: 100%; margin-top: 6px; height: 36px; }
+        .tb-video { width: 100%; max-height: 320px; border-radius: 8px; margin-top: 6px; display: block; background: #000; }
         .tb-msg .del { margin-left: auto; background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 12px; }
         .tb-msg .del:hover { color: var(--vital-ruby); }
         .tb-member { display: flex; align-items: center; gap: 6px; padding: 6px 0; border-bottom: 1px dashed var(--border-subtle); font-size: 13px; }
@@ -147,13 +169,14 @@
                         <div id="tbVoice"><p class="tb-status">Chargement…</p></div>
                         <hr style="border:none;border-top:1px solid var(--border-subtle);margin:12px 0;">
                         <h3 id="tbChatTitle">Choisis une table</h3>
+                        <div id="tbUploadState" style="display:none"></div>
                         <div id="tbMessages"></div>
                         <div id="tbComposer" style="display:none;margin-top:10px;">
                             <div class="tb-field"><label>Destinataire (vide = public)</label><select id="tbTo"></select></div>
                             <div id="tbSendScope"></div>
                             <div class="tb-field"><label>Message</label><textarea id="tbText" maxlength="2000" placeholder="Écris ici... (Entrée = envoyer)"></textarea></div>
                             <div class="tb-field"><label>Image (URL http/https)</label><input id="tbImageUrl" placeholder="https://..."></div>
-                            <div class="tb-field"><label>…ou upload (≤ ~2 Mo, réduit à 1024 px)</label><input id="tbFile" type="file" accept="image/png,image/jpeg,image/gif,image/webp"></div>
+                            <div class="tb-field"><label>…ou upload (image ≤ ~10 Mo réduite à 1024 px, PDF, audio ou vidéo)</label><input id="tbFile" type="file" accept="image/png,image/jpeg,image/gif,image/webp,image/apng,application/pdf,audio/*,video/*"></div>
                             <button class="tb-btn primary" id="tbSend" type="button">Envoyer</button>
                             <span class="tb-status" id="tbChatStatus"></span>
                         </div>

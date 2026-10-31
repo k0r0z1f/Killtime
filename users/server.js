@@ -1486,7 +1486,7 @@ async function handleRequest(req, res, isAdminListener) {
        TABLES DE GROUPE — chat persistant + images + MPs (REST + JSON)
        ----------------------------------------------------------------
        Un groupe se crée une table : chat public, partage d'images (URL
-       ou upload base64 ≤ ~2 Mo), messages privés (MJ <-> joueur).
+       ou upload base64 ≤ ~10 Mo), messages privés (MJ <-> joueur).
        Log : un fichier JSON par table dans data/tables/table_<id>.json.
        Rôles de table : mj (créateur, voit tout), helper (co-gère, voit
        tout), joueur (défaut : public + ses propres MPs).
@@ -1496,7 +1496,7 @@ async function handleRequest(req, res, isAdminListener) {
     const TABLE_ID_RE = /^[a-z0-9_-]{1,32}$/i;
     const TABLE_MAX_MESSAGES = 5000;
     const TABLE_MAX_TEXT = 2000;
-    const TABLE_MAX_UPLOAD_CHARS = 2800000; // ~2 Mo binaires en base64
+    const TABLE_MAX_UPLOAD_CHARS = 14000000; // ~10 Mo binaires en base64
     function tablesEnsureDir() {
         try { fs.mkdirSync(TABLES_DIR, { recursive: true }); } catch (e) {}
     }
@@ -1524,7 +1524,7 @@ async function handleRequest(req, res, isAdminListener) {
         const file = tableFilePath(doc.id);
         try { if (fs.existsSync(file)) fs.copyFileSync(file, file + '.bak'); } catch (e) {}
         const json = JSON.stringify(doc, null, 2);
-        if (json.length > 12 * 1024 * 1024) return false; // garde-fou fichier
+        if (json.length > 64 * 1024 * 1024) return false; // garde-fou fichier (pièces jointes jusqu'à ~10 Mo)
         fs.writeFileSync(file, json);
         return true;
     }
@@ -1557,11 +1557,21 @@ async function handleRequest(req, res, isAdminListener) {
         const r = tableRoleOf(doc, user.id);
         return r === 'mj' || r === 'helper';
     }
+    // Métadonnées de pièce jointe sans les octets (dataUrl) : le contenu
+    // se charge à la demande (GET .../messages/:mid/attachment).
+    function tablePublicFile(f) {
+        if (!f || f.kind !== 'upload') return f || null;
+        const o = { kind: 'upload', mime: f.mime };
+        if (f.name) o.name = String(f.name).slice(0, 120);
+        if (f.bytes) o.bytes = f.bytes;
+        return o;
+    }
     function tablePublicMsg(msg, avatars, members) {
         const o = {
             id: msg.id, fromId: msg.fromId, fromName: msg.fromName, fromRole: msg.fromRole,
             fromAvatar: (avatars && avatars[msg.fromId]) || null,
-            text: msg.text || '', image: msg.image || null,
+            text: msg.text || '', image: msg.image && msg.image.kind === 'upload' ? tablePublicFile(msg.image) : (msg.image || null),
+            file: tablePublicFile(msg.file),
             toUserId: msg.toUserId || null, toName: msg.toName || null,
             private: !!msg.toUserId, createdAt: msg.createdAt,
             // IDs exclus à l'envoi (pour l'héritage côté client : répondre
@@ -1605,6 +1615,34 @@ async function handleRequest(req, res, isAdminListener) {
             const h = crypto.createHash('sha256').update(doc.pw.salt + ':' + String(plain || '')).digest('hex');
             return crypto.timingSafeEqual(Buffer.from(h, 'hex'), Buffer.from(doc.pw.hash, 'hex'));
         } catch (e) { return false; }
+    }
+    // Liste d'uploads en cours d'une table (expirés purgés).
+    function tableUploadList(doc) {
+        const now = Date.now();
+        const st = tableUploads[doc.id] || {};
+        const out = [];
+        Object.keys(st).forEach((uid) => {
+            const u = st[uid];
+            if (!u || now - (u.startedAt || 0) > TABLE_UPLOAD_TTL_MS) { delete st[uid]; return; }
+            const m = doc.members.find((x) => x && x.userId === uid);
+            out.push({ userId: uid, username: (m && m.username) || u.username || '?', kind: u.kind || 'fichier', startedAt: u.startedAt });
+        });
+        out.sort((a, b) => String(a.username).localeCompare(String(b.username), 'fr'));
+        return out;
+    }
+    // Push instantané : diffuse la présence d'upload aux membres connectés.
+    function sseNotifyUploads(doc) {
+        if (!doc || sseSubs.size === 0) return;
+        const data = JSON.stringify({ tableId: doc.id, tableName: doc.name, uploads: tableUploadList(doc) });
+        for (const sub of [...sseSubs]) {
+            try {
+                if (!sub || !sub.res) { sseSubs.delete(sub); continue; }
+                if (!tableRoleOf(doc, sub.userId) && !isAdminEmail(sub.email)) continue;
+                sub.res.write('event: upload-state\n' + 'data: ' + data + '\n\n');
+            } catch (e) {
+                try { sseSubs.delete(sub); } catch (_) {}
+            }
+        }
     }
     // Push instantané : diffuse le message aux abonnés SSE membres de la
     // table, en respectant la visibilité des MPs (MJ/helper voient tout).
@@ -1885,6 +1923,9 @@ async function handleRequest(req, res, isAdminListener) {
                     let image = null;
                     const imageUrl = String((body && body.imageUrl) || '').trim().slice(0, 2048);
                     const imageData = String((body && body.imageData) || '');
+                    let file = null;
+                    const fileData = String((body && body.fileData) || '');
+                    const fileName = String((body && body.fileName) || 'document.pdf').slice(0, 120);
                     if (imageUrl) {
                         let ok = false;
                         try {
@@ -1894,15 +1935,24 @@ async function handleRequest(req, res, isAdminListener) {
                         if (!ok) return sendJson(res, 400, { error: 'URL d’image invalide (http/https requis).' });
                         image = { kind: 'url', url: imageUrl };
                     } else if (imageData) {
-                        const m = /^data:image\/(png|jpe?g|gif|webp);base64,[A-Za-z0-9+/=]+$/.exec(imageData);
-                        if (!m) return sendJson(res, 400, { error: 'Image invalide (data:image/png|jpeg|gif|webp;base64).' });
+                        const m = /^data:image\/(png|jpe?g|gif|webp|apng);base64,[A-Za-z0-9+/=]+$/.exec(imageData);
+                        if (!m) return sendJson(res, 400, { error: 'Image invalide (data:image/png|jpeg|gif|webp|apng;base64).' });
                         if (imageData.length > TABLE_MAX_UPLOAD_CHARS) {
-                            return sendJson(res, 413, { error: 'Image trop lourde (max ~2 Mo).' });
+                            return sendJson(res, 413, { error: 'Image trop lourde (max ~10 Mo).' });
                         }
                         const bytes = Math.floor((imageData.length - imageData.indexOf(',') - 1) * 3 / 4);
                         image = { kind: 'upload', mime: 'image/' + m[1].replace('jpg', 'jpeg'), dataUrl: imageData, bytes };
                     }
-                    if (!text && !image) return sendJson(res, 400, { error: 'Message vide (texte ou image requis).' });
+                    if (fileData) {
+                        const fm = /^data:(application\/pdf|application\/ogg|audio\/[A-Za-z0-9.+-]+|video\/[A-Za-z0-9.+-]+);base64,[A-Za-z0-9+/=]+$/.exec(fileData);
+                        if (!fm) return sendJson(res, 400, { error: 'Fichier invalide (PDF, audio ou vidéo en base64).' });
+                        if (fileData.length > TABLE_MAX_UPLOAD_CHARS) {
+                            return sendJson(res, 413, { error: 'Fichier trop lourd (max ~10 Mo).' });
+                        }
+                        const fbytes = Math.floor((fileData.length - fileData.indexOf(',') - 1) * 3 / 4);
+                        file = { kind: 'upload', mime: fm[1], name: fileName || 'document', dataUrl: fileData, bytes: fbytes };
+                    }
+                    if (!text && !image && !file) return sendJson(res, 400, { error: 'Message vide (texte, image, PDF, audio ou vidéo requis).' });
                     let toUserId = null, toName = null;
                     const rawTo = String((body && body.toUserId) || '').trim();
                     if (rawTo) {
@@ -1945,9 +1995,14 @@ async function handleRequest(req, res, isAdminListener) {
                     const msg = {
                         id: 'm_' + Date.now().toString(36) + Math.floor(Math.random() * 1296).toString(36),
                         fromId: myId, fromName: me.username, fromRole: senderRole,
-                        text, image, toUserId, toName, toExcept, createdAt: Date.now()
+                        text, image, file, toUserId, toName, toExcept, createdAt: Date.now()
                     };
                     doc.messages.push(msg);
+                    // Upload terminé (message arrivé) : on efface la présence.
+                    try {
+                        const ust = tableUploads[doc.id];
+                        if (ust && ust[myId]) { delete ust[myId]; sseNotifyUploads(doc); }
+                    } catch (e) {}
                     if (!saveTableDoc(doc)) { doc.messages.pop(); return sendJson(res, 413, { error: 'Table trop volumineuse.' }); }
                     try { sseNotifyTable(doc, msg); } catch (e) {}
                     return sendJson(res, 201, { success: true, message: tablePublicMsg(msg, buildAvatarMap(), doc.members) });
@@ -1972,6 +2027,32 @@ async function handleRequest(req, res, isAdminListener) {
                 return sendJson(res, 200, { success: true });
             }
             return sendJson(res, 405, { error: 'Méthode non autorisée.' });
+        }
+
+        // GET /api/tables/:id/messages/:mid/attachment — octets d'une pièce
+        // jointe (image, PDF, audio, vidéo). Membre + visibilité du message
+        // requis. Contenu immuable -> cache navigateur longue durée.
+        if (parts.length === 4 && parts[1] === 'messages' && parts[3] === 'attachment') {
+            if (req.method !== 'GET') return sendJson(res, 405, { error: 'Méthode non autorisée.' });
+            if (!isMember) return sendJson(res, 403, { error: 'Table réservée à ses membres.' });
+            const msg = doc.messages.find(m => m.id === parts[2]);
+            if (!msg) return sendJson(res, 404, { error: 'Message introuvable.' });
+            if (!tableCanSeeMsg(doc, msg, me)) return sendJson(res, 403, { error: 'Message non visible.' });
+            const att = [msg.image, msg.file].find(f => f && f.kind === 'upload' && f.dataUrl);
+            if (!att) return sendJson(res, 404, { error: 'Aucune pièce jointe.' });
+            let buf = null;
+            try {
+                const b64 = String(att.dataUrl).split(',')[1] || '';
+                if (!/^[A-Za-z0-9+/=]+$/.test(b64)) throw new Error('base64');
+                buf = Buffer.from(b64, 'base64');
+            } catch (e) { return sendJson(res, 500, { error: 'Pièce jointe illisible.' }); }
+            res.writeHead(200, {
+                'Content-Type': att.mime || 'application/octet-stream',
+                'Content-Length': buf.length,
+                'Cache-Control': 'public, max-age=31536000, immutable',
+                'Vary': 'Origin'
+            });
+            return res.end(buf);
         }
 
         // POST /api/tables/:id/members — inviter (pseudo ou e-mail).
@@ -2124,6 +2205,30 @@ async function handleRequest(req, res, isAdminListener) {
                 if (!saveTableDoc(doc)) return sendJson(res, 413, { error: 'Table trop volumineuse.' });
             }
             return sendJson(res, 200, { success: true });
+        }
+
+        // POST /api/tables/:id/upload-state — signaler début/fin d'envoi de
+        // fichier (animation « untel envoie… » chez les membres).
+        if (parts.length === 2 && parts[1] === 'upload-state') {
+            if (req.method !== 'POST') return sendJson(res, 405, { error: 'Méthode non autorisée.' });
+            if (!isMember) return sendJson(res, 403, { error: 'Table réservée à ses membres.' });
+            const body = await parseBody(req);
+            const state = String((body && body.state) || '');
+            const st = tableUploads[doc.id] || (tableUploads[doc.id] = {});
+            if (state === 'start') {
+                st[myId] = { username: me.username, kind: String((body && body.kind) || 'fichier').slice(0, 16), startedAt: Date.now() };
+            } else {
+                delete st[myId];
+            }
+            sseNotifyUploads(doc);
+            return sendJson(res, 200, { success: true, uploads: tableUploadList(doc) });
+        }
+
+        // GET /api/tables/:id/uploads — présence d'upload (repli sans SSE).
+        if (parts.length === 2 && parts[1] === 'uploads') {
+            if (req.method !== 'GET') return sendJson(res, 405, { error: 'Méthode non autorisée.' });
+            if (!isMember) return sendJson(res, 403, { error: 'Table réservée à ses membres.' });
+            return sendJson(res, 200, { success: true, uploads: tableUploadList(doc) });
         }
 
         /* ------------------------------------------------------------
@@ -2718,6 +2823,12 @@ function tableVoiceState(tableId) {
     }
     return st;
 }
+
+// Présence d'upload : qui est en train d'envoyer un fichier sur une table
+// (animation « untel envoie… » chez tous les membres). Éphémère, expiré
+// après 120 s, effacé à l'envoi du message.
+const tableUploads = {}; // tableId -> { userId -> { username, kind, startedAt } }
+const TABLE_UPLOAD_TTL_MS = 120000;
 
 function vttGenClientId() {
     vttClientSeq += 1;

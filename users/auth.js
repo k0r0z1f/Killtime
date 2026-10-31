@@ -545,7 +545,8 @@
                 // Voix live des tables : la signalisation SDP/ICE et l'état du
                 // salon transitent aussi en SSE. Redispatchés en événements
                 // window (consommés par js/tables-voice.js sur tables.html).
-                for (const vt of ['voice-signal', 'voice-presence', 'voice-mute', 'voice-reset']) {
+                // Présence d'upload : consommée par tables.js + table-dock.js.
+                for (const vt of ['voice-signal', 'voice-presence', 'voice-mute', 'voice-reset', 'upload-state']) {
                     es.addEventListener(vt, (ev) => {
                         try { window.dispatchEvent(new CustomEvent('codex:' + vt, { detail: JSON.parse(ev.data) })); } catch (e) {}
                     });
@@ -706,7 +707,9 @@
                 el.style.cssText = 'background:#0f172a;color:#e2e8f0;border:1px solid #38bdf8;' +
                     'border-radius:12px;padding:10px 12px;font:13px system-ui,sans-serif;' +
                     'box-shadow:0 8px 30px rgba(0,0,0,.5);cursor:pointer;display:flex;gap:8px;align-items:flex-start;';
-                const body = m.image ? ('🖼 ' + (m.text || 'Image partagée')) : (m.text || '');
+                const fMime = (m.file && m.file.mime) || '';
+                const fIcon = fMime.indexOf('video/') === 0 ? '🎬 ' : (fMime.indexOf('audio/') === 0 ? '🎵 ' : '📄 ');
+                const body = m.file ? (fIcon + ((m.file && m.file.name) || m.text || 'Document')) : (m.image ? ('🖼 ' + (m.text || 'Image partagée')) : (m.text || ''));
                 const head = esc(t.name) + ' — ' + esc(m.fromName) + (m.private ? ' 🔒' : '') +
                     ((m.receivedBy && m.receivedBy.length) ? ' 📨' : '');
                 const av = m.fromAvatar

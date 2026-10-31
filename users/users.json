@@ -35,7 +35,7 @@
         "id": "pj_6b9fe396",
         "label": "Roger de Vardis",
         "customLabel": false,
-        "updatedAt": 1793353597862,
+        "updatedAt": 1793455484015,
         "data": {
           "v": 2,
           "name": "Roger de Vardis",
@@ -75,7 +75,7 @@
         "id": "pj_faf0ddf0",
         "label": "Jambon",
         "customLabel": true,
-        "updatedAt": 1793453445783,
+        "updatedAt": 1793456065807,
         "data": {
           "v": 2,
           "name": "Jambon",
@@ -159,6 +159,105 @@
     "role": "Joueur",
     "provider": "local",
     "createdAt": "2026-10-31T11:04:33.673Z",
+    "characters": []
+  },
+  {
+    "id": "usr_mvwg8el8",
+    "username": "pdfprobe_1793454046",
+    "email": "pdfprobe_1793454046@example.net",
+    "saltHex": "8f3684c8da3adc536ad10148e32fdc7b",
+    "passwordHashHex": "3897f4fb3e6ba644a5b8c12856a36a87bb30447a0d3d7facfa3fe179c0b2dcb4",
+    "role": "Joueur",
+    "provider": "local",
+    "createdAt": "2026-10-31T13:40:46.172Z",
+    "characters": []
+  },
+  {
+    "id": "usr_mvwgekan",
+    "username": "mp3probe_1793454333",
+    "email": "mp3probe_1793454333@example.net",
+    "saltHex": "ae28d945fbb09be37277ea7f77f07ef0",
+    "passwordHashHex": "0fd9925daf81876d8f281301ee6bf87184eae3392b3c32e22b490f3b6edb685a",
+    "role": "Joueur",
+    "provider": "local",
+    "createdAt": "2026-10-31T13:45:33.503Z",
+    "characters": []
+  },
+  {
+    "id": "usr_mvwgfr8v",
+    "username": "audioprobe_1793454389",
+    "email": "audioprobe_1793454389@example.net",
+    "saltHex": "4237d3ff1b817e048e1e6d2db0e51a36",
+    "passwordHashHex": "4bb26b5ac3ecf7c4758749adb97f706e2faafc8c04e8d2f0b406c8137dde8e2f",
+    "role": "Joueur",
+    "provider": "local",
+    "createdAt": "2026-10-31T13:46:29.167Z",
+    "characters": []
+  },
+  {
+    "id": "usr_mvwghxm0",
+    "username": "bigprobe_1793454490",
+    "email": "bigprobe_1793454490@example.net",
+    "saltHex": "ba31a0ca0beabf6797f9bcd278725f75",
+    "passwordHashHex": "e8cd86da1be694810c31c16951b1a2df2051e141a3ec23ce0357c1a4ce69b209",
+    "role": "Joueur",
+    "provider": "local",
+    "createdAt": "2026-10-31T13:48:10.728Z",
+    "characters": []
+  },
+  {
+    "id": "usr_mvwgmquw",
+    "username": "upprobe_1793454715",
+    "email": "upprobe_1793454715@example.net",
+    "saltHex": "cc5a92fa9c3b5510853946994299d838",
+    "passwordHashHex": "c6260ddc12f9f16132bfd6b21af94f752876afe6b835d26c4948bc3eaecf3b5f",
+    "role": "Joueur",
+    "provider": "local",
+    "createdAt": "2026-10-31T13:51:55.256Z",
+    "characters": []
+  },
+  {
+    "id": "usr_mvwgpmvj",
+    "username": "vidprobe_1793454850",
+    "email": "vidprobe_1793454850@example.net",
+    "saltHex": "cb019a1533893424a145f083f7b45fae",
+    "passwordHashHex": "93edd13806d7ae4231553957836db084fc19d6e0c1263a6cc567000bbefb1e4f",
+    "role": "Joueur",
+    "provider": "local",
+    "createdAt": "2026-10-31T13:54:10.063Z",
+    "characters": []
+  },
+  {
+    "id": "usr_mvwgr6g9",
+    "username": "gifprobe_1793454922",
+    "email": "gifprobe_1793454922@example.net",
+    "saltHex": "7f69325316de5ac081adc551c1b56762",
+    "passwordHashHex": "40028fa583ff9eeaeba8e1e24be0b569b61e0470ead57aa2292b515826114558",
+    "role": "Joueur",
+    "provider": "local",
+    "createdAt": "2026-10-31T13:55:22.089Z",
+    "characters": []
+  },
+  {
+    "id": "usr_mvwh3a2o",
+    "username": "lazyprobe_1793455486",
+    "email": "lazyprobe_1793455486@example.net",
+    "saltHex": "3eee3dba5bc1f90cd6bd610dbc73ccd7",
+    "passwordHashHex": "95445c769e73333a96e0915df1bf45d0c27a622563bbaf37a60f540af499b877",
+    "role": "Joueur",
+    "provider": "local",
+    "createdAt": "2026-10-31T14:04:46.656Z",
+    "characters": []
+  },
+  {
+    "id": "usr_mvwh5hmv",
+    "username": "varyprobe_1793455589",
+    "email": "varyprobe_1793455589@example.net",
+    "saltHex": "c2ec8edfa50f2c1e532d8fd562aa6aa2",
+    "passwordHashHex": "9c302013e1aa8396d97894b968bef725d3bcb51780c2eea80ab2f841c0362463",
+    "role": "Joueur",
+    "provider": "local",
+    "createdAt": "2026-10-31T14:06:29.767Z",
     "characters": []
   }
 ]
