@@ -147,16 +147,27 @@ document.addEventListener('DOMContentLoaded', () => {
    (overflow-x: auto). Ici on affiche un div fixe au niveau body, positionné
    depuis le rectangle de l'ancre, avec bascule haut/bas et cadrage viewport.
    ========================================================================== */
-document.addEventListener('DOMContentLoaded', () => {
-    const refs = document.querySelectorAll('.rule-ref[data-tip]');
+let codexTipEl = null;
+function ensureCodexTip() {
+    if (!codexTipEl) {
+        codexTipEl = document.createElement('div');
+        codexTipEl.className = 'codex-tip';
+        codexTipEl.hidden = true;
+        document.body.appendChild(codexTipEl);
+        const hide = () => { codexTipEl.hidden = true; };
+        window.addEventListener('scroll', hide, { capture: true, passive: true });
+        window.addEventListener('resize', hide);
+    }
+    return codexTipEl;
+}
+// Attache les tooltips aux ancres .rule-ref (appelable après un rendu
+// dynamique, ex. js/livre_1.js). Les ancres déjà liées sont ignorées.
+function bindCodexTips(scope) {
+    const root = scope || document;
+    const refs = root.querySelectorAll('.rule-ref[data-tip]:not([data-tip-bound])');
     if (!refs.length) return;
     document.documentElement.classList.add('has-js-tip');
-
-    const tip = document.createElement('div');
-    tip.className = 'codex-tip';
-    tip.hidden = true;
-    document.body.appendChild(tip);
-
+    const tip = ensureCodexTip();
     const place = (anchor) => {
         tip.textContent = anchor.getAttribute('data-tip');
         tip.hidden = false;
@@ -172,8 +183,8 @@ document.addEventListener('DOMContentLoaded', () => {
         tip.style.left = left + 'px';
     };
     const hide = () => { tip.hidden = true; };
-
     refs.forEach(a => {
+        a.setAttribute('data-tip-bound', '1');
         a.addEventListener('mouseenter', () => {
             if (!window.matchMedia('(hover: hover)').matches) return;
             place(a);
@@ -183,8 +194,10 @@ document.addEventListener('DOMContentLoaded', () => {
         a.addEventListener('blur', hide);
         a.addEventListener('click', hide);
     });
-    window.addEventListener('scroll', hide, { capture: true, passive: true });
-    window.addEventListener('resize', hide);
+}
+window.bindCodexTips = bindCodexTips;
+document.addEventListener('DOMContentLoaded', () => {
+    bindCodexTips(document);
 });
 document.addEventListener('DOMContentLoaded', () => {
     // Boutons déclaratifs : ouvrent l'URL dans une fenêtre détachée centrée.

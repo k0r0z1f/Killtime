@@ -1,0 +1,872 @@
+{
+ "attributs": [
+  {
+   "groupe": "physiques",
+   "id": "FOR",
+   "nom": "Force",
+   "role": "Puissance musculaire brute, impact des armes de choc, port d'armures lourdes, charges et travaux de force."
+  },
+  {
+   "groupe": "physiques",
+   "id": "AGI",
+   "nom": "Agilité",
+   "role": "Souplesse corporelle, précision manuelle, armes fines ou à distance, équilibre et acrobaties."
+  },
+  {
+   "groupe": "physiques",
+   "id": "CON",
+   "nom": "Constitution",
+   "role": "Santé biologique, cardio, seuil de résistance à la douleur et aux traumatismes."
+  },
+  {
+   "groupe": "physiques",
+   "id": "RAP",
+   "nom": "Rapidité d'exécution",
+   "role": "Vitesse de réaction réflexe, cadence gestuelle, vivacité motrice pure."
+  },
+  {
+   "groupe": "mentaux",
+   "id": "INT",
+   "nom": "Intelligence",
+   "role": "Esprit d'analyse, logique tactique sur le terrain, calcul spatial et déduction sous pression."
+  },
+  {
+   "groupe": "mentaux",
+   "id": "ERU",
+   "nom": "Érudition",
+   "role": "Savoirs académiques, culture générale, médecine, ingénierie et théories arcaniques."
+  },
+  {
+   "groupe": "mentaux",
+   "id": "CHA",
+   "nom": "Charisme",
+   "role": "Force de présence, magnétisme naturel, autorité, séduction, bluff et négociation."
+  },
+  {
+   "groupe": "mentaux",
+   "id": "INS",
+   "nom": "Instinct / Sagesse",
+   "role": "Perception viscérale du danger, intuition instinctive, sang-froid et volonté face à la panique."
+  }
+ ],
+ "couts_xp": [
+  {
+   "amelioration": "+1 Entraînement de Compétence",
+   "cout_croise": "10 XP",
+   "cout_lie": "5 XP",
+   "effet_html": "Fait monter la compétence d'un niveau de dé permanent (+1 palier de dé, max +3). Priorité de paiement : réserve liée → XP libre → autres réserves (×2). <strong>Gratuits d'Érudition : 0 XP</strong> (offerts par <a class=\"rule-ref\" href=\"#sec-etape-5\" data-tip=\"Entraînements gratuits : ton rang d’Érudition = autant de compétences montées d’un palier de dé (Étape 5).\">l’Étape 5</a>).",
+   "ton_croise": "ruby",
+   "ton_lie": "cyan"
+  },
+  {
+   "amelioration": "Débloquer une Spécialisation",
+   "cout_croise": "10 XP",
+   "cout_lie": "5 XP",
+   "effet_html": "Déverrouille une expertise ciblée (ex: <em>Maniement de la rapière</em>, <em>Chirurgie de terrain</em>, <em>Télékinésie fine</em>) pour gommer les malus de visée ou déclencher des prouesses uniques (<a class=\"rule-ref\" href=\"livre_3.html#chap-13\" data-tip=\"Compendium : une ligne par spécialisation, achetée à part entière (§13).\">Livre III §13</a>).",
+   "ton_croise": "ruby",
+   "ton_lie": "amber"
+  },
+  {
+   "amelioration": "Façonner un Pouvoir Arcanique",
+   "cout_croise": "2X XP",
+   "cout_lie": "X XP = X PA",
+   "effet_html": "Vous achetez des modules d'effets (dégâts continus, souffle, portée, altération). Le montant total d'XP investi fixe directement le coût en PA pour déclencher ce sort au combat. Voie d'affinité = coût normal ; autre voie = doublé.",
+   "ton_croise": "ruby",
+   "ton_lie": "ruby"
+  },
+  {
+   "amelioration": "Augmenter une Caractéristique",
+   "cout_croise": "2 × (N + 1) XP si croisé",
+   "cout_lie": "(N + 1) XP",
+   "effet_html": "Gagnez +1 point dans l'attribut choisi (jusqu'à 10 max). Coût de passage : <strong>N ➔ N+1 = (N+1) XP</strong> (ex: 4 ➔ 5 = 5 XP, 9 ➔ 10 = 10 XP). Met à jour immédiatement vos caractéristiques et jauges de combat et offre un entraînement si l'Érudition grimpe.",
+   "ton_croise": "emerald",
+   "ton_lie": "emerald"
+  }
+ ],
+ "echelles": [
+  {
+   "monde": "Du premier feu aux mégastructures stellaires",
+   "niveaux": [
+    {
+     "desc": "Chasseurs-cueilleurs, outils de pierre, d'os et de bronze.",
+     "nom": "Primitive"
+    },
+    {
+     "desc": "Forges d'acier, armures de métal, armes de trait et fortifications.",
+     "nom": "Médiévale"
+    },
+    {
+     "desc": "Équivalent de notre Terre contemporaine, balistique, puces et réseaux.",
+     "nom": "Moderne"
+    },
+    {
+     "desc": "Terraformation, singularité cybernétique, voyages interstellaires.",
+     "nom": "Avancée"
+    },
+    {
+     "desc": "Sphères de Dyson, téléportation, cuves de régénération arcanique.",
+     "nom": "Très Avancée"
+    },
+    {
+     "desc": "Manipulation directe du continuum espace-temps et lois physiques courbées.",
+     "nom": "Démiurgique"
+    }
+   ],
+   "pied": "Niveaux 0 à 6",
+   "titre": "Échelle Technologique"
+  },
+  {
+   "monde": "Perméabilité naturelle à la Cinquième Force",
+   "niveaux": [
+    {
+     "desc": "Biologie hermétique. L'organisme rejette totalement les flux magiques.",
+     "nom": "Impossible"
+    },
+    {
+     "desc": "Éveil difficile, accessible par un entraînement sévère au détriment du physique.",
+     "nom": "Limitée"
+    },
+    {
+     "desc": "Apprentissage et canalisation conventionnels, accessibles par l'étude.",
+     "nom": "Normale"
+    },
+    {
+     "desc": "La Cinquième Force coule dans les veines dès le premier souffle.",
+     "nom": "Inhérente"
+    },
+    {
+     "desc": "Tissage instinctif de la réalité, sans catalyseur ni formule.",
+     "nom": "Démiurgique"
+    }
+   ],
+   "pied": "Cinquième Force",
+   "titre": "Affinité Magique des Espèces"
+  }
+ ],
+ "entrainements_eru": {
+  "bonus": "+1 palier de dé par entraînement (plafond +3 par compétence)",
+  "cout_xp": 0,
+  "evolution": "+1 entraînement gratuit par point d'Érudition gagné en jeu",
+  "nombre": "= score d'Érudition final"
+ },
+ "especes": [
+  {
+   "description": "Présents sur des dizaines de systèmes solaires, les humains compensent leur fragilité naturelle par une polyvalence remarquable, une ténacité hors norme et une capacité unique à s'adapter à tous les environnements, du dénuement tribal aux métropoles stellaires.",
+   "dons": [
+    {
+     "effet": "+1 Essoufflement max ; ignore les malus climatiques légers.",
+     "effet_html": "+1 <a class=\"rule-ref\" href=\"#sec-4-2\" data-tip=\"Essoufflement : 1 point = des PA d’urgence ; ne part pas tout seul, action dédiée pour souffler (§4.2).\">Essoufflement</a> max ; ignore les malus climatiques légers.",
+     "id": "A",
+     "nom": "Endurance Coloniale"
+    },
+    {
+     "effet": "+1 entraînement gratuit à la création (compétence non-magique).",
+     "effet_html": "+1 <a class=\"rule-ref\" href=\"#sec-etape-5\" data-tip=\"Entraînements gratuits : ton rang d’Érudition = autant de compétences montées d’un palier de dé (Étape 5).\">entraînement gratuit</a> à la création (compétence non-magique).",
+     "id": "B",
+     "nom": "Touche-à-tout"
+    },
+    {
+     "effet": "+2 Nature & Survie ; +1 Observation.",
+     "effet_html": "+2 aux jets de <a class=\"rule-ref\" href=\"livre_3.html#chap-12\" data-tip=\"Nature & Survie : pistage, orientation, abris (INS/INT/ÉRU, §12.3).\">Nature & Survie</a> ; +1 aux jets d'<a class=\"rule-ref\" href=\"livre_3.html#chap-12\" data-tip=\"Observation : repérer un indice, un danger, un ennemi camouflé (Vision/Ouïe, §12.3).\">Observation</a>.",
+     "id": "C",
+     "nom": "Instinct de Survie"
+    },
+    {
+     "effet": "+2 Communication (négocier, interroger) en zone civilisée ; 1 contact par station ou colonie.",
+     "effet_html": "+2 aux jets de <a class=\"rule-ref\" href=\"livre_3.html#chap-12\" data-tip=\"Communication : parler, négocier, interroger (CHA/INT, §12.2).\">Communication</a> (négocier, interroger...) en zone civilisée ; 1 contact par station ou colonie.",
+     "id": "D",
+     "nom": "Réseau Colonial"
+    },
+    {
+     "effet": "1×/session, annule 1 Essoufflement ou ignore un échec de moral/peur.",
+     "effet_html": "1×/session, annule 1 <a class=\"rule-ref\" href=\"#sec-4-2\" data-tip=\"Essoufflement : 1 point = des PA d’urgence ; ne part pas tout seul, action dédiée pour souffler (§4.2).\">Essoufflement</a> ou ignore un échec de moral/peur.",
+     "id": "E",
+     "nom": "Sang-Froid"
+    }
+   ],
+   "id": "humain",
+   "magie": "Impossible à Limitée",
+   "nom": "Humain",
+   "origine": "Multiples Mondes",
+   "sens_min": 3,
+   "tech": "Primitive ➔ Très Avancée",
+   "magie_ton": "ruby"
+  },
+  {
+   "description": "Bâtis comme des rocs dans les galeries souterraines d'Hybris, les Dereks ont une ossature ultra-dense, une vision habituée aux pénombres minières et une affinité incomparable avec la métallurgie lourde et l'ingénierie mécanique.",
+   "dons": [
+    {
+     "effet": "+2 Encaissement ; -1 dégâts contondants et chutes.",
+     "effet_html": "+2 <a class=\"rule-ref\" href=\"#sec-4-1\" data-tip=\"Encaissement = CON × 2 : ce que ton corps encaisse en un coup sans traumatisme (§4.1).\">Encaissement</a> ; -1 dégâts contondants et chutes.",
+     "id": "A",
+     "nom": "Ossature Dense"
+    },
+    {
+     "effet": "vision nocturne ; -2 dégâts de froid, résiduels froid à -1, +2 aux jets de Constitution contre le froid ; ébloui 1 tour quand il entre dans une lumière vive (plein soleil, éclat aveuglant), pas s'il s'y trouve déjà.",
+     "effet_html": "vision nocturne ; -2 dégâts de froid, résiduels froid à -1, +2 aux jets de Constitution contre le froid ; ébloui 1 tour quand il entre dans une lumière vive (plein soleil, éclat aveuglant), pas s'il s'y trouve déjà.",
+     "id": "B",
+     "nom": "Sang des Profondeurs"
+    },
+    {
+     "effet": "+2 Forger (Artisanat) ; armure forgée par soi +1 protection.",
+     "effet_html": "+2 aux jets de <a class=\"rule-ref\" href=\"livre_3.html#chap-12\" data-tip=\"Artisanat / Connaissance : fabriquer, forger, sculpter (INS/INT, §12.3).\">Forger</a> (Artisanat) ; une armure forgée par soi protège +1 (une seule armure portée à la fois).",
+     "id": "C",
+     "nom": "Maître-Fondeur"
+    },
+    {
+     "effet": "+2 Nature & Survie (orientation) en souterrain ; sent le danger de la roche à ~30 m (gaz, éboulement, poches).",
+     "effet_html": "tu sens le danger de la roche à ~30 m (épreuve d'<a class=\"rule-ref\" href=\"livre_3.html#chap-12\" data-tip=\"Observation : repérer un indice, un danger, un ennemi camouflé (Vision/Ouïe, §12.3).\">Observation</a>) : gaz inflammables, plafond ou pilier qui menace de céder, poches de gaz, d'eau ou de minerai ; +2 aux jets de <a class=\"rule-ref\" href=\"livre_3.html#chap-12\" data-tip=\"Nature & Survie : pistage, orientation, abris (INS/INT/ÉRU, §12.3).\">Nature & Survie</a> (orientation) en souterrain.",
+     "id": "D",
+     "nom": "Sens de la Pierre"
+    },
+    {
+     "effet": "+2 Constitution contre les gaz et poisons des mines ; apnée 4× CON tours.",
+     "effet_html": "+2 aux jets de Constitution contre les gaz et les poisons des mines ; retient son souffle 4× CON tours.",
+     "id": "E",
+     "nom": "Gueule de Granit"
+    }
+   ],
+   "id": "derek",
+   "magie": "Limitée",
+   "nom": "Derek",
+   "origine": "Planète Hybris",
+   "sens_min": 3,
+   "tech": "Avancée d'Hybris",
+   "magie_ton": "amber"
+  },
+  {
+   "description": "Peuple sylvestre d'une agilité féline, les Tauriens vivent en symbiose totale avec les pulsations du vivant. Leurs sens affûtés et leur fluidité motrice s'accordent naturellement avec les flux élémentaires de la Cinquième Force.",
+   "dons": [
+    {
+     "effet": "-1 PA et +1 Magie Élémentale (terre/eau/vent/feu).",
+     "effet_html": "-1 PA et +1 aux jets de <a class=\"rule-ref\" href=\"livre_4.html#sec-16-1\" data-tip=\"Magie Élémentale : pyro, aéro, hydro, géo (MAG/INT, §16.1).\">Magie Élémentale</a> (tes pouvoirs de terre, d'eau, de vent et de feu).",
+     "id": "A",
+     "nom": "Accord Sylvestre"
+    },
+    {
+     "effet": "+1 Esquive en milieu naturel ; -2 dégâts de chute.",
+     "effet_html": "+1 aux jets d'<a class=\"rule-ref\" href=\"livre_3.html#chap-11\" data-tip=\"Esquive : éviter un coup au dernier moment (AGI/RAP/INS, §11.2).\">Esquive</a> en milieu naturel ; -2 dégâts de chute.",
+     "id": "B",
+     "nom": "Grâce Féline"
+    },
+    {
+     "effet": "+2 Observation en nature, -2 en milieu pollué/artificiel ; sent eau/vie/magie à ~50 m.",
+     "effet_html": "tu sens l'eau, la vie et la magie à ~50 m (épreuve d'<a class=\"rule-ref\" href=\"livre_3.html#chap-12\" data-tip=\"Observation : repérer un indice, un danger, un ennemi camouflé (Vision/Ouïe, §12.3).\">Observation</a>) ; +2 aux jets d'<a class=\"rule-ref\" href=\"livre_3.html#chap-12\" data-tip=\"Observation : repérer un indice, un danger, un ennemi camouflé (Vision/Ouïe, §12.3).\">Observation</a> en nature, -2 en milieu pollué ou artificiel.",
+     "id": "C",
+     "nom": "Sens des Flux"
+    },
+    {
+     "effet": "+2 Discrétion en nature ; ignore les terrains difficiles naturels.",
+     "effet_html": "+2 aux jets de <a class=\"rule-ref\" href=\"livre_3.html#chap-11\" data-tip=\"Discrétion : se cacher, se déplacer sans bruit (AGI/INT, §11.2).\">Discrétion</a> en nature ; ignore les terrains difficiles naturels.",
+     "id": "D",
+     "nom": "Pas Feuillu"
+    },
+    {
+     "effet": "1×/jour au contact du sol naturel : purge 1 Essoufflement ou 1 résiduel de 2 ou moins.",
+     "effet_html": "1×/jour, au contact du sol naturel : tu purges 1 <a class=\"rule-ref\" href=\"#sec-4-2\" data-tip=\"Essoufflement : 1 point = des PA d’urgence ; ne part pas tout seul, action dédiée pour souffler (§4.2).\">Essoufflement</a> ou stoppes net 1 résiduel de 2 ou moins.",
+     "id": "E",
+     "nom": "Sève Vive"
+    }
+   ],
+   "id": "taurien",
+   "magie": "Normale",
+   "nom": "Taurien",
+   "origine": "Planète Hybris",
+   "sens_min": 3,
+   "tech": "Avancée",
+   "magie_ton": "cyan"
+  },
+  {
+   "description": "De petite stature et exclusivement féminine, la société cléienne tient l'Empire à distance grâce à son indépendance farouche. Très sobres en eau et dotées d'un réseau neural hypersensible, les Cléiennes manipulent les arcanes avec une virtuosité innée.",
+   "dons": [
+    {
+     "effet": "-2 dégâts feu/chaleur, En Feu à -1, +2 CON vs chaleur ; -1 Encaissement, +1 dégât de froid subi.",
+     "effet_html": "-2 dégâts feu/chaleur, En Feu à -1, +2 CON vs chaleur ; -1 <a class=\"rule-ref\" href=\"#sec-4-1\" data-tip=\"Encaissement = CON × 2 : ce que ton corps encaisse en un coup sans traumatisme (§4.1).\">Encaissement</a>, +1 dégât de froid subi.",
+     "id": "A",
+     "nom": "Sang-Chaud de Cléia"
+    },
+    {
+     "effet": "+1 canalisation ; progression Magie +1 case ; critique magique = +1 Essoufflement.",
+     "effet_html": "+1 canalisation ; progression Magie +1 case ; critique magique = +1 <a class=\"rule-ref\" href=\"#sec-4-2\" data-tip=\"Essoufflement : 1 point = des PA d’urgence ; ne part pas tout seul, action dédiée pour souffler (§4.2).\">Essoufflement</a>.",
+     "id": "B",
+     "nom": "Résonance Arcanique"
+    },
+    {
+     "effet": "+2 détection/lecture émotionnelle ; -2 contre les détonations et effets aveuglants.",
+     "effet_html": "+2 détection/lecture émotionnelle ; -2 contre les détonations et effets aveuglants.",
+     "id": "C",
+     "nom": "Hypersensibilité Neurale"
+    },
+    {
+     "effet": "besoins eau/nourriture divisés par 2 ; +2 CON vs privation.",
+     "effet_html": "besoins eau/nourriture divisés par 2 ; +2 CON vs privation.",
+     "id": "D",
+     "nom": "Frugalité Cleyane"
+    },
+    {
+     "effet": "+1 discrétion/esquive vs taille humaine et plus ; -1 dégât au corps-à-corps.",
+     "effet_html": "+1 discrétion/esquive vs taille humaine et plus ; -1 dégât au corps-à-corps.",
+     "id": "E",
+     "nom": "Silhouette Mineure"
+    }
+   ],
+   "id": "cleien",
+   "magie": "Inhérente",
+   "nom": "Cléien",
+   "origine": "Planète Cléia",
+   "sens_min": 4,
+   "tech": "Impériale Avancée",
+   "magie_ton": "amber"
+  },
+  {
+   "description": "Reptiliens bipèdes intégrés aux structures impériales, les Mikyais possèdent des écailles épaisses qui dévient les tirs et les lames. Réputés tant pour leur rigueur martiale que pour leur savoir-faire d'armuriers, ce sont des alliés solides et fiers.",
+   "dons": [
+    {
+     "effet": "+1 Armure naturelle vs tranchant/perçant ; +2 Encaissement ; +1 dégât froid subi, -2 CON vs froid extrême.",
+     "effet_html": "+1 Armure naturelle vs tranchant/perçant ; +2 <a class=\"rule-ref\" href=\"#sec-4-1\" data-tip=\"Encaissement = CON × 2 : ce que ton corps encaisse en un coup sans traumatisme (§4.1).\">Encaissement</a> ; +1 dégât froid subi, -2 CON vs froid extrême.",
+     "id": "A",
+     "nom": "Écailles de Karkjiue"
+    },
+    {
+     "effet": "1×/combat : un cran de dégât résiduel est ignoré ; stoppe un Saignement léger sans soin.",
+     "effet_html": "1×/combat, un cran de dégât résiduel est ignoré ; stoppe un Saignement léger sans soin.",
+     "id": "B",
+     "nom": "Régénération Karkjiue"
+    },
+    {
+     "effet": "+2 armes lourdes/réparation impériale ; ignore 1 pt d'encombrement d'armure.",
+     "effet_html": "+2 armes lourdes/réparation impériale ; ignore 1 pt d'encombrement d'armure.",
+     "id": "C",
+     "nom": "Technicien-Guerrier"
+    },
+    {
+     "effet": "griffes/crocs (2 dégâts, jamais désarmé) ; +1 escalade.",
+     "effet_html": "griffes/crocs (2 dégâts, jamais désarmé) ; +1 escalade.",
+     "id": "D",
+     "nom": "Armes Naturelles"
+    },
+    {
+     "effet": "3e main utilitaire (pas d'attaque) ; +1 escalade/natation.",
+     "effet_html": "3e main utilitaire (pas d'attaque) ; +1 escalade/natation.",
+     "id": "E",
+     "nom": "Queue Préhensile"
+    }
+   ],
+   "id": "mikyai",
+   "magie": "Impossible à Limitée",
+   "nom": "Mikyai",
+   "origine": "Karkjiue",
+   "sens_min": 3,
+   "tech": "Impériale Avancée",
+   "magie_ton": "ruby"
+  },
+  {
+   "description": "Forgés par la poussière des astéroïdes miniers et les rivalités de frontière, les Frontaliers ont le cuir tanné et le regard méfiant. Habitués à réparer l'irréparable et à ne compter que sur eux-mêmes, ils ne courbent jamais l'échine devant l'adversité.",
+   "dons": [
+    {
+     "effet": "+2 Volonté/moral/peur/intimidation ; +1 Essoufflement max.",
+     "effet_html": "+2 Volonté/moral/peur/intimidation ; +1 <a class=\"rule-ref\" href=\"#sec-4-2\" data-tip=\"Essoufflement : 1 point = des PA d’urgence ; ne part pas tout seul, action dédiée pour souffler (§4.2).\">Essoufflement</a> max.",
+     "id": "A",
+     "nom": "Trempe des Bordures"
+    },
+    {
+     "effet": "+2 CON Immunitaire (toxines, gaz, radiations faibles) ; Empoisonné/Asphyxie à -1.",
+     "effet_html": "+2 CON Immunitaire (toxines, gaz, radiations faibles) ; Empoisonné/Asphyxie à -1.",
+     "id": "B",
+     "nom": "Gueule des Mines"
+    },
+    {
+     "effet": "+2 bricolage/récup/sabotage ; réparations à moitié prix ; -1 social en milieu impérial.",
+     "effet_html": "+2 bricolage/récup/sabotage ; réparations à moitié prix ; -1 social en milieu impérial.",
+     "id": "C",
+     "nom": "Système Récup"
+    },
+    {
+     "effet": "1×/session, à 0 PV sur un coup ≤ Encaissement : reste conscient 1 tour sans Dernier Souffle.",
+     "effet_html": "1×/session, à 0 PV sur un coup ≤ <a class=\"rule-ref\" href=\"#sec-4-1\" data-tip=\"Encaissement = CON × 2 : ce que ton corps encaisse en un coup sans traumatisme (§4.1).\">Encaissement</a> : reste conscient 1 tour sans Dernier Souffle.",
+     "id": "D",
+     "nom": "Ne Lâche Rien"
+    },
+    {
+     "effet": "+2 discrétion/falsification/douanes ; 1 contact marché noir par zone.",
+     "effet_html": "+2 discrétion/falsification/douanes ; 1 contact marché noir par zone.",
+     "id": "E",
+     "nom": "Contrebandier"
+    }
+   ],
+   "id": "vardien",
+   "magie": "Variable",
+   "nom": "Vardien / Frontaliers",
+   "origine": "Vardis & Bordures",
+   "sens_min": 3,
+   "tech": "Hybride Récup",
+   "magie_ton": "amber"
+  }
+ ],
+ "initiative": {
+  "base": "Max(RAP, AGI, INT)",
+  "conversion": "palier de dé (Livre II §6) : 3→1d4, 5→1d6, 7→1d8…",
+  "moment": "début de l'affrontement"
+ },
+ "lexique": [
+  {
+   "def_html": "Votre réserve d'énergie par tour de 10 secondes. Courir, frapper, viser, parer ou lancer un sortilège : chaque geste consomme un coût en PA. Votre réserve se recharge entièrement <strong>au début de votre propre tour</strong> (au moment exact où votre initiative arrive, remise au maximum sans cumul d'un tour sur l'autre).",
+   "symbole": "PA",
+   "terme_html": "<strong>Points d'Action</strong>",
+   "ton": "cyan"
+  },
+  {
+   "def_html": "Le test classique d'action face à un obstacle ou à l'environnement. Vous lancez le dé de votre compétence (+ PA d'effort investis ± modificateurs situationnels, <strong>sans modificateur d'attribut</strong>) pour atteindre ou dépasser la difficulté fixée par le MJ.",
+   "symbole": "EC",
+   "terme_html": "<strong>Épreuve de Caractéristique</strong>",
+   "ton": "amber"
+  },
+  {
+   "def_html": "Un face-à-face direct entre deux compétences (ex: <em><a class=\"rule-ref\" href=\"livre_3.html#chap-11\" data-tip=\"Maniement d'Arme : manier une arme au contact (FOR/AGI, §11.1).\">Maniement d'Arme</a></em> contre <em><a class=\"rule-ref\" href=\"livre_3.html#chap-11\" data-tip=\"Esquive : éviter un coup au dernier moment (AGI/RAP/INS, §11.2).\">Esquive</a></em> ou <em><a class=\"rule-ref\" href=\"livre_3.html#chap-11\" data-tip=\"Défense Corporelle : parer, bloquer, encaisser (FOR, §11.1).\">Défense Corporelle</a></em>). Quand vous attaquez, la cible peut dépenser ses PA pour se défendre. La différence entre les deux scores détermine l'ampleur de la réussite ou de l'échec.",
+   "symbole": "VS",
+   "terme_html": "<strong>Épreuve Opposée</strong>",
+   "ton": "ruby"
+  },
+  {
+   "def_html": "Votre coup de rein d'urgence. Quand vous êtes à sec de PA mais qu'il faut agir à tout prix pour esquiver un coup fatal ou porter une estocade désespérée, vous pouvez puiser dans vos réserves et gagner des PA immédiats... au détriment de votre endurance.",
+   "symbole": "ESS",
+   "terme_html": "<a class=\"rule-ref\" href=\"#sec-4-2\" data-tip=\"Essoufflement : 1 point = des PA d’urgence ; ne part pas tout seul, action dédiée pour souffler (§4.2).\">Essoufflement</a>",
+   "ton": "ruby"
+  },
+  {
+   "def_html": "Votre robustesse biologique pure (égale à <code>Constitution × 2</code>). C'est ce que votre organisme (muscles, os et chair) peut encaisser sur un seul coup : tant qu'une attaque (après déduction d'une éventuelle armure) ne dépasse pas ce score, vous encaissez le choc sans traumatisme grave.",
+   "symbole": "CAP",
+   "terme_html": "<a class=\"rule-ref\" href=\"#sec-4-1\" data-tip=\"Encaissement = CON × 2 : ce que ton corps encaisse en un coup sans traumatisme (§4.1).\">Seuil d’Encaissement</a>",
+   "ton": "emerald"
+  },
+  {
+   "def_html": "Votre limite vitale absolue (égale à <code>Constitution × 5</code>). Si la somme de vos blessures cumulées atteint ce montant, votre corps s'effondre : c'est l'inconscience critique ou la mort sans assistance médicale d'urgence.",
+   "symbole": "MAX",
+   "terme_html": "<a class=\"rule-ref\" href=\"#sec-4-1\" data-tip=\"Seuil Létal = CON × 5 : blessures cumulées qui l’atteignent = effondrement (§4.1).\">Maximum Létal</a>",
+   "ton": "ruby"
+  },
+  {
+   "def_html": "Votre réserve de chance héroïque (tout PJ commence avec 1 point de base). C'est le coup de pouce du destin qui vous évite la mort certaine au moment le plus tragique.",
+   "symbole": "PM",
+   "terme_html": "<strong>Points de Miracle</strong>",
+   "ton": "amber"
+  }
+ ],
+ "livre": "I",
+ "pa": {
+  "desc_html": "Prenez le meilleur score entre votre <strong>Agilité</strong> ou votre <strong>Intelligence</strong>, ajoutez votre <strong>Rapidité d'exécution</strong>, puis ajoutez la <strong>valeur de votre caractéristique principale la plus basse</strong>.",
+  "formule": "Max(AGI, INT) + RAP + Min(principaux)",
+  "formule_html": "PA = <span class=\"hl-cyan\">[Agi ou Int]</span> + <span class=\"hl-gold\">Rap</span> + <span class=\"hl-ruby\">Min(Principaux)</span>",
+  "recharge": "début du tour personnel, remise au maximum, sans cumul",
+  "badge": "Formule Fondamentale"
+ },
+ "profils": [
+  {
+   "eveille": "17 points au lieu de 15 si le personnage s'éveille à la Magie (au moins 1 pt placé en Magie)",
+   "id": "heros",
+   "limites": "Min 1, Max 3 par attribut restant (Plafond ultime en jeu : 10)",
+   "nom": "Héros PJ (Joueur)",
+   "piliers": [
+    {
+     "ton": "cyan",
+     "valeur": 5
+    },
+    {
+     "ton": "amber",
+     "valeur": 4
+    }
+   ],
+   "secondaires": 15,
+   "secondaires_eveille": 17,
+   "secondaires_html": "<strong>15 points</strong> à ventiler sur les 6 autres attributs (17 si Magie &gt; 0)",
+   "limites_html": "Min <strong>1</strong>, Max <strong>3</strong> par attribut restant (Plafond ultime en jeu : <strong>10</strong>)",
+   "eveille_html": "<strong>17 points</strong> au lieu de 15 si le personnage s'éveille à la Magie (au moins 1 pt placé en Magie)"
+  },
+  {
+   "eveille": "17 points au lieu de 15 si Magie > 0",
+   "id": "elite",
+   "limites": "Min 1, Max 3 par attribut restant (Plafond en cours de jeu : 10)",
+   "nom": "PNJ d'Élite / Vétéran",
+   "piliers": [
+    {
+     "ton": "amber",
+     "valeur": 4
+    },
+    {
+     "ton": "amber",
+     "valeur": 4
+    }
+   ],
+   "secondaires": 15,
+   "secondaires_eveille": 17,
+   "secondaires_html": "<strong>15 points</strong> à répartir sur les 6 autres attributs (17 si Magie &gt; 0)",
+   "limites_html": "Min <strong>1</strong>, Max <strong>3</strong> par attribut restant (Plafond en cours de jeu : <strong>10</strong>)",
+   "eveille_html": "<strong>17 points</strong> au lieu de 15 si Magie &gt; 0"
+  },
+  {
+   "eveille": "11 points si étincelle magique",
+   "id": "sbire",
+   "limites": "Min 1, Max 3 par attribut (Jamais de caractéristique à 0)",
+   "nom": "PNJ Sbire / Fretin",
+   "piliers_texte": "Aucun attribut majeur d'office",
+   "secondaires": 12,
+   "secondaires_eveille": 11,
+   "secondaires_html": "<strong>12 points</strong> au total répartis sur l'ensemble des 8 attributs (11 si Magie &gt; 0)",
+   "limites_html": "Min <strong>1</strong>, Max <strong>3</strong> par attribut (Jamais de caractéristique à 0)",
+   "eveille_html": "<strong>11 points</strong> si étincelle magique"
+  }
+ ],
+ "progression": {
+  "anti_farm": "réserve d'XP lié ≤ niveau de la compétence ; surplus converti 2:1 en XP libre, réserve ramenée au niveau",
+  "cout_carac": "N ➔ N+1 = (N+1) XP (2× si croisé), plafond 10",
+  "cout_croise_x2": true,
+  "cout_entrainement": "5 XP (10 XP si croisé), max +3 paliers",
+  "cout_pouvoir": "X XP = X PA (2X XP si croisé)",
+  "cout_specialisation": "5 XP (10 XP si croisé)",
+  "cout_xp_lie_1p1": true,
+  "piste_longueur": "= valeur de base de la compétence (Livre III §10.1)",
+  "piste_pleine": "reset à zéro + 1 XP lié",
+  "regle": "1 réussite = +1 case (spontané uniquement, 1/succès même en critique)",
+  "xp_total": "somme investie depuis le début (surcharges ×2 incluses), hors réserves et hors gratuits ÉRU"
+ },
+ "quota_attaque": {
+  "base": 1,
+  "seconde": "palier d'élite ≥ 2d6"
+ },
+ "regle_dons": "Sauf précision contraire, un don s'active gratuitement, quand vous voulez (pas d'action, pas de PA).",
+ "sens": [
+  {
+   "texte": "Lancez <strong>1d6</strong> à la création (valeur minimale de 3 selon votre espèce).",
+   "titre": "Vision"
+  },
+  {
+   "texte": "Lancez <strong>1d6</strong> à la création (valeur minimale de 3 selon votre espèce).",
+   "titre": "Ouïe"
+  },
+  {
+   "texte": "Démarre à 0 chez les gens ordinaires. Si vous décidez d'éveiller votre personnage à la Cinquième Force dès sa création, vous disposez d'un budget élargi de <strong>17 points secondaires</strong> (au lieu de 15) et vous placez au moins 1 point en Magie.",
+   "titre": "Magie"
+  },
+  {
+   "texte": "Tout héros joueur commence l'aventure avec <strong>1 Point de Miracle</strong> en réserve.",
+   "titre": "Points de Miracle"
+  }
+ ],
+ "seuils": [
+  {
+   "badge": "Constitution × 2",
+   "desc_html": "Votre robustesse anatomique pure. Tant qu'une frappe ne vous inflige pas des dégâts supérieurs à <code>Con × 2</code> (après déduction d'une éventuelle armure), votre corps absorbe l'impact sans blessure invalidante.",
+   "id": "CAP",
+   "nom": "Seuil d'Encaissement",
+   "ton": "emerald"
+  },
+  {
+   "badge": "Constitution × 5",
+   "desc_html": "La limite biologique absolue. Dès que la somme de vos dégâts accumulés atteint <code>Con × 5</code>, l'organisme s'effondre : le personnage sombre dans le coma ou succombe à ses blessures s'il n'est pas réanimé.",
+   "id": "MAX",
+   "nom": "Maximum Létal",
+   "ton": "ruby"
+  }
+ ],
+ "souffle": {
+  "base": "CON",
+  "recuperation": "action spécifique au début du tour, sans attaque",
+  "regle": "1 pt = PA d'urgence quand les PA manquent ; ne disparaît pas seul"
+ },
+ "source": "livre_1.html",
+ "titre": "Fondations & Création",
+ "tour_s": 10,
+ "updated": "2026-10-31",
+ "version": 1,
+ "entete_html": "                    <div class=\"doc-meta-tags\">\n                        <span class=\"pill-badge cyan\">\n                            <svg width=\"12\" height=\"12\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\"\n                                stroke-width=\"2\">\n                                <rect x=\"3\" y=\"4\" width=\"18\" height=\"18\" rx=\"2\" ry=\"2\" />\n                                <line x1=\"16\" y1=\"2\" x2=\"16\" y2=\"6\" />\n                                <line x1=\"8\" y1=\"2\" x2=\"8\" y2=\"6\" />\n                                <line x1=\"3\" y1=\"10\" x2=\"21\" y2=\"10\" />\n                            </svg>\n                            Livre I — Fondations & Création\n                        </span>\n                        <span class=\"pill-badge emerald\">Règles Officielles</span>\n                        <span class=\"pill-badge ruby\">Combat & Survie</span>\n                    </div>\n\n                    <h1 class=\"doc-title\">Livre I : Fondations du Système&nbsp;& Création de Personnage</h1>\n                    <p class=\"doc-subtitle\">\n                        Tout ce dont vous avez besoin pour donner vie à votre alter-ego, comprendre ce dont son corps\n                        et son esprit sont capables, rythmer ses actions seconde par seconde et mesurer ce qu'il peut\n                        réellement encaisser avant de mordre la poussière.\n                    </p>",
+ "sections": [
+  {
+   "id": "chap-1",
+   "symbole": "1.",
+   "titre": "Principes Fondamentaux & Lexique de Jeu",
+   "blocs": [
+    {
+     "type": "html",
+     "html": "                    <p class=\"lead\">\n                        Ici, oubliez les règles abstraites déconnectées du terrain : chaque seconde et chaque\n                        geste comptent. Que vous tentiez un tir réflexe sous le feu ennemi, forciez un sas blindé ou canalisiez\n                        un flux arcanique, vous engagez directement votre souffle, votre temps et votre sang-froid.\n                    </p>"
+    },
+    {
+     "type": "html",
+     "html": "                    <h3>1.1 Le Tour de 10 Secondes</h3>"
+    },
+    {
+     "type": "html",
+     "html": "                    <p>\n                        Dès que le ton monte ou que les armes sont dégainées, la scène se découpe en <strong>Tours de 10\n                            secondes</strong>. Dix secondes, à l'échelle d'un combat, c'est à la fois très court et\n                        largement suffisant pour faire basculer une situation ! Durant cet intervalle, chacun agit quand\n                        son <a class=\"rule-ref\" href=\"#sec-4-3\" data-tip=\"Initiative : meilleur score entre Rapidité, Agilité et Intelligence, converti en dé (§4.3).\">tour d’initiative</a> arrive, puis dépense ses <strong>Points d'Action (PA)</strong> à sa\n                        guise : vous pouvez tout donner d'un coup dans un assaut furieux, ou garder de précieux réflexes\n                        sous le coude pour esquiver une riposte ou vous jeter à couvert.\n                    </p>"
+    },
+    {
+     "type": "html",
+     "html": "                    <h3>1.2 Lexique & Règle d'Or</h3>"
+    },
+    {
+     "type": "html",
+     "html": "                    <div class=\"callout arcane\" style=\"margin-bottom: 20px;\">\n                        <div class=\"callout-header\">\n                            <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\"\n                                stroke-width=\"2\">\n                                <circle cx=\"12\" cy=\"12\" r=\"10\" />\n                                <polyline points=\"12 6 12 12 14 14\" />\n                            </svg>\n                            La Règle d'Or : On teste toujours une Compétence, jamais une Caractéristique brute\n                        </div>\n                        <div class=\"callout-body\">\n                            Autour de la table, <strong>aucun jet ne se fait sur un attribut brut isolé</strong>. En\n                            situation réelle, ce qui compte, c'est ce que votre personnage sait faire : manier une arme,\n                            crocheter un sas, esquiver un tir ou soigner un allié. Tout jet d'action ou de réaction\n                            découle donc <strong>toujours d'une compétence précise</strong> (ex: <em><a class=\"rule-ref\" href=\"livre_3.html#chap-11\" data-tip=\"Mains Nues : combat à mains nues (FOR/AGI, §11.1).\">Mains Nues</a></em>,\n                            <em><a class=\"rule-ref\" href=\"livre_3.html#chap-11\" data-tip=\"Maniement d'Arme : manier une arme au contact (FOR/AGI, §11.1).\">Maniement d'Arme</a></em>, <em><a class=\"rule-ref\" href=\"livre_3.html#chap-11\" data-tip=\"Ballistique / Tir : tirer à distance (AGI/Vision, §11.2).\">Balistique</a></em>, <em><a class=\"rule-ref\" href=\"livre_3.html#chap-11\" data-tip=\"Esquive : éviter un coup au dernier moment (AGI/RAP/INS, §11.2).\">Esquive</a></em>, <em><a class=\"rule-ref\" href=\"livre_3.html#chap-11\" data-tip=\"Défense Corporelle : parer, bloquer, encaisser (FOR, §11.1).\">Défense Corporelle</a></em>).\n                            Vos attributs ne servent qu'à poser votre base de départ.<br>\n                            Concrètement : aucun modificateur de\n                            caractéristique n'est additionné au dé. Votre résultat vaut :\n                            <strong>Tirage du dé de compétence + PA d'effort injectés ± modificateurs situationnels</strong>\n                            (visée, hauteur, obscurité, blessures).\n                        </div>\n                    </div>"
+    },
+    {
+     "type": "ref",
+     "cible": "lxLexique"
+    }
+   ]
+  },
+  {
+   "id": "chap-2",
+   "symbole": "2.",
+   "titre": "Cosmologie, Mondes & Espèces Jouables",
+   "blocs": [
+    {
+     "type": "html",
+     "html": "                    <p>\n                        L'univers de Killtime brasse des réalités vertigineuses : vous pouvez croiser au même détour de coursive\n                        un chasseur armé d'un épieu de bronze et un ingénieur impérial aux commandes d'un croiseur stellaire.\n                        Pour vous repérer d'un simple coup d'œil, deux échelles universelles permettent de situer l'origine de\n                        tout équipement ou être vivant :\n                    </p>"
+    },
+    {
+     "type": "html",
+     "html": "                    <h3>2.1 Deux Échelles pour se Repérer</h3>"
+    },
+    {
+     "type": "ref",
+     "cible": "lxEchelles"
+    },
+    {
+     "type": "html",
+     "html": "                    <h3>2.2 Les Espèces Reconnues</h3>"
+    },
+    {
+     "type": "html",
+     "html": "                    <p>\n                        Quand vous imaginez votre personnage, son espèce ancre son histoire dans le monde : elle raconte son\n                        berceau d'origine, sa culture, la finesse naturelle de ses sens (Vision & Ouïe), son rapport à la\n                        Cinquième Force et <strong>1 don racial choisi parmi 5 options</strong> (ce don est définitif et donne\n                        toute sa couleur à votre héros dès la création). Sauf précision contraire, un don s'active <strong>gratuitement, quand vous voulez</strong> :\n                        pas d'action, pas de PA à dépenser, simples conditions à remplir :\n                    </p>"
+    },
+    {
+     "type": "ref",
+     "cible": "lxEspeces"
+    }
+   ]
+  },
+  {
+   "id": "chap-3",
+   "symbole": "3.",
+   "titre": "Créer votre Personnage pas-à-pas",
+   "blocs": [
+    {
+     "type": "html",
+     "html": "                    <p>\n                        Créer son personnage se fait en <strong>5 étapes simples</strong>. Pas besoin de\n                        calculatrice savante : suivez le guide pas-à-pas pour bâtir un héros solide, plein de caractère\n                        et immédiatement prêt pour la table de jeu.\n                    </p>"
+    },
+    {
+     "type": "html",
+     "html": "                    <h3>Étape 1 : Qui êtes-vous ? (Identité & Origine)</h3>"
+    },
+    {
+     "type": "html",
+     "html": "                    <p>\n                        Donnez un <strong>Nom</strong>, un <strong>Âge</strong>, un <strong>Sexe</strong> et une\n                        <strong>Allure physique</strong> à votre alter-ego (son gabarit, ses tics, les cicatrices qui\n                        marquent son visage). Prenez un instant pour imaginer son <strong>Histoire</strong> : d'où vient-il ?\n                        Quels traumatismes ou dettes traîne-t-il derrière lui ? Qui sont ses alliés ?\n                        Pour enrichir son passé avec du croustillant, jetez un coup d'œil au\n                        <a href=\"livre_7.html\" style=\"color: var(--arcane-cyan); font-weight: 700;\">Livre VII</a>\n                        (enfance, métier de jeunesse, événement fondateur).\n                    </p>"
+    },
+    {
+     "type": "html",
+     "html": "                    <h3>Étape 2 : Votre Profil & Budget de Points de Départ</h3>"
+    },
+    {
+     "type": "html",
+     "html": "                    <p>\n                        Gardez à l'esprit une distinction essentielle : la <strong>Création Initiale</strong> utilise un\n                        budget fermé pour poser des bases équilibrées entre joueurs. Plus tard, lors de\n                        l'<strong>Évolution en Jeu</strong>, vous serez totalement libre d'améliorer vos attributs au fil\n                        des séances en dépensant vos points d'XP (au coût progressif de <code>N ➔ N+1 = (N+1) XP</code>,\n                        jusqu'au plafond de 10 — voir §5.3). À la création, voici comment répartir vos points selon le rôle\n                        du personnage :\n                    </p>"
+    },
+    {
+     "type": "ref",
+     "cible": "lxProfils"
+    },
+    {
+     "type": "html",
+     "html": "                    <h3>Étape 3 : Vos 8 Attributs Majeurs</h3>"
+    },
+    {
+     "type": "html",
+     "html": "                    <p>\n                        Ces huit caractéristiques définissent le potentiel brut de votre héros : son capital physique d'un\n                        côté, ses facultés intellectuelles et sociales de l'autre.\n                    </p>"
+    },
+    {
+     "type": "ref",
+     "cible": "lxAttributs"
+    },
+    {
+     "type": "html",
+     "html": "                    <h3>Étape 4 : Perceptions & Atouts Spéciaux</h3>"
+    },
+    {
+     "type": "ref",
+     "cible": "lxSens"
+    },
+    {
+     "type": "html",
+     "html": "                    <h3 id=\"sec-etape-5\">Étape 5 : Vos premières Compétences Entraînées (le bonus d'Érudition)</h3>"
+    },
+    {
+     "type": "html",
+     "html": "                    <p>\n                        Plus votre personnage a étudié et voyagé, plus il maîtrise de savoir-faire pratiques. Votre rang d'<strong>Érudition</strong> (ÉRU finale, espèce comprise) vous offre un nombre d'<strong>entraînements gratuits exactement égal à votre score d'ÉRU</strong> (exemple : ÉRU 3 → 3 entraînements gratuits). Chacun de ces choix fait grimper la compétence sélectionnée au rang <em>Entraînée</em>, ce qui vous offre un bonus permanent de <strong>+1 niveau de dé</strong> lorsque vous l'utilisez.\n                    </p>"
+    },
+    {
+     "type": "html",
+     "html": "                    <ul>\n                        <li><strong>1 entraînement gratuit = +1 palier de dé</strong> sur la compétence de votre choix (avec un plafond de +3 par compétence, voir Livre II §6).</li>\n                        <li><strong>À chaque montée d'Érudition en jeu (+1 ÉRU)</strong>, votre héros débloque immédiatement <strong>+1 entraînement gratuit</strong> supplémentaire.</li>\n                        <li><strong>Ces entraînements de départ ne coûtent aucun XP</strong> (ils valent 0 XP dépensé dans votre total, <a class=\"rule-ref\" href=\"#sec-5-4\" data-tip=\"XP Total : tout l’XP investi depuis le début, hors réserves et hors entraînements gratuits (§5.4).\">§5.4</a>). Seuls les entraînements achetés plus tard avec l'expérience accumulée viendront gonfler ce compteur.</li>\n                    </ul>"
+    }
+   ]
+  },
+  {
+   "id": "chap-4",
+   "symbole": "4.",
+   "titre": "Statistiques Dérivées, PA & Survie",
+   "blocs": [
+    {
+     "type": "html",
+     "html": "                    <p>\n                        Une fois vos caractéristiques posées, il ne vous reste plus qu'à calculer vos jauges de jeu : vos\n                        Points d'Action (ce que vous pouvez faire chaque tour) et vos seuils de résistance (ce que votre\n                        corps peut supporter).\n                    </p>"
+    },
+    {
+     "type": "ref",
+     "cible": "formulePA"
+    },
+    {
+     "type": "html",
+     "html": "                    <div class=\"callout arcane\">\n                        <div class=\"callout-header\">\n                            <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\"\n                                stroke-width=\"2\">\n                                <polyline points=\"22 12 18 12 15 21 9 3 6 12 2 12\" />\n                            </svg>\n                            Exemple Concret : Le Calcul des PA de Roger\n                        </div>\n                        <div class=\"callout-body\">\n                            Roger a 3 en Agilité, 2 en Intelligence, 3 en Rapidité, et son attribut le plus faible est le Charisme à 1.<br>\n                            <strong>Son calcul :</strong> Max(3, 2) + 3 + 1 = <strong>7 Points d'Action</strong>.<br>\n                            Roger disposera donc de 7 PA dès que viendra son <a class=\"rule-ref\" href=\"#sec-4-3\" data-tip=\"Initiative : meilleur score entre Rapidité, Agilité et Intelligence, converti en dé (§4.3).\">tour d’initiative</a> dans le combat (ses compteurs reviennent au max, sans cumul possible).\n                        </div>\n                    </div>"
+    },
+    {
+     "type": "html",
+     "html": "                    <div class=\"callout ruby\"\n                        style=\"border-left: 4px solid var(--vital-ruby); background: rgba(244, 63, 94, 0.06); padding: 14px 18px; margin: 16px 0;\">\n                        <div class=\"callout-header\"\n                            style=\"color: var(--vital-ruby); font-weight: 700; display: flex; align-items: center; gap: 8px;\">\n                            <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\"\n                                stroke-width=\"2\">\n                                <circle cx=\"12\" cy=\"12\" r=\"10\" />\n                                <line x1=\"12\" y1=\"8\" x2=\"12\" y2=\"12\" />\n                                <line x1=\"12\" y1=\"16\" x2=\"12.01\" y2=\"16\" />\n                            </svg>\n                            Deux Réflexes Vitaux : Quota d'Attaque & Chute à 0 PV\n                        </div>\n                        <div class=\"callout-body\">\n                            &bull; <strong>Une seule attaque par tour :</strong> Le combat est vif et brouillon. On ne peut porter qu'une unique attaque par tour (il faut attendre un palier d'élite &ge; 2d6 pour pouvoir en placer une seconde).<br>\n                            &bull; <strong>Quand les PV tombent à 0 :</strong> Si l'impact fatal dépasse votre seuil d’<a class=\"rule-ref\" href=\"#sec-4-1\" data-tip=\"Encaissement = CON × 2 : ce que ton corps encaisse en un coup sans traumatisme (§4.1).\">Encaissement</a> (<code>CON &times; 2</code>), votre corps cède immédiatement (syncope directe, voire mort instantanée sur un tir en pleine tête sauf si vous sacrifiez 1 Point de Miracle). Si le coup ne dépasse pas l’<a class=\"rule-ref\" href=\"#sec-4-1\" data-tip=\"Encaissement = CON × 2 : ce que ton corps encaisse en un coup sans traumatisme (§4.1).\">Encaissement</a>, vous avez le choix : <em>Sombrer</em> (vous perdez connaissance mais votre état reste stable) ou tenter un <em>Dernier Souffle</em> (vous refusez de tomber et continuez à agir, mais chaque action vous coûte 1 <a class=\"rule-ref\" href=\"#sec-4-2\" data-tip=\"Essoufflement : 1 point = des PA d’urgence ; ne part pas tout seul, action dédiée pour souffler (§4.2).\">point d’Essoufflement</a>, et la mort survient si votre <a class=\"rule-ref\" href=\"#sec-4-2\" data-tip=\"Essoufflement : 1 point = des PA d’urgence ; ne part pas tout seul, action dédiée pour souffler (§4.2).\">essoufflement</a> égale votre Constitution).\n                        </div>\n                    </div>"
+    },
+    {
+     "type": "html",
+     "html": "                    <h3 id=\"sec-4-1\">4.1 Encaissement & Blessures</h3>"
+    },
+    {
+     "type": "ref",
+     "cible": "lxSeuils"
+    },
+    {
+     "type": "html",
+     "html": "                    <h3 id=\"sec-4-2\">4.2 La Réserve d'Essoufflement</h3>"
+    },
+    {
+     "type": "html",
+     "html": "                    <p>\n                        Votre réserve d'Essoufflement est calibrée sur votre Constitution et votre cardio. En plein affrontement,\n                        lorsque vous êtes à court de PA mais qu'il faut esquiver une lame in extremis ou asséner une ultime frappe,\n                        vous pouvez <strong>prendre 1 point d'Essoufflement pour gagner des PA d'urgence</strong>. Attention :\n                        l'Essoufflement ne disparaît pas tout seul au tour suivant. Pour reprendre votre souffle et l'effacer, vous devrez\n                        consacrer une action spécifique au début de votre tour, sans porter d'attaque.\n                    </p>"
+    },
+    {
+     "type": "html",
+     "html": "                    <h3 id=\"sec-4-3\">4.3 L'Initiative : Qui agit en premier ?</h3>"
+    },
+    {
+     "type": "html",
+     "html": "                    <p>\n                        Quand la poudre parle, l'initiative repose sur votre meilleur score entre <strong>Rapidité</strong>,\n                        <strong>Agilité</strong> et <strong>Intelligence</strong>. On convertit cette valeur en palier de dé\n                        (par exemple un score de 3 donne 1d4, 5 donne 1d6, 7 donne 1d8, etc.). Vous lancez ce dé au début de\n                        l'affrontement pour fixer l'ordre de passage autour de la table.\n                    </p>"
+    }
+   ]
+  },
+  {
+   "id": "chap-5",
+   "symbole": "5.",
+   "titre": "Progression & Dépense d'XP",
+   "blocs": [
+    {
+     "type": "html",
+     "html": "                    <p>\n                        Ici, on progresse comme dans la vraie vie : c'est sur le terrain et en forgeant qu'on devient\n                        forgeron. <strong>Chaque fois que vous réussissez un jet de compétence en jeu, vous progressez dans cette compétence</strong>.\n                        Un échec n'apporte pas de case cochée, mais forge l'expérience. On ne coche qu'une seule case par succès, même\n                        sur un critique éclatant.\n                    </p>"
+    },
+    {
+     "type": "html",
+     "html": "                    <h3>5.1 La Piste de Progression : Vous apprenez de vos réussites</h3>"
+    },
+    {
+     "type": "html",
+     "html": "                    <p>\n                        Chaque compétence dispose de sa propre <strong>piste de progression</strong>, dont la longueur correspond\n                        exactement à sa <strong>valeur de caractéristique de base</strong> (Livre III §10.1). Par exemple, une\n                        compétence dont la base vaut <strong>3 possède 3 cases</strong>, tandis qu'une base à <strong>5 en compte 5</strong>\n                        (de 1 à 10). La logique est très intuitive : un débutant fait des progrès fulgurants, tandis qu'un expert chevronné\n                        doit enchaîner les succès pour franchir un nouveau cap !\n                    </p>"
+    },
+    {
+     "type": "html",
+     "html": "                    <ul>\n                        <li><strong>Action réussie :</strong> vous cochez +1 case dans <em>cette</em> compétence (un tir réussi coche l'arme à distance, une parade réussie coche la défense, un crochetage réussi coche le <a class=\"rule-ref\" href=\"livre_3.html#chap-11\" data-tip=\"Subterfuge Manuel : crocheter, subtiliser, trafiquer (AGI/INT, §11.2).\">subterfuge</a>).</li>\n                        <li><strong>Échec :</strong> pas de case cochée cette fois-ci.</li>\n                        <li><strong>Duel en face-à-face :</strong> seul le vainqueur du duel coche une case (l'attaquant s'il prend le dessus, le défenseur s'il a réagi et contré l'assaut).</li>\n                    </ul>"
+    },
+    {
+     "type": "html",
+     "html": "                    <p>\n                        <strong>L'entraînement entre compagnons :</strong> Vous pouvez demander à un camarade de vous entraîner pendant\n                        les moments calmes. Chaque jet réalisé dans ce cadre correspond à <strong>4 heures d'exercices intensifs</strong>.\n                    </p>"
+    },
+    {
+     "type": "html",
+     "html": "                    <p>\n                        <strong>La spontanéité avant tout :</strong> Vos pistes ne progressent que sur des\n                        <strong>actions improvisées face aux aléas de l'histoire</strong>. Les actions préméditées ou calculées hors-jeu\n                        pour \"gratter\" des points ne cochent aucune case : le MJ veille au grain !\n                    </p>"
+    },
+    {
+     "type": "html",
+     "html": "                    <h3 id=\"sec-5-2\">5.2 Remplir une piste : +1 XP Lié en réserve</h3>"
+    },
+    {
+     "type": "html",
+     "html": "                    <p>\n                        Dès que vous cochez la dernière case d'une compétence, votre piste se réinitialise à zéro et vous gagnez\n                        <strong>1 point d'XP lié</strong> dans la réserve de cette compétence. Exemple : avec une base de 3, 3 actions\n                        réussies complètent la piste et vous rapportent 1 XP prêt à être dépensé.\n                    </p>"
+    },
+    {
+     "type": "html",
+     "html": "                    <p>\n                        <strong>Anti-farm :</strong> ta réserve d'XP lié ne peut pas dépasser le niveau de sa compétence.\n                        Dès qu'elle le dépasse de 2 (réserve à 5 pour un niveau 3), les 2 points en trop se transforment\n                        en <strong>1 XP libre</strong>, et ta réserve retombe au niveau de la compétence (3). Exemple : tu\n                        répètes le même crochetage facile toute la soirée — arrivé à 5 en réserve pour un niveau 3, le MJ\n                        convertit : +1 XP libre pour toi, réserve revenue à 3. Le surplus part en libre au taux de 2 pour 1.\n                    </p>"
+    },
+    {
+     "type": "html",
+     "html": "                    <h3 id=\"sec-5-3\">5.3 Dépenser son Expérience : Votre domaine d'abord, la polyvalence au prix fort</h3>"
+    },
+    {
+     "type": "html",
+     "html": "                    <p>\n                        Pour réinvestir vos points d'XP, la règle est limpide :\n                        dépenser un XP <strong>dans sa propre compétence (ou son attribut lié)</strong> se fait au <strong>tarif normal (1 pour 1)</strong>.\n                        En revanche, si vous voulez transférer l'expérience d'une compétence martiale vers de la médecine ou du crochetage,\n                        le <strong>coût est doublé (&times;2)</strong>, car changer de discipline demande un vrai effort de reconversion.\n                        Enfin, l'<strong>XP libre</strong> (les récompenses généreuses offertes par le MJ en fin de mission) s'utilise\n                        partout au coût normal, sans aucune pénalité.\n                    </p>"
+    },
+    {
+     "type": "html",
+     "html": "                    <p>\n                        <strong>Faire monter ses Caractéristiques en jeu :</strong> Vous n'êtes pas coincé avec vos attributs de départ !\n                        Au fil de vos aventures, vous pouvez augmenter vos 8 attributs et votre Magie avec de l'XP. La règle est simple :\n                        <strong>passer au niveau supérieur coûte autant d'XP que le niveau visé</strong> :\n                    </p>"
+    },
+    {
+     "type": "html",
+     "html": "                    <ul>\n                        <li>Passer de <strong>4 à 5 coûte 5 XP</strong>, de <strong>5 à 6 coûte 6 XP</strong>, de <strong>6 à 7 coûte 7 XP</strong>,\n                            et ainsi de suite jusqu'au sommet absolu où passer de <strong>9 à 10 coûte 10 XP</strong>.\n                        </li>\n                        <li><strong>Plafond Absolu : 10</strong>. Aucun attribut ne peut dépasser 10.</li>\n                        <li><strong>Financement :</strong> On pioche d'abord dans <a class=\"rule-ref\" href=\"#sec-5-2\" data-tip=\"XP lié : une piste remplie = 1 XP réservé à sa compétence (§5.2).\">l’XP lié</a> des compétences associées à cet attribut (taux 1:1), et seulement ensuite dans <a class=\"rule-ref\" href=\"#sec-5-3\" data-tip=\"XP libre : récompense MJ utilisable partout au tarif normal (§5.3).\">l’XP libre</a> (1:1). Les réserves sans lien direct financent au taux croisé doublé (2:1).</li>\n                        <li><strong>Conséquences immédiates :</strong> Dès qu'une caractéristique augmente, toutes vos jauges dérivées sont recalculées\n                            (vos PA avec <code>Max(Agi, Int) + Rap + Min</code>, votre <a class=\"rule-ref\" href=\"#sec-4-1\" data-tip=\"Encaissement = CON × 2 : ce que ton corps encaisse en un coup sans traumatisme (§4.1).\">Encaissement</a> à <code>CON × 2</code>, votre <a class=\"rule-ref\" href=\"#sec-4-1\" data-tip=\"Seuil Létal = CON × 5 : blessures cumulées qui l’atteignent = effondrement (§4.1).\">Seuil Létal</a> à <code>CON × 5</code>, votre <a class=\"rule-ref\" href=\"#sec-4-2\" data-tip=\"Souffle : ta réserve d’Essoufflement, calibrée sur ta Constitution (§4.2).\">Souffle</a> à <code>CON</code>)\n                            et vos futures pistes de progression s'ajustent à votre nouveau rang. Et chaque nouveau point investi en <strong>Érudition</strong>\n                            débloque immédiatement <strong>+1 <a class=\"rule-ref\" href=\"#sec-etape-5\" data-tip=\"Entraînements gratuits : ton rang d’Érudition = autant de compétences montées d’un palier de dé (Étape 5).\">entraînement gratuit</a></strong> permanent sur votre fiche.\n                        </li>\n                    </ul>"
+    },
+    {
+     "type": "ref",
+     "cible": "lxCoutsXP"
+    },
+    {
+     "type": "html",
+     "html": "                    <h3 id=\"sec-5-4\">5.4 Savoir lire son « XP Total »</h3>"
+    },
+    {
+     "type": "html",
+     "html": "                    <p>\n                        Une distinction toute simple mais essentielle : votre <strong>XP Total</strong>, c'est la somme\n                        de <strong>tous les points d'expérience que vous avez déjà investis depuis le début de la campagne</strong>\n                        pour faire évoluer votre personnage (en comptant les surcoûts croisés &times;2 si vous en avez payé).\n                        <strong>Ce n'est pas</strong> l'XP qui dort encore dans vos réserves en attente d'achat : les réserves sont\n                        votre monnaie en poche, l'XP Total mesure la puissance et la maturité de votre héros. Et rappelez-vous que\n                        <strong>les <a class=\"rule-ref\" href=\"#sec-etape-5\" data-tip=\"Entraînements gratuits : ton rang d’Érudition = autant de compétences montées d’un palier de dé (Étape 5).\">entraînements offerts par l’Érudition</a> ne comptent pas dans l'XP Total</strong> (ils ont coûté 0 XP).\n                    </p>"
+    }
+   ]
+  },
+  {
+   "id": "chap-fiche",
+   "symbole": "6.",
+   "titre": "Exemple de Fiche de Personnage Complète",
+   "blocs": [
+    {
+     "type": "html",
+     "html": "                    <p>\n                        Pour voir comment toutes ces briques s'assemblent concrètement sur la table de jeu, voici le profil complet\n                        de <strong>Roger de Vardis</strong>, un milicien humain des bordures (profil standard : piliers FOR 5 et CON 4,\n                        15 points secondaires, total 24 pts — que vous pouvez tester et manipuler dans le\n                        <a href=\"livre_9.html#chap-34\" style=\"color: var(--arcane-cyan); font-weight: 700;\">créateur interactif du Livre IX</a>) :\n                    </p>"
+    },
+    {
+     "type": "html",
+     "html": "                    <div class=\"char-sheet-preview\">\n                        <p style=\"font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 12px;\">\n                            Copie statique du créateur avec les valeurs de Roger : le\n                            <a href=\"livre_9.html#chap-34\" style=\"color: var(--arcane-cyan); font-weight: 700;\">créateur du Livre IX</a>\n                            et la fenêtre détachée affichent exactement cette fiche par défaut.\n                            <span class=\"pill-badge cyan\">Fiche validée — Total 24/24</span>\n                        </p>\n\n                        <div class=\"tool-grid-3\">\n                            <div class=\"tool-form-group\">\n                                <label class=\"tool-label\">Nom du Personnage</label>\n                                <div class=\"field-value\">Roger de Vardis</div>\n                            </div>\n                            <div class=\"tool-form-group\">\n                                <label class=\"tool-label\">Espèce Jouable</label>\n                                <div class=\"field-value\">Humain <span class=\"tool-label-hint\">Polyvalent, sens min 3 | Magie : Impossible à Limitée</span></div>\n                            </div>\n                            <div class=\"tool-form-group\">\n                                <label class=\"tool-label\">Profil & Budget (Livre I §3)</label>\n                                <div class=\"field-value\">Héros PJ (pilier à 5 + pilier à 4, 15 pts secondaires)</div>\n                            </div>\n                        </div>\n\n                        <div class=\"tool-grid-3\" style=\"margin-top: 12px;\">\n                            <div class=\"tool-form-group\">\n                                <label class=\"tool-label\">Âge</label>\n                                <div class=\"field-value\">27</div>\n                            </div>\n                            <div class=\"tool-form-group\">\n                                <label class=\"tool-label\">Sexe</label>\n                                <div class=\"field-value\">M</div>\n                            </div>\n                            <div class=\"tool-form-group\">\n                                <label class=\"tool-label\">Monde d'Origine</label>\n                                <div class=\"field-value\">Frontière Chaude</div>\n                            </div>\n                        </div>\n\n                        <div class=\"tool-grid-3\" style=\"margin-top: 12px;\">\n                            <div class=\"tool-form-group\">\n                                <label class=\"tool-label\">Pilier Majeur (5 Héros / 4 Élite)</label>\n                                <div class=\"field-value\">Force (FOR)</div>\n                            </div>\n                            <div class=\"tool-form-group\">\n                                <label class=\"tool-label\">Pilier Mineur (4)</label>\n                                <div class=\"field-value\">Constitution (CON)</div>\n                            </div>\n                            <div class=\"tool-form-group\">\n                                <label class=\"tool-label\">Don Racial (1 au choix, définitif)</label>\n                                <div class=\"field-value\">4. Réseau Colonial <span class=\"tool-label-hint\">+2 Communication en zone civilisée ; 1 contact par station.</span></div>\n                            </div>\n                        </div>\n\n                        <h4 style=\"margin: 20px 0 10px; font-family: var(--font-mono); font-size: 0.85rem; color: var(--temporal-amber); text-transform: uppercase;\">\n                            1bis. Historique & Ancrage (Livre VII — 1 enfance + 1 métier max)\n                        </h4>\n                        <div class=\"tool-grid-3\">\n                            <div class=\"tool-form-group\">\n                                <label class=\"tool-label\">Enfance (d6)</label>\n                                <div class=\"field-value\">2. Rues & Bas-fonds <span class=\"tool-label-hint\">Gamin des toits : +2 <a class=\"rule-ref\" href=\"livre_3.html#chap-12\" data-tip=\"Observation : repérer un indice, un danger, un ennemi camouflé (Vision/Ouïe, §12.3).\">Observation</a> en urbain.</span></div>\n                            </div>\n                            <div class=\"tool-form-group\">\n                                <label class=\"tool-label\">Métier (d12)</label>\n                                <div class=\"field-value\">1. Milicien <span class=\"tool-label-hint\">+2 <a class=\"rule-ref\" href=\"livre_3.html#chap-11\" data-tip=\"Ballistique / Tir : tirer à distance (AGI/Vision, §11.2).\">Tir</a> (1 arme) & <a class=\"rule-ref\" href=\"livre_3.html#chap-12\" data-tip=\"Observation : repérer un indice, un danger, un ennemi camouflé (Vision/Ouïe, §12.3).\">Observation</a> ; armure légère ; rappelable.</span></div>\n                            </div>\n                            <div class=\"tool-form-group\">\n                                <label class=\"tool-label\">Événement Marquant (d12, optionnel)</label>\n                                <div class=\"field-value\">2. Dette de vie <span class=\"tool-label-hint\">+2 pour protéger un allié ; créancier rappelable.</span></div>\n                            </div>\n                        </div>\n                        <div class=\"tool-form-group\" style=\"margin-top: 10px;\">\n                            <label class=\"tool-label\">Ancrage (époque + monde, 3 réponses : origine, liens, fuite/désir)</label>\n                            <div class=\"field-value\">— (à définir en jeu)</div>\n                        </div>\n\n                        <h4 style=\"margin: 20px 0 10px; font-family: var(--font-mono); font-size: 0.85rem; color: var(--arcane-cyan); text-transform: uppercase;\">\n                            1. Les 8 Attributs Majeurs + Magie (dés Livre II §6.1, sans entraînement)\n                        </h4>\n                        <div class=\"sheet-stats-grid\">\n                            <div class=\"stat-badge-box highlight\">\n                                <div class=\"stat-badge-name\">Force (FOR) [Pilier Majeur]</div>\n                                <div class=\"stat-badge-num\">5</div>\n                                <div class=\"stat-badge-die\">Dé : 1d6</div>\n                            </div>\n                            <div class=\"stat-badge-box highlight\">\n                                <div class=\"stat-badge-name\">Constitution (CON) [Pilier Mineur]</div>\n                                <div class=\"stat-badge-num\">4</div>\n                                <div class=\"stat-badge-die\">Dé : 1d4</div>\n                            </div>\n                            <div class=\"stat-badge-box\">\n                                <div class=\"stat-badge-name\">Agilité (AGI)</div>\n                                <div class=\"stat-badge-num\">3</div>\n                                <div class=\"stat-badge-die\">Dé : 1d4</div>\n                            </div>\n                            <div class=\"stat-badge-box\">\n                                <div class=\"stat-badge-name\">Rapidité (RAP)</div>\n                                <div class=\"stat-badge-num\">3</div>\n                                <div class=\"stat-badge-die\">Dé : 1d4</div>\n                            </div>\n                            <div class=\"stat-badge-box\">\n                                <div class=\"stat-badge-name\">Intelligence (INT)</div>\n                                <div class=\"stat-badge-num\">2</div>\n                                <div class=\"stat-badge-die\">Dé : 1d2</div>\n                            </div>\n                            <div class=\"stat-badge-box\">\n                                <div class=\"stat-badge-name\">Érudition (ÉRU)</div>\n                                <div class=\"stat-badge-num\">3</div>\n                                <div class=\"stat-badge-die\">Dé : 1d4 — 3 entraînements</div>\n                            </div>\n                            <div class=\"stat-badge-box\">\n                                <div class=\"stat-badge-name\">Charisme (CHA) [Min]</div>\n                                <div class=\"stat-badge-num\">1</div>\n                                <div class=\"stat-badge-die\">Dé : 1d2</div>\n                            </div>\n                            <div class=\"stat-badge-box\">\n                                <div class=\"stat-badge-name\">Instinct (INS)</div>\n                                <div class=\"stat-badge-num\">3</div>\n                                <div class=\"stat-badge-die\">Dé : 1d4</div>\n                            </div>\n                            <div class=\"stat-badge-box\">\n                                <div class=\"stat-badge-name\">Magie</div>\n                                <div class=\"stat-badge-num\">0</div>\n                                <div class=\"stat-badge-die\">Non éveillée</div>\n                            </div>\n                        </div>\n\n                        <div class=\"vitals-dashboard\" style=\"margin-top: 14px;\">\n                            <div class=\"vital-metric-card cyan\">\n                                <div class=\"vital-metric-title\">Points d'Action (PA)</div>\n                                <div class=\"vital-metric-num\">7</div>\n                                <div class=\"vital-metric-sub\">Max(Agi, Int) + Rap + Min(Core)</div>\n                            </div>\n                            <div class=\"vital-metric-card emerald\">\n                                <div class=\"vital-metric-title\">Encaissement (CAP)</div>\n                                <div class=\"vital-metric-num\">8</div>\n                                <div class=\"vital-metric-sub\">Constitution × 2</div>\n                            </div>\n                            <div class=\"vital-metric-card ruby\">\n                                <div class=\"vital-metric-title\">Maximum Létal (MAX)</div>\n                                <div class=\"vital-metric-num\">20</div>\n                                <div class=\"vital-metric-sub\">Constitution × 5 (Mort / Coma)</div>\n                            </div>\n                            <div class=\"vital-metric-card amber\">\n                                <div class=\"vital-metric-title\">Essoufflement</div>\n                                <div class=\"vital-metric-num\">4 tours</div>\n                                <div class=\"vital-metric-sub\">Plafond d'effort continu (CON + don)</div>\n                            </div>\n                            <div class=\"vital-metric-card cyan\">\n                                <div class=\"vital-metric-title\">Initiative</div>\n                                <div class=\"vital-metric-num\">1d4 (RAP 3)</div>\n                                <div class=\"vital-metric-sub\">Max(RAP, AGI, INT) en dé (Livre I §4.3)</div>\n                            </div>\n                            <div class=\"vital-metric-card emerald\">\n                                <div class=\"vital-metric-title\">Miracle</div>\n                                <div class=\"vital-metric-num\">1 (PJ)</div>\n                                <div class=\"vital-metric-sub\">Réserve de destin (0 pour un Sbire)</div>\n                            </div>\n                        </div>\n\n                        <div style=\"margin-top: 12px; padding: 16px; background: rgba(0,0,0,0.25); border-radius: 8px; border: 1px dashed var(--border-subtle);\">\n                            <div style=\"display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;\">\n                                <span style=\"font-family: var(--font-mono); font-size: 0.8rem; font-weight: 700; color: var(--text-primary);\">\n                                    Compétences de Base Entraînées (+1 niveau de dé permanent)\n                                </span>\n                                <span class=\"pill-badge cyan\">3 / 3</span>\n                            </div>\n                            <p style=\"font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 12px;\">\n                                Érudition 3 → <strong>3 entraînements gratuits</strong> (Étape 5) : <strong>3 cases par\n                                compétence, 1 case cochée = +1 palier de dé</strong> (plafond +3). Roger a coché 2 cases sur <strong><a class=\"rule-ref\" href=\"livre_3.html#chap-11\" data-tip=\"Mains Nues : combat à mains nues (FOR/AGI, §11.1).\">Mains Nues</a></strong> (poings du milicien, dé 1d10)\n                                et 1 sur <strong><a class=\"rule-ref\" href=\"livre_3.html#chap-11\" data-tip=\"Esquive : éviter un coup au dernier moment (AGI/RAP/INS, §11.2).\">Esquive</a></strong> (réflexes des rues, dé 1d6).\n                            </p>\n                            <div class=\"tool-grid-4\" style=\"font-size: 0.82rem;\">\n                                <label style=\"display: flex; align-items: center; gap: 4px;\"><input type=\"checkbox\" disabled checked> <input type=\"checkbox\" disabled checked> <input type=\"checkbox\" disabled> Mains Nues (FOR) <span class=\"pill-badge amber skill-die\" data-skillref=\"skMainsNues\">1d10</span></label>\n                                <label style=\"display: flex; align-items: center; gap: 4px;\"><input type=\"checkbox\" disabled> <input type=\"checkbox\" disabled> <input type=\"checkbox\" disabled> Mêlée (FOR) <span class=\"pill-badge cyan skill-die\" data-skillref=\"skMelee\">1d6</span></label>\n                                <label style=\"display: flex; align-items: center; gap: 4px;\"><input type=\"checkbox\" disabled> <input type=\"checkbox\" disabled> <input type=\"checkbox\" disabled> Tir & Viseur (AGI) <span class=\"pill-badge cyan skill-die\" data-skillref=\"skTir\">1d4</span></label>\n                                <label style=\"display: flex; align-items: center; gap: 4px;\"><input type=\"checkbox\" disabled checked> <input type=\"checkbox\" disabled> <input type=\"checkbox\" disabled> Esquive Tactique (AGI) <span class=\"pill-badge amber skill-die\" data-skillref=\"skEsquive\">1d6</span></label>\n                                <label style=\"display: flex; align-items: center; gap: 4px;\"><input type=\"checkbox\" disabled> <input type=\"checkbox\" disabled> <input type=\"checkbox\" disabled> Parade / Bouclier (FOR/AGI) <span class=\"pill-badge cyan skill-die\" data-skillref=\"skParade\">1d6</span></label>\n                                <label style=\"display: flex; align-items: center; gap: 4px;\"><input type=\"checkbox\" disabled> <input type=\"checkbox\" disabled> <input type=\"checkbox\" disabled> Athlétisme & Escalade (FOR) <span class=\"pill-badge cyan skill-die\" data-skillref=\"skAthletisme\">1d6</span></label>\n                                <label style=\"display: flex; align-items: center; gap: 4px;\"><input type=\"checkbox\" disabled> <input type=\"checkbox\" disabled> <input type=\"checkbox\" disabled> Discrétion & Infiltration (AGI) <span class=\"pill-badge cyan skill-die\" data-skillref=\"skDiscretion\">1d4</span></label>\n                                <label style=\"display: flex; align-items: center; gap: 4px;\"><input type=\"checkbox\" disabled> <input type=\"checkbox\" disabled> <input type=\"checkbox\" disabled> Pilotage & Conduite (RAP) <span class=\"pill-badge cyan skill-die\" data-skillref=\"skPilotage\">1d4</span></label>\n                                <label style=\"display: flex; align-items: center; gap: 4px;\"><input type=\"checkbox\" disabled> <input type=\"checkbox\" disabled> <input type=\"checkbox\" disabled> Médecine & Soins d’Urgence (ÉRU) <span class=\"pill-badge cyan skill-die\" data-skillref=\"skMedecine\">1d4</span></label>\n                                <label style=\"display: flex; align-items: center; gap: 4px;\"><input type=\"checkbox\" disabled> <input type=\"checkbox\" disabled> <input type=\"checkbox\" disabled> Arcanes & 5e Force (ÉRU/MAG) <span class=\"pill-badge cyan skill-die\" data-skillref=\"skArcanes\">1d4</span></label>\n                                <label style=\"display: flex; align-items: center; gap: 4px;\"><input type=\"checkbox\" disabled> <input type=\"checkbox\" disabled> <input type=\"checkbox\" disabled> Piratage & Informatique (INT) <span class=\"pill-badge cyan skill-die\" data-skillref=\"skPiratage\">1d2</span></label>\n                                <label style=\"display: flex; align-items: center; gap: 4px;\"><input type=\"checkbox\" disabled> <input type=\"checkbox\" disabled> <input type=\"checkbox\" disabled> Négociation (CHA) <span class=\"pill-badge cyan skill-die\" data-skillref=\"skPersuasion\">1d2</span></label>\n                                <label style=\"display: flex; align-items: center; gap: 4px;\"><input type=\"checkbox\" disabled> <input type=\"checkbox\" disabled> <input type=\"checkbox\" disabled> Survie & Pistage (INS) <span class=\"pill-badge cyan skill-die\" data-skillref=\"skSurvie\">1d4</span></label>\n                            </div>\n                        </div>\n\n<div class=\"callout arcane\" style=\"margin-top: 16px;\">\n                            <div class=\"callout-header\">\n                                <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\"\n                                    stroke-width=\"2\">\n                                    <polyline points=\"20 6 9 17 4 12\" />\n                                </svg>\n                                Fiche Entièrement Jouable & Prête à l'Emploi\n                            </div>\n                            <div class=\"callout-body\">\n                                Cet exemple est directement reproductible et modifiable dans le\n                                <a href=\"livre_9.html#chap-34\"\n                                    style=\"color: var(--arcane-cyan); font-weight: 700;\">créateur du Livre IX</a> :\n                                choix des piliers FOR/CON, don racial colonial, tirages sensoriels au 1d6, passé de milicien des rues,\n                                dés de caractéristiques (FOR 5 → 1d6, CON 4 → 1d4, INS 3 → 1d4...), calcul automatique des 7 PA,\n                                validation du budget de 24 points, export texte et JSON.\n                                <br>\n                                <button class=\"tool-btn secondary\" data-popout=\"fiche_pj.html\"\n                                    style=\"margin-top: 10px; width: auto;\"\n                                    title=\"Ouvrir la fiche PJ seule dans une fenêtre détachée à côté des règles\">\n                                    <svg width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\"\n                                        stroke-width=\"2\">\n                                        <path d=\"M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6\" />\n                                        <polyline points=\"15 3 21 3 21 9\" />\n                                        <line x1=\"10\" y1=\"14\" x2=\"21\" y2=\"3\" />\n                                    </svg>\n                                    <span>Ouvrir la fiche en fenêtre détachée</span>\n                                </button>\n                            </div>\n                        </div>\n                    </div>"
+    },
+    {
+     "type": "html",
+     "html": "                    <div class=\"chapter-pagination\">\n                        <a href=\"index.html#preface\" class=\"pagination-btn\">\n                            <div>\n                                <div class=\"pagination-label\">Livre Précédent</div>\n                                <div class=\"pagination-title\">← Préface : Le Souffle & Le Temps</div>\n                            </div>\n                        </a>\n                        <a href=\"livre_2.html\" class=\"pagination-btn\">\n                            <div>\n                                <div class=\"pagination-label\">Livre Suivant</div>\n                                <div class=\"pagination-title\">Livre II : Paliers de Dés & Épreuves →</div>\n                            </div>\n                        </a>\n                    </div>"
+    }
+   ]
+  }
+ ],
+ "tableaux": {
+  "lexique": {
+   "colonnes": [
+    "Terme",
+    "Symbole",
+    "Définition & Utilisation en Jeu"
+   ]
+  },
+  "profils": {
+   "colonnes": [
+    "Profil",
+    "Piliers Majeurs (Points Forts)",
+    "Points Secondaires à Répartir",
+    "Limites à la Création",
+    "Option Éveillé (Magie)"
+   ]
+  },
+  "couts": {
+   "colonnes": [
+    "Amélioration Souhaitée",
+    "Coût XP Lié / Libre",
+    "Coût Croisé (autre réserve)",
+    "Effet Concret sur le Personnage"
+   ]
+  }
+ }
+}
