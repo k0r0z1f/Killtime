@@ -1909,8 +1909,11 @@ async function handleRequest(req, res, isAdminListener) {
                     .map(m => tablePublicMsg(m, avatars, doc.members));
                 // Liste d'envoi héritée (serveur) : rafraîchie à chaque poll pour
                 // que la prochaine réponse hérite sans attendre une réouverture.
+                // Membres inclus : la liste (arrivées/départs/rôles) se met à
+                // jour sans rouvrir la table.
                 return sendJson(res, 200, { success: true, messages: visible,
-                    myInherited: (doc.inherited && Array.isArray(doc.inherited[myId])) ? doc.inherited[myId] : [] });
+                    myInherited: (doc.inherited && Array.isArray(doc.inherited[myId])) ? doc.inherited[myId] : [],
+                    members: doc.members.map(m => ({ userId: m.userId, username: m.username, role: m.role, avatar: avatars[m.userId] || null, joinedAt: m.joinedAt })) });
             }
             if (req.method === 'POST' || req.method === 'PUT') {
                 if (!isMember) return sendJson(res, 403, { error: 'Table réservée à ses membres.' });

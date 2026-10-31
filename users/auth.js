@@ -480,11 +480,11 @@
                 const link = document.createElement('link');
                 link.id = 'ktDockCss';
                 link.rel = 'stylesheet';
-                link.href = prefix + 'css/table-dock.css';
+                link.href = prefix + 'css/table-dock.css?v=1.0';
                 document.head.appendChild(link);
                 const s = document.createElement('script');
                 s.id = 'ktDockJs';
-                s.src = prefix + 'js/table-dock.js';
+                s.src = prefix + 'js/table-dock.js?v=1.0';
                 s.defer = true;
                 document.body.appendChild(s);
             } catch (e) {}

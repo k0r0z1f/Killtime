@@ -592,6 +592,11 @@
   }
 
   let membersOpen = false;
+  function dockMembersSig(members) {
+    try {
+      return (members || []).map((m) => [m && m.userId, m && m.username, m && m.role, m && m.avatar].join('|')).sort().join(';');
+    } catch (e) { return ''; }
+  }
   function renderMembers() {
     const toggle = $('kdMToggle');
     const list = $('kdMembers');
@@ -731,6 +736,12 @@
       const d = await r.json();
       if (!activeDoc) return;
       if (Array.isArray(d.myInherited)) activeDoc.myInherited = d.myInherited;
+      // Membres frais (arrivées/départs/rôles/avatars) sans rouvrir.
+      if (Array.isArray(d.members) && dockMembersSig(d.members) !== dockMembersSig(activeDoc.members)) {
+        activeDoc.members = d.members;
+        renderMembers();
+        renderScope();
+      }
       const fresh = (d.messages || []).filter((m) => m.createdAt > lastTs);
       if (!fresh.length) return;
       activeDoc.messages = (activeDoc.messages || []).concat(fresh);

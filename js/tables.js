@@ -192,6 +192,14 @@
       // État d'envoi serveur toujours frais (même sans nouveau message visible) :
       // la prochaine réponse hérite sans attendre une réouverture.
       if (Array.isArray(d.myInherited)) activeDoc.myInherited = d.myInherited;
+      // Membres frais (arrivées/départs/rôles/avatars) : on ne reconstruit
+      // le panneau que si quelque chose a changé (pas d'écrasement des
+      // champs en cours de saisie).
+      if (Array.isArray(d.members) && membersSig(d.members) !== membersSig(activeDoc.members)) {
+        activeDoc.members = d.members;
+        renderManage();
+        renderRecipients();
+      }
       const fresh = (d.messages || []).filter((m) => m.createdAt > lastTs);
       if (!fresh.length) { renderSendScope(); return; }
       activeDoc.messages = activeDoc.messages.concat(fresh);
@@ -258,15 +266,7 @@
     });
     autoShowCached();
     // Destinataires MP : membres sauf moi.
-    const sel = $('tbTo');
-    sel.innerHTML = '<option value="">Public (tout le monde)</option>';
-    activeDoc.members.forEach((mb) => {
-      if (me && mb.userId === me.id) return;
-      const o = document.createElement('option');
-      o.value = mb.userId;
-      o.textContent = '🔒 ' + mb.username + ' (' + mb.role + ')';
-      sel.appendChild(o);
-    });
+    renderRecipients();
     if (stick) stickBottom(box);
     else if (box.scrollHeight - box.scrollTop < 600) stickBottom(box);
   }
@@ -277,6 +277,28 @@
     try { box.scrollTop = box.scrollHeight; box._stuck = true; } catch (e) {}
   }
 
+  // Signature membres (ids + pseudos + rôles + avatars) pour détecter
+  // un changement sans reconstruire à chaque poll.
+  function membersSig(members) {
+    try {
+      return (members || []).map((m) => [m && m.userId, m && m.username, m && m.role, m && m.avatar].join('|')).sort().join(';');
+    } catch (e) { return ''; }
+  }
+  // Destinataires MP : membres sauf moi (sélection conservée).
+  function renderRecipients() {
+    const sel = $('tbTo');
+    if (!sel || !activeDoc) return;
+    const keep = sel.value || '';
+    sel.innerHTML = '<option value="">Public (tout le monde)</option>';
+    activeDoc.members.forEach((mb) => {
+      if (me && mb.userId === me.id) return;
+      const o = document.createElement('option');
+      o.value = mb.userId;
+      o.textContent = '🔒 ' + mb.username + ' (' + mb.role + ')';
+      if (mb.userId === keep) o.selected = true;
+      sel.appendChild(o);
+    });
+  }
   function renderManage() {
     const box = $('tbManage');
     if (!activeDoc) { box.innerHTML = '<p class="tb-status">Sélectionne une table.</p>'; return; }

@@ -75,7 +75,7 @@
         "id": "pj_faf0ddf0",
         "label": "Jambon",
         "customLabel": true,
-        "updatedAt": 1793456065807,
+        "updatedAt": 1793456948508,
         "data": {
           "v": 2,
           "name": "Jambon",
@@ -258,6 +258,61 @@
     "role": "Joueur",
     "provider": "local",
     "createdAt": "2026-10-31T14:06:29.767Z",
+    "characters": []
+  },
+  {
+    "id": "usr_mvwhqnbm",
+    "username": "mjprobe_1793456576",
+    "email": "mjprobe_1793456576@example.net",
+    "saltHex": "e5eb3dcdf06bc59352cce4307ca70a73",
+    "passwordHashHex": "e24d720ebdc82b745f3b29c1d52176a073a5fb82f485e442061bde3a50a342e4",
+    "role": "Joueur",
+    "provider": "local",
+    "createdAt": "2026-10-31T14:22:56.914Z",
+    "characters": []
+  },
+  {
+    "id": "usr_mvwhqnce",
+    "username": "joueurprobe_1793456576",
+    "email": "joueurprobe_1793456576@example.net",
+    "saltHex": "3c55b705f5a24c3ee062847e5c7fe89b",
+    "passwordHashHex": "33367d5ee60005d3b57ee783e9d159be5faac6ba22cfa65cd1b0865b9269bfb5",
+    "role": "Joueur",
+    "provider": "local",
+    "createdAt": "2026-10-31T14:22:56.942Z",
+    "characters": []
+  },
+  {
+    "id": "usr_mvwhy7xf",
+    "username": "ha_1793456930",
+    "email": "ha_1793456930@example.net",
+    "saltHex": "c8459cc2ae486112f9a4e23ecd5df0d1",
+    "passwordHashHex": "23050631ee6c5353f45abccca8fc5fe91cc8705acee8121d5f1bc77bac5d45b3",
+    "role": "Joueur",
+    "provider": "local",
+    "createdAt": "2026-10-31T14:28:50.211Z",
+    "characters": []
+  },
+  {
+    "id": "usr_mvwhy7xy",
+    "username": "hb_1793456930",
+    "email": "hb_1793456930@example.net",
+    "saltHex": "0f0bd81e863d600ed8efb3e91d83ddf7",
+    "passwordHashHex": "c699e219fd7db9df3b0cb1ee239a33fb9910fc35ce88b6767b19ab6c4bc71060",
+    "role": "Joueur",
+    "provider": "local",
+    "createdAt": "2026-10-31T14:28:50.230Z",
+    "characters": []
+  },
+  {
+    "id": "usr_mvwhy7yg",
+    "username": "hc_1793456930",
+    "email": "hc_1793456930@example.net",
+    "saltHex": "218266c9e521f1f11835faf96fc27d82",
+    "passwordHashHex": "023501b377f08753c043b411de60dd7ca949daba5d2efa36382f91370ec739d4",
+    "role": "Joueur",
+    "provider": "local",
+    "createdAt": "2026-10-31T14:28:50.248Z",
     "characters": []
   }
 ]
