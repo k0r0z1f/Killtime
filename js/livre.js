@@ -1,0 +1,119 @@
+/* ==========================================================================
+   MOTEUR GÉNÉRIQUE LIVRES III+ — RENDU DEPUIS data/livre_N.json.
+   La page déclare <main class="main-content" data-livre="N" id="livre-N"> et
+   ne garde que les conteneurs #lxEntete / #lxContenu.
+   Refs gérées : table (colonnes + lignes HTML), cartes (spec-cards,
+   grille 2/3), formule (badge + math + desc).
+   Mécaniques extractibles : data.mecaniques.<id> + window.LivreData.
+   Traductions = traduire les chaînes du JSON, structure inchangée.
+   (Livres I-II gardent leurs moteurs dédiés vérifiés, inchangés.)
+   ========================================================================== */
+(function () {
+    'use strict';
+
+    function errBox(msg) {
+        return '<div class="callout warning"><div class="callout-body">' + msg + '</div></div>';
+    }
+
+    function thead(cols) {
+        return '<thead><tr>' + cols.map(function (c) {
+            return (typeof c === 'object')
+                ? '<th' + c.attrs + '>' + c.html + '</th>'
+                : '<th>' + c + '</th>';
+        }).join('') + '</tr></thead>';
+    }
+
+    function cell(tag, c) {
+        return (typeof c === 'object')
+            ? '<' + tag + c.attrs + '>' + c.html + '</' + tag + '>'
+            : '<' + tag + '>' + c + '</' + tag + '>';
+    }
+
+    function renderTable(t) {
+        var rows = t.lignes.map(function (cells) {
+            return '<tr>' + cells.map(function (c) {
+                return cell('td', c);
+            }).join('') + '</tr>';
+        }).join('');
+        return '<div class="table-container"><table class="codex-table">' +
+            thead(t.colonnes) + '<tbody>' + rows + '</tbody></table></div>';
+    }
+
+    function renderCartes(c) {
+        var cards = c.cartes.map(function (k) {
+            var title = '<div class="spec-card-title">' + k.titre + '</div>' +
+                (k.monde ? '<div class="spec-card-world">' + k.monde + '</div>' : '');
+            var head = k.top === false ? title
+                : '<div class="spec-card-top">' + title + '</div>';
+            var foot = (k.pied_ton && k.pied_texte)
+                ? '<div class="spec-card-footer"><span class="tag-pill ' + k.pied_ton + '">' +
+                  k.pied_texte + '</span></div>'
+                : '';
+            return '<div class="spec-card">' + head +
+                '<p>' + k.corps_html + '</p>' + foot + '</div>';
+        }).join('');
+        return '<div class="cards-grid-' + (c.grille || 3) + '">' + cards + '</div>';
+    }
+
+    function renderFormule(f) {
+        return '<div class="formula-box"><span class="formula-badge">' + f.badge +
+            '</span><div class="formula-content"><div class="formula-math">' + f.math_html +
+            '</div><div class="formula-desc">' + f.desc_html + '</div></div></div>';
+    }
+
+    function renderRef(b, d) {
+        if (b.type !== 'ref') return b.html;
+        var dRef = (d.donnees && d.donnees[b.cible]) || null;
+        if (!dRef) return errBox('Bloc inconnu : ' + b.cible);
+        if (dRef.type === 'table') return renderTable(dRef);
+        if (dRef.type === 'cartes') return renderCartes(dRef);
+        if (dRef.type === 'formule') return renderFormule(dRef);
+        return errBox('Type inconnu : ' + b.cible);
+    }
+
+    async function boot() {
+        var scope = document.querySelector('main[data-livre]');
+        if (!scope) return;
+        var n = scope.getAttribute('data-livre');
+        var entete = document.getElementById('lxEntete');
+        var contenu = document.getElementById('lxContenu');
+        var d;
+        try {
+            var res = await fetch('data/livre_' + n + '.json', { cache: 'no-store' });
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            d = await res.json();
+        } catch (e) {
+            var msg = errBox('Données Livre ' + n + ' introuvables (data/livre_' + n + '.json).');
+            if (entete) entete.innerHTML = msg;
+            if (contenu) contenu.innerHTML = msg;
+            return;
+        }
+        window.LivreData = d; // source unique : mecaniques via LivreData.mecaniques.<id>
+        if (entete) entete.innerHTML = d.entete_html;
+        if (contenu) contenu.innerHTML = d.sections.map(function (s) {
+            var html = s.titre
+                ? '<h2 id="' + s.id + '"><span class="section-symbol">' + s.symbole +
+                  '</span> ' + s.titre + '</h2>'
+                : ''; // section sans titre (préface in-article, Livre IX) : blocs seuls
+            html += s.blocs.map(function (b) {
+                return renderRef(b, d);
+            }).join('\n');
+            return html;
+        }).join('\n');
+        if (window.bindCodexTips) window.bindCodexTips(scope);
+        // Livre IX : outils interactifs branchés après rendu (js/tools.js).
+        if (window.bootTools) {
+            try { window.bootTools(); } catch (e2) { /* outils en erreur : page lisible quand même */ }
+        }
+        if (location.hash) {
+            var target = document.getElementById(location.hash.slice(1));
+            if (target && target.scrollIntoView) target.scrollIntoView();
+        }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', boot);
+    } else {
+        boot();
+    }
+})();

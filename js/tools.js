@@ -3,12 +3,23 @@
  * Moteur logique : Fiche PJ, Atelier de Sorts (XP=PA), Lanceur de Dés & Critiques, Challenges
  */
 
-document.addEventListener('DOMContentLoaded', () => {
+let __toolsBooted = false;
+function bootTools() {
+    if (__toolsBooted) return;
+    __toolsBooted = true;
     initCharacterSheet();
     initSpellWorkshop();
     initDiceRoller();
     initChallengeResolver();
     initClairsentienceSimulator();
+}
+window.bootTools = bootTools;
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Livre IX : contenu rendu en async par js/livre.js -> boot après rendu.
+    // Page statique (fiche_pj) : les outils sont déjà dans le DOM.
+    if (document.getElementById('lxContenu')) return;
+    bootTools();
 });
 
 // Toast notification helper

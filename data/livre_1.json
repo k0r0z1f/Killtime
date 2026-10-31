@@ -568,6 +568,231 @@
    "ton": "ruby"
   }
  ],
+ "mecaniques": {
+  "note": "Genere depuis livre_1.html (motif RP-075/Livre II). Source unique : regenerer.",
+  "tour": {
+   "duree_s": 10,
+   "regle": "des que le ton monte, la scene se decoupe en tours de 10 s"
+  },
+  "pa": {
+   "formule": "Max(AGI, INT) + RAP + Min(principaux)",
+   "recharge": "début du tour personnel, remise au maximum, sans cumul",
+   "badge": "Formule Fondamentale",
+   "texte": "Prenez le meilleur score entre votre Agilité ou votre Intelligence, ajoutez votre Rapidité d'exécution, puis ajoutez la valeur de votre caractéristique principale la plus basse."
+  },
+  "seuils_survie": {
+   "encaissement": {
+    "formule": "CON x 2",
+    "badge": "Constitution × 2",
+    "texte": "Votre robustesse anatomique pure. Tant qu'une frappe ne vous inflige pas des dégâts supérieurs à Con × 2 (après déduction d'une éventuelle armure), votre corps absorbe l'impact sans blessure invalidante."
+   },
+   "letal": {
+    "formule": "CON x 5",
+    "badge": "Constitution × 5",
+    "texte": "La limite biologique absolue. Dès que la somme de vos dégâts accumulés atteint Con × 5, l'organisme s'effondre : le personnage sombre dans le coma ou succombe à ses blessures s'il n'est pas réanimé."
+   }
+  },
+  "quota_attaque": {
+   "base": 1,
+   "seconde_condition": "palier d'élite ≥ 2d6"
+  },
+  "souffle": {
+   "base": "CON",
+   "recuperation": "action spécifique au début du tour, sans attaque",
+   "regle": "1 pt = PA d'urgence quand les PA manquent ; ne disparaît pas seul"
+  },
+  "initiative": {
+   "base": "Max(RAP, AGI, INT)",
+   "conversion": "palier de dé (Livre II §6) : 3→1d4, 5→1d6, 7→1d8…",
+   "moment": "début de l'affrontement"
+  },
+  "progression": {
+   "anti_farm": "réserve d'XP lié ≤ niveau de la compétence ; surplus converti 2:1 en XP libre, réserve ramenée au niveau",
+   "cout_carac": "N ➔ N+1 = (N+1) XP (2× si croisé), plafond 10",
+   "cout_croise_x2": true,
+   "cout_entrainement": "5 XP (10 XP si croisé), max +3 paliers",
+   "cout_pouvoir": "X XP = X PA (2X XP si croisé)",
+   "cout_specialisation": "5 XP (10 XP si croisé)",
+   "cout_xp_lie_1p1": true,
+   "piste_longueur": "= valeur de base de la compétence (Livre III §10.1)",
+   "piste_pleine": "reset à zéro + 1 XP lié",
+   "regle": "1 réussite = +1 case (spontané uniquement, 1/succès même en critique)",
+   "xp_total": "somme investie depuis le début (surcharges ×2 incluses), hors réserves et hors gratuits ÉRU"
+  },
+  "couts_xp": [
+   {
+    "amelioration": "+1 Entraînement de Compétence",
+    "cout_lie": "5 XP",
+    "cout_croise": "10 XP",
+    "effet": "Fait monter la compétence d'un niveau de dé permanent (+1 palier de dé, max +3). Priorité de paiement : réserve liée → XP libre → autres réserves (×2). Gratuits d'Érudition : 0 XP (offerts par l’Étape 5)."
+   },
+   {
+    "amelioration": "Débloquer une Spécialisation",
+    "cout_lie": "5 XP",
+    "cout_croise": "10 XP",
+    "effet": "Déverrouille une expertise ciblée (ex: Maniement de la rapière, Chirurgie de terrain, Télékinésie fine) pour gommer les malus de visée ou déclencher des prouesses uniques (Livre III §13)."
+   },
+   {
+    "amelioration": "Façonner un Pouvoir Arcanique",
+    "cout_lie": "X XP = X PA",
+    "cout_croise": "2X XP",
+    "effet": "Vous achetez des modules d'effets (dégâts continus, souffle, portée, altération). Le montant total d'XP investi fixe directement le coût en PA pour déclencher ce sort au combat. Voie d'affinité = coût normal ; autre voie = doublé."
+   },
+   {
+    "amelioration": "Augmenter une Caractéristique",
+    "cout_lie": "(N + 1) XP",
+    "cout_croise": "2 × (N + 1) XP si croisé",
+    "effet": "Gagnez +1 point dans l'attribut choisi (jusqu'à 10 max). Coût de passage : N ➔ N+1 = (N+1) XP (ex: 4 ➔ 5 = 5 XP, 9 ➔ 10 = 10 XP). Met à jour immédiatement vos caractéristiques et jauges de combat et offre un entraînement si l'Érudition grimpe."
+   }
+  ],
+  "entrainements_eru": {
+   "bonus": "+1 palier de dé par entraînement (plafond +3 par compétence)",
+   "cout_xp": 0,
+   "evolution": "+1 entraînement gratuit par point d'Érudition gagné en jeu",
+   "nombre": "= score d'Érudition final"
+  },
+  "regle_dons": "Sauf précision contraire, un don s'active gratuitement, quand vous voulez (pas d'action, pas de PA).",
+  "attributs_par_id": {
+   "FOR": {
+    "nom": "Force",
+    "groupe": "physiques",
+    "role": "Puissance musculaire brute, impact des armes de choc, port d'armures lourdes, charges et travaux de force."
+   },
+   "AGI": {
+    "nom": "Agilité",
+    "groupe": "physiques",
+    "role": "Souplesse corporelle, précision manuelle, armes fines ou à distance, équilibre et acrobaties."
+   },
+   "CON": {
+    "nom": "Constitution",
+    "groupe": "physiques",
+    "role": "Santé biologique, cardio, seuil de résistance à la douleur et aux traumatismes."
+   },
+   "RAP": {
+    "nom": "Rapidité d'exécution",
+    "groupe": "physiques",
+    "role": "Vitesse de réaction réflexe, cadence gestuelle, vivacité motrice pure."
+   },
+   "INT": {
+    "nom": "Intelligence",
+    "groupe": "mentaux",
+    "role": "Esprit d'analyse, logique tactique sur le terrain, calcul spatial et déduction sous pression."
+   },
+   "ERU": {
+    "nom": "Érudition",
+    "groupe": "mentaux",
+    "role": "Savoirs académiques, culture générale, médecine, ingénierie et théories arcaniques."
+   },
+   "CHA": {
+    "nom": "Charisme",
+    "groupe": "mentaux",
+    "role": "Force de présence, magnétisme naturel, autorité, séduction, bluff et négociation."
+   },
+   "INS": {
+    "nom": "Instinct / Sagesse",
+    "groupe": "mentaux",
+    "role": "Perception viscérale du danger, intuition instinctive, sang-froid et volonté face à la panique."
+   }
+  },
+  "especes_par_nom": {
+   "Humain": {
+    "origine": "Multiples Mondes",
+    "description": "Présents sur des dizaines de systèmes solaires, les humains compensent leur fragilité naturelle par une polyvalence remarquable, une ténacité hors norme et une capacité unique à s'adapter à tous les environnements, du dénuement tribal aux métropoles stellaires.",
+    "dons": [
+     "+1 Essoufflement max ; ignore les malus climatiques légers.",
+     "+1 entraînement gratuit à la création (compétence non-magique).",
+     "+2 aux jets de Nature & Survie ; +1 aux jets d'Observation.",
+     "+2 aux jets de Communication (négocier, interroger...) en zone civilisée ; 1 contact par station ou colonie.",
+     "1×/session, annule 1 Essoufflement ou ignore un échec de moral/peur."
+    ]
+   },
+   "Derek": {
+    "origine": "Planète Hybris",
+    "description": "Bâtis comme des rocs dans les galeries souterraines d'Hybris, les Dereks ont une ossature ultra-dense, une vision habituée aux pénombres minières et une affinité incomparable avec la métallurgie lourde et l'ingénierie mécanique.",
+    "dons": [
+     "+2 Encaissement ; -1 dégâts contondants et chutes.",
+     "vision nocturne ; -2 dégâts de froid, résiduels froid à -1, +2 aux jets de Constitution contre le froid ; ébloui 1 tour quand il entre dans une lumière vive (plein soleil, éclat aveuglant), pas s'il s'y trouve déjà.",
+     "+2 aux jets de Forger (Artisanat) ; une armure forgée par soi protège +1 (une seule armure portée à la fois).",
+     "tu sens le danger de la roche à ~30 m (épreuve d'Observation) : gaz inflammables, plafond ou pilier qui menace de céder, poches de gaz, d'eau ou de minerai ; +2 aux jets de Nature & Survie (orientation) en souterrain.",
+     "+2 aux jets de Constitution contre les gaz et les poisons des mines ; retient son souffle 4× CON tours."
+    ]
+   },
+   "Taurien": {
+    "origine": "Planète Hybris",
+    "description": "Peuple sylvestre d'une agilité féline, les Tauriens vivent en symbiose totale avec les pulsations du vivant. Leurs sens affûtés et leur fluidité motrice s'accordent naturellement avec les flux élémentaires de la Cinquième Force.",
+    "dons": [
+     "-1 PA et +1 aux jets de Magie Élémentale (tes pouvoirs de terre, d'eau, de vent et de feu).",
+     "+1 aux jets d'Esquive en milieu naturel ; -2 dégâts de chute.",
+     "tu sens l'eau, la vie et la magie à ~50 m (épreuve d'Observation) ; +2 aux jets d'Observation en nature, -2 en milieu pollué ou artificiel.",
+     "+2 aux jets de Discrétion en nature ; ignore les terrains difficiles naturels.",
+     "1×/jour, au contact du sol naturel : tu purges 1 Essoufflement ou stoppes net 1 résiduel de 2 ou moins."
+    ]
+   },
+   "Cléien": {
+    "origine": "Planète Cléia",
+    "description": "De petite stature et exclusivement féminine, la société cléienne tient l'Empire à distance grâce à son indépendance farouche. Très sobres en eau et dotées d'un réseau neural hypersensible, les Cléiennes manipulent les arcanes avec une virtuosité innée.",
+    "dons": [
+     "-2 dégâts feu/chaleur, En Feu à -1, +2 CON vs chaleur ; -1 Encaissement, +1 dégât de froid subi.",
+     "+1 canalisation ; progression Magie +1 case ; critique magique = +1 Essoufflement.",
+     "+2 détection/lecture émotionnelle ; -2 contre les détonations et effets aveuglants.",
+     "besoins eau/nourriture divisés par 2 ; +2 CON vs privation.",
+     "+1 discrétion/esquive vs taille humaine et plus ; -1 dégât au corps-à-corps."
+    ]
+   },
+   "Mikyai": {
+    "origine": "Karkjiue",
+    "description": "Reptiliens bipèdes intégrés aux structures impériales, les Mikyais possèdent des écailles épaisses qui dévient les tirs et les lames. Réputés tant pour leur rigueur martiale que pour leur savoir-faire d'armuriers, ce sont des alliés solides et fiers.",
+    "dons": [
+     "+1 Armure naturelle vs tranchant/perçant ; +2 Encaissement ; +1 dégât froid subi, -2 CON vs froid extrême.",
+     "1×/combat, un cran de dégât résiduel est ignoré ; stoppe un Saignement léger sans soin.",
+     "+2 armes lourdes/réparation impériale ; ignore 1 pt d'encombrement d'armure.",
+     "griffes/crocs (2 dégâts, jamais désarmé) ; +1 escalade.",
+     "3e main utilitaire (pas d'attaque) ; +1 escalade/natation."
+    ]
+   },
+   "Vardien / Frontaliers": {
+    "origine": "Vardis & Bordures",
+    "description": "Forgés par la poussière des astéroïdes miniers et les rivalités de frontière, les Frontaliers ont le cuir tanné et le regard méfiant. Habitués à réparer l'irréparable et à ne compter que sur eux-mêmes, ils ne courbent jamais l'échine devant l'adversité.",
+    "dons": [
+     "+2 Volonté/moral/peur/intimidation ; +1 Essoufflement max.",
+     "+2 CON Immunitaire (toxines, gaz, radiations faibles) ; Empoisonné/Asphyxie à -1.",
+     "+2 bricolage/récup/sabotage ; réparations à moitié prix ; -1 social en milieu impérial.",
+     "1×/session, à 0 PV sur un coup ≤ Encaissement : reste conscient 1 tour sans Dernier Souffle.",
+     "+2 discrétion/falsification/douanes ; 1 contact marché noir par zone."
+    ]
+   }
+  },
+  "lexique_par_terme": {
+   "Points d'Action": {
+    "symbole": "PA",
+    "definition": "Votre réserve d'énergie par tour de 10 secondes. Courir, frapper, viser, parer ou lancer un sortilège : chaque geste consomme un coût en PA. Votre réserve se recharge entièrement au début de votre propre tour (au moment exact où votre initiative arrive, remise au maximum sans cumul d'un tour sur l'autre)."
+   },
+   "Épreuve de Caractéristique": {
+    "symbole": "EC",
+    "definition": "Le test classique d'action face à un obstacle ou à l'environnement. Vous lancez le dé de votre compétence (+ PA d'effort investis ± modificateurs situationnels, sans modificateur d'attribut) pour atteindre ou dépasser la difficulté fixée par le MJ."
+   },
+   "Épreuve Opposée": {
+    "symbole": "VS",
+    "definition": "Un face-à-face direct entre deux compétences (ex: Maniement d'Arme contre Esquive ou Défense Corporelle). Quand vous attaquez, la cible peut dépenser ses PA pour se défendre. La différence entre les deux scores détermine l'ampleur de la réussite ou de l'échec."
+   },
+   "Essoufflement": {
+    "symbole": "ESS",
+    "definition": "Votre coup de rein d'urgence. Quand vous êtes à sec de PA mais qu'il faut agir à tout prix pour esquiver un coup fatal ou porter une estocade désespérée, vous pouvez puiser dans vos réserves et gagner des PA immédiats... au détriment de votre endurance."
+   },
+   "Seuil d’Encaissement": {
+    "symbole": "CAP",
+    "definition": "Votre robustesse biologique pure (égale à Constitution × 2). C'est ce que votre organisme (muscles, os et chair) peut encaisser sur un seul coup : tant qu'une attaque (après déduction d'une éventuelle armure) ne dépasse pas ce score, vous encaissez le choc sans traumatisme grave."
+   },
+   "Maximum Létal": {
+    "symbole": "MAX",
+    "definition": "Votre limite vitale absolue (égale à Constitution × 5). Si la somme de vos blessures cumulées atteint ce montant, votre corps s'effondre : c'est l'inconscience critique ou la mort sans assistance médicale d'urgence."
+   },
+   "Points de Miracle": {
+    "symbole": "PM",
+    "definition": "Votre réserve de chance héroïque (tout PJ commence avec 1 point de base). C'est le coup de pouce du destin qui vous évite la mort certaine au moment le plus tragique."
+   }
+  }
+ },
  "souffle": {
   "base": "CON",
   "recuperation": "action spécifique au début du tour, sans attaque",
