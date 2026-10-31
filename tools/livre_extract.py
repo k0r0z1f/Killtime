@@ -114,6 +114,29 @@ def parse_cartes(div, grille):
         out['suffix'] = suf
     return out
 
+def parse_bestiary(bloc):
+    mcl = re.match(r'<div class="bestiary-card([^"]*)"', bloc)
+    extra = mcl.group(1).strip() if mcl else ''
+    mh = re.search(r'<div class="bestiary-header">', bloc)
+    hbloc, hend = balanced(bloc, mh.start())
+    nom = re.search(r'<h4>(.*?)</h4>', hbloc, re.S).group(1).strip()
+    meta = re.search(r'<div class="bestiary-meta-sub">(.*?)</div>', hbloc, re.S).group(1).strip()
+    mr = re.search(r'<span class="danger-level-badge ([^"]*)">(.*?)</span>', hbloc, re.S)
+    rest = bloc[hend:]
+    mp = re.search(r'<p>', rest)
+    pbloc, pend = balanced(rest, mp.start(), 'p')
+    desc = pbloc[3:-4].strip()
+    mg = re.search(r'<div class="stat-block-grid">', rest)
+    gbloc, gend = balanced(rest, mg.start())
+    stats = []
+    for sm in re.finditer(r'<div class="stat-cell">\s*<span\s+class="stat-cell-label">(.*?)</span>\s*<span\s+class="stat-cell-val([^"]*)">(.*?)</span>\s*</div>', gbloc, re.S):
+        stats.append({'label_html': sm.group(1).strip(), 'valeur_html': sm.group(3).strip(),
+                      'highlight': 'highlight' in sm.group(2)})
+    suite = re.sub(r'\s*</div>\s*$', '', rest[gend:]).strip()
+    return {'type': 'bestiaire', 'classe': extra.strip(), 'nom_html': nom, 'meta_html': meta,
+            'rang_classe': mr.group(1), 'rang_html': mr.group(2).strip(),
+            'description_html': desc, 'stats': stats, 'suite_html': suite}
+
 def parse_formule(div):
     m = re.search(r'<(span|div) class="(formula-badge|formula-label)"([^>]*)>(.*?)</\1>', div, re.S)
     assert m, 'etiquette formule introuvable'
@@ -185,10 +208,29 @@ def render_formule(f):
         inner = '<div class="formula-content">' + inner + '</div>'
     return '<div class="formula-box"' + f.get('extra', '') + '>' + label + inner + '</div>'
 
+def render_bestiary(e):
+    stats = ''.join('<div class="stat-cell"><span class="stat-cell-label">' + s['label_html'] +
+                    '</span><span class="stat-cell-val' + (' highlight' if s['highlight'] else '') +
+                    '">' + s['valeur_html'] + '</span></div>' for s in e['stats'])
+    return ('<div class="bestiary-card' + (' ' + e['classe'] if e.get('classe') else '') + '">' +
+            '<div class="bestiary-header"><div class="bestiary-title-group"><h4>' + e['nom_html'] +
+            '</h4><div class="bestiary-meta-sub">' + e['meta_html'] + '</div></div>' +
+            '<span class="danger-level-badge ' + e['rang_classe'] + '">' + e['rang_html'] +
+            '</span></div><p>' + e['description_html'] + '</p>' +
+            '<div class="stat-block-grid">' + stats + '</div>' + e.get('suite_html', '') + '</div>')
+
+def render_grille_bestiaire(g):
+    return ('<div class="cards-grid-' + str(g.get('grille') or 2) + '"' + g.get('extra', '') + '>' +
+            ''.join(render_bestiary(c) for c in g['creatures']) + '</div>')
+
 def render_ref(b, donnees):
     if b['type'] != 'ref':
         return b['html']
     r = donnees[b['cible']]
+    if r['type'] == 'bestiaire':
+        return render_bestiary(r)
+    if r['type'] == 'grille_bestiaire':
+        return render_grille_bestiaire(r)
     if r['type'] == 'table':
         return render_table(r)
     if r['type'] == 'cartes':
@@ -269,19 +311,26 @@ def main():
         sections_data = []
 
     # --- refs dans l'ordre du document ---
-    donnees, tableaux, counters = {}, {}, {'t': 0, 'c': 0, 'f': 0}
+    donnees, tableaux, counters = {}, {}, {'t': 0, 'c': 0, 'f': 0, 'b': 0, 'g': 0}
     for cid, sym, titre, body in sections:
         blocs, pos = [], 0
-        pat = re.compile(r'<div class="(?:table-container|cards-grid-(\d)|formula-box)"([^>]*)>')
+        pat = re.compile(r'<div class="(?:table-container|cards-grid-(\d)|formula-box|bestiary-card([^"]*))"([^>]*)>')
         while True:
             m = pat.search(body, pos)
             if not m:
                 break
             idx = m.start()
-            extra = m.group(2) or ''
+            extra = m.group(3) or ''
             grille = int(m.group(1)) if m.group(1) else None
-            kind = 'table' if 'table-container' in m.group(0) else (
-                'cartes' if 'cards-grid' in m.group(0) else 'formule')
+            tag0 = m.group(0)
+            if 'table-container' in tag0:
+                kind = 'table'
+            elif 'cards-grid' in tag0:
+                kind = 'cartes'
+            elif 'formula-box' in tag0:
+                kind = 'formule'
+            else:
+                kind = 'bestiaire'
             if body[pos:idx].strip():
                 blocs.append({'type': 'html', 'html': body[pos:idx]})
             if kind == 'table':
@@ -297,12 +346,33 @@ def main():
                 counters['c'] += 1
                 name = renames.get('c%d' % counters['c'], 'cartes%d' % counters['c'])
                 bloc, pos = balanced(body, idx)
+                if '<div class="bestiary-card' in bloc and '<div class="spec-card">' not in bloc:
+                    counters['g'] += 1
+                    gname = renames.get('g%d' % counters['g'], 'grille_bestiaire%d' % counters['g'])
+                    creatures, gp = [], 0
+                    while True:
+                        gi = bloc.find('<div class="bestiary-card', gp)
+                        if gi < 0:
+                            break
+                        gbloc, gp = balanced(bloc, gi)
+                        creatures.append(parse_bestiary(gbloc))
+                    entry = {'type': 'grille_bestiaire', 'grille': grille, 'creatures': creatures}
+                    if extra.strip():
+                        entry['extra'] = extra
+                    donnees[gname] = entry
+                    blocs.append({'type': 'ref', 'cible': gname})
+                    continue
                 if '<div class="spec-card">' not in bloc:
                     print('AVERTISSEMENT %s : grille non spec-cards gardee en HTML.' % cid)
                     blocs.append({'type': 'html', 'html': bloc})
                     counters['c'] -= 1
                     continue
                 entry = parse_cartes(bloc, grille)
+            elif kind == 'bestiaire':
+                counters['b'] += 1
+                name = renames.get('b%d' % counters['b'], 'bestiaire%d' % counters['b'])
+                bloc, pos = balanced(body, idx)
+                entry = parse_bestiary(bloc)
             else:
                 counters['f'] += 1
                 name = renames.get('f%d' % counters['f'], 'formule%d' % counters['f'])
@@ -344,7 +414,7 @@ def main():
                           '<main class="main-content" data-livre="%s"%s>' % (a.n, m_main.group(1)), 1)
     old_s = '    <script src="js/codex.js"></script>\n'
     assert old_s in new
-    if 'js/livre.js' not in new:
+    if '<script src="js/livre.js">' not in new:
         new = new.replace(old_s, old_s + '    <script src="js/livre.js"></script>\n', 1)
     open(src, 'w', encoding='utf-8').write(new)
     print('page squelettisee OK')

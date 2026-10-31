@@ -1270,9 +1270,9 @@
     },
     {
      "id": "RP-085",
-     "title": "JSON-ifier le Livre XI (données + contenu, comme Livre I)",
-     "epic": "Livre XI — Bestiaire",
-     "status": "todo",
+     "title": "JSON-ifier le Livre XII (données + contenu, comme Livre I)",
+     "epic": "Livre XII — Bestiaire",
+     "status": "done",
      "priority": "medium",
      "order": 56,
      "scene": "",
@@ -1281,7 +1281,7 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_12.html",
-     "details": "Comme Livre I : extraire data/livre_N.json (données règles + sections/blocs/refs), rendre via JS (factoriser js/livre_1.js en moteur générique), squelettiser le HTML, fidélité vérifiée par diff. But : source unique + traductions. Fichier : livre_12.html."
+     "details": "FAIT 2026-10-31 (titre kanban corrige : Livre XII, pas XI) — data/livre_12.json (14 créatures sluggées + stats + lookup, 3 rangs menace, 4 calibrages, bloc mecaniques + 6 sections (entête in-article + 5 chapitres)), livre_12.html squelettisé (filtre interactif conservé via bootBestiaire post-rendu). Moteur étendu : refs bestiaire/grille_bestiaire. Vérifié : fidélité + rendu JS réel OK, III–XI intacts."
     },
     {
      "id": "RP-086",

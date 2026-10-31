@@ -65,8 +65,7 @@
             (c.prefix || '') + body + (c.suffix || '') + '</div>';
     }
 
-    function renderFormule(f) {
-        var tag = f.etiquette_tag || 'span';
+    function renderFormule(f) {var tag = f.etiquette_tag || 'span';
         var label = '<' + tag + ' class="' + (f.etiquette_classe || 'formula-badge') + '">' +
             (f.etiquette_html !== undefined ? f.etiquette_html : (f.badge || '')) + '</' + tag + '>';
         return '<div class="formula-box"' + (f.extra || '') + '>' + label +
@@ -76,6 +75,25 @@
             ((f.contenu === undefined || f.contenu) ? '</div>' : '')) + '</div>';
     }
 
+    function renderBestiaire(e) {
+        var stats = e.stats.map(function (s) {
+            return '<div class="stat-cell"><span class="stat-cell-label">' + s.label_html +
+                '</span><span class="stat-cell-val' + (s.highlight ? ' highlight' : '') +
+                '">' + s.valeur_html + '</span></div>';
+        }).join('');
+        return '<div class="bestiary-card' + (e.classe ? ' ' + e.classe : '') + '">' +
+            '<div class="bestiary-header"><div class="bestiary-title-group"><h4>' + e.nom_html +
+            '</h4><div class="bestiary-meta-sub">' + e.meta_html + '</div></div>' +
+            '<span class="danger-level-badge ' + e.rang_classe + '">' + e.rang_html +
+            '</span></div><p>' + e.description_html + '</p>' +
+            '<div class="stat-block-grid">' + stats + '</div>' + (e.suite_html || '') + '</div>';
+    }
+
+    function renderGrilleBestiaire(g) {
+        return '<div class="cards-grid-' + (g.grille || 2) + '"' + (g.extra || '') + '>' +
+            g.creatures.map(renderBestiaire).join('') + '</div>';
+    }
+
     function renderRef(b, d) {
         if (b.type !== 'ref') return b.html;
         var dRef = (d.donnees && d.donnees[b.cible]) || null;
@@ -83,6 +101,8 @@
         if (dRef.type === 'table') return renderTable(dRef);
         if (dRef.type === 'cartes') return renderCartes(dRef);
         if (dRef.type === 'formule') return renderFormule(dRef);
+        if (dRef.type === 'bestiaire') return renderBestiaire(dRef);
+        if (dRef.type === 'grille_bestiaire') return renderGrilleBestiaire(dRef);
         return errBox('Type inconnu : ' + b.cible);
     }
 
@@ -116,10 +136,12 @@
             return html;
         }).join('\n');
         if (window.bindCodexTips) window.bindCodexTips(scope);
-        // Livre IX : outils interactifs branchés après rendu (js/tools.js).
-        if (window.bootTools) {
-            try { window.bootTools(); } catch (e2) { /* outils en erreur : page lisible quand même */ }
-        }
+        // Livre IX/XII : outils interactifs branchés après rendu (js/tools.js, filtre bestiaire).
+        ['bootTools', 'bootBestiaire'].forEach(function (hook) {
+            if (window[hook]) {
+                try { window[hook](); } catch (e2) { /* page lisible quand même */ }
+            }
+        });
         if (location.hash) {
             var target = document.getElementById(location.hash.slice(1));
             if (target && target.scrollIntoView) target.scrollIntoView();

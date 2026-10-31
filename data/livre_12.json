@@ -1,0 +1,1746 @@
+{
+ "livre": "XII",
+ "titre": "Bestiaire",
+ "version": 1,
+ "updated": "2026-10-31",
+ "source": "livre_12.html",
+ "entete_html": "",
+ "sections": [
+  {
+   "id": "entete",
+   "symbole": null,
+   "titre": null,
+   "blocs": [
+    {
+     "type": "html",
+     "html": "\n\n                    <div class=\"doc-badge-row\">\n                        <span class=\"doc-badge-pill\">\n                            <svg width=\"12\" height=\"12\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\"\n                                stroke-width=\"2\">\n                                <path d=\"M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z\" />\n                                <circle cx=\"12\" cy=\"12\" r=\"3\" />\n                            </svg>\n                            Livre XII — Bestiaire &amp; Entités Hostiles\n                        </span>\n                        <span class=\"doc-badge-pill accent\">3 Rangs de Menace</span>\n                        <span class=\"doc-badge-pill live\">Homologué Tables de Jeu</span>\n                    </div>\n\n                    <h1 class=\"doc-title\">Livre XII : Le Bestiaire&nbsp;&amp; Menaces Cosmiques</h1>\n                    <p class=\"doc-lead\">\n                        Dans le Système RP, l'adversité ne se mesure pas à de simples sacs de points de vie passifs.\n                        Tout ennemi — du coupe-jarret embusqué dans les taillis jusqu'au titan de magma largué à travers\n                        les lignes temporelles par Capricius — opère sous la <strong>même rigueur mathématique que les\n                            héros</strong> : calcul dynamique des Points d'Action (PA), seuils d'encaissement\n                        anatomique, malus d'essoufflement et ripostes en réaction. Ce compendium rassemble l'ensemble\n                        des profils martiaux, faunes indigènes et avatars d'annihilation du multivers.\n                    </p>\n\n                    <hr class=\"doc-divider\">\n\n                    <!-- ================= CHAPITRE 43 ================= -->\n                    "
+    }
+   ]
+  },
+  {
+   "id": "chap-48",
+   "symbole": "Chapitre 48.",
+   "titre": "Typologie des Adversaires &amp; Calibrage Tactique",
+   "blocs": [
+    {
+     "type": "html",
+     "html": "\n\n                    <p>\n                        Pour permettre au Maître de Jeu d'orchestrer des affrontements équilibrés et nerveux sans\n                        s'enliser dans la comptabilité, les adversaires sont scindés en trois calibres standardisés :\n                    </p>\n\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "rangs_menace"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <h3>48.2 Table de Calibrage des Rencontres</h3>\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "calibrage_rencontres"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <hr class=\"doc-divider\">\n\n                    <!-- ================= CHAPITRE 44 ================= -->\n                    "
+    }
+   ]
+  },
+  {
+   "id": "chap-49",
+   "symbole": "Chapitre 49.",
+   "titre": "Humanoïdes, Hors-la-Loi &amp; Factions Mortelles",
+   "blocs": [
+    {
+     "type": "html",
+     "html": "\n\n                    <p>\n                        Les adversaires humanoïdes constituent la majorité des affrontements dans les cités, les routes\n                        de campagne et les avant-postes coloniaux.\n                    </p>\n\n                    <!-- FICHE BANDIT 1 -->\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "bandit_epeiste"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <!-- FICHE BANDIT 2 -->\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "bandit_arcaniste"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <!-- FICHE BANDIT 3 -->\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "bandit_tireur"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <!-- FICHE PETITE MERDE -->\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "minion_standard"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <!-- FICHE ILLUMO -->\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "illumo"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <hr class=\"doc-divider\">\n\n                    <!-- ================= CHAPITRE 45 ================= -->\n                    "
+    }
+   ]
+  },
+  {
+   "id": "chap-50",
+   "symbole": "Chapitre 50.",
+   "titre": "Faune Sauvage &amp; Monstres Telluriques d'Hybris",
+   "blocs": [
+    {
+     "type": "html",
+     "html": "\n\n                    <p>\n                        La biosphère jeune et tumultueuse d'Hybris héberge des espèces aux métabolismes dopés par les\n                        veines souterraines de nytharite.\n                    </p>\n\n                    <!-- FICHE THE BEAST -->\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "bete_hybris"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <!-- FICHE DEREKS -->\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "dereks"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <hr class=\"doc-divider\">\n\n                    <!-- ================= CHAPITRE 46 ================= -->\n                    "
+    }
+   ]
+  },
+  {
+   "id": "chap-51",
+   "symbole": "Chapitre 51.",
+   "titre": "Entités Cosmiques, Arcaniques &amp; Disciples de l'Entropie",
+   "blocs": [
+    {
+     "type": "html",
+     "html": "\n\n                    <p>\n                        Au sommet de l'échelle des périls trônent les manifestations de la crise cosmique causée par\n                        Capricius et l'inondation d'Eau Sombre.\n                    </p>\n\n                    <p>\n                        Les Disciples relèvent de <strong>deux générations</strong> : le <strong>prototype de\n                            Terre</strong>, œuvre solitaire de Capricius (~−1 Ga, tir balistique plasma à ~c,\n                        ré-impression lithosphérique à l'arrivée en 1772 HSC), puis la <strong>série industrielle\n                            impériale (Air, Feu, Eau)</strong>, projetée par trous de ver + 5e Force (Livre X §39.3) —\n                        plus rapide, mais dépendante d'un ancrage. Feu et Eau, largués en dormance, restent à ce jour\n                        <strong>non révélés</strong>.\n                    </p>\n\n                    <!-- FICHE MINULICAN -->\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "minulican"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <!-- FICHE DISCIPLE DE TERRE -->\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "disciple_terre"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <!-- FICHE DISCIPLE DE L'AIR -->\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "disciple_air"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <!-- FICHE DISCIPLE DU FEU -->\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "disciple_feu"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <!-- FICHE DISCIPLE DE L'EAU -->\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "disciple_eau"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <hr class=\"doc-divider\">\n\n                    <!-- ================= CHAPITRE 47 ================= -->\n                    "
+    }
+   ]
+  },
+  {
+   "id": "chap-52",
+   "symbole": "Chapitre 52.",
+   "titre": "Automates de Guerre &amp; Cybernétique Impériale",
+   "blocs": [
+    {
+     "type": "html",
+     "html": "\n\n                    <p>\n                        Sur les mondes occupés comme Vardis et dans les couloirs du Nexus d'Aurion, la terreur prend la\n                        forme de machines d'acier sans pitié.\n                    </p>\n\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "automates"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <hr class=\"doc-divider\">\n\n                    <!-- ================= MODULE INTERACTIF ================= -->\n                    <h3>Module Interactif : Sélecteur &amp; Télémétrie du Bestiaire</h3>\n                    <p>\n                        Filtrez instantanément les menaces du multivers pour préparer vos tables de jeu ou consulter les\n                        caractéristiques à la volée :\n                    </p>\n\n                    <div class=\"bestiary-filter-bar\">\n                        <button class=\"bestiary-filter-btn active\" data-bfilter=\"all\">Toutes les Menaces (15+)</button>\n                        <button class=\"bestiary-filter-btn\" data-bfilter=\"minions\">Petites Merdes (Minions)</button>\n                        <button class=\"bestiary-filter-btn\" data-bfilter=\"bandits\">Bandits &amp; Hors-la-Loi</button>\n                        <button class=\"bestiary-filter-btn\" data-bfilter=\"monsters\">Faune &amp; Monstres\n                            d'Hybris</button>\n                        <button class=\"bestiary-filter-btn\" data-bfilter=\"boss\">Boss &amp; Disciples Cosmiques</button>\n                        <button class=\"bestiary-filter-btn\" data-bfilter=\"tech\">Automates &amp; Cybernétique</button>\n                    </div>\n\n                    <div id=\"bestiaryReport\"\n                        style=\"padding: 14px 18px; background: rgba(244, 63, 94, 0.06); border: 1px dashed var(--ruby-danger); border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 0.82rem; color: var(--ruby-danger); margin-bottom: 24px;\">\n                        Affichage Global : 15 entités répertoriées &bull; 3 Rangs de Danger &bull; 4 Boss Légendaires\n                        d'Élite &bull; 100% Calibré pour le Système RP.\n                    </div>\n\n                    <div class=\"codex-signature\">\n                        <div class=\"sig-meta\">\n                            <strong>LIVRE XII DU CODEX UNIVERSEL</strong><br>\n                            Compendium Officiel du Bestiaire &amp; Fléaux Cosmiques<br>\n                            <em>Approuvé pour l'ensemble des Maîtres de Jeu et tables d'affrontements tactiques.</em>\n                        </div>\n                        <div class=\"sig-stamp\">\n                            <span class=\"stamp-title\">BESTIAIRE HOMOLOGUÉ</span>\n                            <span class=\"stamp-date\">12 / 12 LIVRES DU CODEX VALIDÉS</span>\n                        </div>\n                    </div>\n\n                    <!-- PAGINATION ENTRE LIVRES -->\n                    <div class=\"chapter-pagination\">\n                        <a href=\"livre_11.html\" class=\"pagination-btn\">\n                            <div>\n                                <div class=\"pagination-label\">Livre Précédent</div>\n                                <div class=\"pagination-title\">← Livre XI : Cosmologie &amp; Atlas des Mondes</div>\n                            </div>\n                        </a>\n                        <a href=\"index.html\" class=\"pagination-btn\">\n                            <div>\n                                <div class=\"pagination-label\">Terminus du Codex</div>\n                                <div class=\"pagination-title\">Index Général du Système RP →</div>\n                            </div>\n                        </a>\n                    </div>\n\n                "
+    }
+   ]
+  }
+ ],
+ "donnees": {
+  "rangs_menace": {
+   "type": "cartes",
+   "grille": 3,
+   "cartes": [
+    {
+     "titre": "<span>Rang I : Minions</span>\n                                <span class=\"pill-badge\">Les « Petites Merdes »</span>",
+     "top": false,
+     "monde": "Chair à Canon // Combats de Masse",
+     "corps_html": "<strong>12 points d'attributs</strong> (maximum 3 par attribut). <strong>0 Point de\n                                    Miracle</strong>.\n                                Ces sbires attaquent en nombre. Dès qu'un Minion subit une blessure dépassant sa\n                                capacité d'encaissement (<span class=\"hl-cyan\">Con &times; 2</span>) ou reçoit un coup\n                                critique net, il est <em>immédiatement hors de combat</em>.",
+     "pieds": []
+    },
+    {
+     "titre": "<span>Rang II : Réguliers</span>\n                                <span class=\"pill-badge cyan\">PNJ Standards</span>",
+     "top": false,
+     "monde": "Soldats &bull; Bandits &bull; Guerriers",
+     "corps_html": "<strong>2 attributs à 4, 15 points partagés</strong> (maximum 3 par carac). <strong>0 à\n                                    1 Point de Miracle</strong>.\n                                Nombre de compétences entraînées égal au rang d'Érudition. Utilisent pleinement leurs\n                                réactions (parades, esquives, mises à couvert) et bénéficient d'un équipement standard\n                                complet.",
+     "pieds": []
+    },
+    {
+     "titre": "<span>Rang III : Élites &amp; Boss</span>\n                                <span class=\"pill-badge ruby\">Fléaux &amp; Monstres</span>",
+     "top": false,
+     "monde": "Avatars Éliens &bull; Prédateurs Suprêmes",
+     "corps_html": "<strong>Attributs de 5 à 8+</strong>, jauges d'encaissement massives, <strong>2 à 3\n                                    Points de Miracle</strong>.\n                                Immunisés à la plupart des états mentaux mineurs, capables d'attaques de zone\n                                dévastatrices et d'actions spéciales hors-tour.",
+     "pieds": []
+    }
+   ]
+  },
+  "calibrage_rencontres": {
+   "type": "table",
+   "colonnes": [
+    "Niveau de Menace",
+    "Composition Recommandée (Groupe de 4 PJ)",
+    "Ratio PA Ennemis / PJ",
+    "Objectif Tactique"
+   ],
+   "lignes": [
+    [
+     "<span class=\"table-badge green\">Facile / Échauffement</span>",
+     "4 à 6 Minions (Petites Merdes) OU 1 Régulier + 2 Minions",
+     "0.8 &times; PA des PJ",
+     "Épuiser quelques PA et ressources sans risque vital."
+    ],
+    [
+     "<span class=\"table-badge cyan\">Standard / Équilibré</span>",
+     "3 à 4 Réguliers (ex: Patrouille de Bandits 1, 2, 3)",
+     "1.0 &times; PA des PJ",
+     "Duel tactique, gestion du terrain et des couverts."
+    ],
+    [
+     "<span class=\"table-badge amber\">Périlleux / Embuscade</span>",
+     "1 Élite (ex: Illumo) + 4 Réguliers OU 8 Minions organisés",
+     "1.3 &times; PA des PJ",
+     "Danger de mort, gestion impérative des soins d'urgence."
+    ],
+    [
+     "<span class=\"table-badge ruby\">Létal / Boss Cosmique</span>",
+     "1 Boss Suprême (La Bête, Minulican, Disciples de Capricius)",
+     "Spécial (PA doublés + Actions Légendaires)",
+     "Survie collective, coordination de sorts et de faiblesses."
+    ]
+   ],
+   "classe": "data-table"
+  },
+  "bandit_epeiste": {
+   "type": "bestiaire",
+   "classe": "regular",
+   "nom_html": "Bandit #1 — L'Épéiste de Grand Chemin",
+   "meta_html": "Humanoïde // Combattant Régulier de Corps-à-Corps",
+   "rang_classe": "regular",
+   "rang_html": "Rang II &bull; Régulier",
+   "description_html": "Coupe-jarret agile et opportuniste. Vêtu d'un pourpoint de cuir bouilli et armé d'une épée\n                            longue en acier forgé. Il cherche le contact rapproché, vise les organes vitaux et conserve\n                            systématiquement des PA pour contre-attaquer à l'épée.",
+   "stats": [
+    {
+     "label_html": "Force [Pilier 1]",
+     "valeur_html": "4 (1d6)",
+     "highlight": true
+    },
+    {
+     "label_html": "Agilité",
+     "valeur_html": "3 (1d4)",
+     "highlight": false
+    },
+    {
+     "label_html": "Constitution",
+     "valeur_html": "3 (1d4)",
+     "highlight": false
+    },
+    {
+     "label_html": "Rapidité",
+     "valeur_html": "2 (1d2)",
+     "highlight": false
+    },
+    {
+     "label_html": "Intelligence",
+     "valeur_html": "3 (1d4)",
+     "highlight": false
+    },
+    {
+     "label_html": "Érudition",
+     "valeur_html": "2 (1d2)",
+     "highlight": false
+    },
+    {
+     "label_html": "Charisme [Pilier 2]",
+     "valeur_html": "4 (1d6)",
+     "highlight": true
+    },
+    {
+     "label_html": "Instinct",
+     "valeur_html": "2 (1d2)",
+     "highlight": false
+    },
+    {
+     "label_html": "Magie",
+     "valeur_html": "0",
+     "highlight": false
+    },
+    {
+     "label_html": "Vision/Ouïe",
+     "valeur_html": "6 / 5",
+     "highlight": false
+    },
+    {
+     "label_html": "Points d'Action",
+     "valeur_html": "7 PA",
+     "highlight": true
+    },
+    {
+     "label_html": "Encaissement",
+     "valeur_html": "6 dégâts",
+     "highlight": true
+    },
+    {
+     "label_html": "Max Létal",
+     "valeur_html": "15 dégâts",
+     "highlight": true
+    },
+    {
+     "label_html": "Points Miracle",
+     "valeur_html": "0",
+     "highlight": false
+    }
+   ],
+   "suite_html": "<div class=\"tactics-box\">\n                            <h5>Tactique Martiale &amp; Arsenal :</h5>\n                            <strong>Épée longue d'acier :</strong> Dégâts 2D. Jet d'attaque : <strong>1d6</strong>\n                            (Entraîné en Maniement des armes &bull; Maniement de l'épée).<br>\n                            <strong>Coup précis au Cœur :</strong> Coûte 3 PA. Inflige un malus de -1 au jet d'attaque,\n                            mais en cas d'impact réussi, les dégâts sont doublés et appliqués directement au torse.<br>\n                            <strong>Parade Riposte :</strong> Coûte 2 PA en réaction. Dé de parade : 1d6. En cas de\n                            parade réussie avec différentiel &ge; 2, le bandit contre-attaque gratuitement !\n                        </div>"
+  },
+  "bandit_arcaniste": {
+   "type": "bestiaire",
+   "classe": "regular",
+   "nom_html": "Bandit #2 — L'Arcaniste d'Embuscade",
+   "meta_html": "Humanoïde // Magicien Déchu &bull; Pyromancie &amp;\n                                    Gravité",
+   "rang_classe": "regular",
+   "rang_html": "Rang II &bull; Régulier Arcanique",
+   "description_html": "Ancien étudiant d'académie ayant fui les règles impériales pour rejoindre la pègre. Maîtrise\n                            une <strong>Magie de rang 7</strong> axée sur la compression gravitationnelle et les gerbes\n                            enflammées. Reste en retrait pour bombarder les héros.",
+   "stats": [
+    {
+     "label_html": "Force",
+     "valeur_html": "3 (1d2+1)",
+     "highlight": false
+    },
+    {
+     "label_html": "Agilité",
+     "valeur_html": "3 (1d2+1)",
+     "highlight": false
+    },
+    {
+     "label_html": "Constitution",
+     "valeur_html": "3 (1d2+1)",
+     "highlight": false
+    },
+    {
+     "label_html": "Rapidité",
+     "valeur_html": "3 (1d2+1)",
+     "highlight": false
+    },
+    {
+     "label_html": "Intelligence",
+     "valeur_html": "4 (1d4)",
+     "highlight": true
+    },
+    {
+     "label_html": "Érudition",
+     "valeur_html": "4 (1d4)",
+     "highlight": true
+    },
+    {
+     "label_html": "Charisme",
+     "valeur_html": "1 (1d2-1)",
+     "highlight": false
+    },
+    {
+     "label_html": "Instinct",
+     "valeur_html": "2 (1d2)",
+     "highlight": false
+    },
+    {
+     "label_html": "Magie",
+     "valeur_html": "7 (1d8)",
+     "highlight": true
+    },
+    {
+     "label_html": "Vision/Ouïe",
+     "valeur_html": "6 / 3",
+     "highlight": false
+    },
+    {
+     "label_html": "Points d'Action",
+     "valeur_html": "7 PA",
+     "highlight": true
+    },
+    {
+     "label_html": "Encaissement",
+     "valeur_html": "6 dégâts",
+     "highlight": true
+    },
+    {
+     "label_html": "Max Létal",
+     "valeur_html": "15 dégâts",
+     "highlight": true
+    },
+    {
+     "label_html": "Points Miracle",
+     "valeur_html": "0",
+     "highlight": false
+    }
+   ],
+   "suite_html": "<div class=\"tactics-box\">\n                            <h5>Sortilèges Préparés :</h5>\n                            <strong>Étreinte de Gravité (Coût : 2 PA) :</strong> Portée 12m. Jet d'attaque Magie 1d8.\n                            Inflige 3 dégâts résiduels de compression et plaque la cible au sol (statut <em>À\n                                Terre</em>).<br>\n                            <strong>Souffle Igné (Coût : 3 PA) :</strong> Zone conique de 4 mètres. 4 dégâts de feu + état <em>Enflammé</em> (2 dégâts de brûlure par tour).<br>\n                            <strong>Bouclier de Répulsion (Réaction : 2 PA) :</strong> Ajoute +3 à son jet défensif face\n                            aux projectiles physiques.\n                        </div>"
+  },
+  "bandit_tireur": {
+   "type": "bestiaire",
+   "classe": "regular",
+   "nom_html": "Bandit #3 — Le Tireur d'Élite Végétal",
+   "meta_html": "Humanoïde // Tireur Embusqué &bull; Prise d'Otage",
+   "rang_classe": "regular",
+   "rang_html": "Rang II &bull; Tireur d'Élite",
+   "description_html": "Chasseur impitoyable embusqué en hauteur ou derrière des murets de pierre. Doté d'une\n                            <strong>Rapidité exceptionnelle (4)</strong> et d'un total colossal de <strong>10\n                                PA</strong>. Il prépare ses tirs pour interrompre les sorts des PJ et n'hésite pas à\n                            capturer un allié pour forcer une reddition.",
+   "stats": [
+    {
+     "label_html": "Force",
+     "valeur_html": "3 (1d2+1)",
+     "highlight": false
+    },
+    {
+     "label_html": "Agilité",
+     "valeur_html": "4 (1d4)",
+     "highlight": true
+    },
+    {
+     "label_html": "Constitution",
+     "valeur_html": "3 (1d2+1)",
+     "highlight": false
+    },
+    {
+     "label_html": "Rapidité",
+     "valeur_html": "4 (1d4)",
+     "highlight": true
+    },
+    {
+     "label_html": "Intelligence",
+     "valeur_html": "3 (1d2+1)",
+     "highlight": false
+    },
+    {
+     "label_html": "Érudition",
+     "valeur_html": "2 (1d2)",
+     "highlight": false
+    },
+    {
+     "label_html": "Charisme",
+     "valeur_html": "2 (1d2)",
+     "highlight": false
+    },
+    {
+     "label_html": "Instinct",
+     "valeur_html": "2 (1d2)",
+     "highlight": false
+    },
+    {
+     "label_html": "Magie",
+     "valeur_html": "0",
+     "highlight": false
+    },
+    {
+     "label_html": "Vision/Ouïe",
+     "valeur_html": "3 / 5",
+     "highlight": false
+    },
+    {
+     "label_html": "Points d'Action",
+     "valeur_html": "10 PA",
+     "highlight": true
+    },
+    {
+     "label_html": "Encaissement",
+     "valeur_html": "6 dégâts",
+     "highlight": true
+    },
+    {
+     "label_html": "Max Létal",
+     "valeur_html": "15 dégâts",
+     "highlight": true
+    },
+    {
+     "label_html": "Points Miracle",
+     "valeur_html": "0",
+     "highlight": false
+    }
+   ],
+   "suite_html": "<div class=\"tactics-box\">\n                            <h5>Tactique de Tir &amp; Saisie :</h5>\n                            <strong>Carabine à Verrou Impériale :</strong> Dégâts 3D. Portée 25 cases. Dé de tir :\n                            <strong>1d6</strong>.<br>\n                            <strong>Tir Préparé en Interruption :</strong> Dépense 4 PA au tour N pour préparer un tir\n                            réflexe dès qu'un ennemi sort de son couvert ou amorce une incantation.<br>\n                            <strong>Manœuvre de Prise d'Otage :</strong> Si un PJ ou PNJ adjacent est à terre ou\n                            essoufflé, le tireur dépense 6 PA pour lui coller le canon sur la tempe. Toute action\n                            offensive amie exige un jet sous peine d'exécution immédiate !\n                        </div>"
+  },
+  "minion_standard": {
+   "type": "bestiaire",
+   "classe": "minion",
+   "nom_html": "La « Petite Merde » (Minion Standard)",
+   "meta_html": "Larbins // Miliciens paniqués, bandits conscrits,\n                                    gobelinoïdes",
+   "rang_classe": "minion",
+   "rang_html": "Rang I &bull; Minion",
+   "description_html": "Profil canonique universel pour la racaille et les gardes de bas étage. Dépourvu\n                            d'entraînement sérieux, ce profil sert à saturer l'espace lors des assauts de groupe.",
+   "stats": [
+    {
+     "label_html": "Force",
+     "valeur_html": "2 (1d2)",
+     "highlight": false
+    },
+    {
+     "label_html": "Agilité",
+     "valeur_html": "2 (1d2)",
+     "highlight": false
+    },
+    {
+     "label_html": "Constitution",
+     "valeur_html": "2 (1d2)",
+     "highlight": false
+    },
+    {
+     "label_html": "Rapidité",
+     "valeur_html": "2 (1d2)",
+     "highlight": false
+    },
+    {
+     "label_html": "Intelligence",
+     "valeur_html": "1 (1d2)",
+     "highlight": false
+    },
+    {
+     "label_html": "Érudition",
+     "valeur_html": "1 (1d2)",
+     "highlight": false
+    },
+    {
+     "label_html": "Charisme",
+     "valeur_html": "1 (1d2)",
+     "highlight": false
+    },
+    {
+     "label_html": "Instinct",
+     "valeur_html": "1 (1d2)",
+     "highlight": false
+    },
+    {
+     "label_html": "Points d'Action",
+     "valeur_html": "5 PA",
+     "highlight": true
+    },
+    {
+     "label_html": "Encaissement",
+     "valeur_html": "4 dégâts",
+     "highlight": false
+    },
+    {
+     "label_html": "Seuil Létal",
+     "valeur_html": "10 dégâts",
+     "highlight": false
+    }
+   ],
+   "suite_html": "<div class=\"tactics-box\">\n                            <h5>Règle de Combat Hachoir :</h5>\n                            Armé d'un gourdin (1D) ou d'un pistolet rouillé (2D). Dé d'attaque : <strong>1d2</strong>.\n                            Dès qu'une Petite Merde subit &ge; 4 dégâts en une seule attaque, elle est instantanément\n                            neutralisée sans jet d'agonie.\n                        </div>"
+  },
+  "illumo": {
+   "type": "bestiaire",
+   "classe": "elite",
+   "nom_html": "Illumo, le Tueur Fou",
+   "meta_html": "Humanoïde d'Élite // Assassin Pyromancien &bull; 56 ans",
+   "rang_classe": "elite",
+   "rang_html": "Rang III &bull; Boss Assassin",
+   "description_html": "Individu trapu au visage balafré et brûlé au troisième degré. Ayant erré toute sa jeunesse\n                            dans des désolations arides, Illumo a développé une affinité innée avec un <strong>Feu\n                                Arcanique blanc hyper-destructeur</strong>. Spécialiste des infiltrations de bases\n                            fortifiées et des assassinats de cibles sous haute protection.",
+   "stats": [
+    {
+     "label_html": "Force",
+     "valeur_html": "5 (1d6)",
+     "highlight": true
+    },
+    {
+     "label_html": "Agilité",
+     "valeur_html": "5 (1d6)",
+     "highlight": true
+    },
+    {
+     "label_html": "Constitution",
+     "valeur_html": "4 (1d6)",
+     "highlight": true
+    },
+    {
+     "label_html": "Rapidité",
+     "valeur_html": "4 (1d6)",
+     "highlight": false
+    },
+    {
+     "label_html": "Intelligence",
+     "valeur_html": "3 (1d4)",
+     "highlight": false
+    },
+    {
+     "label_html": "Érudition",
+     "valeur_html": "2 (1d2)",
+     "highlight": false
+    },
+    {
+     "label_html": "Charisme",
+     "valeur_html": "1 (1d2)",
+     "highlight": false
+    },
+    {
+     "label_html": "Instinct",
+     "valeur_html": "3 (1d4)",
+     "highlight": false
+    },
+    {
+     "label_html": "Magie (Feu)",
+     "valeur_html": "8 (1d10)",
+     "highlight": true
+    },
+    {
+     "label_html": "Points d'Action",
+     "valeur_html": "10 PA",
+     "highlight": true
+    },
+    {
+     "label_html": "Encaissement",
+     "valeur_html": "8 dégâts",
+     "highlight": true
+    },
+    {
+     "label_html": "Max Létal",
+     "valeur_html": "20 dégâts",
+     "highlight": true
+    },
+    {
+     "label_html": "Points Miracle",
+     "valeur_html": "2 PM",
+     "highlight": true
+    }
+   ],
+   "suite_html": "<div class=\"tactics-box\">\n                            <h5>Pouvoirs d'Assassinat Pyromantique :</h5>\n                            <strong>Dague d'Obsidienne Chauffée à Blanc :</strong> Dégâts 3D + 2 dégâts de brûlure\n                            résiduelle.<br>\n                            <strong>Combustion Spontanée Spatiale (4 PA) :</strong> Illumo désigne une cible à vue\n                            (portée 18m). Les vêtements et armures de la cible s'enflamment spontanément sans jet de\n                            projectile. Inflige 5 dégâts + état <em>Enflammé</em>.<br>\n                            <strong>Foulée de Cendres (2 PA) :</strong> Téléportation de 6 cases à travers un nuage de\n                            braises aveuglant (les assaillants adjacents subissent l'état <em>Aveuglé</em> pour 1 tour).\n                        </div>"
+  },
+  "bete_hybris": {
+   "type": "bestiaire",
+   "classe": "boss",
+   "nom_html": "La Bête d'Hybris (The Beast)",
+   "meta_html": "Monstre Primal Légendaire // Gardien des Falaises\n                                    d'Haliriel",
+   "rang_classe": "boss",
+   "rang_html": "Boss Suprême &bull; Rang III",
+   "description_html": "Colosse bipède de 4 mètres de haut à la fourrure noire et dense, doté d'une musculature\n                            prodigieuse et d'imposants crocs en dents de sabre. D'abord perçue comme un prédateur\n                            sanguinaire traquant les intrus dans les cols gelés du Nord, elle s'avère être un\n                            <strong>gardien initiatique millénaire</strong> testant la trempe des porteurs de la\n                            Cinquième Force. Même criblée de balles et la fourrure calcinée par les flammes\n                            pyrocinétiques, elle continue de charger avec une férocité inébranlable.",
+   "stats": [
+    {
+     "label_html": "Force",
+     "valeur_html": "7 (1d8+2)",
+     "highlight": true
+    },
+    {
+     "label_html": "Agilité",
+     "valeur_html": "5 (1d4+1)",
+     "highlight": true
+    },
+    {
+     "label_html": "Constitution",
+     "valeur_html": "6 (1d6+1)",
+     "highlight": true
+    },
+    {
+     "label_html": "Rapidité",
+     "valeur_html": "4 (1d4)",
+     "highlight": false
+    },
+    {
+     "label_html": "Intelligence",
+     "valeur_html": "4 (Stratégique)",
+     "highlight": false
+    },
+    {
+     "label_html": "Instinct",
+     "valeur_html": "6 (1d6+1)",
+     "highlight": true
+    },
+    {
+     "label_html": "Points d'Action",
+     "valeur_html": "13 PA",
+     "highlight": true
+    },
+    {
+     "label_html": "Encaissement",
+     "valeur_html": "12 dégâts",
+     "highlight": true
+    },
+    {
+     "label_html": "Max Létal",
+     "valeur_html": "30 dégâts",
+     "highlight": true
+    },
+    {
+     "label_html": "Points Miracle",
+     "valeur_html": "3 PM",
+     "highlight": true
+    }
+   ],
+   "suite_html": "<div class=\"tactics-box\">\n                            <h5>Capacités de Boss &amp; Attaques Primordiales :</h5>\n                            <strong>Morsure Sabre (Coût : 3 PA) :</strong> Dégâts <strong>5D</strong>. Si\n                            l'attaque inflige &ge; 5 dégâts nets, la cible subit l'état <em>Hémorragie /\n                                Saignement</em>.<br>\n                            <strong>Balayage de Griffes en Arc (Coût : 4 PA) :</strong> Touche jusqu'à 3 personnages\n                            adjacents. 4D de dégâts + épreuve de Force opposée pour ne pas être projeté à 4 mètres et\n                            subir l'état <em>À Terre</em>.<br>\n                            <strong>Mémoire des Flammes (Passif) :</strong> La Bête mémorise les signatures magiques\n                            utilisées contre elle. Chaque attaque pyrocinétique successive subie dans le même combat\n                            voit ses dégâts réduits de 2 points !<br>\n                            <strong>Charge Tellurique des Falaises (5 PA) :</strong> Bondit de 10 cases sans pénalité de\n                            terrain et écrase un obstacle rocheux, faisant s'effondrer des pans de falaise sur le groupe\n                            (3D de dégâts de zone).\n                        </div>"
+  },
+  "dereks": {
+   "type": "bestiaire",
+   "classe": "regular",
+   "nom_html": "Les Dereks (Guerrier Indigène Tellurique)",
+   "meta_html": "Humanoïde Minéral // Race Native d'Hybris",
+   "rang_classe": "regular",
+   "rang_html": "Rang II &bull; Gardien Indigène",
+   "description_html": "Êtres trapus à la peau de granit grisâtre vivant dans les cavernes pré-coloniales d'Hybris.\n                            Ils ne parlent pas les langues humaines mais communiquent par résonance acoustique dans la\n                            pierre. Capables de fondre dans la roche pour surprendre les mineurs nains.",
+   "stats": [
+    {
+     "label_html": "Force",
+     "valeur_html": "5 (1d4+1)",
+     "highlight": true
+    },
+    {
+     "label_html": "Agilité",
+     "valeur_html": "2 (1d2)",
+     "highlight": false
+    },
+    {
+     "label_html": "Constitution",
+     "valeur_html": "5 (1d4+1)",
+     "highlight": true
+    },
+    {
+     "label_html": "Rapidité",
+     "valeur_html": "2 (1d2)",
+     "highlight": false
+    },
+    {
+     "label_html": "Magie Tellurique",
+     "valeur_html": "4 (Inhérente)",
+     "highlight": true
+    },
+    {
+     "label_html": "Points d'Action",
+     "valeur_html": "6 PA",
+     "highlight": true
+    },
+    {
+     "label_html": "Encaissement",
+     "valeur_html": "10 dégâts",
+     "highlight": true
+    },
+    {
+     "label_html": "Armure Naturelle",
+     "valeur_html": "3 pts",
+     "highlight": false
+    }
+   ],
+   "suite_html": "<div class=\"tactics-box\">\n                            <strong>Peau de Granit :</strong> Réduit automatiquement de 3 tous les dégâts physiques reçus.<br>\n                            <strong>Séisme Souterrain (3 PA) :</strong> Frappe le sol du poing. Toutes les créatures à 3\n                            cases doivent réussir un test d'Agilité ou tomber <em>À Terre</em> et perdre 2 PA au tour\n                            suivant.\n                        </div>"
+  },
+  "minulican": {
+   "type": "bestiaire",
+   "classe": "boss",
+   "nom_html": "Le Minulican (The Quantum Wolf / Le Loup du Néant)",
+   "meta_html": "Entité Cosmique Chaotique // Prédateur du Continuum",
+   "rang_classe": "boss",
+   "rang_html": "Fléau Multidimensionnel",
+   "description_html": "Monstre titanesque libéré lors des grands orages d'arcane de la Cinquième Force. Doté de\n                            cornes spiralées démoniaques, de membres massifs crépitants d'électricité arcanique et d'une\n                            peau léchée par des flammes bleu-violettes. Le Minulican traque avec obsession les\n                            singularités génétiques (la variance biogénomique de 0.0001%) et défie les lois ordinaires\n                            du temps.",
+   "stats": [
+    {
+     "label_html": "Force",
+     "valeur_html": "6 (1d6+1)",
+     "highlight": true
+    },
+    {
+     "label_html": "Agilité",
+     "valeur_html": "6 (1d6+1)",
+     "highlight": true
+    },
+    {
+     "label_html": "Constitution",
+     "valeur_html": "6 (1d6+1)",
+     "highlight": true
+    },
+    {
+     "label_html": "Rapidité",
+     "valeur_html": "5 (1d4+1)",
+     "highlight": true
+    },
+    {
+     "label_html": "Magie Arcanique",
+     "valeur_html": "9 (1d10)",
+     "highlight": true
+    },
+    {
+     "label_html": "Points d'Action",
+     "valeur_html": "14 PA",
+     "highlight": true
+    },
+    {
+     "label_html": "Encaissement",
+     "valeur_html": "12 dégâts",
+     "highlight": true
+    },
+    {
+     "label_html": "Max Létal",
+     "valeur_html": "30 dégâts",
+     "highlight": true
+    },
+    {
+     "label_html": "Points Miracle",
+     "valeur_html": "3 PM",
+     "highlight": true
+    }
+   ],
+   "suite_html": "<div class=\"tactics-box\">\n                            <h5>Pouvoirs de Rupture Causale :</h5>\n                            <strong>Éclairs de Néant en Chaîne (4 PA) :</strong> Décharge un faisceau d'énergie\n                            électrique pure qui ricoche sur 3 cibles à portée (15 cases). 5D dégâts + état\n                            <em>Déstabilisé (-2 EC)</em>.<br>\n                            <strong>Absorption d'Énergie Thermique (Réaction : 2 PA) :</strong> Lorsqu'il est ciblé par\n                            un sort de feu ou de plasma, le Minulican absorbe l'onde et convertit la moitié des dégâts\n                            en points de régénération vitale immédiate !<br>\n                            <strong>Saut Quantique Déphasé (3 PA) :</strong> Disparaît dans une faille du continuum et\n                            réapparaît instantanément n'importe où sur le champ de bataille, prenant ses adversaires à\n                            revers avec avantage au toucher (+2 EC).\n                        </div>"
+  },
+  "disciple_terre": {
+   "type": "bestiaire",
+   "classe": "boss",
+   "nom_html": "Le Disciple de Terre de Capricius",
+   "meta_html": "Missile Biologique d'Extinction // Envoyé de la\n                                    Psychohistoire",
+   "rang_classe": "boss",
+   "rang_html": "Arme Cosmique Antithermodynamique",
+   "description_html": "Colosse lithosphérique de 3 mètres de haut, forgé par Capricius <strong>seul, ~1 milliard\n                                d'années avant l'Empire</strong>, pour purger les anomalies de\n                            la ligne temporelle. Tiré sous forme de plasma à ~c depuis Aurion (~1 Gly de traversée,\n                            timer en temps propre, aucune mise à jour possible en route), il s'est ré-imprimé dans la\n                            roche locale en s'écrasant sur Brum'korath en 1772 HSC. Sa peau de roche noire veinée de\n                            magma en fusion absorbe l'impact des\n                            balles, des lasers et des armes tranchantes comme de simples ricochets. Il rasa les défenses\n                            extérieures de Brum'korath à lui seul.",
+   "stats": [
+    {
+     "label_html": "Force",
+     "valeur_html": "9 (1d10)",
+     "highlight": true
+    },
+    {
+     "label_html": "Agilité",
+     "valeur_html": "2 (1d2)",
+     "highlight": false
+    },
+    {
+     "label_html": "Constitution",
+     "valeur_html": "9 (1d10)",
+     "highlight": true
+    },
+    {
+     "label_html": "Rapidité",
+     "valeur_html": "2 (1d2)",
+     "highlight": false
+    },
+    {
+     "label_html": "Intelligence",
+     "valeur_html": "2 (1d2)",
+     "highlight": false
+    },
+    {
+     "label_html": "Érudition",
+     "valeur_html": "1 (1d2)",
+     "highlight": false
+    },
+    {
+     "label_html": "Charisme",
+     "valeur_html": "1 (1d2)",
+     "highlight": false
+    },
+    {
+     "label_html": "Instinct",
+     "valeur_html": "4 (1d6)",
+     "highlight": true
+    },
+    {
+     "label_html": "Points d'Action",
+     "valeur_html": "5 PA",
+     "highlight": true
+    },
+    {
+     "label_html": "Encaissement",
+     "valeur_html": "18 dégâts",
+     "highlight": true
+    },
+    {
+     "label_html": "Max Létal",
+     "valeur_html": "45 dégâts",
+     "highlight": true
+    },
+    {
+     "label_html": "Armure Magmatique",
+     "valeur_html": "6 pts de dégâts",
+     "highlight": true
+    }
+   ],
+   "suite_html": "<div class=\"tactics-box\">\n                            <h5>Règles de Jugement Dernier :</h5>\n                            <strong>Poing Tectonique (3 PA) :</strong> Dégâts <strong>7D</strong>. Pulvérise les\n                            portes de forteresses et les véhicules blindés.<br>\n                            <strong>Régénération Lithosphérique :</strong> À chaque tour passé en contact avec de la\n                            pierre naturelle ou de la roche, le Disciple régénère automatiquement 3 points de\n                            dégâts.<br>\n                            <strong>Point Faible Critique (Choc Thermique) :</strong> Si le Disciple subit une\n                            alternance violente d'attaque de froid extrême / glace suivie immédiatement d'une frappe\n                            pyrocinétique intense (ou l'inverse), sa cuirasse se fissure : il perd son armure naturelle\n                            pendant 2 tours et subit le double des dégâts !\n                        </div>"
+  },
+  "disciple_air": {
+   "type": "bestiaire",
+   "classe": "boss",
+   "nom_html": "Le Disciple de l'Air de Capricius",
+   "meta_html": "Seconde Génération // Trou de Ver + 5e Force — Actif\n                                    (Continent Est)",
+   "rang_classe": "boss",
+   "rang_html": "Arme Cosmique Antithermodynamique",
+   "description_html": "Premier fruit de la série industrielle impériale : largué vers ~1620 HSC par trou de ver\n                            ancré dans la 5e Force, il doubla le prototype de Terre (encore en transit) et frappa le\n                            Continent Est, provoquant le saut de 1622 HSC (Cratère du Grand Lac). Silhouette de\n                            dépression vivante, à peine visible — on ne le voit qu'à ce qu'il déchire.",
+   "stats": [
+    {
+     "label_html": "Force",
+     "valeur_html": "5 (1d6)",
+     "highlight": false
+    },
+    {
+     "label_html": "Agilité",
+     "valeur_html": "9 (1d10)",
+     "highlight": true
+    },
+    {
+     "label_html": "Constitution",
+     "valeur_html": "6 (1d6+1)",
+     "highlight": false
+    },
+    {
+     "label_html": "Rapidité",
+     "valeur_html": "9 (1d10)",
+     "highlight": true
+    },
+    {
+     "label_html": "Intelligence",
+     "valeur_html": "4 (1d6)",
+     "highlight": false
+    },
+    {
+     "label_html": "Instinct",
+     "valeur_html": "6 (1d6+1)",
+     "highlight": true
+    },
+    {
+     "label_html": "Points d'Action",
+     "valeur_html": "6 PA",
+     "highlight": true
+    },
+    {
+     "label_html": "Encaissement",
+     "valeur_html": "14 dégâts",
+     "highlight": true
+    },
+    {
+     "label_html": "Max Létal",
+     "valeur_html": "38 dégâts",
+     "highlight": true
+    },
+    {
+     "label_html": "Voile Dépressionnaire",
+     "valeur_html": "5 pts de dégâts",
+     "highlight": true
+    }
+   ],
+   "suite_html": "<div class=\"tactics-box\">\n                            <h5>Règles de Jugement Dernier :</h5>\n                            <strong>Cisaille Stratosphérique (3 PA) :</strong> Lames de vide cisaillant sur une ligne\n                            de 6 cases. <strong>6D</strong>. Ignore les armures non scellées.<br>\n                            <strong>Déplacement Sursaut (2 PA) :</strong> Repositionnement instantané n'importe où sur\n                            le champ de bataille via micro-ver, sans provoquer de réaction.<br>\n                            <strong>Point Faible Critique (Saturation Particulaire) :</strong> En zone saturée de\n                            poussière, brume ou sable, ses sens de pression saturent : il perd son voile et subit le\n                            double des dégâts pendant 2 tours !\n                        </div>"
+  },
+  "disciple_feu": {
+   "type": "bestiaire",
+   "classe": "boss",
+   "nom_html": "Le Disciple du Feu de Capricius",
+   "meta_html": "Seconde Génération // Trou de Ver + 5e Force — Dormant\n                                    (Non Révélé)",
+   "rang_classe": "boss",
+   "rang_html": "Arme Cosmique Antithermodynamique",
+   "description_html": "Largué en dormance par trou de ver, tapi près d'une source thermique d'Hybris en attendant\n                            sa séquence d'éveil. Cœur de fusion contenu dans une cage de suie vitrifiée ; là où il\n                            marche, la pierre devient verre. Les sismographes nains enregistrent depuis des décennies\n                            un « second pouls » sous les Montagnes — personne n'a encore fait le lien.",
+   "stats": [
+    {
+     "label_html": "Force",
+     "valeur_html": "8 (1d8+1)",
+     "highlight": true
+    },
+    {
+     "label_html": "Agilité",
+     "valeur_html": "4 (1d6)",
+     "highlight": false
+    },
+    {
+     "label_html": "Constitution",
+     "valeur_html": "9 (1d10)",
+     "highlight": true
+    },
+    {
+     "label_html": "Rapidité",
+     "valeur_html": "3 (1d4)",
+     "highlight": false
+    },
+    {
+     "label_html": "Intelligence",
+     "valeur_html": "3 (1d4)",
+     "highlight": false
+    },
+    {
+     "label_html": "Instinct",
+     "valeur_html": "5 (1d6)",
+     "highlight": false
+    },
+    {
+     "label_html": "Points d'Action",
+     "valeur_html": "5 PA",
+     "highlight": true
+    },
+    {
+     "label_html": "Encaissement",
+     "valeur_html": "18 dégâts",
+     "highlight": true
+    },
+    {
+     "label_html": "Max Létal",
+     "valeur_html": "45 dégâts",
+     "highlight": true
+    },
+    {
+     "label_html": "Couronne de Fusion",
+     "valeur_html": "6 pts de dégâts",
+     "highlight": true
+    }
+   ],
+   "suite_html": "<div class=\"tactics-box\">\n                            <h5>Règles de Jugement Dernier :</h5>\n                            <strong>Lance Solaire (3 PA) :</strong> Jet de plasma focalisé sur une cible.\n                            <strong>7D</strong>. Enflamme le terrain (2 tours).<br>\n                            <strong>Régénération de Fournaise :</strong> Au contact d'une chaleur intense (lave, brasier,\n                            sort de feu), régénère 3 points par tour.<br>\n                            <strong>Point Faible Critique (Asphyxie) :</strong> Privé de comburant (vide, immersion\n                            totale, sable étouffant) : sa couronne s'éteint, il perd armure et régénération pendant\n                            2 tours !\n                        </div>"
+  },
+  "disciple_eau": {
+   "type": "bestiaire",
+   "classe": "boss",
+   "nom_html": "Le Disciple de l'Eau de Capricius",
+   "meta_html": "Seconde Génération // Trou de Ver + 5e Force — Dormant\n                                    (Non Révélé)",
+   "rang_classe": "boss",
+   "rang_html": "Arme Cosmique Antithermodynamique",
+   "description_html": "Largué en dormance par trou de ver, dissous dans une nappe phréatique d'Hybris dont il\n                            épouse lentement le réseau. Il n'a pas de forme fixe : il est la pression dans les\n                            conduits, le goût de fer dans les puits, la voie d'eau dans les cales. Son éveil noiera\n                            d'abord, écrasera ensuite.",
+   "stats": [
+    {
+     "label_html": "Force",
+     "valeur_html": "6 (1d6+1)",
+     "highlight": false
+    },
+    {
+     "label_html": "Agilité",
+     "valeur_html": "8 (1d8+1)",
+     "highlight": true
+    },
+    {
+     "label_html": "Constitution",
+     "valeur_html": "8 (1d8+1)",
+     "highlight": true
+    },
+    {
+     "label_html": "Rapidité",
+     "valeur_html": "5 (1d6)",
+     "highlight": false
+    },
+    {
+     "label_html": "Intelligence",
+     "valeur_html": "6 (1d6+1)",
+     "highlight": true
+    },
+    {
+     "label_html": "Instinct",
+     "valeur_html": "6 (1d6+1)",
+     "highlight": true
+    },
+    {
+     "label_html": "Points d'Action",
+     "valeur_html": "5 PA",
+     "highlight": true
+    },
+    {
+     "label_html": "Encaissement",
+     "valeur_html": "16 dégâts",
+     "highlight": true
+    },
+    {
+     "label_html": "Max Létal",
+     "valeur_html": "42 dégâts",
+     "highlight": true
+    },
+    {
+     "label_html": "Enveloppe Abyssale",
+     "valeur_html": "5 pts de dégâts",
+     "highlight": true
+    }
+   ],
+   "suite_html": "<div class=\"tactics-box\">\n                            <h5>Règles de Jugement Dernier :</h5>\n                            <strong>Étreinte Abyssale (3 PA) :</strong> Écrasement hydraulique sur une zone de 3 cases.\n                            <strong>6D</strong> + <em>À Terre</em>.<br>\n                            <strong>Infiltration (2 PA) :</strong> Se dissipe dans tout volume d'eau connecté et\n                            réémerge d'un autre point d'eau du champ de bataille.<br>\n                            <strong>Point Faible Critique (Assèchement) :</strong> Exposé à une chaleur sèche intense\n                            ou à de grandes quantités de sel/sable absorbant : son enveloppe se craquelle, il perd\n                            son armure et subit le double des dégâts pendant 2 tours !\n                        </div>"
+  },
+  "automates": {
+   "type": "grille_bestiaire",
+   "grille": 2,
+   "creatures": [
+    {
+     "type": "bestiaire",
+     "classe": "regular",
+     "nom_html": "Drone de Surveillance &amp; Répression",
+     "meta_html": "Automate Volant // Sécurité Impériale d'Atraxia",
+     "rang_classe": "regular",
+     "rang_html": "Rang II &bull; Sentinelle",
+     "description_html": "Rotor antigravité silencieux équipé d'optiques thermiques et d'un canon à faisceau\n                                étourdissant.",
+     "stats": [
+      {
+       "label_html": "Coque",
+       "valeur_html": "8 PV",
+       "highlight": false
+      },
+      {
+       "label_html": "Agilité",
+       "valeur_html": "4",
+       "highlight": false
+      },
+      {
+       "label_html": "Vitesse Vol",
+       "valeur_html": "12 cases/tour",
+       "highlight": false
+      },
+      {
+       "label_html": "PA",
+       "valeur_html": "8 PA",
+       "highlight": false
+      }
+     ],
+     "suite_html": "<div class=\"tactics-box\">\n                                <strong>Flash Aveuglant &bull; Impulsion Électrique :</strong> Rayon de 3 cases. La\n                                cible doit réussir un test de Con pour ne pas être <em>Sonnée (1 tour)</em>.<br>\n                                <strong>Balise d'Alerte Réseau :</strong> Au tour 2 de combat, appelle 2 Drones de\n                                renfort qui arrivent en 3 tours.\n                            </div>"
+    },
+    {
+     "type": "bestiaire",
+     "classe": "regular",
+     "nom_html": "Molosse Bionique de Traque",
+     "meta_html": "Canidé Cyborg // Chasseur de Fugitifs",
+     "rang_classe": "regular",
+     "rang_html": "Rang II &bull; Assaut",
+     "description_html": "Bête d'assaut blindée aux mâchoires renforcées de vérins hydrauliques. Utilisée pour\n                                débusquer les cellules rebelles dans les égouts d'Atraxia.",
+     "stats": [
+      {
+       "label_html": "Force",
+       "valeur_html": "4",
+       "highlight": false
+      },
+      {
+       "label_html": "Agilité",
+       "valeur_html": "4",
+       "highlight": false
+      },
+      {
+       "label_html": "Constitution",
+       "valeur_html": "4",
+       "highlight": false
+      },
+      {
+       "label_html": "PA",
+       "valeur_html": "9 PA",
+       "highlight": false
+      }
+     ],
+     "suite_html": "<div class=\"tactics-box\">\n                                <strong>Morsure Hydraulique (3 PA) :</strong> Dégâts 3D. En cas de succès,\n                                verrouille ses mâchoires : la cible est <em>Immobilisée</em> et subit 2 dégâts\n                                automatiques au début de chaque tour jusqu'à ce que le chien soit détruit ou repoussé.\n                            </div>"
+    }
+   ]
+  }
+ },
+ "tableaux": {
+  "calibrage_rencontres": {
+   "colonnes": [
+    "Niveau de Menace",
+    "Composition Recommandée (Groupe de 4 PJ)",
+    "Ratio PA Ennemis / PJ",
+    "Objectif Tactique"
+   ]
+  }
+ },
+ "mecaniques": {
+  "note": "Genere depuis livre_12.html (motif RP-075/Livre II). Source unique : regenerer.",
+  "creatures": [
+   {
+    "nom": "Bandit #1 — L'Épéiste de Grand Chemin",
+    "classe": "regular",
+    "rang": "Rang II • Régulier",
+    "description": "Coupe-jarret agile et opportuniste. Vêtu d'un pourpoint de cuir bouilli et armé d'une épée longue en acier forgé. Il cherche le contact rapproché, vise les organes vitaux et conserve systématiquement des PA pour contre-attaquer à l'épée.",
+    "stats": {
+     "Force [Pilier 1]": "4 (1d6)",
+     "Agilité": "3 (1d4)",
+     "Constitution": "3 (1d4)",
+     "Rapidité": "2 (1d2)",
+     "Intelligence": "3 (1d4)",
+     "Érudition": "2 (1d2)",
+     "Charisme [Pilier 2]": "4 (1d6)",
+     "Instinct": "2 (1d2)",
+     "Magie": "0",
+     "Vision/Ouïe": "6 / 5",
+     "Points d'Action": "7 PA",
+     "Encaissement": "6 dégâts",
+     "Max Létal": "15 dégâts",
+     "Points Miracle": "0"
+    },
+    "id": "bandit_epeiste"
+   },
+   {
+    "nom": "Bandit #2 — L'Arcaniste d'Embuscade",
+    "classe": "regular",
+    "rang": "Rang II • Régulier Arcanique",
+    "description": "Ancien étudiant d'académie ayant fui les règles impériales pour rejoindre la pègre. Maîtrise une Magie de rang 7 axée sur la compression gravitationnelle et les gerbes enflammées. Reste en retrait pour bombarder les héros.",
+    "stats": {
+     "Force": "3 (1d2+1)",
+     "Agilité": "3 (1d2+1)",
+     "Constitution": "3 (1d2+1)",
+     "Rapidité": "3 (1d2+1)",
+     "Intelligence": "4 (1d4)",
+     "Érudition": "4 (1d4)",
+     "Charisme": "1 (1d2-1)",
+     "Instinct": "2 (1d2)",
+     "Magie": "7 (1d8)",
+     "Vision/Ouïe": "6 / 3",
+     "Points d'Action": "7 PA",
+     "Encaissement": "6 dégâts",
+     "Max Létal": "15 dégâts",
+     "Points Miracle": "0"
+    },
+    "id": "bandit_arcaniste"
+   },
+   {
+    "nom": "Bandit #3 — Le Tireur d'Élite Végétal",
+    "classe": "regular",
+    "rang": "Rang II • Tireur d'Élite",
+    "description": "Chasseur impitoyable embusqué en hauteur ou derrière des murets de pierre. Doté d'une Rapidité exceptionnelle (4) et d'un total colossal de 10 PA. Il prépare ses tirs pour interrompre les sorts des PJ et n'hésite pas à capturer un allié pour forcer une reddition.",
+    "stats": {
+     "Force": "3 (1d2+1)",
+     "Agilité": "4 (1d4)",
+     "Constitution": "3 (1d2+1)",
+     "Rapidité": "4 (1d4)",
+     "Intelligence": "3 (1d2+1)",
+     "Érudition": "2 (1d2)",
+     "Charisme": "2 (1d2)",
+     "Instinct": "2 (1d2)",
+     "Magie": "0",
+     "Vision/Ouïe": "3 / 5",
+     "Points d'Action": "10 PA",
+     "Encaissement": "6 dégâts",
+     "Max Létal": "15 dégâts",
+     "Points Miracle": "0"
+    },
+    "id": "bandit_tireur"
+   },
+   {
+    "nom": "La « Petite Merde » (Minion Standard)",
+    "classe": "minion",
+    "rang": "Rang I • Minion",
+    "description": "Profil canonique universel pour la racaille et les gardes de bas étage. Dépourvu d'entraînement sérieux, ce profil sert à saturer l'espace lors des assauts de groupe.",
+    "stats": {
+     "Force": "2 (1d2)",
+     "Agilité": "2 (1d2)",
+     "Constitution": "2 (1d2)",
+     "Rapidité": "2 (1d2)",
+     "Intelligence": "1 (1d2)",
+     "Érudition": "1 (1d2)",
+     "Charisme": "1 (1d2)",
+     "Instinct": "1 (1d2)",
+     "Points d'Action": "5 PA",
+     "Encaissement": "4 dégâts",
+     "Seuil Létal": "10 dégâts"
+    },
+    "id": "minion_standard"
+   },
+   {
+    "nom": "Illumo, le Tueur Fou",
+    "classe": "elite",
+    "rang": "Rang III • Boss Assassin",
+    "description": "Individu trapu au visage balafré et brûlé au troisième degré. Ayant erré toute sa jeunesse dans des désolations arides, Illumo a développé une affinité innée avec un Feu Arcanique blanc hyper-destructeur. Spécialiste des infiltrations de bases fortifiées et des assassinats de cibles sous haute protection.",
+    "stats": {
+     "Force": "5 (1d6)",
+     "Agilité": "5 (1d6)",
+     "Constitution": "4 (1d6)",
+     "Rapidité": "4 (1d6)",
+     "Intelligence": "3 (1d4)",
+     "Érudition": "2 (1d2)",
+     "Charisme": "1 (1d2)",
+     "Instinct": "3 (1d4)",
+     "Magie (Feu)": "8 (1d10)",
+     "Points d'Action": "10 PA",
+     "Encaissement": "8 dégâts",
+     "Max Létal": "20 dégâts",
+     "Points Miracle": "2 PM"
+    },
+    "id": "illumo"
+   },
+   {
+    "nom": "La Bête d'Hybris (The Beast)",
+    "classe": "boss",
+    "rang": "Boss Suprême • Rang III",
+    "description": "Colosse bipède de 4 mètres de haut à la fourrure noire et dense, doté d'une musculature prodigieuse et d'imposants crocs en dents de sabre. D'abord perçue comme un prédateur sanguinaire traquant les intrus dans les cols gelés du Nord, elle s'avère être un gardien initiatique millénaire testant la trempe des porteurs de la Cinquième Force. Même criblée de balles et la fourrure calcinée par les flammes pyrocinétiques, elle continue de charger avec une férocité inébranlable.",
+    "stats": {
+     "Force": "7 (1d8+2)",
+     "Agilité": "5 (1d4+1)",
+     "Constitution": "6 (1d6+1)",
+     "Rapidité": "4 (1d4)",
+     "Intelligence": "4 (Stratégique)",
+     "Instinct": "6 (1d6+1)",
+     "Points d'Action": "13 PA",
+     "Encaissement": "12 dégâts",
+     "Max Létal": "30 dégâts",
+     "Points Miracle": "3 PM"
+    },
+    "id": "bete_hybris"
+   },
+   {
+    "nom": "Les Dereks (Guerrier Indigène Tellurique)",
+    "classe": "regular",
+    "rang": "Rang II • Gardien Indigène",
+    "description": "Êtres trapus à la peau de granit grisâtre vivant dans les cavernes pré-coloniales d'Hybris. Ils ne parlent pas les langues humaines mais communiquent par résonance acoustique dans la pierre. Capables de fondre dans la roche pour surprendre les mineurs nains.",
+    "stats": {
+     "Force": "5 (1d4+1)",
+     "Agilité": "2 (1d2)",
+     "Constitution": "5 (1d4+1)",
+     "Rapidité": "2 (1d2)",
+     "Magie Tellurique": "4 (Inhérente)",
+     "Points d'Action": "6 PA",
+     "Encaissement": "10 dégâts",
+     "Armure Naturelle": "3 pts"
+    },
+    "id": "dereks"
+   },
+   {
+    "nom": "Le Minulican (The Quantum Wolf / Le Loup du Néant)",
+    "classe": "boss",
+    "rang": "Fléau Multidimensionnel",
+    "description": "Monstre titanesque libéré lors des grands orages d'arcane de la Cinquième Force. Doté de cornes spiralées démoniaques, de membres massifs crépitants d'électricité arcanique et d'une peau léchée par des flammes bleu-violettes. Le Minulican traque avec obsession les singularités génétiques (la variance biogénomique de 0.0001%) et défie les lois ordinaires du temps.",
+    "stats": {
+     "Force": "6 (1d6+1)",
+     "Agilité": "6 (1d6+1)",
+     "Constitution": "6 (1d6+1)",
+     "Rapidité": "5 (1d4+1)",
+     "Magie Arcanique": "9 (1d10)",
+     "Points d'Action": "14 PA",
+     "Encaissement": "12 dégâts",
+     "Max Létal": "30 dégâts",
+     "Points Miracle": "3 PM"
+    },
+    "id": "minulican"
+   },
+   {
+    "nom": "Le Disciple de Terre de Capricius",
+    "classe": "boss",
+    "rang": "Arme Cosmique Antithermodynamique",
+    "description": "Colosse lithosphérique de 3 mètres de haut, forgé par Capricius seul, ~1 milliard d'années avant l'Empire, pour purger les anomalies de la ligne temporelle. Tiré sous forme de plasma à ~c depuis Aurion (~1 Gly de traversée, timer en temps propre, aucune mise à jour possible en route), il s'est ré-imprimé dans la roche locale en s'écrasant sur Brum'korath en 1772 HSC. Sa peau de roche noire veinée de magma en fusion absorbe l'impact des balles, des lasers et des armes tranchantes comme de simples ricochets. Il rasa les défenses extérieures de Brum'korath à lui seul.",
+    "stats": {
+     "Force": "9 (1d10)",
+     "Agilité": "2 (1d2)",
+     "Constitution": "9 (1d10)",
+     "Rapidité": "2 (1d2)",
+     "Intelligence": "2 (1d2)",
+     "Érudition": "1 (1d2)",
+     "Charisme": "1 (1d2)",
+     "Instinct": "4 (1d6)",
+     "Points d'Action": "5 PA",
+     "Encaissement": "18 dégâts",
+     "Max Létal": "45 dégâts",
+     "Armure Magmatique": "6 pts de dégâts"
+    },
+    "id": "disciple_terre"
+   },
+   {
+    "nom": "Le Disciple de l'Air de Capricius",
+    "classe": "boss",
+    "rang": "Arme Cosmique Antithermodynamique",
+    "description": "Premier fruit de la série industrielle impériale : largué vers ~1620 HSC par trou de ver ancré dans la 5e Force, il doubla le prototype de Terre (encore en transit) et frappa le Continent Est, provoquant le saut de 1622 HSC (Cratère du Grand Lac). Silhouette de dépression vivante, à peine visible — on ne le voit qu'à ce qu'il déchire.",
+    "stats": {
+     "Force": "5 (1d6)",
+     "Agilité": "9 (1d10)",
+     "Constitution": "6 (1d6+1)",
+     "Rapidité": "9 (1d10)",
+     "Intelligence": "4 (1d6)",
+     "Instinct": "6 (1d6+1)",
+     "Points d'Action": "6 PA",
+     "Encaissement": "14 dégâts",
+     "Max Létal": "38 dégâts",
+     "Voile Dépressionnaire": "5 pts de dégâts"
+    },
+    "id": "disciple_air"
+   },
+   {
+    "nom": "Le Disciple du Feu de Capricius",
+    "classe": "boss",
+    "rang": "Arme Cosmique Antithermodynamique",
+    "description": "Largué en dormance par trou de ver, tapi près d'une source thermique d'Hybris en attendant sa séquence d'éveil. Cœur de fusion contenu dans une cage de suie vitrifiée ; là où il marche, la pierre devient verre. Les sismographes nains enregistrent depuis des décennies un « second pouls » sous les Montagnes — personne n'a encore fait le lien.",
+    "stats": {
+     "Force": "8 (1d8+1)",
+     "Agilité": "4 (1d6)",
+     "Constitution": "9 (1d10)",
+     "Rapidité": "3 (1d4)",
+     "Intelligence": "3 (1d4)",
+     "Instinct": "5 (1d6)",
+     "Points d'Action": "5 PA",
+     "Encaissement": "18 dégâts",
+     "Max Létal": "45 dégâts",
+     "Couronne de Fusion": "6 pts de dégâts"
+    },
+    "id": "disciple_feu"
+   },
+   {
+    "nom": "Le Disciple de l'Eau de Capricius",
+    "classe": "boss",
+    "rang": "Arme Cosmique Antithermodynamique",
+    "description": "Largué en dormance par trou de ver, dissous dans une nappe phréatique d'Hybris dont il épouse lentement le réseau. Il n'a pas de forme fixe : il est la pression dans les conduits, le goût de fer dans les puits, la voie d'eau dans les cales. Son éveil noiera d'abord, écrasera ensuite.",
+    "stats": {
+     "Force": "6 (1d6+1)",
+     "Agilité": "8 (1d8+1)",
+     "Constitution": "8 (1d8+1)",
+     "Rapidité": "5 (1d6)",
+     "Intelligence": "6 (1d6+1)",
+     "Instinct": "6 (1d6+1)",
+     "Points d'Action": "5 PA",
+     "Encaissement": "16 dégâts",
+     "Max Létal": "42 dégâts",
+     "Enveloppe Abyssale": "5 pts de dégâts"
+    },
+    "id": "disciple_eau"
+   },
+   {
+    "nom": "Drone de Surveillance & Répression",
+    "classe": "regular",
+    "rang": "Rang II • Sentinelle",
+    "description": "Rotor antigravité silencieux équipé d'optiques thermiques et d'un canon à faisceau étourdissant.",
+    "stats": {
+     "Coque": "8 PV",
+     "Agilité": "4",
+     "Vitesse Vol": "12 cases/tour",
+     "PA": "8 PA"
+    },
+    "id": "automates_0"
+   },
+   {
+    "nom": "Molosse Bionique de Traque",
+    "classe": "regular",
+    "rang": "Rang II • Assaut",
+    "description": "Bête d'assaut blindée aux mâchoires renforcées de vérins hydrauliques. Utilisée pour débusquer les cellules rebelles dans les égouts d'Atraxia.",
+    "stats": {
+     "Force": "4",
+     "Agilité": "4",
+     "Constitution": "4",
+     "PA": "9 PA"
+    },
+    "id": "automates_1"
+   }
+  ],
+  "creatures_par_nom": {
+   "Bandit #1 — L'Épéiste de Grand Chemin": {
+    "nom": "Bandit #1 — L'Épéiste de Grand Chemin",
+    "classe": "regular",
+    "rang": "Rang II • Régulier",
+    "description": "Coupe-jarret agile et opportuniste. Vêtu d'un pourpoint de cuir bouilli et armé d'une épée longue en acier forgé. Il cherche le contact rapproché, vise les organes vitaux et conserve systématiquement des PA pour contre-attaquer à l'épée.",
+    "stats": {
+     "Force [Pilier 1]": "4 (1d6)",
+     "Agilité": "3 (1d4)",
+     "Constitution": "3 (1d4)",
+     "Rapidité": "2 (1d2)",
+     "Intelligence": "3 (1d4)",
+     "Érudition": "2 (1d2)",
+     "Charisme [Pilier 2]": "4 (1d6)",
+     "Instinct": "2 (1d2)",
+     "Magie": "0",
+     "Vision/Ouïe": "6 / 5",
+     "Points d'Action": "7 PA",
+     "Encaissement": "6 dégâts",
+     "Max Létal": "15 dégâts",
+     "Points Miracle": "0"
+    },
+    "id": "bandit_epeiste"
+   },
+   "Bandit #2 — L'Arcaniste d'Embuscade": {
+    "nom": "Bandit #2 — L'Arcaniste d'Embuscade",
+    "classe": "regular",
+    "rang": "Rang II • Régulier Arcanique",
+    "description": "Ancien étudiant d'académie ayant fui les règles impériales pour rejoindre la pègre. Maîtrise une Magie de rang 7 axée sur la compression gravitationnelle et les gerbes enflammées. Reste en retrait pour bombarder les héros.",
+    "stats": {
+     "Force": "3 (1d2+1)",
+     "Agilité": "3 (1d2+1)",
+     "Constitution": "3 (1d2+1)",
+     "Rapidité": "3 (1d2+1)",
+     "Intelligence": "4 (1d4)",
+     "Érudition": "4 (1d4)",
+     "Charisme": "1 (1d2-1)",
+     "Instinct": "2 (1d2)",
+     "Magie": "7 (1d8)",
+     "Vision/Ouïe": "6 / 3",
+     "Points d'Action": "7 PA",
+     "Encaissement": "6 dégâts",
+     "Max Létal": "15 dégâts",
+     "Points Miracle": "0"
+    },
+    "id": "bandit_arcaniste"
+   },
+   "Bandit #3 — Le Tireur d'Élite Végétal": {
+    "nom": "Bandit #3 — Le Tireur d'Élite Végétal",
+    "classe": "regular",
+    "rang": "Rang II • Tireur d'Élite",
+    "description": "Chasseur impitoyable embusqué en hauteur ou derrière des murets de pierre. Doté d'une Rapidité exceptionnelle (4) et d'un total colossal de 10 PA. Il prépare ses tirs pour interrompre les sorts des PJ et n'hésite pas à capturer un allié pour forcer une reddition.",
+    "stats": {
+     "Force": "3 (1d2+1)",
+     "Agilité": "4 (1d4)",
+     "Constitution": "3 (1d2+1)",
+     "Rapidité": "4 (1d4)",
+     "Intelligence": "3 (1d2+1)",
+     "Érudition": "2 (1d2)",
+     "Charisme": "2 (1d2)",
+     "Instinct": "2 (1d2)",
+     "Magie": "0",
+     "Vision/Ouïe": "3 / 5",
+     "Points d'Action": "10 PA",
+     "Encaissement": "6 dégâts",
+     "Max Létal": "15 dégâts",
+     "Points Miracle": "0"
+    },
+    "id": "bandit_tireur"
+   },
+   "La « Petite Merde » (Minion Standard)": {
+    "nom": "La « Petite Merde » (Minion Standard)",
+    "classe": "minion",
+    "rang": "Rang I • Minion",
+    "description": "Profil canonique universel pour la racaille et les gardes de bas étage. Dépourvu d'entraînement sérieux, ce profil sert à saturer l'espace lors des assauts de groupe.",
+    "stats": {
+     "Force": "2 (1d2)",
+     "Agilité": "2 (1d2)",
+     "Constitution": "2 (1d2)",
+     "Rapidité": "2 (1d2)",
+     "Intelligence": "1 (1d2)",
+     "Érudition": "1 (1d2)",
+     "Charisme": "1 (1d2)",
+     "Instinct": "1 (1d2)",
+     "Points d'Action": "5 PA",
+     "Encaissement": "4 dégâts",
+     "Seuil Létal": "10 dégâts"
+    },
+    "id": "minion_standard"
+   },
+   "Illumo, le Tueur Fou": {
+    "nom": "Illumo, le Tueur Fou",
+    "classe": "elite",
+    "rang": "Rang III • Boss Assassin",
+    "description": "Individu trapu au visage balafré et brûlé au troisième degré. Ayant erré toute sa jeunesse dans des désolations arides, Illumo a développé une affinité innée avec un Feu Arcanique blanc hyper-destructeur. Spécialiste des infiltrations de bases fortifiées et des assassinats de cibles sous haute protection.",
+    "stats": {
+     "Force": "5 (1d6)",
+     "Agilité": "5 (1d6)",
+     "Constitution": "4 (1d6)",
+     "Rapidité": "4 (1d6)",
+     "Intelligence": "3 (1d4)",
+     "Érudition": "2 (1d2)",
+     "Charisme": "1 (1d2)",
+     "Instinct": "3 (1d4)",
+     "Magie (Feu)": "8 (1d10)",
+     "Points d'Action": "10 PA",
+     "Encaissement": "8 dégâts",
+     "Max Létal": "20 dégâts",
+     "Points Miracle": "2 PM"
+    },
+    "id": "illumo"
+   },
+   "La Bête d'Hybris (The Beast)": {
+    "nom": "La Bête d'Hybris (The Beast)",
+    "classe": "boss",
+    "rang": "Boss Suprême • Rang III",
+    "description": "Colosse bipède de 4 mètres de haut à la fourrure noire et dense, doté d'une musculature prodigieuse et d'imposants crocs en dents de sabre. D'abord perçue comme un prédateur sanguinaire traquant les intrus dans les cols gelés du Nord, elle s'avère être un gardien initiatique millénaire testant la trempe des porteurs de la Cinquième Force. Même criblée de balles et la fourrure calcinée par les flammes pyrocinétiques, elle continue de charger avec une férocité inébranlable.",
+    "stats": {
+     "Force": "7 (1d8+2)",
+     "Agilité": "5 (1d4+1)",
+     "Constitution": "6 (1d6+1)",
+     "Rapidité": "4 (1d4)",
+     "Intelligence": "4 (Stratégique)",
+     "Instinct": "6 (1d6+1)",
+     "Points d'Action": "13 PA",
+     "Encaissement": "12 dégâts",
+     "Max Létal": "30 dégâts",
+     "Points Miracle": "3 PM"
+    },
+    "id": "bete_hybris"
+   },
+   "Les Dereks (Guerrier Indigène Tellurique)": {
+    "nom": "Les Dereks (Guerrier Indigène Tellurique)",
+    "classe": "regular",
+    "rang": "Rang II • Gardien Indigène",
+    "description": "Êtres trapus à la peau de granit grisâtre vivant dans les cavernes pré-coloniales d'Hybris. Ils ne parlent pas les langues humaines mais communiquent par résonance acoustique dans la pierre. Capables de fondre dans la roche pour surprendre les mineurs nains.",
+    "stats": {
+     "Force": "5 (1d4+1)",
+     "Agilité": "2 (1d2)",
+     "Constitution": "5 (1d4+1)",
+     "Rapidité": "2 (1d2)",
+     "Magie Tellurique": "4 (Inhérente)",
+     "Points d'Action": "6 PA",
+     "Encaissement": "10 dégâts",
+     "Armure Naturelle": "3 pts"
+    },
+    "id": "dereks"
+   },
+   "Le Minulican (The Quantum Wolf / Le Loup du Néant)": {
+    "nom": "Le Minulican (The Quantum Wolf / Le Loup du Néant)",
+    "classe": "boss",
+    "rang": "Fléau Multidimensionnel",
+    "description": "Monstre titanesque libéré lors des grands orages d'arcane de la Cinquième Force. Doté de cornes spiralées démoniaques, de membres massifs crépitants d'électricité arcanique et d'une peau léchée par des flammes bleu-violettes. Le Minulican traque avec obsession les singularités génétiques (la variance biogénomique de 0.0001%) et défie les lois ordinaires du temps.",
+    "stats": {
+     "Force": "6 (1d6+1)",
+     "Agilité": "6 (1d6+1)",
+     "Constitution": "6 (1d6+1)",
+     "Rapidité": "5 (1d4+1)",
+     "Magie Arcanique": "9 (1d10)",
+     "Points d'Action": "14 PA",
+     "Encaissement": "12 dégâts",
+     "Max Létal": "30 dégâts",
+     "Points Miracle": "3 PM"
+    },
+    "id": "minulican"
+   },
+   "Le Disciple de Terre de Capricius": {
+    "nom": "Le Disciple de Terre de Capricius",
+    "classe": "boss",
+    "rang": "Arme Cosmique Antithermodynamique",
+    "description": "Colosse lithosphérique de 3 mètres de haut, forgé par Capricius seul, ~1 milliard d'années avant l'Empire, pour purger les anomalies de la ligne temporelle. Tiré sous forme de plasma à ~c depuis Aurion (~1 Gly de traversée, timer en temps propre, aucune mise à jour possible en route), il s'est ré-imprimé dans la roche locale en s'écrasant sur Brum'korath en 1772 HSC. Sa peau de roche noire veinée de magma en fusion absorbe l'impact des balles, des lasers et des armes tranchantes comme de simples ricochets. Il rasa les défenses extérieures de Brum'korath à lui seul.",
+    "stats": {
+     "Force": "9 (1d10)",
+     "Agilité": "2 (1d2)",
+     "Constitution": "9 (1d10)",
+     "Rapidité": "2 (1d2)",
+     "Intelligence": "2 (1d2)",
+     "Érudition": "1 (1d2)",
+     "Charisme": "1 (1d2)",
+     "Instinct": "4 (1d6)",
+     "Points d'Action": "5 PA",
+     "Encaissement": "18 dégâts",
+     "Max Létal": "45 dégâts",
+     "Armure Magmatique": "6 pts de dégâts"
+    },
+    "id": "disciple_terre"
+   },
+   "Le Disciple de l'Air de Capricius": {
+    "nom": "Le Disciple de l'Air de Capricius",
+    "classe": "boss",
+    "rang": "Arme Cosmique Antithermodynamique",
+    "description": "Premier fruit de la série industrielle impériale : largué vers ~1620 HSC par trou de ver ancré dans la 5e Force, il doubla le prototype de Terre (encore en transit) et frappa le Continent Est, provoquant le saut de 1622 HSC (Cratère du Grand Lac). Silhouette de dépression vivante, à peine visible — on ne le voit qu'à ce qu'il déchire.",
+    "stats": {
+     "Force": "5 (1d6)",
+     "Agilité": "9 (1d10)",
+     "Constitution": "6 (1d6+1)",
+     "Rapidité": "9 (1d10)",
+     "Intelligence": "4 (1d6)",
+     "Instinct": "6 (1d6+1)",
+     "Points d'Action": "6 PA",
+     "Encaissement": "14 dégâts",
+     "Max Létal": "38 dégâts",
+     "Voile Dépressionnaire": "5 pts de dégâts"
+    },
+    "id": "disciple_air"
+   },
+   "Le Disciple du Feu de Capricius": {
+    "nom": "Le Disciple du Feu de Capricius",
+    "classe": "boss",
+    "rang": "Arme Cosmique Antithermodynamique",
+    "description": "Largué en dormance par trou de ver, tapi près d'une source thermique d'Hybris en attendant sa séquence d'éveil. Cœur de fusion contenu dans une cage de suie vitrifiée ; là où il marche, la pierre devient verre. Les sismographes nains enregistrent depuis des décennies un « second pouls » sous les Montagnes — personne n'a encore fait le lien.",
+    "stats": {
+     "Force": "8 (1d8+1)",
+     "Agilité": "4 (1d6)",
+     "Constitution": "9 (1d10)",
+     "Rapidité": "3 (1d4)",
+     "Intelligence": "3 (1d4)",
+     "Instinct": "5 (1d6)",
+     "Points d'Action": "5 PA",
+     "Encaissement": "18 dégâts",
+     "Max Létal": "45 dégâts",
+     "Couronne de Fusion": "6 pts de dégâts"
+    },
+    "id": "disciple_feu"
+   },
+   "Le Disciple de l'Eau de Capricius": {
+    "nom": "Le Disciple de l'Eau de Capricius",
+    "classe": "boss",
+    "rang": "Arme Cosmique Antithermodynamique",
+    "description": "Largué en dormance par trou de ver, dissous dans une nappe phréatique d'Hybris dont il épouse lentement le réseau. Il n'a pas de forme fixe : il est la pression dans les conduits, le goût de fer dans les puits, la voie d'eau dans les cales. Son éveil noiera d'abord, écrasera ensuite.",
+    "stats": {
+     "Force": "6 (1d6+1)",
+     "Agilité": "8 (1d8+1)",
+     "Constitution": "8 (1d8+1)",
+     "Rapidité": "5 (1d6)",
+     "Intelligence": "6 (1d6+1)",
+     "Instinct": "6 (1d6+1)",
+     "Points d'Action": "5 PA",
+     "Encaissement": "16 dégâts",
+     "Max Létal": "42 dégâts",
+     "Enveloppe Abyssale": "5 pts de dégâts"
+    },
+    "id": "disciple_eau"
+   },
+   "Drone de Surveillance & Répression": {
+    "nom": "Drone de Surveillance & Répression",
+    "classe": "regular",
+    "rang": "Rang II • Sentinelle",
+    "description": "Rotor antigravité silencieux équipé d'optiques thermiques et d'un canon à faisceau étourdissant.",
+    "stats": {
+     "Coque": "8 PV",
+     "Agilité": "4",
+     "Vitesse Vol": "12 cases/tour",
+     "PA": "8 PA"
+    },
+    "id": "automates_0"
+   },
+   "Molosse Bionique de Traque": {
+    "nom": "Molosse Bionique de Traque",
+    "classe": "regular",
+    "rang": "Rang II • Assaut",
+    "description": "Bête d'assaut blindée aux mâchoires renforcées de vérins hydrauliques. Utilisée pour débusquer les cellules rebelles dans les égouts d'Atraxia.",
+    "stats": {
+     "Force": "4",
+     "Agilité": "4",
+     "Constitution": "4",
+     "PA": "9 PA"
+    },
+    "id": "automates_1"
+   }
+  },
+  "nb_creatures": 14,
+  "rangs_menace": [
+   {
+    "rang": "Rang I : Minions Les « Petites Merdes »",
+    "texte": "12 points d'attributs (maximum 3 par attribut). 0 Point de Miracle. Ces sbires attaquent en nombre. Dès qu'un Minion subit une blessure dépassant sa capacité d'encaissement (Con × 2) ou reçoit un coup critique net, il est immédiatement hors de combat."
+   },
+   {
+    "rang": "Rang II : Réguliers PNJ Standards",
+    "texte": "2 attributs à 4, 15 points partagés (maximum 3 par carac). 0 à 1 Point de Miracle. Nombre de compétences entraînées égal au rang d'Érudition. Utilisent pleinement leurs réactions (parades, esquives, mises à couvert) et bénéficient d'un équipement standard complet."
+   },
+   {
+    "rang": "Rang III : Élites & Boss Fléaux & Monstres",
+    "texte": "Attributs de 5 à 8+, jauges d'encaissement massives, 2 à 3 Points de Miracle. Immunisés à la plupart des états mentaux mineurs, capables d'attaques de zone dévastatrices et d'actions spéciales hors-tour."
+   }
+  ],
+  "calibrage_rencontres": [
+   {
+    "menace": "Facile / Échauffement",
+    "composition": "4 à 6 Minions (Petites Merdes) OU 1 Régulier + 2 Minions",
+    "ratio_pa": "0.8 × PA des PJ",
+    "objectif": "Épuiser quelques PA et ressources sans risque vital."
+   },
+   {
+    "menace": "Standard / Équilibré",
+    "composition": "3 à 4 Réguliers (ex: Patrouille de Bandits 1, 2, 3)",
+    "ratio_pa": "1.0 × PA des PJ",
+    "objectif": "Duel tactique, gestion du terrain et des couverts."
+   },
+   {
+    "menace": "Périlleux / Embuscade",
+    "composition": "1 Élite (ex: Illumo) + 4 Réguliers OU 8 Minions organisés",
+    "ratio_pa": "1.3 × PA des PJ",
+    "objectif": "Danger de mort, gestion impérative des soins d'urgence."
+   },
+   {
+    "menace": "Létal / Boss Cosmique",
+    "composition": "1 Boss Suprême (La Bête, Minulican, Disciples de Capricius)",
+    "ratio_pa": "Spécial (PA doublés + Actions Légendaires)",
+    "objectif": "Survie collective, coordination de sorts et de faiblesses."
+   }
+  ]
+ }
+}
