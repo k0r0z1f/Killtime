@@ -5,7 +5,7 @@
   "mjId": "usr_mtvzf3lr",
   "mjName": "k0r0",
   "createdAt": 1793439060000,
-  "updatedAt": 1793449108450,
+  "updatedAt": 1793449132535,
   "maxMembers": 12,
   "inviteCode": "inv_BgCO6QCJUnID",
   "members": [
@@ -14,6 +14,12 @@
       "username": "k0r0",
       "role": "mj",
       "joinedAt": 1793439060000
+    },
+    {
+      "userId": "usr_mtvzstfs",
+      "username": "test",
+      "role": "joueur",
+      "joinedAt": 1793449132534
     }
   ],
   "messages": [

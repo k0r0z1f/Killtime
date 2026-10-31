@@ -5,7 +5,7 @@
   "mjId": "usr_mtvzf3lr",
   "mjName": "k0r0",
   "createdAt": 1793439060000,
-  "updatedAt": 1793449132535,
+  "updatedAt": 1793453390608,
   "maxMembers": 12,
   "inviteCode": "inv_BgCO6QCJUnID",
   "members": [
@@ -274,6 +274,18 @@
       "toName": null,
       "toExcept": [],
       "createdAt": 1793448713928
+    },
+    {
+      "id": "m_mvwfucr47p",
+      "fromId": "usr_mtvzf3lr",
+      "fromName": "k0r0",
+      "fromRole": "mj",
+      "text": "salut",
+      "image": null,
+      "toUserId": null,
+      "toName": null,
+      "toExcept": [],
+      "createdAt": 1793453390608
     }
   ],
   "listed": true,
