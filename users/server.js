@@ -2558,6 +2558,17 @@ async function handleRequest(req, res, isAdminListener) {
         if (cleanPath === '/api/admin/users' && req.method === 'GET') {
             const adm = requirePerm(req, 'users.manage');
             if (adm.status) return sendJson(res, adm.status, { error: adm.error });
+            // Tables gérées (MJ) par utilisateur : un scan des docs de table.
+            const tablesMj = {};
+            try {
+                const files = fs.readdirSync(TABLES_DIR).filter(f => /^table_.*\.json$/.test(f));
+                for (const f of files) {
+                    try {
+                        const doc = JSON.parse(fs.readFileSync(path.join(TABLES_DIR, f), 'utf-8'));
+                        if (doc && doc.mjId) tablesMj[doc.mjId] = (tablesMj[doc.mjId] || 0) + 1;
+                    } catch (e) {}
+                }
+            } catch (e) {}
             const list = loadUsers().map(u => {
                 const s = toSafeUser(u);
                 return {
@@ -2565,7 +2576,8 @@ async function handleRequest(req, res, isAdminListener) {
                     provider: s.provider || 'local', role: s.role, roleId: s.roleId,
                     isAdmin: s.isAdmin, permissions: s.permissions,
                     createdAt: s.createdAt,
-                    characters: Array.isArray(u.characters) ? u.characters.length : 0
+                    characters: Array.isArray(u.characters) ? u.characters.length : 0,
+                    tablesMj: tablesMj[s.id] || 0
                 };
             });
             return sendJson(res, 200, { success: true, users: list });
@@ -2686,13 +2698,70 @@ async function handleRequest(req, res, isAdminListener) {
             try {
                 const body = await parseBody(req);
                 const id = String((body && body.id) || '');
+                const wantArchive = !body || body.archive !== false; // défaut sûr : on archive
                 const users = loadUsers();
                 const target = users.find(u => u.id === id);
                 if (!target) return sendJson(res, 404, { error: 'Utilisateur introuvable.' });
                 if (target.id === adm.user.id) return sendJson(res, 400, { error: 'Impossible de supprimer votre propre compte.' });
+                // 1. Archive JSON : compte (sans secrets) + fiches + tables
+                // (MJ ou membre, docs complets).
+                const arch = { app: 'codex-tables', version: 1, exportedAt: new Date().toISOString(),
+                    user: toSafeUser(target),
+                    characters: Array.isArray(target.characters) ? target.characters : [],
+                    tables: [] };
+                const ownedIds = [];
+                try {
+                    tablesEnsureDir();
+                    const files = fs.readdirSync(TABLES_DIR).filter(f => /^table_.*\.json$/.test(f));
+                    for (const f of files) {
+                        let doc = null;
+                        try { doc = JSON.parse(fs.readFileSync(path.join(TABLES_DIR, f), 'utf-8')); } catch (e) { continue; }
+                        if (!doc || typeof doc !== 'object') continue;
+                        const isMj = doc.mjId === id;
+                        const isMember = Array.isArray(doc.members) && doc.members.some(m => m && m.userId === id);
+                        if (!isMj && !isMember) continue;
+                        arch.tables.push({ file: f, role: isMj ? 'mj' : 'member', doc });
+                        if (isMj && doc.id) ownedIds.push(doc.id);
+                    }
+                } catch (e) {}
+                let archiveFile = null;
+                if (wantArchive) {
+                    try {
+                        const dir = path.join(PUBLIC_DIR, 'data', 'archives');
+                        fs.mkdirSync(dir, { recursive: true });
+                        archiveFile = 'user_' + String(id).replace(/[^a-z0-9_-]/gi, '') + '_' + Date.now().toString(36) + '.json';
+                        fs.writeFileSync(path.join(dir, archiveFile), JSON.stringify(arch, null, 2));
+                    } catch (e) { return sendJson(res, 500, { error: 'Archive impossible : ' + e.message }); }
+                }
+                // 2. Cascade : tables MJ détruites (doc + .bak + présence),
+                // membre retiré des autres tables (+ héritage), puis compte.
+                // Les messages déjà postés restent (historique, pseudo figé).
+                const deletedTables = [];
+                for (const t of arch.tables) {
+                    if (t.role !== 'mj') continue;
+                    try { fs.unlinkSync(path.join(TABLES_DIR, t.file)); deletedTables.push(t.file); } catch (e) {}
+                    try { fs.unlinkSync(path.join(TABLES_DIR, t.file + '.bak')); } catch (e) {}
+                }
+                for (const tid of ownedIds) { try { delete tableUploads[tid]; } catch (e) {} }
+                const removedFromTables = [];
+                try {
+                    const files = fs.readdirSync(TABLES_DIR).filter(f => /^table_.*\.json$/.test(f));
+                    for (const f of files) {
+                        let doc = null;
+                        try { doc = JSON.parse(fs.readFileSync(path.join(TABLES_DIR, f), 'utf-8')); } catch (e) { continue; }
+                        if (!doc || !Array.isArray(doc.members)) continue;
+                        const before = doc.members.length;
+                        doc.members = doc.members.filter(m => !(m && m.userId === id));
+                        let touched = doc.members.length !== before;
+                        if (doc.inherited && doc.inherited[id]) { delete doc.inherited[id]; touched = true; }
+                        if (touched) { removedFromTables.push(doc.id); saveTableDoc(doc); }
+                    }
+                } catch (e) {}
                 saveUsers(users.filter(u => u.id !== id));
-                console.log(`[Admin] utilisateur supprimé : ${target.username} (${target.email})`);
-                return sendJson(res, 200, { success: true, users: users.length - 1 });
+                console.log(`[Admin] utilisateur supprimé : ${target.username} (${target.email}) archive=${archiveFile || 'non'} tablesMJ=${deletedTables.length} retiréDe=${removedFromTables.length}`);
+                return sendJson(res, 200, { success: true, users: users.length - 1,
+                    archived: !!archiveFile, archiveFile,
+                    deletedTables, removedFromTables });
             } catch (e) {
                 return sendJson(res, 400, { error: e.message });
             }

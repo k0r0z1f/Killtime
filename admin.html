@@ -98,7 +98,7 @@
       <h2>Utilisateurs (<span id="userCount">0</span>)</h2>
       <div id="pwdResult" class="hint" hidden></div>
       <table>
-        <thead><tr><th>Usager</th><th>E-mail</th><th>Fournisseur</th><th>Rôle effectif</th><th>Fiches</th><th></th></tr></thead>
+        <thead><tr><th>Usager</th><th>E-mail</th><th>Fournisseur</th><th>Rôle effectif</th><th>Fiches</th><th>Tables MJ</th><th></th></tr></thead>
         <tbody id="userRows"></tbody>
       </table>
       <div class="row" style="margin-top:12px">
@@ -242,11 +242,12 @@
           u.username + (self ? ' (vous)' : ''),
           u.email, u.provider,
           '<span class="badge ' + (u.isAdmin ? 'admin' : 'user') + '">' + u.role + '</span><br>',
-          String(u.characters), ''
+          String(u.characters),
+          String(u.tablesMj != null ? u.tablesMj : '—'), ''
         ];
         cells.forEach((html, i) => {
           const td = document.createElement('td');
-          if (i < 5) td.textContent = html.replace(/<[^>]*>/g, '');
+          if (i < 6) td.textContent = html.replace(/<[^>]*>/g, '');
           else td.innerHTML = html;
           if (i === 3) td.innerHTML = html;
           tr.appendChild(td);
@@ -291,9 +292,20 @@
           dBtn.type = 'button'; dBtn.textContent = 'supprimer'; dBtn.className = 'danger';
           dBtn.addEventListener('click', async () => {
             if (!confirm('Supprimer ' + u.username + ' (' + u.email + ') ?')) return;
+            const wantArchive = confirm('Archiver ses données avant (compte, fiches, tables MJ + membre → JSON) ?\nOK = archiver puis supprimer\nAnnuler = SUPPRIMER TOUT sans archive');
             try {
-              await api('/api/admin/delete-user', { method: 'POST', body: JSON.stringify({ id: u.id }) });
-              msg('Utilisateur supprimé.');
+              const r = await api('/api/admin/delete-user', { method: 'POST', body: JSON.stringify({ id: u.id, archive: wantArchive }) });
+              let txt = 'Utilisateur supprimé.';
+              if (r.deletedTables && r.deletedTables.length) txt += ' Tables MJ détruites : ' + r.deletedTables.length + '.';
+              if (r.removedFromTables && r.removedFromTables.length) txt += ' Retiré de ' + r.removedFromTables.length + ' table(s).';
+              if (r.archiveFile) {
+                txt += ' Archive : ' + r.archiveFile + ' (téléchargement lancé).';
+                const a = document.createElement('a');
+                a.href = '/data/archives/' + r.archiveFile;
+                a.download = r.archiveFile;
+                document.body.appendChild(a); a.click(); a.remove();
+              }
+              msg(txt, 6000);
               loadUsers();
             } catch (e) { msg('Erreur : ' + e.message); }
           });
