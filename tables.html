@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tables de groupe — Système RP</title>
+    <meta name="description"
+        content="Tables de groupe : chat persistant, partage d'images et messages privés MJ/joueurs, log JSON par table.">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;900&family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="users/auth.css">
+    <style>
+        /* ============ TABLES DE GROUPE ============ */
+        /* Pleine largeur : cette page n'a ni sidebar ni inspector,
+           on annule leurs marges réservées par .main-content. */
+        .main-content { margin-left: 0; margin-right: 0; }
+        .tb-layout { display: grid; grid-template-columns: 300px minmax(0, 1fr) 300px; gap: 16px; margin-top: 18px; align-items: start; }
+        @media (max-width: 1100px) { .tb-layout { grid-template-columns: 1fr; } }
+        .tb-panel { background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 14px; padding: 14px; }
+        .tb-panel h3 { margin: 0 0 10px; font-size: 14px; letter-spacing: .04em; text-transform: uppercase; color: var(--text-secondary); }
+        .tb-item { width: 100%; text-align: left; background: var(--bg-canvas); border: 1px solid var(--border-subtle);
+            color: var(--text-primary); border-radius: 10px; padding: 10px 12px; margin-bottom: 8px; cursor: pointer;
+            font-family: var(--font-body); }
+        .tb-item:hover { border-color: var(--border-glow); }
+        .tb-item.on { border-color: var(--arcane-cyan); box-shadow: 0 0 0 1px var(--arcane-cyan-glow); }
+        .tb-item .nm { font-weight: 700; font-size: 14px; }
+        .tb-item .meta { font-size: 11px; color: var(--text-muted); font-family: var(--font-mono); margin-top: 2px; }
+        .tb-badge { display: inline-block; font-size: 10px; font-weight: 800; border-radius: 99px; padding: 1px 8px;
+            margin-left: 6px; vertical-align: middle; }
+        .tb-badge.mj { background: rgba(192,132,252,.18); color: #e9d5ff; border: 1px solid rgba(192,132,252,.5); }
+        .tb-badge.helper { background: rgba(56,189,248,.15); color: #bae6fd; border: 1px solid rgba(56,189,248,.45); }
+        .tb-badge.joueur { background: var(--bg-canvas); color: var(--text-muted); border: 1px solid var(--border-subtle); }
+        .tb-badge.priv { background: rgba(251,191,36,.15); color: #fde68a; border: 1px solid rgba(251,191,36,.45); }
+        .tb-field { margin-bottom: 10px; }
+        .tb-field label { display: block; font-size: 12px; color: var(--text-secondary); margin-bottom: 4px; }
+        .tb-field input, .tb-field textarea, .tb-field select { width: 100%; background: var(--bg-canvas);
+            border: 1px solid var(--border-subtle); color: var(--text-primary); border-radius: 8px;
+            padding: 8px 10px; font-size: 13px; font-family: var(--font-body); outline: none; box-sizing: border-box; }
+        .tb-field textarea { min-height: 64px; resize: vertical; }
+        .tb-btn { display: inline-flex; align-items: center; gap: 6px; background: var(--bg-canvas);
+            border: 1px solid var(--border-subtle); color: var(--text-primary); border-radius: 9px;
+            padding: 8px 14px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: var(--font-body); }
+        .tb-btn:hover { border-color: var(--border-glow); }
+        .tb-btn.primary { background: var(--arcane-cyan-glow); border-color: var(--arcane-cyan); }
+        .tb-btn.danger { border-color: var(--vital-ruby); color: #fca5a5; }
+        .tb-btn:disabled { opacity: .5; cursor: not-allowed; }
+        .tb-ava { width: 22px; height: 22px; border-radius: 50%; object-fit: cover; vertical-align: -5px; margin-right: 4px; background: var(--bg-canvas); }
+        .tb-ava.big { width: 44px; height: 44px; vertical-align: middle; margin-right: 8px; }
+        .tb-avbtn { background: none; border: none; padding: 0; cursor: pointer; border-radius: 50%; line-height: 0; }
+        .tb-avbtn:hover { outline: 2px solid var(--arcane-cyan); }
+        .tb-member.hidden-me { opacity: .75; }
+        .tb-restr { font-size: 11px; color: var(--text-muted); font-family: var(--font-mono); margin-top: 4px; }
+        .tb-row { display: flex; gap: 6px; }
+        .tb-row input { flex: 1; min-width: 0; }
+        #tbMessages { display: flex; flex-direction: column; gap: 8px; max-height: 55vh; overflow-y: auto; padding: 4px; }
+        .tb-msg { background: var(--bg-canvas); border: 1px solid var(--border-subtle); border-radius: 10px; padding: 8px 10px; font-size: 13px; }
+        .tb-msg.priv { border-color: rgba(251,191,36,.5); }
+        .tb-msg .head { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; font-size: 11px; color: var(--text-muted); font-family: var(--font-mono); margin-bottom: 4px; }
+        .tb-msg .who { font-weight: 800; color: var(--text-primary); font-family: var(--font-body); font-size: 12px; }
+        .tb-msg img { max-width: 100%; max-height: 320px; border-radius: 8px; margin-top: 6px; display: block; }
+        .tb-msg .del { margin-left: auto; background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 12px; }
+        .tb-msg .del:hover { color: var(--vital-ruby); }
+        .tb-member { display: flex; align-items: center; gap: 6px; padding: 6px 0; border-bottom: 1px dashed var(--border-subtle); font-size: 13px; }
+        .tb-member select { background: var(--bg-canvas); border: 1px solid var(--border-subtle); color: var(--text-primary);
+            border-radius: 6px; padding: 2px 6px; font-size: 12px; margin-left: auto; }
+        .tb-member .kick { background: none; border: none; color: var(--text-muted); cursor: pointer; }
+        .tb-member .kick:hover { color: var(--vital-ruby); }
+        .tb-status { font-size: 12px; color: var(--text-muted); font-family: var(--font-mono); }
+        .tb-status.ok { color: #6ee7b7; } .tb-status.err { color: #fca5a5; }
+        .tb-login-wall { text-align: center; padding: 40px 20px; }
+    </style>
+</head>
+
+<body>
+    <div class="app-container">
+        <header class="topbar">
+            <div class="topbar-left">
+                <a href="index.html" class="brand">
+                    <div class="brand-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="12 2 2 7 12 12 22 7 12 2" />
+                            <polyline points="2 17 12 22 22 17" />
+                            <polyline points="2 12 12 17 22 12" />
+                        </svg>
+                    </div>
+                    <div class="brand-info"><h1>Système RP <span class="brand-badge">Tables</span></h1></div>
+                </a>
+                <nav class="breadcrumbs"><span>Codex</span><span>/</span><span class="current">Tables de groupe</span></nav>
+            </div>
+            <div class="topbar-right">
+                <a href="index.html" class="topbar-site-link"><span>← Codex</span></a>
+                <div id="authTopbarSlot"></div>
+            </div>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="main-content" style="grid-column: 1 / -1;">
+                <header class="doc-header">
+                    <h1 class="doc-title">Tables de groupe</h1>
+                    <p class="doc-subtitle">Crée ta table, invite ton groupe : chat persistant, images partagées,
+                        messages privés avec le MJ. Chaque table garde son log en JSON (<code>data/tables/</code>).</p>
+                </header>
+
+                <div id="tbWall" class="tb-login-wall" style="display:none;">
+                    <p>Connecte-toi pour créer ou rejoindre une table.</p>
+                    <button class="tb-btn primary" id="tbLoginBtn" type="button">Connexion</button>
+                </div>
+
+                <div id="tbApp" class="tb-layout" style="display:none;">
+                    <section class="tb-panel">
+                        <h3>Mes tables</h3>
+                        <div id="tbList"></div>
+                        <hr style="border:none;border-top:1px solid var(--border-subtle);margin:12px 0;">
+                        <h3>Créer une table</h3>
+                        <div class="tb-field"><label>Nom (tu seras MJ)</label><input id="tbNewName" maxlength="40" placeholder="Ex : Les Veilleurs d'Hybris"></div>
+                        <div class="tb-field"><label>Description</label><textarea id="tbNewDesc" maxlength="500" placeholder="Pitch,horaires, règles de table..."></textarea></div>
+                        <div class="tb-field"><label>Mot de passe (optionnel)</label><input id="tbNewPass" type="password" maxlength="64" placeholder="Vide = ouverte"></div>
+                        <div class="tb-field"><label style="display:flex;gap:6px;align-items:center;"><input type="checkbox" id="tbNewListed" checked style="width:auto;"> Visible dans l'annuaire</label></div>
+                        <button class="tb-btn primary" id="tbCreate" type="button">Créer</button>
+                        <div class="tb-status" id="tbListStatus"></div>
+                        <hr style="border:none;border-top:1px solid var(--border-subtle);margin:12px 0;">
+                        <h3>Mon avatar</h3>
+                        <div id="tbAvatar"></div>
+                        <hr style="border:none;border-top:1px solid var(--border-subtle);margin:12px 0;">
+                        <h3>Toutes les tables</h3>
+                        <div id="tbDirectory"></div>
+                        <div class="tb-status" id="tbDirStatus"></div>
+                        <hr style="border:none;border-top:1px solid var(--border-subtle);margin:12px 0;">
+                        <h3>Amis</h3>
+                        <div id="tbFriends"></div>
+                        <hr style="border:none;border-top:1px solid var(--border-subtle);margin:12px 0;">
+                        <h3>En ligne</h3>
+                        <div id="tbOnline"></div>
+                        <div class="tb-status" id="tbOnlineStatus"></div>
+                    </section>
+
+                    <section class="tb-panel">
+                        <h3 id="tbChatTitle">Choisis une table</h3>
+                        <div id="tbMessages"></div>
+                        <div id="tbComposer" style="display:none;margin-top:10px;">
+                            <div class="tb-field"><label>Destinataire (vide = public)</label><select id="tbTo"></select></div>
+                            <div id="tbSendScope"></div>
+                            <div class="tb-field"><label>Message</label><textarea id="tbText" maxlength="2000" placeholder="Écris ici... (Entrée = envoyer)"></textarea></div>
+                            <div class="tb-field"><label>Image (URL http/https)</label><input id="tbImageUrl" placeholder="https://..."></div>
+                            <div class="tb-field"><label>…ou upload (≤ ~2 Mo, réduit à 1024 px)</label><input id="tbFile" type="file" accept="image/png,image/jpeg,image/gif,image/webp"></div>
+                            <button class="tb-btn primary" id="tbSend" type="button">Envoyer</button>
+                            <span class="tb-status" id="tbChatStatus"></span>
+                        </div>
+                    </section>
+
+                    <aside class="tb-panel">
+                        <h3>Gérer la table</h3>
+                        <div id="tbManage"><p class="tb-status">Sélectionne une table.</p></div>
+                    </aside>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="js/codex.js"></script>
+    <script src="users/user_store.js"></script>
+    <script src="users/auth.js"></script>
+    <script src="js/tables.js?v=1.0"></script>
+</body>
+
+</html>

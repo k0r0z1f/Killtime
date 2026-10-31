@@ -38,9 +38,37 @@
     class CodexAuthManager {
         constructor() {
             this.currentUser = null;
+            this.presenceTimer = null;
             this.restoreSession();
             this.checkOAuthCallback();
             this.setupUI();
+            if (this.currentUser) this.startPresenceHeartbeat();
+            if (this.currentUser) this.startTablesWatcher();
+        }
+
+        // Présence LAN : heartbeat silencieux toutes les 30 s tant que la
+        // session est active. Alimente GET /api/presence (liste « En ligne »).
+        startPresenceHeartbeat() {
+            this.stopPresenceHeartbeat();
+            if (!this.currentUser) return;
+            const beat = () => {
+                try {
+                    fetch(`${getApiBase()}/api/presence`, {
+                        method: 'POST',
+                        credentials: 'include',
+                        headers: { 'ngrok-skip-browser-warning': 'true' }
+                    }).catch(() => {});
+                } catch (e) {}
+            };
+            beat();
+            this.presenceTimer = setInterval(beat, 30000);
+        }
+
+        stopPresenceHeartbeat() {
+            if (this.presenceTimer) {
+                clearInterval(this.presenceTimer);
+                this.presenceTimer = null;
+            }
         }
 
         setupUI() {
@@ -113,10 +141,14 @@
 
             localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(user));
             this.mountTopbarWidget();
+            this.startPresenceHeartbeat();
+            this.startTablesWatcher();
             window.dispatchEvent(new CustomEvent('codex:auth:login', { detail: { user } }));
         }
 
         clearSession() {
+            this.stopPresenceHeartbeat();
+            this.stopTablesWatcher();
             const token = this.getCookie(SESSION_COOKIE_NAME) || '';
             this.currentUser = null;
             this.deleteCookie(SESSION_COOKIE_NAME);
@@ -283,12 +315,15 @@
 
             if (this.currentUser) {
                 const initial = (this.currentUser.username || 'U').charAt(0).toUpperCase();
+                const avatarHtml = this.currentUser.avatar
+                    ? `<img class="user-avatar-circle" src="${this.currentUser.avatar}" alt="" style="object-fit:cover;padding:0;">`
+                    : `<div class="user-avatar-circle">${initial}</div>`;
                 const menuWrapper = document.createElement('div');
                 menuWrapper.className = 'user-profile-menu';
 
                 menuWrapper.innerHTML = `
                     <button class="user-profile-btn" id="userMenuBtn" type="button">
-                        <div class="user-avatar-circle">${initial}</div>
+                        ${avatarHtml}
                         <span class="user-profile-name">${this.currentUser.username}</span>
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <polyline points="6 9 12 15 18 9"/>
@@ -367,6 +402,302 @@
                 btn.addEventListener('click', () => this.openModal());
                 slot.appendChild(btn);
             }
+
+            this.ensureTablesButton();
+            this.refreshSessionAvatar();
+        }
+
+        // Synchro légère : avatar/pseudo frais depuis le serveur (la session
+        // locale peut dater d'avant le choix d'un avatar). Re-rendu si changé.
+        refreshSessionAvatar() {
+            try {
+                if (!this.currentUser) return;
+                fetch(`${getApiBase()}/api/auth/me`, {
+                    credentials: 'include', cache: 'no-store',
+                    headers: { 'ngrok-skip-browser-warning': 'true' }
+                }).then((r) => (r.ok ? r.json() : null)).then((d) => {
+                    if (!d || !d.user) return;
+                    const cur = this.currentUser || {};
+                    if ((cur.avatar || null) !== (d.user.avatar || null) || cur.username !== d.user.username) {
+                        this.currentUser = Object.assign({}, cur, { avatar: d.user.avatar || null, username: d.user.username });
+                        try { localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(this.currentUser)); } catch (e) {}
+                        this.mountTopbarWidget();
+                    }
+                }).catch(() => {});
+            } catch (e) {}
+        }
+
+        // Bouton Tables dans la barre (toutes les pages) + pastille impayés.
+        tablesRootPrefix() {
+            let prefix = '';
+            try {
+                const path = window.location.pathname;
+                if (path.includes('/manuscripts/') || path.includes('/lore/') || path.includes('/chatgpt/')) {
+                    prefix = '../../../';
+                } else if (path.includes('/Killtime/')) {
+                    prefix = '../';
+                }
+            } catch (e) {}
+            return prefix;
+        }
+        ensureTablesButton() {
+            try {
+                if (document.getElementById('tablesTopbarBtn')) {
+                    this.updateTablesBadge();
+                    return;
+                }
+                const slot = document.getElementById('authTopbarSlot');
+                const parent = (slot && slot.parentElement)
+                    || document.querySelector('.topbar-right')
+                    || document.querySelector('.top-controls');
+                if (!parent) return;
+                const a = document.createElement('a');
+                a.id = 'tablesTopbarBtn';
+                a.href = this.tablesRootPrefix() + 'tables.html';
+                a.title = 'Tables de groupe : chat, images, messages privés';
+                a.style.cssText = 'display:inline-flex;align-items:center;gap:6px;text-decoration:none;' +
+                    'border:1px solid rgba(56,189,248,.45);border-radius:9px;padding:6px 10px;' +
+                    'font:700 13px system-ui,sans-serif;color:inherit;background:rgba(56,189,248,.08);' +
+                    'margin-right:8px;white-space:nowrap;';
+                a.innerHTML = '<span>💬 Tables</span>' +
+                    '<span id="tablesUnreadBadge" style="display:none;min-width:18px;height:18px;' +
+                    'border-radius:99px;background:#ef4444;color:#fff;font-size:11px;font-weight:800;' +
+                    'align-items:center;justify-content:center;padding:0 5px;"></span>';
+                parent.insertBefore(a, slot || parent.firstChild);
+                this.updateTablesBadge();
+            } catch (e) {}
+        }
+        getTablesUnread() {
+            try { return JSON.parse(localStorage.getItem('kt-tables-unread') || '{}') || {}; }
+            catch (e) { return {}; }
+        }
+        setTablesUnread(m) {
+            try { localStorage.setItem('kt-tables-unread', JSON.stringify(m)); } catch (e) {}
+        }
+        updateTablesBadge() {
+            try {
+                const badge = document.getElementById('tablesUnreadBadge');
+                if (!badge) return;
+                const un = this.getTablesUnread();
+                let n = 0;
+                Object.keys(un).forEach((k) => { n += Number(un[k]) || 0; });
+                if (n > 0) {
+                    badge.style.display = 'inline-flex';
+                    badge.textContent = n > 9 ? '9+' : String(n);
+                } else {
+                    badge.style.display = 'none';
+                }
+            } catch (e) {}
+        }
+
+        /* ---------- push instantané + repli sondage : badge + popup ----------
+           Tourne sur toutes les pages quand on est connecté. tables.html gère
+           son propre temps réel ; ici on signale les tables NON ouvertes :
+           pastille sur le bouton Tables + popup qui disparaît seul (8 s).
+           Clic sur le popup = ouvrir la table.
+           Transport : SSE (GET /api/tables/stream, instantané). Si EventSource
+           indisponible ou flux coupé, repli sondage toutes les 45 s. */
+        escHtml(s) {
+            return String(s || '').replace(/[&<>"']/g, (c) =>
+                ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+        }
+        startTablesWatcher() {
+            this.stopTablesWatcher();
+            if (!this.currentUser) return;
+            if (typeof EventSource !== 'undefined') this.connectTablesStream();
+            else this.startTablesPoll();
+        }
+        stopTablesWatcher() {
+            try { if (this.tablesES) this.tablesES.close(); } catch (e) {}
+            this.tablesES = null;
+            this.stopTablesPoll();
+        }
+        connectTablesStream() {
+            try {
+                const es = new EventSource(getApiBase() + '/api/tables/stream', { withCredentials: true });
+                this.tablesES = es;
+                es.onopen = () => { this.stopTablesPoll(); this.tablesCheck(); };
+                es.addEventListener('table-message', (ev) => {
+                    try { this.onTablePush(JSON.parse(ev.data)); } catch (e) {}
+                });
+                es.onerror = () => {
+                    try { es.close(); } catch (e) {}
+                    if (this.tablesES === es) this.tablesES = null;
+                    this.startTablesPoll();
+                };
+            } catch (e) {
+                this.startTablesPoll();
+            }
+        }
+        startTablesPoll() {
+            this.stopTablesPoll();
+            this.tablesTimer = setInterval(() => this.tablesCheck(), 45000);
+            this.tablesCheck();
+        }
+        stopTablesPoll() {
+            if (this.tablesTimer) { clearInterval(this.tablesTimer); this.tablesTimer = null; }
+        }
+        // Auteur masqué par moi (filtre personnel local) : ni popup ni pastille
+        // si le message est POSTÉRIEUR au masquage (l'historique reste visible).
+        // Même format que tables.js : {tableId: {userId: mutedSince}} + migration.
+        getHideMap() {
+            try {
+                const h = JSON.parse(localStorage.getItem('kt-tables-hide') || '{}') || {};
+                let fixed = false;
+                Object.keys(h).forEach((t) => {
+                    if (Array.isArray(h[t])) {
+                        const o = {};
+                        h[t].forEach((id) => { if (id) o[id] = 0; });
+                        h[t] = o; fixed = true;
+                    } else if (h[t] && typeof h[t] !== 'object') {
+                        delete h[t]; fixed = true;
+                    }
+                });
+                if (fixed) { try { localStorage.setItem('kt-tables-hide', JSON.stringify(h)); } catch (e) {} }
+                return h;
+            } catch (e) { return {}; }
+        }
+        isAuthorHidden(tableId, uid, createdAt) {
+            try {
+                const t = this.getHideMap()[tableId];
+                if (!t || t[uid] === undefined) return false;
+                return (createdAt || 0) > t[uid];
+            } catch (e) { return false; }
+        }
+        // Réception push d'un message : pastille + popup (+ repère),
+        // sauf table ouverte ici, sauf mes propres messages, sauf auteur
+        // masqué après ce message. (L'héritage d'envoi est serveur : pas de
+        // copie locale ici, la page Tables lit doc.inherited à l'ouverture.)
+        onTablePush(d) {
+            try {
+                if (!d || !d.message || !this.currentUser) return;
+                const m = d.message;
+                if (m.fromId === this.currentUser.id) return;
+                const tid = d.tableId;
+                const LS_LAST = 'kt-tables-lastread';
+                let lr = {};
+                try { lr = JSON.parse(localStorage.getItem(LS_LAST) || '{}') || {}; } catch (e) {}
+                if (tid === (window.KT_ACTIVE_TABLE || null)) {
+                    if ((m.createdAt || 0) > (lr[tid] || 0)) {
+                        lr[tid] = m.createdAt;
+                        try { localStorage.setItem(LS_LAST, JSON.stringify(lr)); } catch (e) {}
+                    }
+                    return;
+                }
+                if (!this.isAuthorHidden(tid, m.fromId, m.createdAt)) {
+                    this.popupTableMessage({ id: tid, name: d.tableName || 'Table' }, m);
+                    const un = this.getTablesUnread();
+                    un[tid] = (Number(un[tid]) || 0) + 1;
+                    this.setTablesUnread(un);
+                    this.updateTablesBadge();
+                }
+                lr[tid] = Math.max(lr[tid] || 0, m.createdAt || 0);
+                try { localStorage.setItem(LS_LAST, JSON.stringify(lr)); } catch (e) {}
+            } catch (e) {}
+        }
+        // Rattrapage REST (ouverture du flux + repli sondage) : même logique
+        // de repères que le push, sans doublon si le flux est actif.
+        async tablesCheck() {
+            try {
+                if (!this.currentUser) return;
+                const myId = this.currentUser.id;
+                const base = getApiBase();
+                const LS_LAST = 'kt-tables-lastread';
+                const getLast = () => {
+                    try { return JSON.parse(localStorage.getItem(LS_LAST) || '{}') || {}; }
+                    catch (e) { return {}; }
+                };
+                const setLast = (m) => { try { localStorage.setItem(LS_LAST, JSON.stringify(m)); } catch (e) {} };
+                await this.tablesCheckRun(myId, base, getLast, setLast);
+            } catch (e) {}
+        }
+        async tablesCheckRun(myId, base, getLast, setLast) {
+                try {
+                    const active = window.KT_ACTIVE_TABLE || null;
+                    const rl = await fetch(base + '/api/tables', {
+                        credentials: 'include', cache: 'no-store',
+                        headers: { 'ngrok-skip-browser-warning': 'true' }
+                    });
+                    if (!rl.ok) return;
+                    const list = ((await rl.json()).tables) || [];
+                    const lr = getLast();
+                    const un = this.getTablesUnread();
+                    let touched = false;
+                    for (const t of list) {
+                        // Le repère (localStorage) survit aux navigations : seules
+                        // les tables déjà vues avec du nouveau déclenchent un popup.
+                        // Sans repère, on signale quand même l'activité des 10
+                        // dernières minutes (voir sinceTs), jamais l'historique.
+                        const hadMark = Object.prototype.hasOwnProperty.call(lr, t.id);
+                        const seen = lr[t.id] || 0;
+                        if (t.id === active) {
+                            if (t.updatedAt > seen) { lr[t.id] = t.updatedAt; setLast(lr); }
+                            continue;
+                        }
+                        if (!(t.updatedAt > seen)) continue;
+                        // Sans repère (table jamais vue sur ce navigateur) : on
+                        // signale quand même l'activité des 10 dernières minutes
+                        // (ex. on vient de rejoindre), puis on cale le repère.
+                        const sinceTs = hadMark ? seen : (Date.now() - 600000);
+                        try {
+                            const rd = await fetch(base + '/api/tables/' + encodeURIComponent(t.id) + '?limit=50', {
+                                credentials: 'include', cache: 'no-store',
+                                headers: { 'ngrok-skip-browser-warning': 'true' }
+                            });
+                            if (!rd.ok) continue;
+                            const msgs = (((await rd.json()).table) || {}).messages || [];
+                            const fresh = msgs.filter((m) => m.createdAt > sinceTs && m.fromId !== myId && !this.isAuthorHidden(t.id, m.fromId, m.createdAt)).slice(-3);
+                            const maxTs = msgs.reduce((a, m) => Math.max(a, m.createdAt || 0), seen);
+                            lr[t.id] = Math.max(maxTs, t.updatedAt || 0);
+                            setLast(lr);
+                            if (fresh.length) {
+                                un[t.id] = (Number(un[t.id]) || 0) + fresh.length;
+                                touched = true;
+                                fresh.forEach((m) => { this.popupTableMessage(t, m); });
+                            }
+                        } catch (e) {}
+                    }
+                    if (touched) this.setTablesUnread(un);
+                    this.updateTablesBadge();
+                } catch (e) {}
+            }
+        popupTableMessage(t, m) {
+            try {
+                const esc = (s) => this.escHtml(s);
+                let wrap = document.getElementById('ktMsgPopups');
+                if (!wrap) {
+                    wrap = document.createElement('div');
+                    wrap.id = 'ktMsgPopups';
+                    wrap.style.cssText = 'position:fixed;right:16px;bottom:16px;z-index:9999;' +
+                        'display:flex;flex-direction:column;gap:8px;max-width:min(360px,90vw);';
+                    document.body.appendChild(wrap);
+                }
+                const el = document.createElement('div');
+                el.style.cssText = 'background:#0f172a;color:#e2e8f0;border:1px solid #38bdf8;' +
+                    'border-radius:12px;padding:10px 12px;font:13px system-ui,sans-serif;' +
+                    'box-shadow:0 8px 30px rgba(0,0,0,.5);cursor:pointer;display:flex;gap:8px;align-items:flex-start;';
+                const body = m.image ? ('🖼 ' + (m.text || 'Image partagée')) : (m.text || '');
+                const head = esc(t.name) + ' — ' + esc(m.fromName) + (m.private ? ' 🔒' : '') +
+                    ((m.receivedBy && m.receivedBy.length) ? ' 📨' : '');
+                const av = m.fromAvatar
+                    ? '<img src="' + m.fromAvatar + '" alt="" style="width:28px;height:28px;border-radius:50%;object-fit:cover;flex:none;">'
+                    : '';
+                el.innerHTML = av + '<div style="min-width:0;"><div style="font-size:11px;color:#7dd3fc;font-weight:700;margin-bottom:2px;">' +
+                    head + '</div>' +
+                    '<div>' + esc(body.slice(0, 140)) + '</div></div>';
+                el.addEventListener('click', () => {
+                    try {
+                        window.location.href = this.tablesRootPrefix() + 'tables.html?table=' + encodeURIComponent(t.id);
+                    } catch (e) {}
+                });
+                wrap.appendChild(el);
+                while (wrap.children.length > 3) wrap.removeChild(wrap.firstChild);
+                setTimeout(() => {
+                    el.style.transition = 'opacity .5s';
+                    el.style.opacity = '0';
+                    setTimeout(() => el.remove(), 520);
+                }, 8000);
+            } catch (e) {}
         }
 
         injectModal() {

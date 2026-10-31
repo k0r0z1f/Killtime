@@ -1,0 +1,288 @@
+{
+  "id": "tbl_mvw7brlkmw",
+  "name": "TRest",
+  "desc": "",
+  "mjId": "usr_mtvzf3lr",
+  "mjName": "k0r0",
+  "createdAt": 1793439060000,
+  "updatedAt": 1793449132535,
+  "maxMembers": 12,
+  "inviteCode": "inv_BgCO6QCJUnID",
+  "members": [
+    {
+      "userId": "usr_mtvzf3lr",
+      "username": "k0r0",
+      "role": "mj",
+      "joinedAt": 1793439060000
+    },
+    {
+      "userId": "usr_mtvzstfs",
+      "username": "test",
+      "role": "joueur",
+      "joinedAt": 1793449132534
+    }
+  ],
+  "messages": [
+    {
+      "id": "m_mvw7wo9ed",
+      "fromId": "usr_mtvzstfs",
+      "fromName": "test",
+      "fromRole": "joueur",
+      "text": "test",
+      "image": null,
+      "toUserId": null,
+      "toName": null,
+      "createdAt": 1793440061906
+    },
+    {
+      "id": "m_mvw7x6f12c",
+      "fromId": "usr_mtvzstfs",
+      "fromName": "test",
+      "fromRole": "joueur",
+      "text": "allo",
+      "image": null,
+      "toUserId": null,
+      "toName": null,
+      "createdAt": 1793440085437
+    },
+    {
+      "id": "m_mvw9bj9oh0",
+      "fromId": "usr_mtvzstfs",
+      "fromName": "test",
+      "fromRole": "joueur",
+      "text": "allo",
+      "image": null,
+      "toUserId": null,
+      "toName": null,
+      "createdAt": 1793442434892
+    },
+    {
+      "id": "m_mvw9bw0ckm",
+      "fromId": "usr_mtvzstfs",
+      "fromName": "test",
+      "fromRole": "joueur",
+      "text": "test",
+      "image": null,
+      "toUserId": null,
+      "toName": null,
+      "createdAt": 1793442451404
+    },
+    {
+      "id": "m_mvw9ery3k9",
+      "fromId": "usr_mtvzf3lr",
+      "fromName": "k0r0",
+      "fromRole": "mj",
+      "text": "allo",
+      "image": null,
+      "toUserId": null,
+      "toName": null,
+      "createdAt": 1793442586107
+    },
+    {
+      "id": "m_mvw9vixoml",
+      "fromId": "usr_mtvzf3lr",
+      "fromName": "k0r0",
+      "fromRole": "mj",
+      "text": "allo",
+      "image": null,
+      "toUserId": null,
+      "toName": null,
+      "toExcept": [],
+      "createdAt": 1793443367580
+    },
+    {
+      "id": "m_mvwanscwh8",
+      "fromId": "usr_mvwaniq1",
+      "fromName": "winlol",
+      "fromRole": "joueur",
+      "text": "aye",
+      "image": null,
+      "toUserId": null,
+      "toName": null,
+      "toExcept": [
+        "usr_mtvzstfs"
+      ],
+      "createdAt": 1793444686160
+    },
+    {
+      "id": "m_mvwayn79mf",
+      "fromId": "usr_mvwaniq1",
+      "fromName": "winlol",
+      "fromRole": "joueur",
+      "text": "test",
+      "image": null,
+      "toUserId": null,
+      "toName": null,
+      "createdAt": 1793445192693
+    },
+    {
+      "id": "m_mvwbclaywy",
+      "fromId": "usr_mtvzf3lr",
+      "fromName": "k0r0",
+      "fromRole": "mj",
+      "text": "test sans winlol",
+      "image": null,
+      "toUserId": null,
+      "toName": null,
+      "toExcept": [
+        "usr_mtvzstfs"
+      ],
+      "createdAt": 1793445843418
+    },
+    {
+      "id": "m_mvwbqdroyw",
+      "fromId": "usr_mtvzf3lr",
+      "fromName": "k0r0",
+      "fromRole": "mj",
+      "text": "message pour winlol",
+      "image": null,
+      "toUserId": null,
+      "toName": null,
+      "toExcept": [
+        "usr_mtvzstfs"
+      ],
+      "createdAt": 1793446486836
+    },
+    {
+      "id": "m_mvwbqu0efv",
+      "fromId": "usr_mvwaniq1",
+      "fromName": "winlol",
+      "fromRole": "joueur",
+      "text": "test",
+      "image": null,
+      "toUserId": null,
+      "toName": null,
+      "toExcept": [],
+      "createdAt": 1793446507886
+    },
+    {
+      "id": "m_mvwbxm0p8u",
+      "fromId": "usr_mtvzf3lr",
+      "fromName": "k0r0",
+      "fromRole": "mj",
+      "text": "test ne recoit pas",
+      "image": null,
+      "toUserId": null,
+      "toName": null,
+      "toExcept": [
+        "usr_mtvzstfs"
+      ],
+      "createdAt": 1793446824121
+    },
+    {
+      "id": "m_mvwby2nrwe",
+      "fromId": "usr_mvwaniq1",
+      "fromName": "winlol",
+      "fromRole": "joueur",
+      "text": "test",
+      "image": null,
+      "toUserId": null,
+      "toName": null,
+      "toExcept": [],
+      "createdAt": 1793446845687
+    },
+    {
+      "id": "m_mvwcsinaof",
+      "fromId": "usr_mtvzf3lr",
+      "fromName": "k0r0",
+      "fromRole": "mj",
+      "text": "sans test",
+      "image": null,
+      "toUserId": null,
+      "toName": null,
+      "toExcept": [
+        "usr_mtvzstfs"
+      ],
+      "createdAt": 1793448266086
+    },
+    {
+      "id": "m_mvwcswr88w",
+      "fromId": "usr_mvwaniq1",
+      "fromName": "winlol",
+      "fromRole": "joueur",
+      "text": "oui",
+      "image": null,
+      "toUserId": null,
+      "toName": null,
+      "toExcept": [
+        "usr_mtvzstfs"
+      ],
+      "createdAt": 1793448284372
+    },
+    {
+      "id": "m_mvwcuik5k1",
+      "fromId": "usr_mtvzf3lr",
+      "fromName": "k0r0",
+      "fromRole": "mj",
+      "text": "test?",
+      "image": null,
+      "toUserId": null,
+      "toName": null,
+      "toExcept": [
+        "usr_mtvzstfs"
+      ],
+      "createdAt": 1793448359285
+    },
+    {
+      "id": "m_mvwd0uykpa",
+      "fromId": "usr_mtvzf3lr",
+      "fromName": "k0r0",
+      "fromRole": "mj",
+      "text": "test?",
+      "image": null,
+      "toUserId": null,
+      "toName": null,
+      "toExcept": [],
+      "createdAt": 1793448655292
+    },
+    {
+      "id": "m_mvwd1hsbpy",
+      "fromId": "usr_mvwaniq1",
+      "fromName": "winlol",
+      "fromRole": "joueur",
+      "text": "lej est on",
+      "image": null,
+      "toUserId": null,
+      "toName": null,
+      "toExcept": [
+        "usr_mtvzf3lr"
+      ],
+      "createdAt": 1793448684875
+    },
+    {
+      "id": "m_mvwd1u39w9",
+      "fromId": "usr_mtvzstfs",
+      "fromName": "test",
+      "fromRole": "joueur",
+      "text": "quoi",
+      "image": null,
+      "toUserId": null,
+      "toName": null,
+      "toExcept": [
+        "usr_mtvzf3lr"
+      ],
+      "createdAt": 1793448700821
+    },
+    {
+      "id": "m_mvwd247clw",
+      "fromId": "usr_mvwaniq1",
+      "fromName": "winlol",
+      "fromRole": "joueur",
+      "text": "rien",
+      "image": null,
+      "toUserId": null,
+      "toName": null,
+      "toExcept": [],
+      "createdAt": 1793448713928
+    }
+  ],
+  "listed": true,
+  "pw": {
+    "salt": "afb86f310ea16c8f",
+    "hash": "a9cab8f4312e38c7d504b9d303801cc45e45c71b7d20bc062ae9e27dab3dea6e"
+  },
+  "excluded": [
+    "usr_mtvzstfs"
+  ],
+  "inherited": {}
+}

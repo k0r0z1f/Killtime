@@ -223,7 +223,7 @@ function setCors(req, res) {
         res.setHeader('Access-Control-Allow-Origin', '*');
     }
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization, ngrok-skip-browser-warning');
 }
 
 function sendJson(res, statusCode, data, setCookieHeader = null) {
@@ -570,6 +570,54 @@ async function handleRequest(req, res, isAdminListener) {
             return sendJson(res, 200, { success: true, user: toSafeUser(u) });
         }
         return sendJson(res, 405, { error: 'Méthode non autorisée.' });
+    }
+
+    /* PUT /api/auth/avatar — avatar perso (URL http/https ou upload
+       base64 ≤ ~512 Ko, affiché en chat + popups + en-ligne + amis).
+       {imageUrl} | {imageData} | {clear:true}. */
+    const AVATAR_MAX_CHARS = 700000;
+    if (isRoute('/api/auth/avatar')) {
+        if (req.method !== 'PUT' && req.method !== 'POST') {
+            return sendJson(res, 405, { error: 'Méthode non autorisée.' });
+        }
+        const me = getSessionUser(req);
+        if (!me) return sendJson(res, 401, { error: 'Connexion requise.' });
+        try {
+            const body = await parseBody(req);
+            const users = loadUsers();
+            const target = users.find(u => u.id === me.id);
+            if (!target) return sendJson(res, 401, { error: 'Session invalide.' });
+            if (body && body.clear) {
+                delete target.avatar;
+            } else {
+                const imageUrl = String((body && body.imageUrl) || '').trim().slice(0, 2048);
+                const imageData = String((body && body.imageData) || '');
+                let av = null;
+                if (imageUrl) {
+                    let ok = false;
+                    try {
+                        const u = new NodeURL(imageUrl);
+                        ok = (u.protocol === 'http:' || u.protocol === 'https:');
+                    } catch (e) {}
+                    if (!ok) return sendJson(res, 400, { error: 'URL d’avatar invalide (http/https requis).' });
+                    av = imageUrl;
+                } else if (imageData) {
+                    const m = /^data:image\/(png|jpe?g|gif|webp);base64,[A-Za-z0-9+/=]+$/.exec(imageData);
+                    if (!m) return sendJson(res, 400, { error: 'Avatar invalide (data:image/png|jpeg|gif|webp;base64).' });
+                    if (imageData.length > AVATAR_MAX_CHARS) {
+                        return sendJson(res, 413, { error: 'Avatar trop lourd (max ~512 Ko).' });
+                    }
+                    av = imageData;
+                } else {
+                    return sendJson(res, 400, { error: 'imageUrl, imageData ou clear requis.' });
+                }
+                target.avatar = av;
+            }
+            saveUsers(users);
+            return sendJson(res, 200, { success: true, user: toSafeUser(target) });
+        } catch (e) {
+            return sendJson(res, 400, { error: e.message });
+        }
     }
 
     /* ================================================================
@@ -1376,6 +1424,833 @@ async function handleRequest(req, res, isAdminListener) {
     }
 
     /* ================================================================
+       PRÉSENCE LAN — qui est connecté au site (groupe autour d'une table)
+       ----------------------------------------------------------------
+       Mémoire seule (éphémère, expire après 45 s sans heartbeat) :
+       POST /api/presence (session requise) = heartbeat + renvoie la liste.
+       GET  /api/presence = liste {userId, username, since}.
+       Aucune IP exposée. Pensé pour le jeu sur wifi local : tout le
+       groupe ouvre http://<IP-du-PC>:3000 et se voit en ligne.
+       ================================================================ */
+    const isPresenceRoute = cleanPath === '/api/presence';
+    if (isPresenceRoute) {
+        const me = getSessionUser(req);
+        if (!me) return sendJson(res, 401, { error: 'Connexion requise.' });
+        if (req.method !== 'GET' && req.method !== 'POST') {
+            return sendJson(res, 405, { error: 'Méthode non autorisée.' });
+        }
+        if (req.method === 'POST') {
+            vttPresence.set(me.id, { userId: me.id, username: me.username, at: Date.now() });
+        }
+        const cut = Date.now() - 45000;
+        const avatars = buildAvatarMap();
+        const online = [];
+        for (const [id, p] of vttPresence) {
+            if (!p || p.at < cut) { vttPresence.delete(id); continue; }
+            online.push({ userId: id, username: p.username || '?', avatar: avatars[id] || null, since: p.at });
+        }
+        online.sort((a, b) => a.username.localeCompare(b.username, 'fr'));
+        return sendJson(res, 200, { success: true, online });
+    }
+
+    /* ================================================================
+       PUSH TABLES — flux instantané SSE (GET /api/tables/stream)
+       ----------------------------------------------------------------
+       Un EventSource par page connectée (avec cookies) reçoit chaque
+       nouveau message dès sa publication : plus d'attente du cycle de
+       sondage. Repli : le client sonde toutes les 45 s si SSE indisponible.
+       ================================================================ */
+    if (cleanPath === '/api/tables/stream') {
+        if (req.method !== 'GET') return sendJson(res, 405, { error: 'Méthode non autorisée.' });
+        const me = getSessionUser(req);
+        if (!me) return sendJson(res, 401, { error: 'Connexion requise.' });
+        if (sseSubs.size > 500) return sendJson(res, 503, { error: 'Trop d’abonnés, réessayez.' });
+        res.writeHead(200, {
+            'Content-Type': 'text/event-stream; charset=utf-8',
+            'Cache-Control': 'no-cache, no-transform',
+            'Connection': 'keep-alive',
+            'X-Accel-Buffering': 'no'
+        });
+        res.write(': ok\n\n');
+        const sub = { userId: me.id, email: me.email, res };
+        sseSubs.add(sub);
+        const hb = setInterval(() => { try { res.write(': ping\n\n'); } catch (e) {} }, 25000);
+        req.on('close', () => {
+            try { clearInterval(hb); } catch (e) {}
+            sseSubs.delete(sub);
+        });
+        return;
+    }
+
+    /* ================================================================
+       TABLES DE GROUPE — chat persistant + images + MPs (REST + JSON)
+       ----------------------------------------------------------------
+       Un groupe se crée une table : chat public, partage d'images (URL
+       ou upload base64 ≤ ~2 Mo), messages privés (MJ <-> joueur).
+       Log : un fichier JSON par table dans data/tables/table_<id>.json.
+       Rôles de table : mj (créateur, voit tout), helper (co-gère, voit
+       tout), joueur (défaut : public + ses propres MPs).
+       Toutes les routes exigent une session (cookie srv_).
+       ================================================================ */
+    const TABLES_DIR = path.join(PUBLIC_DIR, 'data', 'tables');
+    const TABLE_ID_RE = /^[a-z0-9_-]{1,32}$/i;
+    const TABLE_MAX_MESSAGES = 5000;
+    const TABLE_MAX_TEXT = 2000;
+    const TABLE_MAX_UPLOAD_CHARS = 2800000; // ~2 Mo binaires en base64
+    function tablesEnsureDir() {
+        try { fs.mkdirSync(TABLES_DIR, { recursive: true }); } catch (e) {}
+    }
+    function tableFilePath(id) {
+        return path.join(TABLES_DIR, 'table_' + String(id).toLowerCase() + '.json');
+    }
+    function tableCleanStr(s, max) {
+        return String(s || '').replace(/[\u0000-\u001f\u007f]/g, '').trim().slice(0, max);
+    }
+    function loadTableDoc(id) {
+        tablesEnsureDir();
+        const file = tableFilePath(id);
+        if (!fs.existsSync(file)) return null;
+        try {
+            const doc = JSON.parse(fs.readFileSync(file, 'utf-8'));
+            if (!doc || doc.id !== String(id).toLowerCase()) return null;
+            if (!Array.isArray(doc.members)) doc.members = [];
+            if (!Array.isArray(doc.messages)) doc.messages = [];
+            return doc;
+        } catch (e) { return null; }
+    }
+    function saveTableDoc(doc) {
+        tablesEnsureDir();
+        doc.updatedAt = Date.now();
+        const file = tableFilePath(doc.id);
+        try { if (fs.existsSync(file)) fs.copyFileSync(file, file + '.bak'); } catch (e) {}
+        const json = JSON.stringify(doc, null, 2);
+        if (json.length > 12 * 1024 * 1024) return false; // garde-fou fichier
+        fs.writeFileSync(file, json);
+        return true;
+    }
+    function tableRoleOf(doc, userId) {
+        if (!doc || !userId) return null;
+        const m = doc.members.find(m => m.userId === userId);
+        return m ? m.role : null;
+    }
+    function tableCanManage(doc, user) {
+        if (!doc || !user) return false;
+        if (isAdminEmail(user.email)) return true;
+        const r = tableRoleOf(doc, user.id);
+        return r === 'mj' || r === 'helper';
+    }
+    function tableCanSeeMsg(doc, msg, user) {
+        // Messages publics restreints par l'envoyeur (snapshot toExcept) :
+        // chacun choisit à qui SES futurs messages sont envoyés (y compris
+        // le MJ : aucune exception de rôle). L'auteur voit toujours les siens.
+        // Les MPs (toUserId) sont nominatifs : toujours livrés au destinataire.
+        if (!msg.toUserId) {
+            if (msg.toExcept && msg.toExcept.includes(user.id) && user.id !== msg.fromId) {
+                if (isAdminEmail(user.email)) return true;
+                return false;
+            }
+            return true; // public
+        }
+        if (!user) return false;
+        if (isAdminEmail(user.email)) return true;
+        if (msg.fromId === user.id || msg.toUserId === user.id) return true;
+        const r = tableRoleOf(doc, user.id);
+        return r === 'mj' || r === 'helper';
+    }
+    function tablePublicMsg(msg, avatars, members) {
+        const o = {
+            id: msg.id, fromId: msg.fromId, fromName: msg.fromName, fromRole: msg.fromRole,
+            fromAvatar: (avatars && avatars[msg.fromId]) || null,
+            text: msg.text || '', image: msg.image || null,
+            toUserId: msg.toUserId || null, toName: msg.toName || null,
+            private: !!msg.toUserId, createdAt: msg.createdAt,
+            // IDs exclus à l'envoi (pour l'héritage côté client : répondre
+            // dans un fil restreint re-mute automatiquement les mêmes).
+            toExcept: Array.isArray(msg.toExcept) ? msg.toExcept : []
+        };
+        // Message restreint par son envoyeur : liste de ceux qui l'ont reçu
+        // (membres actuels hors exclus + auteur).
+        if (msg.toExcept && msg.toExcept.length && Array.isArray(members)) {
+            const ban = new Set(msg.toExcept);
+            const got = members.filter(m => m && !ban.has(m.userId)).map(m => m.username);
+            if (!got.includes(msg.fromName)) got.unshift(msg.fromName);
+            o.receivedBy = got;
+        } else {
+            o.receivedBy = null;
+        }
+        return o;
+    }
+    // Pseudonymes + avatars : une seule lecture users.json par requête.
+    function buildAvatarMap() {
+        const map = {};
+        try {
+            for (const u of loadUsers()) {
+                if (u && u.id && typeof u.avatar === 'string' && u.avatar) {
+                    map[u.id] = u.avatar.slice(0, 700000);
+                }
+            }
+        } catch (e) {}
+        return map;
+    }
+    // Mot de passe de table optionnel (créateur) : sel + SHA-256, jamais exposé.
+    function tableSetPassword(doc, plain) {
+        if (!plain) { doc.pw = null; return; }
+        const salt = crypto.randomBytes(8).toString('hex');
+        const hash = crypto.createHash('sha256').update(salt + ':' + String(plain)).digest('hex');
+        doc.pw = { salt, hash };
+    }
+    function tableCheckPassword(doc, plain) {
+        if (!doc.pw || !doc.pw.salt || !doc.pw.hash) return true;
+        try {
+            const h = crypto.createHash('sha256').update(doc.pw.salt + ':' + String(plain || '')).digest('hex');
+            return crypto.timingSafeEqual(Buffer.from(h, 'hex'), Buffer.from(doc.pw.hash, 'hex'));
+        } catch (e) { return false; }
+    }
+    // Push instantané : diffuse le message aux abonnés SSE membres de la
+    // table, en respectant la visibilité des MPs (MJ/helper voient tout).
+    function sseNotifyTable(doc, msg) {
+        if (!doc || !msg || sseSubs.size === 0) return;
+        const avatars = buildAvatarMap();
+        for (const sub of [...sseSubs]) {
+            try {
+                if (!sub || !sub.res) { sseSubs.delete(sub); continue; }
+                if (!tableRoleOf(doc, sub.userId) && !isAdminEmail(sub.email)) continue;
+                if (!tableCanSeeMsg(doc, msg, { id: sub.userId, email: sub.email })) continue;
+                sub.res.write('event: table-message\n' +
+                    'data: ' + JSON.stringify({ tableId: doc.id, tableName: doc.name, message: tablePublicMsg(msg, avatars, doc.members) }) + '\n\n');
+            } catch (e) {
+                try { sseSubs.delete(sub); } catch (_) {}
+            }
+        }
+    }
+    function tableSummary(doc, user) {
+        const role = (user && isAdminEmail(user.email)) ? 'admin' : tableRoleOf(doc, user && user.id);
+        return {
+            id: doc.id, name: doc.name, desc: doc.desc || '',
+            mjName: doc.mjName || '?', role: role,
+            members: doc.members.length, messages: doc.messages.length,
+            hasPassword: !!(doc.pw && doc.pw.salt), listed: doc.listed !== false,
+            createdAt: doc.createdAt, updatedAt: doc.updatedAt
+        };
+    }
+    const isTablesRoute = cleanPath === '/api/tables' || cleanPath.startsWith('/api/tables/');
+    if (isTablesRoute) {
+        const me = getSessionUser(req);
+        if (!me) return sendJson(res, 401, { error: 'Connexion requise.' });
+        const myId = me.id;
+        const sub = cleanPath.slice('/api/tables'.length); // '' | '/<id>' | '/<id>/...'
+        const parts = sub.split('/').filter(Boolean);
+
+        // GET /api/tables — tables dont je suis membre (+ toutes si admin site).
+        if (parts.length === 0) {
+            if (req.method === 'GET') {
+                tablesEnsureDir();
+                let files = [];
+                try { files = fs.readdirSync(TABLES_DIR).filter(f => /^table_.*\.json$/.test(f)); } catch (e) {}
+                const out = [];
+                for (const f of files) {
+                    try {
+                        const doc = JSON.parse(fs.readFileSync(path.join(TABLES_DIR, f), 'utf-8'));
+                        if (!doc || !doc.id) continue;
+                        if (isAdminEmail(me.email) || tableRoleOf(doc, myId)) out.push(tableSummary(doc, me));
+                    } catch (e) {}
+                }
+                out.sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
+                return sendJson(res, 200, { success: true, tables: out });
+            }
+            // POST /api/tables — créer une table (je deviens MJ).
+            if (req.method === 'POST') {
+                try {
+                    const body = await parseBody(req);
+                    const name = tableCleanStr(body && body.name, 40);
+                    const desc = tableCleanStr(body && body.desc, 500);
+                    if (!name) return sendJson(res, 400, { error: 'Nom de table requis (1-40 caractères).' });
+                    const now = Date.now();
+                    const id = 'tbl_' + now.toString(36) + Math.floor(Math.random() * 1296).toString(36);
+                    const doc = {
+                        id, name, desc, mjId: myId, mjName: me.username,
+                        createdAt: now, updatedAt: now, maxMembers: 12, inviteCode: null,
+                        listed: (body && body.listed === false) ? false : true, pw: null,
+                        members: [{ userId: myId, username: me.username, role: 'mj', joinedAt: now }],
+                        messages: []
+                    };
+                    if (body && body.password !== undefined) {
+                        const p = String(body.password || '').slice(0, 64);
+                        if (p) tableSetPassword(doc, p);
+                    }
+                    if (!saveTableDoc(doc)) return sendJson(res, 413, { error: 'Table trop volumineuse.' });
+                    console.log(`[Tables] table créée : ${id} ("${name}") par ${me.username}.`);
+                    return sendJson(res, 201, { success: true, table: tableSummary(doc, me) });
+                } catch (e) {
+                    return sendJson(res, 400, { error: e.message });
+                }
+            }
+            return sendJson(res, 405, { error: 'Méthode non autorisée.' });
+        }
+
+        // POST /api/tables/join — rejoindre via code d'invitation (?invite=).
+        if (parts.length === 1 && parts[0] === 'join') {
+            if (req.method === 'POST') {
+                try {
+                    const body = await parseBody(req);
+                    const code = String((body && body.code) || '').trim().slice(0, 64);
+                    if (!code) return sendJson(res, 400, { error: 'Code d’invitation requis.' });
+                    tablesEnsureDir();
+                    let files = [];
+                    try { files = fs.readdirSync(TABLES_DIR).filter(f => /^table_.*\.json$/.test(f)); } catch (e) {}
+                    let found = null;
+                    for (const f of files) {
+                        try {
+                            const d = JSON.parse(fs.readFileSync(path.join(TABLES_DIR, f), 'utf-8'));
+                            if (d && d.id && d.inviteCode === code) { found = d; break; }
+                        } catch (e) {}
+                    }
+                    if (!found) return sendJson(res, 404, { error: 'Code d’invitation invalide ou révoqué.' });
+                    if (found.members.some(m => m.userId === myId)) {
+                        return sendJson(res, 200, { success: true, table: tableSummary(found, me), already: true });
+                    }
+                    if (found.members.length >= (found.maxMembers || 12)) {
+                        return sendJson(res, 403, { error: 'Table complète.' });
+                    }
+                    const users = loadUsers();
+                    const u = users.find(x => x.id === myId);
+                    found.members.push({ userId: myId, username: u ? u.username : me.username, role: 'joueur', joinedAt: Date.now() });
+                    if (!saveTableDoc(found)) { found.members.pop(); return sendJson(res, 413, { error: 'Table trop volumineuse.' }); }
+                    console.log(`[Tables] ${me.username} rejoint ${found.id} via invitation.`);
+                    return sendJson(res, 200, { success: true, table: tableSummary(found, me) });
+                } catch (e) {
+                    return sendJson(res, 400, { error: e.message });
+                }
+            }
+            return sendJson(res, 405, { error: 'Méthode non autorisée.' });
+        }
+
+        // GET /api/tables/directory — annuaire (tables listées ; les non
+        // listées n'apparaissent qu'à leurs membres / admin). hasPassword
+        // signale le cadenas, jamais le secret.
+        if (parts.length === 1 && parts[0] === 'directory') {
+            if (req.method !== 'GET') return sendJson(res, 405, { error: 'Méthode non autorisée.' });
+            tablesEnsureDir();
+            let files = [];
+            try { files = fs.readdirSync(TABLES_DIR).filter(f => /^table_.*\.json$/.test(f)); } catch (e) {}
+            const out = [];
+            for (const f of files) {
+                try {
+                    const d = JSON.parse(fs.readFileSync(path.join(TABLES_DIR, f), 'utf-8'));
+                    if (!d || !d.id) continue;
+                    const member = isAdminEmail(me.email) || tableRoleOf(d, myId);
+                    if (d.listed === false && !member) continue;
+                    out.push(Object.assign(tableSummary(d, me), { isMember: !!member }));
+                } catch (e) {}
+            }
+            out.sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
+            return sendJson(res, 200, { success: true, tables: out });
+        }
+
+        const tableId = String(parts[0] || '').toLowerCase();
+        if (!TABLE_ID_RE.test(tableId)) return sendJson(res, 400, { error: 'Identifiant de table invalide.' });
+        const doc = loadTableDoc(tableId);
+        if (!doc) return sendJson(res, 404, { error: 'Table introuvable.' });
+        const myRole = isAdminEmail(me.email) ? 'admin' : tableRoleOf(doc, myId);
+        const isMember = !!myRole;
+
+        // GET /api/tables/:id — détail + log filtré (?limit, ?since).
+        if (parts.length === 1) {
+            if (req.method === 'GET') {
+                if (!isMember) return sendJson(res, 403, { error: 'Table réservée à ses membres.' });
+                let limit = parseInt(parsedUrl.searchParams.get('limit'), 10);
+                if (!Number.isFinite(limit)) limit = 200;
+                limit = Math.max(1, Math.min(500, limit));
+                const since = Number(parsedUrl.searchParams.get('since')) || 0;
+                const avatars = buildAvatarMap();
+                const visible = doc.messages
+                    .filter(m => m.createdAt > since && tableCanSeeMsg(doc, m, me))
+                    .slice(-limit)
+                    .map(m => tablePublicMsg(m, avatars, doc.members));
+                return sendJson(res, 200, {
+                    success: true,
+                    table: {
+                        id: doc.id, name: doc.name, desc: doc.desc || '',
+                        mjId: doc.mjId, mjName: doc.mjName || '?',
+                        myRole: myRole, createdAt: doc.createdAt, updatedAt: doc.updatedAt,
+                        maxMembers: doc.maxMembers || 12,
+                        hasPassword: !!(doc.pw && doc.pw.salt), listed: doc.listed !== false,
+                        myInherited: (doc.inherited && Array.isArray(doc.inherited[myId])) ? doc.inherited[myId] : [],
+                        inviteCode: tableCanManage(doc, me) ? (doc.inviteCode || null) : null,
+                        members: doc.members.map(m => ({ userId: m.userId, username: m.username, role: m.role, avatar: avatars[m.userId] || null, joinedAt: m.joinedAt })),
+                        messages: visible
+                    }
+                });
+            }
+            // PUT /api/tables/:id — renommer / décrire / mot de passe / liste (MJ, helper, admin site).
+            if (req.method === 'PUT' || req.method === 'POST') {
+                if (!tableCanManage(doc, me)) return sendJson(res, 403, { error: 'Gestion réservée au MJ / helper.' });
+                try {
+                    const body = await parseBody(req);
+                    if (body.name !== undefined) {
+                        const name = tableCleanStr(body.name, 40);
+                        if (!name) return sendJson(res, 400, { error: 'Nom invalide.' });
+                        doc.name = name;
+                    }
+                    if (body.desc !== undefined) doc.desc = tableCleanStr(body.desc, 500);
+                    if (body.listed !== undefined) doc.listed = !!body.listed;
+                    if (body.password !== undefined) {
+                        const p = String(body.password || '').slice(0, 64);
+                        tableSetPassword(doc, p || null);
+                    }
+                    if (body.maxMembers !== undefined) {
+                        const n = parseInt(body.maxMembers, 10);
+                        if (!Number.isFinite(n) || n < 2 || n > 24) {
+                            return sendJson(res, 400, { error: 'maxMembers invalide (2-24).' });
+                        }
+                        if (n < doc.members.length) {
+                            return sendJson(res, 400, { error: 'maxMembers inférieur au nombre de membres.' });
+                        }
+                        doc.maxMembers = n;
+                    }
+                    if (!saveTableDoc(doc)) return sendJson(res, 413, { error: 'Table trop volumineuse.' });
+                    console.log(`[Tables] ${doc.id} renommée par ${me.username}.`);
+                    return sendJson(res, 200, { success: true, table: tableSummary(doc, me) });
+                } catch (e) {
+                    return sendJson(res, 400, { error: e.message });
+                }
+            }
+            // DELETE /api/tables/:id — supprimer (MJ de la table ou admin site).
+            if (req.method === 'DELETE') {
+                if (!(doc.mjId === myId || isAdminEmail(me.email))) {
+                    return sendJson(res, 403, { error: 'Suppression réservée au MJ de la table.' });
+                }
+                try { fs.unlinkSync(tableFilePath(doc.id)); } catch (e) {}
+                try { fs.unlinkSync(tableFilePath(doc.id) + '.bak'); } catch (e) {}
+                console.log(`[Tables] table supprimée : ${doc.id} par ${me.username}.`);
+                return sendJson(res, 200, { success: true });
+            }
+            return sendJson(res, 405, { error: 'Méthode non autorisée.' });
+        }
+
+        // POST /api/tables/:id/messages — écrire (public ou MP via toUserId).
+        if (parts.length === 2 && parts[1] === 'messages') {
+            if (req.method === 'GET') {
+                if (!isMember) return sendJson(res, 403, { error: 'Table réservée à ses membres.' });
+                const since = Number(parsedUrl.searchParams.get('since')) || 0;
+                const avatars = buildAvatarMap();
+                const visible = doc.messages
+                    .filter(m => m.createdAt > since && tableCanSeeMsg(doc, m, me))
+                    .map(m => tablePublicMsg(m, avatars, doc.members));
+                // Liste d'envoi héritée (serveur) : rafraîchie à chaque poll pour
+                // que la prochaine réponse hérite sans attendre une réouverture.
+                return sendJson(res, 200, { success: true, messages: visible,
+                    myInherited: (doc.inherited && Array.isArray(doc.inherited[myId])) ? doc.inherited[myId] : [] });
+            }
+            if (req.method === 'POST' || req.method === 'PUT') {
+                if (!isMember) return sendJson(res, 403, { error: 'Table réservée à ses membres.' });
+                if (doc.messages.length >= TABLE_MAX_MESSAGES) {
+                    return sendJson(res, 413, { error: 'Log plein (5000 messages). Le MJ doit purger.' });
+                }
+                try {
+                    const body = await parseBody(req);
+                    const text = tableCleanStr(body && body.text, TABLE_MAX_TEXT);
+                    let image = null;
+                    const imageUrl = String((body && body.imageUrl) || '').trim().slice(0, 2048);
+                    const imageData = String((body && body.imageData) || '');
+                    if (imageUrl) {
+                        let ok = false;
+                        try {
+                            const u = new NodeURL(imageUrl);
+                            ok = (u.protocol === 'http:' || u.protocol === 'https:');
+                        } catch (e) {}
+                        if (!ok) return sendJson(res, 400, { error: 'URL d’image invalide (http/https requis).' });
+                        image = { kind: 'url', url: imageUrl };
+                    } else if (imageData) {
+                        const m = /^data:image\/(png|jpe?g|gif|webp);base64,[A-Za-z0-9+/=]+$/.exec(imageData);
+                        if (!m) return sendJson(res, 400, { error: 'Image invalide (data:image/png|jpeg|gif|webp;base64).' });
+                        if (imageData.length > TABLE_MAX_UPLOAD_CHARS) {
+                            return sendJson(res, 413, { error: 'Image trop lourde (max ~2 Mo).' });
+                        }
+                        const bytes = Math.floor((imageData.length - imageData.indexOf(',') - 1) * 3 / 4);
+                        image = { kind: 'upload', mime: 'image/' + m[1].replace('jpg', 'jpeg'), dataUrl: imageData, bytes };
+                    }
+                    if (!text && !image) return sendJson(res, 400, { error: 'Message vide (texte ou image requis).' });
+                    let toUserId = null, toName = null;
+                    const rawTo = String((body && body.toUserId) || '').trim();
+                    if (rawTo) {
+                        const target = doc.members.find(m => m.userId === rawTo);
+                        if (!target) return sendJson(res, 404, { error: 'Destinataire non membre de la table.' });
+                        if (rawTo === myId) return sendJson(res, 400, { error: 'MP à soi-même inutile : écrivez en public.' });
+                        toUserId = target.userId; toName = target.username;
+                    }
+                    const senderRole = myRole === 'admin' ? (tableRoleOf(doc, myId) || 'joueur') : myRole;
+                    // Liste d'envoi personnelle : l'envoyeur choisit à qui SES
+                    // futurs messages sont livrés (membres uniquement, auteur exclu
+                    // d'office). Snapshot : les réintégrations ultérieures ne
+                    // rouvrent pas l'historique. Les MPs restent nominatifs.
+                    let toExcept = [];
+                    if (Array.isArray(body.toExcept)) {
+                        const memberIds = {};
+                        doc.members.forEach(m => { if (m && m.userId) memberIds[m.userId] = true; });
+                        const seen = {};
+                        for (const raw of body.toExcept.slice(0, 200)) {
+                            const id = String(raw || '').slice(0, 64);
+                            if (id && id !== myId && memberIds[id] && !seen[id]) { seen[id] = true; toExcept.push(id); }
+                        }
+                    }
+                    // MPs nominatifs : la liste d'envoi ne s'applique pas.
+                    if (toUserId) toExcept = [];
+                    // Héritage serveur : les destinataires (hors auteur et hors
+                    // exclus) reçoivent ces exclus dans leur propre liste d'envoi
+                    // pour LEUR prochain message (répondre = re-muter).
+                    const inh = (doc.inherited && typeof doc.inherited === 'object') ? doc.inherited : (doc.inherited = {});
+                    if (toExcept.length && !toUserId) {
+                        for (const m of doc.members) {
+                            const rid = m && m.userId;
+                            if (!rid || rid === myId || toExcept.includes(rid)) continue;
+                            const set = new Set(Array.isArray(inh[rid]) ? inh[rid] : []);
+                            let changed = false;
+                            for (const id of toExcept) { if (!set.has(id)) { set.add(id); changed = true; } }
+                            if (changed) inh[rid] = [...set].slice(0, 200);
+                        }
+                    }
+                    const msg = {
+                        id: 'm_' + Date.now().toString(36) + Math.floor(Math.random() * 1296).toString(36),
+                        fromId: myId, fromName: me.username, fromRole: senderRole,
+                        text, image, toUserId, toName, toExcept, createdAt: Date.now()
+                    };
+                    doc.messages.push(msg);
+                    if (!saveTableDoc(doc)) { doc.messages.pop(); return sendJson(res, 413, { error: 'Table trop volumineuse.' }); }
+                    try { sseNotifyTable(doc, msg); } catch (e) {}
+                    return sendJson(res, 201, { success: true, message: tablePublicMsg(msg, buildAvatarMap(), doc.members) });
+                } catch (e) {
+                    return sendJson(res, 400, { error: e.message });
+                }
+            }
+            return sendJson(res, 405, { error: 'Méthode non autorisée.' });
+        }
+
+        // DELETE /api/tables/:id/messages/:mid — effacer (auteur ou MJ/helper).
+        if (parts.length === 3 && parts[1] === 'messages') {
+            if (req.method === 'DELETE') {
+                const idx = doc.messages.findIndex(m => m.id === parts[2]);
+                if (idx === -1) return sendJson(res, 404, { error: 'Message introuvable.' });
+                const msg = doc.messages[idx];
+                if (!(msg.fromId === myId || tableCanManage(doc, me))) {
+                    return sendJson(res, 403, { error: 'Suppression réservée à l’auteur ou au MJ.' });
+                }
+                doc.messages.splice(idx, 1);
+                if (!saveTableDoc(doc)) return sendJson(res, 413, { error: 'Table trop volumineuse.' });
+                return sendJson(res, 200, { success: true });
+            }
+            return sendJson(res, 405, { error: 'Méthode non autorisée.' });
+        }
+
+        // POST /api/tables/:id/members — inviter (pseudo ou e-mail).
+        if (parts.length === 2 && parts[1] === 'members') {
+            if (req.method === 'POST') {
+                if (!tableCanManage(doc, me)) return sendJson(res, 403, { error: 'Invitations réservées au MJ / helper.' });
+                try {
+                    const body = await parseBody(req);
+                    const term = String((body && body.user) || '').trim().toLowerCase();
+                    if (!term) return sendJson(res, 400, { error: 'Pseudo ou e-mail requis.' });
+                    const users = loadUsers();
+                    const target = users.find(u => u.username.toLowerCase() === term || u.email.toLowerCase() === term);
+                    if (!target) return sendJson(res, 404, { error: 'Utilisateur introuvable.' });
+                    if (doc.members.some(m => m.userId === target.id)) {
+                        return sendJson(res, 409, { error: 'Déjà membre de la table.' });
+                    }
+                    if (doc.members.length >= (doc.maxMembers || 12)) {
+                        return sendJson(res, 403, { error: 'Table complète (maxMembers atteint).' });
+                    }
+                    const rec = { userId: target.id, username: target.username, role: 'joueur', joinedAt: Date.now() };
+                    doc.members.push(rec);
+                    if (!saveTableDoc(doc)) { doc.members.pop(); return sendJson(res, 413, { error: 'Table trop volumineuse.' }); }
+                    console.log(`[Tables] ${target.username} invité sur ${doc.id} par ${me.username}.`);
+                    return sendJson(res, 201, { success: true, member: rec });
+                } catch (e) {
+                    return sendJson(res, 400, { error: e.message });
+                }
+            }
+            return sendJson(res, 405, { error: 'Méthode non autorisée.' });
+        }
+
+        // PUT/DELETE /api/tables/:id/members/:uid — rôle ou exclusion.
+        if (parts.length === 3 && parts[1] === 'members') {
+            const uid = parts[2];
+            const idx = doc.members.findIndex(m => m.userId === uid);
+            if (idx === -1) return sendJson(res, 404, { error: 'Membre introuvable.' });
+            // Sortie volontaire : tout membre non-MJ peut quitter sa table
+            // (le MJ doit transférer son titre ou supprimer la table).
+            if (req.method === 'DELETE' && uid === myId && doc.members[idx].role !== 'mj') {
+                doc.members.splice(idx, 1);
+                if (!saveTableDoc(doc)) return sendJson(res, 413, { error: 'Table trop volumineuse.' });
+                return sendJson(res, 200, { success: true, left: true });
+            }
+            if (!tableCanManage(doc, me)) return sendJson(res, 403, { error: 'Gestion réservée au MJ / helper.' });
+            if (req.method === 'PUT') {
+                try {
+                    const body = await parseBody(req);
+                    const role = String((body && body.role) || '');
+                    if (!['joueur', 'helper', 'mj'].includes(role)) {
+                        return sendJson(res, 400, { error: 'Rôle invalide (joueur|helper|mj).' });
+                    }
+                    // Seul le MJ (ou admin site) touche au titre de MJ.
+                    if (role === 'mj' || doc.members[idx].role === 'mj') {
+                        if (!(doc.mjId === myId || isAdminEmail(me.email))) {
+                            return sendJson(res, 403, { error: 'Transfert MJ réservé au MJ de la table.' });
+                        }
+                    }
+                    if (role === 'mj') {
+                        const oldMj = doc.members.find(m => m.role === 'mj');
+                        if (oldMj) oldMj.role = 'helper';
+                        doc.mjId = uid;
+                    }
+                    doc.members[idx].role = role;
+                    const users = loadUsers();
+                    const u = users.find(x => x.id === uid);
+                    if (u) doc.members[idx].username = u.username;
+                    if (!saveTableDoc(doc)) return sendJson(res, 413, { error: 'Table trop volumineuse.' });
+                    console.log(`[Tables] ${uid} -> ${role} sur ${doc.id} (par ${me.username}).`);
+                    return sendJson(res, 200, { success: true, member: doc.members[idx] });
+                } catch (e) {
+                    return sendJson(res, 400, { error: e.message });
+                }
+            }
+            if (req.method === 'DELETE') {
+                if (doc.members[idx].role === 'mj') {
+                    return sendJson(res, 400, { error: 'Transférez le MJ avant d’exclure (ou supprimez la table).' });
+                }
+                if (uid === myId) return sendJson(res, 400, { error: 'Le MJ ne peut pas s’exclure : transférez ou supprimez.' });
+                doc.members.splice(idx, 1);
+                if (!saveTableDoc(doc)) return sendJson(res, 413, { error: 'Table trop volumineuse.' });
+                return sendJson(res, 200, { success: true });
+            }
+            return sendJson(res, 405, { error: 'Méthode non autorisée.' });
+        }
+
+        // POST /api/tables/:id/invite — lire/créer le code (MJ/helper ; {regen:true} régénère).
+        // DELETE /api/tables/:id/invite — révoquer le code.
+        if (parts.length === 2 && parts[1] === 'invite') {
+            if (!tableCanManage(doc, me)) {
+                return sendJson(res, 403, { error: 'Gestion réservée au MJ / helper.' });
+            }
+            if (req.method === 'POST') {
+                try {
+                    const body = await parseBody(req).catch(() => ({}));
+                    if (!doc.inviteCode || (body && body.regen)) {
+                        doc.inviteCode = 'inv_' + crypto.randomBytes(9).toString('base64url');
+                    }
+                    if (!saveTableDoc(doc)) return sendJson(res, 413, { error: 'Table trop volumineuse.' });
+                    return sendJson(res, 200, { success: true, code: doc.inviteCode });
+                } catch (e) {
+                    return sendJson(res, 400, { error: e.message });
+                }
+            }
+            if (req.method === 'DELETE') {
+                doc.inviteCode = null;
+                if (!saveTableDoc(doc)) return sendJson(res, 413, { error: 'Table trop volumineuse.' });
+                return sendJson(res, 200, { success: true });
+            }
+            return sendJson(res, 405, { error: 'Méthode non autorisée.' });
+        }
+
+        // POST /api/tables/:id/join — rejoindre depuis l'annuaire
+        // (mot de passe si la table en a un).
+        if (parts.length === 2 && parts[1] === 'join') {
+            if (req.method !== 'POST') return sendJson(res, 405, { error: 'Méthode non autorisée.' });
+            if (isMember) {
+                return sendJson(res, 200, { success: true, table: tableSummary(doc, me), already: true });
+            }
+            // Non listée + sans mot de passe = sur invitation uniquement.
+            // Non listée + mot de passe = lien + mot de passe (bouche-à-oreille).
+            if (doc.listed === false && !(doc.pw && doc.pw.salt) && !isAdminEmail(me.email)) {
+                return sendJson(res, 403, { error: 'Table non listée : demandez une invitation.' });
+            }
+            if (doc.members.length >= (doc.maxMembers || 12)) {
+                return sendJson(res, 403, { error: 'Table complète.' });
+            }
+            try {
+                const body = await parseBody(req).catch(() => ({}));
+                if (!tableCheckPassword(doc, body && body.password)) {
+                    return sendJson(res, 403, { error: 'Mot de passe incorrect.' });
+                }
+            } catch (e) {
+                return sendJson(res, 400, { error: e.message });
+            }
+            const users = loadUsers();
+            const u = users.find(x => x.id === myId);
+            doc.members.push({ userId: myId, username: u ? u.username : me.username, role: 'joueur', joinedAt: Date.now() });
+            if (!saveTableDoc(doc)) { doc.members.pop(); return sendJson(res, 413, { error: 'Table trop volumineuse.' }); }
+            console.log(`[Tables] ${me.username} rejoint ${doc.id} via annuaire.`);
+            return sendJson(res, 200, { success: true, table: tableSummary(doc, me) });
+        }
+
+        // POST /api/tables/:id/send-reset — rouvrir mon envoi (oublier les
+        // exclus hérités). Les masqués personnels (local) se gèrent à l'œil.
+        if (parts.length === 2 && parts[1] === 'send-reset') {
+            if (req.method !== 'POST') return sendJson(res, 405, { error: 'Méthode non autorisée.' });
+            if (!isMember) return sendJson(res, 403, { error: 'Table réservée à ses membres.' });
+            if (doc.inherited && doc.inherited[myId]) {
+                delete doc.inherited[myId];
+                if (!saveTableDoc(doc)) return sendJson(res, 413, { error: 'Table trop volumineuse.' });
+            }
+            return sendJson(res, 200, { success: true });
+        }
+
+        return sendJson(res, 404, { error: 'Route tables inconnue.' });
+    }
+
+    /* ================================================================
+       AMIS — liste d'amis par utilisateur (demandes + acceptation)
+       ----------------------------------------------------------------
+       Stockage auto : data/friends.json (+ .bak) :
+       { "<userId>": { friends:[{userId,since}], incoming:[...], outgoing:[...] } }.
+       Les pseudos sont résolus en direct depuis users.json à la lecture.
+       ================================================================ */
+    const FRIENDS_PATH = path.join(PUBLIC_DIR, 'data', 'friends.json');
+    function loadFriendsDoc() {
+        try {
+            if (!fs.existsSync(FRIENDS_PATH)) return {};
+            const d = JSON.parse(fs.readFileSync(FRIENDS_PATH, 'utf-8'));
+            return (d && typeof d === 'object') ? d : {};
+        } catch (e) { return {}; }
+    }
+    function saveFriendsDoc(d) {
+        const json = JSON.stringify(d, null, 2);
+        if (json.length > 4 * 1024 * 1024) return false;
+        try { if (fs.existsSync(FRIENDS_PATH)) fs.copyFileSync(FRIENDS_PATH, FRIENDS_PATH + '.bak'); } catch (e) {}
+        fs.writeFileSync(FRIENDS_PATH, json);
+        return true;
+    }
+    function friendEntry(d, uid) {
+        if (!d[uid] || typeof d[uid] !== 'object') d[uid] = { friends: [], incoming: [], outgoing: [] };
+        const e = d[uid];
+        if (!Array.isArray(e.friends)) e.friends = [];
+        if (!Array.isArray(e.incoming)) e.incoming = [];
+        if (!Array.isArray(e.outgoing)) e.outgoing = [];
+        return e;
+    }
+    function friendName(uid) {
+        const u = loadUsers().find(x => x.id === uid);
+        return u ? u.username : '(parti)';
+    }
+    function friendListOf(d, uid, key, avatars) {
+        return friendEntry(d, uid)[key]
+            .map(r => ({ userId: r.userId, username: friendName(r.userId), avatar: (avatars && avatars[r.userId]) || null, since: r.since || 0 }))
+            .sort((a, b) => a.username.localeCompare(b.username, 'fr'));
+    }
+    function friendLink(d, a, b) {
+        const now = Date.now();
+        const ea = friendEntry(d, a), eb = friendEntry(d, b);
+        ea.friends = ea.friends.filter(r => r.userId !== b);
+        eb.friends = eb.friends.filter(r => r.userId !== a);
+        ea.friends.push({ userId: b, since: now });
+        eb.friends.push({ userId: a, since: now });
+        ea.incoming = ea.incoming.filter(r => r.userId !== b);
+        ea.outgoing = ea.outgoing.filter(r => r.userId !== b);
+        eb.incoming = eb.incoming.filter(r => r.userId !== a);
+        eb.outgoing = eb.outgoing.filter(r => r.userId !== a);
+    }
+    function friendUnlink(d, a, b) {
+        friendEntry(d, a).friends = friendEntry(d, a).friends.filter(r => r.userId !== b);
+        friendEntry(d, b).friends = friendEntry(d, b).friends.filter(r => r.userId !== a);
+    }
+    const isFriendsRoute = cleanPath === '/api/friends' || cleanPath.startsWith('/api/friends/');
+    if (isFriendsRoute) {
+        const me = getSessionUser(req);
+        if (!me) return sendJson(res, 401, { error: 'Connexion requise.' });
+        const sub = cleanPath.slice('/api/friends'.length);
+        const parts = sub.split('/').filter(Boolean);
+
+        // GET /api/friends — mes amis + demandes reçues/envoyées.
+        if (parts.length === 0) {
+            if (req.method === 'GET') {
+                const d = loadFriendsDoc();
+                const avatars = buildAvatarMap();
+                return sendJson(res, 200, {
+                    success: true,
+                    friends: friendListOf(d, me.id, 'friends', avatars),
+                    incoming: friendListOf(d, me.id, 'incoming', avatars),
+                    outgoing: friendListOf(d, me.id, 'outgoing', avatars)
+                });
+            }
+            return sendJson(res, 405, { error: 'Méthode non autorisée.' });
+        }
+
+        // POST /api/friends/request {user} — demander en ami (pseudo ou e-mail).
+        // POST /api/friends/accept|decline|cancel {userId}.
+        if (parts.length === 1 && ['request', 'accept', 'decline', 'cancel'].includes(parts[0])) {
+            if (req.method !== 'POST') return sendJson(res, 405, { error: 'Méthode non autorisée.' });
+            try {
+                const body = await parseBody(req);
+                const action = parts[0];
+                const d = loadFriendsDoc();
+                const entry = friendEntry(d, me.id);
+                if (action === 'request') {
+                    const term = String((body && body.user) || '').trim().toLowerCase();
+                    if (!term) return sendJson(res, 400, { error: 'Pseudo ou e-mail requis.' });
+                    const target = loadUsers().find(u => u.username.toLowerCase() === term || u.email.toLowerCase() === term);
+                    if (!target) return sendJson(res, 404, { error: 'Utilisateur introuvable.' });
+                    if (target.id === me.id) return sendJson(res, 400, { error: 'Impossible de s’ajouter soi-même.' });
+                    if (entry.friends.some(r => r.userId === target.id)) {
+                        return sendJson(res, 409, { error: 'Déjà amis.' });
+                    }
+                    // Demande croisée : acceptation immédiate des deux côtés.
+                    if (entry.incoming.some(r => r.userId === target.id)) {
+                        friendLink(d, me.id, target.id);
+                        if (!saveFriendsDoc(d)) return sendJson(res, 413, { error: 'Carnet trop volumineux.' });
+                        return sendJson(res, 200, { success: true, linked: true, userId: target.id });
+                    }
+                    if (entry.outgoing.some(r => r.userId === target.id)) {
+                        return sendJson(res, 409, { error: 'Demande déjà envoyée.' });
+                    }
+                    const now = Date.now();
+                    entry.outgoing.push({ userId: target.id, since: now });
+                    friendEntry(d, target.id).incoming.push({ userId: me.id, since: now });
+                    if (!saveFriendsDoc(d)) return sendJson(res, 413, { error: 'Carnet trop volumineux.' });
+                    console.log(`[Amis] demande : ${me.username} -> ${target.username}.`);
+                    return sendJson(res, 200, { success: true, userId: target.id });
+                }
+                const uid = String((body && body.userId) || '').trim();
+                if (!uid) return sendJson(res, 400, { error: 'userId requis.' });
+                if (action === 'accept') {
+                    if (!entry.incoming.some(r => r.userId === uid)) {
+                        return sendJson(res, 404, { error: 'Demande introuvable.' });
+                    }
+                    friendLink(d, me.id, uid);
+                    if (!saveFriendsDoc(d)) return sendJson(res, 413, { error: 'Carnet trop volumineux.' });
+                    console.log(`[Amis] liés : ${me.username} <-> ${friendName(uid)}.`);
+                    return sendJson(res, 200, { success: true, userId: uid });
+                }
+                if (action === 'decline') {
+                    entry.incoming = entry.incoming.filter(r => r.userId !== uid);
+                    friendEntry(d, uid).outgoing = friendEntry(d, uid).outgoing.filter(r => r.userId !== me.id);
+                    if (!saveFriendsDoc(d)) return sendJson(res, 413, { error: 'Carnet trop volumineux.' });
+                    return sendJson(res, 200, { success: true });
+                }
+                // cancel : retirer ma demande envoyée.
+                entry.outgoing = entry.outgoing.filter(r => r.userId !== uid);
+                friendEntry(d, uid).incoming = friendEntry(d, uid).incoming.filter(r => r.userId !== me.id);
+                if (!saveFriendsDoc(d)) return sendJson(res, 413, { error: 'Carnet trop volumineux.' });
+                return sendJson(res, 200, { success: true });
+            } catch (e) {
+                return sendJson(res, 400, { error: e.message });
+            }
+        }
+
+        // DELETE /api/friends/:userId — retirer un ami (des deux côtés).
+        if (parts.length === 1) {
+            if (req.method === 'DELETE') {
+                const uid = parts[0];
+                const d = loadFriendsDoc();
+                friendUnlink(d, me.id, uid);
+                if (!saveFriendsDoc(d)) return sendJson(res, 413, { error: 'Carnet trop volumineux.' });
+                return sendJson(res, 200, { success: true });
+            }
+            return sendJson(res, 405, { error: 'Méthode non autorisée.' });
+        }
+
+        return sendJson(res, 404, { error: 'Route amis inconnue.' });
+    }
+
+    /* ================================================================
        ADMIN LOCAL — page + API, jamais servies par l'écouteur public.
        L'écouteur public répond 404 (ne révèle pas l'existence).
        L'écouteur admin (127.0.0.1:ADMIN_PORT) ne sert QUE ceci.
@@ -1642,6 +2517,8 @@ const VTT_WS_PATH = '/ws/vtt';
 const VTT_WS_GUID = '258EAFA5-E914-47DA-95CA-C5AB0DC85B11';
 const VTT_MAX_PAYLOAD = 512 * 1024; // 512 Ko max par message
 const vttClients = new Map(); // clientId -> conn
+const vttPresence = new Map(); // userId -> {userId, username, at} (heartbeat /api/presence, expire 45 s)
+const sseSubs = new Set(); // abonnés push tables : {userId, email, res} (GET /api/tables/stream)
 const vttRooms = new Map();   // CODE -> { code, createdAt, gmId, members: Map(clientId -> {username, role, userId}), units, clientUnits, covers }
 let vttClientSeq = 0;
 

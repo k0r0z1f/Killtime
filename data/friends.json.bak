@@ -1,0 +1,22 @@
+{
+  "usr_mtvzf3lr": {
+    "friends": [
+      {
+        "userId": "usr_mtvzstfs",
+        "since": 1793439987661
+      }
+    ],
+    "incoming": [],
+    "outgoing": []
+  },
+  "usr_mtvzstfs": {
+    "friends": [
+      {
+        "userId": "usr_mtvzf3lr",
+        "since": 1793439987661
+      }
+    ],
+    "incoming": [],
+    "outgoing": []
+  }
+}
