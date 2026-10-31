@@ -1107,7 +1107,7 @@
      "id": "RP-074",
      "title": "Aligner le créateur (tools.js RACE_DATA) sur data/livre_1.json",
      "epic": "Livre I — Bases & Création",
-     "status": "todo",
+     "status": "done",
      "priority": "medium",
      "order": 45,
      "scene": "",
@@ -1116,7 +1116,7 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "js/tools.js",
-     "details": "data/livre_1.json est la source unique (la page la charge via js/livre_1.js). Reste : faire charger RACE_DATA/giftNotes (espèces, dons, notes) depuis le JSON au lieu du codé en dur, unifier les wordings page/créateur (ex. 'ou colonie'), gérer l'alias 'nain'→'derek' (RP-073) et la fiche prototype (vieux noms de compétences)."
+     "details": "FAIT 2026-10-31 — js/tools.js branché sur les JSON (couche CodexData + replis intégrés) : RACE_DATA/giftNotes ← livre_1.json (wordings unifiés : 'Vardien / Frontaliers', 'ou colonie'), alias 'nain'→'derek' conservé (migration auto si clé 'nain' un jour), ENFANCES/METIERS/EVENEMENTS ← livre_7.json, échelle+crans ← livre_2.json (ladder complet), fiche_pj.html : 'Maniement d'Arme (Tranchantes / Contondantes)' (ids préservés, sauvegardes compatibles). Vérifié navigateur (livre_9 + fiche_pj, seule 401 auth préexistante)."
     },
     {
      "id": "RP-075",
@@ -1227,7 +1227,7 @@
      "id": "RP-082",
      "title": "Brancher les outils du Livre IX sur les JSON (page statique)",
      "epic": "Livre IX — Outils Web",
-     "status": "todo",
+     "status": "done",
      "priority": "medium",
      "order": 53,
      "scene": "",
@@ -1236,7 +1236,7 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_9.html",
-     "details": "Décision 2026-10-31 : livre_9.html RESTE statique (5 ateliers liés par js/tools.js via getElementById — squelettisation = risque sans gain, règles déjà en JSON Livres I–VIII). À la place : brancher les outils sur les JSON — créateur ← data/livre_1.json (RACE_DATA, cf. RP-074) + livre_7.json (enfances/métiers/événements), lanceur ← livre_2.json (paliers, critiques), atelier sorts ← livre_4.json (modules, XP=PA), défis ← livre_2.json, clairsentience : externaliser les tiers codés en dur. Vérif exigée : test navigateur des 5 ateliers (le harnais Node ne couvre que le rendu statique). Fichiers : livre_9.html (inchangé), js/tools.js."
+     "details": "FAIT 2026-10-31 — page restée statique (décision) ; js/tools.js consomme les JSON : lanceur ← livre_2.json (paliers parsés + 13 critiques canoniques, intermédiaires rabattus au palier inférieur — l'outil en inventait 11), atelier sorts inchangé (coûts déjà dans le DOM, règle XP=PA canon), défis déjà canon (×2−rattrapages, min 2), chrono tiers → data/livre_10.json (nouveau mecaniques.simulateur_chronotrames, repli intégré). Vérifié navigateur : jet + critique + carte, workshop, challenge, chrono T5. Fichiers : js/tools.js, data/livre_10.json."
     },
     {
      "id": "RP-083",

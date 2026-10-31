@@ -4,9 +4,39 @@
  */
 
 let __toolsBooted = false;
-function bootTools() {
+
+// Source unique (RP-074/082) : les data/livre_N.json priment ; en cas
+// d'échec de chargement (fichier local, hors-ligne), chaque module
+// garde ses miroirs intégrés en repli, sans changer de comportement.
+const CodexData = { l1: null, l2: null, l4: null, l7: null, l10: null };
+window.CodexData = CodexData;
+
+async function loadCodexData() {
+    const urls = { l1: 'data/livre_1.json', l2: 'data/livre_2.json', l4: 'data/livre_4.json', l7: 'data/livre_7.json', l10: 'data/livre_10.json' };
+    await Promise.all(Object.keys(urls).map(async (k) => {
+        try {
+            const r = await fetch(urls[k], { cache: 'no-store' });
+            if (r.ok) CodexData[k] = await r.json();
+        } catch (e) { /* repli miroirs intégrés */ }
+    }));
+}
+
+function stripHtml(s) {
+    const d = document.createElement('div');
+    d.innerHTML = s || '';
+    return (d.textContent || '').replace(/\s+/g, ' ').trim();
+}
+
+// 'd2' -> '1d2', '2d6' inchangé : forme canon des paliers (Livre II §6.1).
+function normDe(s) {
+    s = String(s || '').replace(/\s+/g, '');
+    return /^\d/.test(s) ? s : '1' + s;
+}
+
+async function bootTools() {
     if (__toolsBooted) return;
     __toolsBooted = true;
+    try { await loadCodexData(); } catch (e) { /* repli miroirs intégrés */ }
     initCharacterSheet();
     initSpellWorkshop();
     initDiceRoller();
@@ -115,7 +145,18 @@ function initCharacterSheet() {
     const EVENEMENTS = [{n:'Frôlé la mort',d:'1×/session : annule 1 Essoufflement (coup > Encaissement) ; cauchemars.'},{n:'Dette de vie',d:'+2 pour protéger un allié ; créancier rappelable.'},{n:'Trahison subie',d:'Relance un jet intuition ; traître actif.'},{n:'Long exil',d:'+2 Survie en terrain inconnu ; −2 premier contact.'},{n:'Contact 5e Force',d:'1 question fermée au MJ ; repérable par sens magiques.'},{n:'Miracle inexpliqué',d:'Ignore 1 échec moral/peur ; un culte s’intéresse à toi.'},{n:'Guerre intérieure',d:'+2 sang-froid (violence) ; fracas = test INS ou +1 Essoufflement.'},{n:'Crime impuni',d:'+2 couvrir ses traces ; un témoin existe.'},{n:'Mentor perdu',d:'+2 domaine du mentor ; promesse à honorer.'},{n:'Écho temporel',d:'1 question fermée (danger) ; +1 Essoufflement/usage.'},{n:'Ruine & misère',d:'+2 improviser avec rien ; −2 contact huppé.'},{n:'Gloire locale',d:'+2 Communication (zone exploit) ; rival jaloux.'}];
 
     // Échelle Livre II §6.1 : valeur d'attribut -> dé sans entraînement.
-    function dieForValue(v) { if (v <= 2) return '1d2'; if (v <= 4) return '1d4'; if (v <= 6) return '1d6'; if (v <= 8) return '1d8'; return '1d10'; }
+    // Source : data/livre_2.json (crans_base), repli seuils codés.
+    function dieForValue(v) {
+        const M = CodexData.l2 && CodexData.l2.mecaniques;
+        if (M && M.crans_base) {
+            for (const r of M.crans_base) {
+                if (v <= r.tranche[1]) return normDe(r.de_sans_entrainement);
+            }
+            const last = M.crans_base[M.crans_base.length - 1];
+            return normDe(last.de_sans_entrainement);
+        }
+        if (v <= 2) return '1d2'; if (v <= 4) return '1d4'; if (v <= 6) return '1d6'; if (v <= 8) return '1d8'; return '1d10';
+    }
 
     // Palier d'entraînement (Livre I Étape 5) : +1 palier = +1 cran sur l'échelle, plafond 1d12.
     const DIE_LADDER = ['1d2', '1d4', '1d6', '1d8', '1d10', '1d12'];
@@ -125,7 +166,60 @@ function initCharacterSheet() {
         return DIE_LADDER[Math.min(DIE_LADDER.length - 1, i + Math.max(0, steps))];
     }
 
-    // Dés intégrés à chaque caractéristique (Livre II §6.1) : pastille
+    // Surcouche Codex JSON (RP-074/082) : écrase les miroirs par le canon
+    // quand les JSON ont chargé (gardes de cardinalité : sinon repli).
+    (function overlayCodexData() {
+        const L1 = CodexData.l1, L7 = CodexData.l7, L2 = CodexData.l2;
+        if (L1 && L1.mecaniques && L1.mecaniques.especes_par_nom) {
+            const SLUGS = { 'Humain': 'humain', 'Derek': 'derek', 'Taurien': 'taurien', 'Cléien': 'cleien', 'Mikyai': 'mikyai', 'Vardien / Frontaliers': 'vardien' };
+            const raw = {};
+            (L1.especes || []).forEach(s => { raw[s.nom] = s; });
+            Object.keys(SLUGS).forEach(nom => {
+                const slug = SLUGS[nom], src = raw[nom];
+                if (!src || !RACE_DATA[slug] || !(src.dons || []).length) return;
+                RACE_DATA[slug] = {
+                    label: src.nom, sensMin: src.sens_min, magie: src.magie,
+                    note: (src.origine || '') + ', sens min ' + src.sens_min,
+                    gifts: src.dons.map(g => g.nom),
+                    giftNotes: src.dons.map(g => stripHtml(g.effet || ''))
+                };
+            });
+        }
+        const M7 = L7 && L7.mecaniques;
+        if (M7) {
+            if (M7.enfances && M7.enfances.length === 6) {
+                ENFANCES.length = 0;
+                M7.enfances.forEach(e => ENFANCES.push({ n: String(e.nom).split(' — ')[0], d: e.texte }));
+            }
+            if (M7.metiers && M7.metiers.length === 12) {
+                METIERS.length = 0;
+                M7.metiers.forEach(m => METIERS.push({ n: m.metier, d: m.bonus + ' ; ' + m.atout }));
+            }
+            if (M7.evenements && M7.evenements.length === 12) {
+                EVENEMENTS.length = 0;
+                M7.evenements.forEach(e => EVENEMENTS.push({ n: e.evenement, d: e.effet + ' ; ' + e.sequelle }));
+            }
+        }
+        if (L2 && L2.echelle_des) {
+            DIE_LADDER.length = 0;
+            L2.echelle_des.forEach(dd => DIE_LADDER.push(normDe(dd)));
+        }
+    })();
+
+    // Options d'espèces reconstruites depuis RACE_DATA (wordings unifiés
+    // page/créateur, les deux pages) en préservant le choix courant/migré.
+    (function rebuildRaceOptions() {
+        if (!raceSelect) return;
+        const cur = resolveRace(raceSelect.value || 'humain');
+        raceSelect.innerHTML = '';
+        Object.keys(RACE_DATA).forEach(k => {
+            const opt = document.createElement('option');
+            opt.value = k;
+            opt.textContent = RACE_DATA[k].label + ' (' + RACE_DATA[k].note + ')';
+            raceSelect.appendChild(opt);
+        });
+        raceSelect.value = cur;
+    })();
     // à gauche du stepper, mise à jour en temps réel avec la valeur.
     function ensureAttrDiceBadges() {
         for (const [k, el] of Object.entries(attrInputs)) {
@@ -1887,7 +1981,16 @@ function initDiceRoller() {
         updateOpposedVis();
     }
 
-    // Die definitions
+    // Die definitions (repli intégré) ; surcouche Livre II : repères de
+    // seuils + échelle canonique, mêmes clés que le <select> statique.
+    function parseNdM(key) {
+        const m = /^(\d*)d(\d+)\s*([+-]\s*\d+)?$/.exec(String(key || ''));
+        if (!m) return null;
+        const mod = m[3] ? parseInt(m[3].replace(/\s+/g, ''), 10) : 0;
+        const count = parseInt(m[1] || '1', 10), sides = parseInt(m[2], 10);
+        const k = (count === 1 ? 'd' + sides : count + 'd' + sides) + (mod ? (mod > 0 ? '+' + mod : mod) : '');
+        return { key: k, count: count, sides: sides, mod: mod, label: k };
+    }
     const dieSteps = {
         'd2': { count: 1, sides: 2, mod: 0, label: '1d2' },
         'd4-1': { count: 1, sides: 4, mod: -1, label: '1d4 - 1' },
@@ -1936,6 +2039,34 @@ function initDiceRoller() {
         23: { off: 'Destruction d\'équipement', def: 'Arme ennemie brisée', soc: 'Capitulation spontanée', util: 'Surcharge du réacteur' },
         24: { off: 'Cible Inconsciente', def: 'Désarçonnement fatal ennemi', soc: 'Soumission absolue', util: 'Succès mirifique critique' }
     };
+
+    // Surcouche Livre II (RP-082) : paliers + critiques canoniques.
+    // Critiques : 13 paliers canoniques, valeurs intermédiaires rabattues
+    // sur le palier inférieur (le livre ne définit que ces 13 résultats).
+    (function overlayDiceCanon() {
+        const M = CodexData.l2 && CodexData.l2.mecaniques;
+        if (M && M.seuils) {
+            (M.seuils.detail || []).forEach(s => {
+                const p = parseNdM(s.tirage_repere);
+                if (p) dieSteps[p.key] = { count: p.count, sides: p.sides, mod: p.mod, label: p.label };
+            });
+        }
+        if (CodexData.l2 && CodexData.l2.echelle_des) {
+            CodexData.l2.echelle_des.forEach(dd => {
+                const p = parseNdM(dd);
+                if (p && !dieSteps[p.key]) dieSteps[p.key] = { count: p.count, sides: p.sides, mod: p.mod, label: p.label };
+            });
+        }
+        const P = M && M.critique && M.critique.par_resultat;
+        if (P) {
+            const keys = Object.keys(P).map(Number).sort((a, b) => a - b);
+            for (let n = 1; n <= 24; n++) {
+                const below = keys.filter(k => k <= n).pop();
+                const e = P[String(below === undefined ? keys[0] : below)];
+                if (e) critTable[n] = { off: e.offensif, def: e.defensif, soc: e.social, util: e.utilitaire };
+            }
+        }
+    })();
 
     btnRoll.addEventListener('click', () => {
         const stepKey = dieSelect.value;
@@ -2152,7 +2283,8 @@ function initClairsentienceSimulator() {
 
     if (!tierSelect || !paDisplay) return;
 
-    const tiers = {
+    // Tiers du simulateur (repli intégré) ; source : data/livre_10.json.
+    const tiers = (CodexData.l10 && CodexData.l10.mecaniques && CodexData.l10.mecaniques.simulateur_chronotrames) || {
         1: { horizon: 'Quelques Secondes (Combat immédiat)', pa: '2 PA', bottleneck: 'Négligeable (Flux local stable)', risk: '0% — Dérive quasi impossible' },
         2: { horizon: '1 à 10 Minutes', pa: '4 PA', bottleneck: 'Très faible (Inflexions mineures)', risk: '5% — Micro-échos de causalité' },
         3: { horizon: '1 à 24 Heures', pa: '6 PA', bottleneck: 'Modéré (Présence de nœuds décisionnels)', risk: '15% — Risque de décalage chronal' },

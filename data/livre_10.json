@@ -613,6 +613,56 @@
      "Difficulté Réduite -4"
     ]
    }
-  ]
+  ],
+  "simulateur_chronotrames": {
+   "1": {
+    "horizon": "Quelques Secondes (Combat immédiat)",
+    "pa": "2 PA",
+    "bottleneck": "Négligeable (Flux local stable)",
+    "risk": "0% — Dérive quasi impossible"
+   },
+   "2": {
+    "horizon": "1 à 10 Minutes",
+    "pa": "4 PA",
+    "bottleneck": "Très faible (Inflexions mineures)",
+    "risk": "5% — Micro-échos de causalité"
+   },
+   "3": {
+    "horizon": "1 à 24 Heures",
+    "pa": "6 PA",
+    "bottleneck": "Modéré (Présence de nœuds décisionnels)",
+    "risk": "15% — Risque de décalage chronal"
+   },
+   "4": {
+    "horizon": "1 Semaine à 1 Mois",
+    "pa": "8 PA",
+    "bottleneck": "Élevé (Goulots d'étranglement identifiés)",
+    "risk": "30% — Effet papillon inversé actif"
+   },
+   "5": {
+    "horizon": "1 An à 1 Décennie",
+    "pa": "12 PA",
+    "bottleneck": "Critique (Convergences historiques rigides)",
+    "risk": "50% — Forte résistance du fleuve temporel"
+   },
+   "6": {
+    "horizon": "1 Siècle (Ères planétaires)",
+    "pa": "16 PA",
+    "bottleneck": "Majeur (Attracteurs universels)",
+    "risk": "75% — Altération d'entités et lignées"
+   },
+   "7": {
+    "horizon": "1 Millénaire",
+    "pa": "20 PA",
+    "bottleneck": "Goulot Cosmique Infranchissable",
+    "risk": "90% — Rupture de chronotrame locale"
+   },
+   "8": {
+    "horizon": "Temps Géologique & Origines (Cosmos)",
+    "pa": "25+ PA",
+    "bottleneck": "Singularité / Démiurge",
+    "risk": "99% — Paradoxe existentiel instantané"
+   }
+  }
  }
 }
