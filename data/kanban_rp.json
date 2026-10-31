@@ -1182,7 +1182,7 @@
      "id": "RP-079",
      "title": "JSON-ifier le Livre VI (données + contenu, comme Livre I)",
      "epic": "Livre VI — Santé & États",
-     "status": "todo",
+     "status": "done",
      "priority": "medium",
      "order": 50,
      "scene": "",
@@ -1191,7 +1191,7 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_6.html",
-     "details": "Comme Livre I : extraire data/livre_N.json (données règles + sections/blocs/refs), rendre via JS (factoriser js/livre_1.js en moteur générique), squelettiser le HTML, fidélité vérifiée par diff. But : source unique + traductions. Fichier : livre_6.html."
+     "details": "FAIT 2026-10-31 — data/livre_6.json (types dégâts, seuils survie, 9 états préjudiciables + 5 bénéfiques + lookup, 4 DoT, 3 statuts vitaux, 9 effets d'épreuve, états objets, récupération quotidienne, fiche pathologie, 6 agents d6, transmission, 4 stades, 2 maladies, bloc mecaniques + 5 sections (entête in-article + 4 chapitres)), livre_6.html squelettisé. Moteur étendu : attributs math/desc, cartes à contenu mixte (corps_brut). Vérifié : fidélité + rendu JS réel OK, III–V intacts."
     },
     {
      "id": "RP-080",

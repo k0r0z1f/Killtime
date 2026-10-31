@@ -46,9 +46,10 @@
             var head = k.top === false ? title
                 : '<div class="spec-card-top">' + title + '</div>';
             var ctag = k.corps_tag || 'p';
-            var corps = ('corps_html' in k || 'corps_tag' in k)
+            var corps = ('corps_brut' in k) ? k.corps_brut
+                : (('corps_html' in k || 'corps_tag' in k)
                 ? '<' + ctag + (k.corps_attrs || '') + '>' + (k.corps_html || '') + '</' + ctag + '>'
-                : '';
+                : '');
             var pieds = (k.pieds || []).map(function (p) {
             return '<span class="tag-pill ' + p.ton + '">' + p.texte + '</span>';
         }).join('');
@@ -70,8 +71,8 @@
             (f.etiquette_html !== undefined ? f.etiquette_html : (f.badge || '')) + '</' + tag + '>';
         return '<div class="formula-box"' + (f.extra || '') + '>' + label +
             (((f.contenu === undefined || f.contenu) ? '<div class="formula-content">' : '') +
-            '<div class="formula-math">' + f.math_html +
-            '</div><div class="formula-desc">' + f.desc_html + '</div>' +
+            '<div class="formula-math"' + (f.math_attrs || '') + '>' + f.math_html +
+            '</div><div class="formula-desc"' + (f.desc_attrs || '') + '>' + f.desc_html + '</div>' +
             ((f.contenu === undefined || f.contenu) ? '</div>' : '')) + '</div>';
     }
 

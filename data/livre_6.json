@@ -1,0 +1,1110 @@
+{
+ "livre": "VI",
+ "titre": "Santé & États",
+ "version": 1,
+ "updated": "2026-10-31",
+ "source": "livre_6.html",
+ "entete_html": "",
+ "sections": [
+  {
+   "id": "entete",
+   "symbole": null,
+   "titre": null,
+   "blocs": [
+    {
+     "type": "html",
+     "html": "\n\n                    <div class=\"doc-badge-row\">\n                        <span class=\"doc-badge-pill\">\n                            <svg width=\"12\" height=\"12\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\"\n                                stroke-width=\"2\">\n                                <path d=\"M22 12h-4l-3 9L9 3l-3 9H2\" />\n                            </svg>\n                            Livre VI — Physiologie & Traumatologie\n                        </span>\n                        <span class=\"doc-badge-pill accent\">Seuils Biologiques & Altérations</span>\n                        <span class=\"doc-badge-pill live\">Système Validé</span>\n                    </div>\n\n                    <h1 class=\"doc-title\">Livre VI : Santé, États&nbsp;& Blessures</h1>\n                    <p class=\"doc-lead\">\n                        Dans le Système RP, la vie d'un être ne se résume pas à un compteur arithmétique qui descend\n                        jusqu'à zéro. La chair encaisse, se déchire, s'asphyxie et réagit selon des <strong>seuils\n                            physiologiques stricts</strong> dérivés de la Constitution. Ce livre rassemble les règles\n                        d'encaissement, le seuil létal (<span class=\"hl-ruby\">Constitution &times; 5</span>), le\n                        compendium officiel complet des <strong>16 états et altérations de statut</strong>, la médecine\n                        de premiers soins et le protocole de résurrection.\n                    </p>\n\n                    <hr class=\"doc-divider\">\n\n                    <!-- ================= CHAPITRE 27 ================= -->\n                    "
+    }
+   ]
+  },
+  {
+   "id": "chap-23",
+   "symbole": "Chapitre 23.",
+   "titre": "Seuils Physiologiques, Encaissement & Séquelles",
+   "blocs": [
+    {
+     "type": "html",
+     "html": "\n\n                    <p>\n                        La résistance corporelle dépend directement de l'attribut <strong>Constitution (Con)</strong>.\n                        Deux formules fondamentales gouvernent la survie d'un personnage face aux violences du monde :\n                    </p>\n\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "seuils_survie"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <h3>23.1 Typologie des Dégâts : Directs, Résiduels & Absolus</h3>\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "types_degats"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <h3 id=\"sec-23-2\">23.2 L'Arbre de Résolution de la Chute à 0 PV</h3>\n                    <p>\n                        Lorsqu'une attaque réduit la vitalité d'un combattant à 0 PV ou moins, on compare les dégâts\n                        réels subis lors de ce coup au Seuil d'Encaissement (<code>CON &times; 2</code>) :\n                    </p>\n                    <ul>\n                        <li><strong>Branche 1 : Dégâts &gt; Seuil d'Encaissement (Traumatisme Incompressible) :</strong>\n                            Aucun choix possible.\n                            <ul>\n                                <li><strong>Impact à la Tête / Crâne :</strong> <strong>Mort Instantanée</strong> par\n                                    destruction cérébrale. Seule la dépense automatique d'un <a class=\"rule-ref\" href=\"#sec-23-3\" data-tip=\"Point de Miracle : dévie un coup mortel, survie à 1 PV sous le seuil létal. Rachat : 20 XP ou jalon MJ.\">Point de Miracle</a>\n                                    permet de survivre in extremis à 1 PV (coma profond).</li>\n                                <li><strong>Impact au Cœur / Cou :</strong> Coma immédiat et agonie rapide (hémorragie\n                                    mortelle en <code>CON / 2</code> tours).</li>\n                                <li><strong>Torse &amp; Membres :</strong> Syncope forcée (état <a class=\"rule-ref\" href=\"#sec-24-3\" data-tip=\"Inconscient : aucune action ni réaction. Réveil par secousse vigoureuse (1 PA) ou premiers soins.\">Inconscient</a> et\n                                    <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À Terre</a> immédiat).\n                                </li>\n                            </ul>\n                        </li>\n                        <li><strong>Branche 2 : Dégâts &le; Seuil d'Encaissement (Choc Contrôlé / Épuisement) :</strong>\n                            Le corps s'éteint par pure décharge vitale. Le combattant choisit :\n                            <ul>\n                                <li><strong>Sombrer (La Syncope Protectrice) :</strong> Tu t'évanouis\n                                    et tu restes stable au sol (<a class=\"rule-ref\" href=\"#sec-24-3\" data-tip=\"Inconscient : aucune action ni réaction. Réveil par secousse vigoureuse (1 PA) ou premiers soins.\">Inconscient</a>, <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À Terre</a>).\n                                    En général, tes adversaires te laissent là où tu es tombé et passent à une\n                                    autre cible : tu ne bouges plus, tu ne les menaces plus. Exemple : tu t'effondres\n                                    au milieu d'une fusillade, le tireur en face réoriente son arme vers ton\n                                    allié debout. Mais ce n'est pas automatique : une bête affamée, un tueur\n                                    méthodique ou un ennemi qui veut s'assurer du résultat peut quand même\n                                    t'achever. Et là, tu es sans défense : il doit encore réussir son attaque,\n                                    mais tu ne peux ni parer ni esquiver. Si son coup te touche, tu meurs.\n                                    Exemple : le tueur s'accroupit près de toi et vise ta tête — un seul coup\n                                    suffit. Ton MJ tranche selon la situation.</li>\n                                <li><strong>Dernier Souffle (Le Baroud d'Honneur) :</strong> Tu refuses de\n                                    t'évanouir. Tu restes conscient, au sol (<a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À Terre</a> et\n                                    <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"Agonisant : aucune action raisonnée, fuite de 6 cases (1d8). Persiste jusqu’à stabilisation médicale.\">Agonisant</a>). Tu gardes tes PA et tu peux encore agir. Mais chaque\n                                    épreuve que tu tentes te coûte <strong>+1 Essoufflement direct</strong> : dès\n                                    que tu lances les dés — épreuve de compétence ou face à face — ton souffle\n                                    monte d'un cran. Les gestes simples sans jet (ramper d'une case, parler,\n                                    lâcher un objet) ne te coûtent rien. Si ton Essoufflement atteint ta\n                                    Constitution, ton cœur lâche pour de bon.\n                                    Exemple : tu lances ta corde à ton allié pour le tirer à couvert — c'est une\n                                    épreuve, +1 Essoufflement. Ramper d'une case juste après, sans jet, ne coûte\n                                    rien. Mais au troisième lancer de dés, ton souffle rejoint ta Constitution :\n                                    arrêt cardiaque définitif.\n                                </li>\n                            </ul>\n                        </li>\n                    </ul>\n\n                    <h3 id=\"sec-23-3\">23.3 Le Point de Miracle : L'Ultime Rempart contre la Mort</h3>\n                    <p>\n                        Chaque Personnage Joueur (PJ) commence sa carrière avec <strong>1 Point de Miracle</strong>\n                        inscrit sur sa fiche de personnage.\n                    </p>\n                    <div class=\"callout warning\">\n                        <div class=\"callout-header\">\n                            <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\"\n                                stroke-width=\"2\">\n                                <circle cx=\"12\" cy=\"12\" r=\"10\" />\n                                <line x1=\"12\" y1=\"8\" x2=\"12\" y2=\"12\" />\n                                <line x1=\"12\" y1=\"16\" x2=\"12.01\" y2=\"16\" />\n                            </svg>\n                            Usage Vital du Point de Miracle\n                        </div>\n                        <div class=\"callout-body\">\n                            Lorsqu'un PJ subit un coup mortel ou dépasse son seuil létal (<span\n                                class=\"hl-ruby\">Constitution &times; 5</span>), le joueur peut dépenser son Point de\n                            Miracle. Le coup est providentiellement dévié (la balle ricoche sur un briquet en métal, la\n                            lame glisse sur une boucle de ceinture, un éclat de nytharite absorbe le rayon). Le PJ\n                            échappe à la mort immédiate et reste vivant à <strong>1 point en dessous de son seuil\n                                létal</strong>, mais sombre dans l'inconscience.<br><br>\n                            <em>Régénération :</em> Un Point de Miracle ne se régénère jamais par simple repos. Il ne\n                            peut être racheté qu'avec <strong>20 points d'XP</strong> ou accordé par le Maître de Jeu\n                            lors de l'accomplissement d'un jalon narratif transcendant.\n                        </div>\n                    </div>\n\n                    <h3>23.4 Résistances & Vulnérabilités Raciales</h3>\n                    <p>\n                        Certains dons raciaux (Livre I §2.2) confèrent une <strong>résistance</strong> ou une\n                        <strong>vulnérabilité</strong> à un élément (feu, froid, toxines, gaz, etc.). Sans cette\n                        mention explicite, aucune espèce n'est résistante ni vulnérable : les dégâts directs sont\n                        réduits par l'armure puis la Constitution (§23.1), sans distinction d'élément.\n                    </p>\n                    <div class=\"callout-body\">\n                        &bull; <strong>Résistance (élément) :</strong> les dégâts directs de cet élément sont réduits\n                        du montant indiqué, <strong>après l'armure et avant la Constitution</strong>. Les dégâts\n                        résiduels du même élément démarrent à -1 (minimum 1).<br>\n                        &bull; <strong>Vulnérabilité (élément) :</strong> +1 dégât subi de cet élément (appliqué\n                        après réductions) ; -2 aux épreuves de Constitution contre cet élément, sauf mention\n                        contraire.<br>\n                        &bull; <strong>Non-cumul :</strong> un personnage ne choisit qu'un seul don racial à la\n                        création ; si deux sources accordent une résistance au même élément, seule la plus forte\n                        s'applique.\n                    </div>\n\n                    <!-- ================= CHAPITRE 28 ================= -->\n                    "
+    }
+   ]
+  },
+  {
+   "id": "chap-24",
+   "symbole": "Chapitre 24.",
+   "titre": "Compendium Officiel des 16 États & Effets Tactiques",
+   "blocs": [
+    {
+     "type": "html",
+     "html": "\n\n                    <p>\n                        Les états modifient profondément ta capacité d'action. Et ils sont tous\n                        cumulatifs : un état n'en chasse pas un autre, leurs effets s'additionnent.\n                        Exemple : si tu es Déstabilisé (−2) et Étourdi (−1), ton prochain jet prend\n                        −3. Ils sont rangés en quatre familles : <strong>états préjudiciables</strong>,\n                        <strong>états bénéfiques (buffs)</strong>, <strong>statuts vitaux</strong> et\n                        <strong>états matériels</strong>.\n                    </p>\n\n                    <h3 id=\"sec-24-1\">24.1 États Préjudiciables & Afflictions en Combat</h3>\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "etats_prejudiciables"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <h3 id=\"sec-24-1bis\">24.1bis États à Dégâts Résiduels (DoT) : tick, aggravation, soin</h3>\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "etats_dot"
+    },
+    {
+     "type": "html",
+     "html": "\n                    <p>\n                        <strong>Aggravation :</strong> un résiduel aggravé (ex : <a class=\"rule-ref\" href=\"#sec-24-1bis\" data-tip=\"Résiduel aggravé : dégâts doublés, +1/tour au lieu de décroître. Seul un soin l’arrête.\">Hémorragie Profonde</a>) inflige\n                        le double et <strong>croît de +1/tour</strong> au lieu de décroître — seul un soin l'arrête.\n                        <strong>Chute à 0 PV par DoT :</strong> résolution via l'arbre standard (Dernier Souffle possible).\n                    </p>\n\n                    <h3>24.2 États Bénéfiques (Buffs) & Amplificateurs</h3>\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "etats_benefiques"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <h3 id=\"sec-24-3\">24.3 Statuts Vitaux Majeurs : Souffrant, Inconscient & Mort</h3>\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "statuts_vitaux"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <h3>24.4 Les Effets Spéciaux Déclenchés sur Épreuve</h3>\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "effets_epreuve"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <h3>24.5 Les 5 États des Objets & Équipements</h3>\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "etats_objets"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <!-- ================= CHAPITRE 29 ================= -->\n                    "
+    }
+   ]
+  },
+  {
+   "id": "chap-25",
+   "symbole": "Chapitre 25.",
+   "titre": "Premiers Soins, Convalescence & Résurrection",
+   "blocs": [
+    {
+     "type": "html",
+     "html": "\n\n                    <p>\n                        Face aux traumatismes du champ de bataille, la médecine d'urgence repose sur la compétence\n                        <strong>Premiers Soins</strong> (liée à l'Érudition ou à l'Intelligence).\n                    </p>\n\n                    <h3>25.1 Protocole de Premiers Soins d'Urgence</h3>\n                    <ul>\n                        <li><strong>Temps d'Action :</strong> Réaliser des premiers soins en combat nécessite <strong>3\n                                PA</strong> d'immobilisation au chevet du blessé.</li>\n                        <li><strong>Stabiliser un Agonisant :</strong> Une réussite sur une épreuve de Premiers Soins\n                            (Difficulté 12) stoppe l'hémorragie et ramène un <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"Agonisant : aucune action raisonnée, fuite de 6 cases (1d8). Persiste jusqu’à stabilisation médicale.\">agonisant</a> à l'état <a class=\"rule-ref\" href=\"#sec-24-3\" data-tip=\"Inconscient : aucune action ni réaction. Réveil par secousse vigoureuse (1 PA) ou premiers soins.\">Inconscient stable</a>.</li>\n                        <li><strong>Levée de l'État Souffrant :</strong> Pour refermer une blessure critique, le médecin\n                            doit obtenir un score suffisant pour soigner en une seule fois une quantité de dégâts égale\n                            ou supérieure à <strong><span class=\"hl-ruby\">Constitution &times; 2</span></strong> de la\n                            victime.</li>\n                    </ul>\n\n                    <h3>25.2 Convalescence Naturelle vs Soins Arcaniques</h3>\n                    <p>\n                        Le repos physiologique permet au corps de réparer ses tissus selon un rythme biologique régulier\n                        :\n                    </p>\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "recuperation_quotidienne"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <h3>25.3 La Règle de Résurrection & Le Poids du Trépas</h3>\n                    <p>\n                        Dans le Système RP, ramener un être d'entre les morts n'est jamais un acte anodin. Si une magie\n                        suprême ou une réanimation d'urgence parvient à réinsuffler la vie dans un cadavre :\n                    </p>\n                    <div class=\"callout ruby\"\n                        style=\"border-left: 4px solid var(--ruby-danger); background: rgba(244, 63, 94, 0.05); padding: 15px 20px; margin: 20px 0;\">\n                        <div class=\"callout-header\"\n                            style=\"color: var(--ruby-danger); font-weight: 700; display: flex; align-items: center; gap: 8px;\">\n                            <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\"\n                                stroke-width=\"2\">\n                                <path\n                                    d=\"M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z\" />\n                                <line x1=\"12\" y1=\"9\" x2=\"12\" y2=\"13\" />\n                                <line x1=\"12\" y1=\"17\" x2=\"12.01\" y2=\"17\" />\n                            </svg>\n                            Le Poids du Retour à la Vie (Séquelle Post-Mortem)\n                        </div>\n                        <div class=\"callout-body\">\n                            Le ressuscité subit une <strong>pénalité de -1 ec sur l'ensemble de ses épreuves</strong>\n                            pendant un nombre de jours réels égal à :\n                            <div\n                                style=\"margin: 10px 0; font-family: 'JetBrains Mono', monospace; font-weight: 700; color: var(--ruby-danger);\">\n                                <span class=\"hl-ruby\">Durée de Convalescence</span> = 10 &minus; <span\n                                    class=\"hl-gold\">Constitution</span> (en jours)\n                            </div>\n                            Un personnage doté d'une Constitution d'acier (ex: 5) ne souffrira que pendant 5 jours,\n                            tandis qu'un être fragile (Constitution 1) restera affaibli durant 9 longues journées avant\n                            que son âme ne soit pleinement réancrée dans sa chair.\n                        </div>\n                    </div>\n\n                    <!-- ================= CHAPITRE 26 ================= -->\n                    "
+    }
+   ]
+  },
+  {
+   "id": "chap-26",
+   "symbole": "Chapitre 26.",
+   "titre": "Générateur de Pathologies (nom libre, composition codifiée)",
+   "blocs": [
+    {
+     "type": "html",
+     "html": "\n\n                    <p>\n                        Une maladie peut porter <strong>n'importe quel nom</strong> (fluff) : ce qui compte à la table,\n                        c'est sa <strong>signature mécanique</strong> — 7 blocs qui la rendent générative et rejouable\n                        avec les règles existantes (DoT §24.1bis, états §24.1, seuils Con&times;2 / Con&times;5 §23,\n                        Premiers Soins §25.1, résistances §23.4, pharmacopée Livre VIII §33.3). Le MJ tire ou choisit\n                        chaque bloc, puis remplit la fiche-type.\n                    </p>\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "fiche_pathologie"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <h3>26.1 Nature de l'agent (détermine ce qui soigne)</h3>\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "agents_pathogenes"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <h3>26.2 Transmission, contagiosité, virulence, incubation</h3>\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "transmission"
+    },
+    {
+     "type": "html",
+     "html": "\n                    <p>\n                        <strong>Virulence (difficulté CON) :</strong> bénigne 6 · commune 10 · sévère 14 · grave 18 ·\n                        mortelle 22+. <strong>Incubation :</strong> 1d6 heures (aiguë), 1d6 jours (lente), ou\n                        1 épisode narratif (arcanique). Pendant l'incubation : aucun symptôme, mais contagiosité selon\n                        vecteur ci-dessus. Résistances raciales §23.4 et Livre I §2.2 s'appliquent\n                        (ex : Gueule des Mines +2 CON immunitaire, Sang-Chaud de Cléia vs chaleur).\n                    </p>\n\n                    <h3>26.3 Stades : durée, transition, effets système</h3>\n                    <p>\n                        Chaque stade = <strong>durée + 1 à 2 effets système + transition</strong>. Transition par défaut :\n                        durée écoulée &rarr; épreuve CON vs Virulence : <strong>réussite = rémission</strong> (stade&minus;1\n                        ou guérison si stade 1), <strong>échec = aggravation</strong> (stade+1). Soin adapté avant l'échéance\n                        = bonus +2 au jet ou rémission directe (MJ).\n                    </p>\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "stades_maladie"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <h3>26.4 Diagnostic, traitement, terrain, issues</h3>\n                    <ul>\n                        <li><strong>Diagnostic :</strong> symptômes visibles = Érudition / Premiers Soins dif. 8–12 ;\n                            nature exacte + stade = dif. Virulence (labo / rituel +4 si arcanique). Échec = 1 stade de retard au diagnostic.</li>\n                        <li><strong>Traitement :</strong> Premiers Soins (3 PA, §25.1) dif. = Virulence ; kit requis\n                            (chirurgie si parasitaire, extinction si En Feu, désobstruction si Asphyxie) ; seringues\n                            (Livre VIII §33.3) rendent des PV mais <strong>ne lèvent pas le DoT pathologique</strong>\n                            (cf. §24.1bis : Empoisonné/Feu/Asphyxie exigent traitement dédié) ; convalescence\n                            Con + Endurance / nuit (§25.2).</li>\n                        <li><strong>Terrain :</strong> CON 1–2 : +1 stade initial ; résistances raciales §23.4\n                            (résiduel à &minus;1, +2 CON vs élément) ; Automates : immunisés aux organiques sauf mention.</li>\n                        <li><strong>Issues :</strong> guérison (immunité 1d6 mois / souche), <strong>porteur sain</strong>\n                            (contagieux sans symptômes), <strong>chronicité</strong> (stade 2 permanent, crises au stress),\n                            <strong>séquelles</strong> (&minus;1 ec pendant 10&minus;Con jours comme §25.3, ou cicatrice :\n                            &minus;1 <a class=\"rule-ref\" href=\"#sec-23-2\" data-tip=\"Encaissement = CON × 2 : seuil comparé aux dégâts du coup (§23.2).\">Encaissement</a>), <strong>mort</strong> via Con&times;5 / arbre 0 PV.</li>\n                        <li><strong>Mutation (option MJ) :</strong> à chaque nouvelle zone, 1d6 : 1–4 souche stable,\n                            5 virulence +2, 6 nouveau vecteur ou résistance au traitement précédent.</li>\n                    </ul>\n\n                    <h3>26.5 Exemples prêts à jouer</h3>\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "maladies_exemples"
+    },
+    {
+     "type": "html",
+     "html": "\n                    <p>\n                        <strong>Procédure de table :</strong> 1) exposition &rarr; jet CON vs Virulence ;\n                        2) si infecté, note incubation ; 3) à chaque échéance de stade, jet CON (rémission / aggravation) ;\n                        4) soins = bonus ou rémission ; 5) quarantaine du groupe = pas de jet secondaire.\n                        Voir pharmacopée : <a href=\"livre_8.html#chap-33\">Livre VIII §33.3</a>.\n                    </p>\n\n                    <div class=\"codex-signature\">\n                        <div class=\"sig-meta\">\n                            <strong>LIVRE VI DU CODEX UNIVERSEL</strong><br>\n                            Traumatologie, Compendium des 16 États & Chirurgie de Champ de Bataille<br>\n                            <em>Validé par les chirurgiens impériaux et les guérisseurs de la Cinquième Force.</em>\n                        </div>\n                        <div class=\"sig-stamp\">\n                            <span class=\"stamp-title\">STATUT BIOLOGIQUE</span>\n                            <span class=\"stamp-date\">HOMOLOGUÉ // PRÊT POUR LA TABLE</span>\n                        </div>\n                    </div>\n\n                    <!-- PAGINATION ENTRE LIVRES -->\n                    <div class=\"chapter-pagination\">\n                        <a href=\"livre_5.html\" class=\"pagination-btn\">\n                            <div>\n                                <div class=\"pagination-label\">Livre Précédent</div>\n                                <div class=\"pagination-title\">← Livre V : Combat Tactique</div>\n                            </div>\n                        </a>\n                        <a href=\"livre_7.html\" class=\"pagination-btn\">\n                            <div>\n                                <div class=\"pagination-label\">Livre Suivant</div>\n                                <div class=\"pagination-title\">Livre VII : Historiques &amp; Passés →</div>\n                            </div>\n                        </a>\n                    </div>\n\n                "
+    }
+   ]
+  }
+ ],
+ "donnees": {
+  "seuils_survie": {
+   "type": "cartes",
+   "grille": 2,
+   "cartes": [
+    {
+     "titre": "<span>Capacité d'Encaissement</span>\n                                <span class=\"pill-badge cyan\">Seuil d'Encaissement</span>",
+     "top": false,
+     "monde": "Physiologie // Musculature & Densité Osseuse",
+     "corps_brut": "\n                            <div class=\"formula-math\" style=\"font-size: 1.25em; margin: 15px 0;\">\n                                <span class=\"hl-cyan\">Capacité d'Encaissement</span> = <span\n                                    class=\"hl-gold\">Constitution</span> &times; 2\n                            </div>\n                            <p>\n                                C'est la quantité maximale de dégâts accumulés sur une même zone anatomique qu'un corps\n                                peut supporter sans défaillance structurelle. Dès que les dégâts cumulés sur une zone\n                                dépassent ce seuil, le personnage subit un <strong>Choc Traumatique</strong> : il gagne\n                                immédiatement <strong>+1 Essoufflement</strong> et doit réussir une épreuve de\n                                Constitution pour ne pas s'effondrer.\n                            </p>\n                            ",
+     "pieds": [
+      {
+       "ton": "cyan",
+       "texte": "Choc Traumatique à > Con &times; 2"
+      }
+     ]
+    },
+    {
+     "titre": "<span>Maximum Létal</span>\n                                <span class=\"pill-badge ruby\">Seuil Critique Absolu</span>",
+     "top": false,
+     "monde": "Physiologie // Rupture Organique Totale",
+     "corps_brut": "\n                            <div class=\"formula-math\" style=\"font-size: 1.25em; margin: 15px 0;\">\n                                <span class=\"hl-ruby\">Maximum Létal</span> = <span class=\"hl-gold\">Constitution</span>\n                                &times; 5\n                            </div>\n                            <p>\n                                Le seuil au-delà duquel les fonctions vitales cessent immédiatement. Si le total de\n                                dégâts subis par un personnage atteint ou dépasse <span class=\"hl-ruby\">Constitution\n                                    &times; 5</span>, le sujet bascule immédiatement dans l'état <strong>Mort</strong>\n                                (ou nécessite l'activation immédiate d'un <a class=\"rule-ref\" href=\"#sec-23-3\" data-tip=\"Point de Miracle : dévie un coup mortel, survie à 1 PV sous le seuil létal. Rachat : 20 XP ou jalon MJ.\">Point de Miracle</a> pour être stabilisé\n                                in extremis à l'état <strong>Agonisant</strong>).\n                            </p>\n                            ",
+     "pieds": [
+      {
+       "ton": "ruby",
+       "texte": "Arrêt Cardiaque / Trépas"
+      }
+     ]
+    }
+   ]
+  },
+  "types_degats": {
+   "type": "table",
+   "colonnes": [
+    "Type de Dégâts",
+    "Définition & Mécanique",
+    "Interaction avec la Constitution & l'Armure"
+   ],
+   "lignes": [
+    [
+     "<strong>Dégâts Directs (Physiques)</strong>",
+     "Impact direct d'une lame, d'un projectile ou d'une onde de choc.",
+     "Réduits par l'<strong>Armure</strong> puis par la <strong>Constitution</strong>\n                                        de la cible. Si le différentiel après réduction est &le; 0, le personnage\n                                        encaisse sans dommage."
+    ],
+    [
+     "<strong>Dégâts Résiduels (Continus)</strong>",
+     "Hémorragie active (Saignement), brûlures persistantes (En Feu), toxines\n                                        (Empoisonné) ou suffocation (Asphyxie). Posés avec une <strong>valeur\n                                            dégressive</strong> (ex : 3 résiduels).",
+     "<strong>Tick en début du tour personnel</strong> de la victime : elle subit la\n                                        valeur résiduelle en PV (ex : 3 PV), puis la valeur <strong>décroît de 1</strong>\n                                        (3 → 2 → 1 → 0 = disparition du statut). <strong>Ignorent l'armure</strong> ;\n                                        En Feu traverse le <strong>bouclier</strong> d'abord ; Asphyxie draine aussi\n                                        <strong>1 PA</strong>. Tout <strong>soin stoppe le Saignement</strong>\n                                        (bandage, seringue, premiers soins) ; Empoisonné / En Feu / Asphyxie exigent un\n                                        traitement dédié (kit de chirurgie, extinction, désobstruction). Sans soin, un\n                                        résiduel <strong>aggravé</strong> (ex : Hémorragie Profonde) croît de +1/tour\n                                        au lieu de décroître."
+    ],
+    [
+     "<strong>Dégâts Absolus (Arcaniques)</strong>",
+     "Ondes gravitationnelles de Cinquième Force, compression subquantique.",
+     "<strong>Ignorent totalement</strong> l'armure physique et la Constitution !\n                                        Chaque point de dégât absolu est déduit directement de la jauge vitale."
+    ]
+   ],
+   "classe": "data-table"
+  },
+  "etats_prejudiciables": {
+   "type": "table",
+   "colonnes": [
+    "État",
+    "Description Physiologique",
+    "Malus & Impact Mécanique",
+    "Durée Typique"
+   ],
+   "lignes": [
+    [
+     "<span class=\"table-badge ruby\">Déstabilisé</span>",
+     "Une créature est physiquement débalancée suite à un impact lourd.",
+     "<strong>-2 ec</strong> (épreuves de compétence), vitesse de déplacement réduite\n                                        à rampante (1 case = 2 PA).",
+     "Variable (1 à 6 tours en combat)."
+    ],
+    [
+     "<span class=\"table-badge ruby\">Étourdi</span>",
+     "Une créature a la tête qui tourne ou le regard trouble.",
+     "<strong>-1 ec</strong> sur tous les jets.",
+     "Variable (1 à 20 tours en combat)."
+    ],
+    [
+     "<span class=\"table-badge ruby\">Immobilisé</span>",
+     "Une créature est entravée, prise au piège ou gelée sur place.",
+     "<strong>Désavantage :</strong> Impossible d'effectuer la moindre action de\n                                        mouvement.",
+     "Variable (1 à 6 tours en combat)."
+    ],
+    [
+     "<span class=\"table-badge ruby\">Paralysé</span>",
+     "Système nerveux totalement tétanisé par un choc électrique ou mental.",
+     "<strong>Incapacité Totale :</strong> Ne peut faire aucune action ni réaction.",
+     "Court (1 à 2 tours en combat)."
+    ],
+    [
+     "<span class=\"table-badge ruby\">Sonné</span>",
+     "Commotion violente combinant paralysie et perte de conscience brève.",
+     "Ne peut faire aucune action. <strong>La créature tombe immédiatement à\n                                            terre</strong> à son tour.",
+     "Court (1 à 2 tours en combat)."
+    ],
+    [
+     "<span class=\"table-badge ruby\">À terre</span>",
+     "Une créature est étendue sur le sol ou agenouillée.",
+     "<strong>-1 ec</strong> aux épreuves d'attaque, <strong>-2</strong>\n                                        en défense. Déplacement : <strong>+1 PA par case</strong> (1 case = 2 PA).",
+     "Jusqu'à ce que la créature dépense ses PA pour se relever."
+    ],
+    [
+     "<span class=\"table-badge ruby\">Ralenti</span>",
+     "Ralentissement musculaire ou distorsion gravitationnelle locale.",
+     "<strong>Toute action coûte le DOUBLE de PA</strong> (ex: bouger d'une case coûte\n                                        2 PA au lieu d'1).",
+     "Variable (1 à 5 tours en combat)."
+    ],
+    [
+     "<span class=\"table-badge ruby\">Agonisant</span>",
+     "La créature a perdu ses moyens vitaux et panique nerveusement.",
+     "Ne peut prendre aucune action raisonnée. Le personnage fuit en courant de\n                                        <strong>6 cases</strong> dans une direction aléatoire (1d8).",
+     "Jusqu'à stabilisation médicale."
+    ],
+    [
+     "<span class=\"table-badge ruby\">Canon Entravé</span>",
+     "Contrainte spatiale d'encombrement : arme longue tenue avec un ennemi adjacent (dist 1).",
+     "<strong>-2 au tir</strong> balistique (annulable pour +1 PA de visée de rétention). Parade à l'arme pénalisée d'un niveau de dé sans spécialisation.",
+     "Tant qu'un adversaire conscient occupe un hexagone adjacent."
+    ]
+   ],
+   "classe": "data-table"
+  },
+  "etats_dot": {
+   "type": "table",
+   "colonnes": [
+    "État",
+    "Tick en début de tour personnel",
+    "Soin / Dissipation"
+   ],
+   "lignes": [
+    [
+     "<span class=\"table-badge ruby\">Saignement</span>",
+     "Valeur résiduelle en PV directs (ignore armure et bouclier), puis −1/tour.\n                                        Sans valeur posée : 1 PV/tour. Ex : Frappe Jugulaire = entraînements en résiduels.",
+     "<strong>Tout soin stoppe</strong> : bandage, seringue, premiers soins, Homéostasie.\n                                        Sinon persiste jusqu'à 0."
+    ],
+    [
+     "<span class=\"table-badge ruby\">Empoisonné</span>",
+     "Valeur résiduelle en PV directs (ignore armure et bouclier), puis −1/tour.\n                                        Sans valeur posée : 1 PV/tour.",
+     "Kit de chirurgie / premiers soins + kit, résine de Mina. Seringue seule : non."
+    ],
+    [
+     "<span class=\"table-badge ruby\">En Feu</span>",
+     "Valeur résiduelle (sans valeur : 2 PV/tour), <strong>bouclier d'abord</strong>,\n                                        ignore l'armure, puis −1/tour.",
+     "Extinction (kit + premiers soins), résine de Mina, Coagulation Flash. S'éteint à 0."
+    ],
+    [
+     "<span class=\"table-badge ruby\">Asphyxie</span>",
+     "Valeur résiduelle en PV (sans valeur : 1 PV/tour) <strong>+ drain de 1 PA</strong>\n                                        sur la réserve rechargée, puis −1/tour.",
+     "Désobstruction (premiers soins + kit), résine de Mina, masque en prévention."
+    ]
+   ],
+   "classe": "data-table"
+  },
+  "etats_benefiques": {
+   "type": "table",
+   "colonnes": [
+    "État",
+    "Description Arcanique / Physiologique",
+    "Bonus & Avantages Tactiques",
+    "Durée Typique"
+   ],
+   "lignes": [
+    [
+     "<span class=\"table-badge cyan\">Survolté</span>",
+     "Afflux massif d'adrénaline ou stimulation nerveuse arcanique.",
+     "<strong>+1 ec</strong> sur tous les tests, <strong>+3 PA</strong>\n                                        supplémentaires par tour !",
+     "1 à 5 tours en combat."
+    ],
+    [
+     "<span class=\"table-badge green\">En transe</span>",
+     "Harmonie synaptique parfaite, perception en temps ralenti.",
+     "<strong>+2 ec</strong> sur tous les jets, <strong>+5 PA</strong> par tour !",
+     "Court (1 à 2 tours en combat)."
+    ],
+    [
+     "<span class=\"table-badge cyan\">Accéléré</span>",
+     "Distorsion spatiale ou propulsion cinétique des membres.",
+     "<strong>Toute action de déplacement coûte la MOITIÉ des PA</strong> (arrondi au\n                                        supérieur).",
+     "1 à 2 tours en combat."
+    ],
+    [
+     "<span class=\"table-badge cyan\">Rapide</span>",
+     "Foulée amplifiée et réflexes moteurs aiguisés.",
+     "<strong>+3 PA réservés exclusivement aux déplacements</strong> à chaque tour.",
+     "1 à 6 tours en combat."
+    ],
+    [
+     "<span class=\"table-badge amber\">Lévitation / En Vol</span>",
+     "Répulsion gravitationnelle de Cinquième Force.",
+     "Déplacement aérien libre, coût de déplacement réduit de moitié (-1 ec si le\n                                        sujet n'a pas la spécialisation Aérien ou Acrobate).",
+     "Variable selon la réserve d'énergie."
+    ]
+   ],
+   "classe": "data-table"
+  },
+  "statuts_vitaux": {
+   "type": "cartes",
+   "grille": 3,
+   "cartes": [
+    {
+     "titre": "<span>Inconscient</span>\n                                <span class=\"pill-badge amber\">Inerte</span>",
+     "top": false,
+     "monde": "Statut Pur // Syncope / Sommeil",
+     "corps_attrs": " style=\"font-size: 0.9em; margin-top: 10px;\"",
+     "corps_html": "La créature est endormie ou assommée. Elle ne peut effectuer aucune action ni réaction.\n                                Elle peut être réveillée par une secousse vigoureuse (1 PA d'un allié) ou par\n                                l'application de premiers soins.",
+     "pieds": []
+    },
+    {
+     "titre": "<span>Souffrant</span>\n                                <span class=\"pill-badge ruby\">Blessure Grave</span>",
+     "top": false,
+     "monde": "Statut Pur // Traumatisme Ouvert",
+     "corps_attrs": " style=\"font-size: 0.9em; margin-top: 10px;\"",
+     "corps_html": "Le personnage souffre d'une blessure critique invalidante. <strong>Règle d'Or Médicale\n                                    :</strong> Ce statut <em>ne peut pas être guéri par des soins ordinaires</em>. Il\n                                exige une épreuve de Premiers Soins soignant d'un seul coup au moins <strong><span\n                                        class=\"hl-ruby\">Constitution &times; 2</span> dégâts</strong> !",
+     "pieds": []
+    },
+    {
+     "titre": "<span>Mort</span>\n                                <span class=\"pill-badge ruby\">Trépas Clinique</span>",
+     "top": false,
+     "monde": "Statut Pur // Arrêt Métabolique",
+     "corps_attrs": " style=\"font-size: 0.9em; margin-top: 10px;\"",
+     "corps_html": "La conscience a quitté la chair. Le sujet ne peut plus agir à moins d'un rituel\n                                arcanique de rappel de l'âme ou d'une défibrillation chirurgicale dans les 10 tours\n                                suivant le décès.",
+     "pieds": []
+    }
+   ]
+  },
+  "effets_epreuve": {
+   "type": "table",
+   "colonnes": [
+    "Effet Déclenché",
+    "Prérequis & Différentiel",
+    "Conséquence Immédiate sur la Cible"
+   ],
+   "lignes": [
+    [
+     "<strong>Repousser</strong>",
+     "Différentiel de 1+ en corps-à-corps ou magie",
+     "La cible est repoussée d'autant de cases que le différentiel (max 1 case par\n                                        niveau d'entraînement)."
+    ],
+    [
+     "<strong>Refoulement (Push-Kick)</strong>",
+     "Arts Martiaux au contact + Choc (&gt; CON &times; 2), Critique ou Diff &ge; 4",
+     "La cible est repoussée d'1 case en arrière (Distance = 2), brisant l'état <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"Canon Entravé : arme longue + ennemi adjacent = −2 au tir (annulable pour +1 PA de visée).\">Canon Entravé</a>. Si la trajectoire est bloquée par un obstacle, la cible subit l'état <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).\">Déstabilisé</a>."
+    ],
+    [
+     "<strong>Attirer</strong>",
+     "Différentiel de 1+ avec grappin ou télékinésie",
+     "La cible est attirée vers l'origine d'autant de cases que le différentiel ou\n                                        l'entraînement."
+    ],
+    [
+     "<strong>Saigner</strong>",
+     "Différentiel de 5+ avec arme tranchante/perforante",
+     "Inflige des <strong>dégâts résiduels</strong> continus égaux au niveau\n                                        d'entraînement à chaque tour."
+    ],
+    [
+     "<strong>Brûler</strong>",
+     "Différentiel de 5+ avec feu ou plasma",
+     "La cible prend feu et subit des dégâts de brûlure pendant 1 à 3 tours\n                                        consécutifs."
+    ],
+    [
+     "<strong>Désarmer</strong>",
+     "Différentiel de 5+ et 3 entraînements martiaux",
+     "L'arme tenue par la cible vole à 2 cases d'elle au sol."
+    ],
+    [
+     "<strong>Assommer</strong>",
+     "Différentiel de 10+ et visée crânienne (niveau 2)",
+     "La cible bascule immédiatement dans l'état <strong>Inconscient</strong> pour 1\n                                        tour minimum."
+    ],
+    [
+     "<strong>Posséder</strong>",
+     "Différentiel de 10+ en Magie de l'Esprit",
+     "Prend le contrôle des actions de la créature pendant 1 tour. Amnésie totale de\n                                        la victime."
+    ],
+    [
+     "<strong>Désintégrer</strong>",
+     "Différentiel de 20+ et Spécialisation Destruction 6",
+     "<strong>Mort instantanée et totale :</strong> la matière de la cible est\n                                        vaporisée sans laisser de dépouille."
+    ]
+   ],
+   "classe": "data-table"
+  },
+  "etats_objets": {
+   "type": "cartes",
+   "grille": 2,
+   "cartes": [
+    {
+     "titre": "<span>Parfait État & Endommagé</span>\n                                <span class=\"pill-badge green\">Opérationnel</span>",
+     "top": false,
+     "corps_tag": "ul",
+     "corps_attrs": " style=\"padding-left: 15px; margin-top: 10px; font-size: 0.9em;\"",
+     "corps_html": "<li><strong>Parfait État :</strong> L'objet est totalement neuf ou réparé à 100%.\n                                    Rendement maximal.</li>\n                                <li><strong>Endommagé :</strong> L'objet a encaissé des impacts ou de l'usure, mais\n                                    conserve toutes ses fonctions nominales.</li>",
+     "pieds": []
+    },
+    {
+     "titre": "<span>Jammé, Détruit & Anéanti</span>\n                                <span class=\"pill-badge ruby\">Hors-Service</span>",
+     "top": false,
+     "corps_tag": "ul",
+     "corps_attrs": " style=\"padding-left: 15px; margin-top: 10px; font-size: 0.9em;\"",
+     "corps_html": "<li><strong>Jammé (Enrayé) :</strong> Inutilisable temporairement, mais réparable sur le\n                                    terrain en dépensant <strong>2 PA</strong>.</li>\n                                <li><strong>Détruit :</strong> En morceaux et inutilisable, mais restaurable en atelier\n                                    avec pièces de rechange.</li>\n                                <li><strong>Anéanti :</strong> Totalement pulvérisé, irrécupérable et irréparable.</li>",
+     "pieds": []
+    }
+   ]
+  },
+  "recuperation_quotidienne": {
+   "type": "formule",
+   "etiquette_tag": "div",
+   "etiquette_classe": "formula-label",
+   "etiquette_html": "Taux de Récupération Quotidien",
+   "math_html": "<span class=\"hl-emerald\">Dégâts Récupérés par Nuit</span> = <span\n                                class=\"hl-gold\">Constitution</span> + Niveau d'Endurance",
+   "desc_html": "Une nuit de sommeil complète en lieu sûr régénère un montant de dégâts égal à la\n                            Constitution plus le niveau dans la compétence Endurance. Les soins magiques de Cinquième\n                            Force accélèrent ce processus en échange de points d'énergie arcanique.",
+   "contenu": false
+  },
+  "fiche_pathologie": {
+   "type": "formule",
+   "etiquette_tag": "div",
+   "etiquette_classe": "formula-label",
+   "etiquette_html": "Fiche-type pathologie (signature)",
+   "math_html": "Nom libre + [Nature | Transmission | Virulence (dif. CON) | Incubation | Stades (durée + effets système) | Diagnostic / Traitement | Terrain & Issues]",
+   "desc_html": "Effets exprimés <strong>uniquement</strong> en vocabulaire système : dégâts résiduels\n                            (Saignement / Empoisonné / En Feu / Asphyxie), états du chap. 24, &minus;ec, drain PA,\n                            +Essoufflement, seuils Con&times;2 / Con&times;5. Max conseillé : <strong>4 stades</strong>.",
+   "math_attrs": " style=\"font-size: 0.95em;\"",
+   "contenu": false
+  },
+  "agents_pathogenes": {
+   "type": "table",
+   "colonnes": [
+    "Nature (d6)",
+    "Exemples",
+    "Traitement efficace",
+    "Inefficace / note"
+   ],
+   "lignes": [
+    [
+     "<strong>1 — Bactérien</strong>",
+     "Peste des tranchées, choléra des docks",
+     "Premiers Soins + kit, antibiotiques / résine de Mina",
+     "Seringue de soins seule : PV rendus mais DoT persiste"
+    ],
+    [
+     "<strong>2 — Viral</strong>",
+     "Fièvre des brumes, grippe de cale",
+     "Repos + soins de soutien ; vaccin en prévention",
+     "Antibiotiques : aucun effet ; seringue seule : non curative"
+    ],
+    [
+     "<strong>3 — Parasitaire / Fongique</strong>",
+     "Ver des sables, moisissure d'Hybris",
+     "Chirurgie / extraction + Premiers Soins",
+     "Masque seul insuffisant si ingestion"
+    ],
+    [
+     "<strong>4 — Toxique / Prion</strong>",
+     "Mal des mineurs, tremblante",
+     "Kit de chirurgie, dialyse arcanique ; séquelles fréquentes",
+     "Souvent incurable au stade 3+ : stabilisation seule"
+    ],
+    [
+     "<strong>5 — Arcanique (5e Force)</strong>",
+     "Peste de Nynth, souffle cendré",
+     "Magie / rituel + résine de Mina ; Coagulation Flash si En Feu",
+     "Médecine mundane : stabilise, ne guérit pas"
+    ],
+    [
+     "<strong>6 — Nanotech / Cyber</strong>",
+     "Rouille grise, code dormant",
+     "Atelier + purge EM ; Automates : immunisés sauf mention",
+     "Premiers Soins organiques : diagnostic seul"
+    ]
+   ],
+   "classe": "data-table"
+  },
+  "transmission": {
+   "type": "table",
+   "colonnes": [
+    "Vecteur",
+    "Jet de contamination",
+    "Période contagieuse"
+   ],
+   "lignes": [
+    [
+     "<strong>Contact / gouttelettes</strong>",
+     {
+      "attrs": " rowspan=\"4\"",
+      "html": "Épreuve de <strong>Constitution vs Virulence</strong> (difficulté 0–34, Livre II §7) à chaque exposition franche. Masque / combinaison / quarantaine : +2 à +4 au jet ou pas de jet."
+     },
+     "Stade symptomatique uniquement"
+    ],
+    [
+     "<strong>Aérien (aérosol)</strong>",
+     "Incubation + stade 1 compris (silencieuse)"
+    ],
+    [
+     "<strong>Sang / eau / nourriture</strong>",
+     "Uniquement lors du partage (blessure ouverte, repas commun)"
+    ],
+    [
+     "<strong>Vecteur animal / arcanique</strong>",
+     "Zone ou relique contaminée : 1 jet / scène d'exposition"
+    ]
+   ],
+   "classe": "data-table"
+  },
+  "stades_maladie": {
+   "type": "table",
+   "colonnes": [
+    "Stade",
+    "Durée type",
+    "Effets (choisir 1–2, vocabulaire système)"
+   ],
+   "lignes": [
+    [
+     "<strong>1 — Prodrome</strong>",
+     "1–2 jours",
+     "&minus;1 ec ciblé (ex : FOR) ; <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"Étourdi : −1 ec sur tous les jets.\">Étourdi</a> intermittent ; 1 résiduel <a class=\"rule-ref\" href=\"#sec-24-1bis\" data-tip=\"Empoisonné : PV directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonné</a>/jour"
+    ],
+    [
+     "<strong>2 — Déclaré</strong>",
+     "2–3 jours",
+     "<a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).\">Déstabilisé</a> ou <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"Ralenti : toute action coûte le double de PA.\">Ralenti</a> ; 1–2 résiduels <a class=\"rule-ref\" href=\"#sec-24-1bis\" data-tip=\"Empoisonné : PV directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonné</a>/tick repos ; drain 1 PA (si respiratoire : <a class=\"rule-ref\" href=\"#sec-24-1bis\" data-tip=\"Asphyxie : PV + drain de 1 PA par tour. Soin : désobstruction (premiers soins + kit).\">Asphyxie</a>)"
+    ],
+    [
+     "<strong>3 — Grave</strong>",
+     "1–3 jours",
+     "<a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"Agonisant : aucune action raisonnée, fuite de 6 cases (1d8). Persiste jusqu’à stabilisation médicale.\">Agonisant</a> partiel (fuite impossible, prostré) ou <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À terre</a> ; DoT aggravé (+1/tour) ; statut <a class=\"rule-ref\" href=\"#sec-24-3\" data-tip=\"Souffrant : seul un soin unique ≥ CON×2 le lève. Les soins ordinaires ne le lèvent jamais.\">Souffrant</a> (levée : soin Con&times;2 en une fois, §24.3)"
+    ],
+    [
+     "<strong>4 — Terminal</strong>",
+     "Heures",
+     "Chute à 0 PV : arbre §23.2 ; atteinte Con&times;5 = <a class=\"rule-ref\" href=\"#sec-24-3\" data-tip=\"Mort : retour possible par rituel arcanique ou défibrillation sous 10 tours.\">Mort</a> ; Point de Miracle applicable"
+    ]
+   ],
+   "classe": "data-table"
+  },
+  "maladies_exemples": {
+   "type": "cartes",
+   "grille": 2,
+   "cartes": [
+    {
+     "titre": "<span>Fièvre des Brumes (virale, commune)</span>\n                                <span class=\"pill-badge green\">Virulence 10</span>",
+     "top": false,
+     "monde": "Aérien // Incubation 1d6 jours, contagieuse",
+     "corps_attrs": " style=\"font-size: 0.9em; margin-top: 10px;\"",
+     "corps_html": "S1 (2 j) : &minus;1 ec FOR, <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"Étourdi : −1 ec sur tous les jets.\">Étourdi</a>. S2 (3 j) : <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"Ralenti : toute action coûte le double de PA.\">Ralenti</a>, 1 résiduel\n                                <a class=\"rule-ref\" href=\"#sec-24-1bis\" data-tip=\"Empoisonné : PV directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonné</a>/jour. S3 : <a class=\"rule-ref\" href=\"#sec-24-3\" data-tip=\"Souffrant : seul un soin unique ≥ CON×2 le lève. Les soins ordinaires ne le lèvent jamais.\">Souffrant</a> si échec CON. Traitement : repos +\n                                Premiers Soins dif. 10 ; seringue 5 PV : symptômes seuls. Guérison : immunité 6 mois.",
+     "pieds": []
+    },
+    {
+     "titre": "<span>Peste de Nynth (arcanique, grave)</span>\n                                <span class=\"pill-badge ruby\">Virulence 18</span>",
+     "top": false,
+     "monde": "Relique / aérosol // Incubation 1 épisode",
+     "corps_attrs": " style=\"font-size: 0.9em; margin-top: 10px;\"",
+     "corps_html": "S1 : &minus;1 ec global. S2 : <a class=\"rule-ref\" href=\"#sec-24-1bis\" data-tip=\"Asphyxie : PV + drain de 1 PA par tour. Soin : désobstruction (premiers soins + kit).\">Asphyxie</a> 1 + drain 1 PA. S3 : DoT aggravé,\n                                <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"Agonisant : aucune action raisonnée, fuite de 6 cases (1d8). Persiste jusqu’à stabilisation médicale.\">Agonisant</a>. Médecine mundane : stabilise (dif. 18) ; guérison : rituel + résine\n                                de Mina. Mutation sur 6 : devient contact direct.",
+     "pieds": []
+    }
+   ]
+  }
+ },
+ "tableaux": {
+  "types_degats": {
+   "colonnes": [
+    "Type de Dégâts",
+    "Définition & Mécanique",
+    "Interaction avec la Constitution & l'Armure"
+   ]
+  },
+  "etats_prejudiciables": {
+   "colonnes": [
+    "État",
+    "Description Physiologique",
+    "Malus & Impact Mécanique",
+    "Durée Typique"
+   ]
+  },
+  "etats_dot": {
+   "colonnes": [
+    "État",
+    "Tick en début de tour personnel",
+    "Soin / Dissipation"
+   ]
+  },
+  "etats_benefiques": {
+   "colonnes": [
+    "État",
+    "Description Arcanique / Physiologique",
+    "Bonus & Avantages Tactiques",
+    "Durée Typique"
+   ]
+  },
+  "effets_epreuve": {
+   "colonnes": [
+    "Effet Déclenché",
+    "Prérequis & Différentiel",
+    "Conséquence Immédiate sur la Cible"
+   ]
+  },
+  "agents_pathogenes": {
+   "colonnes": [
+    "Nature (d6)",
+    "Exemples",
+    "Traitement efficace",
+    "Inefficace / note"
+   ]
+  },
+  "transmission": {
+   "colonnes": [
+    "Vecteur",
+    "Jet de contamination",
+    "Période contagieuse"
+   ]
+  },
+  "stades_maladie": {
+   "colonnes": [
+    "Stade",
+    "Durée type",
+    "Effets (choisir 1–2, vocabulaire système)"
+   ]
+  }
+ },
+ "mecaniques": {
+  "note": "Genere depuis livre_6.html (motif RP-075/Livre II). Source unique : regenerer.",
+  "types_degats": [
+   {
+    "type": "Dégâts Directs (Physiques)",
+    "definition": "Impact direct d'une lame, d'un projectile ou d'une onde de choc.",
+    "interaction": "Réduits par l'Armure puis par la Constitution de la cible. Si le différentiel après réduction est ≤ 0, le personnage encaisse sans dommage."
+   },
+   {
+    "type": "Dégâts Résiduels (Continus)",
+    "definition": "Hémorragie active (Saignement), brûlures persistantes (En Feu), toxines (Empoisonné) ou suffocation (Asphyxie). Posés avec une valeur dégressive (ex : 3 résiduels).",
+    "interaction": "Tick en début du tour personnel de la victime : elle subit la valeur résiduelle en PV (ex : 3 PV), puis la valeur décroît de 1 (3 → 2 → 1 → 0 = disparition du statut). Ignorent l'armure ; En Feu traverse le bouclier d'abord ; Asphyxie draine aussi 1 PA. Tout soin stoppe le Saignement (bandage, seringue, premiers soins) ; Empoisonné / En Feu / Asphyxie exigent un traitement dédié (kit de chirurgie, extinction, désobstruction). Sans soin, un résiduel aggravé (ex : Hémorragie Profonde) croît de +1/tour au lieu de décroître."
+   },
+   {
+    "type": "Dégâts Absolus (Arcaniques)",
+    "definition": "Ondes gravitationnelles de Cinquième Force, compression subquantique.",
+    "interaction": "Ignorent totalement l'armure physique et la Constitution ! Chaque point de dégât absolu est déduit directement de la jauge vitale."
+   }
+  ],
+  "seuils_survie": [
+   {
+    "seuil": "Capacité d'Encaissement Seuil d'Encaissement",
+    "formule": "Capacité d'Encaissement = Constitution × 2 = C'est la quantité maximale de dégâts accumulés sur une même zone anatomique qu'un corps peut supporter sans défaillance structurelle. Dès que les dégâts cumulés sur une zone dépassent ce seuil, le personnage subit un Choc Traumatique : il gagne immédiatement +1 Essoufflement et doit réussir une épreuve de Constitution pour ne pas s'effondrer.",
+    "texte": "Capacité d'Encaissement = Constitution × 2 C'est la quantité maximale de dégâts accumulés sur une même zone anatomique qu'un corps peut supporter sans défaillance structurelle. Dès que les dégâts cumulés sur une zone dépassent ce seuil, le personnage subit un Choc Traumatique : il gagne immédiatement +1 Essoufflement et doit réussir une épreuve de Constitution pour ne pas s'effondrer.",
+    "role": "Choc Traumatique à > Con × 2"
+   },
+   {
+    "seuil": "Maximum Létal Seuil Critique Absolu",
+    "formule": "Maximum Létal = Constitution × 5 = Le seuil au-delà duquel les fonctions vitales cessent immédiatement. Si le total de dégâts subis par un personnage atteint ou dépasse Constitution × 5, le sujet bascule immédiatement dans l'état Mort (ou nécessite l'activation immédiate d'un Point de Miracle pour être stabilisé in extremis à l'état Agonisant).",
+    "texte": "Maximum Létal = Constitution × 5 Le seuil au-delà duquel les fonctions vitales cessent immédiatement. Si le total de dégâts subis par un personnage atteint ou dépasse Constitution × 5, le sujet bascule immédiatement dans l'état Mort (ou nécessite l'activation immédiate d'un Point de Miracle pour être stabilisé in extremis à l'état Agonisant).",
+    "role": "Arrêt Cardiaque / Trépas"
+   }
+  ],
+  "etats_prejudiciables": [
+   {
+    "etat": "Déstabilisé",
+    "description": "Une créature est physiquement débalancée suite à un impact lourd.",
+    "malus": "-2 ec (épreuves de compétence), vitesse de déplacement réduite à rampante (1 case = 2 PA).",
+    "duree": "Variable (1 à 6 tours en combat)."
+   },
+   {
+    "etat": "Étourdi",
+    "description": "Une créature a la tête qui tourne ou le regard trouble.",
+    "malus": "-1 ec sur tous les jets.",
+    "duree": "Variable (1 à 20 tours en combat)."
+   },
+   {
+    "etat": "Immobilisé",
+    "description": "Une créature est entravée, prise au piège ou gelée sur place.",
+    "malus": "Désavantage : Impossible d'effectuer la moindre action de mouvement.",
+    "duree": "Variable (1 à 6 tours en combat)."
+   },
+   {
+    "etat": "Paralysé",
+    "description": "Système nerveux totalement tétanisé par un choc électrique ou mental.",
+    "malus": "Incapacité Totale : Ne peut faire aucune action ni réaction.",
+    "duree": "Court (1 à 2 tours en combat)."
+   },
+   {
+    "etat": "Sonné",
+    "description": "Commotion violente combinant paralysie et perte de conscience brève.",
+    "malus": "Ne peut faire aucune action. La créature tombe immédiatement à terre à son tour.",
+    "duree": "Court (1 à 2 tours en combat)."
+   },
+   {
+    "etat": "À terre",
+    "description": "Une créature est étendue sur le sol ou agenouillée.",
+    "malus": "-1 ec aux épreuves d'attaque, -2 en défense. Déplacement : +1 PA par case (1 case = 2 PA).",
+    "duree": "Jusqu'à ce que la créature dépense ses PA pour se relever."
+   },
+   {
+    "etat": "Ralenti",
+    "description": "Ralentissement musculaire ou distorsion gravitationnelle locale.",
+    "malus": "Toute action coûte le DOUBLE de PA (ex: bouger d'une case coûte 2 PA au lieu d'1).",
+    "duree": "Variable (1 à 5 tours en combat)."
+   },
+   {
+    "etat": "Agonisant",
+    "description": "La créature a perdu ses moyens vitaux et panique nerveusement.",
+    "malus": "Ne peut prendre aucune action raisonnée. Le personnage fuit en courant de 6 cases dans une direction aléatoire (1d8).",
+    "duree": "Jusqu'à stabilisation médicale."
+   },
+   {
+    "etat": "Canon Entravé",
+    "description": "Contrainte spatiale d'encombrement : arme longue tenue avec un ennemi adjacent (dist 1).",
+    "malus": "-2 au tir balistique (annulable pour +1 PA de visée de rétention). Parade à l'arme pénalisée d'un niveau de dé sans spécialisation.",
+    "duree": "Tant qu'un adversaire conscient occupe un hexagone adjacent."
+   }
+  ],
+  "etats_par_nom": {
+   "Déstabilisé": {
+    "etat": "Déstabilisé",
+    "description": "Une créature est physiquement débalancée suite à un impact lourd.",
+    "malus": "-2 ec (épreuves de compétence), vitesse de déplacement réduite à rampante (1 case = 2 PA).",
+    "duree": "Variable (1 à 6 tours en combat)."
+   },
+   "Étourdi": {
+    "etat": "Étourdi",
+    "description": "Une créature a la tête qui tourne ou le regard trouble.",
+    "malus": "-1 ec sur tous les jets.",
+    "duree": "Variable (1 à 20 tours en combat)."
+   },
+   "Immobilisé": {
+    "etat": "Immobilisé",
+    "description": "Une créature est entravée, prise au piège ou gelée sur place.",
+    "malus": "Désavantage : Impossible d'effectuer la moindre action de mouvement.",
+    "duree": "Variable (1 à 6 tours en combat)."
+   },
+   "Paralysé": {
+    "etat": "Paralysé",
+    "description": "Système nerveux totalement tétanisé par un choc électrique ou mental.",
+    "malus": "Incapacité Totale : Ne peut faire aucune action ni réaction.",
+    "duree": "Court (1 à 2 tours en combat)."
+   },
+   "Sonné": {
+    "etat": "Sonné",
+    "description": "Commotion violente combinant paralysie et perte de conscience brève.",
+    "malus": "Ne peut faire aucune action. La créature tombe immédiatement à terre à son tour.",
+    "duree": "Court (1 à 2 tours en combat)."
+   },
+   "À terre": {
+    "etat": "À terre",
+    "description": "Une créature est étendue sur le sol ou agenouillée.",
+    "malus": "-1 ec aux épreuves d'attaque, -2 en défense. Déplacement : +1 PA par case (1 case = 2 PA).",
+    "duree": "Jusqu'à ce que la créature dépense ses PA pour se relever."
+   },
+   "Ralenti": {
+    "etat": "Ralenti",
+    "description": "Ralentissement musculaire ou distorsion gravitationnelle locale.",
+    "malus": "Toute action coûte le DOUBLE de PA (ex: bouger d'une case coûte 2 PA au lieu d'1).",
+    "duree": "Variable (1 à 5 tours en combat)."
+   },
+   "Agonisant": {
+    "etat": "Agonisant",
+    "description": "La créature a perdu ses moyens vitaux et panique nerveusement.",
+    "malus": "Ne peut prendre aucune action raisonnée. Le personnage fuit en courant de 6 cases dans une direction aléatoire (1d8).",
+    "duree": "Jusqu'à stabilisation médicale."
+   },
+   "Canon Entravé": {
+    "etat": "Canon Entravé",
+    "description": "Contrainte spatiale d'encombrement : arme longue tenue avec un ennemi adjacent (dist 1).",
+    "malus": "-2 au tir balistique (annulable pour +1 PA de visée de rétention). Parade à l'arme pénalisée d'un niveau de dé sans spécialisation.",
+    "duree": "Tant qu'un adversaire conscient occupe un hexagone adjacent."
+   },
+   "Survolté": {
+    "etat": "Survolté",
+    "description": "Afflux massif d'adrénaline ou stimulation nerveuse arcanique.",
+    "bonus": "+1 ec sur tous les tests, +3 PA supplémentaires par tour !",
+    "duree": "1 à 5 tours en combat."
+   },
+   "En transe": {
+    "etat": "En transe",
+    "description": "Harmonie synaptique parfaite, perception en temps ralenti.",
+    "bonus": "+2 ec sur tous les jets, +5 PA par tour !",
+    "duree": "Court (1 à 2 tours en combat)."
+   },
+   "Accéléré": {
+    "etat": "Accéléré",
+    "description": "Distorsion spatiale ou propulsion cinétique des membres.",
+    "bonus": "Toute action de déplacement coûte la MOITIÉ des PA (arrondi au supérieur).",
+    "duree": "1 à 2 tours en combat."
+   },
+   "Rapide": {
+    "etat": "Rapide",
+    "description": "Foulée amplifiée et réflexes moteurs aiguisés.",
+    "bonus": "+3 PA réservés exclusivement aux déplacements à chaque tour.",
+    "duree": "1 à 6 tours en combat."
+   },
+   "Lévitation / En Vol": {
+    "etat": "Lévitation / En Vol",
+    "description": "Répulsion gravitationnelle de Cinquième Force.",
+    "bonus": "Déplacement aérien libre, coût de déplacement réduit de moitié (-1 ec si le sujet n'a pas la spécialisation Aérien ou Acrobate).",
+    "duree": "Variable selon la réserve d'énergie."
+   }
+  },
+  "etats_dot": [
+   {
+    "etat": "Saignement",
+    "tick": "Valeur résiduelle en PV directs (ignore armure et bouclier), puis −1/tour. Sans valeur posée : 1 PV/tour. Ex : Frappe Jugulaire = entraînements en résiduels.",
+    "soin": "Tout soin stoppe : bandage, seringue, premiers soins, Homéostasie. Sinon persiste jusqu'à 0."
+   },
+   {
+    "etat": "Empoisonné",
+    "tick": "Valeur résiduelle en PV directs (ignore armure et bouclier), puis −1/tour. Sans valeur posée : 1 PV/tour.",
+    "soin": "Kit de chirurgie / premiers soins + kit, résine de Mina. Seringue seule : non."
+   },
+   {
+    "etat": "En Feu",
+    "tick": "Valeur résiduelle (sans valeur : 2 PV/tour), bouclier d'abord, ignore l'armure, puis −1/tour.",
+    "soin": "Extinction (kit + premiers soins), résine de Mina, Coagulation Flash. S'éteint à 0."
+   },
+   {
+    "etat": "Asphyxie",
+    "tick": "Valeur résiduelle en PV (sans valeur : 1 PV/tour) + drain de 1 PA sur la réserve rechargée, puis −1/tour.",
+    "soin": "Désobstruction (premiers soins + kit), résine de Mina, masque en prévention."
+   }
+  ],
+  "etats_benefiques": [
+   {
+    "etat": "Survolté",
+    "description": "Afflux massif d'adrénaline ou stimulation nerveuse arcanique.",
+    "bonus": "+1 ec sur tous les tests, +3 PA supplémentaires par tour !",
+    "duree": "1 à 5 tours en combat."
+   },
+   {
+    "etat": "En transe",
+    "description": "Harmonie synaptique parfaite, perception en temps ralenti.",
+    "bonus": "+2 ec sur tous les jets, +5 PA par tour !",
+    "duree": "Court (1 à 2 tours en combat)."
+   },
+   {
+    "etat": "Accéléré",
+    "description": "Distorsion spatiale ou propulsion cinétique des membres.",
+    "bonus": "Toute action de déplacement coûte la MOITIÉ des PA (arrondi au supérieur).",
+    "duree": "1 à 2 tours en combat."
+   },
+   {
+    "etat": "Rapide",
+    "description": "Foulée amplifiée et réflexes moteurs aiguisés.",
+    "bonus": "+3 PA réservés exclusivement aux déplacements à chaque tour.",
+    "duree": "1 à 6 tours en combat."
+   },
+   {
+    "etat": "Lévitation / En Vol",
+    "description": "Répulsion gravitationnelle de Cinquième Force.",
+    "bonus": "Déplacement aérien libre, coût de déplacement réduit de moitié (-1 ec si le sujet n'a pas la spécialisation Aérien ou Acrobate).",
+    "duree": "Variable selon la réserve d'énergie."
+   }
+  ],
+  "statuts_vitaux": [
+   {
+    "statut": "Inconscient Inerte",
+    "texte": "La créature est endormie ou assommée. Elle ne peut effectuer aucune action ni réaction. Elle peut être réveillée par une secousse vigoureuse (1 PA d'un allié) ou par l'application de premiers soins."
+   },
+   {
+    "statut": "Souffrant Blessure Grave",
+    "texte": "Le personnage souffre d'une blessure critique invalidante. Règle d'Or Médicale : Ce statut ne peut pas être guéri par des soins ordinaires. Il exige une épreuve de Premiers Soins soignant d'un seul coup au moins Constitution × 2 dégâts !"
+   },
+   {
+    "statut": "Mort Trépas Clinique",
+    "texte": "La conscience a quitté la chair. Le sujet ne peut plus agir à moins d'un rituel arcanique de rappel de l'âme ou d'une défibrillation chirurgicale dans les 10 tours suivant le décès."
+   }
+  ],
+  "effets_epreuve": [
+   {
+    "effet": "Repousser",
+    "prerequis": "Différentiel de 1+ en corps-à-corps ou magie",
+    "consequence": "La cible est repoussée d'autant de cases que le différentiel (max 1 case par niveau d'entraînement)."
+   },
+   {
+    "effet": "Refoulement (Push-Kick)",
+    "prerequis": "Arts Martiaux au contact + Choc (> CON × 2), Critique ou Diff ≥ 4",
+    "consequence": "La cible est repoussée d'1 case en arrière (Distance = 2), brisant l'état Canon Entravé. Si la trajectoire est bloquée par un obstacle, la cible subit l'état Déstabilisé."
+   },
+   {
+    "effet": "Attirer",
+    "prerequis": "Différentiel de 1+ avec grappin ou télékinésie",
+    "consequence": "La cible est attirée vers l'origine d'autant de cases que le différentiel ou l'entraînement."
+   },
+   {
+    "effet": "Saigner",
+    "prerequis": "Différentiel de 5+ avec arme tranchante/perforante",
+    "consequence": "Inflige des dégâts résiduels continus égaux au niveau d'entraînement à chaque tour."
+   },
+   {
+    "effet": "Brûler",
+    "prerequis": "Différentiel de 5+ avec feu ou plasma",
+    "consequence": "La cible prend feu et subit des dégâts de brûlure pendant 1 à 3 tours consécutifs."
+   },
+   {
+    "effet": "Désarmer",
+    "prerequis": "Différentiel de 5+ et 3 entraînements martiaux",
+    "consequence": "L'arme tenue par la cible vole à 2 cases d'elle au sol."
+   },
+   {
+    "effet": "Assommer",
+    "prerequis": "Différentiel de 10+ et visée crânienne (niveau 2)",
+    "consequence": "La cible bascule immédiatement dans l'état Inconscient pour 1 tour minimum."
+   },
+   {
+    "effet": "Posséder",
+    "prerequis": "Différentiel de 10+ en Magie de l'Esprit",
+    "consequence": "Prend le contrôle des actions de la créature pendant 1 tour. Amnésie totale de la victime."
+   },
+   {
+    "effet": "Désintégrer",
+    "prerequis": "Différentiel de 20+ et Spécialisation Destruction 6",
+    "consequence": "Mort instantanée et totale : la matière de la cible est vaporisée sans laisser de dépouille."
+   }
+  ],
+  "etats_objets": [
+   {
+    "etat": "Parfait État & Endommagé Opérationnel",
+    "texte": "Parfait État : L'objet est totalement neuf ou réparé à 100%. Rendement maximal. Endommagé : L'objet a encaissé des impacts ou de l'usure, mais conserve toutes ses fonctions nominales."
+   },
+   {
+    "etat": "Jammé, Détruit & Anéanti Hors-Service",
+    "texte": "Jammé (Enrayé) : Inutilisable temporairement, mais réparable sur le terrain en dépensant 2 PA. Détruit : En morceaux et inutilisable, mais restaurable en atelier avec pièces de rechange. Anéanti : Totalement pulvérisé, irrécupérable et irréparable."
+   }
+  ],
+  "recuperation_quotidienne": {
+   "formule": "Dégâts Récupérés par Nuit = Constitution + Niveau d'Endurance",
+   "texte": "Une nuit de sommeil complète en lieu sûr régénère un montant de dégâts égal à la Constitution plus le niveau dans la compétence Endurance. Les soins magiques de Cinquième Force accélèrent ce processus en échange de points d'énergie arcanique."
+  },
+  "fiche_pathologie": {
+   "etiquette": "Fiche-type pathologie (signature)",
+   "signature": "Nom libre + [Nature | Transmission | Virulence (dif. CON) | Incubation | Stades (durée + effets système) | Diagnostic / Traitement | Terrain & Issues]",
+   "texte": "Effets exprimés uniquement en vocabulaire système : dégâts résiduels (Saignement / Empoisonné / En Feu / Asphyxie), états du chap. 24, −ec, drain PA, +Essoufflement, seuils Con×2 / Con×5. Max conseillé : 4 stades."
+  },
+  "agents_pathogenes": [
+   {
+    "d6": 1,
+    "nature": "Bactérien",
+    "exemples": "Peste des tranchées, choléra des docks",
+    "traitement": "Premiers Soins + kit, antibiotiques / résine de Mina",
+    "inefficace": "Seringue de soins seule : PV rendus mais DoT persiste"
+   },
+   {
+    "d6": 2,
+    "nature": "Viral",
+    "exemples": "Fièvre des brumes, grippe de cale",
+    "traitement": "Repos + soins de soutien ; vaccin en prévention",
+    "inefficace": "Antibiotiques : aucun effet ; seringue seule : non curative"
+   },
+   {
+    "d6": 3,
+    "nature": "Parasitaire / Fongique",
+    "exemples": "Ver des sables, moisissure d'Hybris",
+    "traitement": "Chirurgie / extraction + Premiers Soins",
+    "inefficace": "Masque seul insuffisant si ingestion"
+   },
+   {
+    "d6": 4,
+    "nature": "Toxique / Prion",
+    "exemples": "Mal des mineurs, tremblante",
+    "traitement": "Kit de chirurgie, dialyse arcanique ; séquelles fréquentes",
+    "inefficace": "Souvent incurable au stade 3+ : stabilisation seule"
+   },
+   {
+    "d6": 5,
+    "nature": "Arcanique (5e Force)",
+    "exemples": "Peste de Nynth, souffle cendré",
+    "traitement": "Magie / rituel + résine de Mina ; Coagulation Flash si En Feu",
+    "inefficace": "Médecine mundane : stabilise, ne guérit pas"
+   },
+   {
+    "d6": 6,
+    "nature": "Nanotech / Cyber",
+    "exemples": "Rouille grise, code dormant",
+    "traitement": "Atelier + purge EM ; Automates : immunisés sauf mention",
+    "inefficace": "Premiers Soins organiques : diagnostic seul"
+   }
+  ],
+  "transmission": [
+   {
+    "vecteur": "Contact / gouttelettes",
+    "jet": "Épreuve de Constitution vs Virulence (difficulté 0–34, Livre II §7) à chaque exposition franche. Masque / combinaison / quarantaine : +2 à +4 au jet ou pas de jet.",
+    "periode": "Stade symptomatique uniquement"
+   },
+   {
+    "vecteur": "Aérien (aérosol)",
+    "jet": "Incubation + stade 1 compris (silencieuse)",
+    "periode": null
+   },
+   {
+    "vecteur": "Sang / eau / nourriture",
+    "jet": "Uniquement lors du partage (blessure ouverte, repas commun)",
+    "periode": null
+   },
+   {
+    "vecteur": "Vecteur animal / arcanique",
+    "jet": "Zone ou relique contaminée : 1 jet / scène d'exposition",
+    "periode": null
+   }
+  ],
+  "stades_maladie": [
+   {
+    "stade": 1,
+    "nom": "Prodrome",
+    "duree": "1–2 jours",
+    "effets": "−1 ec ciblé (ex : FOR) ; Étourdi intermittent ; 1 résiduel Empoisonné/jour"
+   },
+   {
+    "stade": 2,
+    "nom": "Déclaré",
+    "duree": "2–3 jours",
+    "effets": "Déstabilisé ou Ralenti ; 1–2 résiduels Empoisonné/tick repos ; drain 1 PA (si respiratoire : Asphyxie)"
+   },
+   {
+    "stade": 3,
+    "nom": "Grave",
+    "duree": "1–3 jours",
+    "effets": "Agonisant partiel (fuite impossible, prostré) ou À terre ; DoT aggravé (+1/tour) ; statut Souffrant (levée : soin Con×2 en une fois, §24.3)"
+   },
+   {
+    "stade": 4,
+    "nom": "Terminal",
+    "duree": "Heures",
+    "effets": "Chute à 0 PV : arbre §23.2 ; atteinte Con×5 = Mort ; Point de Miracle applicable"
+   }
+  ],
+  "maladies_exemples": [
+   {
+    "nom": "Fièvre des Brumes",
+    "nature_gravite": "virale, commune",
+    "virulence": 10,
+    "texte": "S1 (2 j) : −1 ec FOR, Étourdi. S2 (3 j) : Ralenti, 1 résiduel Empoisonné/jour. S3 : Souffrant si échec CON. Traitement : repos + Premiers Soins dif. 10 ; seringue 5 PV : symptômes seuls. Guérison : immunité 6 mois."
+   },
+   {
+    "nom": "Peste de Nynth",
+    "nature_gravite": "arcanique, grave",
+    "virulence": 18,
+    "texte": "S1 : −1 ec global. S2 : Asphyxie 1 + drain 1 PA. S3 : DoT aggravé, Agonisant. Médecine mundane : stabilise (dif. 18) ; guérison : rituel + résine de Mina. Mutation sur 6 : devient contact direct."
+   }
+  ]
+ }
+}
