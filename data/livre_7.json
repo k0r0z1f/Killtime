@@ -1,0 +1,896 @@
+{
+ "livre": "VII",
+ "titre": "Historiques",
+ "version": 1,
+ "updated": "2026-10-31",
+ "source": "livre_7.html",
+ "entete_html": "",
+ "sections": [
+  {
+   "id": "entete",
+   "symbole": null,
+   "titre": null,
+   "blocs": [
+    {
+     "type": "html",
+     "html": "\n\n                    <div class=\"doc-badge-row\">\n                        <span class=\"doc-badge-pill\">\n                            <svg width=\"12\" height=\"12\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\"\n                                stroke-width=\"2\">\n                                <path d=\"M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z\" />\n                                <circle cx=\"12\" cy=\"12\" r=\"3\" />\n                            </svg>\n                            Livre VII — Historiques &amp; Passés\n                        </span>\n                        <span class=\"doc-badge-pill accent\">Création Étape 1bis</span>\n                        <span class=\"doc-badge-pill live\">Homologué Tables de Jeu</span>\n                    </div>\n\n                    <h1 class=\"doc-title\">Livre VII : Historiques&nbsp;&amp; Passés de Personnages</h1>\n                    <p class=\"doc-lead\">\n                        Avant de compter vos points, racontez d'où vous venez. Vous avez grandi où ?\n                        Vous faisiez quoi avant l'aventure ? Quel moment vous a changé ?\n                        Ce livre vous aide à répondre en cinq minutes, seul ou aux dés.\n                        Vous repartez avec du récit, un petit bonus d'enfance, un bonus\n                        de métier un peu plus costaud, et peut-être un événement marquant :\n                        un coup de pouce 1×/séance, à condition d'en jouer le prix.\n                        C'est l'<strong>Étape 1bis</strong>, juste après l'Étape 1 du\n                        Livre I, §3.\n                    </p>\n\n                    <hr class=\"doc-divider\">\n\n                    <!-- ================= CHAPITRE 26 ================= -->\n                    "
+    }
+   ]
+  },
+  {
+   "id": "chap-27",
+   "symbole": "27.",
+   "titre": "Principes &amp; Procédure (Étape 1bis)",
+   "blocs": [
+    {
+     "type": "html",
+     "html": "\n\n                    <p>\n                        Vous venez de poser l'identité, l'espèce et le concept (Étape 1,\n                        Livre I §3). Prenez deux minutes pour le passé, avant de répartir\n                        vos points (Étape 2). Tant que votre fiche n'est pas validée,\n                        vous pouvez encore tout changer : enfance, métier, même espèce\n                        ou concept si l'histoire vous emmène ailleurs.\n                    </p>\n\n                    <p>\n                        Vous avez <strong>4 cases</strong>, dont <strong>1 seule obligatoire</strong>\n                        (l'Enfance). Vous pouvez <strong>choisir</strong> ou <strong>lancer\n                        les dés</strong> (d6 enfance, d12 métier, d12 événement). Sur chaque\n                        case que vous prenez, notez une <strong>époque [E0–E5]</strong>\n                        (Échelle Technologique, Livre I §2.1, voir §27.4) : même bonus,\n                        juste le décor change.\n                    </p>\n\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "etapes_historique"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <h3>27.1 Ce que les bonus modifient — et ne modifient pas</h3>\n                    <p>\n                        Concret : vos bonus d'historique s'ajoutent au <strong>total de votre jet</strong>\n                        (Tirage + PA + modificateurs, Livre II). C'est tout.\n                        Ils ne vous donnent <strong>jamais</strong> : un dé plus gros, un point\n                        d'attribut, des PA, des dégâts, de l'armure, un entraînement gratuit\n                        ou des points de Magie. Votre Érudition et ses entraînements gratuits\n                        (Étape 5) ne bougent pas.\n                    </p>\n\n                    <div class=\"callout arcane\">\n                        <div class=\"callout-header\">\n                            Pour vous repérer\n                        </div>\n                        <div class=\"callout-body\">\n                            Une <strong>enfance vaut environ la moitié d'un don racial</strong>.\n                            Un <strong>métier vaut à peu près un don racial</strong> quand vous\n                            jouez son attache. Pour comparer : un don racial\n                            (Livre I, §2.2), c'est à peu près +2 dans 2–3 compétences ou\n                            1 capacité 1×/session. Votre enfance (+2 dans 1 compétence\n                            bien précise) reste en dessous. Votre métier (+2/+2 + atout\n                            pratique + attache si vous la prenez) joue dans la même cour.\n                        </div>\n                    </div>\n\n                    <h3>27.2 Les 5 règles à garder autour de la table</h3>\n                    <ul>\n                        <li><strong>Une de chaque, pas plus.</strong> Vous prenez une enfance,\n                            et au plus un métier, même avec un passé chargé. Le reste,\n                            racontez-le dans l'Ancrage (récit pur, sans bonus).</li>\n                        <li><strong>On ne cumule pas, on élargit.</strong> Si votre enfance ou\n                            votre métier donne +2 là où votre don racial ou l'autre entrée\n                            donne déjà +2, vous ne les additionnez pas. Le second +2 se déplace\n                            vers la compétence voisine la plus proche. Exemple : votre Milicien\n                            donne +2 <em>Observation (vigilance)</em> mais votre espèce couvre\n                            déjà la vigilance ? Vous passez ce +2 en <em>Écoute</em>. Votre MJ valide.</li>\n                        <li><strong>L'attache, c'est d'accord avec votre MJ.</strong> Si vous prenez\n                            un métier, vous pouvez prendre son attache (dette, hiérarchie, ennemi,\n                            commande) ou la laisser de côté. Ce n'est pas un malus chiffré :\n                            c'est une prise que votre MJ <strong>peut</strong> activer quand ça\n                            sert l'histoire.</li>\n                        <li><strong>L'événement, c'est un contrat.</strong> Son effet 1×/session\n                            ne marche que si vous jouez vraiment sa séquelle. Si vous la refusez\n                            ou la contournez tout le temps, vous perdez l'effet. C'est votre MJ\n                            qui tranche, et c'est définitif.</li>\n                        <li><strong>Restez crédible.</strong> Un Cléien ne grandit pas forgeron\n                            médiéval sur Cléia sans bonne raison. Un Derek ne grandit pas en\n                            station orbitale sans explication. Chaque entrée se décline selon\n                            le niveau tech de votre monde d'origine (voir §27.4 et §29.2).</li>\n                    </ul>\n\n                    <h3>27.3 Où noter sur la fiche</h3>\n                    <p>\n                        Ouvrez le bloc <strong>Historique</strong> de votre fiche (Livre I,\n                        fiche prototype) et remplissez ce que vous avez pris, ligne par ligne :\n                        <em>Ancrage</em> ([Ex] + monde + 3 lignes), <em>Enfance</em> (nom + [Ex] + bonus),\n                        <em>Métier</em> (nom + [Ex] + bonus + atout + attache si vous la prenez),\n                        <em>Événement</em> (nom + [Ex] + effet + séquelle). Laissez vide ce que\n                        vous ne prenez pas. Ce qui n'est pas noté n'existe pas en jeu.\n                        Exemple : <em>Milicien [E2] — Hybris, cité de Ferron</em>.\n                    </p>\n\n                    <h3>27.4 Marqueur d'époque [E0–E5] (à noter à chaque fois)</h3>\n                    <p>\n                        Votre MJ fixe <strong>l'époque de campagne</strong> (une valeur E0–E5\n                        par défaut). Chaque case que vous prenez porte son propre marqueur.\n                        Par défaut, vous prenez celui de la campagne. Envie d'une époque\n                        différente (exil, voyage, monde d'origine décalé) ? Dites-le à votre\n                        MJ et ajoutez une ligne d'explication dans votre historique.\n                    </p>\n\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "marqueurs_epoque"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <div class=\"callout temporal\">\n                        <div class=\"callout-header\">\n                            Ce que le marqueur change — et ne change pas\n                        </div>\n                        <div class=\"callout-body\">\n                            Le marqueur ne change <strong>jamais</strong> votre bonus : un Mécano\n                            forgeron [E1] et un Mécano orbital [E3] donnent le même +2/+2.\n                            Seuls le décor, l'atout (caisse à outils → forge → atelier orbital)\n                            et l'attache (dette, guilde, commanditaire) changent de nom.\n                            Si votre atout ne sert à rien dans l'époque jouée (une licence\n                            d'astroport en campagne E1), votre MJ le convertit en contact\n                            ou droit équivalent.\n                        </div>\n                    </div>\n\n                    <!-- ================= CHAPITRE 27 ================= -->\n                    "
+    }
+   ]
+  },
+  {
+   "id": "chap-28",
+   "symbole": "28.",
+   "titre": "Enfances : 6 Milieux d'Origine (d6)",
+   "blocs": [
+    {
+     "type": "html",
+     "html": "\n\n                    <p>\n                        Lancez <strong>1d6</strong> ou choisissez. Chaque enfance vous donne\n                        <strong>1 petit bonus</strong> : +2 à une compétence bien précise\n                        <strong>dans son contexte</strong>, ou un petit trait situatif.\n                        Hors contexte, pas de bonus. Exemple : votre +2 en ville ne vous\n                        aide pas en pleine forêt. Notez votre <strong>[E0–E5]</strong>\n                        (§27.4) : même bonus, juste le décor change.\n                    </p>\n\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "enfances"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <!-- ================= CHAPITRE 28 ================= -->\n                    "
+    }
+   ]
+  },
+  {
+   "id": "chap-29",
+   "symbole": "29.",
+   "titre": "Métiers : 12 Parcours (d12)",
+   "blocs": [
+    {
+     "type": "html",
+     "html": "\n\n                    <p>\n                        Lancez <strong>1d12</strong> ou choisissez. Chaque métier vous donne :\n                        <strong>+2 à 2 compétences</strong> de son champ, <strong>1 atout</strong>\n                        concret (outil, contact, permis — jamais un bonus chiffré en plus)\n                        et <strong>1 attache si vous la voulez</strong> (voir §27.2).\n                        Notez votre <strong>[E0–E5]</strong> (§27.4) : le bonus ne change pas,\n                        seul le décor change (voir §29.2). Exemple : forgeron [E1] ou\n                        mécano orbital [E3], c'est le même +2.\n                    </p>\n\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "metiers"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <h3>29.1 Exemple autour de la table</h3>\n                    <p>\n                        Prenons Mara, Taurienne. Enfance Rues [E2], métier Milicienne [E2].\n                        Son don racial <em>Pas Feuillu</em>, son enfance +2 <em>Observation</em>\n                        en ville, son métier +2 Ballistique/Tir (fusil réglementaire) et +2\n                        <em>Observation (vigilance)</em>. En ville, sa vigilance ne prend\n                        <strong>+2 qu'une seule fois</strong> (on ne cumule pas, §27.2).\n                        Le second +2 se déplace en +2 <em>Écoute</em>, avec l'accord du MJ.\n                        Sur un jet de vigilance en ville, Mara lance donc :\n                        Tirage + PA + 2. Simple.\n                    </p>\n\n                    <h3>29.2 Le même métier, à toutes les époques [E0–E5]</h3>\n                    <p>\n                        Chaque métier existe à toutes les époques (Livre I, §2.1). Garde armé\n                        de lance [E0], forgeron [E1], chauffeur [E2], indexeur de trames [E5] :\n                        le bonus reste le même. Seuls le nom, l'outil et l'attache changent.\n                        La « caisse à outils » d'un forgeron vaut celle d'un mécano orbital\n                        en jeu. Notez <strong>Nom [Ex]</strong> sur votre fiche (§27.3).\n                        Si vous jouez une autre époque que celle de la campagne,\n                        prévoyez une ligne d'explication pour votre MJ (§27.4).\n                    </p>\n\n                    <!-- ================= CHAPITRE 29 ================= -->\n                    "
+    }
+   ]
+  },
+  {
+   "id": "chap-30",
+   "symbole": "30.",
+   "titre": "Événement Marquant (optionnel, d12) &amp; Ancrage",
+   "blocs": [
+    {
+     "type": "html",
+     "html": "\n\n                    <h3>30.1 Table des événements (d12)</h3>\n                    <p>\n                        C'est optionnel, et vous pouvez le refuser. Chacun vous donne\n                        <strong>1 effet à jouer 1×/session</strong> contre <strong>1 séquelle</strong>\n                        que votre MJ activera vraiment (§27.2). Lancez 1d12 ou choisissez.\n                        Notez votre <strong>[E0–E5]</strong> (§27.4, par défaut celle\n                        de la campagne).\n                    </p>\n\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "evenements"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <h3>30.2 Note temporelle (Écho n°10)</h3>\n                    <p>\n                        L'Écho temporel, ce n'est pas de la clairsentience (Livre X, §41).\n                        C'est un déjà-vu brut, que vous ne contrôlez pas, et qui fait mal :\n                        votre MJ répond par oui / non / peut-être, jamais par des détails.\n                        C'est la seule entrée d'historique qui touche au Fleuve du Temps —\n                        d'où son coût : +1 Essoufflement à chaque usage.\n                    </p>\n\n                    <h3>30.3 Et la magie, là-dedans ?</h3>\n                    <p>\n                        Aucune entrée d'historique ne vous donne — ni ne vous retire —\n                        l'accès à la Cinquième Force. Si vous jouez un Éveillé\n                        (Magie &gt; 0), vous payez toujours votre éveil au prix fort\n                        (17 points secondaires, Livre I, §3). Votre historique dit juste\n                        <em>comment</em> ça s'est passé. Le n°5 (contact avec la 5e Force)\n                        est tout indiqué pour ça.\n                    </p>\n\n                    <h3>30.4 Ancrage : 3 questions + époque (récit pur, 0 mécanique)</h3>\n                    <p>\n                        L'Ancrage ne donne aucun bonus. Il vous donne mieux : de quoi jouer.\n                        Répondez en une ligne ou deux par question, avec votre époque et\n                        votre monde ([E0–E5] + lieu, §27.4 — par défaut ceux de la campagne) :\n                    </p>\n                    <ul>\n                        <li><strong>Votre époque + votre monde ?</strong> Notez [E0–E5] + lieu\n                            (§27.4 — par défaut ceux de la campagne).</li>\n                        <li><strong>D'où venez-vous vraiment ?</strong> Un lieu, un milieu, une langue,\n                            ce qui vous manque.</li>\n                        <li><strong>Qui vous a marqué ?</strong> 1 allié, 1 rival, 1 disparu —\n                            un nom et une ligne chacun.</li>\n                        <li><strong>Que fuyez-vous, que cherchez-vous ?</strong> Une peur qui vous\n                            pousse et un désir qui vous tire — une ligne chacun.</li>\n                    </ul>\n                    <div class=\"callout temporal\">\n                        <div class=\"callout-header\">\n                            Pour votre MJ — des prises pour la suite\n                        </div>\n                        <div class=\"callout-body\">\n                            Chaque réponse d'Ancrage vous prépare un levier : un lieu à menacer,\n                            un allié à compromettre, un désir à bousculer. Notez-les à part :\n                            ce sont vos idées d'arcs (Livre X, §42), pas des bonus.\n                        </div>\n                    </div>\n\n                    <!-- PAGINATION ENTRE LIVRES -->\n                    <div class=\"chapter-pagination\">\n                        <a href=\"livre_6.html\" class=\"pagination-btn\">\n                            <div>\n                                <div class=\"pagination-label\">Livre Précédent</div>\n                                <div class=\"pagination-title\">← Livre VI : Santé, États &amp; Blessures</div>\n                            </div>\n                        </a>\n                        <a href=\"livre_8.html\" class=\"pagination-btn\">\n                            <div>\n                                <div class=\"pagination-label\">Livre Suivant</div>\n                                <div class=\"pagination-title\">Livre VIII : Arsenal &amp; Arcanotech →</div>\n                            </div>\n                        </a>\n                    </div>\n\n                "
+    }
+   ]
+  }
+ ],
+ "donnees": {
+  "etapes_historique": {
+   "type": "table",
+   "colonnes": [
+    "Entrée",
+    "Statut",
+    "Effet mécanique",
+    "Cumul",
+    "Époque"
+   ],
+   "lignes": [
+    [
+     "<strong>A. Ancrage</strong> (§30.4)",
+     "Optionnel",
+     "<strong>Aucun</strong> — 3 réponses de récit pur",
+     "—",
+     "<strong>[E0–E5]</strong> + monde"
+    ],
+    [
+     "<strong>B. Enfance</strong> (chap. 28)",
+     "Obligatoire",
+     "<strong>1 aptitude mineure</strong> : +2 à 1 compétence étroite, ou trait situatif",
+     "1 seule",
+     "<strong>[E0–E5]</strong>"
+    ],
+    [
+     "<strong>C. Métier</strong> (chap. 29)",
+     "Optionnel",
+     "<strong>1 aptitude majeure</strong> : +2 à 2 compétences + 1 atout + 1 attache optionnelle",
+     "1 seul",
+     "<strong>[E0–E5]</strong>"
+    ],
+    [
+     "<strong>D. Événement marquant</strong> (§30.1)",
+     "Optionnel",
+     "<strong>1 effet 1×/session</strong> + 1 séquelle narrative réelle",
+     "1 seul, refusable",
+     "<strong>[E0–E5]</strong>"
+    ]
+   ]
+  },
+  "marqueurs_epoque": {
+   "type": "table",
+   "colonnes": [
+    "Marqueur",
+    "Époque (Livre I, §2.1)",
+    "Habillage type"
+   ],
+   "lignes": [
+    [
+     "<strong>E0</strong>",
+     "Primitive",
+     "Pierre, bronze, chasse, tribus"
+    ],
+    [
+     "<strong>E1</strong>",
+     "Médiévale",
+     "Forges, acier, châteaux, guildes"
+    ],
+    [
+     "<strong>E2</strong>",
+     "Moderne",
+     "Balistique, silicium, États-nations"
+    ],
+    [
+     "<strong>E3</strong>",
+     "Avancée",
+     "Orbital, terraformation, interstellaire"
+    ],
+    [
+     "<strong>E4</strong>",
+     "Très Avancée",
+     "Dyson, téléportation, pods arcaniques"
+    ],
+    [
+     "<strong>E5</strong>",
+     "Démiurgique",
+     "Continuum manipulé, post-matière"
+    ]
+   ]
+  },
+  "enfances": {
+   "type": "cartes",
+   "grille": 2,
+   "cartes": [
+    {
+     "titre": "1. Soutes &amp; Docks — Enfant de station",
+     "top": false,
+     "corps_html": "Vous avez grandi entre coursives et containers, dans le bruit\n                                des réacteurs. Vous savez passer où les autres coincent.<br>\n                                <strong>Vous gagnez :</strong> +2 <em>Subterfuge Manuel</em> (crochetage, dépannage\n                                improvisé) en milieu confiné (vaisseau, station, souterrain). Vous ignorez\n                                les malus d'exiguïté pour vous faufiler.",
+     "pieds": []
+    },
+    {
+     "titre": "2. Rues &amp; Bas-fonds — Gamin des toits",
+     "top": false,
+     "corps_html": "La ville vous a élevé : ses gangs, ses toits, ses recoins.\n                                Vous sentez quand on vous suit.<br>\n                                <strong>Vous gagnez :</strong> +2 <em>Observation</em> (repérer embuscades, filatures,\n                                planques) en milieu urbain uniquement.",
+     "pieds": []
+    },
+    {
+     "titre": "3. Ferme &amp; Frontière — Enfant des confins",
+     "top": false,
+     "corps_html": "Vous avez grandi au rythme des récoltes, des bêtes et des saisons.\n                                Vous savez lire le ciel et trouver un abri.<br>\n                                <strong>Vous gagnez :</strong> +2 <em>Nature &amp; Survie</em> (orientation, abris,\n                                lecture météo) en milieu rural ou sauvage.",
+     "pieds": []
+    },
+    {
+     "titre": "4. Clan &amp; Tribu — Sang des anciens",
+     "top": false,
+     "corps_html": "Les veillées et la parole des anciens vous ont formé. Vous sentez\n                                quand un groupe devient hostile.<br>\n                                <strong>Vous gagnez :</strong> +2 <em>Intuition</em> (pressentir l'hostilité d'un groupe,\n                                sens du danger en assemblée). Votre MJ peut ajouter 1 contact clanique,\n                                juste pour le récit (aucun effet chiffré).",
+     "pieds": []
+    },
+    {
+     "titre": "5. Cité &amp; École — Enfant instruit",
+     "top": false,
+     "corps_html": "Bancs d'école, bibliothèques, précepteurs. Vous savez où chercher\n                                et vous retenez vite.<br>\n                                <strong>Vous gagnez :</strong> +2 <em>Académie</em> dans 1 domaine au choix (histoire,\n                                linguistique, économie). Cela ne donne <strong>aucun</strong> entraînement gratuit :\n                                votre Érudition ne change pas.",
+     "pieds": []
+    },
+    {
+     "titre": "6. Caserne &amp; Ordre — Enfant de troupe",
+     "top": false,
+     "corps_html": "Vous avez grandi au son du clairon, entre dortoirs et terrains\n                                d'exercice. Marcher, porter, tenir : vous savez faire.<br>\n                                <strong>Vous gagnez :</strong> +2 <em>Athlétisme</em> (franchissement, marches forcées,\n                                portage) + habitudes de discipline (aucun bonus social).",
+     "pieds": []
+    }
+   ]
+  },
+  "metiers": {
+   "type": "table",
+   "colonnes": [
+    "d12",
+    "Métier",
+    "Bonus (+2 / +2)",
+    "Atout",
+    "Attache"
+   ],
+   "lignes": [
+    [
+     "<strong>1</strong>",
+     "<strong>Milicien</strong>",
+     "Ballistique/Tir (1 arme réglementaire) &amp; Observation (vigilance)",
+     "Armure légère réglementaire (Livre VIII) ou accès armurerie",
+     "Autorité de réserve : rappelable en cas de crise"
+    ],
+    [
+     "<strong>2</strong>",
+     "<strong>Médic</strong>",
+     "Premiers Soins &amp; Observation (triage)",
+     "Kit de soin complet personnel",
+     "Serment : ne jamais abandonner un blessé conscient"
+    ],
+    [
+     "<strong>3</strong>",
+     "<strong>Mécano</strong>",
+     "Ingénierie &amp; Arcanotech (réparation) &amp; Subterfuge Manuel (dépannage)",
+     "Caisse à outils personnelle",
+     "Dette d'atelier (loyer ou emprunt en cours)"
+    ],
+    [
+     "<strong>4</strong>",
+     "<strong>Pilote</strong>",
+     "Conduite &amp; Pilotage (1 catégorie) &amp; Observation (navigation)",
+     "Licence + 1 contact astroport / écurie",
+     "Crédit sur un engin, ou ancien employeur exigeant"
+    ],
+    [
+     "<strong>5</strong>",
+     "<strong>Prospecteur</strong>",
+     "Nature &amp; Survie (1 milieu extrême) &amp; Endurance Physique (efforts prolongés)",
+     "Équipement d'exploration complet",
+     "Contrat d'exclusivité (part fixe à un commanditaire)"
+    ],
+    [
+     "<strong>6</strong>",
+     "<strong>Négociant</strong>",
+     "Communication (négocier) &amp; Intuition (évaluer une offre)",
+     "1 contact commercial + licence de commerce",
+     "Dette en cours ou concurrent hostile nommé"
+    ],
+    [
+     "<strong>7</strong>",
+     "<strong>Archiviste</strong>",
+     "Académie (1 domaine) &amp; Observation (repérer détails)",
+     "Accès à un fonds d'archives",
+     "Censure : sujets interdits, lectures surveillées"
+    ],
+    [
+     "<strong>8</strong>",
+     "<strong>Artisan</strong>",
+     "Artisanat/Connaissance (1 artisanat) &amp; Ingénierie (entretien courant)",
+     "Établi et outils de maître",
+     "Commande en cours (délai, client puissant)"
+    ],
+    [
+     "<strong>9</strong>",
+     "<strong>Chasseur</strong>",
+     "Nature &amp; Survie (traque) &amp; Discrétion (milieu naturel uniquement)",
+     "Pièges, appelants, camouflage",
+     "Territoire et quota (permis, garde-chasse, rival)"
+    ],
+    [
+     "<strong>10</strong>",
+     "<strong>Infiltré</strong>",
+     "Discrétion &amp; Communication (tromper)",
+     "Faux papiers + 1 planque sûre",
+     "Ancien commanditaire : peut exiger 1 service"
+    ],
+    [
+     "<strong>11</strong>",
+     "<strong>Herboriste</strong>",
+     "Nature &amp; Survie (botanique) &amp; Artisanat (pharmacopée)",
+     "Stock de remèdes courants",
+     "Clientèle dangereuse (on paie en silence)"
+    ],
+    [
+     "<strong>12</strong>",
+     "<strong>Officier</strong>",
+     "Leadership &amp; Intimidation",
+     "Insigne + 1 contact hiérarchique",
+     "Responsabilité : hommes perdus, procès ou disgrâce possible"
+    ]
+   ]
+  },
+  "evenements": {
+   "type": "table",
+   "colonnes": [
+    "d12",
+    "Événement",
+    "Effet 1×/session",
+    "Séquelle"
+   ],
+   "lignes": [
+    [
+     "<strong>1</strong>",
+     "<strong>Frôlé la mort</strong>",
+     "Annule 1 Essoufflement après un coup qui dépasse l'Encaissement",
+     "Cicatrices + cauchemars (le MJ peut imposer −2 à 1 jet de sang-froid / scénario)"
+    ],
+    [
+     "<strong>2</strong>",
+     "<strong>Dette de vie</strong>",
+     "+2 à un jet pour protéger un allié en danger",
+     "Créancier nommé, rappelable à tout moment"
+    ],
+    [
+     "<strong>3</strong>",
+     "<strong>Trahison subie</strong>",
+     "Relance un jet d'Intuition (sens du danger, mensonges)",
+     "Traître nommé, encore actif quelque part"
+    ],
+    [
+     "<strong>4</strong>",
+     "<strong>Long exil</strong>",
+     "+2 Nature &amp; Survie en terrain inconnu",
+     "Étranger : −2 au premier contact dans 1 culture au choix du MJ"
+    ],
+    [
+     "<strong>5</strong>",
+     "<strong>Contact avec la 5e Force</strong>",
+     "Poser 1 question fermée au MJ sur une résonance perçue",
+     "Marqué : −2 Discrétion face aux sens et détecteurs magiques"
+    ],
+    [
+     "<strong>6</strong>",
+     "<strong>Miracle inexpliqué</strong>",
+     "Ignore un échec de moral ou de peur",
+     "Un culte ou un curieux puissant s'intéresse à toi"
+    ],
+    [
+     "<strong>7</strong>",
+     "<strong>Guerre vue de l'intérieur</strong>",
+     "+2 à tout jet de sang-froid face à la violence",
+     "Stress : fracas de bataille = test INS ou +1 Essoufflement"
+    ],
+    [
+     "<strong>8</strong>",
+     "<strong>Crime impuni</strong>",
+     "+2 Discrétion ou Subterfuge pour couvrir ses traces",
+     "Un témoin existe, et il sait"
+    ],
+    [
+     "<strong>9</strong>",
+     "<strong>Mentor perdu</strong>",
+     "+2 à un jet dans le domaine du mentor",
+     "Promesse : achever son œuvre inachevée"
+    ],
+    [
+     "<strong>10</strong>",
+     "<strong>Écho temporel</strong>",
+     "1 question fermée au MJ sur le danger immédiat (cf. Livre X)",
+     "Chaque usage coûte +1 Essoufflement (migraine)"
+    ],
+    [
+     "<strong>11</strong>",
+     "<strong>Ruine &amp; misère</strong>",
+     "+2 pour improviser avec rien (Artisanat, Subterfuge)",
+     "Réputation de misère : −2 au premier contact en milieu huppé"
+    ],
+    [
+     "<strong>12</strong>",
+     "<strong>Gloire locale</strong>",
+     "+2 Communication (charmer, impressionner) là où l'exploit est connu",
+     "Rival jaloux + réputation à défendre en permanence"
+    ]
+   ]
+  }
+ },
+ "tableaux": {
+  "etapes_historique": {
+   "colonnes": [
+    "Entrée",
+    "Statut",
+    "Effet mécanique",
+    "Cumul",
+    "Époque"
+   ]
+  },
+  "marqueurs_epoque": {
+   "colonnes": [
+    "Marqueur",
+    "Époque (Livre I, §2.1)",
+    "Habillage type"
+   ]
+  },
+  "metiers": {
+   "colonnes": [
+    "d12",
+    "Métier",
+    "Bonus (+2 / +2)",
+    "Atout",
+    "Attache"
+   ]
+  },
+  "evenements": {
+   "colonnes": [
+    "d12",
+    "Événement",
+    "Effet 1×/session",
+    "Séquelle"
+   ]
+  }
+ },
+ "mecaniques": {
+  "note": "Genere depuis livre_7.html (motif RP-075/Livre II). Source unique : regenerer.",
+  "etapes_historique": [
+   {
+    "etape": "A. Ancrage (§30.4)",
+    "statut": "Optionnel",
+    "obligatoire": false,
+    "effet": "Aucun — 3 réponses de récit pur",
+    "cumul": "—",
+    "epoque": "[E0–E5] + monde"
+   },
+   {
+    "etape": "B. Enfance (chap. 28)",
+    "statut": "Obligatoire",
+    "obligatoire": true,
+    "effet": "1 aptitude mineure : +2 à 1 compétence étroite, ou trait situatif",
+    "cumul": "1 seule",
+    "epoque": "[E0–E5]"
+   },
+   {
+    "etape": "C. Métier (chap. 29)",
+    "statut": "Optionnel",
+    "obligatoire": false,
+    "effet": "1 aptitude majeure : +2 à 2 compétences + 1 atout + 1 attache optionnelle",
+    "cumul": "1 seul",
+    "epoque": "[E0–E5]"
+   },
+   {
+    "etape": "D. Événement marquant (§30.1)",
+    "statut": "Optionnel",
+    "obligatoire": false,
+    "effet": "1 effet 1×/session + 1 séquelle narrative réelle",
+    "cumul": "1 seul, refusable",
+    "epoque": "[E0–E5]"
+   }
+  ],
+  "marqueurs_epoque": [
+   {
+    "marqueur": "E0",
+    "epoque": "Primitive",
+    "habillage": "Pierre, bronze, chasse, tribus"
+   },
+   {
+    "marqueur": "E1",
+    "epoque": "Médiévale",
+    "habillage": "Forges, acier, châteaux, guildes"
+   },
+   {
+    "marqueur": "E2",
+    "epoque": "Moderne",
+    "habillage": "Balistique, silicium, États-nations"
+   },
+   {
+    "marqueur": "E3",
+    "epoque": "Avancée",
+    "habillage": "Orbital, terraformation, interstellaire"
+   },
+   {
+    "marqueur": "E4",
+    "epoque": "Très Avancée",
+    "habillage": "Dyson, téléportation, pods arcaniques"
+   },
+   {
+    "marqueur": "E5",
+    "epoque": "Démiurgique",
+    "habillage": "Continuum manipulé, post-matière"
+   }
+  ],
+  "enfances": [
+   {
+    "d6": 1,
+    "nom": "Soutes & Docks — Enfant de station",
+    "texte": "Vous avez grandi entre coursives et containers, dans le bruit des réacteurs. Vous savez passer où les autres coincent. Vous gagnez : +2 Subterfuge Manuel (crochetage, dépannage improvisé) en milieu confiné (vaisseau, station, souterrain). Vous ignorez les malus d'exiguïté pour vous faufiler."
+   },
+   {
+    "d6": 2,
+    "nom": "Rues & Bas-fonds — Gamin des toits",
+    "texte": "La ville vous a élevé : ses gangs, ses toits, ses recoins. Vous sentez quand on vous suit. Vous gagnez : +2 Observation (repérer embuscades, filatures, planques) en milieu urbain uniquement."
+   },
+   {
+    "d6": 3,
+    "nom": "Ferme & Frontière — Enfant des confins",
+    "texte": "Vous avez grandi au rythme des récoltes, des bêtes et des saisons. Vous savez lire le ciel et trouver un abri. Vous gagnez : +2 Nature & Survie (orientation, abris, lecture météo) en milieu rural ou sauvage."
+   },
+   {
+    "d6": 4,
+    "nom": "Clan & Tribu — Sang des anciens",
+    "texte": "Les veillées et la parole des anciens vous ont formé. Vous sentez quand un groupe devient hostile. Vous gagnez : +2 Intuition (pressentir l'hostilité d'un groupe, sens du danger en assemblée). Votre MJ peut ajouter 1 contact clanique, juste pour le récit (aucun effet chiffré)."
+   },
+   {
+    "d6": 5,
+    "nom": "Cité & École — Enfant instruit",
+    "texte": "Bancs d'école, bibliothèques, précepteurs. Vous savez où chercher et vous retenez vite. Vous gagnez : +2 Académie dans 1 domaine au choix (histoire, linguistique, économie). Cela ne donne aucun entraînement gratuit : votre Érudition ne change pas."
+   },
+   {
+    "d6": 6,
+    "nom": "Caserne & Ordre — Enfant de troupe",
+    "texte": "Vous avez grandi au son du clairon, entre dortoirs et terrains d'exercice. Marcher, porter, tenir : vous savez faire. Vous gagnez : +2 Athlétisme (franchissement, marches forcées, portage) + habitudes de discipline (aucun bonus social)."
+   }
+  ],
+  "enfances_par_d6": {
+   "1": {
+    "d6": 1,
+    "nom": "Soutes & Docks — Enfant de station",
+    "texte": "Vous avez grandi entre coursives et containers, dans le bruit des réacteurs. Vous savez passer où les autres coincent. Vous gagnez : +2 Subterfuge Manuel (crochetage, dépannage improvisé) en milieu confiné (vaisseau, station, souterrain). Vous ignorez les malus d'exiguïté pour vous faufiler."
+   },
+   "2": {
+    "d6": 2,
+    "nom": "Rues & Bas-fonds — Gamin des toits",
+    "texte": "La ville vous a élevé : ses gangs, ses toits, ses recoins. Vous sentez quand on vous suit. Vous gagnez : +2 Observation (repérer embuscades, filatures, planques) en milieu urbain uniquement."
+   },
+   "3": {
+    "d6": 3,
+    "nom": "Ferme & Frontière — Enfant des confins",
+    "texte": "Vous avez grandi au rythme des récoltes, des bêtes et des saisons. Vous savez lire le ciel et trouver un abri. Vous gagnez : +2 Nature & Survie (orientation, abris, lecture météo) en milieu rural ou sauvage."
+   },
+   "4": {
+    "d6": 4,
+    "nom": "Clan & Tribu — Sang des anciens",
+    "texte": "Les veillées et la parole des anciens vous ont formé. Vous sentez quand un groupe devient hostile. Vous gagnez : +2 Intuition (pressentir l'hostilité d'un groupe, sens du danger en assemblée). Votre MJ peut ajouter 1 contact clanique, juste pour le récit (aucun effet chiffré)."
+   },
+   "5": {
+    "d6": 5,
+    "nom": "Cité & École — Enfant instruit",
+    "texte": "Bancs d'école, bibliothèques, précepteurs. Vous savez où chercher et vous retenez vite. Vous gagnez : +2 Académie dans 1 domaine au choix (histoire, linguistique, économie). Cela ne donne aucun entraînement gratuit : votre Érudition ne change pas."
+   },
+   "6": {
+    "d6": 6,
+    "nom": "Caserne & Ordre — Enfant de troupe",
+    "texte": "Vous avez grandi au son du clairon, entre dortoirs et terrains d'exercice. Marcher, porter, tenir : vous savez faire. Vous gagnez : +2 Athlétisme (franchissement, marches forcées, portage) + habitudes de discipline (aucun bonus social)."
+   }
+  },
+  "metiers": [
+   {
+    "d12": 1,
+    "metier": "Milicien",
+    "bonus": "Ballistique/Tir (1 arme réglementaire) & Observation (vigilance)",
+    "atout": "Armure légère réglementaire (Livre VIII) ou accès armurerie",
+    "attache": "Autorité de réserve : rappelable en cas de crise"
+   },
+   {
+    "d12": 2,
+    "metier": "Médic",
+    "bonus": "Premiers Soins & Observation (triage)",
+    "atout": "Kit de soin complet personnel",
+    "attache": "Serment : ne jamais abandonner un blessé conscient"
+   },
+   {
+    "d12": 3,
+    "metier": "Mécano",
+    "bonus": "Ingénierie & Arcanotech (réparation) & Subterfuge Manuel (dépannage)",
+    "atout": "Caisse à outils personnelle",
+    "attache": "Dette d'atelier (loyer ou emprunt en cours)"
+   },
+   {
+    "d12": 4,
+    "metier": "Pilote",
+    "bonus": "Conduite & Pilotage (1 catégorie) & Observation (navigation)",
+    "atout": "Licence + 1 contact astroport / écurie",
+    "attache": "Crédit sur un engin, ou ancien employeur exigeant"
+   },
+   {
+    "d12": 5,
+    "metier": "Prospecteur",
+    "bonus": "Nature & Survie (1 milieu extrême) & Endurance Physique (efforts prolongés)",
+    "atout": "Équipement d'exploration complet",
+    "attache": "Contrat d'exclusivité (part fixe à un commanditaire)"
+   },
+   {
+    "d12": 6,
+    "metier": "Négociant",
+    "bonus": "Communication (négocier) & Intuition (évaluer une offre)",
+    "atout": "1 contact commercial + licence de commerce",
+    "attache": "Dette en cours ou concurrent hostile nommé"
+   },
+   {
+    "d12": 7,
+    "metier": "Archiviste",
+    "bonus": "Académie (1 domaine) & Observation (repérer détails)",
+    "atout": "Accès à un fonds d'archives",
+    "attache": "Censure : sujets interdits, lectures surveillées"
+   },
+   {
+    "d12": 8,
+    "metier": "Artisan",
+    "bonus": "Artisanat/Connaissance (1 artisanat) & Ingénierie (entretien courant)",
+    "atout": "Établi et outils de maître",
+    "attache": "Commande en cours (délai, client puissant)"
+   },
+   {
+    "d12": 9,
+    "metier": "Chasseur",
+    "bonus": "Nature & Survie (traque) & Discrétion (milieu naturel uniquement)",
+    "atout": "Pièges, appelants, camouflage",
+    "attache": "Territoire et quota (permis, garde-chasse, rival)"
+   },
+   {
+    "d12": 10,
+    "metier": "Infiltré",
+    "bonus": "Discrétion & Communication (tromper)",
+    "atout": "Faux papiers + 1 planque sûre",
+    "attache": "Ancien commanditaire : peut exiger 1 service"
+   },
+   {
+    "d12": 11,
+    "metier": "Herboriste",
+    "bonus": "Nature & Survie (botanique) & Artisanat (pharmacopée)",
+    "atout": "Stock de remèdes courants",
+    "attache": "Clientèle dangereuse (on paie en silence)"
+   },
+   {
+    "d12": 12,
+    "metier": "Officier",
+    "bonus": "Leadership & Intimidation",
+    "atout": "Insigne + 1 contact hiérarchique",
+    "attache": "Responsabilité : hommes perdus, procès ou disgrâce possible"
+   }
+  ],
+  "metiers_par_d12": {
+   "1": {
+    "d12": 1,
+    "metier": "Milicien",
+    "bonus": "Ballistique/Tir (1 arme réglementaire) & Observation (vigilance)",
+    "atout": "Armure légère réglementaire (Livre VIII) ou accès armurerie",
+    "attache": "Autorité de réserve : rappelable en cas de crise"
+   },
+   "2": {
+    "d12": 2,
+    "metier": "Médic",
+    "bonus": "Premiers Soins & Observation (triage)",
+    "atout": "Kit de soin complet personnel",
+    "attache": "Serment : ne jamais abandonner un blessé conscient"
+   },
+   "3": {
+    "d12": 3,
+    "metier": "Mécano",
+    "bonus": "Ingénierie & Arcanotech (réparation) & Subterfuge Manuel (dépannage)",
+    "atout": "Caisse à outils personnelle",
+    "attache": "Dette d'atelier (loyer ou emprunt en cours)"
+   },
+   "4": {
+    "d12": 4,
+    "metier": "Pilote",
+    "bonus": "Conduite & Pilotage (1 catégorie) & Observation (navigation)",
+    "atout": "Licence + 1 contact astroport / écurie",
+    "attache": "Crédit sur un engin, ou ancien employeur exigeant"
+   },
+   "5": {
+    "d12": 5,
+    "metier": "Prospecteur",
+    "bonus": "Nature & Survie (1 milieu extrême) & Endurance Physique (efforts prolongés)",
+    "atout": "Équipement d'exploration complet",
+    "attache": "Contrat d'exclusivité (part fixe à un commanditaire)"
+   },
+   "6": {
+    "d12": 6,
+    "metier": "Négociant",
+    "bonus": "Communication (négocier) & Intuition (évaluer une offre)",
+    "atout": "1 contact commercial + licence de commerce",
+    "attache": "Dette en cours ou concurrent hostile nommé"
+   },
+   "7": {
+    "d12": 7,
+    "metier": "Archiviste",
+    "bonus": "Académie (1 domaine) & Observation (repérer détails)",
+    "atout": "Accès à un fonds d'archives",
+    "attache": "Censure : sujets interdits, lectures surveillées"
+   },
+   "8": {
+    "d12": 8,
+    "metier": "Artisan",
+    "bonus": "Artisanat/Connaissance (1 artisanat) & Ingénierie (entretien courant)",
+    "atout": "Établi et outils de maître",
+    "attache": "Commande en cours (délai, client puissant)"
+   },
+   "9": {
+    "d12": 9,
+    "metier": "Chasseur",
+    "bonus": "Nature & Survie (traque) & Discrétion (milieu naturel uniquement)",
+    "atout": "Pièges, appelants, camouflage",
+    "attache": "Territoire et quota (permis, garde-chasse, rival)"
+   },
+   "10": {
+    "d12": 10,
+    "metier": "Infiltré",
+    "bonus": "Discrétion & Communication (tromper)",
+    "atout": "Faux papiers + 1 planque sûre",
+    "attache": "Ancien commanditaire : peut exiger 1 service"
+   },
+   "11": {
+    "d12": 11,
+    "metier": "Herboriste",
+    "bonus": "Nature & Survie (botanique) & Artisanat (pharmacopée)",
+    "atout": "Stock de remèdes courants",
+    "attache": "Clientèle dangereuse (on paie en silence)"
+   },
+   "12": {
+    "d12": 12,
+    "metier": "Officier",
+    "bonus": "Leadership & Intimidation",
+    "atout": "Insigne + 1 contact hiérarchique",
+    "attache": "Responsabilité : hommes perdus, procès ou disgrâce possible"
+   }
+  },
+  "evenements": [
+   {
+    "d12": 1,
+    "evenement": "Frôlé la mort",
+    "effet": "Annule 1 Essoufflement après un coup qui dépasse l'Encaissement",
+    "sequelle": "Cicatrices + cauchemars (le MJ peut imposer −2 à 1 jet de sang-froid / scénario)"
+   },
+   {
+    "d12": 2,
+    "evenement": "Dette de vie",
+    "effet": "+2 à un jet pour protéger un allié en danger",
+    "sequelle": "Créancier nommé, rappelable à tout moment"
+   },
+   {
+    "d12": 3,
+    "evenement": "Trahison subie",
+    "effet": "Relance un jet d'Intuition (sens du danger, mensonges)",
+    "sequelle": "Traître nommé, encore actif quelque part"
+   },
+   {
+    "d12": 4,
+    "evenement": "Long exil",
+    "effet": "+2 Nature & Survie en terrain inconnu",
+    "sequelle": "Étranger : −2 au premier contact dans 1 culture au choix du MJ"
+   },
+   {
+    "d12": 5,
+    "evenement": "Contact avec la 5e Force",
+    "effet": "Poser 1 question fermée au MJ sur une résonance perçue",
+    "sequelle": "Marqué : −2 Discrétion face aux sens et détecteurs magiques"
+   },
+   {
+    "d12": 6,
+    "evenement": "Miracle inexpliqué",
+    "effet": "Ignore un échec de moral ou de peur",
+    "sequelle": "Un culte ou un curieux puissant s'intéresse à toi"
+   },
+   {
+    "d12": 7,
+    "evenement": "Guerre vue de l'intérieur",
+    "effet": "+2 à tout jet de sang-froid face à la violence",
+    "sequelle": "Stress : fracas de bataille = test INS ou +1 Essoufflement"
+   },
+   {
+    "d12": 8,
+    "evenement": "Crime impuni",
+    "effet": "+2 Discrétion ou Subterfuge pour couvrir ses traces",
+    "sequelle": "Un témoin existe, et il sait"
+   },
+   {
+    "d12": 9,
+    "evenement": "Mentor perdu",
+    "effet": "+2 à un jet dans le domaine du mentor",
+    "sequelle": "Promesse : achever son œuvre inachevée"
+   },
+   {
+    "d12": 10,
+    "evenement": "Écho temporel",
+    "effet": "1 question fermée au MJ sur le danger immédiat (cf. Livre X)",
+    "sequelle": "Chaque usage coûte +1 Essoufflement (migraine)"
+   },
+   {
+    "d12": 11,
+    "evenement": "Ruine & misère",
+    "effet": "+2 pour improviser avec rien (Artisanat, Subterfuge)",
+    "sequelle": "Réputation de misère : −2 au premier contact en milieu huppé"
+   },
+   {
+    "d12": 12,
+    "evenement": "Gloire locale",
+    "effet": "+2 Communication (charmer, impressionner) là où l'exploit est connu",
+    "sequelle": "Rival jaloux + réputation à défendre en permanence"
+   }
+  ],
+  "evenements_par_d12": {
+   "1": {
+    "d12": 1,
+    "evenement": "Frôlé la mort",
+    "effet": "Annule 1 Essoufflement après un coup qui dépasse l'Encaissement",
+    "sequelle": "Cicatrices + cauchemars (le MJ peut imposer −2 à 1 jet de sang-froid / scénario)"
+   },
+   "2": {
+    "d12": 2,
+    "evenement": "Dette de vie",
+    "effet": "+2 à un jet pour protéger un allié en danger",
+    "sequelle": "Créancier nommé, rappelable à tout moment"
+   },
+   "3": {
+    "d12": 3,
+    "evenement": "Trahison subie",
+    "effet": "Relance un jet d'Intuition (sens du danger, mensonges)",
+    "sequelle": "Traître nommé, encore actif quelque part"
+   },
+   "4": {
+    "d12": 4,
+    "evenement": "Long exil",
+    "effet": "+2 Nature & Survie en terrain inconnu",
+    "sequelle": "Étranger : −2 au premier contact dans 1 culture au choix du MJ"
+   },
+   "5": {
+    "d12": 5,
+    "evenement": "Contact avec la 5e Force",
+    "effet": "Poser 1 question fermée au MJ sur une résonance perçue",
+    "sequelle": "Marqué : −2 Discrétion face aux sens et détecteurs magiques"
+   },
+   "6": {
+    "d12": 6,
+    "evenement": "Miracle inexpliqué",
+    "effet": "Ignore un échec de moral ou de peur",
+    "sequelle": "Un culte ou un curieux puissant s'intéresse à toi"
+   },
+   "7": {
+    "d12": 7,
+    "evenement": "Guerre vue de l'intérieur",
+    "effet": "+2 à tout jet de sang-froid face à la violence",
+    "sequelle": "Stress : fracas de bataille = test INS ou +1 Essoufflement"
+   },
+   "8": {
+    "d12": 8,
+    "evenement": "Crime impuni",
+    "effet": "+2 Discrétion ou Subterfuge pour couvrir ses traces",
+    "sequelle": "Un témoin existe, et il sait"
+   },
+   "9": {
+    "d12": 9,
+    "evenement": "Mentor perdu",
+    "effet": "+2 à un jet dans le domaine du mentor",
+    "sequelle": "Promesse : achever son œuvre inachevée"
+   },
+   "10": {
+    "d12": 10,
+    "evenement": "Écho temporel",
+    "effet": "1 question fermée au MJ sur le danger immédiat (cf. Livre X)",
+    "sequelle": "Chaque usage coûte +1 Essoufflement (migraine)"
+   },
+   "11": {
+    "d12": 11,
+    "evenement": "Ruine & misère",
+    "effet": "+2 pour improviser avec rien (Artisanat, Subterfuge)",
+    "sequelle": "Réputation de misère : −2 au premier contact en milieu huppé"
+   },
+   "12": {
+    "d12": 12,
+    "evenement": "Gloire locale",
+    "effet": "+2 Communication (charmer, impressionner) là où l'exploit est connu",
+    "sequelle": "Rival jaloux + réputation à défendre en permanence"
+   }
+  }
+ }
+}

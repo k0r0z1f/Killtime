@@ -1197,7 +1197,7 @@
      "id": "RP-080",
      "title": "JSON-ifier le Livre VII (données + contenu, comme Livre I)",
      "epic": "Livre VII — Historiques",
-     "status": "todo",
+     "status": "done",
      "priority": "medium",
      "order": 51,
      "scene": "",
@@ -1206,7 +1206,7 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_7.html",
-     "details": "Comme Livre I : extraire data/livre_N.json (données règles + sections/blocs/refs), rendre via JS (factoriser js/livre_1.js en moteur générique), squelettiser le HTML, fidélité vérifiée par diff. But : source unique + traductions. Fichier : livre_7.html."
+     "details": "FAIT 2026-10-31 — data/livre_7.json (4 étapes historique, marqueurs E0–E5, 6 enfances d6 + lookup, 12 métiers d12 + lookup, 12 événements d12 + lookup, bloc mecaniques + 5 sections (entête in-article + 4 chapitres)), livre_7.html squelettisé. Aucune extension moteur nécessaire. Vérifié : fidélité + rendu JS réel OK."
     },
     {
      "id": "RP-081",
