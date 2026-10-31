@@ -997,6 +997,21 @@
           "primitive": "",
           "suggestedAsset": "tables.html",
           "details": "Salon vocal mesh P2P par table (js/tables-voice.js + users/tables_voice.js + routes /api/tables/:id/voice*). Fait : VAD/PTT/continu, passe-haut 80Hz, limiteur, gains + volumes par joueur, muet/sourdine, mute MJ (mute = ne recoit plus le vocal), reset vocal MJ pour tout le monde, pastille qui-parle dans membres + panneau voix en tete de table, repli sondage sans SSE, anti-glare offreur. Verifie : node:test 11/11, curl (join/mute 200, signal vers mute 403, reset MJ 200 puis signal 200, reset non-MJ 403), SSE live (mute/reset/signal recus, signal bloque aux mutes). DONE 2026-10-31."
+        },
+        {
+          "id": "RP-067",
+          "title": "Table en cours : panneau latéral chat sur tout le site — livré",
+          "epic": "Outils Web (Livre IX)",
+          "status": "done",
+          "priority": "high",
+          "order": 38,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "js/table-dock.js",
+          "details": "Panneau latéral repliable (css/table-dock.css + js/table-dock.js) chargé par users/auth.js (ensureTableDock) sur toutes les pages sauf tables.html, sans toucher aux HTML. Fait : onglet bord droit + pastille impayés, lecture + envoi texte public sur la table active (kt-tables-active), sélecteur de table, polling 5 s, masquages perso + envoi restreint hérité respectés, KT_ACTIVE_TABLE posé (pas de double popup), Échap/✕, état persisté (kt-dock-open). Images/MPs/gestion -> page Tables. Vérifié : node --check, harnais DOM simulé (init, garde tables.html/tbApp, login si déconnecté, XSS neutralisée, URL image non-http bloquée, masquage avant/après, repère lecture). DONE 2026-10-31."
         }
       ]
     }

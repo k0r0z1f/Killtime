@@ -404,6 +404,7 @@
             }
 
             this.ensureTablesButton();
+            this.ensureTableDock();
             this.refreshSessionAvatar();
         }
 
@@ -465,6 +466,27 @@
                     'align-items:center;justify-content:center;padding:0 5px;"></span>';
                 parent.insertBefore(a, slot || parent.firstChild);
                 this.updateTablesBadge();
+            } catch (e) {}
+        }
+        // Panneau latéral « Table en cours » (toutes les pages sauf tables.html).
+        // Charge une seule fois css/table-dock.css + js/table-dock.js ; le dock
+        // est autonome (lit kt-tables-active, polling 5 s sur la table active).
+        ensureTableDock() {
+            try {
+                if (document.getElementById('ktDockCss') || document.getElementById('ktDockJs')) return;
+                const path = window.location.pathname || '';
+                if (/tables\.html$/.test(path) || document.getElementById('tbApp')) return;
+                const prefix = this.tablesRootPrefix();
+                const link = document.createElement('link');
+                link.id = 'ktDockCss';
+                link.rel = 'stylesheet';
+                link.href = prefix + 'css/table-dock.css';
+                document.head.appendChild(link);
+                const s = document.createElement('script');
+                s.id = 'ktDockJs';
+                s.src = prefix + 'js/table-dock.js';
+                s.defer = true;
+                document.body.appendChild(s);
             } catch (e) {}
         }
         getTablesUnread() {
