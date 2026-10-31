@@ -277,7 +277,7 @@
    "magie_ton": "cyan"
   },
   {
-   "description": "De petite stature et exclusivement féminine, la société cléienne tient l'Empire à distance grâce à son indépendance farouche. Très sobres en eau et dotées d'un réseau neural hypersensible, les Cléiennes manipulent les arcanes avec une virtuosité innée.",
+   "description": "De petite stature et exclusivement féminine, la société cléienne tient l'Empire à distance grâce à son indépendance farouche. Très sobres en eau et à la sensibilité à fleur de peau, les Cléiennes manipulent les arcanes avec une virtuosité innée.",
    "dons": [
     {
      "effet": "-2 dégâts feu/chaleur, En Feu à -1, +2 CON vs chaleur ; -1 Encaissement, +1 dégât de froid subi.",
@@ -295,7 +295,7 @@
      "effet": "+2 détection/lecture émotionnelle ; -2 contre les détonations et effets aveuglants.",
      "effet_html": "+2 détection/lecture émotionnelle ; -2 contre les détonations et effets aveuglants.",
      "id": "C",
-     "nom": "Hypersensibilité Neurale"
+     "nom": "Sensibilité à fleur de peau"
     },
     {
      "effet": "besoins eau/nourriture divisés par 2 ; +2 CON vs privation.",
@@ -730,7 +730,7 @@
    },
    "Cléien": {
     "origine": "Planète Cléia",
-    "description": "De petite stature et exclusivement féminine, la société cléienne tient l'Empire à distance grâce à son indépendance farouche. Très sobres en eau et dotées d'un réseau neural hypersensible, les Cléiennes manipulent les arcanes avec une virtuosité innée.",
+    "description": "De petite stature et exclusivement féminine, la société cléienne tient l'Empire à distance grâce à son indépendance farouche. Très sobres en eau et à la sensibilité à fleur de peau, les Cléiennes manipulent les arcanes avec une virtuosité innée.",
     "dons": [
      "-2 dégâts feu/chaleur, En Feu à -1, +2 CON vs chaleur ; -1 Encaissement, +1 dégât de froid subi.",
      "+1 canalisation ; progression Magie +1 case ; critique magique = +1 Essoufflement.",

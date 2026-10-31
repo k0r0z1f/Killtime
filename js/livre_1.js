@@ -1,5 +1,8 @@
 /* ==========================================================================
-   LIVRE I — RENDU DEPUIS data/livre_1.json (source unique, tout le chapitre).
+   LIVRE I — RENDU DEPUIS data/livre_1.json (lu par le navigateur).
+   Textes : s'ecrivent dans content/livre_1/**.md puis
+   `python3 tools/build_livres.py --build 1` regenere le JSON.
+   Ne plus editer les textes directement dans le JSON.
    Données règles (lexique, espèces, budgets...) + contenu texte (sections,
    paragraphes, encadrés, exemples) : la page ne garde que les conteneurs.
    Traductions = traduire les chaînes du JSON, structure inchangée.

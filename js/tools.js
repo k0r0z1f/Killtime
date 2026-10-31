@@ -123,7 +123,7 @@ function initCharacterSheet() {
             gifts: ['Accord Sylvestre', 'Grâce Féline', 'Sens des Flux', 'Pas Feuillu', 'Sève Vive'],
             giftNotes: ['-1 PA et +1 Magie Élémentale (terre/eau/vent/feu).', '+1 esquive en milieu naturel ; -2 dégâts de chute.', 'Sent eau/vie/magie à ~50 m (Observation) ; +2 Observation en nature, -2 en milieu pollué/artificiel.', '+2 discrétion en nature ; ignore les terrains difficiles naturels.', '1×/jour au contact du sol naturel : purge 1 Essoufflement ou 1 résiduel de 2 ou moins.'] },
         cleien: { label: 'Cléien', sensMin: 4, magie: 'Inhérente', note: 'Hypersensible arcanique, sens min 4',
-            gifts: ['Sang-Chaud de Cléia', 'Résonance Arcanique', 'Hypersensibilité Neurale', 'Frugalité Cleyane', 'Silhouette Mineure'],
+            gifts: ['Sang-Chaud de Cléia', 'Résonance Arcanique', 'Sensibilité à fleur de peau', 'Frugalité Cleyane', 'Silhouette Mineure'],
             giftNotes: ['-2 dégâts feu/chaleur ; -1 Encaissement, +1 dégât de froid subi.', '+1 canalisation ; progression Magie +1 case ; critique magique = +1 Essoufflement.', '+2 détection/lecture émotionnelle ; -2 vs flash/bang.', 'Besoins eau/nourriture ÷ 2 ; +2 CON vs privation.', '+1 discrétion/esquive vs taille humaine et plus ; -1 dégât au corps-à-corps.'] },
         mikyai: { label: 'Mikyai', sensMin: 3, magie: 'Impossible à Limitée', note: 'Écailles renforcées, sens min 3',
             gifts: ['Écailles de Karkjiue', 'Régénération Karkjiue', 'Technicien-Guerrier', 'Armes Naturelles', 'Queue Préhensile'],
