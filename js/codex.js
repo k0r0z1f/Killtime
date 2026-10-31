@@ -4,11 +4,39 @@
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Gestion de l'accordéon dans la sidebar
+    // 1. Gestion de l'accordéon dans la sidebar (état persisté : un groupe
+    // refermé le reste après navigation, fini les réouvertures à chaque page).
+    // Exécuté immédiatement (pas en DOMContentLoaded) pour éviter le flash
+    // ouvert → fermé : le script est en fin de body, la sidebar existe déjà.
+    const navKey = t => 'codex-nav:' + t;
+    const restoreNav = () => {
+        document.querySelectorAll('.nav-group').forEach(group => {
+            const tag = group.querySelector('.group-tag');
+            const id = tag ? tag.textContent.trim() : null;
+            if (id) {
+                try {
+                    const saved = localStorage.getItem(navKey(id));
+                    if (saved === '0') group.classList.remove('expanded');
+                    else if (saved === '1') group.classList.add('expanded');
+                } catch (e) {}
+                group.dataset.navId = id;
+            }
+        });
+    };
+    restoreNav();
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', restoreNav);
+    }
     document.querySelectorAll('.nav-group-header').forEach(header => {
         header.addEventListener('click', () => {
             const group = header.parentElement;
             group.classList.toggle('expanded');
+            const id = group.dataset.navId;
+            if (id) {
+                try {
+                    localStorage.setItem(navKey(id), group.classList.contains('expanded') ? '1' : '0');
+                } catch (e) {}
+            }
         });
     });
 

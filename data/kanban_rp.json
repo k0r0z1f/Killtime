@@ -1627,6 +1627,21 @@
      "scale": null,
      "suggestedAsset": "content/livre_12/",
      "details": "FAIT 2026-10-31 — 21 blocs (entete, chap-48..52) extraits en content/livre_12/sections/**.md, build -> data/livre_12.json identique a l octet, check OK. Pattern RP-098. Serie Markdown II-XII terminee."
+    },
+    {
+     "id": "RP-109",
+     "title": "Nettoyer la navigation codex (menus, badges, scrollspy, pilotage)",
+     "epic": "Outillage — Navigation Codex",
+     "status": "done",
+     "priority": "medium",
+     "order": 80,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "js/codex.js",
+     "details": "FAIT 2026-10-31 — lignes « Livre N (Fichier Dédié)/(Page Dédiée) » supprimees (17 pages), 1ers chapitres -> haut de page, badges Disponible/Actif/Nouveau/Interactif retires des menus, scrollspy etendu au menu gauche (chapitre suivi au clic/scroll), etat replie/deplie persiste en localStorage + restauration immediate (pas de flash), Pilotage ferme par defaut, menus des 4 pages compactes harmonises avec l accueil (avec restauration des groupes ◆/00 ecrases par erreur)."
     }
    ]
   }
