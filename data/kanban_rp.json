@@ -1512,7 +1512,7 @@
      "id": "RP-101",
      "title": "Markdown-ifier le Livre IV (textes en content/, JSON genere)",
      "epic": "Livre IV — 5e Force & Magie",
-     "status": "todo",
+     "status": "done",
      "priority": "medium",
      "order": 72,
      "scene": "",
@@ -1521,13 +1521,13 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "content/livre_4/",
-     "details": "Apres RP-098 (Livre I, pattern). Extraire textes en content/livre_4/**.md via tools/build_livres.py --extract 4, --build 4, --check OK, JSON identique. Champs mecaniques restent en JSON."
+     "details": "FAIT 2026-10-31 — 18 blocs (chap-14..19) extraits en content/livre_4/sections/**.md, build -> data/livre_4.json identique a l octet, check OK. Pattern RP-098."
     },
     {
      "id": "RP-102",
      "title": "Markdown-ifier le Livre V (textes en content/, JSON genere)",
      "epic": "Livre V — Combat Tactique",
-     "status": "todo",
+     "status": "done",
      "priority": "medium",
      "order": 73,
      "scene": "",
@@ -1536,13 +1536,13 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "content/livre_5/",
-     "details": "Apres RP-098 (Livre I, pattern). Extraire textes en content/livre_5/**.md via tools/build_livres.py --extract 5, --build 5, --check OK, JSON identique. Champs mecaniques restent en JSON."
+     "details": "FAIT 2026-10-31 — 19 blocs (entete, chap-20..22, ~70k car) extraits en content/livre_5/sections/**.md, build -> data/livre_5.json identique a l octet, check OK. Pattern RP-098."
     },
     {
      "id": "RP-103",
      "title": "Markdown-ifier le Livre VI (textes en content/, JSON genere)",
      "epic": "Livre VI — Santé & États",
-     "status": "todo",
+     "status": "done",
      "priority": "medium",
      "order": 74,
      "scene": "",
@@ -1551,13 +1551,13 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "content/livre_6/",
-     "details": "Apres RP-098 (Livre I, pattern). Extraire textes en content/livre_6/**.md via tools/build_livres.py --extract 6, --build 6, --check OK, JSON identique. Champs mecaniques restent en JSON."
+     "details": "FAIT 2026-10-31 — 19 blocs (entete, chap-23..26) extraits en content/livre_6/sections/**.md, build -> data/livre_6.json identique a l octet, check OK. Pattern RP-098."
     },
     {
      "id": "RP-104",
      "title": "Markdown-ifier le Livre VII (textes en content/, JSON genere)",
      "epic": "Livre VII — Historiques",
-     "status": "todo",
+     "status": "done",
      "priority": "medium",
      "order": 75,
      "scene": "",
@@ -1566,13 +1566,13 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "content/livre_7/",
-     "details": "Apres RP-098 (Livre I, pattern). Extraire textes en content/livre_7/**.md via tools/build_livres.py --extract 7, --build 7, --check OK, JSON identique. Champs mecaniques restent en JSON."
+     "details": "FAIT 2026-10-31 — 10 blocs (entete, chap-27..30) extraits en content/livre_7/sections/**.md, build -> data/livre_7.json identique a l octet, check OK. Pattern RP-098."
     },
     {
      "id": "RP-105",
      "title": "Markdown-ifier le Livre VIII (textes en content/, JSON genere)",
      "epic": "Livre VIII — Arsenal",
-     "status": "todo",
+     "status": "done",
      "priority": "medium",
      "order": 76,
      "scene": "",
@@ -1581,13 +1581,13 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "content/livre_8/",
-     "details": "Apres RP-098 (Livre I, pattern). Extraire textes en content/livre_8/**.md via tools/build_livres.py --extract 8, --build 8, --check OK, JSON identique. Champs mecaniques restent en JSON."
+     "details": "FAIT 2026-10-31 — 13 blocs (entete, chap-31..33) extraits en content/livre_8/sections/**.md, build -> data/livre_8.json identique a l octet, check OK. Pattern RP-098."
     },
     {
      "id": "RP-106",
      "title": "Markdown-ifier le Livre X (textes en content/, JSON genere)",
      "epic": "Livre X — Temps & MJ",
-     "status": "todo",
+     "status": "done",
      "priority": "medium",
      "order": 77,
      "scene": "",
@@ -1596,13 +1596,13 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "content/livre_10/",
-     "details": "Apres RP-098 (Livre I, pattern). Extraire textes en content/livre_10/**.md via tools/build_livres.py --extract 10, --build 10, --check OK, JSON identique. Champs mecaniques restent en JSON."
+     "details": "FAIT 2026-10-31 — 12 blocs (entete, chap-39..42) extraits en content/livre_10/sections/**.md, build -> data/livre_10.json identique a l octet, check OK. Pattern RP-098."
     },
     {
      "id": "RP-107",
      "title": "Markdown-ifier le Livre XI (textes en content/, JSON genere)",
      "epic": "Livre XI — Atlas",
-     "status": "todo",
+     "status": "done",
      "priority": "medium",
      "order": 78,
      "scene": "",
@@ -1611,13 +1611,13 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "content/livre_11/",
-     "details": "Apres RP-098 (Livre I, pattern). Extraire textes en content/livre_11/**.md via tools/build_livres.py --extract 11, --build 11, --check OK, JSON identique. Champs mecaniques restent en JSON."
+     "details": "FAIT 2026-10-31 — 12 blocs (entete, chap-43..47) extraits en content/livre_11/sections/**.md, build -> data/livre_11.json identique a l octet, check OK. Pattern RP-098."
     },
     {
      "id": "RP-108",
      "title": "Markdown-ifier le Livre XII (textes en content/, JSON genere)",
      "epic": "Livre XII — Bestiaire",
-     "status": "todo",
+     "status": "done",
      "priority": "medium",
      "order": 79,
      "scene": "",
@@ -1626,7 +1626,7 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "content/livre_12/",
-     "details": "Apres RP-098 (Livre I, pattern). Extraire textes en content/livre_12/**.md via tools/build_livres.py --extract 12, --build 12, --check OK, JSON identique. Champs mecaniques restent en JSON."
+     "details": "FAIT 2026-10-31 — 21 blocs (entete, chap-48..52) extraits en content/livre_12/sections/**.md, build -> data/livre_12.json identique a l octet, check OK. Pattern RP-098. Serie Markdown II-XII terminee."
     }
    ]
   }
