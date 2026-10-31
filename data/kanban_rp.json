@@ -1497,7 +1497,7 @@
      "id": "RP-100",
      "title": "Markdown-ifier le Livre III (textes en content/, JSON genere)",
      "epic": "Livre III — Compétences",
-     "status": "todo",
+     "status": "done",
      "priority": "medium",
      "order": 71,
      "scene": "",
@@ -1506,7 +1506,7 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "content/livre_3/",
-     "details": "Apres RP-098 (Livre I, pattern). Extraire textes en content/livre_3/**.md via tools/build_livres.py --extract 3, --build 3, --check OK, JSON identique. Champs mecaniques restent en JSON."
+     "details": "FAIT 2026-10-31 — 12 blocs (chap-10..13) extraits en content/livre_3/sections/**.md, build -> data/livre_3.json identique a l octet, check OK. Pattern RP-098."
     },
     {
      "id": "RP-101",
