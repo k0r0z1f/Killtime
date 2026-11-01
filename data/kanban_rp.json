@@ -51,13 +51,13 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_1.html#chap-2",
-     "details": "Passe 2026-11-01 (relecture terminée) — FAIT : dons Cléien A–E (Sang-Chaud : -1 feu/résiduel, +2 CON chaleur ; Résonance : +1 Magie/double-tick/critique coûte Essoufflement ; Fille du désert remplace Sensibilité ; Frugalité moitié + privation ; Silhouette : Discrétion/Esquive + Mains Nues/contact), Mikyai A–E (Armure tranchant/perforant, froid ; Régénération valeur résiduelle ; Technicien : Armes Lourdes/Ingénierie/encombrement ; Armes Naturelles Athlétisme grimper ; Queue 5 kg), Vardien A–E (Intimidation attaque/défense ; Système Immunitaire + résiduels -1 ; Récup/Communication ; Ne Lâche Rien ; Contrebandier). FIX transverses : source spé Projectiles→Ballistique (Livre III), tooltips/liens posés (§23.2, §23.4, §24.1bis, §11.1-11.3, §12.1-12.3), miroirs js/tools.js resync + fix syntaxe. RESTE : RP-073 (ajout Nain), RP-125 (bouffe/privation), RP-126 (encombrement armures)."
+     "details": "Passe 2026-11-01 (relecture terminée) — FAIT : dons Cléien A–E, Mikyai A–E, Vardien A–E normalisés (vocabulaire canon, liens/tooltips §§23.2/23.4/24.1bis/11.x/12.x, tournures calquées Derek/Taurien). Remplacements : Sensibilité→Fille du désert ; canalisation virée puis +1 Magie restauré ; (orientation) supprimé ×2 ; Projectiles→Ballistique (Livre III) ; queue 5 kg ; contacts narratifs. Miroirs js/tools.js resync + fix syntaxe. Restes ouverts : RP-073 (Nain), RP-125 (bouffe/privation), RP-126 (encombrement armures)."
     },
     {
      "id": "RP-004",
      "title": "Relire chap. 3. Création pas-à-pas",
      "epic": "Livre I — Bases & Création",
-     "status": "in_progress",
+     "status": "done",
      "priority": "high",
      "order": 2,
      "scene": "",
@@ -66,7 +66,7 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_1.html#chap-3",
-     "details": "Vérification humaine — livre_1.html#chap-3. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
+     "details": "FAIT 2026-11-01 (1er check chap-3) — intro 5 étapes reformulée (positif, 2e personne) ; formule N➔N+1 virée, lien rule-ref vers §5.3 (#sec-5-3) ; colonne Éveillé unifiée (fini étincelle/Magie>0 → si éveillé à la Magie) ; sbire éveillé 11→14 pts (+2 comme Héros, prop. tools.js + Unity RD-211) ; sens Vision/Ouïe : max(1d6, min espèce) au lieu de min 3 figé ; entraînement gratuit sans = + lien Livre II §6 + plafond 3 entraînements (pas +3). Reste ouvert : aligner max +3/plafond +3 (Livre II, fiche, créateur) sur 3 entraînements maximum ?"
     },
     {
      "id": "RP-005",

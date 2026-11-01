@@ -335,7 +335,7 @@
     },
     {
      "effet": "+2 Armes Lourdes (Ballistique) ; +2 Ingénierie pour réparer le matériel impérial ; ignore 1 point d'encombrement d'armure.",
-     "effet_html": "+2 <a class=\"rule-ref\" href=\"livre_3.html#chap-13\" data-tip=\"Armes Lourdes (Canons) : +100 d\u00e9g\u00e2ts de masse contre structures, fortifications et blindages (§13).\">Armes Lourdes</a> (Ballistique) ; +2 <a class=\"rule-ref\" href=\"livre_3.html#chap-12\" data-tip=\"Ingénierie & Arcanotech : réparation, réacteurs, piratage (INT/ÉRU, §12.1).\">Ingénierie</a> pour réparer le matériel impérial ; ignore 1 point d'encombrement d'armure.",
+     "effet_html": "+2 <a class=\"rule-ref\" href=\"livre_3.html#chap-13\" data-tip=\"Armes Lourdes (Canons) : +100 dégâts de masse contre structures, fortifications et blindages (§13).\">Armes Lourdes</a> (Ballistique) ; +2 <a class=\"rule-ref\" href=\"livre_3.html#chap-12\" data-tip=\"Ingénierie & Arcanotech : réparation, réacteurs, piratage (INT/ÉRU, §12.1).\">Ingénierie</a> pour réparer le matériel impérial ; ignore 1 point d'encombrement d'armure.",
      "id": "C",
      "nom": "Technicien-Guerrier"
     },
@@ -462,7 +462,7 @@
  },
  "profils": [
   {
-   "eveille": "17 points au lieu de 15 si le personnage s'éveille à la Magie (au moins 1 pt placé en Magie)",
+   "eveille": "17 points au lieu de 15 si éveillé à la Magie",
    "id": "heros",
    "limites": "Min 1, Max 3 par attribut restant (Plafond ultime en jeu : 10)",
    "nom": "Héros PJ (Joueur)",
@@ -478,12 +478,12 @@
    ],
    "secondaires": 15,
    "secondaires_eveille": 17,
-   "secondaires_html": "<strong>15 points</strong> à ventiler sur les 6 autres attributs (17 si Magie &gt; 0)",
+   "secondaires_html": "<strong>15 points</strong> à ventiler sur les 6 autres attributs (17 si éveillé à la Magie)",
    "limites_html": "Min <strong>1</strong>, Max <strong>3</strong> par attribut restant (Plafond ultime en jeu : <strong>10</strong>)",
-   "eveille_html": "<strong>17 points</strong> au lieu de 15 si le personnage s'éveille à la Magie (au moins 1 pt placé en Magie)"
+   "eveille_html": "<strong>17 points</strong> au lieu de 15 si éveillé à la Magie"
   },
   {
-   "eveille": "17 points au lieu de 15 si Magie > 0",
+   "eveille": "17 points au lieu de 15 si éveillé à la Magie",
    "id": "elite",
    "limites": "Min 1, Max 3 par attribut restant (Plafond en cours de jeu : 10)",
    "nom": "PNJ d'Élite / Vétéran",
@@ -499,21 +499,21 @@
    ],
    "secondaires": 15,
    "secondaires_eveille": 17,
-   "secondaires_html": "<strong>15 points</strong> à répartir sur les 6 autres attributs (17 si Magie &gt; 0)",
+   "secondaires_html": "<strong>15 points</strong> à répartir sur les 6 autres attributs (17 si éveillé à la Magie)",
    "limites_html": "Min <strong>1</strong>, Max <strong>3</strong> par attribut restant (Plafond en cours de jeu : <strong>10</strong>)",
-   "eveille_html": "<strong>17 points</strong> au lieu de 15 si Magie &gt; 0"
+   "eveille_html": "<strong>17 points</strong> au lieu de 15 si éveillé à la Magie"
   },
   {
-   "eveille": "11 points si étincelle magique",
+   "eveille": "14 points au lieu de 12 si éveillé à la Magie",
    "id": "sbire",
    "limites": "Min 1, Max 3 par attribut (Jamais de caractéristique à 0)",
    "nom": "PNJ Sbire / Fretin",
    "piliers_texte": "Aucun attribut majeur d'office",
    "secondaires": 12,
-   "secondaires_eveille": 11,
-   "secondaires_html": "<strong>12 points</strong> au total répartis sur l'ensemble des 8 attributs (11 si Magie &gt; 0)",
+   "secondaires_eveille": 14,
+   "secondaires_html": "<strong>12 points</strong> au total répartis sur l'ensemble des 8 attributs (14 si éveillé à la Magie)",
    "limites_html": "Min <strong>1</strong>, Max <strong>3</strong> par attribut (Jamais de caractéristique à 0)",
-   "eveille_html": "<strong>11 points</strong> si étincelle magique"
+   "eveille_html": "<strong>14 points</strong> au lieu de 12 si éveillé à la Magie"
   }
  ],
  "progression": {
@@ -536,11 +536,11 @@
  "regle_dons": "Sauf précision contraire, un don s'active gratuitement, quand vous voulez (pas d'action, pas de PA).",
  "sens": [
   {
-   "texte": "Lancez <strong>1d6</strong> à la création (valeur minimale de 3 selon votre espèce).",
+   "texte": "Lancez <strong>1d6</strong> à la création. Si votre dé tombe sous le minimum de votre espèce, remontez-le à ce minimum.",
    "titre": "Vision"
   },
   {
-   "texte": "Lancez <strong>1d6</strong> à la création (valeur minimale de 3 selon votre espèce).",
+   "texte": "Lancez <strong>1d6</strong> à la création. Si votre dé tombe sous le minimum de votre espèce, remontez-le à ce minimum.",
    "titre": "Ouïe"
   },
   {
@@ -874,7 +874,7 @@
    "blocs": [
     {
      "type": "html",
-     "html": "                    <p>\n                        Créer son personnage se fait en <strong>5 étapes simples</strong>. Pas besoin de\n                        calculatrice savante : suivez le guide pas-à-pas pour bâtir un héros solide, plein de caractère\n                        et immédiatement prêt pour la table de jeu.\n                    </p>"
+     "html": "                    <p>\n                        Créez votre personnage en <strong>5 étapes simples</strong>. Suivez le guide\n                        pas-à-pas et repartez avec un héros solide, plein de caractère, prêt à jouer\n                        dès ce soir.\n                    </p>"
     },
     {
      "type": "html",
@@ -890,7 +890,7 @@
     },
     {
      "type": "html",
-     "html": "                    <p>\n                        Gardez à l'esprit une distinction essentielle : la <strong>Création Initiale</strong> utilise un\n                        budget fermé pour poser des bases équilibrées entre joueurs. Plus tard, lors de\n                        l'<strong>Évolution en Jeu</strong>, vous serez totalement libre d'améliorer vos attributs au fil\n                        des séances en dépensant vos points d'XP (au coût progressif de <code>N ➔ N+1 = (N+1) XP</code>,\n                        jusqu'au plafond de 10 — voir §5.3). À la création, voici comment répartir vos points selon le rôle\n                        du personnage :\n                    </p>"
+     "html": "                    <p>\n                        Gardez à l'esprit une distinction essentielle : la <strong>Création Initiale</strong> utilise un\n                        budget fermé pour poser des bases équilibrées entre joueurs. Plus tard, lors de\n                        l'<strong>Évolution en Jeu</strong>, vous améliorez vos attributs au fil\n                        des séances avec vos points d'XP. Grimper haut coûte plus cher,\n                        jusqu'au plafond de 10 — voir <a class=\"rule-ref\" href=\"#sec-5-3\" data-tip=\"Dépenser son Expérience : votre domaine d'abord, la polyvalence au prix fort (§5.3).\">§5.3</a>. À la création, voici comment répartir vos points selon le rôle\n                        du personnage :\n                    </p>"
     },
     {
      "type": "ref",
@@ -926,7 +926,7 @@
     },
     {
      "type": "html",
-     "html": "                    <ul>\n                        <li><strong>1 entraînement gratuit = +1 palier de dé</strong> sur la compétence de votre choix (avec un plafond de +3 par compétence, voir Livre II §6).</li>\n                        <li><strong>À chaque montée d'Érudition en jeu (+1 ÉRU)</strong>, votre héros débloque immédiatement <strong>+1 entraînement gratuit</strong> supplémentaire.</li>\n                        <li><strong>Ces entraînements de départ ne coûtent aucun XP</strong> (ils valent 0 XP dépensé dans votre total, <a class=\"rule-ref\" href=\"#sec-5-4\" data-tip=\"XP Total : tout l’XP investi depuis le début, hors réserves et hors entraînements gratuits (§5.4).\">§5.4</a>). Seuls les entraînements achetés plus tard avec l'expérience accumulée viendront gonfler ce compteur.</li>\n                    </ul>"
+     "html": "                    <ul>\n                        <li><strong>1 entraînement gratuit monte la compétence de votre choix d'un palier de dé</strong> (3 entraînements maximum par compétence, voir <a class=\"rule-ref\" href=\"livre_2.html#chap-6\" data-tip=\"Échelle des dés : chaque entraînement fait grimper votre dé d'un cran, 3 entraînements maximum par compétence (§6).\">Livre II §6</a>).</li>\n                        <li><strong>À chaque montée d'Érudition en jeu (+1 ÉRU)</strong>, votre héros débloque immédiatement <strong>+1 entraînement gratuit</strong> supplémentaire.</li>\n                        <li><strong>Ces entraînements de départ ne coûtent aucun XP</strong> (ils valent 0 XP dépensé dans votre total, <a class=\"rule-ref\" href=\"#sec-5-4\" data-tip=\"XP Total : tout l’XP investi depuis le début, hors réserves et hors entraînements gratuits (§5.4).\">§5.4</a>). Seuls les entraînements achetés plus tard avec l'expérience accumulée viendront gonfler ce compteur.</li>\n                    </ul>"
     }
    ]
   },

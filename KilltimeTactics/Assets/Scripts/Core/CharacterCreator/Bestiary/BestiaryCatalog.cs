@@ -631,8 +631,9 @@ namespace Killtime.Core.Character
             }
             if (profile == CharacterProfileType.PnjSbire)
             {
-                bool ok = sum8 <= 12;
-                message = ok ? $"Sbire OK : {sum8}/12." : $"Sbire HORS BUDGET : {sum8}/12 !";
+                int sbudget = a.MAG > 0 ? 14 : 12;
+                bool ok = sum8 <= sbudget;
+                message = ok ? $"Sbire OK : {sum8}/{sbudget}." : $"Sbire HORS BUDGET : {sum8}/{sbudget} !";
                 return ok;
             }
             // PnjNormal / HerosPJ : 2 piliers à 4 + 15 secondaires (17 si MAG>0).

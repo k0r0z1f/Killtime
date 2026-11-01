@@ -3203,6 +3203,22 @@
           "suggestedAsset": "atlas_mondes.html + data/atlas_mondes.json",
           "details": "FAIT (2026-10-19) : 1) Complétion de data/atlas_mondes.json (v4, 111 entrées dans mondes[], 5 entités supra-planétaires, 30 relations, 47 marqueurs + 18 routes Hybris) à partir des Livres I/XI/XII, atlas_3d.html, HybrisWorldMapRegistry.cs, HybrisWorldMapData.cs, Bestiary.json, hybris_history.html et des overviews de lore : 36 Zones Éliennes, 3 Galaxies (Principale, Aurion, Sans Étoiles), Mars/Lune/Stations Jupiter (Sol), Anneau débris Hybris, Ceinture Janus, Satellites Cléia, Bassins miniers Karkjiue, Starlight Voyager, Windfighters d'Haliriel, 7 régions, 25 pôles/royaumes/cités/lacs/ports (Hybris, Vardis, Cléia, Nefris, Karkjiue, Avaleur) et 29 espèces/tribus/boss/automates/entités avec affinage complet des 20 fiches espèces existantes. 2) Amélioration de atlas_mondes.html : bandeau KPI dynamique cliquable, filtres rapides par grande famille, filtre par monde hôte et statut, panneau inspecteur détaillé avec navigation parent/enfants, anti-collision des bulles Tech×Magie, et 4 nouvelles vues (Arbre Cosmique & Systèmes, Carte 2D interactive d'Hybris 47 marqueurs + Lieux, Matrice des Espèces & Bestiaire, Spectre Gravité & Atmosphères).",
           "updated": "2026-10-19"
+        },
+        {
+          "id": "RD-211",
+          "title": "Sbire éveillé : budget 11 → 14 pts (aligné +2 Héros/Élite)",
+          "epic": "Codex & Lore",
+          "status": "done",
+          "priority": "medium",
+          "order": 28,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "data/livre_1.json + js/tools.js + AttributeRulesService.cs + BestiaryCatalog.cs",
+          "details": "FAIT (2026-11-01) : le sbire éveillé passait de 12 à 11 pts (anomalie import RP-086, strictement pire que non-éveillé ; le créateur appliquait 12 par tolérance MJ). Choix MJ : +2 comme Héros/Élite → 14 pts si éveillé à la Magie (Magie hors budget). Unifié le wording colonne Éveillé (fini étincelle magique / Magie > 0). Fichiers : profils sbire livre_1.json (12/14), validation + stepper tools.js (cap 14 si mag>0, note tolérance virée), AttributeRulesService (2 spots), BestiaryCatalog (budget 14 si MAG>0).",
+          "updated": "2026-11-01"
         }
       ]
     },

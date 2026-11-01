@@ -1069,13 +1069,12 @@ function initCharacterSheet() {
         let budgetTotal = 0, ptsUsed = 0, expected = '';
 
         if (profile === 'sbire') {
-            budgetTotal = 12; // Livre I §3 : 12 pts sur les 8 attributs, min 1 max 3, aucun à 0.
+            budgetTotal = awakened ? 14 : 12; // Livre I §3 : 12 pts sur les 8 attributs (14 si éveillé), min 1 max 3, aucun à 0.
             ptsUsed = CORE8.reduce((s, k) => s + eff[k], 0);
-            expected = 'Sbire : 12 pts sur les 8 attributs (Magie hors budget).';
+            expected = 'Sbire : ' + budgetTotal + ' pts sur les 8 attributs (Magie hors budget).';
             for (const k of CORE8) {
                 if (eff[k] < 1 || eff[k] > 3) errors.push(ATTR_LABELS[k] + ' doit être entre 1 et 3 (sbire).');
             }
-            if (awakened) errors.push('Note : le Livre I §3 indique 11 pts si Magie débloquée pour un sbire — appliquez 12 par tolérance MJ.');
         } else {
             const isHero = (profile === 'hero');
             const pilMajVal = isHero ? 5 : 4, pilMinVal = isHero ? 4 : 4;
@@ -1321,7 +1320,8 @@ function initCharacterSheet() {
         const valOf = (k) => parseInt(attrInputs[k] ? attrInputs[k].value : '0') || 0;
         if (profile === 'sbire') {
             const total = CORE8.reduce((s, k) => s + valOf(k), 0);
-            if (total + step > 12) return 'Budget plein : ' + total + '/12 (Sbire, Livre I §3). Retire 1 point ailleurs pour ajouter ici.';
+            const cap = valOf('mag') > 0 ? 14 : 12;
+            if (total + step > cap) return 'Budget plein : ' + total + '/' + cap + ' (Sbire, Livre I §3). Retire 1 point ailleurs pour ajouter ici.';
             return null;
         }
         const maj = pillarMajorSelect ? pillarMajorSelect.value : null;

@@ -4,7 +4,7 @@ format: raw
 livre: 1
 ---
                     <p>
-                        Créer son personnage se fait en <strong>5 étapes simples</strong>. Pas besoin de
-                        calculatrice savante : suivez le guide pas-à-pas pour bâtir un héros solide, plein de caractère
-                        et immédiatement prêt pour la table de jeu.
+                        Créez votre personnage en <strong>5 étapes simples</strong>. Suivez le guide
+                        pas-à-pas et repartez avec un héros solide, plein de caractère, prêt à jouer
+                        dès ce soir.
                     </p>

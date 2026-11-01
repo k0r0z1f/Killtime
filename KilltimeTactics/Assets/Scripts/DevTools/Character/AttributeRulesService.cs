@@ -71,7 +71,7 @@ namespace Killtime.DevTools.Character
                     if (candidate[i] > 3) return false;
                 }
 
-                int maxSbirePoints = magie > 0 ? 11 : 12;
+                int maxSbirePoints = magie > 0 ? 14 : 12;
                 int currentTotal = 0;
                 for (int i = 0; i < 8; i++) currentTotal += candidate[i];
 
@@ -215,7 +215,7 @@ namespace Killtime.DevTools.Character
                     total += core[i];
                 }
 
-                int expected = b.Magie > 0 ? 11 : 12;
+                int expected = b.Magie > 0 ? 14 : 12;
                 if (total == expected)
                 {
                     statusMessage = $"✅ Sbire : {total}/{expected} pts alloués";
