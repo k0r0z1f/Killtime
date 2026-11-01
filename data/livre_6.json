@@ -250,7 +250,7 @@
      "<span class=\"table-badge ruby\">Étourdi</span>",
      "Une créature a la tête qui tourne ou le regard trouble.",
      "<strong>-1 ec</strong> sur tous les jets.",
-     "Variable (1 à 20 tours en combat)."
+     "Court (1 à 2 tours en combat)."
     ],
     [
      "<span class=\"table-badge ruby\">Immobilisé</span>",
@@ -953,7 +953,7 @@
    {
     "effet": "Saigner",
     "prerequis": "Différentiel de 5+ avec arme tranchante/perforante",
-    "consequence": "Inflige des dégâts résiduels continus égaux au niveau d'entraînement à chaque tour."
+    "consequence": "Inflige des dégâts résiduels égaux au niveau d'entraînement à chaque tour."
    },
    {
     "effet": "Brûler",

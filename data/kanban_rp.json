@@ -147,7 +147,7 @@
      "id": "RP-010",
      "title": "Relire chap. 8. Tables des Critiques (d2-d24)",
      "epic": "Livre II — Dés & Épreuves",
-     "status": "todo",
+     "status": "done",
      "priority": "high",
      "order": 3,
      "scene": "",
@@ -156,7 +156,7 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_2.html#chap-8",
-     "details": "Vérification humaine — livre_2.html#chap-8. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
+     "details": "FAIT 2026-11-01 — check mécaniques chap. 8 : palier complet relancé (plus 'second dé') ; 'continus' retiré des résiduels (table+miroirs) ; 14 liens/tooltips posés (§8.2) ; durées intégrées puis élaguées (inline/2e ligne) ; 8.3 fusionné en 8.1 (une table, deux sens) ; échec = entraînement protège, max relance d10 ; fumble lit 8.2 à l'envers ; cases inventées/clarifiées (pas de côté, brèche, défense impénétrable, contre-attaque, KO défensif) ; RP-127 créée (social/utilitaire à développer)."
     },
     {
      "id": "RP-011",
@@ -1897,6 +1897,21 @@
      "scale": null,
      "suggestedAsset": "livre_8.html#sec-33-1",
      "details": "Écrire la règle d'encombrement des armures : barème par armure (légère/lourde/motorisée), effet (surcoût PA ? malus ?), cas zéro encombrement (boucliers, Force perso). Raccorder : Technicien-Guerrier Mikyai (Livre I §2.2 : ignore 1 point) + mentions Livre VIII (zéro encombrement en PA) + valeur Unity ArmoryCatalog. DONE = §33.1 rempli + exemples chiffrés + liens rule-ref OK."
+    },
+    {
+     "id": "RP-127",
+     "title": "Développer les mécaniques sociales & utilitaires (tous Livres)",
+     "epic": "Livre II — Épreuves & Critiques",
+     "status": "todo",
+     "priority": "medium",
+     "order": 126,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "livre_2.html#chap-8",
+     "details": "OUVERT 2026-11-01 — les axes social & utilitaire sont sous-développés face au combat (Face-à-Face, états, seuils) : duel social ? (négociation, intimidation, persuasion, baratin), progression et coûts dédiés, utilitaire (artisanat, réparation, économie de matériel, soins hors combat), portées, durées, cumuls, interactions avec les états. La table des critiques §8.2 en est un symptôme : 17 effets sociaux/utilitaires encore flavor (Ascendant, Ralliement, Soumission, Survoltage, Succès mirifique, Découverte, Économie, Composant, Ralentissement temporel, Regains, Tâche sans bruit...). En même temps : cadrer les 17 effets sociaux/utilitaires de la table §8.2 avec ces nouvelles règles (pas de passe séparée)."
     }
    ]
   }

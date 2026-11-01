@@ -1301,7 +1301,7 @@
     },
     {
      "cout": "3 points",
-     "effet": "La cible subit 2 Dégâts Résiduels continus",
+     "effet": "La cible subit 2 Dégâts Résiduels",
      "type": "Dégressif par tour (-1/tour)"
     },
     {
@@ -1331,7 +1331,7 @@
     },
     {
      "cout": "6 points",
-     "effet": "La cible subit 3 Dégâts Résiduels continus",
+     "effet": "La cible subit 3 Dégâts Résiduels",
      "type": "Dégressif par tour"
     },
     {
@@ -1346,7 +1346,7 @@
     },
     {
      "cout": "10 points",
-     "effet": "La cible subit 4 Dégâts Résiduels continus",
+     "effet": "La cible subit 4 Dégâts Résiduels",
      "type": "Dégressif par tour"
     }
    ],
