@@ -96,7 +96,7 @@
                     thead(d.tableaux.critiques.colonnes) +
                     '<tbody>' + critiquesRows(d.critiques) + '</tbody></table></div>';
             case 'formuleDefi':
-                return '<div class="formula-box"><span class="formula-badge">' + d.defis.formule.badge +
+                return '<div class="formula-box wide"><span class="formula-badge">' + d.defis.formule.badge +
                     '</span><div class="formula-content"><div class="formula-math">' + d.defis.formule.math_html +
                     '</div><div class="formula-desc">' + d.defis.formule.desc_html + '</div></div></div>';
             default:

@@ -137,7 +137,7 @@
             case 'sens':
                 return '<ul>' + sensItems(d.sens) + '</ul>';
             case 'formulePA':
-                return '<div class="formula-box"><span class="formula-badge">' + d.pa.badge +
+                return '<div class="formula-box wide"><span class="formula-badge">' + d.pa.badge +
                     '</span><div class="formula-content"><div class="formula-math">' + d.pa.formule_html +
                     '</div><div class="formula-desc">' + d.pa.desc_html + '</div></div></div>';
             case 'seuils':

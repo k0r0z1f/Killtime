@@ -72,7 +72,7 @@
      "id": "RP-005",
      "title": "Relire chap. 4. Points d'Action & Dégâts",
      "epic": "Livre I — Bases & Création",
-     "status": "in_progress",
+     "status": "done",
      "priority": "high",
      "order": 3,
      "scene": "",
@@ -81,7 +81,7 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_1.html#chap-4",
-     "details": "Vérification humaine — livre_1.html#chap-4. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
+     "details": "FAIT 2026-11-01 — check mécaniques chap. 4 : formule PA en wide (css/js livre_1/2 + repli mobile) ; règle ≥ unique Encaissement/Létal (atteint ou dépasse, complément <) sur L1/L5/L6 (blocs, cartes seuils, mécaniques, lexique) ; rule-refs posés (syncope, mort instantanée, Miracle, Sombrer, Dernier Souffle, reprise souffle §20.1) ; réserve ESS = CON (cardio retiré, exemple chiffré) ; dépassement plafond ESS = À Terre + Inconscient jusqu'à fin du prochain tour ; Reprendre son Souffle = 1 PA/point, sans interdiction d'attaquer. OUVERT : dons +1 ESS max (Humain, Frontalier) à retravailler."
     },
     {
      "id": "RP-006",

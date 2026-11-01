@@ -148,7 +148,7 @@ livre: 1
                             <div class="vital-metric-card amber">
                                 <div class="vital-metric-title">Essoufflement</div>
                                 <div class="vital-metric-num">4 tours</div>
-                                <div class="vital-metric-sub">Plafond d'effort continu (CON + don)</div>
+                                <div class="vital-metric-sub">Plafond d'effort continu (CON)</div>
                             </div>
                             <div class="vital-metric-card cyan">
                                 <div class="vital-metric-title">Initiative</div>

@@ -47,7 +47,7 @@ livre: 5
                         </div>
                         <div class="callout-body">
                             Sauf précision, les dégâts Duo-Tech sont <strong>directs</strong> (ils ignorent l'armure).
-                            Tu les résous comme une <a class="rule-ref" href="livre_3.html#chap-13" data-tip="Clé : manœuvre signature qui dépasse l'Encaissement et déclenche l'arbre à 0 PV (§13).">Clé</a> (Livre III) : si le total dépasse l'<a class="rule-ref" href="livre_6.html#sec-23-2" data-tip="Encaissement = CON × 2 : seuil comparé aux dégâts du coup (§23.2).">Encaissement</a>, tu appliques
+                            Tu les résous comme une <a class="rule-ref" href="livre_3.html#chap-13" data-tip="Clé : manœuvre signature qui atteint ou dépasse l'Encaissement et déclenche l'arbre à 0 PV (§13).">Clé</a> (Livre III) : si le total atteint ou dépasse l'<a class="rule-ref" href="livre_6.html#sec-23-2" data-tip="Encaissement = CON × 2 : seuil comparé aux dégâts du coup (§23.2).">Encaissement</a>, tu appliques
                             l'arbre à 0 PV (<a class="rule-ref" href="livre_6.html#chap-23" data-tip="Seuils vitales : Encaissement CON×2, Létal CON×5, Miracle (§23).">Livre VI</a>). Le vrai prix, ce n'est pas le ND : c'est l'<strong>addition des PA</strong>.
                             Compte 5 à 11 PA à deux : ça vide ~70% de vos réserves (héros typique : 11 PA) et vous laisse
                             sans réaction derrière — c'est votre fenêtre de vulnérabilité. Ajoute les

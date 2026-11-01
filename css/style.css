@@ -941,6 +941,18 @@ body::before {
     max-width: 100%;
 }
 
+/* Formules standards : empile la description sous la formule sur écran
+   étroit pour éviter l'écrasement latéral (ex. PA Livre I). */
+@media (max-width: 760px) {
+    .formula-content {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .formula-desc {
+        max-width: 100%;
+    }
+}
+
 /* ================= TABLES ================= */
 .table-container {
     width: 100%;

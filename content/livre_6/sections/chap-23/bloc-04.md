@@ -11,7 +11,7 @@ livre: 6
                         réels subis lors de ce coup au Seuil d'Encaissement (<code>CON &times; 2</code>) :
                     </p>
                     <ul>
-                        <li><strong>Branche 1 : Dégâts &gt; Seuil d'Encaissement (Traumatisme Incompressible) :</strong>
+                        <li><strong>Branche 1 : Dégâts &ge; Seuil d'Encaissement (Traumatisme Incompressible) :</strong>
                             Aucun choix possible.
                             <ul>
                                 <li><strong>Impact à la Tête / Crâne :</strong> <strong>Mort Instantanée</strong> par
@@ -24,7 +24,7 @@ livre: 6
                                 </li>
                             </ul>
                         </li>
-                        <li><strong>Branche 2 : Dégâts &le; Seuil d'Encaissement (Choc Contrôlé / Épuisement) :</strong>
+                        <li><strong>Branche 2 : Dégâts &lt; Seuil d'Encaissement (Choc Contrôlé / Épuisement) :</strong>
                             Le corps s'éteint par pure décharge vitale. Le combattant choisit :
                             <ul>
                                 <li><strong>Sombrer (La Syncope Protectrice) :</strong> Tu t'évanouis
@@ -71,7 +71,7 @@ livre: 6
                             Usage Vital du Point de Miracle
                         </div>
                         <div class="callout-body">
-                            Lorsqu'un PJ subit un coup mortel ou dépasse son seuil létal (<span
+                            Lorsqu'un PJ subit un coup mortel ou atteint ou dépasse son seuil létal (<span
                                 class="hl-ruby">Constitution &times; 5</span>), le joueur peut dépenser son Point de
                             Miracle. Le coup est providentiellement dévié (la balle ricoche sur un briquet en métal, la
                             lame glisse sur une boucle de ceinture, un éclat de nytharite absorbe le rayon). Le PJ
