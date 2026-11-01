@@ -5,7 +5,7 @@
   "mjId": "usr_mtvzf3lr",
   "mjName": "k0r0",
   "createdAt": 1793439060000,
-  "updatedAt": 1793531197237,
+  "updatedAt": 1793537077898,
   "maxMembers": 12,
   "inviteCode": "inv_BgCO6QCJUnID",
   "members": [
@@ -544,6 +544,19 @@
       "toName": null,
       "toExcept": [],
       "createdAt": 1793531197237
+    },
+    {
+      "id": "m_mvxto2a2k0",
+      "fromId": "usr_mtvzf3lr",
+      "fromName": "k0r0",
+      "fromRole": "mj",
+      "text": "📖 Système de Jeu RP — Livre I : Fondations & Création — livre_1.html#chap-2« En Feu -1, +2 CON vs »",
+      "image": null,
+      "file": null,
+      "toUserId": null,
+      "toName": null,
+      "toExcept": [],
+      "createdAt": 1793537077898
     }
   ],
   "listed": true,

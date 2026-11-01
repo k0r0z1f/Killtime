@@ -214,8 +214,8 @@
      "nom": "Maître-Fondeur"
     },
     {
-     "effet": "+2 Nature & Survie (orientation) en souterrain ; sent le danger de la roche à ~30 m (gaz, éboulement, poches).",
-     "effet_html": "tu sens le danger de la roche à ~30 m (épreuve d'<a class=\"rule-ref\" href=\"livre_3.html#chap-12\" data-tip=\"Observation : repérer un indice, un danger, un ennemi camouflé (Vision/Ouïe, §12.3).\">Observation</a>) : gaz inflammables, plafond ou pilier qui menace de céder, poches de gaz, d'eau ou de minerai ; +2 aux jets de <a class=\"rule-ref\" href=\"livre_3.html#chap-12\" data-tip=\"Nature & Survie : pistage, orientation, abris (INS/INT/ÉRU, §12.3).\">Nature & Survie</a> (orientation) en souterrain.",
+     "effet": "+2 Nature & Survie en souterrain ; sent le danger de la roche à ~30 m (gaz, éboulement, poches).",
+     "effet_html": "tu sens le danger de la roche à ~30 m (épreuve d'<a class=\"rule-ref\" href=\"livre_3.html#chap-12\" data-tip=\"Observation : repérer un indice, un danger, un ennemi camouflé (Vision/Ouïe, §12.3).\">Observation</a>) : gaz inflammables, plafond ou pilier qui menace de céder, poches de gaz, d'eau ou de minerai ; +2 aux jets de <a class=\"rule-ref\" href=\"livre_3.html#chap-12\" data-tip=\"Nature & Survie : pistage, orientation, abris (INS/INT/ÉRU, §12.3).\">Nature & Survie</a> en souterrain.",
      "id": "D",
      "nom": "Sens de la Pierre"
     },
@@ -280,32 +280,32 @@
    "description": "De petite stature et exclusivement féminine, la société cléienne tient l'Empire à distance grâce à son indépendance farouche. Très sobres en eau et à la sensibilité à fleur de peau, les Cléiennes manipulent les arcanes avec une virtuosité innée.",
    "dons": [
     {
-     "effet": "-2 dégâts feu/chaleur, En Feu à -1, +2 CON vs chaleur ; -1 Encaissement, +1 dégât de froid subi.",
-     "effet_html": "-2 dégâts feu/chaleur, En Feu à -1, +2 CON vs chaleur ; -1 <a class=\"rule-ref\" href=\"#sec-4-1\" data-tip=\"Encaissement = CON × 2 : ce que ton corps encaisse en un coup sans traumatisme (§4.1).\">Encaissement</a>, +1 dégât de froid subi.",
+     "effet": "-2 dégâts feu, résiduel En Feu -1, +2 aux jets de Constitution contre la chaleur ; -1 Encaissement, +1 dégât de froid subi.",
+     "effet_html": "-2 dégâts feu, <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1bis\" data-tip=\"Dégâts Résiduels : PV directs qui baissent de 1 par tour. Seul un soin les stoppe (§24.1bis).\">résiduel</a> En Feu -1, +2 aux jets de Constitution contre la chaleur ; -1 <a class=\"rule-ref\" href=\"#sec-4-1\" data-tip=\"Encaissement = CON × 2 : ce que ton corps encaisse en un coup sans traumatisme (§4.1).\">Encaissement</a>, +1 dégât de froid subi.",
      "id": "A",
      "nom": "Sang-Chaud de Cléia"
     },
     {
-     "effet": "+1 canalisation ; progression Magie +1 case ; critique magique = +1 Essoufflement.",
-     "effet_html": "+1 canalisation ; progression Magie +1 case ; critique magique = +1 <a class=\"rule-ref\" href=\"#sec-4-2\" data-tip=\"Essoufflement : 1 point = des PA d’urgence ; ne part pas tout seul, action dédiée pour souffler (§4.2).\">Essoufflement</a>.",
+     "effet": "+1 aux jets de Magie ; chaque réussite en Magie coche 2 cases de progression ; réussite critique en Magie coûte +1 Essoufflement.",
+     "effet_html": "+1 aux jets de <a class=\"rule-ref\" href=\"livre_4.html#sec-16-1\" data-tip=\"Magie Élémentale : pyro, aéro, hydro, géo (MAG/INT, §16.1).\">Magie</a> ; chaque réussite en Magie coche 2 cases de <a class=\"rule-ref\" href=\"#sec-5-2\" data-tip=\"Piste de progression : autant de cases que votre base — base 3 → 3 cases, base 5 → 5 cases (§5.1).\">progression</a> ; réussite <a class=\"rule-ref\" href=\"livre_2.html#chap-8\" data-tip=\"Critique : ton dé affiche son max (6 sur d6, 8 sur d8). Second jet sur la table (§8.1).\">critique</a> en Magie coûte +1 <a class=\"rule-ref\" href=\"#sec-4-2\" data-tip=\"Essoufflement : 1 point = des PA d’urgence ; ne part pas tout seul, action dédiée pour souffler (§4.2).\">Essoufflement</a>.",
      "id": "B",
      "nom": "Résonance Arcanique"
     },
     {
-     "effet": "+2 détection/lecture émotionnelle ; -2 contre les détonations et effets aveuglants.",
-     "effet_html": "+2 détection/lecture émotionnelle ; -2 contre les détonations et effets aveuglants.",
+     "effet": "+2 Nature & Survie en terrain aride ; ignore les terrains difficiles sableux ; -2 en milieu clos et artificiel.",
+     "effet_html": "+2 aux jets de <a class=\"rule-ref\" href=\"livre_3.html#chap-12\" data-tip=\"Nature & Survie : pistage, orientation, abris (INS/INT/ÉRU, §12.3).\">Nature & Survie</a> en terrain aride ; ignore les terrains difficiles sableux ; -2 aux jets en milieu clos et artificiel.",
      "id": "C",
-     "nom": "Sensibilité à fleur de peau"
+     "nom": "Fille du désert"
     },
     {
-     "effet": "besoins eau/nourriture divisés par 2 ; +2 CON vs privation.",
-     "effet_html": "besoins eau/nourriture divisés par 2 ; +2 CON vs privation.",
+     "effet": "besoins en eau et nourriture réduits de moitié ; +2 aux jets de Constitution contre la privation.",
+     "effet_html": "besoins en eau et nourriture réduits de moitié ; +2 aux jets de Constitution contre la privation.",
      "id": "D",
      "nom": "Frugalité Cleyane"
     },
     {
-     "effet": "+1 discrétion/esquive vs taille humaine et plus ; -1 dégât au corps-à-corps.",
-     "effet_html": "+1 discrétion/esquive vs taille humaine et plus ; -1 dégât au corps-à-corps.",
+     "effet": "+1 aux jets de Discrétion et d'Esquive contre les créatures de taille humaine ou plus ; -1 dégât infligé à Mains Nues et aux armes de contact.",
+     "effet_html": "+1 aux jets de <a class=\"rule-ref\" href=\"livre_3.html#chap-11\" data-tip=\"Discrétion : se cacher, se déplacer sans bruit (AGI/INT, §11.2).\">Discrétion</a> et d'<a class=\"rule-ref\" href=\"livre_3.html#chap-11\" data-tip=\"Esquive : éviter un coup au dernier moment (AGI/RAP/INS, §11.2).\">Esquive</a> contre les créatures de taille humaine ou plus ; -1 dégât infligé à Mains Nues et aux armes de contact.",
      "id": "E",
      "nom": "Silhouette Mineure"
     }
@@ -322,32 +322,32 @@
    "description": "Reptiliens bipèdes intégrés aux structures impériales, les Mikyais possèdent des écailles épaisses qui dévient les tirs et les lames. Réputés tant pour leur rigueur martiale que pour leur savoir-faire d'armuriers, ce sont des alliés solides et fiers.",
    "dons": [
     {
-     "effet": "+1 Armure naturelle vs tranchant/perçant ; +2 Encaissement ; +1 dégât froid subi, -2 CON vs froid extrême.",
-     "effet_html": "+1 Armure naturelle vs tranchant/perçant ; +2 <a class=\"rule-ref\" href=\"#sec-4-1\" data-tip=\"Encaissement = CON × 2 : ce que ton corps encaisse en un coup sans traumatisme (§4.1).\">Encaissement</a> ; +1 dégât froid subi, -2 CON vs froid extrême.",
+     "effet": "+1 Armure naturelle contre les dégâts tranchants et perforants ; +2 Encaissement ; +1 dégât de froid subi ; -2 aux jets de Constitution contre le froid.",
+     "effet_html": "+1 Armure naturelle contre les dégâts tranchants et perforants ; +2 <a class=\"rule-ref\" href=\"#sec-4-1\" data-tip=\"Encaissement = CON × 2 : ce que ton corps encaisse en un coup sans traumatisme (§4.1).\">Encaissement</a> ; +1 dégât de froid subi ; -2 aux jets de Constitution contre le froid.",
      "id": "A",
      "nom": "Écailles de Karkjiue"
     },
     {
-     "effet": "1×/combat : un cran de dégât résiduel est ignoré ; stoppe un Saignement léger sans soin.",
-     "effet_html": "1×/combat, un cran de dégât résiduel est ignoré ; stoppe un Saignement léger sans soin.",
+     "effet": "1×/combat : réduit de 1 la valeur d'un résiduel posé ; stoppe sans soin un Saignement de valeur 1.",
+     "effet_html": "1×/combat : réduit de 1 la valeur d'un <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1bis\" data-tip=\"Dégâts Résiduels : PV directs qui baissent de 1 par tour. Seul un soin les stoppe (§24.1bis).\">résiduel</a> posé ; stoppe sans soin un <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1bis\" data-tip=\"Saignement : PV directs en début de tour, puis −1/tour. Tout soin le stoppe (§24.1bis).\">Saignement</a> de valeur 1.",
      "id": "B",
      "nom": "Régénération Karkjiue"
     },
     {
-     "effet": "+2 armes lourdes/réparation impériale ; ignore 1 pt d'encombrement d'armure.",
-     "effet_html": "+2 armes lourdes/réparation impériale ; ignore 1 pt d'encombrement d'armure.",
+     "effet": "+2 Armes Lourdes (Ballistique) ; +2 Ingénierie pour réparer le matériel impérial ; ignore 1 point d'encombrement d'armure.",
+     "effet_html": "+2 <a class=\"rule-ref\" href=\"livre_3.html#chap-13\" data-tip=\"Armes Lourdes (Canons) : +100 d\u00e9g\u00e2ts de masse contre structures, fortifications et blindages (§13).\">Armes Lourdes</a> (Ballistique) ; +2 <a class=\"rule-ref\" href=\"livre_3.html#chap-12\" data-tip=\"Ingénierie & Arcanotech : réparation, réacteurs, piratage (INT/ÉRU, §12.1).\">Ingénierie</a> pour réparer le matériel impérial ; ignore 1 point d'encombrement d'armure.",
      "id": "C",
      "nom": "Technicien-Guerrier"
     },
     {
-     "effet": "griffes/crocs (2 dégâts, jamais désarmé) ; +1 escalade.",
-     "effet_html": "griffes/crocs (2 dégâts, jamais désarmé) ; +1 escalade.",
+     "effet": "griffes et crocs (2 dégâts, jamais désarmé) ; +1 aux jets d'Athlétisme pour grimper.",
+     "effet_html": "griffes et crocs (2 dégâts, jamais désarmé) ; +1 aux jets d'<a class=\"rule-ref\" href=\"livre_3.html#chap-11\" data-tip=\"Athlétisme : effort physique, escalade, nage (CON/FOR/AGI, §11.1).\">Athlétisme</a> pour grimper.",
      "id": "D",
      "nom": "Armes Naturelles"
     },
     {
-     "effet": "3e main utilitaire (pas d'attaque) ; +1 escalade/natation.",
-     "effet_html": "3e main utilitaire (pas d'attaque) ; +1 escalade/natation.",
+     "effet": "3e main utilitaire (porte jusqu'à 5 kg, jamais d'attaque) ; +1 aux jets d'Athlétisme pour grimper et nager.",
+     "effet_html": "3e main utilitaire (porte jusqu'à 5 kg, jamais d'attaque) ; +1 aux jets d'<a class=\"rule-ref\" href=\"livre_3.html#chap-11\" data-tip=\"Athlétisme : effort physique, escalade, nage (CON/FOR/AGI, §11.1).\">Athlétisme</a> pour grimper et nager.",
      "id": "E",
      "nom": "Queue Préhensile"
     }
@@ -364,32 +364,32 @@
    "description": "Forgés par la poussière des astéroïdes miniers et les rivalités de frontière, les Frontaliers ont le cuir tanné et le regard méfiant. Habitués à réparer l'irréparable et à ne compter que sur eux-mêmes, ils ne courbent jamais l'échine devant l'adversité.",
    "dons": [
     {
-     "effet": "+2 Volonté/moral/peur/intimidation ; +1 Essoufflement max.",
-     "effet_html": "+2 Volonté/moral/peur/intimidation ; +1 <a class=\"rule-ref\" href=\"#sec-4-2\" data-tip=\"Essoufflement : 1 point = des PA d’urgence ; ne part pas tout seul, action dédiée pour souffler (§4.2).\">Essoufflement</a> max.",
+     "effet": "+2 aux jets d'Intimidation, pour intimider comme pour résister ; +1 Essoufflement max.",
+     "effet_html": "+2 aux jets d'<a class=\"rule-ref\" href=\"livre_3.html#chap-12\" data-tip=\"Intimidation : menacer, soumettre par la peur (CHA, §12.2).\">Intimidation</a>, pour intimider comme pour résister ; +1 <a class=\"rule-ref\" href=\"#sec-4-2\" data-tip=\"Essoufflement : 1 point = des PA d’urgence ; ne part pas tout seul, action dédiée pour souffler (§4.2).\">Essoufflement</a> max.",
      "id": "A",
      "nom": "Trempe des Bordures"
     },
     {
-     "effet": "+2 CON Immunitaire (toxines, gaz, radiations faibles) ; Empoisonné/Asphyxie à -1.",
-     "effet_html": "+2 CON Immunitaire (toxines, gaz, radiations faibles) ; Empoisonné/Asphyxie à -1.",
+     "effet": "+2 aux jets de Système Immunitaire (toxines, gaz, radiations faibles) ; réduit de 1 la valeur des résiduels Empoisonné et Asphyxie.",
+     "effet_html": "+2 aux jets de <a class=\"rule-ref\" href=\"livre_3.html#chap-11\" data-tip=\"Système Immunitaire : résister aux toxines, poisons et gaz (CON, §11.3).\">Système Immunitaire</a> (toxines, gaz, radiations faibles) ; réduit de 1 la valeur des résiduels <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1bis\" data-tip=\"Empoisonné : PV directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonné</a> et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1bis\" data-tip=\"Asphyxie : PV + drain de 1 PA par tour. Soin : désobstruction (premiers soins + kit).\">Asphyxie</a>.",
      "id": "B",
      "nom": "Gueule des Mines"
     },
     {
-     "effet": "+2 bricolage/récup/sabotage ; réparations à moitié prix ; -1 social en milieu impérial.",
-     "effet_html": "+2 bricolage/récup/sabotage ; réparations à moitié prix ; -1 social en milieu impérial.",
+     "effet": "+2 aux jets pour bricoler, récupérer et saboter ; réparations à moitié prix ; -1 aux jets de Communication en milieu impérial.",
+     "effet_html": "+2 aux jets pour bricoler, récupérer et saboter ; réparations à moitié prix ; -1 aux jets de <a class=\"rule-ref\" href=\"livre_3.html#chap-12\" data-tip=\"Communication : parler, négocier, interroger (CHA/INT, §12.2).\">Communication</a> en milieu impérial.",
      "id": "C",
      "nom": "Système Récup"
     },
     {
-     "effet": "1×/session, à 0 PV sur un coup ≤ Encaissement : reste conscient 1 tour sans Dernier Souffle.",
-     "effet_html": "1×/session, à 0 PV sur un coup ≤ <a class=\"rule-ref\" href=\"#sec-4-1\" data-tip=\"Encaissement = CON × 2 : ce que ton corps encaisse en un coup sans traumatisme (§4.1).\">Encaissement</a> : reste conscient 1 tour sans Dernier Souffle.",
+     "effet": "1×/session : à 0 PV sur un coup qui ne dépasse pas ton Encaissement, reste conscient et agis 1 tour en Dernier Souffle, sans son coût d'Essoufflement.",
+     "effet_html": "1×/session : à 0 PV sur un coup qui ne dépasse pas ton <a class=\"rule-ref\" href=\"#sec-4-1\" data-tip=\"Encaissement = CON × 2 : ce que ton corps encaisse en un coup sans traumatisme (§4.1).\">Encaissement</a>, reste conscient et agis 1 tour en <a class=\"rule-ref\" href=\"livre_6.html#sec-23-2\" data-tip=\"Dernier Souffle : à 0 PV (coup sous Encaissement), reste conscient et agis, +1 Essoufflement par jet (§23.2).\">Dernier Souffle</a>, sans son coût d'<a class=\"rule-ref\" href=\"#sec-4-2\" data-tip=\"Essoufflement : 1 point = des PA d’urgence ; ne part pas tout seul, action dédiée pour souffler (§4.2).\">Essoufflement</a>.",
      "id": "D",
      "nom": "Ne Lâche Rien"
     },
     {
-     "effet": "+2 discrétion/falsification/douanes ; 1 contact marché noir par zone.",
-     "effet_html": "+2 discrétion/falsification/douanes ; 1 contact marché noir par zone.",
+     "effet": "+2 aux jets de Discrétion pour la falsification et le passage des douanes ; 1 contact marché noir par zone.",
+     "effet_html": "+2 aux jets de <a class=\"rule-ref\" href=\"livre_3.html#chap-11\" data-tip=\"Discrétion : se cacher, se déplacer sans bruit (AGI/INT, §11.2).\">Discrétion</a> pour la falsification et le passage des douanes ; 1 contact marché noir par zone.",
      "id": "E",
      "nom": "Contrebandier"
     }
@@ -713,7 +713,7 @@
      "+2 Encaissement ; -1 dégâts contondants et chutes.",
      "vision nocturne ; -2 dégâts de froid, résiduels froid à -1, +2 aux jets de Constitution contre le froid ; ébloui 1 tour quand il entre dans une lumière vive (plein soleil, éclat aveuglant), pas s'il s'y trouve déjà.",
      "+2 aux jets de Forger (Artisanat) ; une armure forgée par soi protège +1 (une seule armure portée à la fois).",
-     "tu sens le danger de la roche à ~30 m (épreuve d'Observation) : gaz inflammables, plafond ou pilier qui menace de céder, poches de gaz, d'eau ou de minerai ; +2 aux jets de Nature & Survie (orientation) en souterrain.",
+     "tu sens le danger de la roche à ~30 m (épreuve d'Observation) : gaz inflammables, plafond ou pilier qui menace de céder, poches de gaz, d'eau ou de minerai ; +2 aux jets de Nature & Survie en souterrain.",
      "+2 aux jets de Constitution contre les gaz et les poisons des mines ; retient son souffle 4× CON tours."
     ]
    },
@@ -732,33 +732,33 @@
     "origine": "Planète Cléia",
     "description": "De petite stature et exclusivement féminine, la société cléienne tient l'Empire à distance grâce à son indépendance farouche. Très sobres en eau et à la sensibilité à fleur de peau, les Cléiennes manipulent les arcanes avec une virtuosité innée.",
     "dons": [
-     "-2 dégâts feu/chaleur, En Feu à -1, +2 CON vs chaleur ; -1 Encaissement, +1 dégât de froid subi.",
-     "+1 canalisation ; progression Magie +1 case ; critique magique = +1 Essoufflement.",
-     "+2 détection/lecture émotionnelle ; -2 contre les détonations et effets aveuglants.",
-     "besoins eau/nourriture divisés par 2 ; +2 CON vs privation.",
-     "+1 discrétion/esquive vs taille humaine et plus ; -1 dégât au corps-à-corps."
+     "-2 dégâts feu, résiduel En Feu -1, +2 aux jets de Constitution contre la chaleur ; -1 Encaissement, +1 dégât de froid subi.",
+     "+1 aux jets de Magie ; chaque réussite en Magie coche 2 cases de progression ; réussite critique en Magie coûte +1 Essoufflement.",
+     "+2 Nature & Survie en terrain aride ; ignore les terrains difficiles sableux ; -2 en milieu clos et artificiel.",
+     "besoins en eau et nourriture réduits de moitié ; +2 aux jets de Constitution contre la privation.",
+     "+1 aux jets de Discrétion et d'Esquive contre les créatures de taille humaine ou plus ; -1 dégât infligé à Mains Nues et aux armes de contact."
     ]
    },
    "Mikyai": {
     "origine": "Karkjiue",
     "description": "Reptiliens bipèdes intégrés aux structures impériales, les Mikyais possèdent des écailles épaisses qui dévient les tirs et les lames. Réputés tant pour leur rigueur martiale que pour leur savoir-faire d'armuriers, ce sont des alliés solides et fiers.",
     "dons": [
-     "+1 Armure naturelle vs tranchant/perçant ; +2 Encaissement ; +1 dégât froid subi, -2 CON vs froid extrême.",
-     "1×/combat, un cran de dégât résiduel est ignoré ; stoppe un Saignement léger sans soin.",
-     "+2 armes lourdes/réparation impériale ; ignore 1 pt d'encombrement d'armure.",
-     "griffes/crocs (2 dégâts, jamais désarmé) ; +1 escalade.",
-     "3e main utilitaire (pas d'attaque) ; +1 escalade/natation."
+     "+1 Armure naturelle contre les dégâts tranchants et perforants ; +2 Encaissement ; +1 dégât de froid subi ; -2 aux jets de Constitution contre le froid.",
+     "1×/combat : réduit de 1 la valeur d'un résiduel posé ; stoppe sans soin un Saignement de valeur 1.",
+     "+2 Armes Lourdes (Ballistique) ; +2 Ingénierie pour réparer le matériel impérial ; ignore 1 point d'encombrement d'armure.",
+     "griffes et crocs (2 dégâts, jamais désarmé) ; +1 aux jets d'Athlétisme pour grimper.",
+     "3e main utilitaire (porte jusqu'à 5 kg, jamais d'attaque) ; +1 aux jets d'Athlétisme pour grimper et nager."
     ]
    },
    "Vardien / Frontaliers": {
     "origine": "Vardis & Bordures",
     "description": "Forgés par la poussière des astéroïdes miniers et les rivalités de frontière, les Frontaliers ont le cuir tanné et le regard méfiant. Habitués à réparer l'irréparable et à ne compter que sur eux-mêmes, ils ne courbent jamais l'échine devant l'adversité.",
     "dons": [
-     "+2 Volonté/moral/peur/intimidation ; +1 Essoufflement max.",
-     "+2 CON Immunitaire (toxines, gaz, radiations faibles) ; Empoisonné/Asphyxie à -1.",
-     "+2 bricolage/récup/sabotage ; réparations à moitié prix ; -1 social en milieu impérial.",
-     "1×/session, à 0 PV sur un coup ≤ Encaissement : reste conscient 1 tour sans Dernier Souffle.",
-     "+2 discrétion/falsification/douanes ; 1 contact marché noir par zone."
+     "+2 aux jets d'Intimidation, pour intimider comme pour résister ; +1 Essoufflement max.",
+     "+2 aux jets de Système Immunitaire (toxines, gaz, radiations faibles) ; réduit de 1 la valeur des résiduels Empoisonné et Asphyxie.",
+     "+2 aux jets pour bricoler, récupérer et saboter ; réparations à moitié prix ; -1 aux jets de Communication en milieu impérial.",
+     "1×/session : à 0 PV sur un coup qui ne dépasse pas ton Encaissement, reste conscient et agis 1 tour en Dernier Souffle, sans son coût d'Essoufflement.",
+     "+2 aux jets de Discrétion pour la falsification et le passage des douanes ; 1 contact marché noir par zone."
     ]
    }
   },

@@ -42,7 +42,7 @@
      "id": "RP-003",
      "title": "Relire chap. 2. Cosmologie & Espèces",
      "epic": "Livre I — Bases & Création",
-     "status": "in_progress",
+     "status": "done",
      "priority": "high",
      "order": 1,
      "scene": "",
@@ -51,7 +51,7 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_1.html#chap-2",
-     "details": "Passe 2026-10-31 (relecture en cours) — FAIT : dons Humain (C/D normalisés + liens/tooltips), Derek (A–E relus : dégâts uniformisés, +2 CON reformulé, éblouissement au déclencheur, Forger/Observation liés, apnée gardée), Taurien (A–E : Magie Élémentale + feu, Esquive/Discrétion/Observation liées, Sève Vive gardée) ; règle d'activation gratuite des dons écrite en §2.2. RESTE : Cléia, Mikyai, Vardien + RP-073 (ajout Nain)."
+     "details": "Passe 2026-11-01 (relecture terminée) — FAIT : dons Cléien A–E (Sang-Chaud : -1 feu/résiduel, +2 CON chaleur ; Résonance : +1 Magie/double-tick/critique coûte Essoufflement ; Fille du désert remplace Sensibilité ; Frugalité moitié + privation ; Silhouette : Discrétion/Esquive + Mains Nues/contact), Mikyai A–E (Armure tranchant/perforant, froid ; Régénération valeur résiduelle ; Technicien : Armes Lourdes/Ingénierie/encombrement ; Armes Naturelles Athlétisme grimper ; Queue 5 kg), Vardien A–E (Intimidation attaque/défense ; Système Immunitaire + résiduels -1 ; Récup/Communication ; Ne Lâche Rien ; Contrebandier). FIX transverses : source spé Projectiles→Ballistique (Livre III), tooltips/liens posés (§23.2, §23.4, §24.1bis, §11.1-11.3, §12.1-12.3), miroirs js/tools.js resync + fix syntaxe. RESTE : RP-073 (ajout Nain), RP-125 (bouffe/privation), RP-126 (encombrement armures)."
     },
     {
      "id": "RP-004",
@@ -1867,6 +1867,36 @@
      "scale": null,
      "suggestedAsset": "livre_12.html",
      "details": "Traduction EN de livre_12.html. Source FR : content/livre_12/ + data/livre_12.json. Appliquer la convention EN figée sur RP-112. Périmètre : tout le texte visible (titres, règles, exemples chiffrés, labels UI du livre). Contraintes : mécaniques strictement identiques (formules PA, paliers de dés, seuils, valeurs) ; exemples chiffrés rejoués après traduction ; ton d'accueil MJ (cf. préface) transposé en anglais, pas de traduction littérale lourde ; liens internes + ancres vérifiés. DONE = version EN lisible sans résidu FR, relue, mécaniques auditées OK."
+    },
+    {
+     "id": "RP-125",
+     "title": "Système bouffe/privation — états Affamé / Privation (eau, nourriture)",
+     "epic": "Livre VI — Santé & États",
+     "status": "todo",
+     "priority": "medium",
+     "order": 96,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "livre_6.html#chap-24",
+     "details": "Développer le système de bouffe : seuils eau/nourriture (rations/jour), états Privation (soif) et/ou Affamé (faim) au chap. 24 (tick, soin, cumul), épreuves CON associées, interaction Frugalité Cleyane (Livre I §2.2 : besoins ÷2, +2 CON vs privation). DONE = états définis + exemples chiffrés + liens rule-ref OK."
+    },
+    {
+     "id": "RP-126",
+     "title": "Définir l'encombrement des armures (Livre VIII §33.1)",
+     "epic": "Livre VIII — Arsenal",
+     "status": "todo",
+     "priority": "medium",
+     "order": 97,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "livre_8.html#sec-33-1",
+     "details": "Écrire la règle d'encombrement des armures : barème par armure (légère/lourde/motorisée), effet (surcoût PA ? malus ?), cas zéro encombrement (boucliers, Force perso). Raccorder : Technicien-Guerrier Mikyai (Livre I §2.2 : ignore 1 point) + mentions Livre VIII (zéro encombrement en PA) + valeur Unity ArmoryCatalog. DONE = §33.1 rempli + exemples chiffrés + liens rule-ref OK."
     }
    ]
   }

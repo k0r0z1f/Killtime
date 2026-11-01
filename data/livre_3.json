@@ -1295,7 +1295,7 @@
     ],
     [
      "<strong>Armes Lourdes (Canons)</strong>",
-     "Projectiles (AGI, FOR)",
+     "Ballistique (AGI)",
      "Offensif",
      "Armement de gros calibre : confère <strong>+100 dégâts de masse</strong> contre\n                                        les structures, fortifications et blindages de véhicules."
     ],
@@ -2993,7 +2993,7 @@
    {
     "nom": "Armes Lourdes (Canons)",
     "parente": null,
-    "source": "Projectiles (AGI, FOR)",
+    "source": "Ballistique / Tir",
     "type": "Offensif",
     "effets": "Armement de gros calibre : confère +100 dégâts de masse contre les structures, fortifications et blindages de véhicules."
    },
@@ -4136,7 +4136,7 @@
    "Armes Lourdes (Canons)": {
     "nom": "Armes Lourdes (Canons)",
     "parente": null,
-    "source": "Projectiles (AGI, FOR)",
+    "source": "Ballistique / Tir",
     "type": "Offensif",
     "effets": "Armement de gros calibre : confère +100 dégâts de masse contre les structures, fortifications et blindages de véhicules."
    },
