@@ -221,3 +221,23 @@
 @media (max-width: 640px) {
     #ktDockFab { top: auto; bottom: 90px; transform: none; }
 }
+/* Partage sélection Codex → chat (bouton flottant, posé par js/table-dock.js). */
+#kdShareSel {
+    position: fixed;
+    z-index: 9500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--bg-surface-elevated, #182235);
+    color: var(--text-primary, #f1f5f9);
+    border: 1px solid var(--arcane-cyan, #38bdf8);
+    border-radius: 99px;
+    padding: 7px 13px;
+    font: 700 12px system-ui, sans-serif;
+    cursor: pointer;
+    box-shadow: 0 8px 26px rgba(0, 0, 0, .5);
+    white-space: nowrap;
+}
+#kdShareSel:hover { filter: brightness(1.2); }
+#kdShareSel:disabled { opacity: .6; cursor: wait; }
+#kdShareSel.kd-share-fallback { right: 76px; bottom: 18px; top: auto; left: auto; }

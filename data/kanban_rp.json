@@ -1,6 +1,6 @@
 {
  "version": 3,
- "updated": "2026-10-31",
+ "updated": "2026-11-01",
  "activeId": "board-revue-rp",
  "boards": [
   {
@@ -1011,7 +1011,7 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "js/table-dock.js",
-     "details": "Panneau latéral repliable (css/table-dock.css + js/table-dock.js) chargé par users/auth.js (ensureTableDock) sur toutes les pages sauf tables.html, sans toucher aux HTML. Fait : onglet bord droit + pastille impayés, lecture + envoi texte public sur la table active (kt-tables-active), sélecteur de table, polling 5 s, masquages perso + envoi restreint hérité respectés, KT_ACTIVE_TABLE posé (pas de double popup), Échap/✕, état persisté (kt-dock-open). Images/MPs/gestion -> page Tables. Vérifié : node --check, harnais DOM simulé (init, garde tables.html/tbApp, login si déconnecté, XSS neutralisée, URL image non-http bloquée, masquage avant/après, repère lecture). DONE 2026-10-31. Redimensionnement à la souris sur le bord gauche du panneau (glisser, 280–640 px persistés kt-dock-width, MAJ 2026-10-31). Liste joueurs repliable (rôles) + mutes perso (👁️‍🗨️/👁️, futurs messages, historique conservé) + bandeau envoi restreint avec ↺ reset (send-reset serveur), MAJ 2026-10-31. Avatars joueurs (liste + messages, initiale sinon, URL non-http/data rejetées), MAJ 2026-10-31. Drag & drop d'images vers le chat (tables.html: tbMessages/tbComposer -> handleFile existant ; dock: downscale 1024 px + plafond ~14 Mo chars + envoi imageData), MAJ 2026-10-31. Pièces jointes PDF + audio + vidéo (serveur: fileData/fileName base64 <=~10 Mo, PDF + audio + vidéo/* ; clients: sélecteur + drop, carte 📄 + fenêtre via Blob, lecteurs <audio>/<video> intégrés ; popup auth 🎵/📄). Vérifié E2E réel : 201 ogg/wav/m4a/mp4 + GET, 400 vidéo/vide, 413 lourd. MAJ 2026-10-31. Fichiers portés à 10 Mo max (TABLE_MAX_UPLOAD_CHARS 14M, garde-fou table 64 Mo). Vérifié E2E réel : 201 + GET 5 Mo, 413 12 Mo. MAJ 2026-10-31. Présence d'upload (serveur: POST upload-state + GET uploads, TTL 120 s, effacé à l'envoi, SSE upload-state ; clients: anim « 📤 X envoie… » page Tables + dock, SSE + repli poll 5 s). Vérifié E2E réel : start/GET/done/effacé à l'envoi/403/405 + smoke tables.js et dock. MAJ 2026-10-31. Vidéo : video/* accepté, kind 'video' pour la présence. Vérifié E2E réel mp4. MAJ 2026-10-31. GIF/APNG animés conservés (lus en brut, pas de downscale canvas ; serveur accepte image/gif|apng). Vérifié E2E réel gif+apng. MAJ 2026-10-31. Anim d'upload pendant le transfert réel (start au clic Envoyer + affichage optimiste, done à l'envoi/échec ; soi inclus). Vérifié harnais : ordre start->msg->done. MAJ 2026-10-31. Visibilité minimale 5 s une fois aperçue (aucun client ne rate un transfert court). Vérifié harnais. MAJ 2026-10-31. Chargement paresseux (serveur: métadonnées sans dataUrl + GET attachment binaire immutable ; clients: boutons charger, fetch au clic, cache mémoire + HTTP, cache envoyeur). Vérifié E2E réel : GET 9x plus léger, octets+MIME+cache, 404/401 + harnais clic. MAJ 2026-10-31. Cache client à 2 niveaux (mémoire session + HTTP force-cache/immutable inter-sessions) ; Vary: Origin ajouté. MAJ 2026-10-31. Auto-affichage depuis le cache persistant (Cache Storage, clé table+message, 1 vérif/message, PDF jamais auto-ouvert). Vérifié harnais : img auto sans réseau, absent->bouton. MAJ 2026-10-31. Scroll en bas au (re)chargement du chat (fetchTable -> renderChat stick). Vérifié harnais. MAJ 2026-10-31. Rattrapage scroll après chargement des médias (load/loadedmetadata, si déjà en bas). MAJ 2026-10-31. Scroll suivi robuste petits écrans (état stuck, seul un scroll manuel l'annule, rattrapage sans borne). Vérifié harnais. MAJ 2026-10-31. Membres live au poll (serveur: members dans messages?since ; clients: re-rendu liste + destinataires MP si signature change). Vérifié E2E 2 comptes + harnais dock. MAJ 2026-10-31. Colonne Tables MJ dans admin.html (serveur: tablesMj par scan mjId). MAJ 2026-10-31. Suppression compte avec choix archive (JSON compte+fiches+tables, téléchargé) sinon cascade totale (tables MJ détruites, membre retiré, messages conservés). Simulé sur copies. MAJ 2026-10-31."
+     "details": "Panneau latéral repliable (css/table-dock.css + js/table-dock.js) chargé par users/auth.js (ensureTableDock) sur toutes les pages sauf tables.html, sans toucher aux HTML. Fait : onglet bord droit + pastille impayés, lecture + envoi texte public sur la table active (kt-tables-active), sélecteur de table, polling 5 s, masquages perso + envoi restreint hérité respectés, KT_ACTIVE_TABLE posé (pas de double popup), Échap/✕, état persisté (kt-dock-open). Images/MPs/gestion -> page Tables. Vérifié : node --check, harnais DOM simulé (init, garde tables.html/tbApp, login si déconnecté, XSS neutralisée, URL image non-http bloquée, masquage avant/après, repère lecture). DONE 2026-10-31. Redimensionnement à la souris sur le bord gauche du panneau (glisser, 280–640 px persistés kt-dock-width, MAJ 2026-10-31). Liste joueurs repliable (rôles) + mutes perso (👁️‍🗨️/👁️, futurs messages, historique conservé) + bandeau envoi restreint avec ↺ reset (send-reset serveur), MAJ 2026-10-31. Avatars joueurs (liste + messages, initiale sinon, URL non-http/data rejetées), MAJ 2026-10-31. Drag & drop d'images vers le chat (tables.html: tbMessages/tbComposer -> handleFile existant ; dock: downscale 1024 px + plafond ~14 Mo chars + envoi imageData), MAJ 2026-10-31. Pièces jointes PDF + audio + vidéo (serveur: fileData/fileName base64 <=~10 Mo, PDF + audio + vidéo/* ; clients: sélecteur + drop, carte 📄 + fenêtre via Blob, lecteurs <audio>/<video> intégrés ; popup auth 🎵/📄). Vérifié E2E réel : 201 ogg/wav/m4a/mp4 + GET, 400 vidéo/vide, 413 lourd. MAJ 2026-10-31. Fichiers portés à 10 Mo max (TABLE_MAX_UPLOAD_CHARS 14M, garde-fou table 64 Mo). Vérifié E2E réel : 201 + GET 5 Mo, 413 12 Mo. MAJ 2026-10-31. Présence d'upload (serveur: POST upload-state + GET uploads, TTL 120 s, effacé à l'envoi, SSE upload-state ; clients: anim « 📤 X envoie… » page Tables + dock, SSE + repli poll 5 s). Vérifié E2E réel : start/GET/done/effacé à l'envoi/403/405 + smoke tables.js et dock. MAJ 2026-10-31. Vidéo : video/* accepté, kind 'video' pour la présence. Vérifié E2E réel mp4. MAJ 2026-10-31. GIF/APNG animés conservés (lus en brut, pas de downscale canvas ; serveur accepte image/gif|apng). Vérifié E2E réel gif+apng. MAJ 2026-10-31. Anim d'upload pendant le transfert réel (start au clic Envoyer + affichage optimiste, done à l'envoi/échec ; soi inclus). Vérifié harnais : ordre start->msg->done. MAJ 2026-10-31. Visibilité minimale 5 s une fois aperçue (aucun client ne rate un transfert court). Vérifié harnais. MAJ 2026-10-31. Chargement paresseux (serveur: métadonnées sans dataUrl + GET attachment binaire immutable ; clients: boutons charger, fetch au clic, cache mémoire + HTTP, cache envoyeur). Vérifié E2E réel : GET 9x plus léger, octets+MIME+cache, 404/401 + harnais clic. MAJ 2026-10-31. Cache client à 2 niveaux (mémoire session + HTTP force-cache/immutable inter-sessions) ; Vary: Origin ajouté. MAJ 2026-10-31. Auto-affichage depuis le cache persistant (Cache Storage, clé table+message, 1 vérif/message, PDF jamais auto-ouvert). Vérifié harnais : img auto sans réseau, absent->bouton. MAJ 2026-10-31. Scroll en bas au (re)chargement du chat (fetchTable -> renderChat stick). Vérifié harnais. MAJ 2026-10-31. Rattrapage scroll après chargement des médias (load/loadedmetadata, si déjà en bas). MAJ 2026-10-31. Scroll suivi robuste petits écrans (état stuck, seul un scroll manuel l'annule, rattrapage sans borne). Vérifié harnais. MAJ 2026-10-31. Membres live au poll (serveur: members dans messages?since ; clients: re-rendu liste + destinataires MP si signature change). Vérifié E2E 2 comptes + harnais dock. MAJ 2026-10-31. Colonne Tables MJ dans admin.html (serveur: tablesMj par scan mjId). MAJ 2026-10-31. Suppression compte avec choix archive (JSON compte+fiches+tables, téléchargé) sinon cascade totale (tables MJ détruites, membre retiré, messages conservés). Simulé sur copies. MAJ 2026-10-31. MAJ 2026-11-01. Clic hors panneau referme le dock (pointerdown capture, bouton gauche seul ; exclus : intérieur #ktDock, #ktDockFab, #kdShareSel ; état persisté kt-dock-open). Cache-bust v=1.1 (users/auth.js). Vérifié : node --check + smoke DOM (dehors ferme, dedans/fab/partage/clic droit restent ouverts)."
     },
     {
      "id": "RP-068",
@@ -1302,7 +1302,7 @@
      "id": "RP-087",
      "title": "Aligner créateurs/outils sur le JSON du Livre II",
      "epic": "Livre II — Dés & Épreuves",
-     "status": "todo",
+     "status": "done",
      "priority": "medium",
      "order": 58,
      "scene": "",
@@ -1311,13 +1311,13 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_2.html",
-     "details": "Après RP-075 (JSON-ification). Aligner les consommateurs sur data/livre_ii.json : js/tools.js (lanceur, paliers). Recenser les miroirs (JS/Unity), unifier les wordings page/créateur, gérer les migrations. Pattern RP-074 (Livre I). Fichier : livre_2.html."
+     "details": "FAIT 2026-11-01 — data/livre_2.json (corr. nom : pas de livre_ii.json). js/tools.js : repli dieSteps + select lanceur avec palier 2d6 manquant (canon : double attaque, Livre II §6 ; label 'Double attaque débloquée'), résolveur défis branché sur mecaniques.defi (étapes 3-7, cap rattrapages max 3 + toast, plancher minimum_valide, repli valeurs identiques). Lanceur/critiques déjà canon (RP-082 : 13 paliers rabattus). Miroirs Unity recensés conformes : SkillDefinitions.StepUpDie = échelle 11 paliers, CharacteristicSteps = crans_base (D3/D20 enum hors chaîne, sans effet). Non-touché : gravité échec critique (pas de table chiffrée au livre), options select non-canon d6+1/d6+2/d8+2/d12+2 conservées (utilitaires, sans migration). Vérifié : node --check OK, JSON 3/7/3/2 conforme."
     },
     {
      "id": "RP-088",
      "title": "Aligner créateurs/outils sur le JSON du Livre III",
      "epic": "Livre III — Compétences",
-     "status": "todo",
+     "status": "done",
      "priority": "medium",
      "order": 59,
      "scene": "",
@@ -1326,13 +1326,13 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_3.html",
-     "details": "Après RP-076 (JSON-ification). Aligner les consommateurs sur data/livre_iii.json : fiche_pj.html (grilles 27 compétences). Recenser les miroirs (JS/Unity), unifier les wordings page/créateur, gérer les migrations. Pattern RP-074 (Livre I). Fichier : livre_3.html."
+     "details": "FAIT 2026-11-01 — data/livre_3.json (corr. nom : pas de livre_iii.json). js/tools.js skillBaseScore : Math.round → Math.ceil (canon calcul_rang_base 'moyenne arrondie vers le haut' ; ex. livre 4.5→5, 4→4 inchangés ; cas 4.33→5 corrigé). livre_9.html : data-skill 'Maniement d'Arme' → 'Maniement d'Arme (Tranchantes / Contondantes)' + label (comme fiche_pj RP-074 ; ids skManiement-* identiques sur les 2 pages → 0 migration, sauvegardes par id). Vérifié script : 27/27 compétences × 2 pages, noms JSON=HTML, attrs 'ou' = union déjà validée RP-062 (laissée telle quelle). Miroir Unity conforme : SkillDefinitions en division entière plafond (FOR+AGI+1)/2. Vérifié : node --check OK."
     },
     {
      "id": "RP-089",
      "title": "Aligner créateurs/outils sur le JSON du Livre IV",
      "epic": "Livre IV — 5e Force & Magie",
-     "status": "todo",
+     "status": "done",
      "priority": "medium",
      "order": 60,
      "scene": "",
@@ -1341,13 +1341,13 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_4.html",
-     "details": "Après RP-077 (JSON-ification). Aligner les consommateurs sur data/livre_iv.json : livre_9.html#chap-35 (atelier sorts). Recenser les miroirs (JS/Unity), unifier les wordings page/créateur, gérer les migrations. Pattern RP-074 (Livre I). Fichier : livre_4.html."
+     "details": "FAIT 2026-11-01 — data/livre_4.json (corr. nom : pas de livre_iv.json). livre_9.html#chap-35 : atelier passé de 19 à 32 entrées = modules JSON (18 off. + 13 déf./util. + 1 social), coûts/tous libellés vérifiés 1:1 (teinte 1, recul 2, malus 2, résiduels 2/3/4, rayon 4, soins 2, portée+ 2, purge 2, armure 3, bouclier 3, social 1 ; cumulables en number, immédiats/durées en checkbox). Règle hybride +1/cat. hors PA déjà canon (§19, callout livre). JS inchangé (lecteur data-cost générique). Miroir Unity RECENSÉ non modifié (tâche Unity à part : ArcanotechWorkshop.cs 22 entrées vs 32 JSON — manquent les 10 ci-dessus ; divergence Offensive_DirectAbsoluteDamage coût 1 direct vs JSON zone 3 ; enum ArcanotechEnums.cs à étendre + ArcanotechWorkshopTests.cs ; PowerCategory.Social existe déjà). Vérifié : 32 inputs, coûts conformes."
     },
     {
      "id": "RP-090",
      "title": "Aligner créateurs/outils sur le JSON du Livre V",
      "epic": "Livre V — Combat Tactique",
-     "status": "todo",
+     "status": "done",
      "priority": "medium",
      "order": 61,
      "scene": "",
@@ -1356,13 +1356,13 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_5.html",
-     "details": "Après RP-078 (JSON-ification). Aligner les consommateurs sur data/livre_v.json : outils + miroirs Unity (CombatCalculator, noter). Recenser les miroirs (JS/Unity), unifier les wordings page/créateur, gérer les migrations. Pattern RP-074 (Livre I). Fichier : livre_5.html."
+     "details": "FAIT 2026-11-01 — data/livre_5.json (corr. nom : pas de livre_v.json). Audit 1:1 sans modification (tout conforme). Pas de consommateur web (aucun outil combat dans livre_9). Miroirs Unity vérifiés : 9 duo-techs coûts/ND/caracs/conditions OK (DuoTechRegistry.Defs.cs:20-131), couvert 0/-1/-2 + total bloque (CoreRulesConfig 65, tests Cover), 2e action principale à 2d6+ (CharacterStats.Actions.cs:61-69), Préparation 1PA→+2 (PreparationState.cs:56), charge 3+ +2/-1 (RD-038), réactions 0/1/1/0 + garde 1PA + lutte 2PA (RD-031/032/039), assaut groupé + poursuite (RD-084), Canon Entravé 4 options + Décrochage (CanonEntraveTests), déviation anatomique (RD-082), paliers véhicules 1-10/11-50/51-1000/1001+ + zones essentiel/superficiel (RD-051). 0 divergence Livre V."
     },
     {
      "id": "RP-091",
      "title": "Aligner créateurs/outils sur le JSON du Livre VI",
      "epic": "Livre VI — Santé & États",
-     "status": "todo",
+     "status": "done",
      "priority": "medium",
      "order": 62,
      "scene": "",
@@ -1371,13 +1371,13 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_6.html",
-     "details": "Après RP-079 (JSON-ification). Aligner les consommateurs sur data/livre_vi.json : fiche_pj.html (soins, états). Recenser les miroirs (JS/Unity), unifier les wordings page/créateur, gérer les migrations. Pattern RP-074 (Livre I). Fichier : livre_6.html."
+     "details": "FAIT 2026-11-01 — data/livre_6.json (corr. nom : pas de livre_vi.json). Web : rien à aligner (fiche_pj.html sans UI états/soins ; vitaux CON×2/CON×5 = Livre I §4, conformes seuils_survie). Unity audité conforme : 9 préjudiciables + 5 bénéfiques + vitaux (StatusEffect.cs:10-41, malus -2/-1/double PA/+1EC+3PA/+2+5/rapide/accéléré OK), tick dégressif + EnFeu par bouclier + Asphyxie drain 1 PA (CharacterStats.Dots.cs), Souffrant/Soins Majeurs CON×2 (RD-083), Canon Entravé via règles dédiées (RD-201). FIX : défaut tick sans pool 3 → DefaultDotDamage canon (Saign/Empois/Asphyx 1, EnFeu 2), helper existant mais jamais appelé. Preuve batchmode EditMode : CoreRulesTests 30/30 (dont nouveau TestDot_RD091 pinning 1/1/2/1) + DotCareCheatsTests 5/5 + SouffrantMajorCareTests 13/13 + DuoTechTests 35/35 + GrenadeSystemTests 17/17 + NamedZonesTests 8/8, exit 0 ; ProjectSettings.asset restauré, 0 artefact. Noté sans toucher : Aveugle/Sourd = Unity-only (cf RP-071), fuite Agonisant au budget PA (livre : 6 cases), moral Unity-only (cf RP-069)."
     },
     {
      "id": "RP-092",
      "title": "Aligner créateurs/outils sur le JSON du Livre VII",
      "epic": "Livre VII — Historiques",
-     "status": "todo",
+     "status": "done",
      "priority": "medium",
      "order": 63,
      "scene": "",
@@ -1386,13 +1386,13 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_7.html",
-     "details": "Après RP-080 (JSON-ification). Aligner les consommateurs sur data/livre_vii.json : js/tools.js (ENFANCES/METIERS/EVENEMENTS). Recenser les miroirs (JS/Unity), unifier les wordings page/créateur, gérer les migrations. Pattern RP-074 (Livre I). Fichier : livre_7.html."
+     "details": "FAIT 2026-11-01 — data/livre_7.json (corr. nom : pas de livre_vii.json). Socle déjà en place (RP-074 : ENFANCES/METIERS/EVENEMENTS ← JSON avec gardes 6/12/12). Vérifié script : 6/12/12, ordres d6/d12 = repli, noms courts unifiés, sauvegardes par indice (pas de migration). FIX : overlay METIERS perdait le 3e champ attache (ex. serment Médic, rappelable Milicien) — ajouté ' ; attache' (12/12 avec attache). Pas de miroir Unity (historiques web-only). Vérifié : node --check OK."
     },
     {
      "id": "RP-093",
-     "title": "Aligner créateurs/outils sur le JSON du Livre VII",
-     "epic": "Livre VII — Arsenal",
-     "status": "todo",
+     "title": "Aligner créateurs/outils sur le JSON du Livre VIII",
+     "epic": "Livre VIII — Arsenal",
+     "status": "done",
      "priority": "medium",
      "order": 64,
      "scene": "",
@@ -1401,13 +1401,13 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_8.html",
-     "details": "Après RP-081 (JSON-ification). Aligner les consommateurs sur data/livre_vii.json : miroir Unity Armory.json (déjà JSON). Recenser les miroirs (JS/Unity), unifier les wordings page/créateur, gérer les migrations. Pattern RP-074 (Livre I). Fichier : livre_8.html."
+     "details": "FAIT 2026-11-01 — data/livre_8.json (titre/epic corrigés : Livre VIII, pas VII ; corr. nom : pas de livre_vii.json). Audit 1:1 Armory.json (121 items) vs JSON : 7 lames + 5 choc/hast + 9 laser + 5 grenades + Deglazer 200k = noms/prix/DLPH 100 % OK ; champs 1-5 prix + shield 10-50 OK ; armures apMod 0 / 1-2 OK ; pharma (Antidouleurs 500, seringues) OK. Non-divergences : spacesuits 70k/400k dans les fourchettes livre (50-90k, 75-750k) — prix point à l'intérieur du canon, laissé tel quel. 0 modification. Marché F4 déjà sur Armory.json."
     },
     {
      "id": "RP-094",
-     "title": "Aligner créateurs/outils sur le JSON du Livre VIII",
-     "epic": "Livre VIII — Outils Web",
-     "status": "todo",
+     "title": "Aligner créateurs/outils sur le JSON du Livre IX",
+     "epic": "Livre IX — Outils Web",
+     "status": "done",
      "priority": "medium",
      "order": 65,
      "scene": "",
@@ -1416,13 +1416,13 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_9.html",
-     "details": "Après RP-082 (JSON-ification). Aligner les consommateurs sur data/livre_viii.json : livre_9.html (créateurs/outils). Recenser les miroirs (JS/Unity), unifier les wordings page/créateur, gérer les migrations. Pattern RP-074 (Livre I). Fichier : livre_9.html."
+     "details": "FAIT 2026-11-01 — (titre corrigé : Livre IX = chap 34-38 outils, pas VIII ; pas de data/livre_viii.json, page restée statique per RP-082). Constat de couverture : chaque outil de livre_9.html est déjà branché sur son JSON — créateur fiche ← livre_1/3/7.json (RP-074/088/092), atelier sorts ← livre_4.json 32/32 (RP-089), lanceur + défis ← livre_2.json (RP-082/087), chrono 8 tiers ← livre_10.json (RP-082, re-vérifié 1:1 : horizons/PA/goulots/risques identiques, select 8 paliers OK). 0 divergence, 0 modification."
     },
     {
      "id": "RP-095",
-     "title": "Aligner créateurs/outils sur le JSON du Livre IX",
-     "epic": "Livre IX — Temps & MJ",
-     "status": "todo",
+     "title": "Aligner créateurs/outils sur le JSON du Livre X",
+     "epic": "Livre X — Temps & MJ",
+     "status": "done",
      "priority": "medium",
      "order": 66,
      "scene": "",
@@ -1431,13 +1431,13 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_10.html",
-     "details": "Après RP-083 (JSON-ification). Aligner les consommateurs sur data/livre_ix.json : livre_9.html#chap-38 (simulateur). Recenser les miroirs (JS/Unity), unifier les wordings page/créateur, gérer les migrations. Pattern RP-074 (Livre I). Fichier : livre_10.html."
+     "details": "FAIT 2026-11-01 — data/livre_10.json (titre corrigé : Livre X, pas IX ; corr. nom : pas de livre_ix.json). Consommateur unique livre_9.html#chap-38 déjà vérifié 1:1 en RP-094 (8 tiers). Miroirs Unity : aucun mécanique (TimelineBranch/PsychicTier = mentions narratives ; Livre X = tables MJ + simulateur web). JSON : 8 échelons + lookup 1-8, 4 lois, 4 distorsions, 2 techniques — page rendue depuis le JSON (RP-083), rien à aligner. 0 modification."
     },
     {
      "id": "RP-096",
-     "title": "Aligner créateurs/outils sur le JSON du Livre X",
-     "epic": "Livre X — Atlas",
-     "status": "todo",
+     "title": "Aligner créateurs/outils sur le JSON du Livre XI",
+     "epic": "Livre XI — Atlas",
+     "status": "done",
      "priority": "medium",
      "order": 67,
      "scene": "",
@@ -1446,13 +1446,13 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_11.html",
-     "details": "Après RP-084 (JSON-ification). Aligner les consommateurs sur data/livre_x.json : data/atlas_mondes.json (déjà JSON). Recenser les miroirs (JS/Unity), unifier les wordings page/créateur, gérer les migrations. Pattern RP-074 (Livre I). Fichier : livre_11.html."
+     "details": "FAIT 2026-11-01 — data/livre_11.json (titre corrigé : Livre XI, pas X ; corr. nom : pas de livre_x.json). Audit vs atlas v4 (fait foi) : 5 systèmes livre tous présents côté atlas, gravités/étoiles/affiliations cohérentes ; livre = digest, atlas = 111 mondes (portée différente, pas contradiction). FIX divergence réelle : livre 'Système Cléia / Astra-Cléia' vs atlas 'système Veyla, Veyla-Mère + Veyla-Sœur' — aligné sur l'atlas (3 spots livre_11.json : table donnees + mecaniques + lookup ; citation data/atlas_mondes.json:2463 ; nœud atlas_3d.html sys-cleia + desc étoiles ; occurrence embeddée atlas_mondes.html). Zéro occurrence restante. Vérifié : JSON valides, build --check 11 OK."
     },
     {
      "id": "RP-097",
-     "title": "Aligner créateurs/outils sur le JSON du Livre XI",
-     "epic": "Livre XI — Bestiaire",
-     "status": "todo",
+     "title": "Aligner créateurs/outils sur le JSON du Livre XII",
+     "epic": "Livre XII — Bestiaire",
+     "status": "done",
      "priority": "medium",
      "order": 68,
      "scene": "",
@@ -1461,7 +1461,7 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_12.html",
-     "details": "Après RP-085 (JSON-ification). Aligner les consommateurs sur data/livre_xi.json : miroir Unity Bestiary.json (déjà JSON). Recenser les miroirs (JS/Unity), unifier les wordings page/créateur, gérer les migrations. Pattern RP-074 (Livre I). Fichier : livre_12.html."
+     "details": "FAIT 2026-11-01 — data/livre_12.json (titre corrigé : Livre XII, pas XI ; corr. nom : pas de livre_xi.json). Audit 1:1 scripté (formule PA Unity = max(AGI,INT)+RAP+min8 vérifiée) : 14 créatures livre toutes présentes côté Unity sauf Disciples Air/Feu/Eau (Unity = Terre seul) ; attributs/ENC/Létal/Miracle 100 % OK ; rangs/calibrages OK. DIVERGENCES NOTÉES SANS TOUCHER (décision MJ requise) : (1) V/O Bandits #1 6/5 et #2 6/3 (livre) vs 3/3 (Unity) — suspect côté livre (#3 Tireur d'élite à 3/3 incohérent) ; V/O mécaniques (FogOfWar, Observation) donc impact jeu. (2) PA livre vs formule : Bandit#2 7 vs 8, Bête 13 vs 10, Minulican 14 vs 12 — sens mixtes, probable slip livre ou prime boss non écrite. (3) Disciples Air/Feu/Eau absents d'Unity — Feu/Eau lore NON-RÉVÉLÉS (ne pas ajouter sans ordre), Air à statter + bossAI à calibrer. Noms display proches (ids stables, lookups par id/substring) — renommage non fait (TitanBoss name-matching). Aucun test ne fige ces valeurs (TitanBossTests en MakeStats synthétiques)."
     },
     {
      "id": "RP-098",
@@ -1642,6 +1642,231 @@
      "scale": null,
      "suggestedAsset": "js/codex.js",
      "details": "FAIT 2026-10-31 — lignes « Livre N (Fichier Dédié)/(Page Dédiée) » supprimees (17 pages), 1ers chapitres -> haut de page, badges Disponible/Actif/Nouveau/Interactif retires des menus, scrollspy etendu au menu gauche (chapitre suivi au clic/scroll), etat replie/deplie persiste en localStorage + restauration immediate (pas de flash), Pilotage ferme par defaut, menus des 4 pages compactes harmonises avec l accueil (avec restauration des groupes ◆/00 ecrases par erreur)."
+    },
+    {
+     "id": "RP-110",
+     "title": "Envoyer au chat (table en cours) le texte sélectionné dans le codex RP",
+     "epic": "Outils Web (Livre IX)",
+     "status": "done",
+     "priority": "medium",
+     "order": 81,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "js/table-dock.js",
+     "details": "FAIT 2026-11-01 — sélection dans une page codex (livres I–XII, accueil) → bouton flottant « Envoyer au chat » près de la sélection → POST /api/tables/:id/messages vers la table active (kt-tables-active) avec citation « titre — page#ancre » + extrait entre guillemets, plafond 2000 car. (tronqué avec …), envoi restreint hérité respecté (toExcept). Non connecté → invite connexion ; sans table → consigne page Tables. Exclus : champs de saisie, panneau dock. Fichiers : js/table-dock.js (section partage + initShare), css/table-dock.css (#kdShareSel). Vérifié : node --check OK + smoke DOM (bouton visible/caché <4 car., POST cité avec source, ≤2000)."
+    },
+    {
+     "id": "RP-111",
+     "title": "Thèmes CSS multi-thèmes sur tout le site (Système RP + pages)",
+     "epic": "Outillage — Thèmes CSS",
+     "status": "todo",
+     "priority": "medium",
+     "order": 82,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "css/style.css",
+     "details": "État actuel : 2 thèmes (dark arcanique / light via [data-theme] dans css/style.css, toggle binaire #themeToggle dans js/codex.js, clé localStorage codex-theme, duplication des variables dans users/auth.css, défaut data-theme=\"dark\" sur chaque HTML). Demande : prise en charge de plusieurs thèmes transverses au Système RP et au site entier. Périmètre : index.html, livre_1..12.html, tables.html, fiche_pj.html, kanban_rp/narratif.html, roadmap.html, financement.html, admin.html, atlas_*.html, tactics_*.html, users/* ; CSS : css/style.css, css/table-dock.css, users/auth.css ; JS : js/codex.js, users/auth.js (slot themeToggle). Spec : 1) créer css/themes.css central avec un bloc de variables par thème ([data-theme=dark] = actuel par défaut, light existant conservé, + sépia/parchemin, nuit bleue, émeraude matrice, contraste élevé accessibilité — noms/ids à figer) ; 2) remplacer le toggle binaire par un sélecteur multi-thèmes (dropdown ou cycle, id themeToggle conservé pour compat), persistance localStorage (clé codex-theme conservée + migration dark/light existants), prefers-color-scheme au premier chargement, script précoce anti-flash dans <head> ; 3) migrer les 3 CSS vers les variables (supprimer les duplications) ; 4) vérifier table-dock + auth (panneau latéral, login). DONE = N thèmes sélectionnables et persistés, tour visuel de toutes les pages OK sans régression, aucun flash au reload, contraste texte/fond vérifié par thème."
+    },
+    {
+     "id": "RP-112",
+     "title": "Traduire en anglais — Préface — Le Souffle, la Matière et le Fleuve du Temps",
+     "epic": "Traduction EN",
+     "status": "todo",
+     "priority": "medium",
+     "order": 83,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "index.html",
+     "details": "Traduction EN de index.html. Source FR : inline dans index.html (pas de source content/). Convention EN à figer sur cette tâche (nommage fichiers _en + sélecteur FR/EN + langue <html lang>) puis répliquée aux autres livres. Périmètre : tout le texte visible (titres, règles, exemples chiffrés, labels UI du livre). Contraintes : mécaniques strictement identiques (formules PA, paliers de dés, seuils, valeurs) ; exemples chiffrés rejoués après traduction ; ton d'accueil MJ (cf. préface) transposé en anglais, pas de traduction littérale lourde ; liens internes + ancres vérifiés. DONE = version EN lisible sans résidu FR, relue, mécaniques auditées OK."
+    },
+    {
+     "id": "RP-113",
+     "title": "Traduire en anglais — Livre I — Bases & Création",
+     "epic": "Traduction EN",
+     "status": "todo",
+     "priority": "medium",
+     "order": 84,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "livre_1.html",
+     "details": "Traduction EN de livre_1.html. Source FR : content/livre_1/ + data/livre_1.json. Appliquer la convention EN figée sur RP-112. Périmètre : tout le texte visible (titres, règles, exemples chiffrés, labels UI du livre). Contraintes : mécaniques strictement identiques (formules PA, paliers de dés, seuils, valeurs) ; exemples chiffrés rejoués après traduction ; ton d'accueil MJ (cf. préface) transposé en anglais, pas de traduction littérale lourde ; liens internes + ancres vérifiés. DONE = version EN lisible sans résidu FR, relue, mécaniques auditées OK."
+    },
+    {
+     "id": "RP-114",
+     "title": "Traduire en anglais — Livre II — Dés & Épreuves",
+     "epic": "Traduction EN",
+     "status": "todo",
+     "priority": "medium",
+     "order": 85,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "livre_2.html",
+     "details": "Traduction EN de livre_2.html. Source FR : content/livre_2/ + data/livre_2.json. Appliquer la convention EN figée sur RP-112. Périmètre : tout le texte visible (titres, règles, exemples chiffrés, labels UI du livre). Contraintes : mécaniques strictement identiques (formules PA, paliers de dés, seuils, valeurs) ; exemples chiffrés rejoués après traduction ; ton d'accueil MJ (cf. préface) transposé en anglais, pas de traduction littérale lourde ; liens internes + ancres vérifiés. DONE = version EN lisible sans résidu FR, relue, mécaniques auditées OK."
+    },
+    {
+     "id": "RP-115",
+     "title": "Traduire en anglais — Livre III — Compétences",
+     "epic": "Traduction EN",
+     "status": "todo",
+     "priority": "medium",
+     "order": 86,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "livre_3.html",
+     "details": "Traduction EN de livre_3.html. Source FR : content/livre_3/ + data/livre_3.json. Appliquer la convention EN figée sur RP-112. Périmètre : tout le texte visible (titres, règles, exemples chiffrés, labels UI du livre). Contraintes : mécaniques strictement identiques (formules PA, paliers de dés, seuils, valeurs) ; exemples chiffrés rejoués après traduction ; ton d'accueil MJ (cf. préface) transposé en anglais, pas de traduction littérale lourde ; liens internes + ancres vérifiés. DONE = version EN lisible sans résidu FR, relue, mécaniques auditées OK."
+    },
+    {
+     "id": "RP-116",
+     "title": "Traduire en anglais — Livre IV — 5e Force & Magie",
+     "epic": "Traduction EN",
+     "status": "todo",
+     "priority": "medium",
+     "order": 87,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "livre_4.html",
+     "details": "Traduction EN de livre_4.html. Source FR : content/livre_4/ + data/livre_4.json. Appliquer la convention EN figée sur RP-112. Périmètre : tout le texte visible (titres, règles, exemples chiffrés, labels UI du livre). Contraintes : mécaniques strictement identiques (formules PA, paliers de dés, seuils, valeurs) ; exemples chiffrés rejoués après traduction ; ton d'accueil MJ (cf. préface) transposé en anglais, pas de traduction littérale lourde ; liens internes + ancres vérifiés. DONE = version EN lisible sans résidu FR, relue, mécaniques auditées OK."
+    },
+    {
+     "id": "RP-117",
+     "title": "Traduire en anglais — Livre V — Combat Tactique",
+     "epic": "Traduction EN",
+     "status": "todo",
+     "priority": "medium",
+     "order": 88,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "livre_5.html",
+     "details": "Traduction EN de livre_5.html. Source FR : content/livre_5/ + data/livre_5.json. Appliquer la convention EN figée sur RP-112. Périmètre : tout le texte visible (titres, règles, exemples chiffrés, labels UI du livre). Contraintes : mécaniques strictement identiques (formules PA, paliers de dés, seuils, valeurs) ; exemples chiffrés rejoués après traduction ; ton d'accueil MJ (cf. préface) transposé en anglais, pas de traduction littérale lourde ; liens internes + ancres vérifiés. DONE = version EN lisible sans résidu FR, relue, mécaniques auditées OK."
+    },
+    {
+     "id": "RP-118",
+     "title": "Traduire en anglais — Livre VI — Santé & États",
+     "epic": "Traduction EN",
+     "status": "todo",
+     "priority": "medium",
+     "order": 89,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "livre_6.html",
+     "details": "Traduction EN de livre_6.html. Source FR : content/livre_6/ + data/livre_6.json. Appliquer la convention EN figée sur RP-112. Périmètre : tout le texte visible (titres, règles, exemples chiffrés, labels UI du livre). Contraintes : mécaniques strictement identiques (formules PA, paliers de dés, seuils, valeurs) ; exemples chiffrés rejoués après traduction ; ton d'accueil MJ (cf. préface) transposé en anglais, pas de traduction littérale lourde ; liens internes + ancres vérifiés. DONE = version EN lisible sans résidu FR, relue, mécaniques auditées OK."
+    },
+    {
+     "id": "RP-119",
+     "title": "Traduire en anglais — Livre VII — Arsenal",
+     "epic": "Traduction EN",
+     "status": "todo",
+     "priority": "medium",
+     "order": 90,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "livre_7.html",
+     "details": "Traduction EN de livre_7.html. Source FR : content/livre_7/ + data/livre_7.json. Appliquer la convention EN figée sur RP-112. Périmètre : tout le texte visible (titres, règles, exemples chiffrés, labels UI du livre). Contraintes : mécaniques strictement identiques (formules PA, paliers de dés, seuils, valeurs) ; exemples chiffrés rejoués après traduction ; ton d'accueil MJ (cf. préface) transposé en anglais, pas de traduction littérale lourde ; liens internes + ancres vérifiés. DONE = version EN lisible sans résidu FR, relue, mécaniques auditées OK."
+    },
+    {
+     "id": "RP-120",
+     "title": "Traduire en anglais — Livre VIII — Historiques / Pathologies",
+     "epic": "Traduction EN",
+     "status": "todo",
+     "priority": "medium",
+     "order": 91,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "livre_8.html",
+     "details": "Traduction EN de livre_8.html. Source FR : content/livre_8/ + data/livre_8.json. Appliquer la convention EN figée sur RP-112. Périmètre : tout le texte visible (titres, règles, exemples chiffrés, labels UI du livre). Contraintes : mécaniques strictement identiques (formules PA, paliers de dés, seuils, valeurs) ; exemples chiffrés rejoués après traduction ; ton d'accueil MJ (cf. préface) transposé en anglais, pas de traduction littérale lourde ; liens internes + ancres vérifiés. DONE = version EN lisible sans résidu FR, relue, mécaniques auditées OK."
+    },
+    {
+     "id": "RP-121",
+     "title": "Traduire en anglais — Livre IX — Outils Web",
+     "epic": "Traduction EN",
+     "status": "todo",
+     "priority": "medium",
+     "order": 92,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "livre_9.html",
+     "details": "Traduction EN de livre_9.html. Source FR : inline dans livre_9.html (page outils, pas de source content/ ni JSON). Appliquer la convention EN figée sur RP-112. Périmètre : tout le texte visible (titres, règles, exemples chiffrés, labels UI du livre). Contraintes : mécaniques strictement identiques (formules PA, paliers de dés, seuils, valeurs) ; exemples chiffrés rejoués après traduction ; ton d'accueil MJ (cf. préface) transposé en anglais, pas de traduction littérale lourde ; liens internes + ancres vérifiés. DONE = version EN lisible sans résidu FR, relue, mécaniques auditées OK."
+    },
+    {
+     "id": "RP-122",
+     "title": "Traduire en anglais — Livre X — Temps & MJ",
+     "epic": "Traduction EN",
+     "status": "todo",
+     "priority": "medium",
+     "order": 93,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "livre_10.html",
+     "details": "Traduction EN de livre_10.html. Source FR : content/livre_10/ + data/livre_10.json. Appliquer la convention EN figée sur RP-112. Périmètre : tout le texte visible (titres, règles, exemples chiffrés, labels UI du livre). Contraintes : mécaniques strictement identiques (formules PA, paliers de dés, seuils, valeurs) ; exemples chiffrés rejoués après traduction ; ton d'accueil MJ (cf. préface) transposé en anglais, pas de traduction littérale lourde ; liens internes + ancres vérifiés. DONE = version EN lisible sans résidu FR, relue, mécaniques auditées OK."
+    },
+    {
+     "id": "RP-123",
+     "title": "Traduire en anglais — Livre XI — Atlas",
+     "epic": "Traduction EN",
+     "status": "todo",
+     "priority": "medium",
+     "order": 94,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "livre_11.html",
+     "details": "Traduction EN de livre_11.html. Source FR : content/livre_11/ + data/livre_11.json. Appliquer la convention EN figée sur RP-112. Périmètre : tout le texte visible (titres, règles, exemples chiffrés, labels UI du livre). Contraintes : mécaniques strictement identiques (formules PA, paliers de dés, seuils, valeurs) ; exemples chiffrés rejoués après traduction ; ton d'accueil MJ (cf. préface) transposé en anglais, pas de traduction littérale lourde ; liens internes + ancres vérifiés. DONE = version EN lisible sans résidu FR, relue, mécaniques auditées OK."
+    },
+    {
+     "id": "RP-124",
+     "title": "Traduire en anglais — Livre XII — Bestiaire",
+     "epic": "Traduction EN",
+     "status": "todo",
+     "priority": "medium",
+     "order": 95,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "livre_12.html",
+     "details": "Traduction EN de livre_12.html. Source FR : content/livre_12/ + data/livre_12.json. Appliquer la convention EN figée sur RP-112. Périmètre : tout le texte visible (titres, règles, exemples chiffrés, labels UI du livre). Contraintes : mécaniques strictement identiques (formules PA, paliers de dés, seuils, valeurs) ; exemples chiffrés rejoués après traduction ; ton d'accueil MJ (cf. préface) transposé en anglais, pas de traduction littérale lourde ; liens internes + ancres vérifiés. DONE = version EN lisible sans résidu FR, relue, mécaniques auditées OK."
     }
    ]
   }

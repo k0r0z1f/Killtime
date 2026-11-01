@@ -193,7 +193,7 @@ function initCharacterSheet() {
             }
             if (M7.metiers && M7.metiers.length === 12) {
                 METIERS.length = 0;
-                M7.metiers.forEach(m => METIERS.push({ n: m.metier, d: m.bonus + ' ; ' + m.atout }));
+                M7.metiers.forEach(m => METIERS.push({ n: m.metier, d: m.bonus + ' ; ' + m.atout + (m.attache ? ' ; ' + m.attache : '') }));
             }
             if (M7.evenements && M7.evenements.length === 12) {
                 EVENEMENTS.length = 0;
@@ -279,13 +279,13 @@ function initCharacterSheet() {
         return levels;
     }
 
-    // Score de base canon d'une compétence (Livre III §10.1) : moyenne de ses
-    // attributs associés, arrondie ; un seul attribut = sa valeur.
-    // 'vision'/'ouie' = sens 1d6 (Observation, Écoute, Ballistique).
+    // Score de base canon d'une compétence (Livre III §10.1, calcul_rang_base) :
+    // moyenne de ses attributs associés, arrondie vers le haut ; un seul
+    // attribut = sa valeur. 'vision'/'ouie' = sens 1d6 (Observation, Écoute, Ballistique).
     function skillBaseScore(attrList, ext) {
         const nums = attrList.map(k => ext[k]).filter(v => typeof v === 'number' && !isNaN(v));
         if (!nums.length) return 0;
-        return Math.round(nums.reduce((a, b) => a + b, 0) / nums.length);
+        return Math.ceil(nums.reduce((a, b) => a + b, 0) / nums.length);
     }
 
     // Infos canon d'une compétence depuis sa première case (data-attrs).
@@ -2006,6 +2006,7 @@ function initDiceRoller() {
         'd10': { count: 1, sides: 10, mod: 0, label: '1d10' },
         'd12': { count: 1, sides: 12, mod: 0, label: '1d12' },
         'd12+2': { count: 1, sides: 12, mod: 2, label: '1d12 + 2' },
+        '2d6': { count: 2, sides: 6, mod: 0, label: '2d6' },
         '2d8': { count: 2, sides: 8, mod: 0, label: '2d8' },
         '2d10': { count: 2, sides: 10, mod: 0, label: '2d10' },
         '2d12': { count: 2, sides: 12, mod: 0, label: '2d12' },
@@ -2171,8 +2172,20 @@ function initChallengeResolver() {
 
     let challengeData = [];
 
+    // Source unique : data/livre_2.json (mecaniques.defi), repli valeurs codées.
+    function defiParams() {
+        const D = CodexData.l2 && CodexData.l2.mecaniques && CodexData.l2.mecaniques.defi;
+        return {
+            etapesMin: (D && D.etapes && D.etapes.min) || 3,
+            etapesMax: (D && D.etapes && D.etapes.max) || 7,
+            rattrapagesMax: (D && D.rattrapages && D.rattrapages.max) || 3,
+            minimumValide: (D && D.minimum_valide) || 2
+        };
+    }
+
     function renderSteps() {
-        const count = parseInt(stepCountSelect.value) || 4;
+        const P0 = defiParams();
+        const count = Math.min(P0.etapesMax, Math.max(P0.etapesMin, parseInt(stepCountSelect.value) || 4));
         stepsContainer.innerHTML = '';
         challengeData = [];
 
@@ -2220,6 +2233,10 @@ function initChallengeResolver() {
                     step.status = 'failed';
                     row.className = 'challenge-step-row failed';
                 } else if (action === 'retry') {
+                    if (step.retries >= defiParams().rattrapagesMax) {
+                        showToast('Rattrapages épuisés (max ' + defiParams().rattrapagesMax + ', Livre II §9).');
+                        return;
+                    }
                     step.retries++;
                 }
 
@@ -2242,10 +2259,11 @@ function initChallengeResolver() {
             totalRetries += s.retries;
         });
 
-        // Official Formula: Reward = (Successes * 2) - Retries, min 2 if at least 1 success
-        // Livre I §5 : récompense = cases de progression à répartir (piste pleine = +1 XP lié).
+        // Formule canon : Récompense = (Réussies × 2) − Rattrapages, plancher si validé.
+        // Livre II §9 + Livre I §5 : récompense = cases de progression (piste pleine = +1 XP lié).
+        const P = defiParams();
         let reward = (successes * 2) - totalRetries;
-        if (successes > 0 && reward < 2) reward = 2;
+        if (successes > 0 && reward < P.minimumValide) reward = P.minimumValide;
         if (successes === 0) reward = 0;
 
         rewardBadge.textContent = `${reward} case(s) de progression (Livre I §5)`;

@@ -84,7 +84,9 @@ namespace Killtime.Core.Character
                 int pool = GetResidualDamage(dot);
                 if (pool <= 0)
                 {
-                    pool = 3;
+                    // Livre VI §23 : défaut canon sans valeur posée (Saignement 1,
+                    // Empoisonné 1, En Feu 2, Asphyxie 1) via DefaultDotDamage.
+                    pool = DefaultDotDamage(dot);
                     _residualDamages[dot] = pool;
                 }
                 bool aggravating = _aggravatingDots.Contains(dot);
@@ -137,7 +139,7 @@ namespace Killtime.Core.Character
                 result.TotalDamage += finalDmg;
                 result.DamageByStatus[dot] = finalDmg;
 
-                // Décrément dégressif : 3 → 2 → 1 → 0 (disparition).
+                // Décrément dégressif (ex : 3 → 2 → 1 → 0, disparition).
                 // Aggravation : déjà doublé ci-dessus, le pool reste tel quel.
                 if (pool > 0 && !aggravating)
                 {

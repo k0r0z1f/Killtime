@@ -889,7 +889,7 @@
                                 <h5 style="margin: 4px 0 8px; font-family: var(--font-mono); font-size: 0.78rem; color: var(--arcane-cyan); text-transform: uppercase;">Arbre de la Force — Livre III §11.1</h5>
                                 <div class="tool-grid-4" style="font-size: 0.82rem;">
                                     <label style="display: flex; align-items: center; gap: 4px;" title="Livre III §11.1 — base = moyenne FOR/AGI ; MAG en offensif si éveillé (Corps Augmenté)"><input type="checkbox" class="skill-check" id="skMainsNues-1" data-skill="Mains Nues" data-attrs="for,agi" data-mag><input type="checkbox" class="skill-check" id="skMainsNues-2" data-skill="Mains Nues" data-attrs="for,agi" data-mag><input type="checkbox" class="skill-check" id="skMainsNues-3" data-skill="Mains Nues" data-attrs="for,agi" data-mag> Mains Nues (FOR/AGI) <span class="pill-badge cyan skill-die" data-skillref="skMainsNues">—</span></label>
-                                    <label style="display: flex; align-items: center; gap: 4px;" title="Livre III §11.1 — base = moyenne FOR/AGI"><input type="checkbox" class="skill-check" id="skManiement-1" data-skill="Maniement d'Arme" data-attrs="for,agi"><input type="checkbox" class="skill-check" id="skManiement-2" data-skill="Maniement d'Arme" data-attrs="for,agi"><input type="checkbox" class="skill-check" id="skManiement-3" data-skill="Maniement d'Arme" data-attrs="for,agi"> Maniement d'Arme (FOR/AGI) <span class="pill-badge cyan skill-die" data-skillref="skManiement">—</span></label>
+                                    <label style="display: flex; align-items: center; gap: 4px;" title="Livre III §11.1 — base = moyenne FOR/AGI"><input type="checkbox" class="skill-check" id="skManiement-1" data-skill="Maniement d'Arme (Tranchantes / Contondantes)" data-attrs="for,agi"><input type="checkbox" class="skill-check" id="skManiement-2" data-skill="Maniement d'Arme (Tranchantes / Contondantes)" data-attrs="for,agi"><input type="checkbox" class="skill-check" id="skManiement-3" data-skill="Maniement d'Arme (Tranchantes / Contondantes)" data-attrs="for,agi"> Maniement d'Arme (Tranchantes / Contondantes) (FOR/AGI) <span class="pill-badge cyan skill-die" data-skillref="skManiement">—</span></label>
                                     <label style="display: flex; align-items: center; gap: 4px;" title="Livre III §11.1 — base = moyenne CON/FOR/AGI"><input type="checkbox" class="skill-check" id="skAthletisme-1" data-skill="Athlétisme" data-attrs="con,for,agi"><input type="checkbox" class="skill-check" id="skAthletisme-2" data-skill="Athlétisme" data-attrs="con,for,agi"><input type="checkbox" class="skill-check" id="skAthletisme-3" data-skill="Athlétisme" data-attrs="con,for,agi"> Athlétisme (CON/FOR/AGI) <span class="pill-badge cyan skill-die" data-skillref="skAthletisme">—</span></label>
                                     <label style="display: flex; align-items: center; gap: 4px;" title="Livre III §11.1 — base = FOR"><input type="checkbox" class="skill-check" id="skDefense-1" data-skill="Défense Corporelle" data-attrs="for"><input type="checkbox" class="skill-check" id="skDefense-2" data-skill="Défense Corporelle" data-attrs="for"><input type="checkbox" class="skill-check" id="skDefense-3" data-skill="Défense Corporelle" data-attrs="for"> Défense Corporelle (FOR) <span class="pill-badge cyan skill-die" data-skillref="skDefense">—</span></label>
                                 </div>
@@ -1140,13 +1140,39 @@
                                             data-unit="cran(s)" min="0" max="5" value="0">
                                     </div>
 
+                                    <div class="tool-form-group">
+                                        <label class="tool-label">
+                                            <span>Recul Forcé (+1 case / point)</span>
+                                            <span class="tool-label-hint">2 XP / PA par cran</span>
+                                        </label>
+                                        <input type="number" class="tool-input spell-effect-input" data-cost="2"
+                                            data-category="offensif" data-label="La cible recule d'1 case"
+                                            data-unit="cran(s)" min="0" max="5" value="0">
+                                    </div>
+
+                                    <div class="tool-form-group">
+                                        <label class="tool-label">
+                                            <span>Malus Ciblé (-1 prochaine épreuve / point)</span>
+                                            <span class="tool-label-hint">2 XP / PA par cran</span>
+                                        </label>
+                                        <input type="number" class="tool-input spell-effect-input" data-cost="2"
+                                            data-category="offensif" data-label="La cible prend -1 à sa prochaine épreuve"
+                                            data-unit="cran(s)" min="0" max="5" value="0">
+                                    </div>
+
                                     <div class="tool-grid-2" style="font-size: 0.8rem; margin-top: 8px;">
+                                        <label><input type="checkbox" class="spell-effect-input" data-cost="1"
+                                                data-category="offensif" data-label="Teinte élémentaire (type de dégâts)"
+                                                data-unit="actif"> Teinte Élémentaire (1 pt)</label>
                                         <label><input type="checkbox" class="spell-effect-input" data-cost="1"
                                                 data-category="offensif" data-label="Cible Débalancée (1 tour)"
                                                 data-unit="actif"> Cible Débalancée (1 pt)</label>
                                         <label><input type="checkbox" class="spell-effect-input" data-cost="2"
                                                 data-category="offensif" data-label="Cible Tombe au sol (À terre)"
                                                 data-unit="actif"> Cible À Terre (2 pts)</label>
+                                        <label><input type="checkbox" class="spell-effect-input" data-cost="3"
+                                                data-category="offensif" data-label="2 Dégâts Résiduels continus"
+                                                data-unit="actif"> 2 Résiduels (3 pts)</label>
                                         <label><input type="checkbox" class="spell-effect-input" data-cost="3"
                                                 data-category="offensif" data-label="Cible Déstabilisée (-2 EC)"
                                                 data-unit="actif"> Cible Déstabilisée (3 pts)</label>
@@ -1159,12 +1185,21 @@
                                         <label><input type="checkbox" class="spell-effect-input" data-cost="4"
                                                 data-category="offensif" data-label="Cible Ralentie (PA doublés)"
                                                 data-unit="actif"> Cible Ralentie (4 pts)</label>
+                                        <label><input type="checkbox" class="spell-effect-input" data-cost="4"
+                                                data-category="offensif" data-label="Frappe +1 case de rayon (dégâts aussi)"
+                                                data-unit="actif"> +1 Rayon Zone (4 pts)</label>
+                                        <label><input type="checkbox" class="spell-effect-input" data-cost="6"
+                                                data-category="offensif" data-label="3 Dégâts Résiduels continus"
+                                                data-unit="actif"> 3 Résiduels (6 pts)</label>
                                         <label><input type="checkbox" class="spell-effect-input" data-cost="7"
                                                 data-category="offensif" data-label="Cible Paralysée (1 tour)"
                                                 data-unit="actif"> Cible Paralysée (7 pts)</label>
                                         <label><input type="checkbox" class="spell-effect-input" data-cost="8"
                                                 data-category="offensif" data-label="Cible Sonnée (paralysée + chute)"
                                                 data-unit="actif"> Cible Sonnée (8 pts)</label>
+                                        <label><input type="checkbox" class="spell-effect-input" data-cost="10"
+                                                data-category="offensif" data-label="4 Dégâts Résiduels continus"
+                                                data-unit="actif"> 4 Résiduels (10 pts)</label>
                                     </div>
                                 </div>
 
@@ -1196,7 +1231,43 @@
                                             data-unit="cran(s)" min="0" max="4" value="0">
                                     </div>
 
+                                    <div class="tool-form-group">
+                                        <label class="tool-label">
+                                            <span>Soins Arcaniques (+4 PV / point)</span>
+                                            <span class="tool-label-hint">2 XP / PA par cran</span>
+                                        </label>
+                                        <input type="number" class="tool-input spell-effect-input" data-cost="2"
+                                            data-category="defensif" data-label="Rend 4 PV (allié ou soi)"
+                                            data-unit="cran(s)" min="0" max="10" value="0">
+                                    </div>
+
+                                    <div class="tool-form-group">
+                                        <label class="tool-label">
+                                            <span>Portée Étendue (+MAG cases / point)</span>
+                                            <span class="tool-label-hint">2 XP / PA par cran</span>
+                                        </label>
+                                        <input type="number" class="tool-input spell-effect-input" data-cost="2"
+                                            data-category="defensif" data-label="Porte +MAG cases plus loin"
+                                            data-unit="cran(s)" min="0" max="5" value="0">
+                                    </div>
+
+                                    <div class="tool-form-group">
+                                        <label class="tool-label">
+                                            <span>Bouclier Arcanique (+4 absorption / point)</span>
+                                            <span class="tool-label-hint">3 XP / PA par cran</span>
+                                        </label>
+                                        <input type="number" class="tool-input spell-effect-input" data-cost="3"
+                                            data-category="defensif" data-label="Bouclier : absorbe 4 dégâts"
+                                            data-unit="cran(s)" min="0" max="5" value="0">
+                                    </div>
+
                                     <div class="tool-grid-2" style="font-size: 0.8rem; margin-top: 8px;">
+                                        <label><input type="checkbox" class="spell-effect-input" data-cost="2"
+                                                data-category="defensif" data-label="Dissipe 1 état préjudiciable"
+                                                data-unit="actif"> Purge d'État (2 pts)</label>
+                                        <label><input type="checkbox" class="spell-effect-input" data-cost="3"
+                                                data-category="defensif" data-label="+2 armure naturelle (1 tour)"
+                                                data-unit="actif"> Armure +2 (3 pts)</label>
                                         <label><input type="checkbox" class="spell-effect-input" data-cost="3"
                                                 data-category="utilitaire" data-label="État Rapide (+3 PA déplacement)"
                                                 data-unit="actif"> État Rapide (3 pts)</label>
@@ -1217,6 +1288,22 @@
                                                 data-category="utilitaire" data-label="Lévitation Arcanique sans effort"
                                                 data-unit="actif"> Lévitation (9 pts)</label>
                                     </div>
+                                </div>
+                            </div>
+
+                            <div style="background: rgba(0,0,0,0.25); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 14px; margin-top: 12px;">
+                                <h5
+                                    style="color: var(--text-secondary); font-family: var(--font-mono); font-size: 0.82rem; margin-bottom: 10px; text-transform: uppercase;">
+                                    Effets Sociaux
+                                </h5>
+                                <div class="tool-form-group">
+                                    <label class="tool-label">
+                                        <span>Bonus au Jet Social (+1 EC / point)</span>
+                                        <span class="tool-label-hint">1 XP / PA par cran</span>
+                                    </label>
+                                    <input type="number" class="tool-input spell-effect-input" data-cost="1"
+                                        data-category="social" data-label="+1 à l'épreuve sociale"
+                                        data-unit="cran(s)" min="0" max="6" value="0">
                                 </div>
                             </div>
 
@@ -1315,6 +1402,7 @@
                                         <option value="d10">1d10 (Échelon Avancé)</option>
                                         <option value="d12">1d12 (Échelon Maître)</option>
                                         <option value="d12+2">1d12 + 2</option>
+                                        <option value="2d6">2d6 (Double attaque débloquée)</option>
                                         <option value="2d8">2d8 (Échelon Héroïque)</option>
                                         <option value="2d10">2d10 (Échelon Légendaire)</option>
                                         <option value="2d12">2d12 (Échelon Mythique)</option>

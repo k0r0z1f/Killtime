@@ -247,8 +247,8 @@
      "Territoire Militaire de l'Empire Intergalactique"
     ],
     [
-     "<strong>Système Cléia</strong>",
-     "Astra-Cléia (Étoile blanche à flux constant)",
+     "<strong>Système Veyla</strong>",
+     "Veyla-Mère (blanche, flux constant) + Veyla-Sœur (naine compagne)",
      "<strong>Cléia</strong>, Réseau de satellites capteurs de 5e Force",
      "Royaume Matriarcal Cléien (Indépendant, prospecté)"
     ],
@@ -416,8 +416,8 @@
     "affiliation": "Territoire Militaire de l'Empire Intergalactique"
    },
    {
-    "systeme": "Système Cléia",
-    "etoile": "Astra-Cléia (Étoile blanche à flux constant)",
+    "systeme": "Système Veyla",
+    "etoile": "Veyla-Mère (blanche, flux constant) + Veyla-Sœur (naine compagne)",
     "mondes": "Cléia, Réseau de satellites capteurs de 5e Force",
     "affiliation": "Royaume Matriarcal Cléien (Indépendant, prospecté)"
    },
@@ -447,9 +447,9 @@
     "mondes": "Vardis, Nefris, Ceinture d'astéroïdes tactique",
     "affiliation": "Territoire Militaire de l'Empire Intergalactique"
    },
-   "Système Cléia": {
-    "systeme": "Système Cléia",
-    "etoile": "Astra-Cléia (Étoile blanche à flux constant)",
+   "Système Veyla": {
+    "systeme": "Système Veyla",
+    "etoile": "Veyla-Mère (blanche, flux constant) + Veyla-Sœur (naine compagne)",
     "mondes": "Cléia, Réseau de satellites capteurs de 5e Force",
     "affiliation": "Royaume Matriarcal Cléien (Indépendant, prospecté)"
    },

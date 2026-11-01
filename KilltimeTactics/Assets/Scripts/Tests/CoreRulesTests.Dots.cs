@@ -144,6 +144,39 @@ namespace Killtime.Tests
         }
 
         [Test]
+        public void TestDot_RD091_SansPool_DefautsCanon_1_1_2_1()
+        {
+            // RP-091 : statut DoT posé sans pool (ApplyStatus sans residualDamage)
+            // -> tick aux défauts canon Livre VI §23 (Saignement 1, Empoisonné 1,
+            // En Feu 2, Asphyxie 1 + drain 1 PA), puis décroissance normale.
+            var attr = new Attributes(4, 4, 4, 3, 3, 2, 2, 2);
+            var sheet = new CharacterSheet { Name = "Roger", BaseAttributes = attr };
+            var stats = sheet.ToCombatStats();
+            stats.Sheet = sheet;
+
+            stats.ApplyStatus(StatusEffect.Saignement);
+            stats.ApplyStatus(StatusEffect.Empoisonne);
+            stats.ApplyStatus(StatusEffect.EnFeu);
+            stats.ApplyStatus(StatusEffect.Asphyxie);
+            stats.ResetTurn();
+            int hp0 = stats.CurrentHealth;
+            int pa0 = stats.CurrentActionPoints;
+
+            var tick = stats.TickTurnStatus();
+            Assert.AreEqual(1, tick.DamageByStatus[StatusEffect.Saignement]);
+            Assert.AreEqual(1, tick.DamageByStatus[StatusEffect.Empoisonne]);
+            Assert.AreEqual(2, tick.DamageByStatus[StatusEffect.EnFeu]);
+            Assert.AreEqual(1, tick.DamageByStatus[StatusEffect.Asphyxie]);
+            Assert.AreEqual(1, tick.PaDrained);
+            Assert.AreEqual(hp0 - 5, stats.CurrentHealth);
+            Assert.AreEqual(pa0 - 1, stats.CurrentActionPoints);
+            // Pools à 1 : purgés après ce tick ; En Feu (pool 2) persiste à 1.
+            Assert.IsFalse(stats.ActiveStatus.HasFlag(StatusEffect.Saignement));
+            Assert.IsTrue(stats.ActiveStatus.HasFlag(StatusEffect.EnFeu));
+            Assert.AreEqual(1, stats.GetResidualDamage(StatusEffect.EnFeu));
+        }
+
+        [Test]
         public void TestMina_FibresResilientes_And_Homeostasie()
         {
             var attr = new Attributes(@for: 3, agi: 5, con: 3, rap: 4, @int: 3, eru: 2, cha: 3, ins: 3, mag: 5);

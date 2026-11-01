@@ -5,7 +5,7 @@
   "mjId": "usr_mtvzf3lr",
   "mjName": "k0r0",
   "createdAt": 1793439060000,
-  "updatedAt": 1793457013566,
+  "updatedAt": 1793531197237,
   "maxMembers": 12,
   "inviteCode": "inv_BgCO6QCJUnID",
   "members": [
@@ -505,6 +505,45 @@
       "toName": null,
       "toExcept": [],
       "createdAt": 1793457013566
+    },
+    {
+      "id": "m_mvxpse2no6",
+      "fromId": "usr_mtvzf3lr",
+      "fromName": "k0r0",
+      "fromRole": "mj",
+      "text": "📖 Revue Système RP — Kanban (solo) — kanban_rp.html« FAIT 2026-11-01 — data/livre_2.json (corr. nom : pas de livre_ii.json). js/tools.js : repli dieSteps + select lanceur avec palier 2d6 manquant (canon : double attaque, Livre II §6 ; label 'Double attaque débloquée'), résolveur défis branché sur mecaniques.defi (étapes 3-7, cap rattrapages max 3 + toast, plancher minimum_valide, repli valeurs identiques). Lanceur/critiques déjà canon (RP-082 : 13 paliers rabattus). Miroirs Unity recensés conformes : SkillDefinitions.StepUpDie = échelle 11 paliers, CharacteristicSteps = crans_base (D3/D20 enum hors chaîne, sans effet). Non-touché : gravité échec critique (pas de table chiffrée au livre), options select non-canon d6+1/d6+2/d8+2/d12+2 conservées (utilitaires, sans migration). Vérifié : node --check OK, JSON 3/7/3/2 conforme. »",
+      "image": null,
+      "file": null,
+      "toUserId": null,
+      "toName": null,
+      "toExcept": [],
+      "createdAt": 1793530561343
+    },
+    {
+      "id": "m_mvxq5pqyc9",
+      "fromId": "usr_mtvzf3lr",
+      "fromName": "k0r0",
+      "fromRole": "mj",
+      "text": "📖 Système de Jeu RP — Livre I : Fondations & Création — livre_1.html#chap-2« Échelle TechnologiqueDu premier feu aux mégastructures stellairesPrimitive : Chasseurs-cueilleurs, outils de pierre, d'os et de bronze.Médiévale : Forges d'acier, armures de métal, armes de trait et fortifications.Moderne : Équivalent de notre Terre contemporaine, balistique, puces et réseaux.Avancée : Terraformation, singularité cybernétique, voyages interstellaires.Très Avancée : Sphères de Dyson, téléportation, cuves de régénération arcanique.Démiurgique : Manipulation directe du continuum espace-temps et lois physiques courbées. »",
+      "image": null,
+      "file": null,
+      "toUserId": null,
+      "toName": null,
+      "toExcept": [],
+      "createdAt": 1793531183002
+    },
+    {
+      "id": "m_mvxq60qd4",
+      "fromId": "usr_mtvzf3lr",
+      "fromName": "k0r0",
+      "fromRole": "mj",
+      "text": "📖 Système de Jeu RP — Livre I : Fondations & Création — livre_1.html#chap-2« Démiurgique : Manipulation directe du continuum espace-temps et lois physiques courbées. »",
+      "image": null,
+      "file": null,
+      "toUserId": null,
+      "toName": null,
+      "toExcept": [],
+      "createdAt": 1793531197237
     }
   ],
   "listed": true,

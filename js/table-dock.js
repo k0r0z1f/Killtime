@@ -793,6 +793,162 @@
     if (btn) btn.disabled = false;
   }
 
+  /* ---------- partage sélection Codex → chat (table en cours) ----------
+     Sélection dans la page (codex RP) → bouton flottant « Envoyer au chat ».
+     Envoie le texte cité vers POST /messages de la table active (même
+     endpoint que le dock), avec source (titre + page). Respecte l'envoi
+     restreint (toExcept) comme le composer. */
+  const SHARE_MIN_LEN = 4;
+  const SHARE_MAX_TEXT = 2000;
+  function shareBtn() {
+    let b = $('kdShareSel');
+    if (b) return b;
+    b = document.createElement('button');
+    b.id = 'kdShareSel';
+    b.type = 'button';
+    b.title = 'Envoyer la sélection au chat de la table en cours';
+    b.textContent = '💬 Envoyer au chat';
+    b.style.display = 'none';
+    b.addEventListener('click', (e) => {
+      if (e.preventDefault) e.preventDefault();
+      if (e.stopPropagation) e.stopPropagation();
+      sendShare();
+    });
+    document.body.appendChild(b);
+    return b;
+  }
+  function shareSelText() {
+    try {
+      const s = window.getSelection();
+      if (!s || s.isCollapsed) return '';
+      const t = String(s.toString() || '').replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/g, '').trim();
+      return t;
+    } catch (e) { return ''; }
+  }
+  function shareSelOk() {
+    try {
+      const s = window.getSelection();
+      if (!s || s.isCollapsed || !s.anchorNode) return false;
+      let n = s.anchorNode;
+      if (n && n.nodeType === 3) n = n.parentElement;
+      if (!n || !n.closest) return true;
+      if (n.closest('#ktDock, #ktDockFab, #kdShareSel, input, textarea, select, [contenteditable="true"]')) return false;
+      return true;
+    } catch (e) { return true; }
+  }
+  function hideShare() {
+    const b = $('kdShareSel');
+    if (b) b.style.display = 'none';
+  }
+  function updateShare() {
+    const b = shareBtn();
+    const t = shareSelOk() ? shareSelText() : '';
+    if (!t || t.length < SHARE_MIN_LEN) { b.style.display = 'none'; return; }
+    let rect = null;
+    try {
+      const s = window.getSelection();
+      if (s && s.rangeCount) rect = s.getRangeAt(0).getBoundingClientRect();
+    } catch (e) {}
+    b.style.display = '';
+    if (rect && rect.width + rect.height > 0) {
+      const vw = window.innerWidth || 800;
+      const top = Math.max(8, Math.min(window.innerHeight - 48, rect.top - 44));
+      const left = Math.max(8, Math.min(vw - 190, rect.left + rect.width / 2 - 90));
+      b.style.top = top + 'px';
+      b.style.left = left + 'px';
+    } else {
+      b.style.top = '';
+      b.style.left = '';
+      b.classList.add('kd-share-fallback');
+    }
+  }
+  let shareDeb = null;
+  function scheduleShare() {
+    if (shareDeb) clearTimeout(shareDeb);
+    shareDeb = setTimeout(updateShare, 120);
+  }
+  function buildShareText(sel) {
+    let title = '';
+    try { title = String(document.title || '').trim().slice(0, 90); } catch (e) {}
+    let ref = '';
+    try {
+      const page = String(window.location.pathname || '').split('/').pop() || 'codex';
+      ref = page + (window.location.hash || '');
+    } catch (e) {}
+    const head = '📖 ' + (title ? title + ' — ' : '') + ref;
+    const maxSel = Math.max(200, SHARE_MAX_TEXT - head.length - 12);
+    let q = String(sel || '').trim().replace(/\n{3,}/g, '\n\n');
+    if (q.length > maxSel) q = q.slice(0, maxSel - 1).trimEnd() + '…';
+    return (head + '\n« ' + q + ' »').slice(0, SHARE_MAX_TEXT);
+  }
+  async function sendShare() {
+    const b = $('kdShareSel');
+    const sel = shareSelText();
+    if (!sel || sel.length < SHARE_MIN_LEN) { hideShare(); return; }
+    if (!me) {
+      setStatus('Connecte-toi pour envoyer au chat.', 'err');
+      setOpen(true);
+      try {
+        const t = document.getElementById('authModalTrigger');
+        if (t) t.click();
+        else if (window.CodexAuth) window.CodexAuth.openModal();
+      } catch (e) {}
+      return;
+    }
+    if (!activeId || !activeDoc) {
+      setStatus('Aucune table active — rejoins une table depuis la page Tables.', 'err');
+      setOpen(true);
+      return;
+    }
+    const text = buildShareText(sel);
+    if (b) { b.disabled = true; b.textContent = 'Envoi…'; }
+    try {
+      const r = await api('/api/tables/' + encodeURIComponent(activeId) + '/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text, toExcept: effectiveExcept() })
+      });
+      const d = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(d.error || ('Erreur ' + r.status));
+      try {
+        activeDoc.messages.push(d.message);
+        if (d.message.createdAt > lastTs) lastTs = d.message.createdAt;
+      } catch (e) {}
+      try { if (window.getSelection) window.getSelection().removeAllRanges(); } catch (e) {}
+      hideShare();
+      setOpen(true);
+      render(true);
+      setStatus('Extrait envoyé au chat ✓', 'ok');
+    } catch (e) {
+      setStatus(e.message, 'err');
+    }
+    if (b) { b.disabled = false; b.textContent = '💬 Envoyer au chat'; }
+  }
+  function initShare() {
+    if (initShare.done) return;
+    initShare.done = true;
+    shareBtn();
+    document.addEventListener('mouseup', scheduleShare);
+    document.addEventListener('touchend', scheduleShare);
+    try { document.addEventListener('selectionchange', scheduleShare); } catch (e) {}
+    document.addEventListener('mousedown', (e) => {
+      try {
+        if (e && e.target && e.target.closest && e.target.closest('#kdShareSel')) return;
+      } catch (err) {}
+      hideShare();
+    });
+    window.addEventListener('scroll', hideShare, { capture: true, passive: true });
+    window.addEventListener('resize', hideShare);
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') hideShare();
+      else if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+        try {
+          if ($('kdShareSel') && $('kdShareSel').style.display !== 'none') sendShare();
+        } catch (err) {}
+      }
+    });
+  }
+
   /* ---------- largeur ajustable (bordure, persistée) ---------- */
   const DOCK_W_KEY = 'kt-dock-width';
   const DOCK_W_MIN = 280, DOCK_W_MAX = 640, DOCK_W_DEF = 360;
@@ -896,6 +1052,7 @@
       window.addEventListener('pointerup', up, { once: true });
     });
     $('kdSend').addEventListener('click', send);
+    initShare();
     bindDockDrop($('kdMsgs'));
     bindDockDrop($('kdCompose'));
     $('kdText').addEventListener('keydown', (e) => {
@@ -904,6 +1061,19 @@
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && isOpen()) setOpen(false);
     });
+    // Clic ailleurs dans le site (hors panneau/bouton/partage) : referme
+    // le panneau. Exclusions : intérieur du dock, bouton latéral (toggle),
+    // bouton flottant « Envoyer au chat » (rouvre le panneau à l'envoi).
+    document.addEventListener('pointerdown', (e) => {
+      if (!isOpen()) return;
+      try {
+        if (e && e.button !== undefined && e.button !== 0) return;
+        const t = e && e.target;
+        if (!t || !t.closest) return;
+        if (t.closest('#ktDock, #ktDockFab, #kdShareSel')) return;
+      } catch (err) { return; }
+      setOpen(false);
+    }, { capture: true });
     window.addEventListener('storage', (e) => {
       if (e.key === 'kt-tables-unread') updateFab();
     });
