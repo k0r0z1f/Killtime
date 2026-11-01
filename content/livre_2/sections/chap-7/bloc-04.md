@@ -5,7 +5,7 @@ livre: 2
 ---
 
 
-                    <h3>7.3 Résoudre un Face-à-Face : L'Épreuve Opposée (Duel à l'Aveugle)</h3>
+                    <h3>7.3 Résoudre un Face-à-Face : L'Épreuve Opposée</h3>
                     <p>
                         Sur le champ de bataille ou dans un bras de fer tendu, on n'agit pas contre une cible immobile : l'adversaire réagit !
                         Un jet d'attaque oppose donc la compétence offensive de l'attaquant (<em>Maniement d'Arme</em>, <em>Balistique</em>, <em>Mains Nues</em>)
@@ -13,12 +13,12 @@ livre: 2
                         <strong>La cible peut aussi choisir de ne pas se défendre</strong> : dans ce cas, elle ne jette aucun dé, ne dépense aucun PA, et sa défense est considérée comme nulle (score de 0).
                     </p>
                     <p>
-                        <strong>La procédure du duel à l'aveugle (simple et pleine de tension) :</strong>
+                        <strong>La procédure du Face-à-Face (simple et pleine de tension) :</strong>
                         Pour préserver le suspense et la tactique, les deux protagonistes déclarent leurs intentions et leurs mises de PA en secret avant de révéler leurs résultats simultanément.
                     </p>
                     <ol>
                         <li><strong>L'attaquant annonce son assaut :</strong> il désigne sa cible, déclare la compétence utilisée et choisit secrètement les PA d'effort qu'il investit (+1 par PA, dans la limite de sa Constitution). <em>Exemple : Mains Nues avec 2 entraînements et FOR 5 = dé 1d10, mise cachée de 2 PA.</em> Le dé est lancé face cachée jusqu'à la résolution.</li>
-                        <li><strong>Le défenseur réagit à l'aveugle :</strong> sans connaître la mise de l'attaquant, il annonce comment il réagit (Esquive ou Parade) et engage secrètement ses propres PA d'effort (+1 par PA). <em>Exemple : Esquive avec 1 entraînement et AGI 5 = dé 1d8, mise cachée de 1 PA.</em></li>
+                        <li><strong>Le défenseur réagit en secret :</strong> sans connaître la mise de l'attaquant, il annonce comment il réagit (Esquive ou Parade) et engage secrètement ses propres PA d'effort (+1 par PA). <em>Exemple : Esquive avec 1 entraînement et AGI 5 = dé 1d8, mise cachée de 1 PA.</em></li>
                         <li><strong>Révélation simultanée & Différentiel Net :</strong> les deux dés sont découverts en même temps, et chacun ajoute ses PA d'effort et ses malus éventuels (pas de bonus de caractéristique !). On soustrait le total du défenseur de celui de l'attaquant pour obtenir le <strong>Différentiel Net</strong> :</li>
                     </ol>
                     <ul>

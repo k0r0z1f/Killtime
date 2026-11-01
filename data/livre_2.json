@@ -400,49 +400,6 @@
    "effort_par_pa": 1,
    "texte_rappel": "Autour de la table, une Épreuve de Caractéristique (EC) ne teste jamais un attribut brut isolé : elle mesure toujours ce que votre personnage sait faire concrètement via une compétence précise. La valeur de référence de cette compétence (la moyenne des attributs qui lui sont associés) vous donne des crans sur l'échelle des dés (1-2 : +0, 3-4 : +1, 5-6 : +2, 7-8 : +3, 9-10 : +4). Chaque entraînement vous fait grimper d'un cran supplémentaire à partir du d2. Règle d'or du calcul : aucun modificateur de caractéristique n'est ajouté au tirage. Vos attributs ne servent qu'à déterminer la taille physique du dé que vous lancez ! Seuls les PA d'effort injectés (+1 par PA dépensé) et les malus de situation (visée difficile, obscurité, blessures du Livre VI) modifient le total. Formule en jeu : Total = Résultat du dé de compétence + PA d'effort - malus éventuels."
   },
-  "duel_aveugle": {
-   "etapes": [
-    {
-     "ordre": 1,
-     "texte": "L'attaquant annonce son assaut : il désigne sa cible, déclare la compétence utilisée et choisit secrètement les PA d'effort qu'il investit (+1 par PA, dans la limite de sa Constitution). Exemple : Mains Nues avec 2 entraînements et FOR 5 = dé 1d10, mise cachée de 2 PA. Le dé est lancé face cachée jusqu'à la résolution."
-    },
-    {
-     "ordre": 2,
-     "texte": "Le défenseur réagit à l'aveugle : sans connaître la mise de l'attaquant, il annonce comment il réagit (Esquive ou Parade) et engage secrètement ses propres PA d'effort (+1 par PA). Exemple : Esquive avec 1 entraînement et AGI 5 = dé 1d8, mise cachée de 1 PA."
-    },
-    {
-     "ordre": 3,
-     "texte": "Révélation simultanée & Différentiel Net : les deux dés sont découverts en même temps, et chacun ajoute ses PA d'effort et ses malus éventuels (pas de bonus de caractéristique !). On soustrait le total du défenseur de celui de l'attaquant pour obtenir le Différentiel Net :"
-    }
-   ],
-   "competences_attaque": [
-    "Maniement d'Arme",
-    "Balistique",
-    "Mains Nues"
-   ],
-   "competences_defense": [
-    "Esquive",
-    "Défense Corporelle / Parade"
-   ],
-   "sans_defense": {
-    "defense": 0,
-    "texte": "Sur le champ de bataille ou dans un bras de fer tendu, on n'agit pas contre une cible immobile : l'adversaire réagit ! Un jet d'attaque oppose donc la compétence offensive de l'attaquant (Maniement d'Arme, Balistique, Mains Nues) à la compétence défensive choisie par la cible (Esquive ou Défense Corporelle / Parade). La cible peut aussi choisir de ne pas se défendre : dans ce cas, elle ne jette aucun dé, ne dépense aucun PA, et sa défense est considérée comme nulle (score de 0)."
-   },
-   "issues": [
-    {
-     "condition": "differentiel < 0",
-     "effet": "Différentiel inférieur à 0 : Échec de l'attaque. Le coup est totalement esquivé ou dévié par le bouclier/l'arme."
-    },
-    {
-     "condition": "differentiel = 0",
-     "effet": "Différentiel égal à 0 : Touche superficielle ! Le coup effleure la cible sans pénétration franche (on détermine la zone touchée au hasard avec 1d4 ou 1d6)."
-    },
-    {
-     "condition": "differentiel > 0",
-     "effet": "Différentiel supérieur à 0 : Touche franche ! L'attaque porte de plein fouet : elle inflige ses dégâts de base augmentés du différentiel net, avant comparaison avec l'armure et l'Encaissement de la cible."
-    }
-   ]
-  },
   "critique": {
    "declenchement": {
     "condition": "La règle est limpide et grisante : vous obtenez une Réussite Critique chaque fois que votre dé affiche son score maximal lors d'une épreuve (un 4 sur un d4, un 6 sur un d6, un 8 sur un d8, un 10 sur un d10, etc.).",
@@ -677,6 +634,49 @@
     "rattrapages": 2,
     "cases": 6
    }
+  },
+  "face_a_face": {
+   "etapes": [
+    {
+     "ordre": 1,
+     "texte": "L'attaquant annonce son assaut : il désigne sa cible, déclare la compétence utilisée et choisit secrètement les PA d'effort qu'il investit (+1 par PA, dans la limite de sa Constitution). Exemple : Mains Nues avec 2 entraînements et FOR 5 = dé 1d10, mise cachée de 2 PA. Le dé est lancé face cachée jusqu'à la résolution."
+    },
+    {
+     "ordre": 2,
+     "texte": "Le défenseur réagit en secret : sans connaître la mise de l'attaquant, il annonce comment il réagit (Esquive ou Parade) et engage secrètement ses propres PA d'effort (+1 par PA). Exemple : Esquive avec 1 entraînement et AGI 5 = dé 1d8, mise cachée de 1 PA."
+    },
+    {
+     "ordre": 3,
+     "texte": "Révélation simultanée & Différentiel Net : les deux dés sont découverts en même temps, et chacun ajoute ses PA d'effort et ses malus éventuels (pas de bonus de caractéristique !). On soustrait le total du défenseur de celui de l'attaquant pour obtenir le Différentiel Net :"
+    }
+   ],
+   "competences_attaque": [
+    "Maniement d'Arme",
+    "Balistique",
+    "Mains Nues"
+   ],
+   "competences_defense": [
+    "Esquive",
+    "Défense Corporelle / Parade"
+   ],
+   "sans_defense": {
+    "defense": 0,
+    "texte": "Sur le champ de bataille ou dans un bras de fer tendu, on n'agit pas contre une cible immobile : l'adversaire réagit ! Un jet d'attaque oppose donc la compétence offensive de l'attaquant (Maniement d'Arme, Balistique, Mains Nues) à la compétence défensive choisie par la cible (Esquive ou Défense Corporelle / Parade). La cible peut aussi choisir de ne pas se défendre : dans ce cas, elle ne jette aucun dé, ne dépense aucun PA, et sa défense est considérée comme nulle (score de 0)."
+   },
+   "issues": [
+    {
+     "condition": "differentiel < 0",
+     "effet": "Différentiel inférieur à 0 : Échec de l'attaque. Le coup est totalement esquivé ou dévié par le bouclier/l'arme."
+    },
+    {
+     "condition": "differentiel = 0",
+     "effet": "Différentiel égal à 0 : Touche superficielle ! Le coup effleure la cible sans pénétration franche (on détermine la zone touchée au hasard avec 1d4 ou 1d6)."
+    },
+    {
+     "condition": "differentiel > 0",
+     "effet": "Différentiel supérieur à 0 : Touche franche ! L'attaque porte de plein fouet : elle inflige ses dégâts de base augmentés du différentiel net, avant comparaison avec l'armure et l'Encaissement de la cible."
+    }
+   ]
   }
  },
  "entete_html": "\n                    <div class=\"doc-meta-tags\">\n                        <span class=\"pill-badge cyan\">\n                            <svg width=\"12\" height=\"12\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\"\n                                stroke-width=\"2\">\n                                <circle cx=\"12\" cy=\"12\" r=\"10\" />\n                                <path d=\"M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01\" />\n                            </svg>\n                            Livre II — Résolution & Épreuves\n                        </span>\n                        <span class=\"pill-badge amber\">Die-Step Polyédrique</span>\n                        <span class=\"pill-badge ruby\">Critiques d2-d24</span>\n                    </div>\n\n                    <h1 class=\"doc-title\">Livre II : Paliers de Dés, Difficultés&nbsp;& Tables des Critiques</h1>\n                    <p class=\"doc-subtitle\">\n                        Comment donner vie à l'action autour de la table : l'échelle vivante des dés (du d2 au 2d12+10),\n                        les seuils de difficulté de 0 à 34 pour le MJ, les effets spectaculaires des réussites et échecs\n                        critiques, et les règles simples pour surmonter les défis hors-combat en équipe.\n                    </p>\n                ",
@@ -731,7 +731,7 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <h3>7.3 Résoudre un Face-à-Face : L'Épreuve Opposée (Duel à l'Aveugle)</h3>\n                    <p>\n                        Sur le champ de bataille ou dans un bras de fer tendu, on n'agit pas contre une cible immobile : l'adversaire réagit !\n                        Un jet d'attaque oppose donc la compétence offensive de l'attaquant (<em>Maniement d'Arme</em>, <em>Balistique</em>, <em>Mains Nues</em>)\n                        à la compétence défensive choisie par la cible (<em>Esquive</em> ou <em>Défense Corporelle / Parade</em>).\n                        <strong>La cible peut aussi choisir de ne pas se défendre</strong> : dans ce cas, elle ne jette aucun dé, ne dépense aucun PA, et sa défense est considérée comme nulle (score de 0).\n                    </p>\n                    <p>\n                        <strong>La procédure du duel à l'aveugle (simple et pleine de tension) :</strong>\n                        Pour préserver le suspense et la tactique, les deux protagonistes déclarent leurs intentions et leurs mises de PA en secret avant de révéler leurs résultats simultanément.\n                    </p>\n                    <ol>\n                        <li><strong>L'attaquant annonce son assaut :</strong> il désigne sa cible, déclare la compétence utilisée et choisit secrètement les PA d'effort qu'il investit (+1 par PA, dans la limite de sa Constitution). <em>Exemple : Mains Nues avec 2 entraînements et FOR 5 = dé 1d10, mise cachée de 2 PA.</em> Le dé est lancé face cachée jusqu'à la résolution.</li>\n                        <li><strong>Le défenseur réagit à l'aveugle :</strong> sans connaître la mise de l'attaquant, il annonce comment il réagit (Esquive ou Parade) et engage secrètement ses propres PA d'effort (+1 par PA). <em>Exemple : Esquive avec 1 entraînement et AGI 5 = dé 1d8, mise cachée de 1 PA.</em></li>\n                        <li><strong>Révélation simultanée & Différentiel Net :</strong> les deux dés sont découverts en même temps, et chacun ajoute ses PA d'effort et ses malus éventuels (pas de bonus de caractéristique !). On soustrait le total du défenseur de celui de l'attaquant pour obtenir le <strong>Différentiel Net</strong> :</li>\n                    </ol>\n                    <ul>\n                        <li><strong>Différentiel inférieur à 0 :</strong> Échec de l'attaque. Le coup est totalement esquivé ou dévié par le bouclier/l'arme.</li>\n                        <li><strong>Différentiel égal à 0 :</strong> Touche superficielle ! Le coup effleure la cible sans pénétration franche (on détermine la zone touchée au hasard avec 1d4 ou 1d6).</li>\n                        <li><strong>Différentiel supérieur à 0 :</strong> Touche franche ! L'attaque porte de plein fouet : elle inflige ses dégâts de base augmentés du différentiel net, avant comparaison avec l'armure et l'Encaissement de la cible.</li>\n                    </ul>\n\n                    <!-- ================= CHAPITRE 8 ================= -->\n                    "
+     "html": "\n\n                    <h3>7.3 Résoudre un Face-à-Face : L'Épreuve Opposée</h3>\n                    <p>\n                        Sur le champ de bataille ou dans un bras de fer tendu, on n'agit pas contre une cible immobile : l'adversaire réagit !\n                        Un jet d'attaque oppose donc la compétence offensive de l'attaquant (<em>Maniement d'Arme</em>, <em>Balistique</em>, <em>Mains Nues</em>)\n                        à la compétence défensive choisie par la cible (<em>Esquive</em> ou <em>Défense Corporelle / Parade</em>).\n                        <strong>La cible peut aussi choisir de ne pas se défendre</strong> : dans ce cas, elle ne jette aucun dé, ne dépense aucun PA, et sa défense est considérée comme nulle (score de 0).\n                    </p>\n                    <p>\n                        <strong>La procédure du Face-à-Face (simple et pleine de tension) :</strong>\n                        Pour préserver le suspense et la tactique, les deux protagonistes déclarent leurs intentions et leurs mises de PA en secret avant de révéler leurs résultats simultanément.\n                    </p>\n                    <ol>\n                        <li><strong>L'attaquant annonce son assaut :</strong> il désigne sa cible, déclare la compétence utilisée et choisit secrètement les PA d'effort qu'il investit (+1 par PA, dans la limite de sa Constitution). <em>Exemple : Mains Nues avec 2 entraînements et FOR 5 = dé 1d10, mise cachée de 2 PA.</em> Le dé est lancé face cachée jusqu'à la résolution.</li>\n                        <li><strong>Le défenseur réagit en secret :</strong> sans connaître la mise de l'attaquant, il annonce comment il réagit (Esquive ou Parade) et engage secrètement ses propres PA d'effort (+1 par PA). <em>Exemple : Esquive avec 1 entraînement et AGI 5 = dé 1d8, mise cachée de 1 PA.</em></li>\n                        <li><strong>Révélation simultanée & Différentiel Net :</strong> les deux dés sont découverts en même temps, et chacun ajoute ses PA d'effort et ses malus éventuels (pas de bonus de caractéristique !). On soustrait le total du défenseur de celui de l'attaquant pour obtenir le <strong>Différentiel Net</strong> :</li>\n                    </ol>\n                    <ul>\n                        <li><strong>Différentiel inférieur à 0 :</strong> Échec de l'attaque. Le coup est totalement esquivé ou dévié par le bouclier/l'arme.</li>\n                        <li><strong>Différentiel égal à 0 :</strong> Touche superficielle ! Le coup effleure la cible sans pénétration franche (on détermine la zone touchée au hasard avec 1d4 ou 1d6).</li>\n                        <li><strong>Différentiel supérieur à 0 :</strong> Touche franche ! L'attaque porte de plein fouet : elle inflige ses dégâts de base augmentés du différentiel net, avant comparaison avec l'armure et l'Encaissement de la cible.</li>\n                    </ul>\n\n                    <!-- ================= CHAPITRE 8 ================= -->\n                    "
     }
    ]
   },

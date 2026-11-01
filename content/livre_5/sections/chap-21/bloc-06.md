@@ -39,10 +39,10 @@ livre: 5
                     <ul>
                         <li><strong>Malus d'attaque, pas bonus de défense :</strong> le -1 / -2 s'applique au
                             <strong>total d'attaque</strong> (comme le malus de visée anatomique), annoncé en Phase 1
-                            du <a class="rule-ref" href="livre_2.html#chap-7" data-tip="Duel à l'aveugle : chacun lance son dé + PA, le meilleur gagne. Seul le vainqueur coche (§7.3).">duel aveugle</a> (<a class="rule-ref" href="#sec-20-1" data-tip="Duel aveugle : mises cachées attaquant puis défenseur, révélation simultanée (§20.1).">§20.1</a>) et tracé dans le journal de combat. Le jet de défense du défenseur
+                            du <a class="rule-ref" href="livre_2.html#chap-7" data-tip="Face-à-Face : chacun lance son dé + PA, le meilleur gagne. Seul le vainqueur coche (§7.3).">Face-à-Face</a> (<a class="rule-ref" href="#sec-20-1" data-tip="Face-à-Face : mises cachées attaquant puis défenseur, révélation simultanée (§20.1).">§20.1</a>) et tracé dans le journal de combat. Le jet de défense du défenseur
                             n'est pas modifié.</li>
                         <li><strong>Cumul tactique :</strong> couvert, punition de visée (-1 ou +1 <a class="rule-ref" href="livre_1.html#chap-4" data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a>), <a class="rule-ref" href="#sec-22-2" data-tip="Canon Entravé : arme longue + ennemi adjacent = −2 au tir, visée précise pour +1 PA (§22.2).">Canon Entravé</a>
-                            (-2) et mises aveugles (<a class="rule-ref" href="livre_1.html#chap-4" data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a> / PE) se cumulent. <em>Exemple : un tir à 6 cases sur une cible
+                            (-2) et mises masquées (<a class="rule-ref" href="livre_1.html#chap-4" data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a> / PE) se cumulent. <em>Exemple : un tir à 6 cases sur une cible
                             aux trois-quarts couverte en visant la tête part à <strong>-3 avant mises</strong>
                             (-2 couvert, -1 visée).</em></li>
                         <li><strong>Couvert total :</strong> l'attaque est <strong>refusée avant tout jet et sans
@@ -108,7 +108,7 @@ livre: 5
                         <li><strong>Ennemi non détecté = invisible :</strong> silhouette masquée, aucun ciblage
                             possible (tir, grenade ciblée, sort mono-cible). Seuls les effets de zone aveugles
                             restent envisageables, sans bonus.</li>
-                        <li><strong>Observation active (1 <a class="rule-ref" href="livre_1.html#chap-4" data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a>) :</strong> <a class="rule-ref" href="livre_2.html#chap-7" data-tip="Épreuve opposée : les deux lancent en aveugle, dé + PA − malus. Égalité = statu quo (§7.3).">duel opposé</a> <strong>Observation</strong>
+                        <li><strong>Observation active (1 <a class="rule-ref" href="livre_1.html#chap-4" data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a>) :</strong> <a class="rule-ref" href="livre_2.html#chap-7" data-tip="Face-à-Face : les deux lancent en secret, dé + PA − malus. Égalité = statu quo (§7.3).">Face-à-Face</a> <strong>Observation</strong>
                             (observateur) vs <strong>Discrétion</strong> (cible) : <strong>-1 par case</strong>
                             au-delà du contact, <strong>-1 / -2 / -4</strong> selon le couvert
                             (moitié, trois-quarts, total — un couvert total rend l'observation

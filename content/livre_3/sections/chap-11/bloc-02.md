@@ -15,12 +15,10 @@ livre: 3
                         <li><strong>Pousser / Soulever</strong> : vous poussez une herse, vous soulevez une poutre. Si
                             quelqu'un
                             s'oppose, faites un <a class="rule-ref" href="livre_2.html#chap-7"
-                                data-tip="Duel à l'aveugle : chacun lance son dé + PA, le meilleur gagne. Seul le vainqueur coche (§7.3).">duel
-                                Force contre Force</a>.</li>
+                                data-tip="Face-à-Face : chacun lance son dé + PA, le meilleur gagne. Seul le vainqueur coche (§7.3).">Face-à-Face</a> Force contre Force.</li>
                         <li><strong>Agripper</strong> : vous attrapez quelqu'un — <a class="rule-ref"
                                 href="livre_2.html#chap-7"
-                                data-tip="Duel à l'aveugle : chacun lance son dé + PA, le meilleur gagne. Seul le vainqueur coche (§7.3).">duel
-                                Force contre sa Défense</a>. Réussi ?
+                                data-tip="Face-à-Face : chacun lance son dé + PA, le meilleur gagne. Seul le vainqueur coche (§7.3).">Face-à-Face</a> Force contre sa Défense. Réussi ?
                             Il est <a class="rule-ref" href="livre_6.html#sec-24-1"
                                 data-tip="Immobilisé : impossible de faire la moindre action de mouvement (§24.1).">immobilisé</a>.
                         </li>

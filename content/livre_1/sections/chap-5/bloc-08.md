@@ -4,7 +4,7 @@ format: raw
 livre: 1
 ---
                     <p>
-                        <strong>Anti-farm :</strong> ta réserve d'XP lié ne peut pas dépasser le niveau de sa compétence.
+                        <strong>Anti-farm :</strong> ta réserve d'XP lié ne peut pas dépasser le niveau de sa compétence de plus de 2.
                         Dès qu'elle le dépasse de 2 (réserve à 5 pour un niveau 3), les 2 points en trop se transforment
                         en <strong>1 XP libre</strong>, et ta réserve retombe au niveau de la compétence (3). Exemple : tu
                         répètes le même crochetage facile toute la soirée — arrivé à 5 en réserve pour un niveau 3, le MJ

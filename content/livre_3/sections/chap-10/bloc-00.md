@@ -12,7 +12,7 @@ livre: 3
                         vous donne des effets que les autres n'ont pas.
                     </p>
 
-                    <h3>10.1 Calcul du Rang de Base</h3>
+                    <h3 id="sec-10-1">10.1 Calcul du Rang de Base</h3>
                     <p>
                         Pour trouver votre score de base, prenez la
                         <strong><a class="rule-ref" href="livre_2.html#chap-6"

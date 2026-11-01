@@ -70,7 +70,7 @@
    "amelioration": "Façonner un Pouvoir Arcanique",
    "cout_croise": "2X XP",
    "cout_lie": "X XP = X PA",
-   "effet_html": "Vous achetez des modules d'effets (dégâts continus, souffle, portée, altération). Le montant total d'XP investi fixe directement le coût en PA pour déclencher ce sort au combat. Voie d'affinité = coût normal ; autre voie = doublé.",
+   "effet_html": "Vous achetez des modules d'effets (dégâts continus, souffle, portée, altération). Le montant total d'XP investi fixe directement le coût en PA pour déclencher ce sort au combat. Modules de <strong>ta voie</strong> (ton affinité : Élémentale, Primale, Psyché...) : coût normal (<strong>X XP = X PA</strong>). Modules d'une <strong>autre voie</strong> : tu paies <strong>double en XP</strong> (<strong>2X XP</strong>). Exemple : une gerbe à 3 PA te coûte 3 XP dans ta voie, 6 XP hors de ta voie.",
    "ton_croise": "ruby",
    "ton_lie": "ruby"
   },
@@ -78,7 +78,7 @@
    "amelioration": "Augmenter une Caractéristique",
    "cout_croise": "2 × (N + 1) XP si croisé",
    "cout_lie": "(N + 1) XP",
-   "effet_html": "Gagnez +1 point dans l'attribut choisi (jusqu'à 10 max). Coût de passage : <strong>N ➔ N+1 = (N+1) XP</strong> (ex: 4 ➔ 5 = 5 XP, 9 ➔ 10 = 10 XP). Met à jour immédiatement vos caractéristiques et jauges de combat et offre un entraînement si l'Érudition grimpe.",
+   "effet_html": "Gagnez +1 point dans l'attribut choisi (jusqu'à 10 max). Vous payez le score d'arrivée : passer de <strong>4 à 5 coûte 5 XP</strong>, de <strong>9 à 10 coûte 10 XP</strong>. Met à jour immédiatement vos caractéristiques et jauges de combat et offre un entraînement si l'Érudition grimpe.",
    "ton_croise": "emerald",
    "ton_lie": "emerald"
   }
@@ -518,7 +518,7 @@
  ],
  "progression": {
   "anti_farm": "réserve d'XP lié ≤ niveau de la compétence ; surplus converti 2:1 en XP libre, réserve ramenée au niveau",
-  "cout_carac": "N ➔ N+1 = (N+1) XP (2× si croisé), plafond 10",
+  "cout_carac": "coûte le score d'arrivée (passer à 5 = 5 XP, à 10 = 10 XP ; 2× si croisé), plafond 10",
   "cout_croise_x2": true,
   "cout_entrainement": "5 XP (10 XP si croisé), max +3 paliers",
   "cout_pouvoir": "X XP = X PA (2X XP si croisé)",
@@ -608,7 +608,7 @@
   },
   "progression": {
    "anti_farm": "réserve d'XP lié ≤ niveau de la compétence ; surplus converti 2:1 en XP libre, réserve ramenée au niveau",
-   "cout_carac": "N ➔ N+1 = (N+1) XP (2× si croisé), plafond 10",
+   "cout_carac": "coûte le score d'arrivée (passer à 5 = 5 XP, à 10 = 10 XP ; 2× si croisé), plafond 10",
    "cout_croise_x2": true,
    "cout_entrainement": "5 XP (10 XP si croisé), max +3 paliers",
    "cout_pouvoir": "X XP = X PA (2X XP si croisé)",
@@ -636,13 +636,13 @@
     "amelioration": "Façonner un Pouvoir Arcanique",
     "cout_lie": "X XP = X PA",
     "cout_croise": "2X XP",
-    "effet": "Vous achetez des modules d'effets (dégâts continus, souffle, portée, altération). Le montant total d'XP investi fixe directement le coût en PA pour déclencher ce sort au combat. Voie d'affinité = coût normal ; autre voie = doublé."
+    "effet": "Vous achetez des modules d'effets (dégâts continus, souffle, portée, altération). Le montant total d'XP investi fixe directement le coût en PA pour déclencher ce sort au combat. Modules de ta voie (ton affinité : Élémentale, Primale, Psyché...) : coût normal (X XP = X PA). Modules d'une autre voie : tu paies double en XP (2X XP). Exemple : une gerbe à 3 PA te coûte 3 XP dans ta voie, 6 XP hors de ta voie."
    },
    {
     "amelioration": "Augmenter une Caractéristique",
     "cout_lie": "(N + 1) XP",
     "cout_croise": "2 × (N + 1) XP si croisé",
-    "effet": "Gagnez +1 point dans l'attribut choisi (jusqu'à 10 max). Coût de passage : N ➔ N+1 = (N+1) XP (ex: 4 ➔ 5 = 5 XP, 9 ➔ 10 = 10 XP). Met à jour immédiatement vos caractéristiques et jauges de combat et offre un entraînement si l'Érudition grimpe."
+    "effet": "Gagnez +1 point dans l'attribut choisi (jusqu'à 10 max). Vous payez le score d'arrivée : passer de 4 à 5 coûte 5 XP, de 9 à 10 coûte 10 XP. Met à jour immédiatement vos caractéristiques et jauges de combat et offre un entraînement si l'Érudition grimpe."
    }
   ],
   "entrainements_eru": {
@@ -984,7 +984,7 @@
    "blocs": [
     {
      "type": "html",
-     "html": "                    <p>\n                        Ici, on progresse comme dans la vraie vie : c'est sur le terrain et en forgeant qu'on devient\n                        forgeron. <strong>Chaque fois que vous réussissez un jet de compétence en jeu, vous progressez dans cette compétence</strong>.\n                        Un échec n'apporte pas de case cochée, mais forge l'expérience. On ne coche qu'une seule case par succès, même\n                        sur un critique éclatant.\n                    </p>"
+     "html": "                    <p>\n                        Ici, on progresse comme dans la vraie vie : c'est sur le terrain et en forgeant qu'on devient\n                        forgeron. <strong>Chaque fois que vous réussissez un jet de compétence en jeu, vous progressez dans cette compétence</strong>.\n                        Un échec n'apporte pas de case cochée. On ne coche qu'une seule case par succès, même\n                        sur un critique éclatant.\n                    </p>"
     },
     {
      "type": "html",
@@ -992,11 +992,11 @@
     },
     {
      "type": "html",
-     "html": "                    <p>\n                        Chaque compétence dispose de sa propre <strong>piste de progression</strong>, dont la longueur correspond\n                        exactement à sa <strong>valeur de caractéristique de base</strong> (Livre III §10.1). Par exemple, une\n                        compétence dont la base vaut <strong>3 possède 3 cases</strong>, tandis qu'une base à <strong>5 en compte 5</strong>\n                        (de 1 à 10). La logique est très intuitive : un débutant fait des progrès fulgurants, tandis qu'un expert chevronné\n                        doit enchaîner les succès pour franchir un nouveau cap !\n                    </p>"
+     "html": "                    <p>\n                        Chaque compétence dispose de sa propre <strong>piste de progression</strong>, dont la longueur correspond\n                        exactement à sa <strong>valeur de caractéristique de base</strong> (<a class=\"rule-ref\" href=\"livre_3.html#sec-10-1\" data-tip=\"Rang de base : moyenne de tes attributs liés, arrondie au supérieur. Base 3 → piste de 3 cases (§10.1).\">Livre III §10.1</a>). Par exemple, une\n                        compétence dont la base vaut <strong>3 possède 3 cases</strong>, tandis qu'une base à <strong>5 en compte 5</strong>\n                        (de 1 à 10). La logique est très intuitive : un débutant fait des progrès fulgurants, tandis qu'un expert chevronné\n                        doit enchaîner les succès pour franchir un nouveau cap !\n                    </p>"
     },
     {
      "type": "html",
-     "html": "                    <ul>\n                        <li><strong>Action réussie :</strong> vous cochez +1 case dans <em>cette</em> compétence (un tir réussi coche l'arme à distance, une parade réussie coche la défense, un crochetage réussi coche le <a class=\"rule-ref\" href=\"livre_3.html#chap-11\" data-tip=\"Subterfuge Manuel : crocheter, subtiliser, trafiquer (AGI/INT, §11.2).\">subterfuge</a>).</li>\n                        <li><strong>Échec :</strong> pas de case cochée cette fois-ci.</li>\n                        <li><strong>Duel en face-à-face :</strong> seul le vainqueur du duel coche une case (l'attaquant s'il prend le dessus, le défenseur s'il a réagi et contré l'assaut).</li>\n                    </ul>"
+     "html": "                    <ul>\n                        <li><strong>Action réussie :</strong> vous cochez +1 case dans <em>cette</em> compétence (un tir réussi coche l'arme à distance, une parade réussie coche la défense, un crochetage réussi coche le <a class=\"rule-ref\" href=\"livre_3.html#chap-11\" data-tip=\"Subterfuge Manuel : crocheter, subtiliser, trafiquer (AGI/INT, §11.2).\">subterfuge</a>).</li>\n                        <li><strong>Échec :</strong> pas de case cochée cette fois-ci.</li>\n                        <li><strong><a class=\"rule-ref\" href=\"livre_2.html#chap-7\" data-tip=\"Face-à-Face : chacun lance son dé + PA, le meilleur gagne. Seul le vainqueur coche (§7.3).\">Face-à-Face</a> :</strong> seul le vainqueur du duel coche une case (l'attaquant s'il prend le dessus, le défenseur s'il a réagi et contré l'assaut).</li>\n                    </ul>"
     },
     {
      "type": "html",
@@ -1016,7 +1016,7 @@
     },
     {
      "type": "html",
-     "html": "                    <p>\n                        <strong>Anti-farm :</strong> ta réserve d'XP lié ne peut pas dépasser le niveau de sa compétence.\n                        Dès qu'elle le dépasse de 2 (réserve à 5 pour un niveau 3), les 2 points en trop se transforment\n                        en <strong>1 XP libre</strong>, et ta réserve retombe au niveau de la compétence (3). Exemple : tu\n                        répètes le même crochetage facile toute la soirée — arrivé à 5 en réserve pour un niveau 3, le MJ\n                        convertit : +1 XP libre pour toi, réserve revenue à 3. Le surplus part en libre au taux de 2 pour 1.\n                    </p>"
+     "html": "                    <p>\n                        <strong>Anti-farm :</strong> ta réserve d'XP lié ne peut pas dépasser le niveau de sa compétence de plus de 2.\n                        Dès qu'elle le dépasse de 2 (réserve à 5 pour un niveau 3), les 2 points en trop se transforment\n                        en <strong>1 XP libre</strong>, et ta réserve retombe au niveau de la compétence (3). Exemple : tu\n                        répètes le même crochetage facile toute la soirée — arrivé à 5 en réserve pour un niveau 3, le MJ\n                        convertit : +1 XP libre pour toi, réserve revenue à 3. Le surplus part en libre au taux de 2 pour 1.\n                    </p>"
     },
     {
      "type": "html",
@@ -1044,7 +1044,7 @@
     },
     {
      "type": "html",
-     "html": "                    <p>\n                        Une distinction toute simple mais essentielle : votre <strong>XP Total</strong>, c'est la somme\n                        de <strong>tous les points d'expérience que vous avez déjà investis depuis le début de la campagne</strong>\n                        pour faire évoluer votre personnage (en comptant les surcoûts croisés &times;2 si vous en avez payé).\n                        <strong>Ce n'est pas</strong> l'XP qui dort encore dans vos réserves en attente d'achat : les réserves sont\n                        votre monnaie en poche, l'XP Total mesure la puissance et la maturité de votre héros. Et rappelez-vous que\n                        <strong>les <a class=\"rule-ref\" href=\"#sec-etape-5\" data-tip=\"Entraînements gratuits : ton rang d’Érudition = autant de compétences montées d’un palier de dé (Étape 5).\">entraînements offerts par l’Érudition</a> ne comptent pas dans l'XP Total</strong> (ils ont coûté 0 XP).\n                    </p>"
+     "html": "                    <p>\n                        Une distinction toute simple mais essentielle : votre <strong>XP Total</strong>, c'est tout ce que votre héros a vraiment intégré depuis le début de la campagne : chaque amélioration y compte à son prix normal (même celles que vous avez payées double en croisé).\n                        <strong>Ce n'est pas</strong> l'XP qui dort encore dans vos réserves en attente d'achat : les réserves sont\n                        votre monnaie en poche, l'XP Total mesure la puissance et la maturité de votre héros. Et rappelez-vous que\n                        <strong>les <a class=\"rule-ref\" href=\"#sec-etape-5\" data-tip=\"Entraînements gratuits : ton rang d’Érudition = autant de compétences montées d’un palier de dé (Étape 5).\">entraînements offerts par l’Érudition</a> ne comptent pas dans l'XP Total</strong> (ils ont coûté 0 XP). En résumé : hors création, chaque achat fait grimper votre XP Total, compté à son prix normal.\n                    </p>"
     }
    ]
   },

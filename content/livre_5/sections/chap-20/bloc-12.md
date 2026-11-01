@@ -6,13 +6,13 @@ livre: 5
 
 
                     <ul>
-                        <li><strong>🥋 Prise au Corps-à-Corps (2 <a class="rule-ref" href="livre_1.html#chap-4" data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a>, contact) :</strong> <a class="rule-ref" href="livre_2.html#chap-7" data-tip="Épreuve opposée : les deux lancent en aveugle, dé + PA − malus. Égalité = statu quo (§7.3).">duel opposé aveugle</a>
+                        <li><strong>🥋 Prise au Corps-à-Corps (2 <a class="rule-ref" href="livre_1.html#chap-4" data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a>, contact) :</strong> <a class="rule-ref" href="livre_2.html#chap-7" data-tip="Face-à-Face : les deux lancent en secret, dé + PA − malus. Égalité = statu quo (§7.3).">Face-à-Face</a>
                             <strong>Athlétisme</strong> (ou Mains Nues) de l'assaillant contre <strong>Athlétisme</strong>
                             (ou Défense Corporelle) du défenseur. Victoire de l'assaillant (Diff ≥ 0) = la cible est saisie
                             et subit l'état <a class="rule-ref" href="livre_6.html#sec-24-1" data-tip="Immobilisé : impossible de faire la moindre action de mouvement (§24.1)."><strong>Immobilisé 1 tour</strong></a> (-2 esquive active, déplacement impossible).
                             En cas d'échec (Diff &lt; 0), la prise est esquivée ou repoussée.</li>
                         <li><strong>🔓 Se Libérer de la Prise (2 <a class="rule-ref" href="livre_1.html#chap-4" data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a>) :</strong> la victime saisie peut tenter de briser
-                            l'étreinte lors de son propre tour via un <a class="rule-ref" href="livre_2.html#chap-7" data-tip="Épreuve opposée : les deux lancent en aveugle, dé + PA − malus. Égalité = statu quo (§7.3).">duel opposé aveugle</a> (meilleure compétence entre
+                            l'étreinte lors de son propre tour via un <a class="rule-ref" href="livre_2.html#chap-7" data-tip="Face-à-Face : les deux lancent en secret, dé + PA − malus. Égalité = statu quo (§7.3).">Face-à-Face</a> (meilleure compétence entre
                             Athlétisme, Mains Nues et Acrobatie vs Athlétisme du grappler). Victoire = l'état <a class="rule-ref" href="livre_6.html#sec-24-1" data-tip="Immobilisé : impossible de faire la moindre action de mouvement (§24.1).">Immobilisé</a>
                             est immédiatement dissipé et la prise est rompue.</li>
                         <li><strong>🥋 Relâcher la Prise (0 PA) :</strong> le grappler peut rompre volontairement son étreinte
@@ -23,7 +23,7 @@ livre: 5
                             dans la case qu'il vient de libérer. Les deux combattants avancent de concert sans déclencher de réaction
                             d'opportunité, préservant la distance de contact et le verrou de lutte.</li>
                         <li><strong>🫁 Étranglement (2 <a class="rule-ref" href="livre_1.html#chap-4" data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a>, contact) :</strong> compression de la gorge sur cible saisie ou immobilisée
-                            (<a class="rule-ref" href="livre_2.html#chap-7" data-tip="Épreuve opposée : les deux lancent en aveugle, dé + PA − malus. Égalité = statu quo (§7.3).">duel opposé</a> <strong>Athlétisme vs Endurance Physique</strong>). Victoire = 2+ dégâts ignorant
+                            (<a class="rule-ref" href="livre_2.html#chap-7" data-tip="Face-à-Face : les deux lancent en secret, dé + PA − malus. Égalité = statu quo (§7.3).">Face-à-Face</a> <strong>Athlétisme vs Endurance Physique</strong>). Victoire = 2+ dégâts ignorant
                             l'armure au cou (trachée) + application du statut <a class="rule-ref" href="livre_6.html#sec-24-1bis" data-tip="Asphyxie : PV + drain de 1 PA par tour. Soin : désobstruction (premiers soins + kit)."><strong>Asphyxie pendant 2 tours</strong></a>
                             (drain d'1 <a class="rule-ref" href="livre_1.html#chap-4" data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a> de réserve par tour et pool de 2 dégâts résiduels dégressifs).</li>
                         <li><strong>Rupture automatique :</strong> la lutte est immédiatement rompue si le grappler ou la victime

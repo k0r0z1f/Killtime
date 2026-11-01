@@ -15,7 +15,7 @@ livre: 3
                         </div>
                         <div class="callout-body">
                             Vous pouvez parer avec une <a class="rule-ref" href="livre_2.html#chap-7"
-                                data-tip="Duel à l'aveugle : attaquant et défenseur lancent en secret, dé + PA − malus. Seul le vainqueur coche (§7.3).">compétence
+                                data-tip="Face-à-Face : attaquant et défenseur lancent en secret, dé + PA − malus. Seul le vainqueur coche (§7.3).">compétence
                                 défensive</a>. Pas de souci.
                             <br>Mais si votre compétence n'est <strong>pas 100 % défensive</strong> — par exemple vous
                             parez

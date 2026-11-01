@@ -6,14 +6,13 @@ livre: 5
 
 
                     <ul>
-                        <li><strong>🗡️ Frappe d'opportunité (0 <a class="rule-ref" href="livre_1.html#chap-4" data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a>, défaut) :</strong> coup de mêlée réflexe en <a class="rule-ref" href="livre_2.html#chap-7" data-tip="Duel à l'aveugle : chacun lance son dé + PA, le meilleur gagne. Seul le vainqueur coche (§7.3).">duel
-                            aveugle</a> auto (compétence de l'arme de contact, sinon Mains Nues). Consomme l'unique
+                        <li><strong>🗡️ Frappe d'opportunité (0 <a class="rule-ref" href="livre_1.html#chap-4" data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a>, défaut) :</strong> coup de mêlée réflexe en <a class="rule-ref" href="livre_2.html#chap-7" data-tip="Face-à-Face : chacun lance son dé + PA, le meilleur gagne. Seul le vainqueur coche (§7.3).">Face-à-Face</a> automatique (compétence de l'arme de contact, sinon Mains Nues). Consomme l'unique
                             réaction du round.</li>
                         <li><strong>👣 Poursuite (1 <a class="rule-ref" href="livre_1.html#chap-4" data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a>) :</strong> au lieu de frapper, suit le fuyard d'<strong>1 case</strong>
                             (case libérée) en réaction à son déplacement. Sans attaque, sans grapple. Le suivi ne
                             provoque aucune réaction <strong>d'opportunité</strong> à son tour (pas de ping-pong ;
                             un <strong>guet</strong> adverse peut toujours tirer sur l'arrivée, RD-030).</li>
-                        <li><strong>🛡️ Blocage (1 <a class="rule-ref" href="livre_1.html#chap-4" data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a>) :</strong> <a class="rule-ref" href="livre_2.html#chap-7" data-tip="Épreuve opposée : les deux lancent en aveugle, dé + PA − malus. Égalité = statu quo (§7.3).">duel opposé aveugle</a> <strong>Athlétisme vs
+                        <li><strong>🛡️ Blocage (1 <a class="rule-ref" href="livre_1.html#chap-4" data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a>) :</strong> <a class="rule-ref" href="livre_2.html#chap-7" data-tip="Face-à-Face : les deux lancent en secret, dé + PA − malus. Égalité = statu quo (§7.3).">Face-à-Face</a> <strong>Athlétisme vs
                             Athlétisme</strong> (mises à 0). Victoire du bloqueur = le <strong>pas est annulé</strong>,
                             sans grapple permanent : le fuyard reste sur sa case et <strong>ses <a class="rule-ref" href="livre_1.html#chap-4" data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a> de déplacement
                             sont remboursés</strong> (intégral s'il n'a pas bougé, prorata sinon). Échec = réaction

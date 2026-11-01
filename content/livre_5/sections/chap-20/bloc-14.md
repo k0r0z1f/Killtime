@@ -10,7 +10,7 @@ livre: 5
                             de contact (mêlée, mains nues, arme blanche ou contondante). Il est consommé dès la résolution de la frappe.
                             Il n'augmente pas les tirs à distance.</li>
                         <li><strong>🛡️ Exposition défensive (-1 défense jusqu'au prochain tour) :</strong> le chargeur s'expose
-                            en brisant sa garde pour maximiser son élan. Tout <a class="rule-ref" href="livre_2.html#chap-7" data-tip="Duel à l'aveugle : chacun lance son dé + PA, le meilleur gagne. Seul le vainqueur coche (§7.3).">duel</a> où il se défend (parade, esquive active ou réflexe)
+                            en brisant sa garde pour maximiser son élan. Tout <a class="rule-ref" href="livre_2.html#chap-7" data-tip="Face-à-Face : chacun lance son dé + PA, le meilleur gagne. Seul le vainqueur coche (§7.3).">Face-à-Face</a> où il se défend (parade, esquive active ou réflexe)
                             subit un malus de <strong>-1</strong>. Ce malus persiste pendant le reste de son tour et durant les tours
                             adverses, jusqu'au début de son propre tour personnel suivant (recalage à <code>ResetTurn</code>).</li>
                         <li><strong>🏃 Verrouillage du Tir (« Sprint bloque tir ce tour ») :</strong> courir à pleine vitesse

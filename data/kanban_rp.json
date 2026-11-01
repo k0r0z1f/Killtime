@@ -87,7 +87,7 @@
      "id": "RP-006",
      "title": "Relire chap. 5. Progression & XP",
      "epic": "Livre I — Bases & Création",
-     "status": "in_progress",
+     "status": "done",
      "priority": "high",
      "order": 4,
      "scene": "",
@@ -96,7 +96,7 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_1.html#chap-5",
-     "details": "Vérification humaine — livre_1.html#chap-5. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
+     "details": "FAIT 2026-11-01 — check mécaniques chap. 5 : échec sans case (formule 'forge l'expérience' retirée) ; §10.1 lié + ancre créée ; 'Duel à l'aveugle' renommé 'Face-à-Face' partout (L1/L2/L3/L5, tips, mécaniques, clé) ; anti-farm = plafond niveau+2 ; XP Total au prix normal, définition sans 'somme', résumé hors-création ; seuils/filtres croisés harmonisés (coût carac = score d'arrivée, voie magique = double en XP)."
     },
     {
      "id": "RP-007",
