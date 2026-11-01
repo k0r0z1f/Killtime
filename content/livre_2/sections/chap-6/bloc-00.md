@@ -20,7 +20,7 @@ livre: 2
                         </div>
                     </div>
                     <p class="lead">
-                        Plutôt que d'utiliser un dé unique figé avec une litanie de bonus et de malus à calculer, Killtime adopte une <strong>échelle de dés vivante</strong>. Plus votre personnage affine son art et gagne en expérience, plus le dé qu'il prend en main s'agrandit (du modeste d4 jusqu'aux redoutables d10, d12 et doubles dés), repoussant naturellement le plafond de ses réussites sans compliquer les calculs.
+                        Plutôt que d'utiliser un dé unique figé avec une litanie de bonus et de malus à calculer, ce système adopte une <strong>échelle de dés vivante</strong>. Plus votre personnage affine son art et gagne en expérience, plus le dé qu'il prend en main s'agrandit (du modeste d4 jusqu'aux redoutables d10, d12 et doubles dés), repoussant naturellement le plafond de ses réussites sans compliquer les calculs.
                     </p>
 
                     <h3>6.1 Gravir l'Échelle : Des Caractéristiques aux Dés</h3>

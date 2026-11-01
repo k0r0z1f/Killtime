@@ -20,7 +20,7 @@ livre: 2
                         </div>
                     </div>
 
-                    <h3>6.2 Ce que ça Change en Duel : L'Avantage des Dés Supérieurs</h3>
+                    <h3>6.2 Ce que ça Change en Face-à-Face : L'Avantage des Dés Supérieurs</h3>
                     <p>
                         Avoir un dé plus gros ne vous garantit pas seulement un chiffre maximal plus spectaculaire : cela vous confère un avantage statistique très net lors des face-à-face directs :
                     </p>
