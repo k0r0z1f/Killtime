@@ -92,7 +92,6 @@ function persistAdminEmails(list) {
 // localStorage sur 401/403, sans erreur visible).
 const WRITE_GUARDS = [
     { route: '/api/roadmaps', perm: 'kanban.roadmaps' },
-    { route: '/api/roadmap', perm: 'kanban.roadmaps' },
     { route: '/api/kanban-rp', perm: 'kanban.revue-rp' },
     { route: '/api/kanban-narratif', perm: 'kanban.narratif' },
     { route: '/api/financement', perm: 'kanban.financement' },
@@ -1145,42 +1144,6 @@ async function handleRequest(req, res, isAdminListener) {
             if (!u) return sendJson(res, 401, { error: 'Connexion requise.' });
             if (!getUserPermissions(u).includes(g.perm)) return sendJson(res, 403, { error: 'Permission requise : ' + g.perm + '.' });
         }
-    }
-
-    /* ================================================================
-       ROADMAP SOLO — autosave disque (PUT /api/roadmap)
-       ----------------------------------------------------------------
-       Le kanban roadmap.html pousse son état ici (debounced) quand le
-       site est servi par ce serveur Node. Écrit data/roadmap.json avec
-       une copie .bak. Sans ce serveur (Ruby/python/file://), le client
-       bascule en mode "local seul" (localStorage + export manuel).
-       ================================================================ */
-    const ROADMAP_PATH = path.join(PUBLIC_DIR, 'data', 'roadmap.json');
-    if (isRoute('/api/roadmap')) {
-        if (req.method === 'PUT' || req.method === 'POST') {
-            try {
-                const body = await parseBody(req);
-                if (!body || !Array.isArray(body.tasks)) {
-                    return sendJson(res, 400, { error: 'tasks[] manquant.' });
-                }
-                const json = JSON.stringify(body, null, 2);
-                if (json.length > 2 * 1024 * 1024) {
-                    return sendJson(res, 413, { error: 'Payload trop volumineux.' });
-                }
-                try { fs.mkdirSync(path.dirname(ROADMAP_PATH), { recursive: true }); } catch (e) { /* ignore */ }
-                try {
-                    if (fs.existsSync(ROADMAP_PATH)) {
-                        fs.copyFileSync(ROADMAP_PATH, ROADMAP_PATH + '.bak');
-                    }
-                } catch (e) { /* backup optionnel */ }
-                fs.writeFileSync(ROADMAP_PATH, json);
-                console.log(`[Roadmap] autosave disque : ${body.tasks.length} tâches.`);
-                return sendJson(res, 200, { success: true, tasks: body.tasks.length });
-            } catch (e) {
-                return sendJson(res, 400, { error: e.message });
-            }
-        }
-        return sendJson(res, 405, { error: 'Méthode non autorisée.' });
     }
 
     /* ROADMAPS MULTI-BOARDS — autosave disque (PUT /api/roadmaps) */

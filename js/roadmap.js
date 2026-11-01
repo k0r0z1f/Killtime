@@ -1,13 +1,12 @@
 /* Roadmaps v3 multi-boards — Killtime / Systeme RP
    Stockage : { boards: [{id,name,desc,tasks[]}], activeId }.
-   Source : data/roadmaps.json (migration auto depuis data/roadmap.json v1/v2).
+   Source : data/roadmaps.json.
    Autosave : localStorage instantané + PUT /api/roadmaps debounced.
    Drag : pointer events (souris + tactile), reorder intra-colonne + inter-colonnes. */
 (function () {
   'use strict';
   const LS_KEY = 'kt-roadmap-v1';
   const JSON_URL = 'data/roadmaps.json';
-  const LEGACY_URL = 'data/roadmap.json';
   const STATUSES = ['todo', 'in_progress', 'done'];
   const ARCHIVED = 'archived'; // hors-colonnes : exclu des colonnes, du drag et des stats ; listé dans la section Archives.
   const STATUS_LABEL = { todo: 'À faire', in_progress: 'En cours', done: 'Terminé', archived: 'Archivé' };
@@ -292,7 +291,7 @@
     }
     return false;
   }
-  // Disque toujours relu (anti-cache) : API Node d'abord, puis JSON statique + legacy.
+  // Disque toujours relu (anti-cache) : API Node d'abord, puis JSON statique.
   async function fetchDiskDoc() {
     const bust = (u) => u + (u.includes('?') ? '&' : '?') + 't=' + Date.now();
     try {
@@ -302,17 +301,10 @@
         if (Array.isArray(doc.boards) || Array.isArray(doc.tasks)) return doc;
       }
     } catch (e) { /* sans serveur Node : repli statique */ }
-    try {
-      const res = await fetch(bust(JSON_URL), { cache: 'no-store' });
-      if (res.ok) {
-        const doc = await res.json();
-        if (Array.isArray(doc.boards) || Array.isArray(doc.tasks)) return doc;
-      } else throw new Error('HTTP ' + res.status);
-    } catch (e1) {
-      const res = await fetch(bust(LEGACY_URL), { cache: 'no-store' });
-      if (!res.ok) throw new Error('HTTP ' + res.status);
-      return await res.json();
-    }
+    const res = await fetch(bust(JSON_URL), { cache: 'no-store' });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const doc = await res.json();
+    if (Array.isArray(doc.boards) || Array.isArray(doc.tasks)) return doc;
     throw new Error('format inconnu');
   }
 
