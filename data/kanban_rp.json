@@ -132,7 +132,7 @@
      "id": "RP-009",
      "title": "Relire chap. 7. Difficultés & Seuils (0-34)",
      "epic": "Livre II — Dés & Épreuves",
-     "status": "todo",
+     "status": "done",
      "priority": "high",
      "order": 2,
      "scene": "",
@@ -141,7 +141,7 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_2.html#chap-7",
-     "details": "Vérification humaine — livre_2.html#chap-7. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
+     "details": "FAIT 2026-11-01 — check mécaniques chap. 7 : table des seuils refondue (Dé Moyen + Dé Maxi puis retirés, colonne Réussite Auto par palier de dé) ; auto = moitié du max − 1 (§7.2 reformulé sans formule, cartes par dé) ; rangs remplacés par paliers de dés ; Face-à-Face partout ; défense passive nulle mais armure toujours comptée ; Diff 0 = dégâts ignorés, effets spéciaux OK."
     },
     {
      "id": "RP-010",

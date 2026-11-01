@@ -41,7 +41,7 @@
         return rows.map(function (r) {
             return '<tr><td><span class="pill-badge ' + r.seuil_ton + '">' + r.seuil_texte + '</span></td>' +
                 '<td>' + r.degre_html + '</td>' +
-                '<td>' + r.repere_html + '</td>' +
+                '<td>' + r.auto_html + '</td>' +
                 '<td>' + r.exploit_html + '</td></tr>';
         }).join('');
     }
