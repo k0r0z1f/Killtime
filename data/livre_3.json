@@ -1900,10 +1900,10 @@
    ],
    "lignes": [
     [
-     "1",
+     "2",
      "1",
      "<strong>+1 dégât, cette attaque</strong> — +1 dégât sur une attaque.",
-     "Toutes armes. Cumulable ×5 (chaque achat = +1 dégât pour 1 XP + 1 PA)."
+     "Toutes armes. Cumulable ×5 (chaque achat = +1 dégât pour 2 XP + 1 PA). Sur critique (carte Prérequis liée) : −1 XP par cumul."
     ],
     [
      "4",
@@ -1954,16 +1954,40 @@
      "Un seul bonus par jet. Cumulable en durée (+1 tour : +1 XP +1 PA)."
     ],
     [
-     "2",
      "1",
-     "<strong>Statut mineur</strong> — Ralenti 1 tour, −1 à la prochaine épreuve adverse, ou Déstabilisé léger.",
+     "1",
+     "<strong>Ralenti</strong> — La cible est Ralentie 1 tour.",
      "Seuil Δ≥0. Durée cumulable (+1 tour : +1 XP +1 PA)."
     ],
     [
-     "3",
      "1",
-     "<strong>Statut majeur</strong> — À Terre, Immobilisé ou Sonné, 1 tour.",
-     "Seuil Δ≥2 obligatoire. Un seul statut majeur par technique."
+     "1",
+     "<strong>−1 à la prochaine épreuve adverse</strong> — −1 à sa prochaine épreuve.",
+     "Seuil Δ≥0."
+    ],
+    [
+     "1",
+     "1",
+     "<strong>Déstabilisé léger</strong> — La cible est Déstabilisée (léger) 1 tour.",
+     "Seuil Δ≥0."
+    ],
+    [
+     "2",
+     "1",
+     "<strong>À Terre</strong> — La cible est À Terre 1 tour.",
+     "Seuil Δ≥2 obligatoire."
+    ],
+    [
+     "2",
+     "1",
+     "<strong>Immobilisé</strong> — La cible est Immobilisée 1 tour.",
+     "Seuil Δ≥2 obligatoire."
+    ],
+    [
+     "2",
+     "1",
+     "<strong>Sonné</strong> — La cible est Sonnée 1 tour.",
+     "Seuil Δ≥2 obligatoire."
     ],
     [
      "4",
@@ -1975,19 +1999,13 @@
      "2",
      "0",
      "<strong>Repousse 1 case</strong> — Sur succès net, la cible recule d’1 case.",
-     "Cumulable +1 case par achat (+2 XP par case)."
+     "Cumulable +1 case par achat (+2 XP par case). Sur critique (carte Prérequis liée) : −1 XP par case."
     ],
     [
-     "+2",
-     "+1",
-     "<strong>Projection 3 cases</strong> — Sur critique, la cible vole de 3 cases.",
-     "Prérequis Repousse. Remplace la repousse simple."
-    ],
-    [
-     "3",
+     "2",
      "1",
-     "<strong>Seconde cible</strong> — Blesse une seconde cible : adjacente, juste derrière, ou 2 alignées.",
-     "Incompatible Absolus. Précise laquelle."
+     "<strong>Seconde cible</strong> — +1 dégât auto sur la seconde cible, adjacente à toi.",
+     "Cumulable ×5 (chaque achat = +1 dégât auto pour 2 XP + 1 PA). Portée 2 à 3 cases (+2 XP/case). Sur critique liée : −1 XP par cumul. Incompatible Absolus."
     ],
     [
      "4",
@@ -2213,14 +2231,9 @@
    ],
    "lignes": [
     [
-     "+1 XP",
-     "<strong>Portée +2 cases</strong> (+0 PA)",
-     "Cumulable ×2. Pour les frappes à distance et les ondes."
-    ],
-    [
-     "+2 XP",
-     "<strong>Portée +4 cases</strong> (+0 PA)",
-     "À la place de +2, pas en plus."
+     "+2 XP/case",
+     "<strong>Portée 2 à 3 cases</strong> (+0 PA)",
+     "Base 1 case gratuite. +1 case (+2 XP), +2 cases (+4 XP), 3 max. Pour les frappes à distance et les ondes."
     ],
     [
      "+2 XP",
@@ -2316,7 +2329,7 @@
     {
      "titre": "Soleil Noir — REFUSÉE",
      "monde": "Contrôle du MJ // règle 8",
-     "corps_html": "« Je veux du Absolu sur tout le monde. » Dégâts Absolus (3 XP) + seconde cible (3 XP) + châssis action (0 XP) = 6 XP : ça passe le budget — mais la règle 8 dit non. Absolus ⊕ multi-cible, jamais ensemble. Reviens avec un choix : la puissance ou la foule.",
+     "corps_html": "« Je veux du Absolu sur tout le monde. » Dégâts Absolus (3 XP) + seconde cible (2 XP) + châssis action (1 XP) = 6 XP : ça passe le budget — mais la règle 8 dit non. Absolus ⊕ multi-cible, jamais ensemble. Reviens avec un choix : la puissance ou la foule.",
      "pieds": [
       {
        "ton": "ruby",
@@ -5097,7 +5110,6 @@
   "fabrique": {
    "note": "Fabrique de Techniques (sysRP). Standard 4-6 XP, signature 7-8 XP (MJ), activation ≤ 6 PA.",
    "budgets": {
-    
     "standard_xp": [
      4,
      6
@@ -5142,17 +5154,10 @@
    "modificateurs": [
     {
      "id": "M1",
-     "nom": "Portée +2 cases",
-     "cout": "+1 XP",
+     "nom": "Portée 2 à 3 cases",
+     "cout": "+2 XP/case",
      "cout_pa": "+0 PA",
-     "detail": "Cumulable ×2. Pour les frappes à distance et les ondes."
-    },
-    {
-     "id": "M2",
-     "nom": "Portée +4 cases",
-     "cout": "+2 XP",
-     "cout_pa": "+0 PA",
-     "detail": "À la place de +2, pas en plus."
+     "detail": "Base 1 case gratuite. +1 case (+2 XP), +2 cases (+4 XP), 3 max. Pour les frappes à distance et les ondes."
     },
     {
      "id": "M3",
@@ -5190,13 +5195,13 @@
      "detail": "Pièce d’une autre compétence : tu paies double, comme le croisé ×2 (§5.3)."
     }
    ],
-   "nb_pieces": 45,
+   "nb_pieces": 48,
    "pieces": [
     {
      "id": "O1",
      "nom": "+1 dégât, cette attaque",
      "famille": "offensif",
-     "cout_xp": "1",
+     "cout_xp": "2",
      "cout_pa": "1",
      "cumul": true,
      "portee": "universel",
@@ -5329,34 +5334,6 @@
      "texte": "Ton prochain jet gagne +2."
     },
     {
-     "id": "O10",
-     "nom": "Statut mineur",
-     "famille": "offensif",
-     "cout_xp": "2",
-     "cout_pa": "1",
-     "cumul": true,
-     "portee": "universel",
-     "prerequis": [],
-     "seuil": "Δ≥0",
-     "majeure": false,
-     "incompatible": [],
-     "texte": "Sur touche, ta cible subit l’état mineur écrit."
-    },
-    {
-     "id": "O11",
-     "nom": "Statut majeur",
-     "famille": "offensif",
-     "cout_xp": "3",
-     "cout_pa": "1",
-     "cumul": false,
-     "portee": "universel",
-     "prerequis": [],
-     "seuil": "Δ≥2",
-     "majeure": false,
-     "incompatible": [],
-     "texte": "Sur Delta ≥ 2, ta cible subit l’état majeur écrit."
-    },
-    {
      "id": "O12",
      "nom": "Statut critique",
      "famille": "offensif",
@@ -5365,7 +5342,7 @@
      "cumul": false,
      "portee": "universel",
      "prerequis": [
-      "O10 ou O11 même famille"
+      "O20, O21, O22, O23, O24 ou O25"
      ],
      "seuil": "Δ≥3 ou critique",
      "majeure": true,
@@ -5387,38 +5364,20 @@
      "texte": "Sur succès net, tu repousses ta cible d’1 case."
     },
     {
-     "id": "O14",
-     "nom": "Projection 3 cases",
-     "famille": "offensif",
-     "cout_xp": "+2",
-     "cout_pa": "+1",
-     "cumul": false,
-     "portee": "contact et allonge",
-     "prerequis": [
-      "O13"
-     ],
-     "seuil": "critique",
-     "majeure": false,
-     "incompatible": [
-      "O13"
-     ],
-     "texte": "Sur critique, tu projettes ta cible de 3 cases."
-    },
-    {
      "id": "O15",
      "nom": "Seconde cible",
      "famille": "offensif",
-     "cout_xp": "3",
+     "cout_xp": "2",
      "cout_pa": "1",
-     "cumul": false,
-     "portee": "universel",
+     "cumul": true,
+     "portee": "seconde cible adjacente à toi",
      "prerequis": [],
      "seuil": null,
      "majeure": false,
      "incompatible": [
       "O7"
      ],
-     "texte": "Ton coup blesse aussi la seconde cible écrite."
+     "texte": "Ton coup blesse aussi la seconde cible, adjacente à toi : +1 dégât auto."
     },
     {
      "id": "O16",
@@ -5477,6 +5436,90 @@
      "majeure": false,
      "incompatible": [],
      "texte": "Ta frappe ignore le couvert écrit."
+    },
+    {
+     "id": "O20",
+     "nom": "Ralenti",
+     "famille": "offensif",
+     "cout_xp": "1",
+     "cout_pa": "1",
+     "cumul": false,
+     "portee": "universel",
+     "prerequis": [],
+     "seuil": "Δ≥0",
+     "majeure": false,
+     "incompatible": [],
+     "texte": "Ta cible est Ralentie 1 tour."
+    },
+    {
+     "id": "O21",
+     "nom": "−1 à la prochaine épreuve adverse",
+     "famille": "offensif",
+     "cout_xp": "1",
+     "cout_pa": "1",
+     "cumul": false,
+     "portee": "universel",
+     "prerequis": [],
+     "seuil": "Δ≥0",
+     "majeure": false,
+     "incompatible": [],
+     "texte": "Ta cible prend −1 à sa prochaine épreuve."
+    },
+    {
+     "id": "O22",
+     "nom": "Déstabilisé léger",
+     "famille": "offensif",
+     "cout_xp": "1",
+     "cout_pa": "1",
+     "cumul": false,
+     "portee": "universel",
+     "prerequis": [],
+     "seuil": "Δ≥0",
+     "majeure": false,
+     "incompatible": [],
+     "texte": "Ta cible est Déstabilisée (léger) 1 tour."
+    },
+    {
+     "id": "O23",
+     "nom": "À Terre",
+     "famille": "offensif",
+     "cout_xp": "2",
+     "cout_pa": "1",
+     "cumul": false,
+     "portee": "universel",
+     "prerequis": [],
+     "seuil": "Δ≥2",
+     "majeure": false,
+     "incompatible": [],
+     "texte": "Sur Delta ≥ 2, ta cible est À Terre 1 tour."
+    },
+    {
+     "id": "O24",
+     "nom": "Immobilisé",
+     "famille": "offensif",
+     "cout_xp": "2",
+     "cout_pa": "1",
+     "cumul": false,
+     "portee": "universel",
+     "prerequis": [],
+     "seuil": "Δ≥2",
+     "majeure": false,
+     "incompatible": [],
+     "texte": "Sur Delta ≥ 2, ta cible est Immobilisée 1 tour."
+    },
+    {
+     "id": "O25",
+     "nom": "Sonné",
+     "famille": "offensif",
+     "cout_xp": "2",
+     "cout_pa": "1",
+     "cumul": false,
+     "portee": "universel",
+     "prerequis": [],
+     "seuil": "Δ≥2",
+     "majeure": false,
+     "incompatible": [],
+     "texte": "Sur Delta ≥ 2, ta cible est Sonnée 1 tour."
     },
     {
      "id": "D1",

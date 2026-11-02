@@ -1638,7 +1638,7 @@
                             Alors monte ta technique comme un nœud du graphe : clique ◆ pour l'ensemble,
                             ⊕ pour brancher 1 à 3 pièces. Le menu ne propose que ce qui se branche ici —
                             chaque choix dit ce qu'il demande et ce qu'il refuse.
-                            L'atelier compte les XP et les PA tout seul, et il te dit quand ton MJ doit signer (7–8 XP).
+                            L'atelier compte les XP et les PA tout seul, et il te dit quand ton MJ doit signer (7 XP et plus).
                         </p>
 
                         <div class="tool-section" id="fabPuzzle">
@@ -1653,7 +1653,7 @@
                                     Atelier puzzle de la Fabrique
                                 </div>
                                 <div class="tool-badge-row">
-                                    <span class="pill-badge amber">Standard 4–6 XP · Signature 7–8 XP (MJ)</span>
+                                    <span class="pill-badge amber">Standard 4–6 XP · Signature 7+ XP (MJ)</span>
                                     <span class="pill-badge cyan" id="fabBudgetBadge">0 XP · 0 PA</span>
                                 </div>
                             </div>
@@ -1686,20 +1686,6 @@
                                 se branche ici — les prérequis s'imposent d'eux-mêmes quand un effet les exige.
                                 Échap ou clic ailleurs = annuler.
                             </p>
-
-                            <h4
-                                style="margin: 16px 0 10px; font-family: var(--font-mono); font-size: 0.85rem; color: var(--vital-ruby); text-transform: uppercase;">
-                                Contrôle MJ (en direct)
-                            </h4>
-                            <ul id="fabChecklist" class="spell-effects-list">
-                                <li><em>Clique ◆ pour choisir ton ensemble, ⊕ pour brancher une pièce.</em></li>
-                            </ul>
-
-                            <h4
-                                style="margin: 20px 0 10px; font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-secondary); text-transform: uppercase;">
-                                2. Finitions (modificateurs — les bords du graphe)
-                            </h4>
-                            <div id="fabModifs" class="fab-modifs"></div>
 
                             <h4
                                 style="margin: 20px 0 10px; font-family: var(--font-mono); font-size: 0.85rem; color: var(--arcane-cyan); text-transform: uppercase;">
@@ -1868,7 +1854,7 @@
 
     <!-- Scripts partagés et interactifs -->
     <script src="js/codex.js"></script>
-    <script src="js/fabrique.js?v=5"></script>
+    <script src="js/fabrique.js?v=11"></script>
     <script src="js/tools.js?v=9"></script>
 
     <!-- Scripts Authentification -->

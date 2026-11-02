@@ -1,12 +1,16 @@
 /* ==========================================================================
    FABRIQUE DE TECHNIQUES — ATELIER GRAPHE (Livre III chap-14, Livre IX chap-40).
-   Moteur pur FabriqueEngine.compute (inchangé : châssis + 1-3 pièces,
-   paliers en filière, M1-M7, hybride auto, croisé ×2,
-   signature 7-8, plafond PA 6, incompatibilités, prérequis) + initFabrique()
+   Moteur pur FabriqueEngine.compute (châssis + 1-3 pièces,
+   paliers en filière, M1-M4/M7 par carte effet, M6 hybride auto, croisé ×2
+   par carte, signature 7-8, plafond PA 6, incompatibilités, prérequis) + initFabrique()
    qui monte le graphe depuis data/livre_3.json (mecaniques.fabrique).
    Graphe : 1 ensemble (racine ◆) (châssis) + pièces qui s'emboîtent dans 3 logements.
-   Les filières (O4→O5→O6, O13→O14) sont des grosses pièces : elles prennent
+   Les filières (O4→O5→O6) sont des grosses pièces : elles prennent
    2-3 logements d'un coup, prérequis inclus.
+   Modificateurs sur la carte effet (pas hors graphe) : Portée totale 1 à 3 cases
+   (base 1 gratuite, +2 XP/case), Zone M3
+   (O3 O7 O12 O20 O22 O23 O24 O25 — O7 + zone
+   refusé règle 8), Durée M4 (O9/O20 « durée cumulable », 2 crans max), M7 ×2 (toute carte).
    ========================================================================== */
 (function () {
 'use strict';
@@ -28,6 +32,7 @@ function fabNum(v) {
 var KIND = {
     O1:  { t: 'n', max: 5, unit: 'crans', plural: [['dégât', 'dégâts']] },
     O13: { t: 'n', max: 3, unit: 'cases' },
+    O15: { t: 'n', max: 5, unit: 'cibles', plural: [['dégât', 'dégâts']] },
     D8:  { t: 'n', max: 3, unit: 'malus' },
     S1:  { t: 'n', max: 3, unit: 'crans', plural: [['épreuve', 'épreuves']] },
     O19: { t: 'radio', opts: [
@@ -62,12 +67,46 @@ function scaledPieceText(s, id, q) {
                 out = out.replace(new RegExp(pair[0] + '(?!s)', 'g'), pair[1]);
             });
         }
+        /* "Repousse 1 case" x3 -> "Repousse 3 cases" (KIND unit: 'cases'). */
+        var n = q | 0;
+        out = out.split('d’1 case').join('de ' + n + ' cases');
+        out = out.split("d'1 case").join('de ' + n + ' cases');
+        out = out.split('1 case').join(n + ' cases');
     }
     return out;
 }
 
 /* Paliers qui REMPLACENT leur prérequis (filière payée une fois). */
-var REPLACE = { O5: ['O4'], O6: ['O5', 'O4'], O14: ['O13'] };
+var REPLACE = { O5: ['O4'], O6: ['O5', 'O4'] };
+
+/* Compatibilité des modificateurs par carte effet (M1-M4/M7 sur la carte, pas hors graphe).
+   Portée : base 1 case gratuite, +1 case (+2 XP, total 2) ou +2 cases (+4 XP, total 3 max).
+   Zone M3 : dégâts, statuts ou repoussée (O3 O7 O12 O20 O22 O23 O24 O25) ; O7 + zone
+   refusé règle 8 (Absolus multi-cible, comme O7 + O15).
+   Durée M4 : là où la table dit « durée cumulable » (O9, O20), 2 crans max.
+   Hors-compétence M7 ×2 : toute carte (pièce d'une autre compétence). */
+var MOD_RANGE_EXCL = { O1: 'dégât instantané mono-attaque, sans portée propre', O12: 'statut délivré par la frappe, sans portée propre', O13: 'repoussée : la distance, c’est la quantité (x3)', O16: 'a déjà sa forme (prends la pièce Zone O16)', O17: 'contact/adjacent, pas d’extension', O18: 'passif de critique, pas de portée', O20: 'statut délivré par la frappe, sans portée propre', O21: 'statut délivré par la frappe, sans portée propre', O22: 'statut délivré par la frappe, sans portée propre', O23: 'statut délivré par la frappe, sans portée propre', O24: 'statut délivré par la frappe, sans portée propre', O25: 'statut délivré par la frappe, sans portée propre' };
+var MOD_ZONE_IDS = { O3: 1, O7: 1, O12: 1, O20: 1, O22: 1, O23: 1, O24: 1, O25: 1 };
+var MOD_DUR_IDS = { O9: 1, O20: 1 };
+function modRangeOk(p) {
+    if (!p) return { ok: false, reason: 'Carte inconnue.' };
+    if (p.famille !== 'offensif') return { ok: false, reason: 'Portée : frappes à distance et ondes (offensif) uniquement.' };
+    if (MOD_RANGE_EXCL[p.id]) return { ok: false, reason: 'Portée : ' + p.id + ' ' + MOD_RANGE_EXCL[p.id] + '.' };
+    return { ok: true };
+}
+function modZoneOk(p) {
+    if (!p) return { ok: false, reason: 'Carte inconnue.' };
+    if (p.id === 'O16') return { ok: false, reason: 'Zone : O16 a déjà sa forme.' };
+    if (p.id === 'O15') return { ok: false, reason: 'Zone : O15 est déjà multi-cible.' };
+    if (!MOD_ZONE_IDS[p.id]) return { ok: false, reason: 'Zone : dégâts, statuts ou repoussée uniquement (O3 O7 O12 O20 O22 O23 O24 O25).' };
+    return { ok: true };
+}
+function modDurOk(p) {
+    if (!p) return { ok: false, reason: 'Carte inconnue.' };
+    if (!MOD_DUR_IDS[p.id]) return { ok: false, reason: 'Durée : là où la table dit « durée cumulable » (O9, O20).' };
+    return { ok: true };
+}
+function modCrossOk() { return { ok: true }; }
 
 var FabriqueEngine = {
     KIND: KIND,
@@ -94,12 +133,13 @@ var FabriqueEngine = {
             return null;
         }
 
-        /* 1. Châssis. */
+        /* 1. Châssis (+ compétence entraînée liée, obligatoire). */
         var ch = sel.chassis ? C(sel.chassis) : null;
         if (!ch) {
             errors.push('Choisis un ensemble : il dit quand ta technique part.');
         } else {
             lines.push({ id: 'chassis', label: 'Ensemble — ' + ch.nom, xp: toInt(ch.cout_xp), pa: toInt(ch.cout_pa), kind: 'chassis' });
+            if (!sel.ensSkill) errors.push('Lie ton ensemble (◆) à une compétence entraînée.');
         }
 
         /* 2. Pré-requis auto (filières linéaires). */
@@ -193,8 +233,8 @@ var FabriqueEngine = {
             errors.push('Contre-attaque / interception (O17) exige l\u2019ensemble Réaction.');
         if ((has('D1') || has('D3')) === false && has('D8'))
             errors.push('Ignore un malus (D8) exige D1 ou D3 (filière défensive).');
-        if (has('O12') && !(has('O10') || has('O11')))
-            warnings.push('Statut critique (O12) : prérequis filière = un statut de la même famille (O10 ou O11).');
+        if (has('O12') && !(has('O20') || has('O21') || has('O22') || has('O23') || has('O24') || has('O25')))
+            warnings.push('Statut critique (O12) : prérequis filière = un statut de la même famille (O20 à O25).');
         if (has('U5'))
             warnings.push('Téléport 2 cases (U5) : prérequis narratif = Roulade ou esquive Δ≥2.');
         if (has('O18') && counted < 3)
@@ -221,11 +261,68 @@ var FabriqueEngine = {
             }
         }
 
-        /* 6. Modificateurs. */
-        if (sel.range === 2) lines.push({ id: 'M1', label: 'Portée +2 cases', xp: 1, pa: 0, kind: 'mod' });
-        if (sel.range === 4) lines.push({ id: 'M2', label: 'Portée +4 cases', xp: 2, pa: 0, kind: 'mod' });
-        if (sel.zone) lines.push({ id: 'M3', label: 'Forme de zone', xp: 2, pa: 1, kind: 'mod' });
-        if ((sel.dur | 0) > 0) lines.push({ id: 'M4', label: 'Durée +' + sel.dur + ' tour(s)', xp: sel.dur | 0, pa: sel.dur | 0, kind: 'mod' });
+        /* 6. Modificateurs par carte effet (portée/zone/durée/M7 sur la carte, pas hors graphe).
+           sel.mods = { [id]: { range: 0|2|4, zone: bool, dur: 0..2, cross: bool } }.
+           Sans sel.mods (vieux tests) : repli global historique. */
+        var crossedIds = [];
+        if (sel.mods) {
+            Object.keys(qty).forEach(function (id) {
+                if ((qty[id] | 0) <= 0) return;
+                var p = P(id);
+                if (!p) return;
+                var m = sel.mods[id] || {};
+                var rg = m.range | 0;
+                if (rg < 0 || rg > 2) {
+                    errors.push('Portée de ' + id + ' : base 1, 3 max (+2 XP/case).');
+                    rg = 0;
+                }
+                if (rg) {
+                    var rok = modRangeOk(p);
+                    if (!rok.ok) errors.push('Portée ' + (1 + rg) + ' cases incompatible avec ' + id + ' (' + p.nom + ') : ' + rok.reason);
+                    else lines.push({ id: 'M1', label: 'Portée ' + (1 + rg) + ' cases — ' + id + ' ' + p.nom, xp: rg * 2, pa: 0, kind: 'mod', piece: id });
+                }
+                if (m.zone) {
+                    var zok = modZoneOk(p);
+                    if (!zok.ok) errors.push('Zone incompatible avec ' + id + ' (' + p.nom + ') : ' + zok.reason);
+                    else if (id === 'O7') errors.push('Incompatible : O7 + zone (règle 8, Absolus jamais multi-cible).');
+                    else lines.push({ id: 'M3', label: 'Forme de zone — ' + id + ' ' + p.nom, xp: 2, pa: 1, kind: 'mod', piece: id });
+                }
+                var du = Math.max(0, Math.min(2, m.dur | 0));
+                if ((m.dur | 0) !== du) errors.push('Durée de ' + id + ' : 0 à 2 crans max.');
+                if (du > 0) {
+                    var dok = modDurOk(p);
+                    if (!dok.ok) errors.push('Durée +' + du + ' incompatible avec ' + id + ' (' + p.nom + ') : ' + dok.reason);
+                    else lines.push({ id: 'M4', label: 'Durée +' + du + ' tour(s) — ' + id + ' ' + p.nom, xp: du, pa: du, kind: 'mod', piece: id });
+                }
+                if (m.cross) crossedIds.push(id);
+            });
+            /* M7 par carte : la carte (pièce + ses modificateurs) paie double. */
+            crossedIds.forEach(function (cid) {
+                lines.forEach(function (l) {
+                    if ((l.kind === 'piece' && l.id === cid) || (l.kind === 'mod' && l.piece === cid)) {
+                        l.xp = l.xp * 2;
+                        l.crossed = true;
+                    }
+                });
+            });
+            /* Sur critique liée : −1 XP par cumul (M5) — O1, O13, O15. */
+            ['O1', 'O13', 'O15'].forEach(function (cid) {
+                var lk = sel.plink && sel.plink[cid];
+                if (lk && lk.t === 'cond' && lk.id === 'critique' && (qty[cid] | 0) > 0) {
+                    lines.forEach(function (l) {
+                        if (l.kind === 'piece' && l.id === cid) {
+                            l.xp = Math.max(1, l.xp - (qty[cid] | 0));
+                            l.narrow = (qty[cid] | 0);
+                        }
+                    });
+                }
+            });
+        } else {
+            if (sel.range === 2) lines.push({ id: 'M1', label: 'Portée +2 cases', xp: 1, pa: 0, kind: 'mod' });
+            if (sel.range === 4) lines.push({ id: 'M2', label: 'Portée +4 cases', xp: 2, pa: 0, kind: 'mod' });
+            if (sel.zone) lines.push({ id: 'M3', label: 'Forme de zone', xp: 2, pa: 1, kind: 'mod' });
+            if ((sel.dur | 0) > 0) lines.push({ id: 'M4', label: 'Durée +' + sel.dur + ' tour(s)', xp: sel.dur | 0, pa: sel.dur | 0, kind: 'mod' });
+        }
 
         /* 7. Hybride auto (M6). */
         var famKeys = Object.keys(fams);
@@ -235,18 +332,17 @@ var FabriqueEngine = {
         /* 8. Totaux. */
         var xp = 0, pa = 0;
         lines.forEach(function (l) { xp += l.xp; pa += l.pa; });
-        var crossed = false;
-        if (sel.cross) { xp = xp * 2; crossed = true; }
+        var crossed = crossedIds.length > 0;
+        if (!sel.mods && sel.cross) { xp = xp * 2; crossed = true; }
 
         var status = 'standard';
-        if (xp >= 7 && xp <= 8) {
+        if (xp >= 7) {
             status = 'signature';
-            warnings.push('Signature 7–8 XP : une seule par personnage, accord MJ obligatoire.');
+            warnings.push('Signature (7 XP et plus) : une seule par personnage, accord MJ obligatoire.');
             if (majeures > 2) errors.push('2 majeures maximum, même en signature.');
         } else if (majeures > 1) {
             errors.push(majeures + ' majeures : une seule par technique standard (règle 8).');
         }
-        if (xp > 8) errors.push('Plafond 8 XP : découpe en deux techniques sœurs.');
         if (pa > 6) errors.push('Activation ' + pa + ' PA > 6 : ça doit tenir dans un tour.');
         if (ch && ch.id === 'C0' && pa > 0)
             errors.push('Passif conditionnel : 0 PA — ni pièce ni finition à activation (pas de jet, pas d’activation).');
@@ -262,8 +358,8 @@ var FabriqueEngine = {
 
 /* ---------------------------------------------------------------- PUZZLE */
 // Filières = grosses pièces (prérequis inclus, 2-3 logements).
-var CHAINS = { O5: ['O4', 'O5'], O6: ['O4', 'O5', 'O6'], O14: ['O13', 'O14'] };
-var CHAIN_KEY = { O4: 'perce', O5: 'perce', O6: 'perce', O13: 'proj', O14: 'proj' };
+var CHAINS = { O5: ['O4', 'O5'], O6: ['O4', 'O5', 'O6'] };
+var CHAIN_KEY = { O4: 'perce', O5: 'perce', O6: 'perce' };
 var INCOMP = [['O7', 'O15'], ['D6', 'D1'], ['D6', 'D2'], ['D6', 'D3'], ['D6', 'D4']];
 var FAM_LABEL = { offensif: 'Offensif', defensif: 'Défensif', utilitaire: 'Utilitaire', social: 'Social' };
 var SAVE_KEY = 'fabrique-puzzle-v1';
@@ -336,9 +432,8 @@ function initFabrique() {
     }
 
     /* --- État : source unique, le DOM ne fait que l'afficher. --- */
-    var state = { chassis: null, qty: {}, order: [], conds: [], plink: {}, condSkill: "Maniement d'Arme",
-                  o19: 'partiel', u7: '5', u11: {},
-                  range: 0, zone: false, dur: 0, cross: false };
+    var state = { chassis: null, ensSkill: '', qty: {}, order: [], conds: [], plink: {}, condSkill: "Maniement d'Arme",
+                  o19: 'partiel', u7: '5', u11: {}, mods: {} };
     var menu = null; /* {kind:'slot'|'piece'|'root', id, search} */
     var nodesEl = document.getElementById('fabNodes');
     var wiresEl = document.getElementById('fabWires');
@@ -443,14 +538,14 @@ function initFabrique() {
         }
         if (placedSpan() + need > 3)
             return { lock: true, reason: 'Plus de logement libre (3 max).' };
-        if (id === 'O12' && !present('O10') && !present('O11'))
-            return { lock: false, soft: 'Demande O10 ou O11 sur le graphe.' };
+        if (id === 'O12' && !present('O20') && !present('O21') && !present('O22') && !present('O23') && !present('O24') && !present('O25'))
+            return { lock: false, soft: 'Demande un statut (O20 à O25) sur le graphe.' };
         if (id === 'O18' && placedSpan() + need < 3)
             return { lock: false, soft: 'Demande 3 pièces de la même arme.' };
         if (id === 'U5')
             return { lock: false, soft: 'Prérequis narratif : Roulade ou esquive Δ≥2.' };
         if (p.majeure && majeuresCount() >= 1)
-            return { lock: false, soft: '2e majeure = signature 7–8 XP, MJ obligatoire.' };
+            return { lock: false, soft: '2e majeure = signature (7 XP et plus), MJ obligatoire.' };
         return { lock: false };
     }
 
@@ -467,6 +562,7 @@ function initFabrique() {
                 var old = state.order[idx];
                 if (spanOf(old) >= spanOf(id)) { toast('Déjà incluse.'); return false; }
                 delete state.qty[old];
+                if (state.mods[old]) { state.mods[id] = state.mods[old]; delete state.mods[old]; }
                 state.order[idx] = id;
                 state.qty[id] = 1;
             } else {
@@ -523,6 +619,7 @@ function initFabrique() {
     }
     function removePiece(id) {
         delete state.qty[id];
+        delete state.mods[id];
         delete state.plink[id];
         Object.keys(state.plink).forEach(function (eid) {
             if (state.plink[eid].t === 'piece' && state.plink[eid].id === id) delete state.plink[eid];
@@ -544,17 +641,9 @@ function initFabrique() {
         state.plink = {};
         state.o19 = 'partiel'; state.u7 = '5'; state.u11 = {};
         state.condSkill = DEFAULT_SKILL;
+        state.ensSkill = '';
         state.u11auto = false;
-        var rr0 = document.querySelector('input[name="fabRange"][value="0"]');
-        if (rr0) rr0.checked = true;
-        ['fabZone', 'fabCross'].forEach(function (cid) {
-            var c = document.getElementById(cid);
-            if (c) c.checked = false;
-        });
-        ['fabDur'].forEach(function (nid) {
-            var n = document.getElementById(nid);
-            if (n) n.value = '0';
-        });
+        state.mods = {};
         try { localStorage.removeItem(SAVE_KEY); } catch (e) { /* vide */ }
         closeMenu();
         render();
@@ -602,56 +691,65 @@ function initFabrique() {
         render();
     }
 
-    /* --- Lecture des finitions (dans le DOM, construites une fois). --- */
+    /* --- Lecture des modificateurs : sur chaque carte effet (state.mods), pas hors graphe.
+       Les prérequis-conditions sont hors monnaie : ni coût, ni réduction. --- */
+    function getMod(id) {
+        var m = state.mods[id] || {};
+        var rg = m.range | 0;
+        if (rg < 0 || rg > 2) rg = 0;
+        return { range: rg, zone: !!m.zone, dur: Math.max(0, Math.min(2, m.dur | 0)), cross: !!m.cross };
+    }
+    function setMod(id, patch) {
+        var m = { range: 0, zone: false, dur: 0, cross: false };
+        if (state.mods[id]) {
+            m.range = state.mods[id].range | 0;
+            m.zone = !!state.mods[id].zone;
+            m.dur = state.mods[id].dur | 0;
+            m.cross = !!state.mods[id].cross;
+        }
+        if (patch.range !== undefined) {
+            var pv = patch.range | 0;
+            m.range = Math.max(0, Math.min(2, pv));
+        }
+        if (patch.zone !== undefined) m.zone = !!patch.zone;
+        if (patch.dur !== undefined) m.dur = Math.max(0, Math.min(2, patch.dur | 0));
+        if (patch.cross !== undefined) m.cross = !!patch.cross;
+        if (!m.range && !m.zone && !m.dur && !m.cross) delete state.mods[id];
+        else state.mods[id] = m;
+    }
     function buildSel() {
-        /* Les prérequis-conditions sont hors monnaie : ni coût, ni réduction. */
-        var sel = { chassis: state.chassis, qty: {}, o19: state.o19, u7: state.u7, u11: {},
-                    narrow: 0, range: 0, zone: false, dur: 0, cross: false };
+        var sel = { chassis: state.chassis, ensSkill: state.ensSkill || '', qty: {}, o19: state.o19, u7: state.u7, u11: {},
+                    narrow: 0, mods: {} };
         sel.conds = state.conds.slice();
+        sel.plink = {};
+        Object.keys(state.plink).forEach(function (eid) {
+            if ((state.qty[eid] | 0) > 0) {
+                var L = state.plink[eid];
+                if (L && ((L.t === 'cond' && state.conds.indexOf(L.id) >= 0) ||
+                           (L.t === 'piece' && (state.qty[L.id] | 0) > 0))) sel.plink[eid] = { t: L.t, id: L.id };
+            }
+        });
         Object.keys(state.qty).forEach(function (id) { sel.qty[id] = state.qty[id]; });
         Object.keys(state.u11).forEach(function (v) { if (state.u11[v]) sel.u11[v] = true; });
-        var rr = document.querySelector('input[name="fabRange"]:checked');
-        sel.range = rr ? (parseInt(rr.value, 10) || 0) : 0;
-        var zo = document.getElementById('fabZone');
-        sel.zone = !!(zo && zo.checked);
-        var du = document.getElementById('fabDur');
-        sel.dur = du ? Math.max(0, Math.min(2, parseInt(du.value, 10) || 0)) : 0;
-        var cx = document.getElementById('fabCross');
-        sel.cross = !!(cx && cx.checked);
+        Object.keys(state.mods).forEach(function (id) {
+            if ((state.qty[id] | 0) > 0) sel.mods[id] = getMod(id);
+        });
         return sel;
     }
 
-    /* --- 2. Finitions (modificateurs). --- */
+    /* --- 2. Finitions : rappel, les modificateurs vivent sur les cartes effet. --- */
     function buildModifs() {
         var mod = document.getElementById('fabModifs');
         if (!mod) return;
         mod.innerHTML = '';
-        var r = el('div', 'fab-mod', '<b>Portée (M1/M2)</b>');
-        [['0', 'Aucune (+0)'], ['2', '+2 cases (+1 XP)'], ['4', '+4 cases (+2 XP)']].forEach(function (o, i) {
-            var l = el('label', '', '<input type="radio" name="fabRange" value="' + o[0] + '"' +
-                (i === 0 ? ' checked' : '') + ' class="fab-input"> ' + o[1]);
-            r.appendChild(l);
-        });
-        mod.appendChild(r);
-        var z = el('div', 'fab-mod', '<b>Zone (M3 · +2 XP +1 PA)</b>');
-        var zl = el('label', '', '<input type="checkbox" id="fabZone" class="fab-input"> Forme de zone : cône, ligne ou rayon +1');
-        z.appendChild(zl);
-        mod.appendChild(z);
-        var d = el('div', 'fab-mod', '<b>Durée +1 tour (M4 · +1 XP +1 PA par cran)</b>');
-        var dn = document.createElement('input');
-        dn.type = 'number'; dn.min = '0'; dn.max = '2'; dn.value = '0'; dn.id = 'fabDur';
-        dn.className = 'tool-input fab-input'; dn.style.width = '90px';
-        d.appendChild(dn);
-        mod.appendChild(d);
-        var n = el('div', 'fab-mod', '<b>Prérequis (conditions · 0 XP)</b>');
-        var nh = el('span', '', 'Choisis des cartes <strong>Prérequis</strong> dans le graphe ci-dessus (gratuites, hors logements).');
+        var n = el('div', 'fab-mod', '<b>Sur la carte effet, pas ici</b>');
+        var nh = el('span', '', 'Clique une carte effet du graphe : <strong>Portée</strong> totale 1 à 3 (base 1 gratuite, +2 XP/case), ' +
+            '<strong>Zone</strong> M3 (+2 XP +1 PA : cône, ligne ou rayon +1), <strong>Durée</strong> M4 (+1 XP +1 PA par cran, 2 max), ' +
+            '<strong>Hors-compétence</strong> M7 (×2 XP). Seuls les compatibles sont proposés. ' +
+            'Les <strong>Prérequis</strong> sont les cartes de la file ci-dessus (gratuites, hors logements).');
         nh.style.cssText = 'font-size:0.72rem;opacity:.75;display:block;margin-top:4px;';
         n.appendChild(nh);
         mod.appendChild(n);
-        var cr = el('div', 'fab-mod', '<b>Hors-compétence (M7 · ×2 XP)</b>');
-        var cl = el('label', '', '<input type="checkbox" id="fabCross" class="fab-input"> Banque croisée (comme le croisé ×2)');
-        cr.appendChild(cl);
-        mod.appendChild(cr);
     }
 
     /* Coût affiché sur le nœud : total réel pour les cumulables (×n), base sinon. */
@@ -666,6 +764,21 @@ function initFabrique() {
     }
     function nodeCostXp(p, id) { return nodeCost(p, id, false); }
     function nodeCostPa(p, id) { return nodeCost(p, id, true); }
+    /* Badges des modificateurs posés sur une carte (miroir de l'engine, sans validation). */
+    function modFlags(id) {
+        var m = getMod(id);
+        var out = [];
+        if (m.range > 0) out.push('portée ' + (m.range + 1) + ' cases (+' + (m.range * 2) + ' XP)');
+        if (m.zone) out.push('zone (+2 XP +1 PA)');
+        if (m.dur) out.push('+' + m.dur + ' tour' + (m.dur > 1 ? 's' : '') + ' (+' + m.dur + ' XP +' + m.dur + ' PA)');
+        if (m.cross) out.push('×2 hors-compétence');
+        var lk = state.plink[id];
+        if (lk && lk.t === 'cond' && lk.id === 'critique' && (id === 'O1' || id === 'O13' || id === 'O15')) {
+            var nq = state.qty[id] | 0;
+            if (nq > 0) out.push('critique (−' + nq + ' XP)');
+        }
+        return out;
+    }
 
     /* --- Rendu du graphe : racine ◆ + nœuds pièces + logements ⊕, reliés. --- */
     var FAM_COLOR = { offensif: '#f43f5e', defensif: '#38bdf8', utilitaire: '#10b981', social: '#f59e0b' };
@@ -694,10 +807,19 @@ function initFabrique() {
         return '';
     }
 
-    function renderGraph(sel) {
+    function renderGraph(sel, r) {
         nodesEl.innerHTML = '';
         wiresEl.innerHTML = '';
         var ch = sel.chassis ? C(sel.chassis) : null;
+        /* Coût réel par carte : lignes fiche (pièce + ses modificateurs − critique). */
+        var costByPiece = {};
+        if (r && r.lines) r.lines.forEach(function (l) {
+            if (l.kind === 'piece') costByPiece[l.id] = { xp: l.xp, pa: l.pa };
+            else if (l.kind === 'mod' && l.piece && costByPiece[l.piece]) {
+                costByPiece[l.piece].xp += l.xp;
+                costByPiece[l.piece].pa += l.pa;
+            }
+        });
         var flow = el('div', 'fab-flow', '');
         var rootcol = el('div', 'fab-rootcol', '');
         var branchcol = el('div', 'fab-branchcol', '');
@@ -710,9 +832,11 @@ function initFabrique() {
         for (var i = 0; i < 3; i++) dots += '<i class="' + (i < placedSpan() ? 'on' : '') + '"></i>';
         dots += '</span>';
         if (ch) {
+            var ensSkillTxt = sel.ensSkill ? esc(sel.ensSkill) : '⚠ choisis ta compétence entraînée';
             root.innerHTML = '<span class="fab-ens-top"><span class="fab-ens-id">◆ ' + esc(ch.id) + '</span>' +
                 '<span class="fab-ens-cost">' + esc(ch.cout_xp) + ' XP + ' + esc(ch.cout_pa) + ' PA</span></span>' +
-                '<strong>' + esc(ch.nom) + '</strong><small>' + esc(ch.cadre) + '</small>' + dots;
+                '<strong>' + esc(ch.nom) + '</strong><small>' + esc(ch.cadre) + '</small>' +
+                '<small>Compétence : ' + ensSkillTxt + '</small>' + dots;
         } else {
             root.innerHTML = '<span class="fab-ens-top"><span class="fab-ens-id">◆ Ensemble</span></span>' +
                 '<strong>Choisis ton ensemble</strong><small>Clique ici : il dit quand ta technique part.</small>' + dots;
@@ -758,8 +882,10 @@ function initFabrique() {
             box.dataset.id = id;
             var qq = state.qty[id] | 0;
             var nm = scaledPieceText(p.nom, id, qq);
+            var ec = costByPiece[id];
+            var costTxt = ec ? (ec.xp + ' XP + ' + ec.pa + ' PA') : (nodeCostXp(p, id) + ' XP + ' + nodeCostPa(p, id) + ' PA');
             var head = '<div class="fab-placed-head"><strong>' + esc(nm) + '</strong>' +
-                '<span class="fab-placed-cost">' + esc(nodeCostXp(p, id)) + ' XP + ' + esc(nodeCostPa(p, id)) + ' PA</span></div>';
+                '<span class="fab-placed-cost">' + esc(costTxt) + '</span></div>';
             var sub = esc(p.cond || scaledPieceText(p.texte, id, qq) || '');
             var vs = variantSummary(id);
             if (vs) sub += ' — ' + esc(vs);
@@ -767,6 +893,7 @@ function initFabrique() {
             var flags = '<div class="fab-placed-flags">';
             chainOf(id).forEach(function (x) { flags += '<span class="fab-flag">' + esc(x) + '</span>'; });
             if (p.majeure) flags += '<span class="fab-flag star">★ majeure</span>';
+            modFlags(id).forEach(function (t) { flags += '<span class="fab-flag mod">' + esc(t) + '</span>'; });
             flags += '</div>';
             var tiers = '';
             if (chainOf(id).length > 1) {
@@ -940,12 +1067,40 @@ function initFabrique() {
                     (state.chassis === c.id ? '<div class="fab-opt-soft">◆ actuel — clique pour retirer</div>' : '');
                 list.appendChild(b);
             });
+            list.appendChild(el('div', 'fab-ctx-sec', 'Compétence liée (entraînée, obligatoire)'));
+            (function () {
+                var sv = el('div', 'fab-ctx-var', '');
+                var slab = el('label', '', 'Compétence ');
+                slab.style.cssText = 'font-size:0.78rem;display:flex;gap:6px;align-items:baseline;';
+                var ssel = document.createElement('select');
+                ssel.className = 'tool-select fab-input';
+                ssel.setAttribute('data-ens-skill', '1');
+                var op0 = document.createElement('option');
+                op0.value = ''; op0.textContent = '— choisis —';
+                if (!state.ensSkill) op0.selected = true;
+                ssel.appendChild(op0);
+                SKILLS.forEach(function (grp) {
+                    var og = document.createElement('optgroup');
+                    og.label = grp[0];
+                    grp[1].forEach(function (nm) {
+                        var op = document.createElement('option');
+                        op.value = nm; op.textContent = nm;
+                        if (state.ensSkill === nm) op.selected = true;
+                        og.appendChild(op);
+                    });
+                    ssel.appendChild(og);
+                });
+                slab.appendChild(ssel);
+                sv.appendChild(slab);
+                if (!state.ensSkill) sv.appendChild(el('div', 'fab-ctx-foot', 'Tout pouvoir est lié à une compétence entraînée.'));
+                list.appendChild(sv);
+            })();
             list.appendChild(el('div', 'fab-ctx-foot', 'Échap = annuler · Entrée = premier'));
         } else if (menu.kind === 'slot') {
             var s2 = document.createElement('input');
             s2.className = 'fab-ctx-search';
             s2.setAttribute('data-search', '1');
-            s2.placeholder = 'Filtrer les 45 pièces…';
+            s2.placeholder = 'Filtrer les 48 pièces…';
             s2.value = menu.search;
             ctxEl.appendChild(s2);
             var q2 = normSearch(menu.search);
@@ -1126,6 +1281,62 @@ function initFabrique() {
                     '<button type="button" data-inc="' + esc(p.id) + '">+</button></span>';
                 list.appendChild(row);
             }
+            /* Modificateurs sur cette carte : seuls les compatibles sont montrés.
+               L'incompatible est masqué (pas grisé) ; mention si aucun M1–M4. */
+            list.appendChild(el('div', 'fab-ctx-sec', 'Modificateurs de cette carte'));
+            (function () {
+                var mv = el('div', 'fab-ctx-var', '');
+                var cur = getMod(p.id);
+                var c0 = state.chassis === 'C0';
+                var shown = 0;
+                if (modRangeOk(p).ok) {
+                    shown++;
+                    var rlab = el('label', '', 'Portée totale (1–3, base 1 gratuite, +2 XP/case) ');
+                    var rn = document.createElement('input');
+                    rn.type = 'number'; rn.min = '1'; rn.max = '3'; rn.value = String(cur.range + 1);
+                    rn.className = 'tool-input fab-input'; rn.style.width = '70px';
+                    rn.setAttribute('data-mod-range', '1'); rn.setAttribute('data-mid', p.id);
+                    rlab.appendChild(rn);
+                    mv.appendChild(rlab);
+                }
+                if (modZoneOk(p).ok) {
+                    shown++;
+                    var zdis = c0 ? ' disabled title="+1 PA : pas sur un ensemble passif."' : '';
+                    var zl = el('label', '', '<input type="checkbox" data-mod-zone="1" data-mid="' + esc(p.id) + '"' +
+                        (cur.zone ? ' checked' : '') + zdis + '> Zone M3 : cône, ligne ou rayon +1 (+2 XP +1 PA)');
+                    mv.appendChild(zl);
+                    if (c0) mv.appendChild(el('div', 'fab-ctx-foot', 'Zone (+1 PA) : pas sur un passif.'));
+                }
+                if (modDurOk(p).ok) {
+                    shown++;
+                    var dlab = el('label', '', 'Durée M4 (+1 XP +1 PA par cran, 2 max) ');
+                    var dn = document.createElement('input');
+                    dn.type = 'number'; dn.min = '0'; dn.max = '2'; dn.value = String(cur.dur);
+                    dn.className = 'tool-input fab-input'; dn.style.width = '70px';
+                    dn.setAttribute('data-mod-dur', '1'); dn.setAttribute('data-mid', p.id);
+                    if (c0) { dn.disabled = true; dn.title = '+1 PA : pas sur un ensemble passif.'; }
+                    dlab.appendChild(dn);
+                    mv.appendChild(dlab);
+                    if (c0) mv.appendChild(el('div', 'fab-ctx-foot', 'Durée (+1 PA) : pas sur un passif.'));
+                }
+                if (!shown) mv.appendChild(el('div', 'fab-ctx-foot', 'Aucun modificateur M1–M4 compatible avec cette carte.'));
+                var xl = el('label', '', '<input type="checkbox" data-mod-cross="1" data-mid="' + esc(p.id) + '"' +
+                    (cur.cross ? ' checked' : '') + '> Hors-compétence M7 : cette carte paie double (×2 XP)');
+                mv.appendChild(xl);
+                list.appendChild(mv);
+            })();
+            if (p.id === 'O13' || p.id === 'O1' || p.id === 'O15') {
+                list.appendChild(el('div', 'fab-ctx-sec', 'Condition optionnelle (M5)'));
+                (function () {
+                    var cv = el('div', 'fab-ctx-var', '');
+                    var linked = !!(state.plink[p.id] && state.plink[p.id].t === 'cond' && state.plink[p.id].id === 'critique');
+                    var cl = el('label', '', '<input type="checkbox" data-opt-cond="critique" data-mid="' + esc(p.id) + '"' +
+                        (linked ? ' checked' : '') + '> Sur critique : −1 XP par cumul');
+                    cv.appendChild(cl);
+                    cv.appendChild(el('div', 'fab-ctx-foot', 'Lie la carte Prérequis Sur critique (lane du haut).'));
+                    list.appendChild(cv);
+                })();
+            }
             list.appendChild(el('div', 'fab-ctx-sec', 'Nœud'));
             var rr2 = el('div', 'fab-ctx-row', '');
             var del = el('button', 'fab-mini-btn', '⤴ Retirer ce nœud');
@@ -1228,7 +1439,7 @@ function initFabrique() {
         if (menu && menu.kind === 'piece' && !present(menu.id)) menu = null;
         if (menu && menu.kind === 'need' && !present(menu.id)) menu = null;
         if (menu && menu.kind === 'preq' && state.conds.indexOf(menu.id) < 0) menu = null;
-        renderGraph(sel);
+        renderGraph(sel, r);
         renderMenu();
         var name = (document.getElementById('fabName') || {}).value || '';
         var desc = (document.getElementById('fabDesc') || {}).value || '';
@@ -1246,9 +1457,10 @@ function initFabrique() {
         if (!r.lines.length) prev.list.innerHTML = '<li><em>Clique ◆ puis ⊕ pour monter ton graphe.</em></li>';
         r.lines.forEach(function (l) {
             var li = document.createElement('li');
-            li.textContent = l.label + ' — ' + l.xp + ' XP + ' + l.pa + ' PA' + (l.narrow ? ' (−1 étroite)' : '');
+            li.textContent = l.label + ' — ' + l.xp + ' XP + ' + l.pa + ' PA' + (l.narrow ? ' (−' + (typeof l.narrow === 'number' ? l.narrow : 1) + ' étroite)' : '');
             prev.list.appendChild(li);
         });
+        if (prev.check) {
         prev.check.innerHTML = '';
         function ck(ok, txt) {
             var li = document.createElement('li');
@@ -1264,16 +1476,17 @@ function initFabrique() {
             li.style.color = 'var(--temporal-amber)';
             prev.check.appendChild(li);
         });
+        }
         save();
         return r;
     }
 
     /* --- Presets (montages vérifiés du Livre III §14). --- */
     var PRESETS = {
-        hache: { chassis: 'C0', qty: { O2: 1 }, conds: ['arme'], plink: { O2: { t: 'cond', id: 'arme' } }, name: 'Hache de Guerre (canonique)', desc: 'Sur succès net : +2 dégâts.' },
-        suture: { chassis: 'C0', qty: { U1: 1 }, conds: ['contact'], plink: { U1: { t: 'cond', id: 'contact' } }, name: 'Suture Réflexe (canonique)', desc: 'Les premiers soins d’urgence passent de 3 à 2 PA.' },
-        miroir: { chassis: 'C3', qty: { D1: 1 }, conds: ['contact'], plink: { D1: { t: 'cond', id: 'contact' } }, name: 'Lame Miroir (canonique)', desc: 'Tu pares les tirs laser au contact (Delta ≥ 0).' },
-        fente: { chassis: 'C2', qty: { O8: 1, O10: 1 }, name: 'Fente Basse', desc: 'Tu passes sous la garde et tu fauches le jarret.' }
+        hache: { chassis: 'C0', ensSkill: "Maniement d'Arme", qty: { O2: 1 }, conds: ['arme'], plink: { O2: { t: 'cond', id: 'arme' } }, name: 'Hache de Guerre (canonique)', desc: 'Sur succès net : +2 dégâts.' },
+        suture: { chassis: 'C0', ensSkill: 'Premiers Soins', qty: { U1: 1 }, conds: ['contact'], plink: { U1: { t: 'cond', id: 'contact' } }, name: 'Suture Réflexe (canonique)', desc: 'Les premiers soins d’urgence passent de 3 à 2 PA.' },
+        miroir: { chassis: 'C3', ensSkill: "Maniement d'Arme", qty: { D1: 1 }, conds: ['contact'], plink: { D1: { t: 'cond', id: 'contact' } }, name: 'Lame Miroir (canonique)', desc: 'Tu pares les tirs laser au contact (Delta ≥ 0).' },
+        fente: { chassis: 'C2', ensSkill: "Maniement d'Arme", qty: { O8: 1, O20: 1 }, name: 'Fente Basse', desc: 'Tu passes sous la garde et tu fauches le jarret.' }
     };
     function applyPreset(key) {
         var p = PRESETS[key];
@@ -1286,6 +1499,11 @@ function initFabrique() {
             state.order.push(id);
         });
         state.o19 = 'partiel'; state.u7 = '5'; state.u11 = {};
+        state.mods = {};
+        state.ensSkill = p.ensSkill || '';
+        Object.keys(p.mods || {}).forEach(function (id) {
+            if (P(id)) state.mods[id] = p.mods[id];
+        });
         state.conds = (p.conds || []).filter(function (id) { return !!conditionById(id); });
         state.plink = {};
         Object.keys(p.plink || {}).forEach(function (eid) {
@@ -1309,8 +1527,9 @@ function initFabrique() {
             localStorage.setItem(SAVE_KEY, JSON.stringify({
                 chassis: state.chassis, qty: state.qty, order: state.order, conds: state.conds, plink: state.plink,
                 condSkill: state.condSkill,
+                ensSkill: state.ensSkill || '',
                 o19: sel.o19, u7: sel.u7, u11: sel.u11,
-                range: sel.range, zone: sel.zone, dur: sel.dur, cross: sel.cross,
+                mods: sel.mods,
                 name: (document.getElementById('fabName') || {}).value || '',
                 desc: (document.getElementById('fabDesc') || {}).value || ''
             }));
@@ -1322,6 +1541,18 @@ function initFabrique() {
             if (!raw) return;
             var d = JSON.parse(raw);
             if (!d || typeof d !== 'object') return;
+            if (d.qty && (d.qty.O14 | 0) > 0) {
+                /* O14 supprimée : devient Repousse x3 + Sur critique liée. */
+                delete d.qty.O14;
+                if (d.mods) delete d.mods.O14;
+                if (d.plink) delete d.plink.O14;
+                d.qty.O13 = 3;
+                if (d.order && d.order.indexOf && d.order.indexOf('O13') < 0) d.order.push('O13');
+                d.conds = d.conds || [];
+                if (d.conds.indexOf('critique') < 0) d.conds.push('critique');
+                d.plink = d.plink || {};
+                d.plink.O13 = { t: 'cond', id: 'critique' };
+            }
             if (d.chassis && C(d.chassis)) state.chassis = d.chassis;
             if (d.qty) {
                 Object.keys(d.qty).forEach(function (id) {
@@ -1336,6 +1567,57 @@ function initFabrique() {
             if (typeof d.o19 === 'string') state.o19 = d.o19;
             if (typeof d.u7 === 'string') state.u7 = d.u7;
             if (d.u11 && typeof d.u11 === 'object') state.u11 = d.u11;
+            if (typeof d.ensSkill === 'string' && d.ensSkill) {
+                var okEns = false;
+                SKILLS.forEach(function (grp) { if (grp[1].indexOf(d.ensSkill) >= 0) okEns = true; });
+                if (okEns) state.ensSkill = d.ensSkill;
+            } else if (!d.ensSkill && d.conds && d.conds.indexOf('compet') >= 0 && typeof d.condSkill === 'string' && d.condSkill) {
+                /* Migration : l'ancienne carte 'Compétence entraînée' devient le lien d'ensemble. */
+                var okMig = false;
+                SKILLS.forEach(function (grp) { if (grp[1].indexOf(d.condSkill) >= 0) okMig = true; });
+                if (okMig) state.ensSkill = d.condSkill;
+            }
+            if (d.mods && typeof d.mods === 'object') {
+                Object.keys(d.mods).forEach(function (id) {
+                    if (!P(id) || (state.qty[id] | 0) <= 0) return;
+                    var m = d.mods[id] || {};
+                    var rg = m.range | 0;
+                    state.mods[id] = {
+                        range: Math.max(0, Math.min(2, rg)),
+                        zone: !!m.zone, dur: Math.max(0, Math.min(2, m.dur | 0)), cross: !!m.cross
+                    };
+                    if (!state.mods[id].range && !state.mods[id].zone && !state.mods[id].dur && !state.mods[id].cross)
+                        delete state.mods[id];
+                });
+            } else if ((d.range | 0) || d.zone || (d.dur | 0) || d.cross) {
+                /* Migration : les anciens modificateurs globaux rejoignent la 1re carte compatible. */
+                var olds = { range: d.range | 0, zone: !!d.zone, dur: d.dur | 0, cross: !!d.cross };
+                var targets = state.order.filter(function (id) { return P(id); });
+                if (olds.range && !(olds.range === 2 || olds.range === 4)) olds.range = 0;
+                olds.dur = Math.max(0, Math.min(2, olds.dur));
+                var placed = false;
+                targets.forEach(function (id) {
+                    if (placed) return;
+                    var pp = P(id);
+                    var ok = true;
+                    if (olds.range && !modRangeOk(pp).ok) ok = false;
+                    if (olds.zone && !modZoneOk(pp).ok) ok = false;
+                    if (olds.dur && !modDurOk(pp).ok) ok = false;
+                    if (ok && (olds.range || olds.zone || olds.dur)) {
+                        state.mods[id] = { range: olds.range, zone: olds.zone, dur: olds.dur, cross: false };
+                        placed = true;
+                    }
+                });
+                if (olds.cross && !placed && targets.length) {
+                    targets.forEach(function (id) {
+                        var cur = state.mods[id] || { range: 0, zone: false, dur: 0, cross: false };
+                        cur.cross = true;
+                        state.mods[id] = cur;
+                    });
+                } else if (olds.cross && placed) {
+                    Object.keys(state.mods).forEach(function (id) { state.mods[id].cross = true; });
+                }
+            }
             if (typeof d.condSkill === 'string' && d.condSkill) {
                 var okSkill = false;
                 SKILLS.forEach(function (grp) { if (grp[1].indexOf(d.condSkill) >= 0) okSkill = true; });
@@ -1366,16 +1648,6 @@ function initFabrique() {
         } catch (e) { /* sauvegarde illisible */ }
     }
     function restoreInputs() {
-        var d = state._rest;
-        if (!d) return;
-        var rr = document.querySelector('input[name="fabRange"][value="' + (d.range | 0) + '"]');
-        if (rr) rr.checked = true;
-        var zo = document.getElementById('fabZone');
-        if (zo) zo.checked = !!d.zone;
-        var du = document.getElementById('fabDur');
-        if (du) du.value = String(d.dur | 0);
-        var cx = document.getElementById('fabCross');
-        if (cx) cx.checked = !!d.cross;
         state._rest = null;
     }
 
@@ -1449,6 +1721,7 @@ function initFabrique() {
             var txt = '=== TECHNIQUE MAISON (Fabrique, Livre III §14) ===\n' +
                 'Nom : ' + prev.name.textContent + '\n' +
                 'Nature : ' + prev.type.textContent + '\n' +
+                'Compétence liée : ' + (state.ensSkill || '—') + ' (entraînée)\n' +
                 'Activation : ' + r.pa + ' PA · Création : ' + r.xp + ' XP' + (r.crossed ? ' (croisé)' : '') + '\n\n' +
                 'Description : ' + prev.desc.textContent + '\n\n' +
                 'Prérequis : ' + (condNames.length ? condNames.join(', ') + ' (gratuits)' : 'aucun') + '\n\nDétail :\n' +
@@ -1486,9 +1759,52 @@ function initFabrique() {
         var t = ev.target;
         if (!t || !t.dataset) return;
         if (t.dataset.condskill) { state.condSkill = t.value; render(); return; }
+        if (t.dataset.ensSkill) { state.ensSkill = t.value || ''; render(); return; }
         if (t.dataset.varO19) { state.o19 = t.value; render(); return; }
         if (t.dataset.varU7) { state.u7 = t.value; render(); return; }
         if (t.dataset.varU11) { toggleU11(t.dataset.sub); return; }
+        if (t.dataset.modRange !== undefined) {
+            var mr = t.dataset.mid;
+            if (mr && P(mr)) { setMod(mr, { range: (parseInt(t.value, 10) || 1) - 1 }); render(); }
+            return;
+        }
+        if (t.dataset.modZone !== undefined) {
+            var mz = t.dataset.mid;
+            if (mz && P(mz)) { setMod(mz, { zone: !!t.checked }); render(); }
+            return;
+        }
+        if (t.dataset.modDur !== undefined) {
+            var md = t.dataset.mid;
+            if (md && P(md)) {
+                var v = Math.max(0, Math.min(2, parseInt(t.value, 10) || 0));
+                t.value = String(v);
+                setMod(md, { dur: v }); render();
+            }
+            return;
+        }
+        if (t.dataset.modCross !== undefined) {
+            var mx = t.dataset.mid;
+            if (mx && P(mx)) { setMod(mx, { cross: !!t.checked }); render(); }
+            return;
+        }
+        if (t.dataset.optCond !== undefined) {
+            var mo = t.dataset.mid;
+            if (mo && P(mo)) {
+                if (t.checked) {
+                    if (state.conds.indexOf(t.dataset.optCond) < 0) state.conds.push(t.dataset.optCond);
+                    state.plink[mo] = { t: 'cond', id: t.dataset.optCond };
+                } else if (state.plink[mo] && state.plink[mo].t === 'cond' && state.plink[mo].id === t.dataset.optCond) {
+                    delete state.plink[mo];
+                    var still = false;
+                    Object.keys(state.plink).forEach(function (e) {
+                        if (state.plink[e].t === 'cond' && state.plink[e].id === t.dataset.optCond) still = true;
+                    });
+                    if (!still) state.conds = state.conds.filter(function (x) { return x !== t.dataset.optCond; });
+                }
+                render();
+            }
+            return;
+        }
         if (t.classList && t.classList.contains('fab-input')) { render(); return; }
     });
     root.addEventListener('input', function (ev) {
@@ -1502,6 +1818,8 @@ function initFabrique() {
         /* Listes et cases : on attend le 'change' (commit). Re-rendre ici
            détruirait le contrôle en pleine interaction et le 'change'
            partirait dans le vide. */
+        if (t.dataset && (t.dataset.modDur !== undefined || t.dataset.modRange !== undefined ||
+            t.dataset.modZone !== undefined || t.dataset.modCross !== undefined)) return;
         if (t.tagName === 'SELECT' || t.type === 'checkbox' || t.type === 'radio') return;
         if (t.classList && t.classList.contains('fab-input')) { render(); return; }
         if (t && (t.id === 'fabName' || t.id === 'fabDesc')) render();
@@ -1565,6 +1883,10 @@ function initFabrique() {
     if (window.__FABDEBUG) window.__FABDEBUG.state = state;
 }
 
+FabriqueEngine.modRangeOk = modRangeOk;
+FabriqueEngine.modZoneOk = modZoneOk;
+FabriqueEngine.modDurOk = modDurOk;
+FabriqueEngine.modCrossOk = modCrossOk;
 if (typeof window !== 'undefined') {
     window.FabriqueEngine = FabriqueEngine;
     window.initFabrique = initFabrique;

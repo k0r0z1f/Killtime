@@ -3127,6 +3127,7 @@ table.codex-table tr:hover td, table.data-table tr:hover td {
 .fab-flag.req { border-color: var(--temporal-amber); color: var(--temporal-amber); }
 .fab-flag.no { border-color: var(--vital-ruby); color: var(--vital-ruby); }
 .fab-flag.star { border-color: var(--temporal-amber); color: var(--text-gold); }
+.fab-flag.mod { border-color: var(--arcane-cyan); color: var(--arcane-cyan); }
 .fab-placed-ctl { display: flex; gap: 6px; align-items: center; margin-top: 8px; flex-wrap: wrap; }
 .fab-mini-btn {
     background: var(--bg-surface-elevated);
