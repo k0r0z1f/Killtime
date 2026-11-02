@@ -3267,6 +3267,38 @@
           "suggestedAsset": "js/livre.js",
           "updated": "2026-11-02",
           "details": "FAIT 2026-11-02 — Mise en page : renderFormule (js/livre.js, 1 ligne) accepte wide:true → formula-box wide (gabarit CSS existant Livre V). fabrique_regle en wide + math 3 pastilles hl (4–6 XP / 7–8 XP / ≤ 6 PA). Vérifié : rendu réel, classe wide présente, L.III + L.IV verts."
+        },
+        {
+          "id": "RD-215",
+          "title": "Renumérotation X-XII : 39-52 → 40-53 (chap-39 à la Fabrique)",
+          "epic": "Codex sysRP",
+          "status": "done",
+          "priority": "medium",
+          "order": 32,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "data/livre_10.json",
+          "updated": "2026-11-02",
+          "details": "FAIT 2026-11-02 — data/livre_10/11/12.json (sections, symboles Chapitre, h3, §39.3→§40.3) + cross-refs livre_4/livre_7 (§41→42, §42→43) + atlas_mondes (urls + titres Livre XI/XII) + 18 HTML (navs globales, sidebars ACTIF, tocs, prose livre_9) + content/livre_10/11/12 (chap dirs + frontmatter). Scorie réparée : chap-chap- doublé par regex (18 fichiers). Vérifié : rendus L.X/L.XI/L.XII réels, refs OK, 0 errBox."
+        },
+        {
+          "id": "RD-216",
+          "title": "Livre IX chap-39 : Atelier Fabrique de Techniques (outil interactif)",
+          "epic": "Codex sysRP",
+          "status": "done",
+          "priority": "high",
+          "order": 33,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "js/fabrique.js",
+          "updated": "2026-11-02",
+          "details": "FAIT 2026-11-02 — Section chap-39 (toc + sidebar + navs globales + chapô). js/fabrique.js : moteur pur FabriqueEngine.compute (châssis + 1-3 pièces, paliers en filière, M1-M7, hybride auto, croisé ×2, plancher 4, signature 7-8, plafond PA 6, incompatibilités, prérequis) + initFabrique (build DOM depuis mecaniques.fabrique, validation live, presets Hache/Suture/Miroir/Fente, copie fiche, reset). js/tools.js : CodexData.l3 + hook gardé. Livre III §14 aligné (1-3 pièces, Soleil corrigée à 6 XP). Vérifié : 14 tests moteur OK, smoke DOM 4 XP/2 PA, node --check, 0 ID dupliqué."
         }
       ]
     },

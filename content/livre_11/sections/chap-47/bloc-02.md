@@ -1,11 +1,11 @@
 ---
-cible: sections.chap-46.blocs.2.html
+cible: sections.chap-47.blocs.2.html
 format: raw
 livre: 11
 ---
 
 
-                    <h3>46.2 Les Territoires de Vardis</h3>
+                    <h3>47.2 Les Territoires de Vardis</h3>
                     <ul>
                         <li><strong>Le District Impérial d'Atraxia :</strong> Zone industrielle quadrillée par des
                             miradors, des barrières à plasma et des tranchées d'artillerie lourde.</li>

@@ -8,11 +8,11 @@ let __toolsBooted = false;
 // Source unique (RP-074/082) : les data/livre_N.json priment ; en cas
 // d'échec de chargement (fichier local, hors-ligne), chaque module
 // garde ses miroirs intégrés en repli, sans changer de comportement.
-const CodexData = { l1: null, l2: null, l4: null, l7: null, l10: null };
+const CodexData = { l1: null, l2: null, l3: null, l4: null, l7: null, l10: null };
 window.CodexData = CodexData;
 
 async function loadCodexData() {
-    const urls = { l1: 'data/livre_1.json', l2: 'data/livre_2.json', l4: 'data/livre_4.json', l7: 'data/livre_7.json', l10: 'data/livre_10.json' };
+    const urls = { l1: 'data/livre_1.json', l2: 'data/livre_2.json', l3: 'data/livre_3.json', l4: 'data/livre_4.json', l7: 'data/livre_7.json', l10: 'data/livre_10.json' };
     await Promise.all(Object.keys(urls).map(async (k) => {
         try {
             const r = await fetch(urls[k], { cache: 'no-store' });
@@ -42,6 +42,7 @@ async function bootTools() {
     initDiceRoller();
     initChallengeResolver();
     initClairsentienceSimulator();
+    if (window.initFabrique) { try { initFabrique(); } catch (e) { /* atelier indisponible */ } }
 }
 window.bootTools = bootTools;
 

@@ -1,11 +1,11 @@
 ---
-cible: sections.chap-39.blocs.6.html
+cible: sections.chap-40.blocs.6.html
 format: raw
 livre: 10
 ---
 
 
-                    <h3>39.3 Les Trous de Ver Spatiaux (Raccourci Autorisé)</h3>
+                    <h3>40.3 Les Trous de Ver Spatiaux (Raccourci Autorisé)</h3>
                     <p>
                         Ni la Boucle Arrière ni la dérive balistique ne sont les seuls vecteurs : la
                         <strong>Cinquième Force</strong> permet de coudre deux points <strong>contemporains</strong> de
