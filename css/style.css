@@ -2724,7 +2724,7 @@ table.codex-table tr:hover td, table.data-table tr:hover td {
 }
 .codex-tip {
     position: fixed;
-    z-index: 200;
+    z-index: 9600;
     max-width: 300px;
     padding: 10px 12px;
     background: var(--bg-surface-elevated);

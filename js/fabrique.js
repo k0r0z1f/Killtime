@@ -7,7 +7,7 @@
    Graphe : 1 ensemble (racine ◆) (châssis) + 1 à 3 pièces dans 3 logements.
    Modificateurs sur la carte effet (pas hors graphe) : Portée totale 1 à 3 cases
    (base 1 gratuite, +2 XP/case), Zone M3
-   (O7 O20 O22 O23 O24 O25 — O7 + zone
+   (O7 O20 O22 O23 O24 O25 O26 O27 O28 — O7 + zone
    refusé règle 8), Durée M4 (O9/O20 « durée cumulable », 2 crans max), M7 ×2 (toute carte).
    ========================================================================== */
 (function () {
@@ -44,6 +44,11 @@ var KIND = {
         { v: 'p3', label: '3 ESS (+2 XP)', dx: 2, dpa: 0 },
         { v: 'p4', label: '4 ESS + 1 PA immédiat (+2 XP + 1 PA)', dx: 2, dpa: 1 },
         { v: 'p2x', label: '2×/combat (+2 XP)', dx: 2, dpa: 0 }
+    ]},
+    O28: { t: 'palier', opts: [
+        { v: '2', label: '2 résiduels (inclus)', dx: 0 },
+        { v: '3', label: '3 résiduels (+1 XP)', dx: 1 },
+        { v: '4', label: '4 résiduels (+2 XP)', dx: 2 }
     ]}
 };
 
@@ -76,12 +81,12 @@ var REPLACE = {};
 
 /* Compatibilité des modificateurs par carte effet (M1-M4/M7 sur la carte, pas hors graphe).
    Portée : base 1 case gratuite, +1 case (+2 XP, total 2) ou +2 cases (+4 XP, total 3 max).
-   Zone M3 : dégâts, statuts ou repoussée (O7 O20 O22 O23 O24 O25) ; O7 + zone
+   Zone M3 : dégâts, statuts ou repoussée (O7 O20 O22 O23 O24 O25 O26 O27 O28) ; O7 + zone
    refusé règle 8 (Absolus multi-cible, comme O7 + O15).
    Durée M4 : là où la table dit « durée cumulable » (O9, O20), 2 crans max.
    Hors-compétence M7 ×2 : toute carte (pièce d'une autre compétence). */
-var MOD_RANGE_EXCL = { O1: 'dégât instantané mono-attaque, sans portée propre', O13: 'repoussée : la distance, c’est la quantité (x3)', O18: 'passif de critique, pas de portée', O20: 'statut délivré par la frappe, sans portée propre', O21: 'statut délivré par la frappe, sans portée propre', O22: 'statut délivré par la frappe, sans portée propre', O23: 'statut délivré par la frappe, sans portée propre', O24: 'statut délivré par la frappe, sans portée propre', O25: 'statut délivré par la frappe, sans portée propre' };
-var MOD_ZONE_IDS = { O7: 1, O20: 1, O22: 1, O23: 1, O24: 1, O25: 1 };
+var MOD_RANGE_EXCL = { O1: 'dégât instantané mono-attaque, sans portée propre', O13: 'repoussée : la distance, c’est la quantité (x3)', O18: 'passif de critique, pas de portée', O20: 'statut délivré par la frappe, sans portée propre', O21: 'statut délivré par la frappe, sans portée propre', O22: 'statut délivré par la frappe, sans portée propre', O23: 'statut délivré par la frappe, sans portée propre', O24: 'statut délivré par la frappe, sans portée propre', O25: 'statut délivré par la frappe, sans portée propre', O26: 'statut délivré par la frappe, sans portée propre', O27: 'statut délivré par la frappe, sans portée propre', O28: 'saignement posé par la frappe, sans portée propre' };
+var MOD_ZONE_IDS = { O7: 1, O20: 1, O22: 1, O23: 1, O24: 1, O25: 1, O26: 1, O27: 1, O28: 1 };
 var MOD_DUR_IDS = { O9: 1, O20: 1 };
 function modRangeOk(p) {
     if (!p) return { ok: false, reason: 'Carte inconnue.' };
@@ -92,7 +97,7 @@ function modRangeOk(p) {
 function modZoneOk(p) {
     if (!p) return { ok: false, reason: 'Carte inconnue.' };
     if (p.id === 'O15') return { ok: false, reason: 'Zone : O15 est déjà multi-cible.' };
-    if (!MOD_ZONE_IDS[p.id]) return { ok: false, reason: 'Zone : dégâts, statuts ou repoussée uniquement (O7 O20 O22 O23 O24 O25).' };
+    if (!MOD_ZONE_IDS[p.id]) return { ok: false, reason: 'Zone : dégâts, statuts ou repoussée uniquement (O7 O20 O22 O23 O24 O25 O26 O27 O28).' };
     return { ok: true };
 }
 function modDurOk(p) {
@@ -193,6 +198,12 @@ var FabriqueEngine = {
                     if (sel.u11 && sel.u11[o.v]) { ux += o.dx; up += o.dpa; on.push(o.v); }
                 });
                 lines.push({ id: id, label: p.nom + (on.length ? ' (paliers ' + on.join(', ') + ')' : ' (base)'), xp: ux, pa: up, kind: 'piece', fam: p.famille });
+                return;
+            }
+            if (id === 'O28') {
+                var dx28 = 0;
+                (KIND.O28.opts).forEach(function (o) { if (o.v === sel.o28) dx28 = o.dx; });
+                lines.push({ id: id, label: p.nom + ' — ' + (sel.o28 || '2') + ' résiduels', xp: 2 + dx28, pa: 1, kind: 'piece', fam: p.famille });
                 return;
             }
             var k = KIND[id];
@@ -344,6 +355,7 @@ var NAME_BASE = {
     O18: 'Œil Critique',
     O20: 'Entrave', O21: 'Étourdissement', O22: 'Feinte',
     O23: 'Fauchage', O24: 'Chaîne', O25: 'Assommoir',
+    O26: 'Tétanie', O27: 'Panique', O28: 'Hémorragie',
     D1: 'Lame Miroir', D2: 'Rempart', D3: 'Peau de Fer', D4: 'Peau de Pierre',
     D5: 'Immunité', D6: 'Garde Absolue', D7: 'Veille', D8: 'Assise',
     U1: 'Geste Économe', U2: 'Second Souffle', U3: 'Élan Collectif',
@@ -444,6 +456,7 @@ function suggestDesc(CAT, sel) {
         if (!p) return;
         var s = scaledPieceText(p.texte || p.nom, id, qty[id] | 0);
         if (id === 'U7') s = s.replace(/\.\s*$/, '') + (DESC_U7[sel.u7] || DESC_U7['5']);
+        if (id === 'O28') s = s.replace(/2 à 4/, sel.o28 || '2');
         if (id === 'U11') {
             var subs = Object.keys(sel.u11 || {}).filter(function (v) { return sel.u11[v] && DESC_U11[v]; });
             if (subs.length) s = s.replace(/\.\s*$/, '') + ' (paliers : ' + subs.map(function (v) { return DESC_U11[v]; }).join(', ') + ').';
@@ -486,12 +499,20 @@ var FAB_REFS = [
     { k: 'sonné', href: 'livre_6.html#sec-25-1', tip: 'Sonné : aucune action. La créature tombe immédiatement à terre.' },
     { k: 'immobilisée', href: 'livre_6.html#sec-25-1', tip: 'Immobilisé : impossible de faire la moindre action de mouvement (§25.1).' },
     { k: 'immobilisé', href: 'livre_6.html#sec-25-1', tip: 'Immobilisé : impossible de faire la moindre action de mouvement (§25.1).' },
+    { k: 'paralysée', href: 'livre_6.html#sec-25-1', tip: 'Paralysé : aucune action ni réaction, incapacité totale (§25.1).' },
+    { k: 'paralysé', href: 'livre_6.html#sec-25-1', tip: 'Paralysé : aucune action ni réaction, incapacité totale (§25.1).' },
+    { k: 'agonisante', href: 'livre_6.html#sec-25-1', tip: 'Agonisant : aucune action raisonnée, fuite de 6 cases (1d8). Persiste jusqu’à stabilisation médicale.' },
+    { k: 'agonisant', href: 'livre_6.html#sec-25-1', tip: 'Agonisant : aucune action raisonnée, fuite de 6 cases (1d8). Persiste jusqu’à stabilisation médicale.' },
+    { k: 'saignement', href: 'livre_6.html#sec-25-1bis', tip: 'Saignement : PV directs en début de tour, puis −1/tour. Tout soin le stoppe (§25.1bis).' },
+    { k: 'saigne', href: 'livre_6.html#sec-25-1bis', tip: 'Saignement : PV directs en début de tour, puis −1/tour. Tout soin le stoppe (§25.1bis).' },
+    { k: 'résiduels', href: 'livre_6.html#sec-25-1bis', tip: 'Saignement : PV directs en début de tour, puis −1/tour. Tout soin le stoppe (§25.1bis).' },
+    { k: 'résiduel', href: 'livre_6.html#sec-25-1bis', tip: 'Saignement : PV directs en début de tour, puis −1/tour. Tout soin le stoppe (§25.1bis).' },
     { k: 'esquive', href: 'livre_3.html#chap-11', tip: 'Esquive : éviter un coup au dernier moment (AGI/RAP/INS, §11.2).' },
     { k: 'critique', href: 'livre_2.html#chap-8', tip: 'Critique : ton dé affiche son max (6 sur d6, 8 sur d8). Second jet sur la table (§8.1).' },
     { k: 'pa', href: 'livre_1.html#chap-4', tip: 'PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).' },
     { k: 'xp', href: 'livre_1.html#sec-5-3', tip: 'Spécialisation : 5 XP de la bonne banque ou du libre, au tarif normal (§5.3).' }
 ];
-var FAB_TERM_RE = /Encaissement|Essoufflement|essoufflement|Ralentie|Ralenti|À Terre|à terre|Déstabilisée|Déstabilisé|Étourdie|Étourdi|étourdie|étourdi|Sonnée|Sonné|sonnée|sonné|Immobilisée|Immobilisé|immobilisée|immobilisé|Absolus|Absolue|Absolu|absolus|absolue|absolu|Esquive|esquive|Critique|critique|\bPA\b|\bXP\b/g;
+var FAB_TERM_RE = /Encaissement|Essoufflement|essoufflement|Ralentie|Ralenti|À Terre|à terre|Déstabilisée|Déstabilisé|Étourdie|Étourdi|étourdie|étourdi|Sonnée|Sonné|sonnée|sonné|Immobilisée|Immobilisé|immobilisée|immobilisé|Paralysée|Paralysé|paralysée|paralysé|Agonisante|Agonisant|agonisante|agonisant|Saignement|saignement|Saigne|saigne|Résiduels|Résiduel|résiduels|résiduel|Absolus|Absolue|Absolu|absolus|absolue|absolu|Esquive|esquive|Critique|critique|\bPA\b|\bXP\b/g;
 function fabRefFor(m) {
     var k = String(m).toLowerCase();
     for (var i = 0; i < FAB_REFS.length; i++)
@@ -613,7 +634,7 @@ function initFabrique() {
 
     /* --- État : source unique, le DOM ne fait que l'afficher. --- */
     var state = { chassis: null, ensSkill: '', qty: {}, order: [], conds: [], plink: {}, condSkill: "Maniement d'Arme",
-                  u7: '5', u11: {}, mods: {} };
+                  u7: '5', u11: {}, o28: '2', mods: {} };
     var menu = null; /* {kind:'slot'|'piece'|'root', id, search} */
     var lastAuto = ''; /* dernier nom automatique proposé : le champ se remplit seul tant qu'il le suit */
     var lastDesc = ''; /* idem pour la description narrative */
@@ -806,7 +827,7 @@ function initFabrique() {
         state.order = [];
         state.conds = [];
         state.plink = {};
-        state.u7 = '5'; state.u11 = {};
+        state.u7 = '5'; state.u11 = {}; state.o28 = '2';
         state.condSkill = DEFAULT_SKILL;
         state.ensSkill = '';
         state.u11auto = false;
@@ -885,7 +906,7 @@ function initFabrique() {
         else state.mods[id] = m;
     }
     function buildSel() {
-        var sel = { chassis: state.chassis, ensSkill: state.ensSkill || '', qty: {}, u7: state.u7, u11: {},
+        var sel = { chassis: state.chassis, ensSkill: state.ensSkill || '', qty: {}, u7: state.u7, u11: {}, o28: state.o28,
                     narrow: 0, mods: {} };
         sel.conds = state.conds.slice();
         sel.plink = {};
@@ -1050,6 +1071,7 @@ function initFabrique() {
             var head = '<div class="fab-placed-head"><strong>' + esc(nm) + '</strong>' +
                 '<span class="fab-placed-cost">' + esc(costTxt) + '</span></div>';
             var sub = esc(p.cond || scaledPieceText(p.texte, id, qq) || '');
+            if (id === 'O28') sub = sub.replace(/2 à 4/, state.o28 || '2');
             var vs = variantSummary(id);
             if (vs) sub += ' — ' + esc(vs);
             if (qq > 1 && sub.indexOf('×' + qq) < 0 && nm === String(p.nom)) sub += ' — ×' + qq;
@@ -1394,7 +1416,7 @@ function initFabrique() {
             if (!p) { closeMenu(); return; }
             var info = lockInfo(p);
             var k = KIND[p.id];
-            if (k && (p.id === 'U7' || p.id === 'U11')) {
+            if (k && (p.id === 'U7' || p.id === 'U11' || p.id === 'O28')) {
                 list.appendChild(el('div', 'fab-ctx-sec', 'Variante'));
                 var vv = el('div', 'fab-ctx-var', '');
                 if (p.id === 'U7') {
@@ -1410,6 +1432,19 @@ function initFabrique() {
                     });
                     lab.appendChild(sel7);
                     vv.appendChild(lab);
+                } else if (p.id === 'O28') {
+                    var lab28 = el('label', '', 'Résiduels ');
+                    var sel28 = document.createElement('select');
+                    sel28.className = 'tool-select fab-input';
+                    sel28.setAttribute('data-var-o28', '1');
+                    KIND.O28.opts.forEach(function (o) {
+                        var op28 = document.createElement('option');
+                        op28.value = o.v; op28.textContent = o.label;
+                        if ((state.o28 || '2') === o.v) op28.selected = true;
+                        sel28.appendChild(op28);
+                    });
+                    lab28.appendChild(sel28);
+                    vv.appendChild(lab28);
                 } else if (p.id === 'U11') {
                     var c0u = state.chassis === 'C0';
                     KIND.U11.opts.forEach(function (o) {
@@ -1696,7 +1731,7 @@ function initFabrique() {
             state.qty[id] = p.qty[id];
             state.order.push(id);
         });
-        state.u7 = '5'; state.u11 = {};
+        state.u7 = '5'; state.u11 = {}; state.o28 = '2';
         state.mods = {};
         state.ensSkill = p.ensSkill || '';
         Object.keys(p.mods || {}).forEach(function (id) {
@@ -1726,7 +1761,7 @@ function initFabrique() {
                 chassis: state.chassis, qty: state.qty, order: state.order, conds: state.conds, plink: state.plink,
                 condSkill: state.condSkill,
                 ensSkill: state.ensSkill || '',
-                u7: sel.u7, u11: sel.u11,
+                u7: sel.u7, u11: sel.u11, o28: sel.o28,
                 mods: sel.mods,
                 name: (document.getElementById('fabName') || {}).value || '',
                 desc: (document.getElementById('fabDesc') || {}).value || ''
@@ -1763,6 +1798,7 @@ function initFabrique() {
                 });
             }
             if (typeof d.u7 === 'string') state.u7 = d.u7;
+            if (typeof d.o28 === 'string') state.o28 = d.o28;
             if (d.u11 && typeof d.u11 === 'object') state.u11 = d.u11;
             if (typeof d.ensSkill === 'string' && d.ensSkill) {
                 var okEns = false;
@@ -1966,6 +2002,7 @@ function initFabrique() {
         if (t.dataset.condskill) { state.condSkill = t.value; render(); return; }
         if (t.dataset.ensSkill) { state.ensSkill = t.value || ''; render(); return; }
         if (t.dataset.varU7) { state.u7 = t.value; render(); return; }
+        if (t.dataset.varO28) { state.o28 = t.value; render(); return; }
         if (t.dataset.varU11) { toggleU11(t.dataset.sub); return; }
         if (t.dataset.modRange !== undefined) {
             var mr = t.dataset.mid;

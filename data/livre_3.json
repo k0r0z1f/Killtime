@@ -1960,6 +1960,24 @@
      "Sur touche."
     ],
     [
+     "3",
+     "1",
+     "<strong>Paralysé</strong> — La cible est Paralysée jusqu'à la fin de son prochain tour (aucune action ni réaction).",
+     "Sur touche."
+    ],
+    [
+     "2",
+     "1",
+     "<strong>Agonisant</strong> — La cible panique et fuit (6 cases) jusqu'à la fin de son prochain tour (affolée).",
+     "Sur touche."
+    ],
+    [
+     "2",
+     "1",
+     "<strong>Saignement</strong> — La cible subit 2 à 4 résiduels.",
+     "Sur touche. Paliers 2 (inclus) · 3 (+1 XP) · 4 (+2 XP)."
+    ],
+    [
      "2",
      "0",
      "<strong>Repousse 1 case</strong> — Sur succès net, la cible recule d’1 case.",
@@ -1974,7 +1992,7 @@
     [
      "4",
      "0",
-     "<strong>Critique élargi</strong> — Critique dès 11-12 au dé, ou auto-critique 1/combat.",
+     "<strong>Critique élargi</strong> — Critique sur le max ou la face juste en dessous (ex : 5-6 sur d6, 11-12 sur d12).",
      "Prérequis filière : 3 pièces de la même arme."
     ]
    ]
@@ -5238,7 +5256,7 @@
      ],
      "seuil": null,
      "incompatible": [],
-     "texte": "Ton critique arrive dès 11-12 (ou auto-crit 1/combat)."
+     "texte": "Ton critique arrive sur le max ou la face juste en dessous (ex : 5-6 sur d6, 11-12 sur d12)."
     },
     {
      "id": "O20",
@@ -5317,6 +5335,45 @@
      "seuil": "touche",
      "incompatible": [],
      "texte": "Sur touche, ta cible est Sonnée jusqu'à la fin de son prochain tour."
+    },
+    {
+     "id": "O26",
+     "nom": "Paralysé",
+     "famille": "offensif",
+     "cout_xp": "3",
+     "cout_pa": "1",
+     "cumul": false,
+     "portee": "universel",
+     "prerequis": [],
+     "seuil": "touche",
+     "incompatible": [],
+     "texte": "Sur touche, ta cible est Paralysée jusqu'à la fin de son prochain tour (aucune action ni réaction)."
+    },
+    {
+     "id": "O27",
+     "nom": "Agonisant",
+     "famille": "offensif",
+     "cout_xp": "2",
+     "cout_pa": "1",
+     "cumul": false,
+     "portee": "universel",
+     "prerequis": [],
+     "seuil": "touche",
+     "incompatible": [],
+     "texte": "Sur touche, ta cible panique : Agonisante jusqu'à la fin de son prochain tour (elle fuit 6 cases, affolée)."
+    },
+    {
+     "id": "O28",
+     "nom": "Saignement",
+     "famille": "offensif",
+     "cout_xp": "2",
+     "cout_pa": "1",
+     "cumul": false,
+     "portee": "universel",
+     "prerequis": [],
+     "seuil": "touche",
+     "incompatible": [],
+     "texte": "Sur touche, tu poses 2 à 4 résiduels à ta cible."
     },
     {
      "id": "D1",
