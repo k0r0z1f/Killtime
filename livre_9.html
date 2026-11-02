@@ -1635,12 +1635,13 @@
 
                         <p>
                             Tu as lu le <a href="livre_3.html#chap-14">chapitre 14 (Fabrique de Techniques)</a> ?
-                            Alors monte ta technique ici, pièce par pièce. L'atelier compte les XP et les PA tout seul,
-                            il vérifie les 9 règles, et il te dit quand ton MJ doit signer (signature 7–8 XP).
-                            Essaie d'abord un montage vérifié — puis bricole le tien.
+                            Alors assemble ta technique comme un puzzle. Choisis un <strong>ensemble</strong> (le châssis),
+                            puis emboîte <strong>1 à 3 pièces</strong> dans ses logements.
+                            Chaque pièce dit ce qu'elle demande et ce qu'elle refuse.
+                            L'atelier compte les XP et les PA tout seul, et il te dit quand ton MJ doit signer (7–8 XP).
                         </p>
 
-                        <div class="tool-section">
+                        <div class="tool-section" id="fabPuzzle">
                             <div class="tool-header-bar">
                                 <div class="tool-title">
                                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -1649,10 +1650,11 @@
                                         <polyline points="2 17 12 22 22 17" />
                                         <polyline points="2 12 12 17 22 12" />
                                     </svg>
-                                    Atelier de la Fabrique
+                                    Atelier puzzle de la Fabrique
                                 </div>
                                 <div class="tool-badge-row">
                                     <span class="pill-badge amber">Standard 4–6 XP · Signature 7–8 XP (MJ)</span>
+                                    <span class="pill-badge cyan" id="fabBudgetBadge">0 XP · 0 PA</span>
                                 </div>
                             </div>
 
@@ -1672,62 +1674,55 @@
 
                             <h4
                                 style="margin: 20px 0 10px; font-family: var(--font-mono); font-size: 0.85rem; color: var(--temporal-amber); text-transform: uppercase;">
-                                1. Châssis (un seul — il dit quand ça part)
+                                1. Ensemble (un seul — il dit quand ça part)
                             </h4>
-                            <div id="fabChassis"
-                                style="background: rgba(0,0,0,0.25); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 14px;">
-                            </div>
+                            <div id="fabChassis" class="fab-ensemble-row"></div>
 
-                            <h4
-                                style="margin: 20px 0 10px; font-family: var(--font-mono); font-size: 0.85rem; color: var(--arcane-cyan); text-transform: uppercase;">
-                                2. Pièces (1 à 3 — paliers cochés = filière incluse)
-                            </h4>
-                            <div class="tool-grid-2">
-                                <div
-                                    style="background: rgba(0,0,0,0.25); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 14px;">
-                                    <h5
-                                        style="color: var(--vital-ruby); font-family: var(--font-mono); font-size: 0.82rem; margin-bottom: 10px; text-transform: uppercase;">
-                                        Offensif
-                                    </h5>
-                                    <div id="fabFam-offensif"></div>
+                            <div class="fab-puzzle-layout">
+                                <div class="fab-board-col">
+                                    <h4
+                                        style="margin: 20px 0 10px; font-family: var(--font-mono); font-size: 0.85rem; color: var(--matrix-emerald); text-transform: uppercase;">
+                                        2. Plateau — 3 logements (filières = grosse pièce)
+                                    </h4>
+                                    <div id="fabBoard" class="fab-board" aria-live="polite"></div>
+                                    <h4
+                                        style="margin: 16px 0 10px; font-family: var(--font-mono); font-size: 0.85rem; color: var(--vital-ruby); text-transform: uppercase;">
+                                        Contrôle MJ (en direct)
+                                    </h4>
+                                    <ul id="fabChecklist" class="spell-effects-list">
+                                        <li><em>Choisis un ensemble, puis emboîte 1 à 3 pièces.</em></li>
+                                    </ul>
                                 </div>
-                                <div
-                                    style="background: rgba(0,0,0,0.25); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 14px;">
-                                    <h5
-                                        style="color: var(--arcane-cyan); font-family: var(--font-mono); font-size: 0.82rem; margin-bottom: 10px; text-transform: uppercase;">
-                                        Défensif
-                                    </h5>
-                                    <div id="fabFam-defensif"></div>
-                                </div>
-                                <div
-                                    style="background: rgba(0,0,0,0.25); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 14px;">
-                                    <h5
-                                        style="color: var(--matrix-emerald); font-family: var(--font-mono); font-size: 0.82rem; margin-bottom: 10px; text-transform: uppercase;">
-                                        Utilitaire
-                                    </h5>
-                                    <div id="fabFam-utilitaire"></div>
-                                </div>
-                                <div
-                                    style="background: rgba(0,0,0,0.25); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 14px;">
-                                    <h5
-                                        style="color: var(--temporal-amber); font-family: var(--font-mono); font-size: 0.82rem; margin-bottom: 10px; text-transform: uppercase;">
-                                        Social
-                                    </h5>
-                                    <div id="fabFam-social"></div>
+                                <div class="fab-tray-col">
+                                    <h4
+                                        style="margin: 20px 0 10px; font-family: var(--font-mono); font-size: 0.85rem; color: var(--arcane-cyan); text-transform: uppercase;">
+                                        3. Pièces — clique ou glisse vers le plateau
+                                    </h4>
+                                    <div class="fab-tray-filters" role="tablist" aria-label="Filtrer les pièces">
+                                        <button class="tool-btn secondary fab-filter sel" data-fam="all">Toutes</button>
+                                        <button class="tool-btn secondary fab-filter" data-fam="offensif">Offensif</button>
+                                        <button class="tool-btn secondary fab-filter" data-fam="defensif">Défensif</button>
+                                        <button class="tool-btn secondary fab-filter" data-fam="utilitaire">Utilitaire</button>
+                                        <button class="tool-btn secondary fab-filter" data-fam="social">Social</button>
+                                    </div>
+                                    <div class="fab-tray">
+                                        <div id="fabFam-offensif" class="fab-tray-fam"></div>
+                                        <div id="fabFam-defensif" class="fab-tray-fam"></div>
+                                        <div id="fabFam-utilitaire" class="fab-tray-fam"></div>
+                                        <div id="fabFam-social" class="fab-tray-fam"></div>
+                                    </div>
                                 </div>
                             </div>
 
                             <h4
                                 style="margin: 20px 0 10px; font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-secondary); text-transform: uppercase;">
-                                3. Modificateurs
+                                4. Finitions (modificateurs — les bords du puzzle)
                             </h4>
-                            <div id="fabModifs"
-                                style="background: rgba(0,0,0,0.25); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 14px;">
-                            </div>
+                            <div id="fabModifs" class="fab-modifs"></div>
 
                             <h4
                                 style="margin: 20px 0 10px; font-family: var(--font-mono); font-size: 0.85rem; color: var(--arcane-cyan); text-transform: uppercase;">
-                                Montages vérifiés (un clic = la fiche se remplit)
+                                Montages vérifiés (un clic = le puzzle se remplit)
                             </h4>
                             <div class="tool-btn-row">
                                 <button class="tool-btn" data-preset="hache">Hache de Guerre · 5 XP</button>
@@ -1735,14 +1730,6 @@
                                 <button class="tool-btn" data-preset="miroir">Lame Miroir · 4 XP</button>
                                 <button class="tool-btn" data-preset="fente">Fente Basse · 4 XP</button>
                             </div>
-
-                            <h4
-                                style="margin: 20px 0 10px; font-family: var(--font-mono); font-size: 0.85rem; color: var(--temporal-amber); text-transform: uppercase;">
-                                Contrôle MJ (en direct)
-                            </h4>
-                            <ul id="fabChecklist" class="spell-effects-list">
-                                <li><em>Choisis un châssis puis 1 à 3 pièces.</em></li>
-                            </ul>
 
                             <!-- FICHE DE LA TECHNIQUE EN DIRECT -->
                             <div class="spell-card-preview">
@@ -1759,7 +1746,7 @@
                                 <div class="spell-card-body">
                                     <p id="fabCardDesc">Tu passes sous la garde et tu fauches le jarret.</p>
                                     <ul class="spell-effects-list" id="fabCardEffectsList">
-                                        <li><em>Choisis un châssis puis 1 à 3 pièces.</em></li>
+                                        <li><em>Choisis un ensemble puis 1 à 3 pièces.</em></li>
                                     </ul>
                                 </div>
                             </div>
@@ -1900,7 +1887,7 @@
 
     <!-- Scripts partagés et interactifs -->
     <script src="js/codex.js"></script>
-    <script src="js/fabrique.js?v=1"></script>
+    <script src="js/fabrique.js?v=2"></script>
     <script src="js/tools.js?v=9"></script>
 
     <!-- Scripts Authentification -->

@@ -1,9 +1,12 @@
 /* ==========================================================================
-   FABRIQUE DE TECHNIQUES (Livre III chap-14, Livre IX chap-39).
-   Moteur pur FabriqueEngine.compute(sel, CAT) + initFabrique() qui monte
-   l'atelier depuis data/livre_3.json (mecaniques.fabrique).
-   Règles : standard 4-6 XP, signature 7-8 XP (MJ), activation ≤ 6 PA,
-   plancher 4 XP, 1 châssis, 2-4 pièces, paliers en filière, incompatibilités.
+   FABRIQUE DE TECHNIQUES — ATELIER PUZZLE (Livre III chap-14, Livre IX chap-40).
+   Moteur pur FabriqueEngine.compute (inchangé : châssis + 1-3 pièces,
+   paliers en filière, M1-M7, hybride auto, croisé ×2, plancher 4,
+   signature 7-8, plafond PA 6, incompatibilités, prérequis) + initFabrique()
+   qui monte le puzzle depuis data/livre_3.json (mecaniques.fabrique).
+   Puzzle : 1 ensemble (châssis) + pièces qui s'emboîtent dans 3 logements.
+   Les filières (O4→O5→O6, O13→O14) sont des grosses pièces : elles prennent
+   2-3 logements d'un coup, prérequis inclus.
    ========================================================================== */
 (function () {
 'use strict';
@@ -75,9 +78,9 @@ var FabriqueEngine = {
         /* 1. Châssis. */
         var ch = sel.chassis ? C(sel.chassis) : null;
         if (!ch) {
-            errors.push('Choisis un châssis : il dit quand ta technique part.');
+            errors.push('Choisis un ensemble : il dit quand ta technique part.');
         } else {
-            lines.push({ id: 'chassis', label: 'Châssis — ' + ch.nom, xp: toInt(ch.cout_xp), pa: toInt(ch.cout_pa), kind: 'chassis' });
+            lines.push({ id: 'chassis', label: 'Ensemble — ' + ch.nom, xp: toInt(ch.cout_xp), pa: toInt(ch.cout_pa), kind: 'chassis' });
         }
 
         /* 2. Pré-requis auto (filières linéaires). */
@@ -164,13 +167,10 @@ var FabriqueEngine = {
         });
 
         /* 4. Règles de comptage : 1 châssis + 1 à 3 pièces. */
-        if (counted < 1) errors.push('1 pièce minimum (châssis seul ne suffit pas).');
+        if (counted < 1) errors.push('1 pièce minimum (un ensemble seul ne suffit pas).');
         if (counted > 3) errors.push('3 pièces maximum : au-delà, ce sont deux techniques sœurs.');
-        if (sel.chassis === 'C3' || (ch && ch.id === 'C3')) {
-            /* Réaction : rien de plus, le +2 est dans le châssis. */
-        }
         if (has('O17') && sel.chassis !== 'C3')
-            errors.push('Contre-attaque / interception (O17) exige le châssis Réaction.');
+            errors.push('Contre-attaque / interception (O17) exige l\u2019ensemble Réaction.');
         if ((has('D1') || has('D3')) === false && has('D8'))
             errors.push('Ignore un malus (D8) exige D1 ou D3 (filière défensive).');
         if (has('O12') && !(has('O10') || has('O11')))
@@ -185,7 +185,7 @@ var FabriqueEngine = {
             var activePA = 0;
             lines.forEach(function (l) { if (l.kind === 'piece') activePA += l.pa; });
             if (activePA > 0)
-                warnings.push('Châssis passif + pièces à PA : passe en action principale, ou justifie auprès du MJ.');
+                warnings.push('Ensemble passif + pièces à PA : passe en action principale, ou justifie auprès du MJ.');
         }
         /* Incompatibilités. */
         var INCOMP = [['O7', 'O15'], ['D6', 'D1'], ['D6', 'D2'], ['D6', 'D3'], ['D6', 'D4']];
@@ -245,7 +245,17 @@ var FabriqueEngine = {
     }
 };
 
-/* ---------------------------------------------------------------- DOM */
+/* ---------------------------------------------------------------- PUZZLE */
+// Filières = grosses pièces (prérequis inclus, 2-3 logements).
+var CHAINS = { O5: ['O4', 'O5'], O6: ['O4', 'O5', 'O6'], O14: ['O13', 'O14'] };
+var CHAIN_KEY = { O4: 'perce', O5: 'perce', O6: 'perce', O13: 'proj', O14: 'proj' };
+var INCOMP = [['O7', 'O15'], ['D6', 'D1'], ['D6', 'D2'], ['D6', 'D3'], ['D6', 'D4']];
+var FAM_LABEL = { offensif: 'Offensif', defensif: 'Défensif', utilitaire: 'Utilitaire', social: 'Social' };
+var SAVE_KEY = 'fabrique-puzzle-v1';
+
+function chainOf(id) { return CHAINS[id] || [id]; }
+function spanOf(id) { return chainOf(id).length; }
+
 function initFabrique() {
     var host = document.getElementById('fabChassis');
     if (!host) return;
@@ -258,6 +268,11 @@ function initFabrique() {
         return;
     }
 
+    /* --- État : source unique, le DOM ne fait que l'afficher. --- */
+    var state = { chassis: null, qty: {}, order: [],
+                  narrow: 0, range: 0, zone: false, dur: 0, cross: false };
+    var boardEl = document.getElementById('fabBoard');
+
     function esc(s) { return String(s == null ? '' : s); }
     function el(tag, cls, html) {
         var e = document.createElement(tag);
@@ -265,209 +280,312 @@ function initFabrique() {
         if (html != null) e.innerHTML = html;
         return e;
     }
-
-    /* --- Châssis (radios). --- */
-    CAT.chassis.forEach(function (c) {
-        var lab = el('label', '', '');
-        lab.style.cssText = 'display:flex;gap:8px;align-items:flex-start;font-size:0.85rem;margin-bottom:8px;cursor:pointer;';
-        var r = document.createElement('input');
-        r.type = 'radio'; r.name = 'fabChassis'; r.value = c.id; r.className = 'fab-input';
-        var txt = el('span', '', '<strong>' + esc(c.nom) + '</strong> <span class="tool-label-hint">' +
-            esc(c.cout_xp) + ' XP + ' + esc(c.cout_pa) + ' PA</span><br><span style="opacity:.8">' + esc(c.cadre) + '</span>');
-        lab.appendChild(r); lab.appendChild(txt);
-        host.appendChild(lab);
-    });
-
-    /* --- Familles. --- */
-    var FAMS = [['offensif', 'Effets Offensifs', 'var(--vital-ruby)'],
-                ['defensif', 'Effets Défensifs', 'var(--arcane-cyan)'],
-                ['utilitaire', 'Effets Utilitaires', 'var(--matrix-emerald)'],
-                ['social', 'Effets Sociaux', 'var(--temporal-amber)']];
-    FAMS.forEach(function (fm) {
-        var box = document.getElementById('fabFam-' + fm[0]);
-        if (!box) return;
-        CAT.pieces.filter(function (p) { return p.famille === fm[0]; }).forEach(function (p) {
-            var wrap = el('div', 'tool-form-group', '');
-            var k = FabriqueEngine.KIND[p.id];
-            var head = '<span><strong>' + esc(p.nom) + '</strong> <span class="tool-label-hint">' +
-                esc(p.cout_xp) + ' XP + ' + esc(p.cout_pa) + ' PA</span></span>' +
-                '<span class="tool-label-hint">' + esc((p.seuil ? 'Seuil ' + p.seuil + ' · ' : '') +
-                (p.prerequis && p.prerequis.length ? '↳ ' + p.prerequis.join(', ') + ' · ' : '') +
-                (p.majeure ? '★ majeure' : 'pièce')) + '</span>';
-            var lab = el('label', 'tool-label', head);
-            wrap.appendChild(lab);
-            if (k && k.t === 'n') {
-                var n = document.createElement('input');
-                n.type = 'number'; n.min = '0'; n.max = String(k.max); n.value = '0';
-                n.className = 'tool-input fab-input'; n.dataset.pid = p.id; n.dataset.qty = '1';
-                if (k.unit) n.title = k.unit;
-                wrap.appendChild(n);
-            } else if (k && k.t === 'radio') {
-                k.opts.forEach(function (o, i) {
-                    var l = el('label', '', '<input type="radio" name="fab_' + p.id + '" value="' + o.v + '"' +
-                        (i === 0 ? ' checked' : '') + ' class="fab-input"> ' + esc(o.label));
-                    l.style.cssText = 'display:block;font-size:0.82rem;margin:3px 0;';
-                    wrap.appendChild(l);
-                });
-                var hid = document.createElement('input');
-                hid.type = 'hidden'; hid.dataset.pid = p.id; hid.dataset.opt = '1';
-                wrap.appendChild(hid);
-            } else if (k && k.t === 'palier') {
-                var s = document.createElement('select');
-                s.className = 'tool-select fab-input'; s.dataset.pid = p.id; s.dataset.opt = '1';
-                k.opts.forEach(function (o) {
-                    var op = document.createElement('option');
-                    op.value = o.v; op.textContent = o.label;
-                    s.appendChild(op);
-                });
-                wrap.appendChild(s);
-            } else if (k && k.t === 'paliers') {
-                k.opts.forEach(function (o) {
-                    var l = el('label', '', '<input type="checkbox" data-sub="' + o.v + '" data-pid="' + p.id + '" class="fab-input"> ' + esc(o.label));
-                    l.style.cssText = 'display:block;font-size:0.82rem;margin:3px 0;';
-                    wrap.appendChild(l);
-                });
-                var on = document.createElement('input');
-                on.type = 'checkbox'; on.className = 'fab-input'; on.dataset.pid = p.id;
-                on.title = 'Activer ' + p.nom;
-                var lon = el('label', '', '');
-                lon.style.cssText = 'display:block;font-size:0.82rem;margin-top:4px;';
-                lon.appendChild(on);
-                lon.appendChild(document.createTextNode(' Activer (' + p.cout_xp + ' XP + ' + p.cout_pa + ' PA)'));
-                wrap.appendChild(lon);
-            } else {
-                var c = document.createElement('input');
-                c.type = 'checkbox'; c.className = 'fab-input'; c.dataset.pid = p.id;
-                wrap.insertBefore(c, wrap.firstChild);
-                lab.style.marginLeft = '6px';
-                var row = el('div', '', '');
-                row.style.cssText = 'display:flex;gap:8px;align-items:flex-start;';
-                row.appendChild(c); row.appendChild(lab);
-                wrap.innerHTML = '';
-                wrap.appendChild(row);
-                var hint = el('div', '', esc(p.cond || p.texte || ''));
-                hint.style.cssText = 'font-size:0.78rem;opacity:.75;margin:2px 0 0 26px;';
-                wrap.appendChild(hint);
-            }
-            box.appendChild(wrap);
-        });
-        box.querySelectorAll('.tool-form-group').forEach(function (g) {
-            g.style.cssText += 'border-bottom:1px solid rgba(255,255,255,.06);padding-bottom:8px;margin-bottom:8px;';
-        });
-    });
-
-    /* --- Modificateurs. --- */
-    var mod = document.getElementById('fabModifs');
-    function modRow(label, inner) {
-        var w = el('div', 'tool-form-group', '');
-        w.appendChild(el('label', 'tool-label', '<span>' + label + '</span>'));
-        w.appendChild(inner);
-        mod.appendChild(w);
+    function P(id) {
+        for (var i = 0; i < CAT.pieces.length; i++)
+            if (CAT.pieces[i].id === id) return CAT.pieces[i];
+        return null;
     }
-    var r0 = el('div', '', '');
-    [['0', 'Aucune (+0)'], ['2', 'Portée +2 cases (+1 XP)'], ['4', 'Portée +4 cases (+2 XP)']].forEach(function (o, i) {
-        var l = el('label', '', '<input type="radio" name="fabRange" value="' + o[0] + '"' + (i === 0 ? ' checked' : '') + ' class="fab-input"> ' + o[1]);
-        l.style.cssText = 'display:block;font-size:0.82rem;margin:3px 0;';
-        r0.appendChild(l);
-    });
-    modRow('Portée (M1/M2 — l\'une ou l\'autre)', r0);
-    var z = el('label', '', '<input type="checkbox" id="fabZone" class="fab-input"> Forme de zone : cône, ligne ou rayon +1 (+2 XP + 1 PA)');
-    z.style.cssText = 'font-size:0.82rem;';
-    modRow('Zone (M3)', z);
-    var dn = document.createElement('input');
-    dn.type = 'number'; dn.min = '0'; dn.max = '2'; dn.value = '0'; dn.id = 'fabDur';
-    dn.className = 'tool-input fab-input';
-    modRow('Durée +1 tour (M4, +1 XP + 1 PA par cran — durées cumulables seulement)', dn);
-    var nr = document.createElement('input');
-    nr.type = 'number'; nr.min = '0'; nr.max = '4'; nr.value = '0'; nr.id = 'fabNarrow';
-    nr.className = 'tool-input fab-input';
-    modRow('Conditions étroites (M5, −1 XP chacune — critique, Δ≥2, immobile, 1/combat…)', nr);
-    var cr = el('label', '', '<input type="checkbox" id="fabCross" class="fab-input"> Banque croisée (M7, ×2 XP — comme le croisé ×2)');
-    cr.style.cssText = 'font-size:0.82rem;';
-    modRow('Hors-compétence (M7)', cr);
+    function C(id) {
+        for (var i = 0; i < CAT.chassis.length; i++)
+            if (CAT.chassis[i].id === id) return CAT.chassis[i];
+        return null;
+    }
+    function toast(msg) { if (window.showToast) window.showToast(msg); }
 
-    /* --- Collecte. --- */
-    function collect() {
-        var sel = { chassis: null, qty: {}, o19: 'partiel', u7: '5', u11: {},
-                    narrow: 0, range: 0, zone: false, dur: 0, cross: false };
-        var rc = document.querySelector('input[name="fabChassis"]:checked');
-        if (rc) sel.chassis = rc.value;
-        document.querySelectorAll('#fabFam-offensif .fab-input, #fabFam-defensif .fab-input, #fabFam-utilitaire .fab-input, #fabFam-social .fab-input').forEach(function (inp) {
-            if (inp.type === 'number') {
-                if ((parseInt(inp.value, 10) || 0) > 0) sel.qty[inp.dataset.pid] = parseInt(inp.value, 10) || 0;
-            } else if (inp.type === 'checkbox' && !inp.dataset.sub) {
-                if (inp.checked) sel.qty[inp.dataset.pid] = 1;
-            } else if (inp.type === 'checkbox' && inp.dataset.sub) {
-                if (inp.checked) {
-                    sel.qty[inp.dataset.pid] = 1;
-                    sel.u11[inp.dataset.sub] = true;
-                }
-            }
+    /* Présence réelle sur le plateau (tops + étages auto-inclus). */
+    function present(id) {
+        if ((state.qty[id] | 0) > 0) return true;
+        for (var i = 0; i < state.order.length; i++) {
+            var ch = chainOf(state.order[i]);
+            if (ch.indexOf(id) >= 0) return true;
+        }
+        return false;
+    }
+    function placedSpan() {
+        var n = 0;
+        state.order.forEach(function (id) { n += spanOf(id); });
+        return n;
+    }
+    function majeuresCount() {
+        var n = 0;
+        state.order.forEach(function (id) {
+            chainOf(id).forEach(function (x) { var p = P(x); if (p && p.majeure) n++; });
         });
-        ['O19', 'U7'].forEach(function (pid) {
-            var r = document.querySelector('input[name="fab_' + pid + '"]:checked');
-            var s = document.querySelector('select[data-pid="' + pid + '"]');
-            if (r && pid === 'O19') sel.o19 = r.value;
-            if (s && pid === 'U7') sel.u7 = s.value;
+        return n;
+    }
+    function incompWith(id) {
+        for (var i = 0; i < INCOMP.length; i++) {
+            var a = INCOMP[i][0], b = INCOMP[i][1];
+            if (id === a && present(b)) return b;
+            if (id === b && present(a)) return a;
+        }
+        return null;
+    }
+
+    /* Pourquoi cette pièce ne s'emboîte pas (ou avec un avertissement). */
+    function lockInfo(p) {
+        var id = p.id;
+        var k = KIND[id];
+        var q = state.qty[id] | 0;
+        if (!state.chassis) return { lock: true, reason: 'Choisis d\u2019abord un ensemble.' };
+        if (q > 0 && !(k && k.t === 'n')) {
+            if (CHAIN_KEY[id]) {
+                var cur = null;
+                state.order.forEach(function (t) { if (CHAIN_KEY[t] === CHAIN_KEY[id]) cur = t; });
+                if (cur && spanOf(cur) >= spanOf(id))
+                    return { lock: true, reason: 'Déjà incluse dans ' + cur + '.' };
+            } else {
+                return { lock: true, reason: 'Déjà sur le plateau (pièce unique).' };
+            }
+        }
+        if (k && k.t === 'n' && q >= k.max)
+            return { lock: true, reason: 'Maximum ×' + k.max + ' atteint.' };
+        if (id === 'O17' && state.chassis !== 'C3')
+            return { lock: true, reason: 'O17 ne s\u2019emboîte que sur l\u2019ensemble Réaction.' };
+        if (id === 'D8' && !present('D1') && !present('D3'))
+            return { lock: true, reason: 'Demande D1 ou D3 sur le plateau.' };
+        if (id === 'U11' && (state.qty.U11 | 0) === 0) {
+            var anyS = false;
+            document.querySelectorAll('input[data-sub][data-pid="U11"]').forEach(function (c) { if (c.checked) anyS = true; });
+            if (!anyS) return { lock: true, reason: 'Coche d\u2019abord un palier (p3, p4 ou 2×).' };
+        }
+        var bad = incompWith(id);
+        if (bad) return { lock: true, reason: 'Refuse ' + bad + ' (règle 8).' };
+        if (p.majeure && majeuresCount() >= 2)
+            return { lock: true, reason: '2 majeures maximum, même en signature.' };
+        var need = spanOf(id);
+        if (CHAIN_KEY[id]) {
+            state.order.forEach(function (t) {
+                if (CHAIN_KEY[t] === CHAIN_KEY[id]) need = spanOf(id) - spanOf(t);
+            });
+            if (need < 0) need = 0;
+        }
+        if (placedSpan() + need > 3)
+            return { lock: true, reason: 'Plus de logement libre (3 max).' };
+        /* Avertissements souples : la pièce rentre, mais le MJ tiquera. */
+        if (id === 'O12' && !present('O10') && !present('O11'))
+            return { lock: false, soft: 'Demande O10 ou O11 sur le plateau.' };
+        if (id === 'O18' && placedSpan() + need < 3)
+            return { lock: false, soft: 'Demande 3 pièces de la même arme.' };
+        if (id === 'U5')
+            return { lock: false, soft: 'Prérequis narratif : Roulade ou esquive Δ≥2.' };
+        if (p.majeure && majeuresCount() >= 1)
+            return { lock: false, soft: '2e majeure = signature 7–8 XP, MJ obligatoire.' };
+        return { lock: false };
+    }
+
+    function addPiece(id) {
+        var p = P(id);
+        if (!p) return;
+        var info = lockInfo(p);
+        if (info.lock) { toast(info.reason); render(); return; }
+        var k = KIND[id];
+        if (CHAIN_KEY[id]) {
+            var idx = -1;
+            state.order.forEach(function (t, i) { if (CHAIN_KEY[t] === CHAIN_KEY[id]) idx = i; });
+            if (idx >= 0) {
+                var old = state.order[idx];
+                if (spanOf(old) >= spanOf(id)) { toast('Déjà incluse.'); return; }
+                delete state.qty[old];
+                state.order[idx] = id;
+                state.qty[id] = 1;
+            } else {
+                state.order.push(id);
+                state.qty[id] = 1;
+            }
+        } else if (k && k.t === 'n') {
+            if ((state.qty[id] | 0) === 0) state.order.push(id);
+            state.qty[id] = (state.qty[id] | 0) + 1;
+        } else {
+            state.order.push(id);
+            state.qty[id] = 1;
+        }
+        render();
+    }
+    function removePiece(id) {
+        delete state.qty[id];
+        state.order = state.order.filter(function (t) { return t !== id; });
+        render();
+    }
+    function bumpQty(id, d) {
+        var k = KIND[id];
+        var max = (k && k.t === 'n') ? k.max : 1;
+        var v = (state.qty[id] | 0) + d;
+        if (v <= 0) { removePiece(id); return; }
+        if (v > max) return;
+        state.qty[id] = v;
+        render();
+    }
+
+    /* --- Lecture des variantes + finitions (dans les cartes). --- */
+    function readVariants(sel) {
+        var r19 = document.querySelector('input[name="fab_O19"]:checked');
+        sel.o19 = r19 ? r19.value : 'partiel';
+        var s7 = document.querySelector('select[data-pid="U7"]');
+        sel.u7 = s7 ? s7.value : '5';
+        sel.u11 = {};
+        document.querySelectorAll('input[data-sub][data-pid="U11"]').forEach(function (c) {
+            if (c.checked) sel.u11[c.dataset.sub] = true;
         });
         var rr = document.querySelector('input[name="fabRange"]:checked');
-        if (rr) sel.range = parseInt(rr.value, 10) || 0;
+        sel.range = rr ? (parseInt(rr.value, 10) || 0) : 0;
         var zo = document.getElementById('fabZone');
-        if (zo) sel.zone = zo.checked;
+        sel.zone = !!(zo && zo.checked);
         var du = document.getElementById('fabDur');
-        if (du) sel.dur = Math.max(0, Math.min(2, parseInt(du.value, 10) || 0));
+        sel.dur = du ? Math.max(0, Math.min(2, parseInt(du.value, 10) || 0)) : 0;
         var na = document.getElementById('fabNarrow');
-        if (na) sel.narrow = Math.max(0, parseInt(na.value, 10) || 0);
+        sel.narrow = na ? Math.max(0, parseInt(na.value, 10) || 0) : 0;
         var cx = document.getElementById('fabCross');
-        if (cx) sel.cross = cx.checked;
-        /* O19/U7 cochés via leurs fieldsets : présence du fieldset = actif si chassis choisi.
-           Par défaut O19 inactif sauf case dédiée : on l'active via sa radio fieldset visible.
-           Règle simple : O19/U7/U11 actifs ssi leur input principal est coché/renseigné. */
+        sel.cross = !!(cx && cx.checked);
         return sel;
     }
+    function buildSel() {
+        var sel = { chassis: state.chassis, qty: {}, o19: 'partiel', u7: '5', u11: {},
+                    narrow: 0, range: 0, zone: false, dur: 0, cross: false };
+        Object.keys(state.qty).forEach(function (id) { sel.qty[id] = state.qty[id]; });
+        if ((sel.qty.U11 | 0) > 0) {
+            var any = false;
+            document.querySelectorAll('input[data-sub][data-pid="U11"]').forEach(function (c) { if (c.checked) any = true; });
+            if (!any) delete sel.qty.U11;
+        }
+        return readVariants(sel);
+    }
 
-    /* O19/U7 : case d'activation dédiée (leurs fieldsets sont toujours visibles). */
-    function armSpecials() {
-        ['O19', 'U7'].forEach(function (pid) {
-            var box = document.querySelector('[data-pid="' + pid + '"]');
+    /* --- 1. Ensembles (châssis). --- */
+    var ENS_SUB = { C0: 'Passif', C2: 'Action', C3: 'Réaction', C4: 'Opportunité' };
+    function buildEnsembles() {
+        host.innerHTML = '';
+        CAT.chassis.forEach(function (c) {
+            var b = el('button', 'fab-ensemble' + (state.chassis === c.id ? ' sel' : ''), '');
+            b.type = 'button';
+            b.dataset.ens = c.id;
+            b.setAttribute('aria-pressed', state.chassis === c.id ? 'true' : 'false');
+            b.innerHTML = '<span class="fab-ens-top"><span class="fab-ens-id">' + esc(c.id) +
+                ' · ' + esc(ENS_SUB[c.id] || '') + '</span>' +
+                '<span class="fab-ens-cost">' + esc(c.cout_xp) + ' XP + ' + esc(c.cout_pa) + ' PA</span></span>' +
+                '<strong>' + esc(c.nom) + '</strong>' +
+                '<small>' + esc(c.cadre) + '</small>' +
+                '<span class="fab-ens-shape"><i></i><i></i><i></i></span>';
+            host.appendChild(b);
+        });
+    }
+
+    /* --- 3. Casier à pièces. --- */
+    function metaLine(p) {
+        var bits = [];
+        if (p.seuil) bits.push('<b>Seuil :</b> ' + esc(p.seuil));
+        if (p.portee) bits.push('<b>Portée :</b> ' + esc(p.portee));
+        if (p.prerequis && p.prerequis.length)
+            bits.push('<b class="rq">Demande :</b> <span class="rq">' + esc(p.prerequis.join(' · ')) + '</span>');
+        if (p.incompatible && p.incompatible.length)
+            bits.push('<b class="rf">Refuse :</b> <span class="rf">' + esc(p.incompatible.join(' · ')) + '</span>');
+        var tail = p.cumul ? 'Cumulable' : 'Pièce unique';
+        if (p.majeure) tail += ' · ★ majeure';
+        bits.push(tail);
+        return bits.join('<br>');
+    }
+    function buildTray() {
+        ['offensif', 'defensif', 'utilitaire', 'social'].forEach(function (fam) {
+            var box = document.getElementById('fabFam-' + fam);
             if (!box) return;
-            var wrap = box.closest('.tool-form-group');
-            if (!wrap || wrap.querySelector('[data-arm]')) return;
-            var l = document.createElement('label');
-            l.style.cssText = 'display:block;font-size:0.82rem;margin-top:4px;color:var(--temporal-amber);';
-            l.innerHTML = '<input type="checkbox" data-arm="' + pid + '" class="fab-input"> Inclure cette pièce';
-            wrap.insertBefore(l, wrap.firstChild);
+            box.innerHTML = '';
+            box.appendChild(el('div', 'fab-tray-title', FAM_LABEL[fam]));
+            CAT.pieces.filter(function (p) { return p.famille === fam; }).forEach(function (p) {
+                var card = el('div', 'fab-piece fam-' + fam, '');
+                card.dataset.card = p.id;
+                card.draggable = true;
+                var h = '<div class="fab-piece-top"><strong>' + esc(p.nom) + '</strong>' +
+                    '<span class="fab-piece-cost">' + esc(p.cout_xp) + ' XP + ' + esc(p.cout_pa) + ' PA</span></div>' +
+                    '<div class="fab-piece-id">' + esc(p.id) + (p.majeure ? ' · ★ majeure' : '') + '</div>' +
+                    '<div class="fab-piece-text">' + esc(p.cond || p.texte || '') + '</div>' +
+                    '<div class="fab-piece-meta">' + metaLine(p) + '</div>';
+                if (p.id === 'O19') {
+                    h += '<div class="fab-variant">' + KIND.O19.opts.map(function (o, i) {
+                        return '<label><input type="radio" name="fab_O19" value="' + o.v + '"' +
+                            (i === 0 ? ' checked' : '') + ' class="fab-input"> ' + esc(o.label) + '</label>';
+                    }).join('') + '</div>';
+                }
+                if (p.id === 'U7') {
+                    h += '<div class="fab-variant"><label>Palier <select data-pid="U7" class="tool-select fab-input">' +
+                        KIND.U7.opts.map(function (o) {
+                            return '<option value="' + o.v + '">' + esc(o.label) + '</option>';
+                        }).join('') + '</select></label></div>';
+                }
+                if (p.id === 'U11') {
+                    h += '<div class="fab-variant">' + KIND.U11.opts.map(function (o) {
+                        return '<label><input type="checkbox" data-sub="' + o.v + '" data-pid="U11" class="fab-input"> ' +
+                            esc(o.label) + '</label>';
+                    }).join('') + '<span style="opacity:.75">Coche un palier pour l\u2019emboîter (base 2 XP).</span></div>';
+                }
+                h += '<div class="fab-piece-foot"><button type="button" class="fab-fit-btn" data-fit="' + esc(p.id) + '">⤓ Emboîter</button>' +
+                    '<span class="fab-lock" data-lock="' + esc(p.id) + '" hidden></span>' +
+                    '<span class="fab-soft" data-soft="' + esc(p.id) + '" hidden></span></div>';
+                card.innerHTML = h;
+                box.appendChild(card);
+            });
         });
     }
-    armSpecials();
 
-    function collect2() {
-        var sel = collect();
-        sel.qty = {};
-        document.querySelectorAll('.fab-input').forEach(function (inp) {
-            if (inp.dataset && inp.dataset.arm) {
-                if (inp.checked) sel.qty[inp.dataset.arm] = 1;
-            }
+    /* --- 4. Finitions (modificateurs). --- */
+    function buildModifs() {
+        var mod = document.getElementById('fabModifs');
+        if (!mod) return;
+        mod.innerHTML = '';
+        var r = el('div', 'fab-mod', '<b>Portée (M1/M2)</b>');
+        [['0', 'Aucune (+0)'], ['2', '+2 cases (+1 XP)'], ['4', '+4 cases (+2 XP)']].forEach(function (o, i) {
+            var l = el('label', '', '<input type="radio" name="fabRange" value="' + o[0] + '"' +
+                (i === 0 ? ' checked' : '') + ' class="fab-input"> ' + o[1]);
+            r.appendChild(l);
         });
-        /* nombres + checkboxes simples */
-        document.querySelectorAll('#fabFam-offensif .fab-input, #fabFam-defensif .fab-input, #fabFam-utilitaire .fab-input, #fabFam-social .fab-input').forEach(function (inp) {
-            if (inp.type === 'number' && inp.dataset.qty) {
-                var v = parseInt(inp.value, 10) || 0;
-                if (v > 0) sel.qty[inp.dataset.pid] = v;
-            } else if (inp.type === 'checkbox' && inp.dataset.pid && !inp.dataset.sub && !inp.dataset.arm && !inp.dataset.opt) {
-                if (inp.checked) sel.qty[inp.dataset.pid] = 1;
-            } else if (inp.type === 'checkbox' && inp.dataset.sub) {
-                if (inp.checked) {
-                    sel.qty[inp.dataset.pid] = 1;
-                    sel.u11[inp.dataset.sub] = true;
-                }
+        mod.appendChild(r);
+        var z = el('div', 'fab-mod', '<b>Zone (M3 · +2 XP +1 PA)</b>');
+        var zl = el('label', '', '<input type="checkbox" id="fabZone" class="fab-input"> Forme de zone : cône, ligne ou rayon +1');
+        z.appendChild(zl);
+        mod.appendChild(z);
+        var d = el('div', 'fab-mod', '<b>Durée +1 tour (M4 · +1 XP +1 PA par cran)</b>');
+        var dn = document.createElement('input');
+        dn.type = 'number'; dn.min = '0'; dn.max = '2'; dn.value = '0'; dn.id = 'fabDur';
+        dn.className = 'tool-input fab-input'; dn.style.width = '90px';
+        d.appendChild(dn);
+        mod.appendChild(d);
+        var n = el('div', 'fab-mod', '<b>Conditions étroites (M5 · −1 XP chacune)</b>');
+        var nr = document.createElement('input');
+        nr.type = 'number'; nr.min = '0'; nr.max = '4'; nr.value = '0'; nr.id = 'fabNarrow';
+        nr.className = 'tool-input fab-input'; nr.style.width = '90px';
+        n.appendChild(nr);
+        var nh = el('span', '', 'Critique, Δ≥2, immobile, 1/combat… (plancher 1 XP/pièce)');
+        nh.style.cssText = 'font-size:0.72rem;opacity:.75;display:block;margin-top:4px;';
+        n.appendChild(nh);
+        mod.appendChild(n);
+        var cr = el('div', 'fab-mod', '<b>Hors-compétence (M7 · ×2 XP)</b>');
+        var cl = el('label', '', '<input type="checkbox" id="fabCross" class="fab-input"> Banque croisée (comme le croisé ×2)');
+        cr.appendChild(cl);
+        mod.appendChild(cr);
+    }
+
+    /* --- Variantes : U11 coche un palier = pièce emboîtée. --- */
+    function syncU11() {
+        var any = false;
+        document.querySelectorAll('input[data-sub][data-pid="U11"]').forEach(function (c) { if (c.checked) any = true; });
+        if (any && (state.qty.U11 | 0) === 0) {
+            var info = lockInfo(P('U11'));
+            if (info.lock) {
+                document.querySelectorAll('input[data-sub][data-pid="U11"]').forEach(function (c) { c.checked = false; });
+                toast(info.reason);
+                return;
             }
-        });
-        return sel;
+            state.order.push('U11');
+            state.qty.U11 = 1;
+        }
+        if (!any && (state.qty.U11 | 0) > 0) {
+            delete state.qty.U11;
+            state.order = state.order.filter(function (t) { return t !== 'U11'; });
+        }
     }
 
     /* --- Rendu. --- */
     var prev = {
+        badge: document.getElementById('fabBudgetBadge'),
         name: document.getElementById('fabCardName'),
         type: document.getElementById('fabCardType'),
         desc: document.getElementById('fabCardDesc'),
@@ -477,19 +595,208 @@ function initFabrique() {
         check: document.getElementById('fabChecklist')
     };
 
+    function variantSummary(id) {
+        if (id === 'O19') {
+            var r = document.querySelector('input[name="fab_O19"]:checked');
+            var v = r ? r.value : 'partiel';
+            var o = null;
+            KIND.O19.opts.forEach(function (x) { if (x.v === v) o = x; });
+            return o ? o.label : '';
+        }
+        if (id === 'U7') {
+            var s = document.querySelector('select[data-pid="U7"]');
+            return 'palier ' + (s ? s.value : '5') + ' PV';
+        }
+        if (id === 'U11') {
+            var on = [];
+            document.querySelectorAll('input[data-sub][data-pid="U11"]').forEach(function (c) { if (c.checked) on.push(c.dataset.sub); });
+            return on.length ? 'paliers ' + on.join(', ') : 'base';
+        }
+        return '';
+    }
+
+    function renderBoard(sel, r) {
+        boardEl.innerHTML = '';
+        var ch = sel.chassis ? C(sel.chassis) : null;
+        boardEl.appendChild(el('div', 'fab-board-name',
+            ch ? '◆ ' + esc(ch.nom) + ' — ' + esc(ch.cout_xp) + ' XP + ' + esc(ch.cout_pa) + ' PA' : '◆ Choisis un ensemble ci-dessus'));
+        var slots = el('div', 'fab-slots', '');
+        if (!state.order.length) {
+            var emp = el('div', 'fab-board-empty',
+                'Tes pièces emboîtées apparaissent ici.<br>Clique <strong>Emboîter</strong> ou glisse une pièce du casier.');
+            slots.appendChild(emp);
+        }
+        state.order.forEach(function (id) {
+            var p = P(id);
+            if (!p) return;
+            var box = el('div', 'fab-placed fam-' + p.famille, '');
+            box.dataset.slot = id;
+            var k = KIND[id];
+            var line = null;
+            r.lines.forEach(function (l) { if (l.id === id) line = l; });
+            var cost = line ? (line.xp + ' XP + ' + line.pa + ' PA') : (p.cout_xp + ' XP + ' + p.cout_pa + ' PA');
+            var head = '<div class="fab-placed-head"><strong>' + esc(p.nom) + '</strong>' +
+                '<span class="fab-placed-cost">' + esc(cost) + '</span></div>';
+            var sub = esc(p.cond || p.texte || '');
+            var vs = variantSummary(id);
+            if (vs) sub += ' — ' + esc(vs);
+            if ((state.qty[id] | 0) > 1) sub += ' — ×' + (state.qty[id] | 0);
+            var flags = '<div class="fab-placed-flags">';
+            chainOf(id).forEach(function (x) { flags += '<span class="fab-flag">' + esc(x) + '</span>'; });
+            if (p.majeure) flags += '<span class="fab-flag star">★ majeure</span>';
+            if (p.prerequis && p.prerequis.length)
+                flags += '<span class="fab-flag req">demande ' + esc(p.prerequis.join(', ')) + '</span>';
+            if (p.incompatible && p.incompatible.length)
+                flags += '<span class="fab-flag no">refuse ' + esc(p.incompatible.join(', ')) + '</span>';
+            flags += '</div>';
+            var tiers = '';
+            if (chainOf(id).length > 1) {
+                tiers = '<div class="fab-chain">' + chainOf(id).map(function (x) {
+                    var q = P(x);
+                    return '<div class="fab-chain-tier"><b>' + esc(x) + '</b> — ' + esc(q ? q.nom : '') + '</div>';
+                }).join('') + '</div>';
+            }
+            var ctl = '<div class="fab-placed-ctl">';
+            if (k && k.t === 'n')
+                ctl += '<span class="fab-stepper"><button type="button" data-dec="' + esc(id) + '" aria-label="Retirer un cran">−</button>' +
+                    '<span>×' + (state.qty[id] | 0) + ' / ' + k.max + '</span>' +
+                    '<button type="button" data-inc="' + esc(id) + '" aria-label="Ajouter un cran">+</button></span>';
+            ctl += '<button type="button" class="fab-mini-btn" data-unfit="' + esc(id) + '">⤴ Retirer</button></div>';
+            var sock = '<div class="fab-sockets">';
+            for (var i = 0; i < 3; i++)
+                sock += '<i class="' + (i < placedSpan() ? 'on' : '') + '"></i>';
+            sock += '</div>';
+            box.innerHTML = head + '<div class="fab-placed-sub">' + sub + '</div>' + flags + tiers + ctl + sock;
+            slots.appendChild(box);
+        });
+        boardEl.appendChild(slots);
+    }
+
+    function renderTrayLocks() {
+        document.querySelectorAll('.fab-piece[data-card]').forEach(function (card) {
+            var p = P(card.dataset.card);
+            if (!p) return;
+            var info = lockInfo(p);
+            var btn = card.querySelector('[data-fit]');
+            var lk = card.querySelector('[data-lock]');
+            var sf = card.querySelector('[data-soft]');
+            var isPlaced = (state.qty[p.id] | 0) > 0 && !(KIND[p.id] && KIND[p.id].t === 'n');
+            card.classList.toggle('placed', isPlaced);
+            card.classList.toggle('locked', !!info.lock);
+            if (btn) btn.disabled = !!info.lock;
+            if (btn) btn.textContent = isPlaced ? '✓ Emboîtée' : '⤓ Emboîter';
+            if (lk) {
+                lk.hidden = !info.lock;
+                if (info.lock) lk.textContent = '🔒 ' + info.reason;
+            }
+            if (sf) {
+                sf.hidden = !(info.soft && !info.lock);
+                if (info.soft) sf.textContent = '⚠ ' + info.soft;
+            }
+        });
+        document.querySelectorAll('.fab-ensemble').forEach(function (b) {
+            var on = b.dataset.ens === state.chassis;
+            b.classList.toggle('sel', on);
+            b.setAttribute('aria-pressed', on ? 'true' : 'false');
+        });
+    }
+
+    function save() {
+        try {
+            var sel = buildSel();
+            localStorage.setItem(SAVE_KEY, JSON.stringify({
+                chassis: state.chassis, qty: state.qty, order: state.order,
+                o19: sel.o19, u7: sel.u7, u11: sel.u11,
+                narrow: sel.narrow, range: sel.range, zone: sel.zone, dur: sel.dur, cross: sel.cross,
+                name: (document.getElementById('fabName') || {}).value || '',
+                desc: (document.getElementById('fabDesc') || {}).value || ''
+            }));
+        } catch (e) { /* stockage indisponible */ }
+    }
+    function load() {
+        try {
+            var raw = localStorage.getItem(SAVE_KEY);
+            if (!raw) return;
+            var d = JSON.parse(raw);
+            if (!d || typeof d !== 'object') return;
+            if (d.chassis && C(d.chassis)) state.chassis = d.chassis;
+            if (d.qty) {
+                Object.keys(d.qty).forEach(function (id) {
+                    if (P(id)) state.qty[id] = Math.max(0, d.qty[id] | 0);
+                });
+            }
+            if (d.order && d.order.forEach) {
+                d.order.forEach(function (id) {
+                    if (P(id) && (state.qty[id] | 0) > 0 && state.order.indexOf(id) < 0) state.order.push(id);
+                });
+            }
+            var fn = document.getElementById('fabName');
+            if (fn && d.name) fn.value = d.name;
+            var fd = document.getElementById('fabDesc');
+            if (fd && d.desc) fd.value = d.desc;
+            state._rest = d;
+        } catch (e) { /* sauvegarde illisible */ }
+    }
+    function restoreInputs() {
+        var d = state._rest;
+        if (!d) return;
+        if (d.o19) {
+            var r = document.querySelector('input[name="fab_O19"][value="' + d.o19 + '"]');
+            if (r) r.checked = true;
+        }
+        if (d.u7) {
+            var s = document.querySelector('select[data-pid="U7"]');
+            if (s) s.value = d.u7;
+        }
+        if (d.u11) {
+            document.querySelectorAll('input[data-sub][data-pid="U11"]').forEach(function (c) {
+                c.checked = !!(d.u11 && d.u11[c.dataset.sub]);
+            });
+        }
+        var rr = document.querySelector('input[name="fabRange"][value="' + (d.range | 0) + '"]');
+        if (rr) rr.checked = true;
+        var zo = document.getElementById('fabZone');
+        if (zo) zo.checked = !!d.zone;
+        var du = document.getElementById('fabDur');
+        if (du) du.value = String(d.dur | 0);
+        var na = document.getElementById('fabNarrow');
+        if (na) na.value = String(d.narrow | 0);
+        var cx = document.getElementById('fabCross');
+        if (cx) cx.checked = !!d.cross;
+        state._rest = null;
+    }
+
     function render() {
-        var sel = collect2();
+        var sel = buildSel();
         var r = FabriqueEngine.compute(CAT, sel);
+        /* Opportunité : déclencheur étroit obligatoire (table Livre III §14). */
+        if (sel.chassis === 'C4') {
+            var narrow = sel.narrow | 0;
+            var hasSeuil = false;
+            Object.keys(sel.qty).forEach(function (id) {
+                var p = P(id);
+                if (p && p.seuil) hasSeuil = true;
+                chainOf(id).forEach(function (x) { var q = P(x); if (q && q.seuil) hasSeuil = true; });
+            });
+            if (!narrow && !hasSeuil)
+                r.warnings.push('Opportunité : ajoute un déclencheur étroit (Δ≥2, critique, esquive…) ou une condition M5.');
+        }
+        renderBoard(sel, r);
+        renderTrayLocks();
         var name = (document.getElementById('fabName') || {}).value || '';
         var desc = (document.getElementById('fabDesc') || {}).value || '';
         prev.name.textContent = name.trim() || 'Technique Maison';
         var fams = r.familles.map(function (f) { return f.toUpperCase(); }).join(' / ') || '—';
         prev.type.textContent = fams + (r.status === 'signature' ? ' — SIGNATURE (accord MJ)' : r.status === 'invalide' ? ' — À CORRIGER' : '');
-        prev.desc.textContent = desc.trim() || 'Décris ton geste : ce qu’on voit, ce qu’on entend.';
+        prev.desc.textContent = desc.trim() || 'Décris ton geste : ce qu\u2019on voit, ce qu\u2019on entend.';
         prev.pa.textContent = r.pa + ' PA';
         prev.xp.textContent = 'Création : ' + r.xp + ' XP' + (r.crossed ? ' (croisé ×2)' : '');
+        if (prev.badge) {
+            prev.badge.textContent = r.xp + ' XP · ' + r.pa + ' PA' +
+                (r.status === 'signature' ? ' · SIGNATURE' : r.status === 'invalide' ? ' · À CORRIGER' : ' · ' + placedSpan() + '/3 logements');
+        }
         prev.list.innerHTML = '';
-        if (!r.lines.length) prev.list.innerHTML = '<li><em>Choisis un châssis puis 2 à 4 pièces.</em></li>';
+        if (!r.lines.length) prev.list.innerHTML = '<li><em>Choisis un ensemble puis 1 à 3 pièces.</em></li>';
         r.lines.forEach(function (l) {
             var li = document.createElement('li');
             li.textContent = l.label + ' — ' + l.xp + ' XP + ' + l.pa + ' PA' + (l.narrow ? ' (−1 étroite)' : '');
@@ -502,7 +809,7 @@ function initFabrique() {
             li.style.color = ok ? 'var(--matrix-emerald)' : 'var(--vital-ruby)';
             prev.check.appendChild(li);
         }
-        ck(r.errors.length === 0, r.errors.length ? r.errors[0] : (r.status === 'signature' ? 'Montage valide : signature, fais signer ton MJ.' : 'Montage valide : ' + r.xp + ' XP / ' + r.pa + ' PA.'));
+        ck(r.errors.length === 0, r.errors.length ? r.errors[0] : (r.status === 'signature' ? 'Montage valide : signature, fais signer ton MJ.' : 'Montage valide : ' + r.xp + ' XP / ' + r.pa + ' PA, ' + placedSpan() + '/3 logements.'));
         r.errors.slice(1).forEach(function (e) { ck(false, e); });
         r.warnings.forEach(function (w) {
             var li = document.createElement('li');
@@ -510,38 +817,26 @@ function initFabrique() {
             li.style.color = 'var(--temporal-amber)';
             prev.check.appendChild(li);
         });
+        save();
         return r;
     }
-
-    document.querySelectorAll('.fab-input').forEach(function (inp) {
-        inp.addEventListener('input', render);
-        inp.addEventListener('change', render);
-    });
-    ['fabName', 'fabDesc'].forEach(function (id) {
-        var n = document.getElementById(id);
-        if (n) n.addEventListener('input', render);
-    });
 
     /* --- Presets (montages vérifiés du Livre III §14). --- */
     var PRESETS = {
         hache: { chassis: 'C0', qty: { O2: 1 }, name: 'Hache de Guerre (canonique)', desc: 'Sur succès net : +2 dégâts.' },
-        suture: { chassis: 'C0', qty: { U1: 1 }, name: 'Suture Réflexe (canonique)', desc: 'Les premiers soins d’urgence passent de 3 à 2 PA.' },
+        suture: { chassis: 'C0', qty: { U1: 1 }, name: 'Suture Réflexe (canonique)', desc: 'Les premiers soins d\u2019urgence passent de 3 à 2 PA.' },
         miroir: { chassis: 'C3', qty: { D1: 1 }, narrow: 1, name: 'Lame Miroir (canonique)', desc: 'Tu pares les tirs laser au contact (Delta ≥ 0).' },
-        fente: { chassis: 'C2', qty: { O8: 1, O10: 1 }, name: 'Fente Basse', desc: 'Visée Jambes sans malus ; touche ? la cible est Ralentie 1 tour.' }
+        fente: { chassis: 'C2', qty: { O8: 1, O10: 1 }, name: 'Fente Basse', desc: 'Tu passes sous la garde et tu fauches le jarret.' }
     };
     function applyPreset(key) {
         var p = PRESETS[key];
         if (!p) return;
-        document.querySelectorAll('input[name="fabChassis"]').forEach(function (r) { r.checked = (r.value === p.chassis); });
-        document.querySelectorAll('.fab-input').forEach(function (inp) {
-            if (inp.type === 'number' && inp.dataset.qty) inp.value = '0';
-            if (inp.type === 'checkbox' && inp.dataset.pid && !inp.dataset.sub) inp.checked = false;
-        });
-        Object.keys(p.qty).forEach(function (pid) {
-            var n = document.querySelector('.fab-input[data-pid="' + pid + '"][data-qty]');
-            var c = document.querySelector('.fab-input[data-pid="' + pid + '"]:not([data-qty]):not([data-sub]):not([data-opt]):not([data-arm])');
-            if (n) n.value = String(p.qty[pid]);
-            else if (c) c.checked = true;
+        state.chassis = p.chassis;
+        state.qty = {};
+        state.order = [];
+        Object.keys(p.qty).forEach(function (id) {
+            state.qty[id] = p.qty[id];
+            state.order.push(id);
         });
         var na = document.getElementById('fabNarrow');
         if (na) na.value = String(p.narrow || 0);
@@ -551,40 +846,125 @@ function initFabrique() {
         if (fd) fd.value = p.desc;
         render();
     }
-    document.querySelectorAll('[data-preset]').forEach(function (b) {
-        b.addEventListener('click', function () { applyPreset(b.dataset.preset); });
+
+    /* --- Événements (délégués : le plateau est re-rendu à chaque coup). --- */
+    var root = document.getElementById('fabPuzzle') || document;
+    root.addEventListener('click', function (ev) {
+        var t = ev.target;
+        function up(sel) { return t.closest ? t.closest(sel) : null; }
+        var ens = up('.fab-ensemble');
+        if (ens && ens.dataset.ens) {
+            state.chassis = (state.chassis === ens.dataset.ens) ? null : ens.dataset.ens;
+            render();
+            return;
+        }
+        var fit = up('[data-fit]');
+        if (fit) { addPiece(fit.dataset.fit); return; }
+        var unfit = up('[data-unfit]');
+        if (unfit) { removePiece(unfit.dataset.unfit); return; }
+        var dec = up('[data-dec]');
+        if (dec) { bumpQty(dec.dataset.dec, -1); return; }
+        var inc = up('[data-inc]');
+        if (inc) { bumpQty(inc.dataset.inc, 1); return; }
+        var pre = up('[data-preset]');
+        if (pre) { applyPreset(pre.dataset.preset); return; }
+        var flt = up('.fab-filter');
+        if (flt) {
+            document.querySelectorAll('.fab-filter').forEach(function (b) { b.classList.remove('sel'); });
+            flt.classList.add('sel');
+            var fam = flt.dataset.fam;
+            ['offensif', 'defensif', 'utilitaire', 'social'].forEach(function (f) {
+                var box = document.getElementById('fabFam-' + f);
+                if (box) box.classList.toggle('hidden', fam !== 'all' && fam !== f);
+            });
+            return;
+        }
+        if (t.id === 'fabBtnReset') {
+            state.chassis = null;
+            state.qty = {};
+            state.order = [];
+            document.querySelectorAll('input[data-sub][data-pid="U11"]').forEach(function (c) { c.checked = false; });
+            var rr0 = document.querySelector('input[name="fabRange"][value="0"]');
+            if (rr0) rr0.checked = true;
+            ['fabZone', 'fabCross'].forEach(function (id) {
+                var c = document.getElementById(id);
+                if (c) c.checked = false;
+            });
+            ['fabDur', 'fabNarrow'].forEach(function (id) {
+                var n = document.getElementById(id);
+                if (n) n.value = '0';
+            });
+            var r19 = document.querySelector('input[name="fab_O19"][value="partiel"]');
+            if (r19) r19.checked = true;
+            var s7 = document.querySelector('select[data-pid="U7"]');
+            if (s7) s7.value = '5';
+            try { localStorage.removeItem(SAVE_KEY); } catch (e) { /* vide */ }
+            render();
+            return;
+        }
+        if (t.id === 'fabBtnCopy' || (t.closest && t.closest('#fabBtnCopy'))) {
+            var r = render();
+            var txt = '=== TECHNIQUE MAISON (Fabrique, Livre III §14) ===\n' +
+                'Nom : ' + prev.name.textContent + '\n' +
+                'Nature : ' + prev.type.textContent + '\n' +
+                'Activation : ' + r.pa + ' PA · Création : ' + r.xp + ' XP' + (r.crossed ? ' (croisé)' : '') + '\n\n' +
+                'Description : ' + prev.desc.textContent + '\n\nDétail :\n' +
+                r.lines.map(function (l) { return '- ' + l.label + ' (' + l.xp + ' XP + ' + l.pa + ' PA)'; }).join('\n') +
+                (r.errors.length ? '\n\nÀ corriger :\n' + r.errors.map(function (e) { return '- ' + e; }).join('\n') : '') +
+                (r.warnings.length ? '\n\nNotes MJ :\n' + r.warnings.map(function (w) { return '- ' + w; }).join('\n') : '') +
+                '\n============================================';
+            if (navigator.clipboard) navigator.clipboard.writeText(txt).then(function () {
+                toast('Fiche de technique copiée !');
+            });
+        }
     });
-    var rs = document.getElementById('fabBtnReset');
-    if (rs) rs.addEventListener('click', function () {
-        document.querySelectorAll('.fab-input').forEach(function (inp) {
-            if (inp.type === 'number') inp.value = '0';
-            if (inp.type === 'checkbox') inp.checked = false;
-            if (inp.type === 'radio' && inp.name === 'fabRange' && inp.value === '0') inp.checked = true;
-            if (inp.name === 'fab_O19' && inp.value === 'partiel') inp.checked = true;
-        });
-        var u7s = document.querySelector('select[data-pid="U7"]');
-        if (u7s) u7s.value = '5';
-        document.querySelectorAll('input[name="fabChassis"]').forEach(function (r) { r.checked = false; });
+    root.addEventListener('change', function (ev) {
+        var t = ev.target;
+        if (t && t.dataset && t.dataset.sub && t.dataset.pid === 'U11') syncU11();
+        render();
+    });
+    root.addEventListener('input', function (ev) {
+        var t = ev.target;
+        if (!t || !t.classList || !t.classList.contains('fab-input')) {
+            if (t && (t.id === 'fabName' || t.id === 'fabDesc')) render();
+            return;
+        }
+        if (t.dataset && t.dataset.sub && t.dataset.pid === 'U11') syncU11();
         render();
     });
 
-    var cp = document.getElementById('fabBtnCopy');
-    if (cp) cp.addEventListener('click', function () {
-        var r = render();
-        var txt = '=== TECHNIQUE MAISON (Fabrique, Livre III §14) ===\n' +
-            'Nom : ' + prev.name.textContent + '\n' +
-            'Nature : ' + prev.type.textContent + '\n' +
-            'Activation : ' + r.pa + ' PA · Création : ' + r.xp + ' XP' + (r.crossed ? ' (croisé)' : '') + '\n\n' +
-            'Description : ' + prev.desc.textContent + '\n\nDétail :\n' +
-            r.lines.map(function (l) { return '- ' + l.label + ' (' + l.xp + ' XP + ' + l.pa + ' PA)'; }).join('\n') +
-            (r.errors.length ? '\n\nÀ corriger :\n' + r.errors.map(function (e) { return '- ' + e; }).join('\n') : '') +
-            (r.warnings.length ? '\n\nNotes MJ :\n' + r.warnings.map(function (w) { return '- ' + w; }).join('\n') : '') +
-            '\n============================================';
-        if (navigator.clipboard) navigator.clipboard.writeText(txt).then(function () {
-            if (window.showToast) window.showToast('Fiche de technique copiée !');
-        });
+    /* --- Glisser-déposer : la pièce du casier vers le plateau. --- */
+    document.addEventListener('dragstart', function (ev) {
+        var card = ev.target && ev.target.closest ? ev.target.closest('.fab-piece[data-card]') : null;
+        if (!card) return;
+        try { ev.dataTransfer.setData('text/fab-piece', card.dataset.card); } catch (e) { /* presse-papier D&D indisponible */ }
+        try { ev.dataTransfer.effectAllowed = 'copy'; } catch (e) { /* vieux moteur */ }
+    });
+    boardEl.addEventListener('dragover', function (ev) {
+        ev.preventDefault();
+        boardEl.classList.add('fab-drop-hint');
+    });
+    boardEl.addEventListener('dragleave', function () { boardEl.classList.remove('fab-drop-hint'); });
+    boardEl.addEventListener('drop', function (ev) {
+        ev.preventDefault();
+        boardEl.classList.remove('fab-drop-hint');
+        var id = null;
+        try { id = ev.dataTransfer.getData('text/fab-piece'); } catch (e) { /* presse-papier D&D indisponible */ }
+        if (id && P(id)) addPiece(id);
     });
 
+    /* --- Montage initial. --- */
+    load();
+    buildEnsembles();
+    buildTray();
+    buildModifs();
+    restoreInputs();
+    /* U11 restaurée depuis la sauvegarde. */
+    (function () {
+        var any = false;
+        document.querySelectorAll('input[data-sub][data-pid="U11"]').forEach(function (c) { if (c.checked) any = true; });
+        if (any && (state.qty.U11 | 0) === 0) { state.order.push('U11'); state.qty.U11 = 1; }
+    })();
     render();
 }
 
