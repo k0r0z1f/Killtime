@@ -1635,9 +1635,9 @@
 
                         <p>
                             Tu as lu le <a href="livre_3.html#chap-14">chapitre 14 (Fabrique de Techniques)</a> ?
-                            Alors assemble ta technique comme un puzzle. Choisis un <strong>ensemble</strong> (le châssis),
-                            puis emboîte <strong>1 à 3 pièces</strong> dans ses logements.
-                            Chaque pièce dit ce qu'elle demande et ce qu'elle refuse.
+                            Alors monte ta technique comme un nœud du graphe : clique ◆ pour l'ensemble,
+                            ⊕ pour brancher 1 à 3 pièces. Le menu ne propose que ce qui se branche ici —
+                            chaque choix dit ce qu'il demande et ce qu'il refuse.
                             L'atelier compte les XP et les PA tout seul, et il te dit quand ton MJ doit signer (7–8 XP).
                         </p>
 
@@ -1674,49 +1674,30 @@
 
                             <h4
                                 style="margin: 20px 0 10px; font-family: var(--font-mono); font-size: 0.85rem; color: var(--temporal-amber); text-transform: uppercase;">
-                                1. Ensemble (un seul — il dit quand ça part)
+                                1. Graphe — clique un nœud, le menu propose les choix possibles
                             </h4>
-                            <div id="fabChassis" class="fab-ensemble-row"></div>
-
-                            <div class="fab-puzzle-layout">
-                                <div class="fab-board-col">
-                                    <h4
-                                        style="margin: 20px 0 10px; font-family: var(--font-mono); font-size: 0.85rem; color: var(--matrix-emerald); text-transform: uppercase;">
-                                        2. Plateau — 3 logements (filières = grosse pièce)
-                                    </h4>
-                                    <div id="fabBoard" class="fab-board" aria-live="polite"></div>
-                                    <h4
-                                        style="margin: 16px 0 10px; font-family: var(--font-mono); font-size: 0.85rem; color: var(--vital-ruby); text-transform: uppercase;">
-                                        Contrôle MJ (en direct)
-                                    </h4>
-                                    <ul id="fabChecklist" class="spell-effects-list">
-                                        <li><em>Choisis un ensemble, puis emboîte 1 à 3 pièces.</em></li>
-                                    </ul>
-                                </div>
-                                <div class="fab-tray-col">
-                                    <h4
-                                        style="margin: 20px 0 10px; font-family: var(--font-mono); font-size: 0.85rem; color: var(--arcane-cyan); text-transform: uppercase;">
-                                        3. Pièces — clique ou glisse vers le plateau
-                                    </h4>
-                                    <div class="fab-tray-filters" role="tablist" aria-label="Filtrer les pièces">
-                                        <button class="tool-btn secondary fab-filter sel" data-fam="all">Toutes</button>
-                                        <button class="tool-btn secondary fab-filter" data-fam="offensif">Offensif</button>
-                                        <button class="tool-btn secondary fab-filter" data-fam="defensif">Défensif</button>
-                                        <button class="tool-btn secondary fab-filter" data-fam="utilitaire">Utilitaire</button>
-                                        <button class="tool-btn secondary fab-filter" data-fam="social">Social</button>
-                                    </div>
-                                    <div class="fab-tray">
-                                        <div id="fabFam-offensif" class="fab-tray-fam"></div>
-                                        <div id="fabFam-defensif" class="fab-tray-fam"></div>
-                                        <div id="fabFam-utilitaire" class="fab-tray-fam"></div>
-                                        <div id="fabFam-social" class="fab-tray-fam"></div>
-                                    </div>
-                                </div>
+                            <div id="fabGraph" class="fab-graph" aria-live="polite">
+                                <svg id="fabWires" class="fab-wires" aria-hidden="true"></svg>
+                                <div id="fabNodes" class="fab-nodes"></div>
+                                <div id="fabCtx" class="fab-ctx" hidden></div>
                             </div>
+                            <p class="fab-hint">
+                                Clic gauche ou clic droit sur ◆, ⊕ ou une pièce : le menu ne montre que ce qui
+                                se branche ici — l'impossible reste grisé avec sa raison.
+                                Échap ou clic ailleurs = annuler.
+                            </p>
+
+                            <h4
+                                style="margin: 16px 0 10px; font-family: var(--font-mono); font-size: 0.85rem; color: var(--vital-ruby); text-transform: uppercase;">
+                                Contrôle MJ (en direct)
+                            </h4>
+                            <ul id="fabChecklist" class="spell-effects-list">
+                                <li><em>Clique ◆ pour choisir ton ensemble, ⊕ pour brancher une pièce.</em></li>
+                            </ul>
 
                             <h4
                                 style="margin: 20px 0 10px; font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-secondary); text-transform: uppercase;">
-                                4. Finitions (modificateurs — les bords du puzzle)
+                                2. Finitions (modificateurs — les bords du graphe)
                             </h4>
                             <div id="fabModifs" class="fab-modifs"></div>
 
@@ -1887,7 +1868,7 @@
 
     <!-- Scripts partagés et interactifs -->
     <script src="js/codex.js"></script>
-    <script src="js/fabrique.js?v=2"></script>
+    <script src="js/fabrique.js?v=3"></script>
     <script src="js/tools.js?v=9"></script>
 
     <!-- Scripts Authentification -->

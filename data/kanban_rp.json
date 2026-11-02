@@ -1,6 +1,6 @@
 {
  "version": 3,
- "updated": "2026-11-01",
+ "updated": "2026-11-02",
  "activeId": "board-revue-rp",
  "boards": [
   {
@@ -1912,6 +1912,21 @@
      "scale": null,
      "suggestedAsset": "livre_2.html#chap-8",
      "details": "OUVERT 2026-11-01 — les axes social & utilitaire sont sous-développés face au combat (Face-à-Face, états, seuils) : duel social ? (négociation, intimidation, persuasion, baratin), progression et coûts dédiés, utilitaire (artisanat, réparation, économie de matériel, soins hors combat), portées, durées, cumuls, interactions avec les états. La table des critiques §8.2 en est un symptôme : 17 effets sociaux/utilitaires encore flavor (Ascendant, Ralliement, Soumission, Survoltage, Succès mirifique, Découverte, Économie, Composant, Ralentissement temporel, Regains, Tâche sans bruit...). En même temps : cadrer les 17 effets sociaux/utilitaires de la table §8.2 avec ces nouvelles règles (pas de passe séparée)."
+    },
+    {
+     "id": "RP-128",
+     "title": "Préface étendue : c'est quoi le roleplay autour d'une table, type de jeu, en combat, etc.",
+     "epic": "Préface",
+     "status": "todo",
+     "priority": "medium",
+     "order": 127,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "index.html#preface",
+     "details": "Étendre la préface (index.html#preface) avec une section d'accueil : c'est quoi le roleplay autour d'une table (MJ + joueurs, parler en personnage, jets pour trancher le doute), les types de jeu (enquête / social / exploration / combat tactique), et à quoi ressemble un tour en combat (10s, PA à dépenser : bouger / frapper / se protéger / préparer). Ton MJ accueillant (phrases courtes, 2e personne, exemples concrets, modèle = préface 2026-10-29) ; mécaniques strictement intactes ; liens + ancres OK. DONE = section lisible par un débutant total, relue, sans résidu jargon."
     }
    ]
   }

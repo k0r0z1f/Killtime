@@ -1,10 +1,10 @@
 /* ==========================================================================
-   FABRIQUE DE TECHNIQUES — ATELIER PUZZLE (Livre III chap-14, Livre IX chap-40).
+   FABRIQUE DE TECHNIQUES — ATELIER GRAPHE (Livre III chap-14, Livre IX chap-40).
    Moteur pur FabriqueEngine.compute (inchangé : châssis + 1-3 pièces,
    paliers en filière, M1-M7, hybride auto, croisé ×2, plancher 4,
    signature 7-8, plafond PA 6, incompatibilités, prérequis) + initFabrique()
-   qui monte le puzzle depuis data/livre_3.json (mecaniques.fabrique).
-   Puzzle : 1 ensemble (châssis) + pièces qui s'emboîtent dans 3 logements.
+   qui monte le graphe depuis data/livre_3.json (mecaniques.fabrique).
+   Graphe : 1 ensemble (racine ◆) (châssis) + pièces qui s'emboîtent dans 3 logements.
    Les filières (O4→O5→O6, O13→O14) sont des grosses pièces : elles prennent
    2-3 logements d'un coup, prérequis inclus.
    ========================================================================== */
@@ -256,13 +256,19 @@ var SAVE_KEY = 'fabrique-puzzle-v1';
 function chainOf(id) { return CHAINS[id] || [id]; }
 function spanOf(id) { return chainOf(id).length; }
 
+function normSearch(s) {
+    var n = String(s == null ? '' : s).toLowerCase();
+    if (n.normalize) n = n.normalize('NFD').replace(/[̀-ͯ]/g, '');
+    return n;
+}
+
 function initFabrique() {
-    var host = document.getElementById('fabChassis');
-    if (!host) return;
+    var graphEl = document.getElementById('fabGraph');
+    if (!graphEl) return;
     var CAT = window.CodexData && window.CodexData.l3 &&
               window.CodexData.l3.mecaniques && window.CodexData.l3.mecaniques.fabrique;
     if (!CAT) {
-        host.innerHTML = '<div class="callout warning"><div class="callout-body">' +
+        graphEl.innerHTML = '<div class="callout warning"><div class="callout-body">' +
             'Données de la Fabrique introuvables (data/livre_3.json). Ouvre cette page via le site, pas en fichier seul.' +
             '</div></div>';
         return;
@@ -270,8 +276,12 @@ function initFabrique() {
 
     /* --- État : source unique, le DOM ne fait que l'afficher. --- */
     var state = { chassis: null, qty: {}, order: [],
+                  o19: 'partiel', u7: '5', u11: {},
                   narrow: 0, range: 0, zone: false, dur: 0, cross: false };
-    var boardEl = document.getElementById('fabBoard');
+    var menu = null; /* {kind:'slot'|'piece'|'root', id, search} */
+    var nodesEl = document.getElementById('fabNodes');
+    var wiresEl = document.getElementById('fabWires');
+    var ctxEl = document.getElementById('fabCtx');
 
     function esc(s) { return String(s == null ? '' : s); }
     function el(tag, cls, html) {
@@ -290,9 +300,9 @@ function initFabrique() {
             if (CAT.chassis[i].id === id) return CAT.chassis[i];
         return null;
     }
-    function toast(msg) { if (window.showToast) window.showToast(msg); }
+    function toast(m) { if (window.showToast) window.showToast(m); }
 
-    /* Présence réelle sur le plateau (tops + étages auto-inclus). */
+    /* Présence réelle sur le graphe (tops + étages auto-inclus). */
     function present(id) {
         if ((state.qty[id] | 0) > 0) return true;
         for (var i = 0; i < state.order.length; i++) {
@@ -322,12 +332,12 @@ function initFabrique() {
         return null;
     }
 
-    /* Pourquoi cette pièce ne s'emboîte pas (ou avec un avertissement). */
+    /* Pourquoi ce choix n'est pas possible ici (ou avec un avertissement). */
     function lockInfo(p) {
         var id = p.id;
         var k = KIND[id];
         var q = state.qty[id] | 0;
-        if (!state.chassis) return { lock: true, reason: 'Choisis d\u2019abord un ensemble.' };
+        if (!state.chassis) return { lock: true, reason: 'Choisis d\u2019abord un ensemble (◆).' };
         if (q > 0 && !(k && k.t === 'n')) {
             if (CHAIN_KEY[id]) {
                 var cur = null;
@@ -335,20 +345,15 @@ function initFabrique() {
                 if (cur && spanOf(cur) >= spanOf(id))
                     return { lock: true, reason: 'Déjà incluse dans ' + cur + '.' };
             } else {
-                return { lock: true, reason: 'Déjà sur le plateau (pièce unique).' };
+                return { lock: true, reason: 'Déjà sur le graphe (pièce unique).' };
             }
         }
         if (k && k.t === 'n' && q >= k.max)
             return { lock: true, reason: 'Maximum ×' + k.max + ' atteint.' };
         if (id === 'O17' && state.chassis !== 'C3')
-            return { lock: true, reason: 'O17 ne s\u2019emboîte que sur l\u2019ensemble Réaction.' };
+            return { lock: true, reason: 'O17 ne se branche que sur l\u2019ensemble Réaction.' };
         if (id === 'D8' && !present('D1') && !present('D3'))
-            return { lock: true, reason: 'Demande D1 ou D3 sur le plateau.' };
-        if (id === 'U11' && (state.qty.U11 | 0) === 0) {
-            var anyS = false;
-            document.querySelectorAll('input[data-sub][data-pid="U11"]').forEach(function (c) { if (c.checked) anyS = true; });
-            if (!anyS) return { lock: true, reason: 'Coche d\u2019abord un palier (p3, p4 ou 2×).' };
-        }
+            return { lock: true, reason: 'Demande D1 ou D3 sur le graphe.' };
         var bad = incompWith(id);
         if (bad) return { lock: true, reason: 'Refuse ' + bad + ' (règle 8).' };
         if (p.majeure && majeuresCount() >= 2)
@@ -362,9 +367,8 @@ function initFabrique() {
         }
         if (placedSpan() + need > 3)
             return { lock: true, reason: 'Plus de logement libre (3 max).' };
-        /* Avertissements souples : la pièce rentre, mais le MJ tiquera. */
         if (id === 'O12' && !present('O10') && !present('O11'))
-            return { lock: false, soft: 'Demande O10 ou O11 sur le plateau.' };
+            return { lock: false, soft: 'Demande O10 ou O11 sur le graphe.' };
         if (id === 'O18' && placedSpan() + need < 3)
             return { lock: false, soft: 'Demande 3 pièces de la même arme.' };
         if (id === 'U5')
@@ -376,16 +380,16 @@ function initFabrique() {
 
     function addPiece(id) {
         var p = P(id);
-        if (!p) return;
+        if (!p) return false;
         var info = lockInfo(p);
-        if (info.lock) { toast(info.reason); render(); return; }
+        if (info.lock) { toast(info.reason); return false; }
         var k = KIND[id];
         if (CHAIN_KEY[id]) {
             var idx = -1;
             state.order.forEach(function (t, i) { if (CHAIN_KEY[t] === CHAIN_KEY[id]) idx = i; });
             if (idx >= 0) {
                 var old = state.order[idx];
-                if (spanOf(old) >= spanOf(id)) { toast('Déjà incluse.'); return; }
+                if (spanOf(old) >= spanOf(id)) { toast('Déjà incluse.'); return false; }
                 delete state.qty[old];
                 state.order[idx] = id;
                 state.qty[id] = 1;
@@ -400,11 +404,19 @@ function initFabrique() {
             state.order.push(id);
             state.qty[id] = 1;
         }
+        closeMenu();
         render();
+        return true;
     }
     function removePiece(id) {
         delete state.qty[id];
         state.order = state.order.filter(function (t) { return t !== id; });
+        closeMenu();
+        render();
+    }
+    function setChassis(id) {
+        state.chassis = (state.chassis === id) ? null : id;
+        closeMenu();
         render();
     }
     function bumpQty(id, d) {
@@ -416,17 +428,36 @@ function initFabrique() {
         state.qty[id] = v;
         render();
     }
+    function toggleU11(v) {
+        state.u11[v] = !state.u11[v];
+        var any = false;
+        Object.keys(state.u11).forEach(function (x) { if (state.u11[x]) any = true; });
+        if (any && (state.qty.U11 | 0) === 0) {
+            var info = lockInfo(P('U11'));
+            if (info.lock) {
+                state.u11[v] = false;
+                toast(info.reason);
+                render();
+                return;
+            }
+            state.order.push('U11');
+            state.qty.U11 = 1;
+            state.u11auto = true;
+        }
+        if (!any && (state.qty.U11 | 0) > 0 && state.u11auto) {
+            delete state.qty.U11;
+            state.order = state.order.filter(function (t) { return t !== 'U11'; });
+            state.u11auto = false;
+        }
+        render();
+    }
 
-    /* --- Lecture des variantes + finitions (dans les cartes). --- */
-    function readVariants(sel) {
-        var r19 = document.querySelector('input[name="fab_O19"]:checked');
-        sel.o19 = r19 ? r19.value : 'partiel';
-        var s7 = document.querySelector('select[data-pid="U7"]');
-        sel.u7 = s7 ? s7.value : '5';
-        sel.u11 = {};
-        document.querySelectorAll('input[data-sub][data-pid="U11"]').forEach(function (c) {
-            if (c.checked) sel.u11[c.dataset.sub] = true;
-        });
+    /* --- Lecture des finitions (dans le DOM, construites une fois). --- */
+    function buildSel() {
+        var sel = { chassis: state.chassis, qty: {}, o19: state.o19, u7: state.u7, u11: {},
+                    narrow: 0, range: 0, zone: false, dur: 0, cross: false };
+        Object.keys(state.qty).forEach(function (id) { sel.qty[id] = state.qty[id]; });
+        Object.keys(state.u11).forEach(function (v) { if (state.u11[v]) sel.u11[v] = true; });
         var rr = document.querySelector('input[name="fabRange"]:checked');
         sel.range = rr ? (parseInt(rr.value, 10) || 0) : 0;
         var zo = document.getElementById('fabZone');
@@ -439,94 +470,8 @@ function initFabrique() {
         sel.cross = !!(cx && cx.checked);
         return sel;
     }
-    function buildSel() {
-        var sel = { chassis: state.chassis, qty: {}, o19: 'partiel', u7: '5', u11: {},
-                    narrow: 0, range: 0, zone: false, dur: 0, cross: false };
-        Object.keys(state.qty).forEach(function (id) { sel.qty[id] = state.qty[id]; });
-        if ((sel.qty.U11 | 0) > 0) {
-            var any = false;
-            document.querySelectorAll('input[data-sub][data-pid="U11"]').forEach(function (c) { if (c.checked) any = true; });
-            if (!any) delete sel.qty.U11;
-        }
-        return readVariants(sel);
-    }
 
-    /* --- 1. Ensembles (châssis). --- */
-    var ENS_SUB = { C0: 'Passif', C2: 'Action', C3: 'Réaction', C4: 'Opportunité' };
-    function buildEnsembles() {
-        host.innerHTML = '';
-        CAT.chassis.forEach(function (c) {
-            var b = el('button', 'fab-ensemble' + (state.chassis === c.id ? ' sel' : ''), '');
-            b.type = 'button';
-            b.dataset.ens = c.id;
-            b.setAttribute('aria-pressed', state.chassis === c.id ? 'true' : 'false');
-            b.innerHTML = '<span class="fab-ens-top"><span class="fab-ens-id">' + esc(c.id) +
-                ' · ' + esc(ENS_SUB[c.id] || '') + '</span>' +
-                '<span class="fab-ens-cost">' + esc(c.cout_xp) + ' XP + ' + esc(c.cout_pa) + ' PA</span></span>' +
-                '<strong>' + esc(c.nom) + '</strong>' +
-                '<small>' + esc(c.cadre) + '</small>' +
-                '<span class="fab-ens-shape"><i></i><i></i><i></i></span>';
-            host.appendChild(b);
-        });
-    }
-
-    /* --- 3. Casier à pièces. --- */
-    function metaLine(p) {
-        var bits = [];
-        if (p.seuil) bits.push('<b>Seuil :</b> ' + esc(p.seuil));
-        if (p.portee) bits.push('<b>Portée :</b> ' + esc(p.portee));
-        if (p.prerequis && p.prerequis.length)
-            bits.push('<b class="rq">Demande :</b> <span class="rq">' + esc(p.prerequis.join(' · ')) + '</span>');
-        if (p.incompatible && p.incompatible.length)
-            bits.push('<b class="rf">Refuse :</b> <span class="rf">' + esc(p.incompatible.join(' · ')) + '</span>');
-        var tail = p.cumul ? 'Cumulable' : 'Pièce unique';
-        if (p.majeure) tail += ' · ★ majeure';
-        bits.push(tail);
-        return bits.join('<br>');
-    }
-    function buildTray() {
-        ['offensif', 'defensif', 'utilitaire', 'social'].forEach(function (fam) {
-            var box = document.getElementById('fabFam-' + fam);
-            if (!box) return;
-            box.innerHTML = '';
-            box.appendChild(el('div', 'fab-tray-title', FAM_LABEL[fam]));
-            CAT.pieces.filter(function (p) { return p.famille === fam; }).forEach(function (p) {
-                var card = el('div', 'fab-piece fam-' + fam, '');
-                card.dataset.card = p.id;
-                card.draggable = true;
-                var h = '<div class="fab-piece-top"><strong>' + esc(p.nom) + '</strong>' +
-                    '<span class="fab-piece-cost">' + esc(p.cout_xp) + ' XP + ' + esc(p.cout_pa) + ' PA</span></div>' +
-                    '<div class="fab-piece-id">' + esc(p.id) + (p.majeure ? ' · ★ majeure' : '') + '</div>' +
-                    '<div class="fab-piece-text">' + esc(p.cond || p.texte || '') + '</div>' +
-                    '<div class="fab-piece-meta">' + metaLine(p) + '</div>';
-                if (p.id === 'O19') {
-                    h += '<div class="fab-variant">' + KIND.O19.opts.map(function (o, i) {
-                        return '<label><input type="radio" name="fab_O19" value="' + o.v + '"' +
-                            (i === 0 ? ' checked' : '') + ' class="fab-input"> ' + esc(o.label) + '</label>';
-                    }).join('') + '</div>';
-                }
-                if (p.id === 'U7') {
-                    h += '<div class="fab-variant"><label>Palier <select data-pid="U7" class="tool-select fab-input">' +
-                        KIND.U7.opts.map(function (o) {
-                            return '<option value="' + o.v + '">' + esc(o.label) + '</option>';
-                        }).join('') + '</select></label></div>';
-                }
-                if (p.id === 'U11') {
-                    h += '<div class="fab-variant">' + KIND.U11.opts.map(function (o) {
-                        return '<label><input type="checkbox" data-sub="' + o.v + '" data-pid="U11" class="fab-input"> ' +
-                            esc(o.label) + '</label>';
-                    }).join('') + '<span style="opacity:.75">Coche un palier pour l\u2019emboîter (base 2 XP).</span></div>';
-                }
-                h += '<div class="fab-piece-foot"><button type="button" class="fab-fit-btn" data-fit="' + esc(p.id) + '">⤓ Emboîter</button>' +
-                    '<span class="fab-lock" data-lock="' + esc(p.id) + '" hidden></span>' +
-                    '<span class="fab-soft" data-soft="' + esc(p.id) + '" hidden></span></div>';
-                card.innerHTML = h;
-                box.appendChild(card);
-            });
-        });
-    }
-
-    /* --- 4. Finitions (modificateurs). --- */
+    /* --- 2. Finitions (modificateurs). --- */
     function buildModifs() {
         var mod = document.getElementById('fabModifs');
         if (!mod) return;
@@ -563,27 +508,8 @@ function initFabrique() {
         mod.appendChild(cr);
     }
 
-    /* --- Variantes : U11 coche un palier = pièce emboîtée. --- */
-    function syncU11() {
-        var any = false;
-        document.querySelectorAll('input[data-sub][data-pid="U11"]').forEach(function (c) { if (c.checked) any = true; });
-        if (any && (state.qty.U11 | 0) === 0) {
-            var info = lockInfo(P('U11'));
-            if (info.lock) {
-                document.querySelectorAll('input[data-sub][data-pid="U11"]').forEach(function (c) { c.checked = false; });
-                toast(info.reason);
-                return;
-            }
-            state.order.push('U11');
-            state.qty.U11 = 1;
-        }
-        if (!any && (state.qty.U11 | 0) > 0) {
-            delete state.qty.U11;
-            state.order = state.order.filter(function (t) { return t !== 'U11'; });
-        }
-    }
-
-    /* --- Rendu. --- */
+    /* --- Rendu du graphe : racine ◆ + nœuds pièces + logements ⊕, reliés. --- */
+    var FAM_COLOR = { offensif: '#f43f5e', defensif: '#38bdf8', utilitaire: '#10b981', social: '#f59e0b' };
     var prev = {
         badge: document.getElementById('fabBudgetBadge'),
         name: document.getElementById('fabCardName'),
@@ -597,46 +523,60 @@ function initFabrique() {
 
     function variantSummary(id) {
         if (id === 'O19') {
-            var r = document.querySelector('input[name="fab_O19"]:checked');
-            var v = r ? r.value : 'partiel';
             var o = null;
-            KIND.O19.opts.forEach(function (x) { if (x.v === v) o = x; });
+            KIND.O19.opts.forEach(function (x) { if (x.v === state.o19) o = x; });
             return o ? o.label : '';
         }
-        if (id === 'U7') {
-            var s = document.querySelector('select[data-pid="U7"]');
-            return 'palier ' + (s ? s.value : '5') + ' PV';
-        }
+        if (id === 'U7') return 'palier ' + state.u7 + ' PV';
         if (id === 'U11') {
-            var on = [];
-            document.querySelectorAll('input[data-sub][data-pid="U11"]').forEach(function (c) { if (c.checked) on.push(c.dataset.sub); });
+            var on = Object.keys(state.u11).filter(function (v) { return state.u11[v]; });
             return on.length ? 'paliers ' + on.join(', ') : 'base';
         }
         return '';
     }
 
-    function renderBoard(sel, r) {
-        boardEl.innerHTML = '';
+    function renderGraph(sel) {
+        nodesEl.innerHTML = '';
+        wiresEl.innerHTML = '';
         var ch = sel.chassis ? C(sel.chassis) : null;
-        boardEl.appendChild(el('div', 'fab-board-name',
-            ch ? '◆ ' + esc(ch.nom) + ' — ' + esc(ch.cout_xp) + ' XP + ' + esc(ch.cout_pa) + ' PA' : '◆ Choisis un ensemble ci-dessus'));
-        var slots = el('div', 'fab-slots', '');
-        if (!state.order.length) {
-            var emp = el('div', 'fab-board-empty',
-                'Tes pièces emboîtées apparaissent ici.<br>Clique <strong>Emboîter</strong> ou glisse une pièce du casier.');
-            slots.appendChild(emp);
+        var flow = el('div', 'fab-flow', '');
+        var rootcol = el('div', 'fab-rootcol', '');
+        var branchcol = el('div', 'fab-branchcol', '');
+        /* Racine ◆. */
+        var root = el('div', 'fab-rootnode', '');
+        root.setAttribute('role', 'button');
+        root.setAttribute('tabindex', '0');
+        root.dataset.node = 'root';
+        var dots = '<span class="fab-dots">';
+        for (var i = 0; i < 3; i++) dots += '<i class="' + (i < placedSpan() ? 'on' : '') + '"></i>';
+        dots += '</span>';
+        if (ch) {
+            root.innerHTML = '<span class="fab-ens-top"><span class="fab-ens-id">◆ ' + esc(ch.id) + '</span>' +
+                '<span class="fab-ens-cost">' + esc(ch.cout_xp) + ' XP + ' + esc(ch.cout_pa) + ' PA</span></span>' +
+                '<strong>' + esc(ch.nom) + '</strong><small>' + esc(ch.cadre) + '</small>' + dots;
+        } else {
+            root.innerHTML = '<span class="fab-ens-top"><span class="fab-ens-id">◆ Ensemble</span></span>' +
+                '<strong>Choisis ton ensemble</strong><small>Clique ici : il dit quand ta technique part.</small>' + dots;
+        }
+        rootcol.appendChild(root);
+        flow.appendChild(rootcol);
+        /* Nœuds pièces + logements ⊕. */
+        if (!ch && !state.order.length) {
+            var hint = el('div', 'fab-graph-hint',
+                'Clique <strong>◆</strong> pour choisir ton ensemble — puis <strong>⊕</strong> pour brancher une pièce.<br>' +
+                'Le menu ne propose que les choix possibles ici.');
+            branchcol.appendChild(hint);
         }
         state.order.forEach(function (id) {
             var p = P(id);
             if (!p) return;
             var box = el('div', 'fab-placed fam-' + p.famille, '');
-            box.dataset.slot = id;
-            var k = KIND[id];
-            var line = null;
-            r.lines.forEach(function (l) { if (l.id === id) line = l; });
-            var cost = line ? (line.xp + ' XP + ' + line.pa + ' PA') : (p.cout_xp + ' XP + ' + p.cout_pa + ' PA');
+            box.setAttribute('role', 'button');
+            box.setAttribute('tabindex', '0');
+            box.dataset.node = 'piece';
+            box.dataset.id = id;
             var head = '<div class="fab-placed-head"><strong>' + esc(p.nom) + '</strong>' +
-                '<span class="fab-placed-cost">' + esc(cost) + '</span></div>';
+                '<span class="fab-placed-cost">' + esc(p.cout_xp) + ' XP + ' + esc(p.cout_pa) + ' PA</span></div>';
             var sub = esc(p.cond || p.texte || '');
             var vs = variantSummary(id);
             if (vs) sub += ' — ' + esc(vs);
@@ -644,10 +584,6 @@ function initFabrique() {
             var flags = '<div class="fab-placed-flags">';
             chainOf(id).forEach(function (x) { flags += '<span class="fab-flag">' + esc(x) + '</span>'; });
             if (p.majeure) flags += '<span class="fab-flag star">★ majeure</span>';
-            if (p.prerequis && p.prerequis.length)
-                flags += '<span class="fab-flag req">demande ' + esc(p.prerequis.join(', ')) + '</span>';
-            if (p.incompatible && p.incompatible.length)
-                flags += '<span class="fab-flag no">refuse ' + esc(p.incompatible.join(', ')) + '</span>';
             flags += '</div>';
             var tiers = '';
             if (chainOf(id).length > 1) {
@@ -656,49 +592,330 @@ function initFabrique() {
                     return '<div class="fab-chain-tier"><b>' + esc(x) + '</b> — ' + esc(q ? q.nom : '') + '</div>';
                 }).join('') + '</div>';
             }
-            var ctl = '<div class="fab-placed-ctl">';
-            if (k && k.t === 'n')
-                ctl += '<span class="fab-stepper"><button type="button" data-dec="' + esc(id) + '" aria-label="Retirer un cran">−</button>' +
-                    '<span>×' + (state.qty[id] | 0) + ' / ' + k.max + '</span>' +
-                    '<button type="button" data-inc="' + esc(id) + '" aria-label="Ajouter un cran">+</button></span>';
-            ctl += '<button type="button" class="fab-mini-btn" data-unfit="' + esc(id) + '">⤴ Retirer</button></div>';
-            var sock = '<div class="fab-sockets">';
-            for (var i = 0; i < 3; i++)
-                sock += '<i class="' + (i < placedSpan() ? 'on' : '') + '"></i>';
-            sock += '</div>';
-            box.innerHTML = head + '<div class="fab-placed-sub">' + sub + '</div>' + flags + tiers + ctl + sock;
-            slots.appendChild(box);
+            box.innerHTML = head + '<div class="fab-placed-sub">' + sub + '</div>' + flags + tiers +
+                '<div class="fab-placed-sub" style="opacity:.55">Clique pour régler ou retirer.</div>';
+            branchcol.appendChild(box);
         });
-        boardEl.appendChild(slots);
+        for (var s = placedSpan(); s < 3; s++) {
+            var slot = el('button', 'fab-slot-empty', '<span class="fab-plus">⊕</span><span>Logement libre — clique pour brancher une pièce.</span>');
+            slot.type = 'button';
+            slot.dataset.node = 'slot';
+            branchcol.appendChild(slot);
+        }
+        flow.appendChild(branchcol);
+        nodesEl.appendChild(flow);
+        /* Fils : courbes racine → chaque rangée. */
+        if (!ch) return;
+        try {
+            var gr = graphEl.getBoundingClientRect();
+            if (gr.width <= 0) return;
+            wiresEl.setAttribute('viewBox', '0 0 ' + gr.width + ' ' + gr.height);
+            var rb = root.getBoundingClientRect();
+            var x1 = rb.right - gr.left, y1 = rb.top + rb.height / 2 - gr.top;
+            var rows = branchcol.children;
+            for (var ri = 0; ri < rows.length; ri++) {
+                var bb = rows[ri].getBoundingClientRect();
+                var x2 = bb.left - gr.left, y2 = bb.top + bb.height / 2 - gr.top;
+                var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                var isSlot = rows[ri].dataset && rows[ri].dataset.node === 'slot';
+                var fam = null;
+                if (!isSlot) {
+                    var pid = rows[ri].dataset ? rows[ri].dataset.id : null;
+                    var pp = pid ? P(pid) : null;
+                    fam = pp ? FAM_COLOR[pp.famille] : null;
+                }
+                path.setAttribute('d', 'M ' + x1 + ' ' + y1 + ' C ' + (x1 + 50) + ' ' + y1 + ', ' + (x2 - 50) + ' ' + y2 + ', ' + x2 + ' ' + y2);
+                path.setAttribute('fill', 'none');
+                path.setAttribute('stroke', fam || 'rgba(255,255,255,0.22)');
+                path.setAttribute('stroke-width', '2');
+                if (isSlot) path.setAttribute('stroke-dasharray', '5 4');
+                wiresEl.appendChild(path);
+            }
+        } catch (e) { /* mesure indisponible : graphe sans fils */ }
     }
 
-    function renderTrayLocks() {
-        document.querySelectorAll('.fab-piece[data-card]').forEach(function (card) {
-            var p = P(card.dataset.card);
-            if (!p) return;
+    /* --- Menu contextuel : que les choix possibles ici. --- */
+    function openMenu(kind, id, x, y) {
+        menu = { kind: kind, id: id || null, search: '' };
+        renderMenu(x, y, true);
+    }
+    function closeMenu() {
+        if (!menu) return;
+        menu = null;
+        if (ctxEl) { ctxEl.hidden = true; ctxEl.innerHTML = ''; }
+    }
+    function slotOptions() {
+        return CAT.pieces.map(function (p) { return { p: p, info: lockInfo(p) }; });
+    }
+    function firstLegal() {
+        var q = menu ? normSearch(menu.search) : '';
+        var opts = slotOptions();
+        for (var i = 0; i < opts.length; i++) {
+            if (q && normSearch(opts[i].p.nom + ' ' + opts[i].p.id).indexOf(q) < 0) continue;
+            if (!opts[i].info.lock) return opts[i].p.id;
+        }
+        return null;
+    }
+    function optRow(o, fam) {
+        var p = o.p, info = o.info;
+        var b = el('button', 'fab-opt fam-' + (fam || p.famille), '');
+        b.type = 'button';
+        var h = '<span class="fab-opt-top"><strong>' + esc(p.nom) + '</strong>' +
+            '<span class="fab-opt-cost">' + esc(p.id) + ' · ' + esc(p.cout_xp) + ' XP + ' + esc(p.cout_pa) + ' PA</span></span>';
+        if (p.prerequis && p.prerequis.length)
+            h += '<div class="fab-opt-req"><span class="rq">Demande ' + esc(p.prerequis.join(', ')) + '</span></div>';
+        if (p.incompatible && p.incompatible.length)
+            h += '<div class="fab-opt-req"><span class="rf">Refuse ' + esc(p.incompatible.join(', ')) + '</span></div>';
+        if (info.lock) {
+            b.disabled = true;
+            h += '<div class="fab-opt-lock">🔒 ' + esc(info.reason) + '</div>';
+        } else if (info.soft) {
+            b.dataset.pick = p.id;
+            h += '<div class="fab-opt-soft">⚠ ' + esc(info.soft) + '</div>';
+        } else {
+            b.dataset.pick = p.id;
+        }
+        b.innerHTML = h;
+        return b;
+    }
+    function renderMenu(x, y, focus) {
+        if (!menu || !ctxEl) return;
+        ctxEl.innerHTML = '';
+        var head = el('div', 'fab-ctx-head', '');
+        var title = menu.kind === 'root' ? '◆ Ensemble → ?' :
+                    menu.kind === 'piece' ? esc(menu.id || '') + ' → ?' : '⊕ Logement → ?';
+        head.innerHTML = '<span class="fab-ctx-title">' + title + '</span>';
+        var x0 = el('button', 'fab-ctx-close', '✕');
+        x0.type = 'button';
+        head.appendChild(x0);
+        ctxEl.appendChild(head);
+        var list = el('div', 'fab-ctx-list', '');
+
+        if (menu.kind === 'root') {
+            var s = document.createElement('input');
+            s.className = 'fab-ctx-search';
+            s.setAttribute('data-search', '1');
+            s.placeholder = 'Filtrer…';
+            s.value = menu.search;
+            ctxEl.appendChild(s);
+            list.appendChild(el('div', 'fab-ctx-group', 'Ensembles (un seul)'));
+            var q = normSearch(menu.search);
+            CAT.chassis.forEach(function (c) {
+                if (q && normSearch(c.nom + ' ' + c.id).indexOf(q) < 0) return;
+                var b = el('button', 'fab-opt', '');
+                b.type = 'button';
+                b.dataset.ensPick = c.id;
+                b.innerHTML = '<span class="fab-opt-top"><strong>' + esc(c.nom) + '</strong>' +
+                    '<span class="fab-opt-cost">' + esc(c.id) + ' · ' + esc(c.cout_xp) + ' XP + ' + esc(c.cout_pa) + ' PA</span></span>' +
+                    '<div class="fab-opt-sub">' + esc(c.cadre) + '</div>' +
+                    (state.chassis === c.id ? '<div class="fab-opt-soft">◆ actuel — clique pour retirer</div>' : '');
+                list.appendChild(b);
+            });
+            list.appendChild(el('div', 'fab-ctx-foot', 'Échap = annuler · Entrée = premier'));
+        } else if (menu.kind === 'slot') {
+            var s2 = document.createElement('input');
+            s2.className = 'fab-ctx-search';
+            s2.setAttribute('data-search', '1');
+            s2.placeholder = 'Filtrer les 45 pièces…';
+            s2.value = menu.search;
+            ctxEl.appendChild(s2);
+            var q2 = normSearch(menu.search);
+            var groups = { offensif: [], defensif: [], utilitaire: [], social: [] };
+            slotOptions().forEach(function (o) {
+                if (q2 && normSearch(o.p.nom + ' ' + o.p.id).indexOf(q2) < 0) return;
+                groups[o.p.famille].push(o);
+            });
+            Object.keys(groups).forEach(function (k) {
+                groups[k].sort(function (a, b) {
+                    var la = a.info.lock ? 1 : 0, lb = b.info.lock ? 1 : 0;
+                    if (la !== lb) return la - lb;
+                    var sa = (a.info.soft ? 1 : 0), sb = (b.info.soft ? 1 : 0);
+                    if (sa !== sb) return sa - sb;
+                    return a.p.id < b.p.id ? -1 : 1;
+                });
+            });
+            var shown = 0;
+            ['offensif', 'defensif', 'utilitaire', 'social'].forEach(function (fam) {
+                if (!groups[fam].length) return;
+                shown += groups[fam].length;
+                list.appendChild(el('div', 'fab-ctx-group', FAM_LABEL[fam]));
+                groups[fam].forEach(function (o) { list.appendChild(optRow(o, fam)); });
+            });
+            if (!shown) list.appendChild(el('div', 'fab-ctx-empty', '(aucun choix pour ce filtre — efface ta recherche)'));
+            list.appendChild(el('div', 'fab-ctx-foot', 'Échap = annuler · Entrée = premier choix possible'));
+        } else if (menu.kind === 'piece') {
+            var p = P(menu.id);
+            if (!p) { closeMenu(); return; }
             var info = lockInfo(p);
-            var btn = card.querySelector('[data-fit]');
-            var lk = card.querySelector('[data-lock]');
-            var sf = card.querySelector('[data-soft]');
-            var isPlaced = (state.qty[p.id] | 0) > 0 && !(KIND[p.id] && KIND[p.id].t === 'n');
-            card.classList.toggle('placed', isPlaced);
-            card.classList.toggle('locked', !!info.lock);
-            if (btn) btn.disabled = !!info.lock;
-            if (btn) btn.textContent = isPlaced ? '✓ Emboîtée' : '⤓ Emboîter';
-            if (lk) {
-                lk.hidden = !info.lock;
-                if (info.lock) lk.textContent = '🔒 ' + info.reason;
+            var k = KIND[p.id];
+            if (k && (p.id === 'O19' || p.id === 'U7' || p.id === 'U11')) {
+                list.appendChild(el('div', 'fab-ctx-sec', 'Variante'));
+                var vv = el('div', 'fab-ctx-var', '');
+                if (p.id === 'O19') {
+                    KIND.O19.opts.forEach(function (o) {
+                        var l = el('label', '', '<input type="radio" name="fabm_O19" value="' + o.v + '"' +
+                            (state.o19 === o.v ? ' checked' : '') + ' data-var-o19="1"> ' + esc(o.label));
+                        vv.appendChild(l);
+                    });
+                } else if (p.id === 'U7') {
+                    var lab = el('label', '', 'Palier ');
+                    var sel7 = document.createElement('select');
+                    sel7.className = 'tool-select fab-input';
+                    sel7.setAttribute('data-var-u7', '1');
+                    KIND.U7.opts.forEach(function (o) {
+                        var op = document.createElement('option');
+                        op.value = o.v; op.textContent = o.label;
+                        if (state.u7 === o.v) op.selected = true;
+                        sel7.appendChild(op);
+                    });
+                    lab.appendChild(sel7);
+                    vv.appendChild(lab);
+                } else if (p.id === 'U11') {
+                    KIND.U11.opts.forEach(function (o) {
+                        var l = el('label', '', '<input type="checkbox" data-var-u11="1" data-sub="' + o.v + '"' +
+                            (state.u11[o.v] ? ' checked' : '') + '> ' + esc(o.label));
+                        vv.appendChild(l);
+                    });
+                }
+                list.appendChild(vv);
             }
-            if (sf) {
-                sf.hidden = !(info.soft && !info.lock);
-                if (info.soft) sf.textContent = '⚠ ' + info.soft;
+            if (k && k.t === 'n') {
+                list.appendChild(el('div', 'fab-ctx-sec', 'Quantité (cumulable ×' + k.max + ')'));
+                var row = el('div', 'fab-ctx-row', '');
+                row.innerHTML = '<span class="fab-stepper"><button type="button" data-dec="' + esc(p.id) + '">−</button>' +
+                    '<span>×' + (state.qty[p.id] | 0) + ' / ' + k.max + '</span>' +
+                    '<button type="button" data-inc="' + esc(p.id) + '">+</button></span>';
+                list.appendChild(row);
             }
+            list.appendChild(el('div', 'fab-ctx-sec', 'Nœud'));
+            var rr2 = el('div', 'fab-ctx-row', '');
+            var del = el('button', 'fab-mini-btn', '⤴ Retirer ce nœud');
+            del.type = 'button';
+            del.dataset.unfit = p.id;
+            rr2.appendChild(del);
+            list.appendChild(rr2);
+            var meta = [];
+            if (p.seuil) meta.push('Seuil : ' + p.seuil);
+            if (p.portee) meta.push('Portée : ' + p.portee);
+            if (p.prerequis && p.prerequis.length) meta.push('Demande : ' + p.prerequis.join(', '));
+            if (p.incompatible && p.incompatible.length) meta.push('Refuse : ' + p.incompatible.join(', '));
+            if (p.majeure) meta.push('★ majeure');
+            list.appendChild(el('div', 'fab-ctx-foot', esc(meta.join(' · '))));
+            if (info.soft) {
+                var w = el('div', '', '');
+                w.style.cssText = 'color:var(--temporal-amber);font-size:0.74rem;margin-top:4px;';
+                w.textContent = '⚠ ' + info.soft;
+                list.appendChild(w);
+            }
+        }
+        ctxEl.appendChild(list);
+        /* Position : près du clic, rabattu dans la fenêtre. */
+        if (typeof x === 'number' && typeof y === 'number') {
+            ctxEl.hidden = false;
+            ctxEl.style.left = Math.max(8, Math.min(x, window.innerWidth - 345)) + 'px';
+            ctxEl.style.top = Math.max(8, Math.min(y, window.innerHeight - 120)) + 'px';
+            try {
+                var b = ctxEl.getBoundingClientRect();
+                if (b.bottom > window.innerHeight - 8)
+                    ctxEl.style.top = Math.max(8, window.innerHeight - b.height - 8) + 'px';
+                if (b.right > window.innerWidth - 8)
+                    ctxEl.style.left = Math.max(8, window.innerWidth - b.width - 8) + 'px';
+            } catch (e) { /* mesure indisponible */ }
+        } else {
+            ctxEl.hidden = false;
+        }
+        var si = ctxEl.querySelector('[data-search]');
+        if (focus && si && si.focus) {
+            try {
+                si.focus();
+                var v = si.value || '';
+                si.setSelectionRange(v.length, v.length);
+            } catch (e) { /* focus indisponible */ }
+        }
+    }
+
+    /* --- Rendu. --- */
+    function render() {
+        var sel = buildSel();
+        var r = FabriqueEngine.compute(CAT, sel);
+        if (sel.chassis === 'C4') {
+            var narrow = sel.narrow | 0;
+            var hasSeuil = false;
+            Object.keys(sel.qty).forEach(function (id) {
+                var p = P(id);
+                if (p && p.seuil) hasSeuil = true;
+                chainOf(id).forEach(function (x) { var q = P(x); if (q && q.seuil) hasSeuil = true; });
+            });
+            if (!narrow && !hasSeuil)
+                r.warnings.push('Opportunité : ajoute un déclencheur étroit (Δ≥2, critique, esquive…) ou une condition M5.');
+        }
+        if (menu && menu.kind === 'piece' && !present(menu.id)) menu = null;
+        renderGraph(sel);
+        renderMenu();
+        var name = (document.getElementById('fabName') || {}).value || '';
+        var desc = (document.getElementById('fabDesc') || {}).value || '';
+        prev.name.textContent = name.trim() || 'Technique Maison';
+        var fams = r.familles.map(function (f) { return f.toUpperCase(); }).join(' / ') || '—';
+        prev.type.textContent = fams + (r.status === 'signature' ? ' — SIGNATURE (accord MJ)' : r.status === 'invalide' ? ' — À CORRIGER' : '');
+        prev.desc.textContent = desc.trim() || 'Décris ton geste : ce qu’on voit, ce qu’on entend.';
+        prev.pa.textContent = r.pa + ' PA';
+        prev.xp.textContent = 'Création : ' + r.xp + ' XP' + (r.crossed ? ' (croisé ×2)' : '');
+        if (prev.badge) {
+            prev.badge.textContent = r.xp + ' XP · ' + r.pa + ' PA' +
+                (r.status === 'signature' ? ' · SIGNATURE' : r.status === 'invalide' ? ' · À CORRIGER' : ' · ' + placedSpan() + '/3 logements');
+        }
+        prev.list.innerHTML = '';
+        if (!r.lines.length) prev.list.innerHTML = '<li><em>Clique ◆ puis ⊕ pour monter ton graphe.</em></li>';
+        r.lines.forEach(function (l) {
+            var li = document.createElement('li');
+            li.textContent = l.label + ' — ' + l.xp + ' XP + ' + l.pa + ' PA' + (l.narrow ? ' (−1 étroite)' : '');
+            prev.list.appendChild(li);
         });
-        document.querySelectorAll('.fab-ensemble').forEach(function (b) {
-            var on = b.dataset.ens === state.chassis;
-            b.classList.toggle('sel', on);
-            b.setAttribute('aria-pressed', on ? 'true' : 'false');
+        prev.check.innerHTML = '';
+        function ck(ok, txt) {
+            var li = document.createElement('li');
+            li.textContent = (ok ? '✓ ' : '✗ ') + txt;
+            li.style.color = ok ? 'var(--matrix-emerald)' : 'var(--vital-ruby)';
+            prev.check.appendChild(li);
+        }
+        ck(r.errors.length === 0, r.errors.length ? r.errors[0] : (r.status === 'signature' ? 'Montage valide : signature, fais signer ton MJ.' : 'Montage valide : ' + r.xp + ' XP / ' + r.pa + ' PA, ' + placedSpan() + '/3 logements.'));
+        r.errors.slice(1).forEach(function (e) { ck(false, e); });
+        r.warnings.forEach(function (w) {
+            var li = document.createElement('li');
+            li.textContent = '⚠ ' + w;
+            li.style.color = 'var(--temporal-amber)';
+            prev.check.appendChild(li);
         });
+        save();
+        return r;
+    }
+
+    /* --- Presets (montages vérifiés du Livre III §14). --- */
+    var PRESETS = {
+        hache: { chassis: 'C0', qty: { O2: 1 }, name: 'Hache de Guerre (canonique)', desc: 'Sur succès net : +2 dégâts.' },
+        suture: { chassis: 'C0', qty: { U1: 1 }, name: 'Suture Réflexe (canonique)', desc: 'Les premiers soins d’urgence passent de 3 à 2 PA.' },
+        miroir: { chassis: 'C3', qty: { D1: 1 }, narrow: 1, name: 'Lame Miroir (canonique)', desc: 'Tu pares les tirs laser au contact (Delta ≥ 0).' },
+        fente: { chassis: 'C2', qty: { O8: 1, O10: 1 }, name: 'Fente Basse', desc: 'Tu passes sous la garde et tu fauches le jarret.' }
+    };
+    function applyPreset(key) {
+        var p = PRESETS[key];
+        if (!p) return;
+        state.chassis = p.chassis;
+        state.qty = {};
+        state.order = [];
+        Object.keys(p.qty).forEach(function (id) {
+            state.qty[id] = p.qty[id];
+            state.order.push(id);
+        });
+        state.o19 = 'partiel'; state.u7 = '5'; state.u11 = {};
+        var na = document.getElementById('fabNarrow');
+        if (na) na.value = String(p.narrow || 0);
+        var fn = document.getElementById('fabName');
+        if (fn) fn.value = p.name;
+        var fd = document.getElementById('fabDesc');
+        if (fd) fd.value = p.desc;
+        closeMenu();
+        render();
     }
 
     function save() {
@@ -730,6 +947,9 @@ function initFabrique() {
                     if (P(id) && (state.qty[id] | 0) > 0 && state.order.indexOf(id) < 0) state.order.push(id);
                 });
             }
+            if (typeof d.o19 === 'string') state.o19 = d.o19;
+            if (typeof d.u7 === 'string') state.u7 = d.u7;
+            if (d.u11 && typeof d.u11 === 'object') state.u11 = d.u11;
             var fn = document.getElementById('fabName');
             if (fn && d.name) fn.value = d.name;
             var fd = document.getElementById('fabDesc');
@@ -740,19 +960,6 @@ function initFabrique() {
     function restoreInputs() {
         var d = state._rest;
         if (!d) return;
-        if (d.o19) {
-            var r = document.querySelector('input[name="fab_O19"][value="' + d.o19 + '"]');
-            if (r) r.checked = true;
-        }
-        if (d.u7) {
-            var s = document.querySelector('select[data-pid="U7"]');
-            if (s) s.value = d.u7;
-        }
-        if (d.u11) {
-            document.querySelectorAll('input[data-sub][data-pid="U11"]').forEach(function (c) {
-                c.checked = !!(d.u11 && d.u11[c.dataset.sub]);
-            });
-        }
         var rr = document.querySelector('input[name="fabRange"][value="' + (d.range | 0) + '"]');
         if (rr) rr.checked = true;
         var zo = document.getElementById('fabZone');
@@ -766,124 +973,34 @@ function initFabrique() {
         state._rest = null;
     }
 
-    function render() {
-        var sel = buildSel();
-        var r = FabriqueEngine.compute(CAT, sel);
-        /* Opportunité : déclencheur étroit obligatoire (table Livre III §14). */
-        if (sel.chassis === 'C4') {
-            var narrow = sel.narrow | 0;
-            var hasSeuil = false;
-            Object.keys(sel.qty).forEach(function (id) {
-                var p = P(id);
-                if (p && p.seuil) hasSeuil = true;
-                chainOf(id).forEach(function (x) { var q = P(x); if (q && q.seuil) hasSeuil = true; });
-            });
-            if (!narrow && !hasSeuil)
-                r.warnings.push('Opportunité : ajoute un déclencheur étroit (Δ≥2, critique, esquive…) ou une condition M5.');
-        }
-        renderBoard(sel, r);
-        renderTrayLocks();
-        var name = (document.getElementById('fabName') || {}).value || '';
-        var desc = (document.getElementById('fabDesc') || {}).value || '';
-        prev.name.textContent = name.trim() || 'Technique Maison';
-        var fams = r.familles.map(function (f) { return f.toUpperCase(); }).join(' / ') || '—';
-        prev.type.textContent = fams + (r.status === 'signature' ? ' — SIGNATURE (accord MJ)' : r.status === 'invalide' ? ' — À CORRIGER' : '');
-        prev.desc.textContent = desc.trim() || 'Décris ton geste : ce qu\u2019on voit, ce qu\u2019on entend.';
-        prev.pa.textContent = r.pa + ' PA';
-        prev.xp.textContent = 'Création : ' + r.xp + ' XP' + (r.crossed ? ' (croisé ×2)' : '');
-        if (prev.badge) {
-            prev.badge.textContent = r.xp + ' XP · ' + r.pa + ' PA' +
-                (r.status === 'signature' ? ' · SIGNATURE' : r.status === 'invalide' ? ' · À CORRIGER' : ' · ' + placedSpan() + '/3 logements');
-        }
-        prev.list.innerHTML = '';
-        if (!r.lines.length) prev.list.innerHTML = '<li><em>Choisis un ensemble puis 1 à 3 pièces.</em></li>';
-        r.lines.forEach(function (l) {
-            var li = document.createElement('li');
-            li.textContent = l.label + ' — ' + l.xp + ' XP + ' + l.pa + ' PA' + (l.narrow ? ' (−1 étroite)' : '');
-            prev.list.appendChild(li);
-        });
-        prev.check.innerHTML = '';
-        function ck(ok, txt) {
-            var li = document.createElement('li');
-            li.textContent = (ok ? '✓ ' : '✗ ') + txt;
-            li.style.color = ok ? 'var(--matrix-emerald)' : 'var(--vital-ruby)';
-            prev.check.appendChild(li);
-        }
-        ck(r.errors.length === 0, r.errors.length ? r.errors[0] : (r.status === 'signature' ? 'Montage valide : signature, fais signer ton MJ.' : 'Montage valide : ' + r.xp + ' XP / ' + r.pa + ' PA, ' + placedSpan() + '/3 logements.'));
-        r.errors.slice(1).forEach(function (e) { ck(false, e); });
-        r.warnings.forEach(function (w) {
-            var li = document.createElement('li');
-            li.textContent = '⚠ ' + w;
-            li.style.color = 'var(--temporal-amber)';
-            prev.check.appendChild(li);
-        });
-        save();
-        return r;
-    }
-
-    /* --- Presets (montages vérifiés du Livre III §14). --- */
-    var PRESETS = {
-        hache: { chassis: 'C0', qty: { O2: 1 }, name: 'Hache de Guerre (canonique)', desc: 'Sur succès net : +2 dégâts.' },
-        suture: { chassis: 'C0', qty: { U1: 1 }, name: 'Suture Réflexe (canonique)', desc: 'Les premiers soins d\u2019urgence passent de 3 à 2 PA.' },
-        miroir: { chassis: 'C3', qty: { D1: 1 }, narrow: 1, name: 'Lame Miroir (canonique)', desc: 'Tu pares les tirs laser au contact (Delta ≥ 0).' },
-        fente: { chassis: 'C2', qty: { O8: 1, O10: 1 }, name: 'Fente Basse', desc: 'Tu passes sous la garde et tu fauches le jarret.' }
-    };
-    function applyPreset(key) {
-        var p = PRESETS[key];
-        if (!p) return;
-        state.chassis = p.chassis;
-        state.qty = {};
-        state.order = [];
-        Object.keys(p.qty).forEach(function (id) {
-            state.qty[id] = p.qty[id];
-            state.order.push(id);
-        });
-        var na = document.getElementById('fabNarrow');
-        if (na) na.value = String(p.narrow || 0);
-        var fn = document.getElementById('fabName');
-        if (fn) fn.value = p.name;
-        var fd = document.getElementById('fabDesc');
-        if (fd) fd.value = p.desc;
-        render();
-    }
-
-    /* --- Événements (délégués : le plateau est re-rendu à chaque coup). --- */
+    /* --- Événements (délégués). --- */
     var root = document.getElementById('fabPuzzle') || document;
+    function up(t, sel) { return (t && t.closest) ? t.closest(sel) : null; }
     root.addEventListener('click', function (ev) {
         var t = ev.target;
-        function up(sel) { return t.closest ? t.closest(sel) : null; }
-        var ens = up('.fab-ensemble');
-        if (ens && ens.dataset.ens) {
-            state.chassis = (state.chassis === ens.dataset.ens) ? null : ens.dataset.ens;
-            render();
-            return;
-        }
-        var fit = up('[data-fit]');
-        if (fit) { addPiece(fit.dataset.fit); return; }
-        var unfit = up('[data-unfit]');
+        var pick = up(t, '[data-pick]');
+        if (pick) { addPiece(pick.dataset.pick); return; }
+        var ens = up(t, '[data-ens-pick]');
+        if (ens) { setChassis(ens.dataset.ensPick); return; }
+        var unfit = up(t, '[data-unfit]');
         if (unfit) { removePiece(unfit.dataset.unfit); return; }
-        var dec = up('[data-dec]');
+        var dec = up(t, '[data-dec]');
         if (dec) { bumpQty(dec.dataset.dec, -1); return; }
-        var inc = up('[data-inc]');
+        var inc = up(t, '[data-inc]');
         if (inc) { bumpQty(inc.dataset.inc, 1); return; }
-        var pre = up('[data-preset]');
-        if (pre) { applyPreset(pre.dataset.preset); return; }
-        var flt = up('.fab-filter');
-        if (flt) {
-            document.querySelectorAll('.fab-filter').forEach(function (b) { b.classList.remove('sel'); });
-            flt.classList.add('sel');
-            var fam = flt.dataset.fam;
-            ['offensif', 'defensif', 'utilitaire', 'social'].forEach(function (f) {
-                var box = document.getElementById('fabFam-' + f);
-                if (box) box.classList.toggle('hidden', fam !== 'all' && fam !== f);
-            });
+        if (up(t, '[data-preset]')) { applyPreset(up(t, '[data-preset]').dataset.preset); return; }
+        if (up(t, '.fab-ctx-close')) { closeMenu(); return; }
+        var node = up(t, '[data-node]');
+        if (node) {
+            openMenu(node.dataset.node, node.dataset.id || null, ev.clientX, ev.clientY);
             return;
         }
-        if (t.id === 'fabBtnReset') {
+        if (t.id === 'fabBtnReset' || up(t, '#fabBtnReset')) {
             state.chassis = null;
             state.qty = {};
             state.order = [];
-            document.querySelectorAll('input[data-sub][data-pid="U11"]').forEach(function (c) { c.checked = false; });
+            state.o19 = 'partiel'; state.u7 = '5'; state.u11 = {};
+            state.u11auto = false;
             var rr0 = document.querySelector('input[name="fabRange"][value="0"]');
             if (rr0) rr0.checked = true;
             ['fabZone', 'fabCross'].forEach(function (id) {
@@ -894,15 +1011,12 @@ function initFabrique() {
                 var n = document.getElementById(id);
                 if (n) n.value = '0';
             });
-            var r19 = document.querySelector('input[name="fab_O19"][value="partiel"]');
-            if (r19) r19.checked = true;
-            var s7 = document.querySelector('select[data-pid="U7"]');
-            if (s7) s7.value = '5';
             try { localStorage.removeItem(SAVE_KEY); } catch (e) { /* vide */ }
+            closeMenu();
             render();
             return;
         }
-        if (t.id === 'fabBtnCopy' || (t.closest && t.closest('#fabBtnCopy'))) {
+        if (t.id === 'fabBtnCopy' || up(t, '#fabBtnCopy')) {
             var r = render();
             var txt = '=== TECHNIQUE MAISON (Fabrique, Livre III §14) ===\n' +
                 'Nom : ' + prev.name.textContent + '\n' +
@@ -916,54 +1030,78 @@ function initFabrique() {
             if (navigator.clipboard) navigator.clipboard.writeText(txt).then(function () {
                 toast('Fiche de technique copiée !');
             });
+            return;
         }
+        if (menu && !up(t, '.fab-ctx')) closeMenu();
+    });
+    /* Clic droit sur le graphe = même menu, comme un nœud KT. */
+    graphEl.addEventListener('contextmenu', function (ev) {
+        ev.preventDefault();
+        var node = up(ev.target, '[data-node]');
+        if (node) openMenu(node.dataset.node, node.dataset.id || null, ev.clientX, ev.clientY);
+        else openMenu('slot', null, ev.clientX, ev.clientY);
     });
     root.addEventListener('change', function (ev) {
         var t = ev.target;
-        if (t && t.dataset && t.dataset.sub && t.dataset.pid === 'U11') syncU11();
-        render();
+        if (!t || !t.dataset) return;
+        if (t.dataset.varO19) { state.o19 = t.value; render(); return; }
+        if (t.dataset.varU7) { state.u7 = t.value; render(); return; }
+        if (t.dataset.varU11) { toggleU11(t.dataset.sub); return; }
     });
     root.addEventListener('input', function (ev) {
         var t = ev.target;
-        if (!t || !t.classList || !t.classList.contains('fab-input')) {
-            if (t && (t.id === 'fabName' || t.id === 'fabDesc')) render();
+        if (!t) return;
+        if (t.dataset && t.dataset.search !== undefined && menu) {
+            menu.search = t.value || '';
+            renderMenu(undefined, undefined, true);
             return;
         }
-        if (t.dataset && t.dataset.sub && t.dataset.pid === 'U11') syncU11();
-        render();
+        if (t.classList && t.classList.contains('fab-input')) { render(); return; }
+        if (t && (t.id === 'fabName' || t.id === 'fabDesc')) render();
     });
-
-    /* --- Glisser-déposer : la pièce du casier vers le plateau. --- */
-    document.addEventListener('dragstart', function (ev) {
-        var card = ev.target && ev.target.closest ? ev.target.closest('.fab-piece[data-card]') : null;
-        if (!card) return;
-        try { ev.dataTransfer.setData('text/fab-piece', card.dataset.card); } catch (e) { /* presse-papier D&D indisponible */ }
-        try { ev.dataTransfer.effectAllowed = 'copy'; } catch (e) { /* vieux moteur */ }
-    });
-    boardEl.addEventListener('dragover', function (ev) {
-        ev.preventDefault();
-        boardEl.classList.add('fab-drop-hint');
-    });
-    boardEl.addEventListener('dragleave', function () { boardEl.classList.remove('fab-drop-hint'); });
-    boardEl.addEventListener('drop', function (ev) {
-        ev.preventDefault();
-        boardEl.classList.remove('fab-drop-hint');
-        var id = null;
-        try { id = ev.dataTransfer.getData('text/fab-piece'); } catch (e) { /* presse-papier D&D indisponible */ }
-        if (id && P(id)) addPiece(id);
+    document.addEventListener('keydown', function (ev) {
+        if (ev.key === 'Escape' && menu) { closeMenu(); return; }
+        if ((ev.key === 'Enter' || ev.key === ' ') && ev.target && ev.target.dataset && ev.target.dataset.node) {
+            var b = ev.target.getBoundingClientRect();
+            openMenu(ev.target.dataset.node, ev.target.dataset.id || null, b.left + 20, b.top + 20);
+            ev.preventDefault();
+            return;
+        }
+        if (ev.key === 'Enter' && menu && (menu.kind === 'slot' || menu.kind === 'root')) {
+            var ae = document.activeElement;
+            if (ae && ae.dataset && ae.dataset.search !== undefined) {
+                if (menu.kind === 'slot') {
+                    var first = firstLegal();
+                    if (first) addPiece(first);
+                } else {
+                    var firstCh = null;
+                    var q = normSearch(menu.search);
+                    for (var i = 0; i < CAT.chassis.length; i++) {
+                        if (!q || normSearch(CAT.chassis[i].nom + ' ' + CAT.chassis[i].id).indexOf(q) >= 0) {
+                            firstCh = CAT.chassis[i].id;
+                            break;
+                        }
+                    }
+                    if (firstCh) setChassis(firstCh);
+                }
+                ev.preventDefault();
+            }
+        }
     });
 
     /* --- Montage initial. --- */
     load();
-    buildEnsembles();
-    buildTray();
     buildModifs();
     restoreInputs();
     /* U11 restaurée depuis la sauvegarde. */
     (function () {
         var any = false;
-        document.querySelectorAll('input[data-sub][data-pid="U11"]').forEach(function (c) { if (c.checked) any = true; });
-        if (any && (state.qty.U11 | 0) === 0) { state.order.push('U11'); state.qty.U11 = 1; }
+        Object.keys(state.u11).forEach(function (v) { if (state.u11[v]) any = true; });
+        if (any && (state.qty.U11 | 0) === 0 && P('U11')) {
+            state.order.push('U11');
+            state.qty.U11 = 1;
+            state.u11auto = true;
+        }
     })();
     render();
 }

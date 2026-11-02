@@ -3347,6 +3347,22 @@
           "suggestedAsset": "js/fabrique.js",
           "updated": "2026-11-02",
           "details": "FAIT 2026-11-02 — Remplace l'atelier cases-à-cocher par un puzzle : 4 ensembles cliquables (ex-châssis, mini-plateau 3 logements gravé), plateau 3 logements (filières O4→O5→O6 et O13→O14 = grosses pièces 2-3 logements, prérequis inclus), 45 cartes pièces (languette puzzle, couleur famille, Demande/Refuse/seuil/portée/majeure affichés, clic + glisser-déposer), verrous expliqués (O17→Réaction, D8→D1/D3, incompatibilités r.8, 2 majeures max, 3 logements max, U11→palier coché), finitions M1-M7, presets, sauvegarde locale, copie fiche. Moteur FabriqueEngine.compute INCHANGÉ (fuzz 5000/5000 identique à l'ancien). Bogue trouvé+réparé : U11 fantôme (posée sans palier, ignorée du calcul). Vérifié : 23/23 Chrome headless réel, node --check, 0 ID dupliqué, 0 erreur JS, livre_9.html fabrique.js?v=2."
+        },
+        {
+          "id": "RD-220",
+          "title": "Fabrique chap-40 : graphe nodal + menus contextuels (fin du casier listé)",
+          "epic": "Codex sysRP",
+          "status": "done",
+          "priority": "high",
+          "order": 37,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "js/fabrique.js",
+          "updated": "2026-11-02",
+          "details": "FAIT 2026-11-02 — Remplace le casier 45 cartes toujours listées par un graphe façon node graph KT : racine ◆ (ensemble) reliée par fils SVG aux nœuds pièces et logements ⊕. Clic gauche/droit/clavier ouvre un menu contextuel (titre → ?, recherche autofocus, Entrée = premier choix filtré, Échap/clic ailleurs = annuler) qui ne propose que les choix possibles ici, l'impossible restant grisé avec sa raison. Variantes O19/U7/U11 + quantités + retirer dans le menu du nœud. Moteur compute INCHANGÉ (octet près + fuzz 5000/5000). Bogues trouvés+réparés : U11 fantôme (base ignorée), Entrée qui ignorait le filtre, focus volé pendant la frappe. Vérifié : 37/37 Chrome headless réel, 0 erreur JS, 0 ID dupliqué, livre_9.html fabrique.js?v=3."
         }
       ]
     },
