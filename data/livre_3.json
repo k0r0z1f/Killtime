@@ -125,7 +125,7 @@
     },
     {
      "type": "html",
-     "html": "\n                    <h3 id=\"sec-14-1\">14.1 Fiche technique d'une technique</h3>\n                    <p>\n                        Pour chaque technique, remplis ces rubriques avec ton MJ. Une ligne chacune, ça tient sur un post-it :\n                    </p>\n                    <ul>\n                        <li><strong>Nom :</strong> le titre de ta technique (gratuit). <em>Ex : Fente Basse, Voile de Poussière.</em></li>\n                        <li><strong>Châssis :</strong> un seul (table ci-dessous). Il dit quand ça se déclenche — et tes PA de base.</li>\n                        <li><strong>Pièces :</strong> 1 à 3, piochées dans les 4 familles. Recopie leurs textes : ta technique est écrite.</li>\n                        <li><strong>Famille :</strong> offensif, défensif, utilitaire, social — ou hybride (deux familles, +1 XP).</li>\n                        <li><strong>Coûts :</strong> l'addition XP d'un côté, l'addition PA de l'autre. Montre les deux au MJ.</li>\n                        <li><strong>Accord MJ :</strong> il vérifie les 9 règles ci-dessous, il signe, tu paies.</li>\n                    </ul>\n                    <h3 id=\"sec-14-regles\">Les 9 règles d'assemblage</h3>\n                    <ol>\n                        <li><strong>Un châssis, un seul.</strong> Il dit quand ta technique part — et ses PA de base.</li>\n                        <li><strong>Un châssis + 1 à 3 pièces, pas plus.</strong> Au-delà, ce sont deux techniques sœurs.</li>\n                        <li><strong>Budget : tu additionnes châssis + pièces.</strong> Le châssis donne la base (1 XP, 3 pour un passif) + 1 XP par cran. À 7-8, c'est une signature (MJ obligatoire).</li>\n                        <li><strong>Activation à 6 PA max.</strong> Le châssis compte dedans. Si ça dépasse, découpe.</li>\n                        <li><strong>Un seul bonus chiffré par jet.</strong> Deux +2 à l'attaque ne s'additionnent pas — le meilleur gagne.</li>\n                        <li><strong>Les gros effets ont un seuil.</strong> Statuts majeurs à Δ≥2, critiques à Δ≥3 ou sur critique. La mort instantanée, c'est sbires seulement.</li>\n                        <li><strong>Les filières se montent dans l'ordre.</strong> Perce 2 avant Perce 3, Soin 5 avant Soin 10. On ne saute pas d'étage.</li>\n                        <li><strong>Deux incompatibilités.</strong> Immunité totale ⊕ bonus défensif ; dégâts Absolus ⊕ multi-cible. Le reste se combine.</li>\n                        <li><strong>Réaction = +2 PA, 1/round.</strong> Opportunité 0 PA = déclencheur étroit obligatoire, 1/round. Comme les sorts.</li>\n                    </ol>\n"
+     "html": "\n                    <h3 id=\"sec-14-1\">14.1 Fiche technique d'une technique</h3>\n                    <p>\n                        Pour chaque technique, remplis ces rubriques avec ton MJ. Une ligne chacune, ça tient sur un post-it :\n                    </p>\n                    <ul>\n                        <li><strong>Nom :</strong> le titre de ta technique (gratuit). <em>Ex : Fente Basse, Voile de Poussière.</em></li>\n                        <li><strong>Châssis :</strong> un seul (table ci-dessous). Il dit quand ça se déclenche — et tes PA de base.</li>\n                        <li><strong>Pièces :</strong> 1 à 3, piochées dans les 4 familles. Recopie leurs textes : ta technique est écrite.</li>\n                        <li><strong>Famille :</strong> offensif, défensif, utilitaire, social — ou hybride (deux familles, +1 XP).</li>\n                        <li><strong>Coûts :</strong> l'addition XP d'un côté, l'addition PA de l'autre. Montre les deux au MJ.</li>\n                        <li><strong>Accord MJ :</strong> il vérifie les 9 règles ci-dessous, il signe, tu paies.</li>\n                    </ul>\n                    <h3 id=\"sec-14-regles\">Les 9 règles d'assemblage</h3>\n                    <ol>\n                        <li><strong>Un châssis, un seul.</strong> Il dit quand ta technique part — et ses PA de base.</li>\n                        <li><strong>Un châssis + 1 à 3 pièces, pas plus.</strong> Au-delà, ce sont deux techniques sœurs.</li>\n                        <li><strong>Budget : tu additionnes châssis + pièces.</strong> Le châssis donne la base (1 XP, 3 pour un passif) + 1 XP par cran. À 7-8, c'est une signature (MJ obligatoire).</li>\n                        <li><strong>Activation à 6 PA max.</strong> Le châssis compte dedans. Si ça dépasse, découpe.</li>\n                        <li><strong>Un seul bonus chiffré par jet.</strong> Deux +2 à l'attaque ne s'additionnent pas — le meilleur gagne.</li>\n                        <li><strong>Les gros effets ont un seuil.</strong> Critiques à Δ≥3 ou sur critique, le reste part sur touche. La mort instantanée, c'est sbires seulement.</li>\n                        <li><strong>Les paliers se montent dans l'ordre.</strong> Soin 5 avant Soin 10 : on ne saute pas d'étage.</li>\n                        <li><strong>Deux incompatibilités.</strong> Immunité totale ⊕ bonus défensif ; dégâts Absolus ⊕ multi-cible. Le reste se combine.</li>\n                        <li><strong>Réaction = +2 PA, 1/round.</strong> Opportunité 0 PA = déclencheur étroit obligatoire, 1/round. Comme les sorts.</li>\n                    </ol>\n"
     },
     {
      "type": "html",
@@ -137,7 +137,7 @@
     },
     {
      "type": "html",
-     "html": "\n                    <h3 id=\"sec-14-off\">14.3 Pièces offensives</h3>\n                    <p>\n                        Pour frapper, percer, bousculer. La filière Perce se lit de haut en bas : chaque étage\n                        remplace le précédent — tu ne paies que la différence (+2, +3).\n                    </p>\n"
+     "html": "\n                    <h3 id=\"sec-14-off\">14.3 Pièces offensives</h3>\n                    <p>\n                        Pour frapper, bousculer.\n                    </p>\n"
     },
     {
      "type": "ref",
@@ -1906,94 +1906,58 @@
      "Toutes armes. Cumulable ×5 (chaque achat = +1 dégât pour 2 XP + 1 PA). Sur critique (carte Prérequis liée) : −1 XP par cumul."
     ],
     [
-     "4",
-     "0",
-     "<strong>+2 dégâts permanents, arme liée</strong> — +2 dégâts à chaque attaque.",
-     "Compétence liée. Non cumulable (prends la version active pour empiler)."
-    ],
-    [
-     "3",
-     "3",
-     "<strong>+5 dégâts, condition marquée</strong> — +5 dégâts d'un coup.",
-     "1/combat, ou sur critique, ou cible Déstabilisée. Non cumulable. Majeure."
-    ],
-    [
-     "3",
-     "0",
-     "<strong>Perce 2</strong> — Tes frappes ignorent 2 points d’armure.",
-     "Arme liée, passif. Premier étage de la filière."
-    ],
-    [
-     "+2",
-     "+1",
-     "<strong>Perce 3, frappe ciblée</strong> — Ignore 3 points d’armure en frappe ciblée.",
-     "Prérequis Perce 2. Remplace Perce 2 (le meilleur s’applique)."
-    ],
-    [
-     "+3",
-     "+1",
-     "<strong>Perce 4 + traverse</strong> — Ignore 4 points d’armure et blesse aussi l’ennemi juste derrière.",
-     "Prérequis Perce 3. Remplace Perce 3."
-    ],
-    [
      "3",
      "0",
      "<strong>Dégâts Absolus</strong> — Tes dégâts deviennent Absolus (ni armure, ni Encaissement).",
-     "Sur critique, ou condition écrite. Incompatible multi-cible. Majeure."
+     "Sur critique, ou condition écrite. Incompatible multi-cible."
     ],
     [
      "2",
      "0",
-     "<strong>+2 à un jet, conditionnel</strong> — +2 à un jet précis (attaque, parade, visée, initiative...).",
-     "Condition écrite : arme liée, immobile, cible analysée... Un seul bonus par jet."
+     "<strong>+1 au jet, cette attaque</strong> — +1 au jet d'une de tes attaques.",
+     "Cumulable ×5 (chaque achat = +1 pour 2 XP). Sur critique (carte Prérequis liée) : −1 XP par cumul. Un seul bonus par jet."
     ],
     [
      "1",
      "1",
-     "<strong>+2 à ton prochain jet</strong> — +2 à ton prochain jet, actif.",
-     "Un seul bonus par jet. Cumulable en durée (+1 tour : +1 XP +1 PA)."
+     "<strong>+1 à ton prochain jet</strong> — +1 à ton prochain jet, actif.",
+     "Cumulable ×5 (chaque achat = +1 pour 1 XP + 1 PA). Un seul bonus par jet. Cumulable en durée (+1 tour : +1 XP +1 PA)."
     ],
     [
      "1",
      "1",
-     "<strong>Ralenti</strong> — La cible est Ralentie 1 tour.",
+     "<strong>Ralenti</strong> — La cible est Ralentie jusqu'à la fin de son prochain tour.",
      "Seuil Δ≥0. Durée cumulable (+1 tour : +1 XP +1 PA)."
     ],
     [
      "1",
      "1",
-     "<strong>−1 à la prochaine épreuve adverse</strong> — −1 à sa prochaine épreuve.",
+     "<strong>Étourdi</strong> — La cible est Étourdie jusqu'à la fin de son prochain tour.",
+     "Sur touche."
+    ],
+    [
+     "1",
+     "1",
+     "<strong>Déstabilisé</strong> — La cible est Déstabilisée jusqu'à la fin de son prochain tour.",
      "Seuil Δ≥0."
     ],
     [
+     "2",
      "1",
-     "1",
-     "<strong>Déstabilisé léger</strong> — La cible est Déstabilisée (léger) 1 tour.",
-     "Seuil Δ≥0."
+     "<strong>À Terre</strong> — La cible est À Terre (se relever coûte des PA).",
+     "Sur touche."
     ],
     [
      "2",
      "1",
-     "<strong>À Terre</strong> — La cible est À Terre 1 tour.",
-     "Seuil Δ≥2 obligatoire."
+     "<strong>Immobilisé</strong> — La cible est Immobilisée jusqu'à la fin de son prochain tour.",
+     "Sur touche."
     ],
     [
      "2",
      "1",
-     "<strong>Immobilisé</strong> — La cible est Immobilisée 1 tour.",
-     "Seuil Δ≥2 obligatoire."
-    ],
-    [
-     "2",
-     "1",
-     "<strong>Sonné</strong> — La cible est Sonnée 1 tour.",
-     "Seuil Δ≥2 obligatoire."
-    ],
-    [
-     "4",
-     "1",
-     "<strong>Statut critique</strong> — Paralysé, Asphyxie ou Saignement continu.",
-     "Seuil Δ≥3 ou critique + prérequis filière (un statut de la même famille). Majeure."
+     "<strong>Sonné</strong> — La cible est Sonnée jusqu'à la fin de son prochain tour.",
+     "Sur touche."
     ],
     [
      "2",
@@ -2009,27 +1973,9 @@
     ],
     [
      "4",
-     "2",
-     "<strong>Zone</strong> — Cône de 3 hex, rayon +1, ou ligne de 3 cases. Dégâts aussi en zone.",
-     "Précise la forme. Touche alliés compris, comme les grenades."
-    ],
-    [
-     "2",
-     "réaction",
-     "<strong>Contre-attaque / interception</strong> — Riposte immédiate, parade pour un allié adjacent, ou interception du corps.",
-     "Consomme ta réaction du round (+2 PA du châssis Réaction)."
-    ],
-    [
-     "4",
      "0",
      "<strong>Critique élargi</strong> — Critique dès 11-12 au dé, ou auto-critique 1/combat.",
-     "Prérequis filière : 3 pièces de la même arme. Majeure."
-    ],
-    [
-     "2-3",
-     "0-1",
-     "<strong>Couvert nié</strong> — Ignore le partiel (2 XP) ; total à −2 (3 XP) ; cible sans couvert 1 tour (3 XP + 1 PA).",
-     "Choisis une des trois. La suppression demande une action principale."
+     "Prérequis filière : 3 pièces de la même arme."
     ]
    ]
   },
@@ -2076,7 +2022,7 @@
      "5",
      "0",
      "<strong>Immunité totale de garde</strong> — Pendant ta garde : immunité aux critiques, au Déstabilisé et à À Terre.",
-     "Une technique entière à elle seule. Incompatible avec tout bonus défensif. Majeure."
+     "Une technique entière à elle seule. Incompatible avec tout bonus défensif."
     ],
     [
      "3",
@@ -2269,7 +2215,7 @@
     {
      "titre": "Fente Basse — 4 XP // Action Principale",
      "monde": "Maniement d'Arme // FOR, AGI",
-     "corps_html": "« Tu passes sous la garde et tu fauches le jarret. » Châssis action principale (0 XP, 1 PA) + visée Jambes sans malus (2 XP, 0 PA) + Ralenti sur touche (2 XP, 1 PA). Fais ton épreuve normalement ; touche ? la cible est <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\" data-tip=\"Ralenti : toute action coûte le DOUBLE de PA (§25.1).\">Ralenti</a> 1 tour.",
+     "corps_html": "« Tu passes sous la garde et tu fauches le jarret. » Châssis action principale (0 XP, 1 PA) + visée Jambes sans malus (2 XP, 0 PA) + Ralenti sur touche (2 XP, 1 PA). Fais ton épreuve normalement ; touche ? la cible est <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\" data-tip=\"Ralenti : toute action coûte le DOUBLE de PA (§25.1).\">Ralenti</a> jusqu'à la fin de son prochain tour.",
      "pieds": [
       {
        "ton": "cyan",
@@ -5195,7 +5141,7 @@
      "detail": "Pièce d’une autre compétence : tu paies double, comme le croisé ×2 (§5.3)."
     }
    ],
-   "nb_pieces": 48,
+   "nb_pieces": 43,
    "pieces": [
     {
      "id": "O1",
@@ -5207,87 +5153,8 @@
      "portee": "universel",
      "prerequis": [],
      "seuil": null,
-     "majeure": false,
      "incompatible": [],
      "texte": "Ta frappe gagne +1 dégât."
-    },
-    {
-     "id": "O2",
-     "nom": "+2 dégâts permanents, arme liée",
-     "famille": "offensif",
-     "cout_xp": "4",
-     "cout_pa": "0",
-     "cumul": false,
-     "portee": "ManiementArmes, ArmesPercantes, Ballistique, MainsNues",
-     "prerequis": [],
-     "seuil": null,
-     "majeure": false,
-     "incompatible": [],
-     "texte": "Chacune de tes frappes de cette arme gagne +2 dégâts."
-    },
-    {
-     "id": "O3",
-     "nom": "+5 dégâts, condition marquée",
-     "famille": "offensif",
-     "cout_xp": "3",
-     "cout_pa": "3",
-     "cumul": false,
-     "portee": "universel",
-     "prerequis": [],
-     "seuil": "critique ou 1/combat",
-     "majeure": true,
-     "incompatible": [],
-     "texte": "Ton coup marqué gagne +5 dégâts."
-    },
-    {
-     "id": "O4",
-     "nom": "Perce 2",
-     "famille": "offensif",
-     "cout_xp": "3",
-     "cout_pa": "0",
-     "cumul": false,
-     "portee": "ManiementArmes, ArmesPercantes, Ballistique, MainsNues",
-     "prerequis": [],
-     "seuil": null,
-     "majeure": false,
-     "incompatible": [],
-     "texte": "Tes frappes ignorent 2 points d’armure."
-    },
-    {
-     "id": "O5",
-     "nom": "Perce 3, frappe ciblée",
-     "famille": "offensif",
-     "cout_xp": "+2",
-     "cout_pa": "+1",
-     "cumul": false,
-     "portee": "ManiementArmes, ArmesPercantes, Ballistique, MainsNues",
-     "prerequis": [
-      "O4"
-     ],
-     "seuil": null,
-     "majeure": false,
-     "incompatible": [
-      "O4"
-     ],
-     "texte": "Ta frappe ciblée ignore 3 points d’armure."
-    },
-    {
-     "id": "O6",
-     "nom": "Perce 4 + traverse",
-     "famille": "offensif",
-     "cout_xp": "+3",
-     "cout_pa": "+1",
-     "cumul": false,
-     "portee": "ManiementArmes, ArmesPercantes, Ballistique, MainsNues",
-     "prerequis": [
-      "O5"
-     ],
-     "seuil": null,
-     "majeure": false,
-     "incompatible": [
-      "O5"
-     ],
-     "texte": "Ta frappe ignore 4 points d’armure et traverse sur l’ennemi derrière."
     },
     {
      "id": "O7",
@@ -5299,7 +5166,6 @@
      "portee": "universel",
      "prerequis": [],
      "seuil": "critique ou condition",
-     "majeure": true,
      "incompatible": [
       "O15"
      ],
@@ -5307,21 +5173,20 @@
     },
     {
      "id": "O8",
-     "nom": "+2 à un jet, conditionnel",
+     "nom": "+1 au jet, cette attaque",
      "famille": "offensif",
      "cout_xp": "2",
      "cout_pa": "0",
-     "cumul": false,
+     "cumul": true,
      "portee": "universel",
      "prerequis": [],
      "seuil": null,
-     "majeure": false,
      "incompatible": [],
-     "texte": "Tu gagnes +2 à ce jet quand la condition tient."
+     "texte": "Tu gagnes +1 à ce jet."
     },
     {
      "id": "O9",
-     "nom": "+2 à ton prochain jet",
+     "nom": "+1 à ton prochain jet",
      "famille": "offensif",
      "cout_xp": "1",
      "cout_pa": "1",
@@ -5329,25 +5194,8 @@
      "portee": "universel",
      "prerequis": [],
      "seuil": null,
-     "majeure": false,
      "incompatible": [],
-     "texte": "Ton prochain jet gagne +2."
-    },
-    {
-     "id": "O12",
-     "nom": "Statut critique",
-     "famille": "offensif",
-     "cout_xp": "4",
-     "cout_pa": "1",
-     "cumul": false,
-     "portee": "universel",
-     "prerequis": [
-      "O20, O21, O22, O23, O24 ou O25"
-     ],
-     "seuil": "Δ≥3 ou critique",
-     "majeure": true,
-     "incompatible": [],
-     "texte": "Sur Delta ≥ 3, ta cible subit l’état critique écrit."
+     "texte": "Ton prochain jet gagne +1."
     },
     {
      "id": "O13",
@@ -5359,7 +5207,6 @@
      "portee": "contact et allonge",
      "prerequis": [],
      "seuil": "succès net",
-     "majeure": false,
      "incompatible": [],
      "texte": "Sur succès net, tu repousses ta cible d’1 case."
     },
@@ -5373,39 +5220,10 @@
      "portee": "seconde cible adjacente à toi",
      "prerequis": [],
      "seuil": null,
-     "majeure": false,
      "incompatible": [
       "O7"
      ],
      "texte": "Ton coup blesse aussi la seconde cible, adjacente à toi : +1 dégât auto."
-    },
-    {
-     "id": "O16",
-     "nom": "Zone",
-     "famille": "offensif",
-     "cout_xp": "4",
-     "cout_pa": "2",
-     "cumul": false,
-     "portee": "universel",
-     "prerequis": [],
-     "seuil": null,
-     "majeure": false,
-     "incompatible": [],
-     "texte": "Ton effet frappe la zone écrite."
-    },
-    {
-     "id": "O17",
-     "nom": "Contre-attaque / interception",
-     "famille": "offensif",
-     "cout_xp": "2",
-     "cout_pa": "réaction",
-     "cumul": false,
-     "portee": "contact et adjacent",
-     "prerequis": [],
-     "seuil": null,
-     "majeure": false,
-     "incompatible": [],
-     "texte": "Tu contre-attaques ou tu t’interposes en réaction."
     },
     {
      "id": "O18",
@@ -5419,23 +5237,8 @@
       "3 pièces même arme"
      ],
      "seuil": null,
-     "majeure": true,
      "incompatible": [],
      "texte": "Ton critique arrive dès 11-12 (ou auto-crit 1/combat)."
-    },
-    {
-     "id": "O19",
-     "nom": "Couvert nié",
-     "famille": "offensif",
-     "cout_xp": "2-3",
-     "cout_pa": "0-1",
-     "cumul": false,
-     "portee": "armes à distance et magie de contact",
-     "prerequis": [],
-     "seuil": null,
-     "majeure": false,
-     "incompatible": [],
-     "texte": "Ta frappe ignore le couvert écrit."
     },
     {
      "id": "O20",
@@ -5447,37 +5250,34 @@
      "portee": "universel",
      "prerequis": [],
      "seuil": "Δ≥0",
-     "majeure": false,
      "incompatible": [],
-     "texte": "Ta cible est Ralentie 1 tour."
+     "texte": "Ta cible est Ralentie jusqu'à la fin de son prochain tour."
     },
     {
      "id": "O21",
-     "nom": "−1 à la prochaine épreuve adverse",
+     "nom": "Étourdi",
      "famille": "offensif",
      "cout_xp": "1",
      "cout_pa": "1",
      "cumul": false,
      "portee": "universel",
      "prerequis": [],
-     "seuil": "Δ≥0",
-     "majeure": false,
+     "seuil": "touche",
      "incompatible": [],
-     "texte": "Ta cible prend −1 à sa prochaine épreuve."
+     "texte": "Sur touche, ta cible est Étourdie jusqu'à la fin de son prochain tour."
     },
     {
      "id": "O22",
-     "nom": "Déstabilisé léger",
+     "nom": "Déstabilisé",
      "famille": "offensif",
      "cout_xp": "1",
      "cout_pa": "1",
      "cumul": false,
      "portee": "universel",
      "prerequis": [],
-     "seuil": "Δ≥0",
-     "majeure": false,
+     "seuil": "touche",
      "incompatible": [],
-     "texte": "Ta cible est Déstabilisée (léger) 1 tour."
+     "texte": "Sur touche, ta cible est Déstabilisée jusqu'à la fin de son prochain tour."
     },
     {
      "id": "O23",
@@ -5488,10 +5288,9 @@
      "cumul": false,
      "portee": "universel",
      "prerequis": [],
-     "seuil": "Δ≥2",
-     "majeure": false,
+     "seuil": "touche",
      "incompatible": [],
-     "texte": "Sur Delta ≥ 2, ta cible est À Terre 1 tour."
+     "texte": "Sur touche, ta cible est À Terre."
     },
     {
      "id": "O24",
@@ -5502,10 +5301,9 @@
      "cumul": false,
      "portee": "universel",
      "prerequis": [],
-     "seuil": "Δ≥2",
-     "majeure": false,
+     "seuil": "touche",
      "incompatible": [],
-     "texte": "Sur Delta ≥ 2, ta cible est Immobilisée 1 tour."
+     "texte": "Sur touche, ta cible est Immobilisée jusqu'à la fin de son prochain tour."
     },
     {
      "id": "O25",
@@ -5516,10 +5314,9 @@
      "cumul": false,
      "portee": "universel",
      "prerequis": [],
-     "seuil": "Δ≥2",
-     "majeure": false,
+     "seuil": "touche",
      "incompatible": [],
-     "texte": "Sur Delta ≥ 2, ta cible est Sonnée 1 tour."
+     "texte": "Sur touche, ta cible est Sonnée jusqu'à la fin de son prochain tour."
     },
     {
      "id": "D1",
@@ -5531,7 +5328,6 @@
      "portee": "compétence liée",
      "prerequis": [],
      "seuil": null,
-     "majeure": false,
      "incompatible": [],
      "texte": "Tu pares sans malus avec cette approche."
     },
@@ -5545,7 +5341,6 @@
      "portee": "bouclier, garde, corps",
      "prerequis": [],
      "seuil": null,
-     "majeure": false,
      "incompatible": [],
      "texte": "Ton blocage absorbe 3 dégâts de plus."
     },
@@ -5559,7 +5354,6 @@
      "portee": "universel",
      "prerequis": [],
      "seuil": null,
-     "majeure": false,
      "incompatible": [],
      "texte": "Ton Encaissement gagne +2."
     },
@@ -5573,7 +5367,6 @@
      "portee": "universel",
      "prerequis": [],
      "seuil": null,
-     "majeure": false,
      "incompatible": [],
      "texte": "Ta peau (ou ton blindage) gagne +1 armure naturelle."
     },
@@ -5587,7 +5380,6 @@
      "portee": "universel",
      "prerequis": [],
      "seuil": null,
-     "majeure": false,
      "incompatible": [],
      "texte": "Tu es immunisé au statut écrit."
     },
@@ -5601,7 +5393,6 @@
      "portee": "garde et bouclier",
      "prerequis": [],
      "seuil": null,
-     "majeure": true,
      "incompatible": [
       "D1",
       "D2",
@@ -5620,7 +5411,6 @@
      "portee": "universel",
      "prerequis": [],
      "seuil": null,
-     "majeure": false,
      "incompatible": [],
      "texte": "Ni embuscade ni attaque de dos ne te surprend."
     },
@@ -5636,7 +5426,6 @@
       "D1 ou D3"
      ],
      "seuil": null,
-     "majeure": false,
      "incompatible": [],
      "texte": "Tu ignores le malus écrit."
     },
@@ -5650,7 +5439,6 @@
      "portee": "universel",
      "prerequis": [],
      "seuil": null,
-     "majeure": false,
      "incompatible": [],
      "texte": "Cette action précise te coûte 1 PA de moins."
     },
@@ -5664,7 +5452,6 @@
      "portee": "universel",
      "prerequis": [],
      "seuil": "déclencheur",
-     "majeure": false,
      "incompatible": [],
      "texte": "Tu gagnes +1 PA de réserve au tour suivant."
     },
@@ -5678,7 +5465,6 @@
      "portee": "commandement et cardio",
      "prerequis": [],
      "seuil": null,
-     "majeure": false,
      "incompatible": [],
      "texte": "Ton ordre (ou ton souffle) donne les PA écrits."
     },
@@ -5692,7 +5478,6 @@
      "portee": "universel",
      "prerequis": [],
      "seuil": "déclencheur",
-     "majeure": false,
      "incompatible": [],
      "texte": "Tu te déplaces d’1 case gratuitement."
     },
@@ -5708,7 +5493,6 @@
       "Roulade ou esquive Δ≥2"
      ],
      "seuil": "Δ≥2",
-     "majeure": false,
      "incompatible": [],
      "texte": "Sur esquive Δ≥2, tu te téléportes de 2 cases."
     },
@@ -5722,7 +5506,6 @@
      "portee": "universel",
      "prerequis": [],
      "seuil": null,
-     "majeure": false,
      "incompatible": [],
      "texte": "Tu ignores le terrain difficile écrit."
     },
@@ -5736,7 +5519,6 @@
      "portee": "soin au contact",
      "prerequis": [],
      "seuil": null,
-     "majeure": false,
      "incompatible": [],
      "texte": "Au contact, tu rends les PV écrits et tu purges 1 état."
     },
@@ -5750,7 +5532,6 @@
      "portee": "observation et soin",
      "prerequis": [],
      "seuil": null,
-     "majeure": false,
      "incompatible": [],
      "texte": "Tu lis les chiffres vitaux exacts de la cible."
     },
@@ -5764,7 +5545,6 @@
      "portee": "intuition et commandement",
      "prerequis": [],
      "seuil": null,
-     "majeure": false,
      "incompatible": [],
      "texte": "1/combat, tu révèles les mises adverses avant de défendre."
     },
@@ -5778,7 +5558,6 @@
      "portee": "universel",
      "prerequis": [],
      "seuil": null,
-     "majeure": false,
      "incompatible": [],
      "texte": "Ton Initiative suit la règle écrite."
     },
@@ -5792,7 +5571,6 @@
      "portee": "cardio",
      "prerequis": [],
      "seuil": null,
-     "majeure": false,
      "incompatible": [],
      "texte": "Ton souffle efface l’essoufflement écrit."
     },
@@ -5806,7 +5584,6 @@
      "portee": "cardio",
      "prerequis": [],
      "seuil": null,
-     "majeure": false,
      "incompatible": [],
      "texte": "Tu forces 1 PA d’action contre 1 essoufflement."
     },
@@ -5820,7 +5597,6 @@
      "portee": "universel",
      "prerequis": [],
      "seuil": null,
-     "majeure": false,
      "incompatible": [],
      "texte": "Tu gagnes +1 à l’épreuve sociale écrite."
     },
@@ -5834,7 +5610,6 @@
      "portee": "intimidation et commandement",
      "prerequis": [],
      "seuil": "Δ≥3",
-     "majeure": false,
      "incompatible": [],
      "texte": "Sur Delta ≥ 3, le sbire fuit."
     },
@@ -5848,7 +5623,6 @@
      "portee": "négociation et commandement",
      "prerequis": [],
      "seuil": null,
-     "majeure": false,
      "incompatible": [],
      "texte": "Le sbire change de camp — ou les armes se taisent 1 tour."
     },
@@ -5862,7 +5636,6 @@
      "portee": "négociation",
      "prerequis": [],
      "seuil": null,
-     "majeure": false,
      "incompatible": [],
      "texte": "Tu négocies la remise (ou l’accès) écrite."
     },
@@ -5876,7 +5649,6 @@
      "portee": "discrétion et tir",
      "prerequis": [],
      "seuil": null,
-     "majeure": false,
      "incompatible": [],
      "texte": "Ton abatage isolé ne donne pas l’alerte."
     },
@@ -5890,7 +5662,6 @@
      "portee": "commandement et télépathie non-magique",
      "prerequis": [],
      "seuil": "Δ≥3 si majeur",
-     "majeure": false,
      "incompatible": [],
      "texte": "Le sbire obéit à l’ordre simple écrit."
     }

@@ -1,15 +1,13 @@
 /* ==========================================================================
    FABRIQUE DE TECHNIQUES — ATELIER GRAPHE (Livre III chap-14, Livre IX chap-40).
    Moteur pur FabriqueEngine.compute (châssis + 1-3 pièces,
-   paliers en filière, M1-M4/M7 par carte effet, M6 hybride auto, croisé ×2
+   M1-M4/M7 par carte effet, M6 hybride auto, croisé ×2
    par carte, signature 7-8, plafond PA 6, incompatibilités, prérequis) + initFabrique()
    qui monte le graphe depuis data/livre_3.json (mecaniques.fabrique).
-   Graphe : 1 ensemble (racine ◆) (châssis) + pièces qui s'emboîtent dans 3 logements.
-   Les filières (O4→O5→O6) sont des grosses pièces : elles prennent
-   2-3 logements d'un coup, prérequis inclus.
+   Graphe : 1 ensemble (racine ◆) (châssis) + 1 à 3 pièces dans 3 logements.
    Modificateurs sur la carte effet (pas hors graphe) : Portée totale 1 à 3 cases
    (base 1 gratuite, +2 XP/case), Zone M3
-   (O3 O7 O12 O20 O22 O23 O24 O25 — O7 + zone
+   (O7 O20 O22 O23 O24 O25 — O7 + zone
    refusé règle 8), Durée M4 (O9/O20 « durée cumulable », 2 crans max), M7 ×2 (toute carte).
    ========================================================================== */
 (function () {
@@ -31,15 +29,12 @@ function fabNum(v) {
 /* Pièces à coût variable : comportement spécial par id. */
 var KIND = {
     O1:  { t: 'n', max: 5, unit: 'crans', plural: [['dégât', 'dégâts']] },
+    O8:  { t: 'n', max: 5, unit: 'points' },
+    O9:  { t: 'n', max: 5, unit: 'points' },
     O13: { t: 'n', max: 3, unit: 'cases' },
     O15: { t: 'n', max: 5, unit: 'cibles', plural: [['dégât', 'dégâts']] },
     D8:  { t: 'n', max: 3, unit: 'malus' },
     S1:  { t: 'n', max: 3, unit: 'crans', plural: [['épreuve', 'épreuves']] },
-    O19: { t: 'radio', opts: [
-        { v: 'partiel', label: 'Partiel ignoré (2 XP)', xp: 2, pa: 0 },
-        { v: 'total', label: 'Total à −2 (3 XP)', xp: 3, pa: 0 },
-        { v: 'suppression', label: 'Cible sans couvert 1 tour (3 XP + 1 PA)', xp: 3, pa: 1 }
-    ]},
     U7: { t: 'palier', opts: [
         { v: '5', label: '5 PV + purge (inclus)', dx: 0 },
         { v: '10', label: '10 PV (+2 XP)', dx: 2 },
@@ -76,17 +71,17 @@ function scaledPieceText(s, id, q) {
     return out;
 }
 
-/* Paliers qui REMPLACENT leur prérequis (filière payée une fois). */
-var REPLACE = { O5: ['O4'], O6: ['O5', 'O4'] };
+/* Plus de palier remplaçant : objet conservé pour compatibilité. */
+var REPLACE = {};
 
 /* Compatibilité des modificateurs par carte effet (M1-M4/M7 sur la carte, pas hors graphe).
    Portée : base 1 case gratuite, +1 case (+2 XP, total 2) ou +2 cases (+4 XP, total 3 max).
-   Zone M3 : dégâts, statuts ou repoussée (O3 O7 O12 O20 O22 O23 O24 O25) ; O7 + zone
+   Zone M3 : dégâts, statuts ou repoussée (O7 O20 O22 O23 O24 O25) ; O7 + zone
    refusé règle 8 (Absolus multi-cible, comme O7 + O15).
    Durée M4 : là où la table dit « durée cumulable » (O9, O20), 2 crans max.
    Hors-compétence M7 ×2 : toute carte (pièce d'une autre compétence). */
-var MOD_RANGE_EXCL = { O1: 'dégât instantané mono-attaque, sans portée propre', O12: 'statut délivré par la frappe, sans portée propre', O13: 'repoussée : la distance, c’est la quantité (x3)', O16: 'a déjà sa forme (prends la pièce Zone O16)', O17: 'contact/adjacent, pas d’extension', O18: 'passif de critique, pas de portée', O20: 'statut délivré par la frappe, sans portée propre', O21: 'statut délivré par la frappe, sans portée propre', O22: 'statut délivré par la frappe, sans portée propre', O23: 'statut délivré par la frappe, sans portée propre', O24: 'statut délivré par la frappe, sans portée propre', O25: 'statut délivré par la frappe, sans portée propre' };
-var MOD_ZONE_IDS = { O3: 1, O7: 1, O12: 1, O20: 1, O22: 1, O23: 1, O24: 1, O25: 1 };
+var MOD_RANGE_EXCL = { O1: 'dégât instantané mono-attaque, sans portée propre', O13: 'repoussée : la distance, c’est la quantité (x3)', O18: 'passif de critique, pas de portée', O20: 'statut délivré par la frappe, sans portée propre', O21: 'statut délivré par la frappe, sans portée propre', O22: 'statut délivré par la frappe, sans portée propre', O23: 'statut délivré par la frappe, sans portée propre', O24: 'statut délivré par la frappe, sans portée propre', O25: 'statut délivré par la frappe, sans portée propre' };
+var MOD_ZONE_IDS = { O7: 1, O20: 1, O22: 1, O23: 1, O24: 1, O25: 1 };
 var MOD_DUR_IDS = { O9: 1, O20: 1 };
 function modRangeOk(p) {
     if (!p) return { ok: false, reason: 'Carte inconnue.' };
@@ -96,9 +91,8 @@ function modRangeOk(p) {
 }
 function modZoneOk(p) {
     if (!p) return { ok: false, reason: 'Carte inconnue.' };
-    if (p.id === 'O16') return { ok: false, reason: 'Zone : O16 a déjà sa forme.' };
     if (p.id === 'O15') return { ok: false, reason: 'Zone : O15 est déjà multi-cible.' };
-    if (!MOD_ZONE_IDS[p.id]) return { ok: false, reason: 'Zone : dégâts, statuts ou repoussée uniquement (O3 O7 O12 O20 O22 O23 O24 O25).' };
+    if (!MOD_ZONE_IDS[p.id]) return { ok: false, reason: 'Zone : dégâts, statuts ou repoussée uniquement (O7 O20 O22 O23 O24 O25).' };
     return { ok: true };
 }
 function modDurOk(p) {
@@ -120,7 +114,7 @@ var FabriqueEngine = {
 
     compute: function (CAT, sel) {
         var errors = [], warnings = [], lines = [], fams = {};
-        var majeures = 0, auto = {};
+        var auto = {};
 
         function P(id) {
             for (var i = 0; i < CAT.pieces.length; i++)
@@ -142,7 +136,7 @@ var FabriqueEngine = {
             if (!sel.ensSkill) errors.push('Lie ton ensemble (◆) à une compétence entraînée.');
         }
 
-        /* 2. Pré-requis auto (filières linéaires). */
+        /* 2. Pré-requis auto (chaînes de pièces, aucune pour l'instant). */
         var qty = sel.qty || {};
         function has(id) { return (qty[id] | 0) > 0 || !!auto[id]; }
         Object.keys(REPLACE).forEach(function (top) {
@@ -157,7 +151,6 @@ var FabriqueEngine = {
             if (!p) return;
             counted++;
             fams[p.famille] = true;
-            if (p.majeure) majeures++;
         });
         Object.keys(auto).forEach(function (id) {
             var p = P(id);
@@ -183,18 +176,11 @@ var FabriqueEngine = {
             if (REPLACE[id]) {
                 var chain = [id].concat(REPLACE[id]);
                 var c = chainCost(chain);
-                lines.push({ id: id, label: p.nom + ' (filière ' + chain.slice().reverse().join(' → ') + ', prérequis inclus)', xp: c.xp, pa: c.pa, kind: 'piece', fam: p.famille });
+                lines.push({ id: id, label: p.nom + ' (chaîne ' + chain.slice().reverse().join(' → ') + ', prérequis inclus)', xp: c.xp, pa: c.pa, kind: 'piece', fam: p.famille });
                 chain.forEach(function (x) { handled[x] = true; });
                 return;
             }
             handled[id] = true;
-            if (id === 'O19') {
-                var opt = null;
-                (KIND.O19.opts).forEach(function (o) { if (o.v === sel.o19) opt = o; });
-                opt = opt || KIND.O19.opts[0];
-                lines.push({ id: id, label: p.nom + ' — ' + opt.label, xp: opt.xp, pa: opt.pa, kind: 'piece', fam: p.famille });
-                return;
-            }
             if (id === 'U7') {
                 var dx = 0;
                 (KIND.U7.opts).forEach(function (o) { if (o.v === sel.u7) dx = o.dx; });
@@ -229,16 +215,12 @@ var FabriqueEngine = {
         /* 4. Règles de comptage : 1 châssis + 1 à 3 pièces. */
         if (counted < 1) errors.push('1 pièce minimum (un ensemble seul ne suffit pas).');
         if (counted > 3) errors.push('3 pièces maximum : au-delà, ce sont deux techniques sœurs.');
-        if (has('O17') && sel.chassis !== 'C3')
-            errors.push('Contre-attaque / interception (O17) exige l\u2019ensemble Réaction.');
         if ((has('D1') || has('D3')) === false && has('D8'))
-            errors.push('Ignore un malus (D8) exige D1 ou D3 (filière défensive).');
-        if (has('O12') && !(has('O20') || has('O21') || has('O22') || has('O23') || has('O24') || has('O25')))
-            warnings.push('Statut critique (O12) : prérequis filière = un statut de la même famille (O20 à O25).');
+            errors.push('Ignore un malus (D8) exige D1 ou D3.');
         if (has('U5'))
             warnings.push('Téléport 2 cases (U5) : prérequis narratif = Roulade ou esquive Δ≥2.');
         if (has('O18') && counted < 3)
-            warnings.push('Critique élargi (O18) : prérequis filière = 3 pièces de la même arme.');
+            warnings.push('Critique élargi (O18) : prérequis = 3 pièces de la même arme.');
         if (has('O8') && has('O9'))
             warnings.push('Règle 5 : un seul bonus chiffré par jet — O8 et O9 ne se cumulent pas.');
         /* Incompatibilités. */
@@ -305,8 +287,8 @@ var FabriqueEngine = {
                     }
                 });
             });
-            /* Sur critique liée : −1 XP par cumul (M5) — O1, O13, O15. */
-            ['O1', 'O13', 'O15'].forEach(function (cid) {
+            /* Sur critique liée : −1 XP par cumul (M5) — O1, O8, O13, O15. */
+            ['O1', 'O8', 'O13', 'O15'].forEach(function (cid) {
                 var lk = sel.plink && sel.plink[cid];
                 if (lk && lk.t === 'cond' && lk.id === 'critique' && (qty[cid] | 0) > 0) {
                     lines.forEach(function (l) {
@@ -339,9 +321,6 @@ var FabriqueEngine = {
         if (xp >= 7) {
             status = 'signature';
             warnings.push('Signature (7 XP et plus) : une seule par personnage, accord MJ obligatoire.');
-            if (majeures > 2) errors.push('2 majeures maximum, même en signature.');
-        } else if (majeures > 1) {
-            errors.push(majeures + ' majeures : une seule par technique standard (règle 8).');
         }
         if (pa > 6) errors.push('Activation ' + pa + ' PA > 6 : ça doit tenir dans un tour.');
         if (ch && ch.id === 'C0' && pa > 0)
@@ -351,20 +330,19 @@ var FabriqueEngine = {
         if (status !== 'signature' && xp >= 4 && xp <= 6) status = 'standard';
 
         return { xp: xp, pa: pa, lines: lines, errors: errors, warnings: warnings,
-                 familles: famKeys, majeures: majeures, crossed: crossed,
+                 familles: famKeys, crossed: crossed,
                  status: errors.length ? 'invalide' : status };
     }
 };
 
 /* Nom automatique live : fragments par carte + suffixes de modificateurs.
-   Pur : suggestName(CAT, sel) -> string. sel = {chassis, qty, order?, mods?, plink?, o19?, u7?}. */
+   Pur : suggestName(CAT, sel) -> string. sel = {chassis, qty, order?, mods?, plink?, u7?}. */
 var NAME_BASE = {
-    O1: 'Frappe Lourde', O2: 'Hache de Guerre', O3: 'Coup de Grâce',
-    O4: 'Pointe Perçante', O5: 'Pointe Ciblée', O6: 'Transperçante',
+    O1: 'Frappe Lourde',
     O7: 'Lame Absolue', O8: 'Visée Sûre', O9: 'Élan Précis',
-    O12: 'Coup Fatal', O13: 'Balayage', O15: 'Frappe en Écho',
-    O16: 'Tourbillon', O17: 'Riposte', O18: 'Œil Critique',
-    O19: 'Traque', O20: 'Entrave', O21: 'Voile', O22: 'Feinte',
+    O13: 'Balayage', O15: 'Frappe en Écho',
+    O18: 'Œil Critique',
+    O20: 'Entrave', O21: 'Étourdissement', O22: 'Feinte',
     O23: 'Fauchage', O24: 'Chaîne', O25: 'Assommoir',
     D1: 'Lame Miroir', D2: 'Rempart', D3: 'Peau de Fer', D4: 'Peau de Pierre',
     D5: 'Immunité', D6: 'Garde Absolue', D7: 'Veille', D8: 'Assise',
@@ -383,16 +361,16 @@ function nameHas(s, words) {
 function suggestName(CAT, sel) {
     sel = sel || {};
     var qty = sel.qty || {};
+    var known = null;
+    if (CAT && CAT.pieces) {
+        known = {};
+        CAT.pieces.forEach(function (p) { known[p.id] = true; });
+    }
     var tops = (sel.order && sel.order.length ? sel.order : Object.keys(qty))
-        .filter(function (id) { return (qty[id] | 0) > 0; });
+        .filter(function (id) { return (qty[id] | 0) > 0 && (!known || known[id]); });
     if (!tops.length) return 'Technique Maison';
     var bases = tops.map(function (id) {
         var b = NAME_BASE[id] || id;
-        if (id === 'O19') {
-            if (sel.o19 === 'total') b = 'Traque Totale';
-            else if (sel.o19 === 'suppression') b = 'Traque Aveuglante';
-            else b = 'Traque Partielle';
-        }
         if (id === 'U7') {
             if (sel.u7 === '10') b = 'Suture Profonde';
             else if (sel.u7 === '15') b = 'Suture Totale';
@@ -407,7 +385,7 @@ function suggestName(CAT, sel) {
     else if (bases.length === 2) name = bases[0] + ' et ' + bases[1];
     else name = bases[0] + ', ' + bases[1] + ' et ' + bases[2];
     /* Ensemble : Réaction et Opportunité signent le nom, sauf si la carte le dit déjà. */
-    if (sel.chassis === 'C3' && tops.indexOf('O17') < 0 &&
+    if (sel.chassis === 'C3' &&
         !nameHas(name, ['riposte', 'miroir', 'contre', 'revers']))
         name = 'Riposte : ' + name;
     if (sel.chassis === 'C4' && !nameHas(name, ['éclair', 'sursaut', 'pas', 'bond', 'élan', 'réflexe']))
@@ -444,11 +422,6 @@ function suggestName(CAT, sel) {
     C3: 'Hors de ton tour, 1/round.',
     C4: '0 PA, 1/round, quand le déclencheur tombe.'
 };
-var DESC_O19 = {
-    partiel: ' Tu ignores le couvert partiel.',
-    total: ' Le couvert total passe à −2.',
-    suppression: ' Ta cible perd son couvert 1 tour.'
-};
 var DESC_U7 = { '5': ' (5 PV + purge 1 état).', '10': ' (10 PV + purge 1 état).', '15': ' (15 PV + immunité 3 tours).' };
 var DESC_U11 = { p3: '3 ESS', p4: '4 ESS + 1 PA', p2x: '2×/combat' };
 function suggestDesc(CAT, sel) {
@@ -470,7 +443,6 @@ function suggestDesc(CAT, sel) {
         var p = pieceById(id);
         if (!p) return;
         var s = scaledPieceText(p.texte || p.nom, id, qty[id] | 0);
-        if (id === 'O19') s += DESC_O19[sel.o19] || DESC_O19.partiel;
         if (id === 'U7') s = s.replace(/\.\s*$/, '') + (DESC_U7[sel.u7] || DESC_U7['5']);
         if (id === 'U11') {
             var subs = Object.keys(sel.u11 || {}).filter(function (v) { return sel.u11[v] && DESC_U11[v]; });
@@ -493,10 +465,81 @@ function suggestDesc(CAT, sel) {
     return out.join(' ');
 }
 
+/* Liens mécaniques façon Livres I-III : les termes de règles affichés par
+   l'atelier deviennent des ancres rule-ref (tooltip via bindCodexTips).
+   Paires (href, tip) reprises verbatim des Livres I-III — rien d'inventé.
+   Pur : fabLinkText(s) -> html (échappé + lié, une seule passe). */
+var FAB_REFS = [
+    { k: 'encaissement', href: 'livre_6.html#sec-24-2', tip: 'Encaissement = CON × 2 : seuil comparé aux dégâts du coup (§24.2).' },
+    { k: 'essoufflement', href: 'livre_1.html#sec-4-2', tip: 'Essoufflement : 1 point = des PA d’urgence ; ne part pas tout seul, action dédiée pour souffler (§4.2).' },
+    { k: 'ralentie', href: 'livre_6.html#sec-25-1', tip: 'Ralenti : toute action coûte le DOUBLE de PA (§25.1).' },
+    { k: 'ralenti', href: 'livre_6.html#sec-25-1', tip: 'Ralenti : toute action coûte le DOUBLE de PA (§25.1).' },
+    { k: 'à terre', href: 'livre_6.html#sec-25-1', tip: 'À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.' },
+    { k: 'déstabilisée', href: 'livre_6.html#sec-25-1', tip: 'Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).' },
+    { k: 'déstabilisé', href: 'livre_6.html#sec-25-1', tip: 'Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).' },
+    { k: 'étourdie', href: 'livre_6.html#sec-25-1', tip: 'Étourdi : −1 ec sur tous les jets.' },
+    { k: 'étourdi', href: 'livre_6.html#sec-25-1', tip: 'Étourdi : −1 ec sur tous les jets.' },
+    { k: 'absolus', href: 'livre_6.html#chap-24', tip: 'Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).' },
+    { k: 'absolue', href: 'livre_6.html#chap-24', tip: 'Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).' },
+    { k: 'absolu', href: 'livre_6.html#chap-24', tip: 'Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).' },
+    { k: 'sonnée', href: 'livre_6.html#sec-25-1', tip: 'Sonné : aucune action. La créature tombe immédiatement à terre.' },
+    { k: 'sonné', href: 'livre_6.html#sec-25-1', tip: 'Sonné : aucune action. La créature tombe immédiatement à terre.' },
+    { k: 'immobilisée', href: 'livre_6.html#sec-25-1', tip: 'Immobilisé : impossible de faire la moindre action de mouvement (§25.1).' },
+    { k: 'immobilisé', href: 'livre_6.html#sec-25-1', tip: 'Immobilisé : impossible de faire la moindre action de mouvement (§25.1).' },
+    { k: 'esquive', href: 'livre_3.html#chap-11', tip: 'Esquive : éviter un coup au dernier moment (AGI/RAP/INS, §11.2).' },
+    { k: 'critique', href: 'livre_2.html#chap-8', tip: 'Critique : ton dé affiche son max (6 sur d6, 8 sur d8). Second jet sur la table (§8.1).' },
+    { k: 'pa', href: 'livre_1.html#chap-4', tip: 'PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).' },
+    { k: 'xp', href: 'livre_1.html#sec-5-3', tip: 'Spécialisation : 5 XP de la bonne banque ou du libre, au tarif normal (§5.3).' }
+];
+var FAB_TERM_RE = /Encaissement|Essoufflement|essoufflement|Ralentie|Ralenti|À Terre|à terre|Déstabilisée|Déstabilisé|Étourdie|Étourdi|étourdie|étourdi|Sonnée|Sonné|sonnée|sonné|Immobilisée|Immobilisé|immobilisée|immobilisé|Absolus|Absolue|Absolu|absolus|absolue|absolu|Esquive|esquive|Critique|critique|\bPA\b|\bXP\b/g;
+function fabRefFor(m) {
+    var k = String(m).toLowerCase();
+    for (var i = 0; i < FAB_REFS.length; i++)
+        if (FAB_REFS[i].k === k) return FAB_REFS[i];
+    return null;
+}
+function escHtml(s) {
+    return String(s == null ? '' : s)
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+function fabLinkText(s) {
+    return escHtml(s).replace(FAB_TERM_RE, function (m) {
+        var r = fabRefFor(m);
+        if (!r) return m;
+        return '<a class="rule-ref" href="' + r.href + '" data-tip="' + r.tip.replace(/"/g, '&quot;') + '">' + m + '</a>';
+    });
+}
+/* Lie les nœuds texte d'un périmètre (hors contrôles et liens existants),
+   puis attache les tooltips. Idempotent : relançable à chaque rendu. */
+function linkifyFab(scope) {
+    if (!scope || !scope.querySelectorAll) return;
+    var walker = document.createTreeWalker(scope, NodeFilter.SHOW_TEXT, null, false);
+    var nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(function (tn) {
+        var p = tn.parentNode;
+        if (!p || !p.replaceChild) return;
+        if (p.closest && p.closest('a,button,input,select,textarea')) return;
+        var s = tn.nodeValue;
+        if (!s) return;
+        FAB_TERM_RE.lastIndex = 0;
+        if (!FAB_TERM_RE.test(s)) return;
+        FAB_TERM_RE.lastIndex = 0;
+        var html = fabLinkText(s);
+        var tmp = document.createElement('span');
+        tmp.innerHTML = html;
+        var frag = document.createDocumentFragment();
+        while (tmp.firstChild) frag.appendChild(tmp.firstChild);
+        p.replaceChild(frag, tn);
+    });
+    if (window.bindCodexTips) window.bindCodexTips(scope);
+}
+
 /* ---------------------------------------------------------------- PUZZLE */
-// Filières = grosses pièces (prérequis inclus, 2-3 logements).
-var CHAINS = { O5: ['O4', 'O5'], O6: ['O4', 'O5', 'O6'] };
-var CHAIN_KEY = { O4: 'perce', O5: 'perce', O6: 'perce' };
+// Chaînes de pièces à prérequis inclus (aucune pour l'instant).
+var CHAINS = {};
+var CHAIN_KEY = {};
 var INCOMP = [['O7', 'O15'], ['D6', 'D1'], ['D6', 'D2'], ['D6', 'D3'], ['D6', 'D4']];
 var FAM_LABEL = { offensif: 'Offensif', defensif: 'Défensif', utilitaire: 'Utilitaire', social: 'Social' };
 var SAVE_KEY = 'fabrique-puzzle-v1';
@@ -529,9 +572,9 @@ function conditionById(id) {
         if (CONDITIONS[i].id === id) return CONDITIONS[i];
     return null;
 }
-/* PA d'activation d'une pièce (base). O19/U11 : selon la variante, gérée dans le menu du nœud. */
+/* PA d'activation d'une pièce (base). U11 : selon la variante, gérée dans le menu du nœud. */
 function piecePA(p) {
-    if (!p || p.id === 'O19' || p.id === 'U11') return 0;
+    if (!p || p.id === 'U11') return 0;
     var pn = fabNum(p.cout_pa);
     return pn.b + pn.d;
 }
@@ -570,7 +613,7 @@ function initFabrique() {
 
     /* --- État : source unique, le DOM ne fait que l'afficher. --- */
     var state = { chassis: null, ensSkill: '', qty: {}, order: [], conds: [], plink: {}, condSkill: "Maniement d'Arme",
-                  o19: 'partiel', u7: '5', u11: {}, mods: {} };
+                  u7: '5', u11: {}, mods: {} };
     var menu = null; /* {kind:'slot'|'piece'|'root', id, search} */
     var lastAuto = ''; /* dernier nom automatique proposé : le champ se remplit seul tant qu'il le suit */
     var lastDesc = ''; /* idem pour la description narrative */
@@ -609,13 +652,6 @@ function initFabrique() {
     function placedSpan() {
         var n = 0;
         state.order.forEach(function (id) { n += spanOf(id); });
-        return n;
-    }
-    function majeuresCount() {
-        var n = 0;
-        state.order.forEach(function (id) {
-            chainOf(id).forEach(function (x) { var p = P(x); if (p && p.majeure) n++; });
-        });
         return n;
     }
     function incompWith(id) {
@@ -660,14 +696,10 @@ function initFabrique() {
         }
         if (k && k.t === 'n' && q >= k.max)
             return { lock: true, reason: 'Maximum ×' + k.max + ' atteint.' };
-        if (id === 'O17' && state.chassis !== 'C3')
-            return { lock: true, reason: 'O17 ne se branche que sur l\u2019ensemble Réaction.' };
         if (id === 'D8' && !present('D1') && !present('D3'))
             return { lock: false, soft: 'Demande D1 ou D3 : choisis la pièce, le menu proposera.' };
         var bad = incompWith(id);
         if (bad) return { lock: true, reason: 'Refuse ' + bad + ' (règle 8).' };
-        if (p.majeure && majeuresCount() >= 2)
-            return { lock: true, reason: '2 majeures maximum, même en signature.' };
         var need = spanOf(id);
         if (CHAIN_KEY[id]) {
             state.order.forEach(function (t) {
@@ -677,14 +709,10 @@ function initFabrique() {
         }
         if (placedSpan() + need > 3)
             return { lock: true, reason: 'Plus de logement libre (3 max).' };
-        if (id === 'O12' && !present('O20') && !present('O21') && !present('O22') && !present('O23') && !present('O24') && !present('O25'))
-            return { lock: false, soft: 'Demande un statut (O20 à O25) sur le graphe.' };
         if (id === 'O18' && placedSpan() + need < 3)
             return { lock: false, soft: 'Demande 3 pièces de la même arme.' };
         if (id === 'U5')
             return { lock: false, soft: 'Prérequis narratif : Roulade ou esquive Δ≥2.' };
-        if (p.majeure && majeuresCount() >= 1)
-            return { lock: false, soft: '2e majeure = signature (7 XP et plus), MJ obligatoire.' };
         return { lock: false };
     }
 
@@ -778,7 +806,7 @@ function initFabrique() {
         state.order = [];
         state.conds = [];
         state.plink = {};
-        state.o19 = 'partiel'; state.u7 = '5'; state.u11 = {};
+        state.u7 = '5'; state.u11 = {};
         state.condSkill = DEFAULT_SKILL;
         state.ensSkill = '';
         state.u11auto = false;
@@ -857,7 +885,7 @@ function initFabrique() {
         else state.mods[id] = m;
     }
     function buildSel() {
-        var sel = { chassis: state.chassis, ensSkill: state.ensSkill || '', qty: {}, o19: state.o19, u7: state.u7, u11: {},
+        var sel = { chassis: state.chassis, ensSkill: state.ensSkill || '', qty: {}, u7: state.u7, u11: {},
                     narrow: 0, mods: {} };
         sel.conds = state.conds.slice();
         sel.plink = {};
@@ -913,7 +941,7 @@ function initFabrique() {
         if (m.dur) out.push('+' + m.dur + ' tour' + (m.dur > 1 ? 's' : '') + ' (+' + m.dur + ' XP +' + m.dur + ' PA)');
         if (m.cross) out.push('×2 hors-compétence');
         var lk = state.plink[id];
-        if (lk && lk.t === 'cond' && lk.id === 'critique' && (id === 'O1' || id === 'O13' || id === 'O15')) {
+        if (lk && lk.t === 'cond' && lk.id === 'critique' && (id === 'O1' || id === 'O8' || id === 'O13' || id === 'O15')) {
             var nq = state.qty[id] | 0;
             if (nq > 0) out.push('critique (−' + nq + ' XP)');
         }
@@ -934,11 +962,6 @@ function initFabrique() {
     };
 
     function variantSummary(id) {
-        if (id === 'O19') {
-            var o = null;
-            KIND.O19.opts.forEach(function (x) { if (x.v === state.o19) o = x; });
-            return o ? o.label : '';
-        }
         if (id === 'U7') return 'palier ' + state.u7 + ' PV';
         if (id === 'U11') {
             var on = Object.keys(state.u11).filter(function (v) { return state.u11[v]; });
@@ -1032,7 +1055,6 @@ function initFabrique() {
             if (qq > 1 && sub.indexOf('×' + qq) < 0 && nm === String(p.nom)) sub += ' — ×' + qq;
             var flags = '<div class="fab-placed-flags">';
             chainOf(id).forEach(function (x) { flags += '<span class="fab-flag">' + esc(x) + '</span>'; });
-            if (p.majeure) flags += '<span class="fab-flag star">★ majeure</span>';
             modFlags(id).forEach(function (t) { flags += '<span class="fab-flag mod">' + esc(t) + '</span>'; });
             flags += '</div>';
             var tiers = '';
@@ -1165,10 +1187,6 @@ function initFabrique() {
             b.dataset.pick = p.id;
             b.tabIndex = 0;
         }
-        /* O17 exige un autre ensemble : proposer le passage, pas une carte. */
-        if (p.id === 'O17' && state.chassis !== 'C3') {
-            h += '<div class="fab-opt-preq"><span>Brancher :</span> <button type="button" class="fab-preq-btn" data-preens="C3">◆ Ensemble Réaction</button></div>';
-        }
         b.innerHTML = h;
         return b;
     }
@@ -1240,7 +1258,7 @@ function initFabrique() {
             var s2 = document.createElement('input');
             s2.className = 'fab-ctx-search';
             s2.setAttribute('data-search', '1');
-            s2.placeholder = 'Filtrer les 48 pièces…';
+            s2.placeholder = 'Filtrer les 39 pièces…';
             s2.value = menu.search;
             ctxEl.appendChild(s2);
             var q2 = normSearch(menu.search);
@@ -1376,19 +1394,10 @@ function initFabrique() {
             if (!p) { closeMenu(); return; }
             var info = lockInfo(p);
             var k = KIND[p.id];
-            if (k && (p.id === 'O19' || p.id === 'U7' || p.id === 'U11')) {
+            if (k && (p.id === 'U7' || p.id === 'U11')) {
                 list.appendChild(el('div', 'fab-ctx-sec', 'Variante'));
                 var vv = el('div', 'fab-ctx-var', '');
-                if (p.id === 'O19') {
-                    var c0 = state.chassis === 'C0';
-                    KIND.O19.opts.forEach(function (o) {
-                        var dis = (c0 && (o.pa | 0) > 0) ? ' disabled title="1 PA : pas sur un ensemble passif."' : '';
-                        var l = el('label', '', '<input type="radio" name="fabm_O19" value="' + o.v + '"' +
-                            (state.o19 === o.v ? ' checked' : '') + dis + ' data-var-o19="1"> ' + esc(o.label));
-                        vv.appendChild(l);
-                    });
-                    if (c0) vv.appendChild(el('div', 'fab-ctx-foot', 'Suppression (1 PA) : pas sur un passif.'));
-                } else if (p.id === 'U7') {
+                if (p.id === 'U7') {
                     var lab = el('label', '', 'Palier ');
                     var sel7 = document.createElement('select');
                     sel7.className = 'tool-select fab-input';
@@ -1465,7 +1474,7 @@ function initFabrique() {
                 mv.appendChild(xl);
                 list.appendChild(mv);
             })();
-            if (p.id === 'O13' || p.id === 'O1' || p.id === 'O15') {
+            if (p.id === 'O13' || p.id === 'O1' || p.id === 'O8' || p.id === 'O15') {
                 list.appendChild(el('div', 'fab-ctx-sec', 'Condition optionnelle (M5)'));
                 (function () {
                     var cv = el('div', 'fab-ctx-var', '');
@@ -1485,15 +1494,7 @@ function initFabrique() {
             rr2.appendChild(del);
             list.appendChild(rr2);
             /* Prérequis manquants : cartes à rebrancher sans quitter le menu. */
-            if (p.id === 'O17' && state.chassis !== 'C3') {
-                list.appendChild(el('div', 'fab-ctx-sec', 'Prérequis'));
-                var er = el('div', 'fab-ctx-row', '');
-                var eb = el('button', 'fab-preq-btn', '◆ Brancher l\u2019ensemble Réaction');
-                eb.type = 'button';
-                eb.dataset.preens = 'C3';
-                er.appendChild(eb);
-                list.appendChild(er);
-            } else {
+            {
                 var miss = [];
                 missingGroups(p).forEach(function (g) {
                     g.forEach(function (mid) { if (miss.indexOf(mid) < 0) miss.push(mid); });
@@ -1526,7 +1527,6 @@ function initFabrique() {
             if (p.portee) meta.push('Portée : ' + p.portee);
             if (p.prerequis && p.prerequis.length) meta.push('Demande : ' + p.prerequis.join(', '));
             if (p.incompatible && p.incompatible.length) meta.push('Refuse : ' + p.incompatible.join(', '));
-            if (p.majeure) meta.push('★ majeure');
             list.appendChild(el('div', 'fab-ctx-foot', esc(meta.join(' · '))));
             if (info.soft) {
                 var w = el('div', '', '');
@@ -1559,6 +1559,7 @@ function initFabrique() {
                 si.setSelectionRange(v.length, v.length);
             } catch (e) { /* focus indisponible */ }
         }
+        linkifyFab(ctxEl);
     }
 
     /* --- Rendu. --- */
@@ -1674,12 +1675,13 @@ function initFabrique() {
         });
         }
         save();
+        var pz = document.getElementById('fabPuzzle');
+        if (pz) linkifyFab(pz);
         return r;
     }
 
     /* --- Presets (montages vérifiés du Livre III §14). --- */
     var PRESETS = {
-        hache: { chassis: 'C0', ensSkill: "Maniement d'Arme", qty: { O2: 1 }, conds: ['arme'], plink: { O2: { t: 'cond', id: 'arme' } }, name: 'Hache de Guerre (canonique)', desc: 'Sur succès net : +2 dégâts.' },
         suture: { chassis: 'C0', ensSkill: 'Premiers Soins', qty: { U1: 1 }, conds: ['contact'], plink: { U1: { t: 'cond', id: 'contact' } }, name: 'Suture Réflexe (canonique)', desc: 'Les premiers soins d’urgence passent de 3 à 2 PA.' },
         miroir: { chassis: 'C3', ensSkill: "Maniement d'Arme", qty: { D1: 1 }, conds: ['contact'], plink: { D1: { t: 'cond', id: 'contact' } }, name: 'Lame Miroir (canonique)', desc: 'Tu pares les tirs laser au contact (Delta ≥ 0).' },
         fente: { chassis: 'C2', ensSkill: "Maniement d'Arme", qty: { O8: 1, O20: 1 }, name: 'Fente Basse', desc: 'Tu passes sous la garde et tu fauches le jarret.' }
@@ -1694,7 +1696,7 @@ function initFabrique() {
             state.qty[id] = p.qty[id];
             state.order.push(id);
         });
-        state.o19 = 'partiel'; state.u7 = '5'; state.u11 = {};
+        state.u7 = '5'; state.u11 = {};
         state.mods = {};
         state.ensSkill = p.ensSkill || '';
         Object.keys(p.mods || {}).forEach(function (id) {
@@ -1724,7 +1726,7 @@ function initFabrique() {
                 chassis: state.chassis, qty: state.qty, order: state.order, conds: state.conds, plink: state.plink,
                 condSkill: state.condSkill,
                 ensSkill: state.ensSkill || '',
-                o19: sel.o19, u7: sel.u7, u11: sel.u11,
+                u7: sel.u7, u11: sel.u11,
                 mods: sel.mods,
                 name: (document.getElementById('fabName') || {}).value || '',
                 desc: (document.getElementById('fabDesc') || {}).value || ''
@@ -1760,7 +1762,6 @@ function initFabrique() {
                     if (P(id) && (state.qty[id] | 0) > 0 && state.order.indexOf(id) < 0) state.order.push(id);
                 });
             }
-            if (typeof d.o19 === 'string') state.o19 = d.o19;
             if (typeof d.u7 === 'string') state.u7 = d.u7;
             if (d.u11 && typeof d.u11 === 'object') state.u11 = d.u11;
             if (typeof d.ensSkill === 'string' && d.ensSkill) {
@@ -1859,8 +1860,6 @@ function initFabrique() {
             render();
             return;
         }
-        var pree = up(t, '[data-preens]');
-        if (pree) { setChassis(pree.dataset.preens); return; }
         var unc = up(t, '[data-uncond]');
         if (unc) { removeCond(unc.dataset.uncond); return; }
         var nd = up(t, '[data-needpick]');
@@ -1966,7 +1965,6 @@ function initFabrique() {
         if (!t || !t.dataset) return;
         if (t.dataset.condskill) { state.condSkill = t.value; render(); return; }
         if (t.dataset.ensSkill) { state.ensSkill = t.value || ''; render(); return; }
-        if (t.dataset.varO19) { state.o19 = t.value; render(); return; }
         if (t.dataset.varU7) { state.u7 = t.value; render(); return; }
         if (t.dataset.varU11) { toggleU11(t.dataset.sub); return; }
         if (t.dataset.modRange !== undefined) {
@@ -2096,6 +2094,7 @@ FabriqueEngine.modCrossOk = modCrossOk;
 FabriqueEngine.suggestName = suggestName;
 FabriqueEngine.NAME_BASE = NAME_BASE;
 FabriqueEngine.suggestDesc = suggestDesc;
+FabriqueEngine.fabLinkText = fabLinkText;
 if (typeof window !== 'undefined') {
     window.FabriqueEngine = FabriqueEngine;
     window.initFabrique = initFabrique;
