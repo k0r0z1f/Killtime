@@ -3299,6 +3299,38 @@
           "suggestedAsset": "js/fabrique.js",
           "updated": "2026-11-02",
           "details": "FAIT 2026-11-02 — Section chap-39 (toc + sidebar + navs globales + chapô). js/fabrique.js : moteur pur FabriqueEngine.compute (châssis + 1-3 pièces, paliers en filière, M1-M7, hybride auto, croisé ×2, plancher 4, signature 7-8, plafond PA 6, incompatibilités, prérequis) + initFabrique (build DOM depuis mecaniques.fabrique, validation live, presets Hache/Suture/Miroir/Fente, copie fiche, reset). js/tools.js : CodexData.l3 + hook gardé. Livre III §14 aligné (1-3 pièces, Soleil corrigée à 6 XP). Vérifié : 14 tests moteur OK, smoke DOM 4 XP/2 PA, node --check, 0 ID dupliqué."
+        },
+        {
+          "id": "RD-217",
+          "title": "Cascade 20-53 → 21-54 : Livres V-IX décalés, X-XII re-décalés",
+          "epic": "Codex sysRP",
+          "status": "done",
+          "priority": "high",
+          "order": 34,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "data/livre_5.json",
+          "updated": "2026-11-02",
+          "details": "FAIT 2026-11-02 — Complète la contiguïté 10-54 : V 21-23, VI 24-27, VII 28-31, VIII 32-34, IX statique 35-39 + outil 40, X 41-44, XI 45-49, XII 50-54. data/*.json + data/atlas_mondes.json + content/ (dirs + frontmatter) + 18 HTML (navs, sidebars ACTIF, tocs, atlas urls/titres, §20.1→21.1). 45 chapitres contigus vérifiés."
+        },
+        {
+          "id": "RD-218",
+          "title": "Réparations renumérotation + double vérification anti-bogues",
+          "epic": "Codex sysRP",
+          "status": "done",
+          "priority": "high",
+          "order": 35,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "js/fabrique.js",
+          "updated": "2026-11-02",
+          "details": "FAIT 2026-11-02 — Bogues introduits puis réparés : collision chap-20 Livre IV (revert ciblé sec-21/§21/h3/id), chap-chap- doublé (18 fichiers), hrefs sidebars préfixées double-décalées (livre_7/11/12), groupe L.IV 4 fichiers sans marqueurs. Double vérification : rendus réels 9 livres OK, 0 errBox/duplicata/morte, cross-check hrefs→sections OK, moteur 10/10 + smoke DOM OK, node --check OK. Laissé tel quel (pré-existant) : toc « 25.3-25.5 » livre_5, « Chapitres 34 à 36 » simulateur."
         }
       ]
     },

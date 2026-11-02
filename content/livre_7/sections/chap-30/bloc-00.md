@@ -5,13 +5,14 @@ livre: 7
 ---
 
 
-                    <h3>30.1 Table des événements (d12)</h3>
                     <p>
-                        C'est optionnel, et vous pouvez le refuser. Chacun vous donne
-                        <strong>1 effet à jouer 1×/session</strong> contre <strong>1 séquelle</strong>
-                        que votre MJ activera vraiment (§27.2). Lancez 1d12 ou choisissez.
-                        Notez votre <strong>[E0–E5]</strong> (§27.4, par défaut celle
-                        de la campagne).
+                        Lancez <strong>1d12</strong> ou choisissez. Chaque métier vous donne :
+                        <strong>+2 à 2 compétences</strong> de son champ, <strong>1 atout</strong>
+                        concret (outil, contact, permis — jamais un bonus chiffré en plus)
+                        et <strong>1 attache si vous la voulez</strong> (voir §28.2).
+                        Notez votre <strong>[E0–E5]</strong> (§28.4) : le bonus ne change pas,
+                        seul le décor change (voir §30.2). Exemple : forgeron [E1] ou
+                        mécano orbital [E3], c'est le même +2.
                     </p>
 
                     

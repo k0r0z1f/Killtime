@@ -5,5 +5,5 @@ livre: 6
 ---
 
 
-                    <h3 id="sec-24-1bis">24.1bis États à Dégâts Résiduels (DoT) : tick, aggravation, soin</h3>
+                    <h3>24.1 Typologie des Dégâts : Directs, Résiduels & Absolus</h3>
                     

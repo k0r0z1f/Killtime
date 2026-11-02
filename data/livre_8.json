@@ -18,8 +18,8 @@
    ]
   },
   {
-   "id": "chap-31",
-   "symbole": "Chapitre 31.",
+   "id": "chap-32",
+   "symbole": "Chapitre 32.",
    "titre": "Nomenclature Universelle & Armement Traditionnel",
    "blocs": [
     {
@@ -32,7 +32,7 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <h3>31.1 Épées & Armes de Poing en Métal</h3>\n                    "
+     "html": "\n\n                    <h3>32.1 Épées & Armes de Poing en Métal</h3>\n                    "
     },
     {
      "type": "ref",
@@ -40,7 +40,7 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <h3>31.2 Armes Concasseuses, Haches & Armes d'Hast</h3>\n                    "
+     "html": "\n\n                    <h3>32.2 Armes Concasseuses, Haches & Armes d'Hast</h3>\n                    "
     },
     {
      "type": "ref",
@@ -53,13 +53,13 @@
    ]
   },
   {
-   "id": "chap-32",
-   "symbole": "Chapitre 32.",
+   "id": "chap-33",
+   "symbole": "Chapitre 33.",
    "titre": "Épées Laser & Fusils Arcanotech",
    "blocs": [
     {
      "type": "html",
-     "html": "\n\n                    <p>\n                        L'armement arcanotech et énergétique combine les principes de la Cinquième Force et la\n                        miniaturisation des circuits à résonance de nytharite.\n                    </p>\n\n                    <h3>32.1 Les Épées Laser de Confinement Plasma</h3>\n                    <p>\n                        Une épée laser projette un arc de plasma stabilisé par un champ magnétique compact. La lame\n                        tranche la matière solide en ignorant la résistance physique ordinaire et ne subit jamais\n                        d'usure ni d'émoussement.\n                    </p>\n\n                    "
+     "html": "\n\n                    <p>\n                        L'armement arcanotech et énergétique combine les principes de la Cinquième Force et la\n                        miniaturisation des circuits à résonance de nytharite.\n                    </p>\n\n                    <h3>33.1 Les Épées Laser de Confinement Plasma</h3>\n                    <p>\n                        Une épée laser projette un arc de plasma stabilisé par un champ magnétique compact. La lame\n                        tranche la matière solide en ignorant la résistance physique ordinaire et ne subit jamais\n                        d'usure ni d'émoussement.\n                    </p>\n\n                    "
     },
     {
      "type": "ref",
@@ -67,7 +67,7 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <h3>32.2 Fusils Laser & L'Arsenal à Distance</h3>\n                    "
+     "html": "\n\n                    <h3>33.2 Fusils Laser & L'Arsenal à Distance</h3>\n                    "
     },
     {
      "type": "ref",
@@ -75,7 +75,7 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <h3>32.3 Grenades & Munitions Explosives</h3>\n                    "
+     "html": "\n\n                    <h3>33.3 Grenades & Munitions Explosives</h3>\n                    "
     },
     {
      "type": "ref",
@@ -88,13 +88,13 @@
    ]
   },
   {
-   "id": "chap-33",
-   "symbole": "Chapitre 33.",
+   "id": "chap-34",
+   "symbole": "Chapitre 34.",
    "titre": "Blindages, Champs de Force & Pharmacopée Tactique",
    "blocs": [
     {
      "type": "html",
-     "html": "\n\n                    <p>\n                        Pour survivre aux tirs laser et aux frappes énergétiques, la technologie offre trois lignes de\n                        protection complémentaires : armures légères flexibles, cuirasses lourdes motorisées et\n                        boucliers de diffraction arcanique.\n                    </p>\n\n                    <h3>33.1 Armures Corporelles : Légères vs Lourdes</h3>\n                    "
+     "html": "\n\n                    <p>\n                        Pour survivre aux tirs laser et aux frappes énergétiques, la technologie offre trois lignes de\n                        protection complémentaires : armures légères flexibles, cuirasses lourdes motorisées et\n                        boucliers de diffraction arcanique.\n                    </p>\n\n                    <h3>34.1 Armures Corporelles : Légères vs Lourdes</h3>\n                    "
     },
     {
      "type": "ref",
@@ -102,7 +102,7 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <h3>33.2 Champs de Force Personnels & Combinaisons Spatiales</h3>\n                    "
+     "html": "\n\n                    <h3>34.2 Champs de Force Personnels & Combinaisons Spatiales</h3>\n                    "
     },
     {
      "type": "ref",
@@ -110,7 +110,7 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <h3>33.3 Pharmacopée Tactique & Consommables Médicaux</h3>\n                    <p>\n                        Dans les situations d'urgence extrême, les stimulants chimiques et seringues arcaniques font la\n                        différence entre la survie et le trépas.\n                    </p>\n\n                    "
+     "html": "\n\n                    <h3>34.3 Pharmacopée Tactique & Consommables Médicaux</h3>\n                    <p>\n                        Dans les situations d'urgence extrême, les stimulants chimiques et seringues arcaniques font la\n                        différence entre la survie et le trépas.\n                    </p>\n\n                    "
     },
     {
      "type": "ref",
@@ -302,7 +302,7 @@
     {
      "titre": "<span>Gamme des Fusils Laser Standard</span>\n                                <span class=\"pill-badge cyan\">Tir Précis</span>",
      "top": false,
-     "corps_brut": "\n                            <ul style=\"padding-left: 15px; margin: 10px 0; font-size: 0.9em;\">\n                                <li><strong>Fusil Laser Léger :</strong> <code>3D - 2L - 500P - 1H</code> (10 000 CE).\n                                    Pistolet lourd compact.</li>\n                                <li><strong>Fusil Laser de Précision :</strong> <code>4D - 2L - 750P - 1H</code> (25 000\n                                    CE). Visée optique intégrée.</li>\n                                <li><strong>Fusil d'Assaut Laser :</strong> <code>4D - 3L - 500P - 2H</code> (20 000\n                                    CE). Cadence soutenue.</li>\n                                <li><strong>Fusil de Sniper Lourd :</strong> <code>5D - 4L - 1000P - 2H</code> (50 000\n                                    CE). Portée 1 kilomètre.</li>\n                            </ul>\n                            <div class=\"callout arcane\" style=\"margin-top: 10px; font-size: 0.85em;\">\n                                <strong>Balistique des Faisceaux Laser :</strong> Le tir produit un trait lumineux instantané et continu. En cas de touche, l'énergie thermique est absorbée par la cible ; en cas d'échec, le faisceau s'écrase sur le sol ou les parois en gerbe d'étincelles thermiques. Au contact direct (Distance = 1 case), les fusils laser sont assujettis à la condition <em>Canon Entravé</em> (Livre V, §22.2).\n                            </div>\n                        ",
+     "corps_brut": "\n                            <ul style=\"padding-left: 15px; margin: 10px 0; font-size: 0.9em;\">\n                                <li><strong>Fusil Laser Léger :</strong> <code>3D - 2L - 500P - 1H</code> (10 000 CE).\n                                    Pistolet lourd compact.</li>\n                                <li><strong>Fusil Laser de Précision :</strong> <code>4D - 2L - 750P - 1H</code> (25 000\n                                    CE). Visée optique intégrée.</li>\n                                <li><strong>Fusil d'Assaut Laser :</strong> <code>4D - 3L - 500P - 2H</code> (20 000\n                                    CE). Cadence soutenue.</li>\n                                <li><strong>Fusil de Sniper Lourd :</strong> <code>5D - 4L - 1000P - 2H</code> (50 000\n                                    CE). Portée 1 kilomètre.</li>\n                            </ul>\n                            <div class=\"callout arcane\" style=\"margin-top: 10px; font-size: 0.85em;\">\n                                <strong>Balistique des Faisceaux Laser :</strong> Le tir produit un trait lumineux instantané et continu. En cas de touche, l'énergie thermique est absorbée par la cible ; en cas d'échec, le faisceau s'écrase sur le sol ou les parois en gerbe d'étincelles thermiques. Au contact direct (Distance = 1 case), les fusils laser sont assujettis à la condition <em>Canon Entravé</em> (Livre V, §23.2).\n                            </div>\n                        ",
      "pieds": []
     },
     {

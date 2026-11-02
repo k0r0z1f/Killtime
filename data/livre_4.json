@@ -86,7 +86,7 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <!-- TÉLÉKINÉSIE & SPATIAL CALCULUS -->\n                    <h3 id=\"sec-18-2\">18.2 Télékinésie : Le Calcul Spatial (*Spatial Calculus*)</h3>\n                    <p>\n                        Tu ne pousses pas l'objet. Tu dis à la gravité autour de lui de changer d'avis.\n                        Concretement, ça donne ça quand tu progresses :\n                    </p>\n                    <ul>\n                        <li><strong>Entrée (Objets Légers) :</strong> Tu bouges un stylo, une dague, des clés.\n                            Il faut voir l'objet et rester concentré.</li>\n                        <li><strong>Basique (Multi-Objets) :</strong> Tu fais flotter plusieurs petits objets\n                            en même temps, devant toi.</li>\n                        <li><strong>Intermédiaire (Masses Lourdes) :</strong> Tu soulèves un meuble, une caisse\n                            d'armes, même un adversaire. Ça tire si tu tiens longtemps.</li>\n                        <li><strong>Avancé (Précision Chirurgicale) :</strong> Tu démontes un mécanisme à distance.\n                            Exemple : tu bloques le percuteur d'un pistolet sans le toucher.</li>\n                        <li><strong>Maîtrise (Barrières de Force) :</strong> Tu lèves un mur invisible qui arrête\n                            les tirs physiques.</li>\n                        <li><strong>Élite (Manipulation Gravitationnelle) :</strong> Tu inverses la gravité sous\n                            une escouade, ou tu compresses la matière (<a class=\"rule-ref\" href=\"livre_6.html#chap-23\"\n                                data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">ça\n                                ignore l'armure</a>).</li>\n                    </ul>\n\n                    <!-- PYROCINÉSIE & VITALITÉ CINÉTIQUE -->\n                    <h3 id=\"sec-18-3\">18.3 Pyrocinésie & Magie de Création</h3>\n                    <p>\n                        Deux autres façons de jouer avec l'énergie. Choisis selon ton style : frapper fort,\n                        ou créer vite.\n                    </p>\n                    "
+     "html": "\n\n                    <!-- TÉLÉKINÉSIE & SPATIAL CALCULUS -->\n                    <h3 id=\"sec-18-2\">18.2 Télékinésie : Le Calcul Spatial (*Spatial Calculus*)</h3>\n                    <p>\n                        Tu ne pousses pas l'objet. Tu dis à la gravité autour de lui de changer d'avis.\n                        Concretement, ça donne ça quand tu progresses :\n                    </p>\n                    <ul>\n                        <li><strong>Entrée (Objets Légers) :</strong> Tu bouges un stylo, une dague, des clés.\n                            Il faut voir l'objet et rester concentré.</li>\n                        <li><strong>Basique (Multi-Objets) :</strong> Tu fais flotter plusieurs petits objets\n                            en même temps, devant toi.</li>\n                        <li><strong>Intermédiaire (Masses Lourdes) :</strong> Tu soulèves un meuble, une caisse\n                            d'armes, même un adversaire. Ça tire si tu tiens longtemps.</li>\n                        <li><strong>Avancé (Précision Chirurgicale) :</strong> Tu démontes un mécanisme à distance.\n                            Exemple : tu bloques le percuteur d'un pistolet sans le toucher.</li>\n                        <li><strong>Maîtrise (Barrières de Force) :</strong> Tu lèves un mur invisible qui arrête\n                            les tirs physiques.</li>\n                        <li><strong>Élite (Manipulation Gravitationnelle) :</strong> Tu inverses la gravité sous\n                            une escouade, ou tu compresses la matière (<a class=\"rule-ref\" href=\"livre_6.html#chap-24\"\n                                data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).\">ça\n                                ignore l'armure</a>).</li>\n                    </ul>\n\n                    <!-- PYROCINÉSIE & VITALITÉ CINÉTIQUE -->\n                    <h3 id=\"sec-18-3\">18.3 Pyrocinésie & Magie de Création</h3>\n                    <p>\n                        Deux autres façons de jouer avec l'énergie. Choisis selon ton style : frapper fort,\n                        ou créer vite.\n                    </p>\n                    "
     },
     {
      "type": "ref",
@@ -148,7 +148,7 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <div class=\"callout vital\" id=\"sec-20-hybride\">\n                        <div class=\"callout-header\">\n                            <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\"\n                                stroke-width=\"2\">\n                                <polyline points=\"16 18 22 12 16 6\" />\n                                <polyline points=\"8 6 2 12 8 18\" />\n                            </svg>\n                            Règle des Pouvoirs Hybrides\n                        </div>\n                        <div class=\"callout-body\">\n                            Tu peux mélanger les catégories. Exemple : un blast qui frappe et te met en\n                            <a class=\"rule-ref\" href=\"livre_6.html#chap-24\"\n                                data-tip=\"Survolté : +1 ec sur tous les tests, +3 PA par tour (§24).\"><em>Survolté</em></a>\n                            en même temps.<br>\n                            <strong>Surcoût :</strong> <strong>+1 XP par catégorie en plus</strong>. Bonne nouvelle :\n                            cet XP-là ne compte pas dans le coût en PA en combat.\n                        </div>\n                    </div>\n\n                    <h3 id=\"sec-20-3\">20.3 Exemples Officiels de Sortilèges Conçus</h3>\n                    <p>\n                        Six sorts prêts à jouer, pour voir comment ça se monte. Copie la méthode pour les tiens.\n                    </p>\n                    "
+     "html": "\n\n                    <div class=\"callout vital\" id=\"sec-20-hybride\">\n                        <div class=\"callout-header\">\n                            <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\"\n                                stroke-width=\"2\">\n                                <polyline points=\"16 18 22 12 16 6\" />\n                                <polyline points=\"8 6 2 12 8 18\" />\n                            </svg>\n                            Règle des Pouvoirs Hybrides\n                        </div>\n                        <div class=\"callout-body\">\n                            Tu peux mélanger les catégories. Exemple : un blast qui frappe et te met en\n                            <a class=\"rule-ref\" href=\"livre_6.html#chap-25\"\n                                data-tip=\"Survolté : +1 ec sur tous les tests, +3 PA par tour (§25).\"><em>Survolté</em></a>\n                            en même temps.<br>\n                            <strong>Surcoût :</strong> <strong>+1 XP par catégorie en plus</strong>. Bonne nouvelle :\n                            cet XP-là ne compte pas dans le coût en PA en combat.\n                        </div>\n                    </div>\n\n                    <h3 id=\"sec-20-3\">20.3 Exemples Officiels de Sortilèges Conçus</h3>\n                    <p>\n                        Six sorts prêts à jouer, pour voir comment ça se monte. Copie la méthode pour les tiens.\n                    </p>\n                    "
     },
     {
      "type": "ref",
@@ -239,11 +239,11 @@
      "<strong>Magie Primale</strong>",
      "Corps, Manipulation, Destruction, Ombre, Lumière, Poison",
      "Offensif, Utilitaire",
-     "Altération biologique, pourrissement, éclairs aveuglants, <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-1bis\"\n                                            data-tip=\"Dégâts Résiduels : PV directs qui baissent de 1 par tour. Seul un soin les stoppe (§24.1bis).\">dégâts\n                                            résiduels</a>\n                                        toxiques."
+     "Altération biologique, pourrissement, éclairs aveuglants, <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-25-1bis\"\n                                            data-tip=\"Dégâts Résiduels : PV directs qui baissent de 1 par tour. Seul un soin les stoppe (§25.1bis).\">dégâts\n                                            résiduels</a>\n                                        toxiques."
     ],
     [
      "<strong>Magie de l'Esprit (Psyché)</strong>",
-     "<a class=\"rule-ref\" href=\"#sec-18-1\"\n                                            data-tip=\"Télépathie : 6 stades, de la lecture de surface jusqu'à la possession (§18.1).\">Télépathie</a>,\n                                        <a class=\"rule-ref\" href=\"#sec-18-2\"\n                                            data-tip=\"Télékinésie : 6 paliers, des objets légers jusqu'à la gravité inversée (§18.2).\">Télékinésie</a>,\n                                        <a class=\"rule-ref\" href=\"livre_10.html#chap-42\"\n                                            data-tip=\"Clairsentience : 8 échelons de perception, détaillés dans le Livre X (§42).\">Clairsentience</a>",
+     "<a class=\"rule-ref\" href=\"#sec-18-1\"\n                                            data-tip=\"Télépathie : 6 stades, de la lecture de surface jusqu'à la possession (§18.1).\">Télépathie</a>,\n                                        <a class=\"rule-ref\" href=\"#sec-18-2\"\n                                            data-tip=\"Télékinésie : 6 paliers, des objets légers jusqu'à la gravité inversée (§18.2).\">Télékinésie</a>,\n                                        <a class=\"rule-ref\" href=\"livre_10.html#chap-43\"\n                                            data-tip=\"Clairsentience : 8 échelons de perception, détaillés dans le Livre X (§43).\">Clairsentience</a>",
      "Offensif, Défensif, Social, Utilitaire",
      "Manipulation spatiale pure, lecture et réécriture de la pensée, calcul\n                                        géométrique de la gravité."
     ]
@@ -382,7 +382,7 @@
     [
      "<span class=\"pill-badge cyan\">1 point</span>",
      "<strong>Teinte élémentaire</strong> : donne un type à tes dégâts (feu, froid,\n                                        foudre, vent, eau, terre…)",
-     "Déclenche <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Résistances : certaines espèces ignorent ou subissent plus selon le type (§23.4).\">résistances et vulnérabilités</a> : contourne les unes, exploite les autres"
+     "Déclenche <a class=\"rule-ref\" href=\"livre_6.html#chap-24\" data-tip=\"Résistances : certaines espèces ignorent ou subissent plus selon le type (§24.4).\">résistances et vulnérabilités</a> : contourne les unes, exploite les autres"
     ],
     [
      "<span class=\"pill-badge cyan\">1 point</span>",
@@ -406,7 +406,7 @@
     ],
     [
      "<span class=\"pill-badge amber\">2 points</span>",
-     "La cible <strong>tombe au sol</strong> (<a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À\n                                            terre</a>)",
+     "La cible <strong>tombe au sol</strong> (<a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À\n                                            terre</a>)",
      "Effet immédiat"
     ],
     [
@@ -421,27 +421,27 @@
     ],
     [
      "<span class=\"pill-badge amber\">3 points</span>",
-     "La cible subit <strong>2 <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1bis\"\n                                                data-tip=\"Dégâts Résiduels : PV directs qui baissent de 1 par tour. Seul un soin les stoppe (§24.1bis).\">Dégâts\n                                                Résiduels</a></strong> continus",
+     "La cible subit <strong>2 <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1bis\"\n                                                data-tip=\"Dégâts Résiduels : PV directs qui baissent de 1 par tour. Seul un soin les stoppe (§25.1bis).\">Dégâts\n                                                Résiduels</a></strong> continus",
      "Dégressif par tour (-1/tour)"
     ],
     [
      "<span class=\"pill-badge amber\">3 points</span>",
-     "La cible est <strong><a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                                data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).\">Déstabilisée</a></strong>\n                                        pour 1 tour (-2 EC)",
+     "La cible est <strong><a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                                data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).\">Déstabilisée</a></strong>\n                                        pour 1 tour (-2 EC)",
      "Durée cumulable"
     ],
     [
      "<span class=\"pill-badge amber\">3 points</span>",
-     "La cible est <strong><a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                                data-tip=\"Immobilisé : impossible de faire la moindre action de mouvement (§24.1).\">Immobilisée</a></strong>\n                                        pour 1 tour",
+     "La cible est <strong><a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                                data-tip=\"Immobilisé : impossible de faire la moindre action de mouvement (§25.1).\">Immobilisée</a></strong>\n                                        pour 1 tour",
      "Durée cumulable"
     ],
     [
      "<span class=\"pill-badge amber\">3 points</span>",
-     "<strong>+1 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\"\n                                                data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">Dégât\n                                                Absolu</a></strong> à toutes les créatures à 1 case de zone",
+     "<strong>+1 <a class=\"rule-ref\" href=\"livre_6.html#chap-24\"\n                                                data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).\">Dégât\n                                                Absolu</a></strong> à toutes les créatures à 1 case de zone",
      "Zone & bonus cumulables"
     ],
     [
      "<span class=\"pill-badge ruby\">4 points</span>",
-     "La cible est <strong><a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                                data-tip=\"Ralenti : toute action coûte le double de PA.\">Ralentie</a></strong>\n                                        (toute action coûte double PA)",
+     "La cible est <strong><a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                                data-tip=\"Ralenti : toute action coûte le double de PA.\">Ralentie</a></strong>\n                                        (toute action coûte double PA)",
      "Durée cumulable"
     ],
     [
@@ -451,22 +451,22 @@
     ],
     [
      "<span class=\"pill-badge ruby\">6 points</span>",
-     "La cible subit <strong>3 <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1bis\"\n                                                data-tip=\"Dégâts Résiduels : PV directs qui baissent de 1 par tour. Seul un soin les stoppe (§24.1bis).\">Dégâts\n                                                Résiduels</a></strong> continus",
+     "La cible subit <strong>3 <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1bis\"\n                                                data-tip=\"Dégâts Résiduels : PV directs qui baissent de 1 par tour. Seul un soin les stoppe (§25.1bis).\">Dégâts\n                                                Résiduels</a></strong> continus",
      "Dégressif par tour"
     ],
     [
      "<span class=\"pill-badge ruby\">7 points</span>",
-     "La cible est <strong><a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                                data-tip=\"Paralysé : aucune action ni réaction, incapacité totale (§24.1).\">Paralysée</a></strong>\n                                        pour 1 tour (incapacité totale)",
+     "La cible est <strong><a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                                data-tip=\"Paralysé : aucune action ni réaction, incapacité totale (§25.1).\">Paralysée</a></strong>\n                                        pour 1 tour (incapacité totale)",
      "Durée cumulable"
     ],
     [
      "<span class=\"pill-badge ruby\">8 points</span>",
-     "La cible est <strong><a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                                data-tip=\"Sonné : aucune action. La créature tombe immédiatement à terre.\">Sonnée</a></strong>\n                                        pour 1 tour (paralysée et chute au sol)",
+     "La cible est <strong><a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                                data-tip=\"Sonné : aucune action. La créature tombe immédiatement à terre.\">Sonnée</a></strong>\n                                        pour 1 tour (paralysée et chute au sol)",
      "Durée cumulable"
     ],
     [
      "<span class=\"pill-badge ruby\">10 points</span>",
-     "La cible subit <strong>4 <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1bis\"\n                                                data-tip=\"Dégâts Résiduels : PV directs qui baissent de 1 par tour. Seul un soin les stoppe (§24.1bis).\">Dégâts\n                                                Résiduels</a></strong> continus",
+     "La cible subit <strong>4 <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1bis\"\n                                                data-tip=\"Dégâts Résiduels : PV directs qui baissent de 1 par tour. Seul un soin les stoppe (§25.1bis).\">Dégâts\n                                                Résiduels</a></strong> continus",
      "Dégressif par tour"
     ]
    ]
@@ -516,32 +516,32 @@
     ],
     [
      "<span class=\"pill-badge amber\">3 points</span>",
-     "État <strong><a class=\"rule-ref\" href=\"livre_6.html#chap-24\"\n                                                data-tip=\"Rapide : +3 PA réservés aux déplacements à chaque tour (§24).\">Rapide</a></strong>\n                                        pour 1 tour (+3 PA dédiés au déplacement)",
+     "État <strong><a class=\"rule-ref\" href=\"livre_6.html#chap-25\"\n                                                data-tip=\"Rapide : +3 PA réservés aux déplacements à chaque tour (§25).\">Rapide</a></strong>\n                                        pour 1 tour (+3 PA dédiés au déplacement)",
      "Utilitaire"
     ],
     [
      "<span class=\"pill-badge ruby\">4 points</span>",
-     "État <strong><a class=\"rule-ref\" href=\"livre_6.html#chap-24\"\n                                                data-tip=\"Survolté : +1 ec sur tous les tests, +3 PA par tour (§24).\">Survolté</a></strong>\n                                        pour 1 tour (+1 EC, +3 PA)",
+     "État <strong><a class=\"rule-ref\" href=\"livre_6.html#chap-25\"\n                                                data-tip=\"Survolté : +1 ec sur tous les tests, +3 PA par tour (§25).\">Survolté</a></strong>\n                                        pour 1 tour (+1 EC, +3 PA)",
      "Utilitaire / Buff"
     ],
     [
      "<span class=\"pill-badge ruby\">7 points</span>",
-     "État <strong><a class=\"rule-ref\" href=\"livre_6.html#chap-24\"\n                                                data-tip=\"En Transe : +2 ec sur tous les jets, +5 PA par tour (§24).\">En\n                                                Transe</a></strong> pour 1 tour (+2 EC, +5 PA)",
+     "État <strong><a class=\"rule-ref\" href=\"livre_6.html#chap-25\"\n                                                data-tip=\"En Transe : +2 ec sur tous les jets, +5 PA par tour (§25).\">En\n                                                Transe</a></strong> pour 1 tour (+2 EC, +5 PA)",
      "Utilitaire / Buff Majeur"
     ],
     [
      "<span class=\"pill-badge ruby\">7 points</span>",
-     "État <strong><a class=\"rule-ref\" href=\"livre_6.html#chap-24\"\n                                                data-tip=\"En Vol : déplacement aérien libre, coût de déplacement réduit de moitié (§24).\">En\n                                                Vol</a></strong> pour 1 tour (déplacement tridimensionnel à\n                                        demi-coût)",
+     "État <strong><a class=\"rule-ref\" href=\"livre_6.html#chap-25\"\n                                                data-tip=\"En Vol : déplacement aérien libre, coût de déplacement réduit de moitié (§25).\">En\n                                                Vol</a></strong> pour 1 tour (déplacement tridimensionnel à\n                                        demi-coût)",
      "Utilitaire arcanique"
     ],
     [
      "<span class=\"pill-badge ruby\">8 points</span>",
-     "État <strong><a class=\"rule-ref\" href=\"livre_6.html#chap-24\"\n                                                data-tip=\"Accéléré : toute action de déplacement coûte la moitié des PA (§24).\">Accéléré</a></strong>\n                                        pour 1 tour (tout déplacement coûte moitié PA)",
+     "État <strong><a class=\"rule-ref\" href=\"livre_6.html#chap-25\"\n                                                data-tip=\"Accéléré : toute action de déplacement coûte la moitié des PA (§25).\">Accéléré</a></strong>\n                                        pour 1 tour (tout déplacement coûte moitié PA)",
      "Utilitaire"
     ],
     [
      "<span class=\"pill-badge ruby\">9 points</span>",
-     "État <strong><a class=\"rule-ref\" href=\"livre_6.html#chap-24\"\n                                                data-tip=\"Lévitation : déplacement aérien libre sans effort, coût réduit de moitié (§24).\">Lévitation</a></strong>\n                                        sans effort pour 1 tour",
+     "État <strong><a class=\"rule-ref\" href=\"livre_6.html#chap-25\"\n                                                data-tip=\"Lévitation : déplacement aérien libre sans effort, coût réduit de moitié (§25).\">Lévitation</a></strong>\n                                        sans effort pour 1 tour",
      "Magie seulement"
     ]
    ]
@@ -585,7 +585,7 @@
      "titre": "<span>Écrasement de Matière</span>\n                                <span class=\"pill-badge ruby\">3 PA // Action Principale</span>",
      "top": false,
      "monde": "Magie Offensive // Attribut : Magie",
-     "corps_html": "<em>« Tu resserres la gravité sur un membre. La matière cède.\n                                    »</em><br><br>\n                                Tu vises une partie du corps et tu lances ton épreuve avec <strong>+1 au\n                                    résultat</strong> (1 pt). Si tu réussis, tu infliges <strong>2 <a class=\"rule-ref\"\n                                        href=\"livre_6.html#chap-23\"\n                                        data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">Dégâts\n                                        Absolus</a></strong> qui ignorent la Constitution et le blindage (2\n                                pts).",
+     "corps_html": "<em>« Tu resserres la gravité sur un membre. La matière cède.\n                                    »</em><br><br>\n                                Tu vises une partie du corps et tu lances ton épreuve avec <strong>+1 au\n                                    résultat</strong> (1 pt). Si tu réussis, tu infliges <strong>2 <a class=\"rule-ref\"\n                                        href=\"livre_6.html#chap-24\"\n                                        data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).\">Dégâts\n                                        Absolus</a></strong> qui ignorent la Constitution et le blindage (2\n                                pts).",
      "pieds": [
       {
        "ton": "ruby",
@@ -601,7 +601,7 @@
      "titre": "<span>Souffle de Braise</span>\n                                <span class=\"pill-badge ruby\">6 PA // Action Principale</span>",
      "top": false,
      "monde": "Magie Offensive // Attribut : Magie",
-     "corps_html": "<em>« Tu craches un cône de flammes qui lèchent tout le rang d'en face.\n                                    »</em><br><br>\n                                Fais ton épreuve normalement. Si tu réussis, tu infliges <strong>+2 Dégâts</strong>\n                                (1 pt) de <strong>teinte feu</strong> (1 pt, <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Résistances : certaines espèces ignorent ou subissent plus selon le type (§23.4).\">gare aux résistances</a>)\n                                sur <strong>1 case de rayon de plus</strong> (4 pts).",
+     "corps_html": "<em>« Tu craches un cône de flammes qui lèchent tout le rang d'en face.\n                                    »</em><br><br>\n                                Fais ton épreuve normalement. Si tu réussis, tu infliges <strong>+2 Dégâts</strong>\n                                (1 pt) de <strong>teinte feu</strong> (1 pt, <a class=\"rule-ref\" href=\"livre_6.html#chap-24\" data-tip=\"Résistances : certaines espèces ignorent ou subissent plus selon le type (§24.4).\">gare aux résistances</a>)\n                                sur <strong>1 case de rayon de plus</strong> (4 pts).",
      "pieds": [
       {
        "ton": "ruby",
@@ -684,7 +684,7 @@
      "<strong>Barricade de Racines</strong>",
      "Magie Primale (MAG, INT)",
      "Défensif, Utilitaire",
-     "Tu fais jaillir un <a class=\"rule-ref\" href=\"livre_5.html#chap-21-3\"\n                                            data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§21.3).\">Couvert\n                                            3/4</a> sur un hexagone à 4 cases. Instantané."
+     "Tu fais jaillir un <a class=\"rule-ref\" href=\"livre_5.html#chap-22-3\"\n                                            data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§22.3).\">Couvert\n                                            3/4</a> sur un hexagone à 4 cases. Instantané."
     ],
     [
      {
@@ -717,7 +717,7 @@
      "<strong>Vignes Constrictrices</strong>",
      "Magie Primale (MAG, INT)",
      "Offensif, Utilitaire",
-     "À 4 cases, ta cible est <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Immobilisé : impossible de faire la moindre action de mouvement (§24.1).\">Immobilisée</a>."
+     "À 4 cases, ta cible est <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Immobilisé : impossible de faire la moindre action de mouvement (§25.1).\">Immobilisée</a>."
     ],
     [
      {
@@ -726,7 +726,7 @@
      },
      "Magie Primale (MAG, INT)",
      "Offensif",
-     "En plus d'Immobilisé, ta cible subit <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-1bis\"\n                                            data-tip=\"Asphyxie : PV + drain de 1 PA par tour. Soin : désobstruction (premiers soins + kit).\">Asphyxie</a>\n                                        : elle perd aussi 1 PA par tour."
+     "En plus d'Immobilisé, ta cible subit <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-25-1bis\"\n                                            data-tip=\"Asphyxie : PV + drain de 1 PA par tour. Soin : désobstruction (premiers soins + kit).\">Asphyxie</a>\n                                        : elle perd aussi 1 PA par tour."
     ],
     [
      {
@@ -744,13 +744,13 @@
      },
      "Magie Primale (MAG, INT)",
      "Offensif",
-     "Ta cible entravée devient <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Paralysé : aucune action ni réaction, incapacité totale (§24.1).\">Paralysée</a>\n                                        et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1bis\"\n                                            data-tip=\"Empoisonné : PV directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonnée</a>\n                                        en continu."
+     "Ta cible entravée devient <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Paralysé : aucune action ni réaction, incapacité totale (§25.1).\">Paralysée</a>\n                                        et <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1bis\"\n                                            data-tip=\"Empoisonné : PV directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonnée</a>\n                                        en continu."
     ],
     [
      "<strong>Catalyse Tissulaire</strong>",
      "Magie Primale (MAG, INT)",
      "Utilitaire",
-     "Tu touches un allié adjacent : il récupère 5 PV et tu dissipes <a\n                                            class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).\">Déstabilisé</a>\n                                        et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Étourdi : −1 ec sur tous les jets.\">Étourdi</a>."
+     "Tu touches un allié adjacent : il récupère 5 PV et tu dissipes <a\n                                            class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).\">Déstabilisé</a>\n                                        et <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Étourdi : −1 ec sur tous les jets.\">Étourdi</a>."
     ],
     [
      {
@@ -759,7 +759,7 @@
      },
      "Magie Primale (MAG, INT)",
      "Utilitaire",
-     "Tu soignes 10 PV au lieu de 5 et tu purges aussi le <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-1bis\"\n                                            data-tip=\"Saignement : PV directs en début de tour, puis −1/tour. Tout soin le stoppe (§24.1bis).\">Saignement</a>."
+     "Tu soignes 10 PV au lieu de 5 et tu purges aussi le <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-25-1bis\"\n                                            data-tip=\"Saignement : PV directs en début de tour, puis −1/tour. Tout soin le stoppe (§25.1bis).\">Saignement</a>."
     ],
     [
      {
@@ -777,13 +777,13 @@
      },
      "Magie Primale (MAG, INT)",
      "Utilitaire",
-     "Tu relèves un allié tombé au contact : il revient avec la moitié de ses PV\n                                        max (<a class=\"rule-ref\" href=\"livre_6.html#chap-25\"\n                                            data-tip=\"Résurrection : ramener un allié tombé suit la règle du §25, avec un prix (Livre VI).\">règle\n                                            de résurrection</a>)."
+     "Tu relèves un allié tombé au contact : il revient avec la moitié de ses PV\n                                        max (<a class=\"rule-ref\" href=\"livre_6.html#chap-26\"\n                                            data-tip=\"Résurrection : ramener un allié tombé suit la règle du §26, avec un prix (Livre VI).\">règle\n                                            de résurrection</a>)."
     ],
     [
      "<strong>Champ de Ronces</strong>",
      "Magie Primale (MAG, INT)",
      "Offensif, Utilitaire",
-     "Zone d'1 case de rayon : <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Ralenti : toute action coûte le double de PA.\">Ralenti</a> et 3\n                                        dégâts par case franchie."
+     "Zone d'1 case de rayon : <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Ralenti : toute action coûte le double de PA.\">Ralenti</a> et 3\n                                        dégâts par case franchie."
     ],
     [
      {
@@ -792,7 +792,7 @@
      },
      "Magie Primale (MAG, INT)",
      "Offensif",
-     "Zone de 2 cases : <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1bis\"\n                                            data-tip=\"Empoisonné : PV directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonné</a>\n                                        et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Ralenti : toute action coûte le double de PA.\">Ralenti</a>."
+     "Zone de 2 cases : <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1bis\"\n                                            data-tip=\"Empoisonné : PV directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonné</a>\n                                        et <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Ralenti : toute action coûte le double de PA.\">Ralenti</a>."
     ],
     [
      {
@@ -831,7 +831,7 @@
      "<strong>Incinération Pyrocinétique</strong>",
      "Magie Élémentale (MAG, INT)",
      "Offensif",
-     "Tu projettes un jet de flammes : 6 dégâts de brûlure et l'état <a\n                                            class=\"rule-ref\" href=\"livre_6.html#sec-24-1bis\"\n                                            data-tip=\"En Feu : 2 PV/tour (bouclier d'abord), puis −1/tour. Il faut l'éteindre (§24.1bis).\">En\n                                            Feu</a>."
+     "Tu projettes un jet de flammes : 6 dégâts de brûlure et l'état <a\n                                            class=\"rule-ref\" href=\"livre_6.html#sec-25-1bis\"\n                                            data-tip=\"En Feu : 2 PV/tour (bouclier d'abord), puis −1/tour. Il faut l'éteindre (§25.1bis).\">En\n                                            Feu</a>."
     ],
     [
      {
@@ -858,7 +858,7 @@
      },
      "Magie Élémentale (MAG, INT)",
      "Offensif",
-     "Tu exploses : 12 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\"\n                                            data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">dégâts\n                                            absolus</a> dans un rayon de 2 cases."
+     "Tu exploses : 12 <a class=\"rule-ref\" href=\"livre_6.html#chap-24\"\n                                            data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).\">dégâts\n                                            absolus</a> dans un rayon de 2 cases."
     ],
     [
      "<strong>Aéromancie</strong>",
@@ -873,7 +873,7 @@
      },
      "Magie Élémentale (MAG, INT)",
      "Offensif",
-     "Ta rafale inflige 4 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\"\n                                            data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">dégâts\n                                            Absolus</a> et ignore le couvert partiel."
+     "Ta rafale inflige 4 <a class=\"rule-ref\" href=\"livre_6.html#chap-24\"\n                                            data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).\">dégâts\n                                            Absolus</a> et ignore le couvert partiel."
     ],
     [
      {
@@ -891,13 +891,13 @@
      },
      "Magie Élémentale (MAG, INT)",
      "Offensif",
-     "Zone de 2 cases de rayon : 8 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\"\n                                            data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">dégâts\n                                            Absolus</a> et cibles <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À\n                                            Terre</a>."
+     "Zone de 2 cases de rayon : 8 <a class=\"rule-ref\" href=\"livre_6.html#chap-24\"\n                                            data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).\">dégâts\n                                            Absolus</a> et cibles <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À\n                                            Terre</a>."
     ],
     [
      "<strong>Hydromancie</strong>",
      "Magie Élémentale (MAG, INT)",
      "Offensif, Utilitaire",
-     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\"\n                                            data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2\n                                            PA</a> : jet à 4 cases — 3 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\"\n                                            data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">dégâts\n                                            Absolus</a> et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Ralenti : toute action coûte le double de PA.\">Ralenti</a> pendant\n                                        1 tour."
+     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\"\n                                            data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2\n                                            PA</a> : jet à 4 cases — 3 <a class=\"rule-ref\" href=\"livre_6.html#chap-24\"\n                                            data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).\">dégâts\n                                            Absolus</a> et <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Ralenti : toute action coûte le double de PA.\">Ralenti</a> pendant\n                                        1 tour."
     ],
     [
      {
@@ -906,7 +906,7 @@
      },
      "Magie Élémentale (MAG, INT)",
      "Offensif, Utilitaire",
-     "Cible à 4 cases : <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Immobilisé : impossible de faire la moindre action de mouvement (§24.1).\">Immobilisée</a>\n                                        pendant 1 tour (Delta ≥ 2 requis contre PJ/PNJ majeur)."
+     "Cible à 4 cases : <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Immobilisé : impossible de faire la moindre action de mouvement (§25.1).\">Immobilisée</a>\n                                        pendant 1 tour (Delta ≥ 2 requis contre PJ/PNJ majeur)."
     ],
     [
      {
@@ -924,13 +924,13 @@
      },
      "Magie Élémentale (MAG, INT)",
      "Offensif",
-     "Ligne de 3 cases : 8 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\"\n                                            data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">dégâts\n                                            Absolus</a> et cibles <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À\n                                            Terre</a>."
+     "Ligne de 3 cases : 8 <a class=\"rule-ref\" href=\"livre_6.html#chap-24\"\n                                            data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).\">dégâts\n                                            Absolus</a> et cibles <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À\n                                            Terre</a>."
     ],
     [
      "<strong>Géomancie</strong>",
      "Magie Élémentale (MAG, INT)",
      "Offensif, Utilitaire",
-     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\"\n                                            data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2\n                                            PA</a> : secousse à 4 cases — <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).\">Déstabilisé</a>\n                                        pendant 1 tour."
+     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\"\n                                            data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2\n                                            PA</a> : secousse à 4 cases — <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).\">Déstabilisé</a>\n                                        pendant 1 tour."
     ],
     [
      {
@@ -939,7 +939,7 @@
      },
      "Magie Élémentale (MAG, INT)",
      "Offensif",
-     "Cible à 2 cases : 4 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\"\n                                            data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">dégâts\n                                            Absolus</a> et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À\n                                            Terre</a> sur Delta ≥ 2."
+     "Cible à 2 cases : 4 <a class=\"rule-ref\" href=\"livre_6.html#chap-24\"\n                                            data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).\">dégâts\n                                            Absolus</a> et <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À\n                                            Terre</a> sur Delta ≥ 2."
     ],
     [
      {
@@ -957,7 +957,7 @@
      },
      "Magie Élémentale (MAG, INT)",
      "Offensif, Utilitaire",
-     "Zone de 2 cases de rayon : 8 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\"\n                                            data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">dégâts\n                                            Absolus</a>, cibles <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À\n                                            Terre</a>, terrain difficile pendant 2 tours."
+     "Zone de 2 cases de rayon : 8 <a class=\"rule-ref\" href=\"livre_6.html#chap-24\"\n                                            data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).\">dégâts\n                                            Absolus</a>, cibles <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À\n                                            Terre</a>, terrain difficile pendant 2 tours."
     ],
     [
      "<strong>Télékinésie</strong>",
@@ -990,7 +990,7 @@
      },
      "Magie de l'Esprit (MAG, INT)",
      "Offensif, Utilitaire",
-     "Tu ouvres un puits de gravité : il attire tous les ennemis dans un rayon de\n                                        3 cases et les projette <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À\n                                            Terre</a>."
+     "Tu ouvres un puits de gravité : il attire tous les ennemis dans un rayon de\n                                        3 cases et les projette <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À\n                                            Terre</a>."
     ],
     [
      "<strong>Télépathie</strong>",
@@ -1005,7 +1005,7 @@
      },
      "Magie de l'Esprit (MAG, INT)",
      "Utilitaire",
-     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\"\n                                            data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2\n                                            PA</a> : tu purges <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).\">Déstabilisé</a>\n                                        d'un allié à 3 cases et tu lui rends 1 PA."
+     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\"\n                                            data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2\n                                            PA</a> : tu purges <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).\">Déstabilisé</a>\n                                        d'un allié à 3 cases et tu lui rends 1 PA."
     ],
     [
      {
@@ -1047,7 +1047,7 @@
      },
      "Magie de l'Esprit (MAG, INT)",
      "Défensif",
-     "En cas d'<a class=\"rule-ref\" href=\"livre_5.html#chap-21-4\"\n                                            data-tip=\"Embuscade : sans Vigilance, pas de réaction défensive. Détection au brouillard (§21.4).\">embuscade</a>,\n                                        tu gardes une réaction défensive à -1 au lieu d'aucune."
+     "En cas d'<a class=\"rule-ref\" href=\"livre_5.html#chap-22-4\"\n                                            data-tip=\"Embuscade : sans Vigilance, pas de réaction défensive. Détection au brouillard (§22.4).\">embuscade</a>,\n                                        tu gardes une réaction défensive à -1 au lieu d'aucune."
     ],
     [
      {

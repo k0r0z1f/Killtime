@@ -6,25 +6,13 @@ livre: 6
 
 
                     <p>
-                        Face aux traumatismes du champ de bataille, la médecine d'urgence repose sur la compétence
-                        <strong>Premiers Soins</strong> (liée à l'Érudition ou à l'Intelligence).
+                        Les états modifient profondément ta capacité d'action. Et ils sont tous
+                        cumulatifs : un état n'en chasse pas un autre, leurs effets s'additionnent.
+                        Exemple : si tu es Déstabilisé (−2) et Étourdi (−1), ton prochain jet prend
+                        −3. Ils sont rangés en quatre familles : <strong>états préjudiciables</strong>,
+                        <strong>états bénéfiques (buffs)</strong>, <strong>statuts vitaux</strong> et
+                        <strong>états matériels</strong>.
                     </p>
 
-                    <h3>25.1 Protocole de Premiers Soins d'Urgence</h3>
-                    <ul>
-                        <li><strong>Temps d'Action :</strong> Réaliser des premiers soins en combat nécessite <strong>3
-                                PA</strong> d'immobilisation au chevet du blessé.</li>
-                        <li><strong>Stabiliser un Agonisant :</strong> Une réussite sur une épreuve de Premiers Soins
-                            (Difficulté 12) stoppe l'hémorragie et ramène un <a class="rule-ref" href="#sec-24-1" data-tip="Agonisant : aucune action raisonnée, fuite de 6 cases (1d8). Persiste jusqu’à stabilisation médicale.">agonisant</a> à l'état <a class="rule-ref" href="#sec-24-3" data-tip="Inconscient : aucune action ni réaction. Réveil par secousse vigoureuse (1 PA) ou premiers soins.">Inconscient stable</a>.</li>
-                        <li><strong>Levée de l'État Souffrant :</strong> Pour refermer une blessure critique, le médecin
-                            doit obtenir un score suffisant pour soigner en une seule fois une quantité de dégâts égale
-                            ou supérieure à <strong><span class="hl-ruby">Constitution &times; 2</span></strong> de la
-                            victime.</li>
-                    </ul>
-
-                    <h3>25.2 Convalescence Naturelle vs Soins Arcaniques</h3>
-                    <p>
-                        Le repos physiologique permet au corps de réparer ses tissus selon un rythme biologique régulier
-                        :
-                    </p>
+                    <h3 id="sec-25-1">25.1 États Préjudiciables & Afflictions en Combat</h3>
                     

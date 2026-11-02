@@ -5,5 +5,5 @@ livre: 8
 ---
 
 
-                    <h3>33.2 Champs de Force Personnels & Combinaisons Spatiales</h3>
+                    <h3>33.2 Fusils Laser & L'Arsenal à Distance</h3>
                     

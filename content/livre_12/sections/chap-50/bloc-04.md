@@ -5,5 +5,7 @@ livre: 12
 ---
 
 
-                    <!-- FICHE BANDIT 3 -->
+                    <hr class="doc-divider">
+
+                    <!-- ================= CHAPITRE 44 ================= -->
                     

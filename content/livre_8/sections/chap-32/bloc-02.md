@@ -5,5 +5,5 @@ livre: 8
 ---
 
 
-                    <h3>32.2 Fusils Laser & L'Arsenal à Distance</h3>
+                    <h3>32.1 Épées & Armes de Poing en Métal</h3>
                     

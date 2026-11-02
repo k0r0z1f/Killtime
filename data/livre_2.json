@@ -215,8 +215,8 @@
  "critiques": [
   {
    "resultat": "1",
-   "offensif_html": "La cible tombe <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">à terre</a>",
-   "defensif_html": "L’attaquant tombe <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">à terre</a>",
+   "offensif_html": "La cible tombe <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">à terre</a>",
+   "defensif_html": "L’attaquant tombe <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">à terre</a>",
    "social_html": "Interlocuteur déstabilisé",
    "utilitaire_html": "Tâche accomplie sans bruit"
   },
@@ -250,8 +250,8 @@
   },
   {
    "resultat": "6",
-   "offensif_html": "<strong><a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"Étourdi : −1 ec sur tous les jets.\">Cible étourdie</a></strong> (-1 EC) jusqu’à la fin de son prochain tour.",
-   "defensif_html": "<a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"Étourdi : −1 ec sur tous les jets.\">Attaquant étourdi</a> (-1 EC) jusqu’à la fin de son prochain tour.",
+   "offensif_html": "<strong><a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\" data-tip=\"Étourdi : −1 ec sur tous les jets.\">Cible étourdie</a></strong> (-1 EC) jusqu’à la fin de son prochain tour.",
+   "defensif_html": "<a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\" data-tip=\"Étourdi : −1 ec sur tous les jets.\">Attaquant étourdi</a> (-1 EC) jusqu’à la fin de son prochain tour.",
    "social_html": "Interlocuteur sidéré",
    "utilitaire_html": "Découverte inattendue"
   },
@@ -271,15 +271,15 @@
   },
   {
    "resultat": "10",
-   "offensif_html": "<strong><a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).\">Cible déstabilisée</a></strong> (-2 EC) jusqu’à la fin de son prochain tour.",
-   "defensif_html": "<a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).\">Attaquant déstabilisé</a> jusqu’à la fin de son prochain tour.",
+   "offensif_html": "<strong><a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\" data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).\">Cible déstabilisée</a></strong> (-2 EC) jusqu’à la fin de son prochain tour.",
+   "defensif_html": "<a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\" data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).\">Attaquant déstabilisé</a> jusqu’à la fin de son prochain tour.",
    "social_html": "Opposition neutralisée",
    "utilitaire_html": "Ralentissement temporel<br><em>Durée : 1 à 5 tours.</em>"
   },
   {
    "resultat": "12",
-   "offensif_html": "<strong><a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"Ralenti : toute action coûte le double de PA.\">Cible ralentie</a></strong> (PA doublés) jusqu’à la fin de son prochain tour.",
-   "defensif_html": "<a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"Ralenti : toute action coûte le double de PA.\">Attaquant ralenti</a> jusqu’à la fin de son prochain tour.",
+   "offensif_html": "<strong><a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\" data-tip=\"Ralenti : toute action coûte le double de PA.\">Cible ralentie</a></strong> (PA doublés) jusqu’à la fin de son prochain tour.",
+   "defensif_html": "<a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\" data-tip=\"Ralenti : toute action coûte le double de PA.\">Attaquant ralenti</a> jusqu’à la fin de son prochain tour.",
    "social_html": "Effondrement de l'argument",
    "utilitaire_html": "Composant réparé/sauvé"
   },
@@ -292,15 +292,15 @@
   },
   {
    "resultat": "20",
-   "offensif_html": "<strong><a class=\"rule-ref\" href=\"livre_6.html#sec-24-1bis\" data-tip=\"Dégâts Résiduels : PV directs qui baissent de 1 par tour. Seul un soin les stoppe (§24.1bis).\">3 Dégâts Résiduels</a></strong>",
-   "defensif_html": "Contre-attaque automatique : riposte après résolution de l’attaque en cours, équivalente à une <a class=\"rule-ref\" href=\"livre_5.html#sec-20-4\" data-tip=\"Frappe d’opportunité : frappe réflexe gratuite (0 PA) en Face-à-Face auto, mises à 0 (§20.4).\">frappe d’opportunité</a> (0 PA), sans consommer ta réaction du round.",
+   "offensif_html": "<strong><a class=\"rule-ref\" href=\"livre_6.html#sec-25-1bis\" data-tip=\"Dégâts Résiduels : PV directs qui baissent de 1 par tour. Seul un soin les stoppe (§25.1bis).\">3 Dégâts Résiduels</a></strong>",
+   "defensif_html": "Contre-attaque automatique : riposte après résolution de l’attaque en cours, équivalente à une <a class=\"rule-ref\" href=\"livre_5.html#sec-21-4\" data-tip=\"Frappe d’opportunité : frappe réflexe gratuite (0 PA) en Face-à-Face auto, mises à 0 (§21.4).\">frappe d’opportunité</a> (0 PA), sans consommer ta réaction du round.",
    "social_html": "Ralliement inconditionnel",
    "utilitaire_html": "Survoltage arcanique total"
   },
   {
    "resultat": "24",
-   "offensif_html": "<span class=\"pill-badge ruby\"><a class=\"rule-ref\" href=\"livre_6.html#sec-24-3\" data-tip=\"Inconscient : aucune action ni réaction. Réveil par secousse vigoureuse (1 PA) ou premiers soins.\">Cible Inconsciente</a></span> jusqu’à la fin de son prochain tour.",
-   "defensif_html": "<span class=\"pill-badge ruby\"><a class=\"rule-ref\" href=\"livre_6.html#sec-24-3\" data-tip=\"Inconscient : aucune action ni réaction. Réveil par secousse vigoureuse (1 PA) ou premiers soins.\">Attaquant inconscient</a></span> jusqu’à la fin de son prochain tour.",
+   "offensif_html": "<span class=\"pill-badge ruby\"><a class=\"rule-ref\" href=\"livre_6.html#sec-25-3\" data-tip=\"Inconscient : aucune action ni réaction. Réveil par secousse vigoureuse (1 PA) ou premiers soins.\">Cible Inconsciente</a></span> jusqu’à la fin de son prochain tour.",
+   "defensif_html": "<span class=\"pill-badge ruby\"><a class=\"rule-ref\" href=\"livre_6.html#sec-25-3\" data-tip=\"Inconscient : aucune action ni réaction. Réveil par secousse vigoureuse (1 PA) ou premiers soins.\">Attaquant inconscient</a></span> jusqu’à la fin de son prochain tour.",
    "social_html": "Soumission absolue",
    "utilitaire_html": "Succès mirifique critique"
   }
@@ -753,7 +753,7 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <h3>7.3 Résoudre un Face-à-Face : L'Épreuve Opposée</h3>\n                    <p>\n                        Sur le champ de bataille ou dans un bras de fer tendu, on n'agit pas contre une cible immobile : l'adversaire réagit !\n                        Un jet d'attaque oppose donc la compétence offensive de l'attaquant (<em>Maniement d'Arme</em>, <em>Balistique</em>, <em>Mains Nues</em>)\n                        à la compétence défensive choisie par la cible (<em>Esquive</em> ou <em>Défense Corporelle / Parade</em>).\n                        <strong>La cible peut aussi choisir de ne pas se défendre</strong> : dans ce cas, elle ne jette aucun dé, ne dépense aucun PA, et sa défense est considérée comme nulle (score de 0). Ne pas se défendre ne veut pas dire encaisser à nu : son armure absorbe toujours sa part des dégâts avant toute comparaison avec son <a class=\"rule-ref\" href=\"livre_6.html#sec-23-2\" data-tip=\"Encaissement = CON × 2 : seuil comparé aux dégâts du coup (§23.2).\">Encaissement</a>.\n                    </p>\n                    <p>\n                        <strong>La procédure du Face-à-Face (simple et pleine de tension) :</strong>\n                        Pour préserver le suspense et la tactique, les deux protagonistes déclarent leurs intentions et leurs mises de PA en secret avant de révéler leurs résultats simultanément.\n                    </p>\n                    <ol>\n                        <li><strong>L'attaquant annonce son assaut :</strong> il désigne sa cible, déclare la compétence utilisée et choisit secrètement les PA d'effort qu'il investit (+1 par PA, dans la limite de sa Constitution). <em>Exemple : Mains Nues avec 2 entraînements et FOR 5 = dé 1d10, mise cachée de 2 PA.</em> Le dé est lancé face cachée jusqu'à la résolution.</li>\n                        <li><strong>Le défenseur réagit en secret :</strong> sans connaître la mise de l'attaquant, il annonce comment il réagit (Esquive ou Parade) et engage secrètement ses propres PA d'effort (+1 par PA). <em>Exemple : Esquive avec 1 entraînement et AGI 5 = dé 1d8, mise cachée de 1 PA.</em></li>\n                        <li><strong>Révélation simultanée & Différentiel Net :</strong> les deux dés sont découverts en même temps, et chacun ajoute ses PA d'effort et ses malus éventuels (pas de bonus de caractéristique !). On soustrait le total du défenseur de celui de l'attaquant pour obtenir le <strong>Différentiel Net</strong> :</li>\n                    </ol>\n                    <ul>\n                        <li><strong>Différentiel inférieur à 0 :</strong> Échec de l'attaque. Le coup est totalement esquivé ou dévié par le bouclier/l'arme.</li>\n                        <li><strong>Différentiel égal à 0 :</strong> Touche superficielle ! Le coup effleure la cible sans pénétration franche : les dégâts sont ignorés, mais les effets spéciaux du coup peuvent encore s'appliquer.</li>\n                        <li><strong>Différentiel supérieur à 0 :</strong> Touche franche ! L'attaque porte de plein fouet : elle inflige ses dégâts de base augmentés du différentiel net, avant comparaison avec l'armure et l'Encaissement de la cible.</li>\n                    </ul>\n\n                    <!-- ================= CHAPITRE 8 ================= -->\n                    "
+     "html": "\n\n                    <h3>7.3 Résoudre un Face-à-Face : L'Épreuve Opposée</h3>\n                    <p>\n                        Sur le champ de bataille ou dans un bras de fer tendu, on n'agit pas contre une cible immobile : l'adversaire réagit !\n                        Un jet d'attaque oppose donc la compétence offensive de l'attaquant (<em>Maniement d'Arme</em>, <em>Balistique</em>, <em>Mains Nues</em>)\n                        à la compétence défensive choisie par la cible (<em>Esquive</em> ou <em>Défense Corporelle / Parade</em>).\n                        <strong>La cible peut aussi choisir de ne pas se défendre</strong> : dans ce cas, elle ne jette aucun dé, ne dépense aucun PA, et sa défense est considérée comme nulle (score de 0). Ne pas se défendre ne veut pas dire encaisser à nu : son armure absorbe toujours sa part des dégâts avant toute comparaison avec son <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\" data-tip=\"Encaissement = CON × 2 : seuil comparé aux dégâts du coup (§24.2).\">Encaissement</a>.\n                    </p>\n                    <p>\n                        <strong>La procédure du Face-à-Face (simple et pleine de tension) :</strong>\n                        Pour préserver le suspense et la tactique, les deux protagonistes déclarent leurs intentions et leurs mises de PA en secret avant de révéler leurs résultats simultanément.\n                    </p>\n                    <ol>\n                        <li><strong>L'attaquant annonce son assaut :</strong> il désigne sa cible, déclare la compétence utilisée et choisit secrètement les PA d'effort qu'il investit (+1 par PA, dans la limite de sa Constitution). <em>Exemple : Mains Nues avec 2 entraînements et FOR 5 = dé 1d10, mise cachée de 2 PA.</em> Le dé est lancé face cachée jusqu'à la résolution.</li>\n                        <li><strong>Le défenseur réagit en secret :</strong> sans connaître la mise de l'attaquant, il annonce comment il réagit (Esquive ou Parade) et engage secrètement ses propres PA d'effort (+1 par PA). <em>Exemple : Esquive avec 1 entraînement et AGI 5 = dé 1d8, mise cachée de 1 PA.</em></li>\n                        <li><strong>Révélation simultanée & Différentiel Net :</strong> les deux dés sont découverts en même temps, et chacun ajoute ses PA d'effort et ses malus éventuels (pas de bonus de caractéristique !). On soustrait le total du défenseur de celui de l'attaquant pour obtenir le <strong>Différentiel Net</strong> :</li>\n                    </ol>\n                    <ul>\n                        <li><strong>Différentiel inférieur à 0 :</strong> Échec de l'attaque. Le coup est totalement esquivé ou dévié par le bouclier/l'arme.</li>\n                        <li><strong>Différentiel égal à 0 :</strong> Touche superficielle ! Le coup effleure la cible sans pénétration franche : les dégâts sont ignorés, mais les effets spéciaux du coup peuvent encore s'appliquer.</li>\n                        <li><strong>Différentiel supérieur à 0 :</strong> Touche franche ! L'attaque porte de plein fouet : elle inflige ses dégâts de base augmentés du différentiel net, avant comparaison avec l'armure et l'Encaissement de la cible.</li>\n                    </ul>\n\n                    <!-- ================= CHAPITRE 8 ================= -->\n                    "
     }
    ]
   },
