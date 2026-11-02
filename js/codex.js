@@ -237,24 +237,23 @@ window.bindCodexTips = bindCodexTips;
 document.addEventListener('DOMContentLoaded', () => {
     bindCodexTips(document);
 });
-document.addEventListener('DOMContentLoaded', () => {
-    // Boutons déclaratifs : ouvrent l'URL dans une fenêtre détachée centrée.
-    document.querySelectorAll('[data-popout]').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            e.preventDefault();
-            const url = btn.getAttribute('data-popout');
-            if (!url) return;
-            const w = 1180, h = 940;
-            const left = Math.max(0, (window.screenX || 0) + ((window.outerWidth || w) - w) / 2);
-            const top = Math.max(0, (window.screenY || 0) + ((window.outerHeight || h) - h) / 2);
-            const features = 'width=' + w + ',height=' + h + ',left=' + Math.round(left) + ',top=' + Math.round(top) +
-                ',resizable=yes,scrollbars=yes,menubar=no,toolbar=no,location=no,status=no';
-            const win = window.open(url, 'codex_popout_fiche', features);
-            if (win) {
-                try { win.focus(); } catch (err) { /* ignore */ }
-            } else {
-                window.open(url, '_blank'); // bloqueur de popups : repli nouvel onglet
-            }
-        });
-    });
+document.addEventListener('click', (e) => {
+    // Délégation (pas de binding figé au chargement) : les boutons vivent
+    // dans du contenu rendu dynamiquement (livre_*.html squelettisés).
+    const btn = e.target && e.target.closest ? e.target.closest('[data-popout]') : null;
+    if (!btn || btn.disabled) return;
+    e.preventDefault();
+    const url = btn.getAttribute('data-popout');
+    if (!url) return;
+    const w = 1180, h = 940;
+    const left = Math.max(0, (window.screenX || 0) + ((window.outerWidth || w) - w) / 2);
+    const top = Math.max(0, (window.screenY || 0) + ((window.outerHeight || h) - h) / 2);
+    const features = 'width=' + w + ',height=' + h + ',left=' + Math.round(left) + ',top=' + Math.round(top) +
+        ',resizable=yes,scrollbars=yes,menubar=no,toolbar=no,location=no,status=no';
+    const win = window.open(url, 'codex_popout_fiche', features);
+    if (win) {
+        try { win.focus(); } catch (err) { /* ignore */ }
+    } else {
+        window.open(url, '_blank'); // bloqueur de popups : repli nouvel onglet
+    }
 });

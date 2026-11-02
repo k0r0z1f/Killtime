@@ -1927,6 +1927,21 @@
      "scale": null,
      "suggestedAsset": "index.html#preface",
      "details": "Étendre la préface (index.html#preface) avec une section d'accueil : c'est quoi le roleplay autour d'une table (MJ + joueurs, parler en personnage, jets pour trancher le doute), les types de jeu (enquête / social / exploration / combat tactique), et à quoi ressemble un tour en combat (10s, PA à dépenser : bouger / frapper / se protéger / préparer). Ton MJ accueillant (phrases courtes, 2e personne, exemples concrets, modèle = préface 2026-10-29) ; mécaniques strictement intactes ; liens + ancres OK. DONE = section lisible par un débutant total, relue, sans résidu jargon."
+    },
+    {
+     "id": "RP-129",
+     "title": "Fenêtre détachée fiche PJ : délégation du clic (codex.js)",
+     "epic": "Outillage — Navigation Codex",
+     "status": "done",
+     "priority": "high",
+     "order": 128,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "js/codex.js",
+     "details": "FAIT 2026-11-02 — le binding [data-popout] au DOMContentLoaded ratait les boutons rendus en dynamique (livre_1.html squelettisé, RP-086) : remplacé par une délégation document.click (closest, garde disabled/sans-closest, repli _blank si bloqueur). Vérifié harnais DOM simulé (ouverture ×1, hors-bouton rien, bloqueur, sans-closest) + node --check. Fichiers : js/codex.js."
     }
    ]
   }
