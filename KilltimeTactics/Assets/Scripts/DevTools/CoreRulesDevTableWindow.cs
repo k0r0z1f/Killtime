@@ -166,7 +166,7 @@ namespace Killtime.UI
             GUILayout.EndVertical();
 
             GUILayout.Space(8);
-            GUILayout.Label("<b>1b. Couvert & Visibilité (Livre V §21.3) :</b>");
+            GUILayout.Label("<b>1b. Couvert & Visibilité (Livre V §22.3) :</b>");
             GUILayout.BeginVertical(GUI.skin.box);
             cfg.HalfCoverAttackPenalty = DrawIntSlider("Malus attaque : moitié visible", cfg.HalfCoverAttackPenalty, -6, 0);
             cfg.ThreeQuartersCoverAttackPenalty = DrawIntSlider("Malus attaque : 3/4 couvert", cfg.ThreeQuartersCoverAttackPenalty, -6, 0);

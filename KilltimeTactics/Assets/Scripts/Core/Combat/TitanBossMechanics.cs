@@ -29,7 +29,7 @@ namespace Killtime.Core.Combat
     }
 
     /// <summary>
-    /// Mécaniques pures des Boss Titans (Livre XII §49-50 — RD-087).
+    /// Mécaniques pures des Boss Titans (Livre XII §50-51 — RD-087).
     /// Aucune dépendance Unity/MonoBehaviour : 100% testable en EditMode.
     /// Les noms de spécialisations recopient à l'identique TitanBossCatalog.
     /// </summary>

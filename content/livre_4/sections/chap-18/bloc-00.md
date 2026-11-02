@@ -5,18 +5,10 @@ livre: 4
 ---
 
 
-                    <p class="lead">
-                        Tes pouvoirs de l'esprit grandissent avec toi. Au début, tu captes juste ce qui traîne
-                        en surface. Plus tu t'entraînes, plus tu vas loin. Jusqu'à déplacer la matière ou
-                        prendre les commandes. Voici le chemin, palier par palier.
+                    <p>
+                        Pour lancer un sort toi-même, il te faut une chose : l'attribut <strong>Magie
+                            (MAG)</strong>. Ensuite tu choisis ton canal. Il y en a trois familles.
+                        Choisis celle qui ressemble à ton perso, et lance-toi :
                     </p>
 
-                    <!-- LES 6 STADES DE LA TÉLÉPATHIE -->
-                    <h3 id="sec-18-1">18.1 Télépathie : Les 6 Stades Neuronaux</h3>
-                    <p>
-                        Lis le tableau comme une <a class="rule-ref" href="livre_1.html#chap-5"
-                            data-tip="Progression : 1 réussite = 1 case. Piste pleine = +1 XP lié, piste à zéro (§5.1-5.2).">progression</a>.
-                        Tu commences en haut, tu débloques vers le bas.
-                        Chaque stade garde ce que le précédent savait faire.
-                    </p>
                     

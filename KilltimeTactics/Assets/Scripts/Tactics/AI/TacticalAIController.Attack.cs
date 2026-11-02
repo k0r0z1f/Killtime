@@ -300,7 +300,7 @@ namespace Killtime.Tactics.AI
         }
 
         // =========================================================================
-        // GRENADES TACTIQUES DE ZONE (LIVRE VIII §31.3)
+        // GRENADES TACTIQUES DE ZONE (LIVRE VIII §32.3)
         // =========================================================================
         private bool TryThrowGrenadeAI(TacticalUnit actor, TacticalPosture posture)
         {
@@ -362,7 +362,7 @@ namespace Killtime.Tactics.AI
 
                         int dThrow = actor.CurrentCoords.DistanceTo(enemy.CurrentCoords);
 
-                        // Brouillard symétrique (§21.4) : pas de grenade sur un ennemi
+                        // Brouillard symétrique (§22.4) : pas de grenade sur un ennemi
                         // invisible à 360° (sauf révélé au bruit / Observation).
                         if (_grid != null && actor.Stats != null && enemy.Stats != null)
                         {
@@ -539,7 +539,7 @@ namespace Killtime.Tactics.AI
         }
 
         /// <summary>
-        /// RD-201 (Livre V §22.2) : repli crosse / mains nues au contact
+        /// RD-201 (Livre V §23.2) : repli crosse / mains nues au contact
         /// entravé quand le tir est impossible (enrayé, chargeur vide sans
         /// réserve). Retourne faux si l'option ne s'applique pas (pas
         /// d'entrave, cible inconsciente, PA insuffisants, quota épuisé).

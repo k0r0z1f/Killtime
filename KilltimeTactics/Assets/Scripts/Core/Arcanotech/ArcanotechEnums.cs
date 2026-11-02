@@ -19,7 +19,7 @@ namespace Killtime.Core.Arcanotech
 
     public enum ArcanotechModuleId
     {
-        // Offensifs (Livre IV §19.2)
+        // Offensifs (Livre IV §20.2)
         Offensive_TestBonus,
         Offensive_DirectDamage,
         Offensive_DirectAbsoluteDamage,
@@ -36,7 +36,7 @@ namespace Killtime.Core.Arcanotech
         Offensive_Sonne,
         Offensive_ResidualDamage_Tier3,
 
-        // Défensifs & Utilitaires (Livre IV §19.2)
+        // Défensifs & Utilitaires (Livre IV §20.2)
         Defensive_TestBonus,
         Defensive_ResidualResistance,
         Utility_Rapide,

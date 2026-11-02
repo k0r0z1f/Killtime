@@ -17,13 +17,13 @@ using Killtime.Tactics.AI;
 namespace Killtime.Tactics.Arena
 {
     /// <summary>
-    /// Passe d'armes principale (ExecuteAttack, duel aveugle Livres II §7 + VI §20.1).
+    /// Passe d'armes principale (ExecuteAttack, duel aveugle Livres II §7 + VI §21.1).
     /// Split move-only : contenu verbatim depuis ArenaAttackService.cs.
     /// </summary>
     public sealed partial class ArenaAttackService
     {
         /// <summary>
-        /// Déclenche une passe d'armes ou tir ciblé selon le duel aveugle officiel (Livres II §7 + VI §20.1) :
+        /// Déclenche une passe d'armes ou tir ciblé selon le duel aveugle officiel (Livres II §7 + VI §21.1) :
         /// déclaration attaquant (mise PA/PE cachée) -> déclaration défenseur à l'aveugle
         /// -> révélation simultanée -> résolution normale. Conforme à l'Axiome Fondateur : résolution par compétence.
         /// defenderBonusAP &lt; 0 = défense réactive auto (besoin réel après révélation de l'attaque).
@@ -202,7 +202,7 @@ namespace Killtime.Tactics.Arena
                 return;
             }
 
-            // Livre V §21.3 — Couvert & Visibilité : la cible totalement à couvert
+            // Livre V §22.3 — Couvert & Visibilité : la cible totalement à couvert
             // (non visible pour l'attaquant) ne peut pas être attaquée directement.
             CoverType attackCover = _targeting.GetCoverToTarget(attacker, defender);
             if (attackCover == CoverType.Full)
@@ -244,7 +244,7 @@ namespace Killtime.Tactics.Arena
                 }
             }
 
-            // Duel aveugle Livres II §7 + VI §20.1 : les mises (PA bonus + PE) se déclarent
+            // Duel aveugle Livres II §7 + VI §21.1 : les mises (PA bonus + PE) se déclarent
             // AVANT les jets et restent cachées jusqu'à la révélation simultanée.
             // Bonus explicite (>= 0) : mise déclarée du défenseur (fenêtre paramétrage).
             // Bonus auto (< 0) : déclaration aveugle auto (estimation sans voir le jet adverse).
@@ -361,7 +361,7 @@ namespace Killtime.Tactics.Arena
                 {
                     effectiveWeaponDamage = equippedWeapon.BaseDamage;
                 }
-                // RD-201 (Livre V §22.2) : la crosse frappe au Maniement avec
+                // RD-201 (Livre V §23.2) : la crosse frappe au Maniement avec
                 // ses dégâts propres (3-4 bruts), jamais ceux de l'arme ; un
                 // coup à mains nues avec une arme longue en main frappe avec
                 // la base transmise (pas les dégâts du fusil).

@@ -8,7 +8,7 @@ using Killtime.Core.Dice;
 namespace Killtime.Tests
 {
     /// <summary>
-    /// RD-202 Préparation + Dégagement / GetAway (Livre V §20.3) :
+    /// RD-202 Préparation + Dégagement / GetAway (Livre V §21.3) :
     /// - Préparation (1 PA) : +2 au jet de l'action OU de la défense suivante,
     ///   one-shot consommée au jet suivant (attaque comme parade active).
     /// - Dégagement : action principale (attaque OU parade résolue) suivie

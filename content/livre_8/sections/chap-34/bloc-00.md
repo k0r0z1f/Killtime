@@ -1,15 +1,20 @@
 ---
+livre: 8
 cible: sections.chap-34.blocs.0.html
 format: raw
-livre: 8
 ---
 
 
                     <p>
-                        Pour survivre aux tirs laser et aux frappes énergétiques, la technologie offre trois lignes de
-                        protection complémentaires : armures légères flexibles, cuirasses lourdes motorisées et
-                        boucliers de diffraction arcanique.
+                        L'armement arcanotech et énergétique combine les principes de la Cinquième Force et la
+                        miniaturisation des circuits à résonance de nytharite.
                     </p>
 
-                    <h3>34.1 Armures Corporelles : Légères vs Lourdes</h3>
+                    <h3>34.1 Les Épées Laser de Confinement Plasma</h3>
+                    <p>
+                        Une épée laser projette un arc de plasma stabilisé par un champ magnétique compact. La lame
+                        tranche la matière solide en ignorant la résistance physique ordinaire et ne subit jamais
+                        d'usure ni d'émoussement.
+                    </p>
+
                     

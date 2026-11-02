@@ -5,5 +5,5 @@ livre: 12
 ---
 
 
-                    <!-- FICHE DEREKS -->
+                    <!-- FICHE BANDIT 2 -->
                     

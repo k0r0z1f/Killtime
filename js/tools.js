@@ -116,7 +116,7 @@ function initCharacterSheet() {
     const RACE_DATA = {
         humain: { label: 'Humain', sensMin: 3, magie: 'Impossible à Limitée', note: 'Polyvalent, sens min 3',
             gifts: ['Endurance Coloniale', 'Touche-à-tout', 'Instinct de Survie', 'Réseau Colonial', 'Sang-Froid'],
-            giftNotes: ['+1 Essoufflement max ; ignore les malus climatiques légers.', '+1 entraînement gratuit à la création (compétence non-magique).', '+2 Nature & Survie ; +1 Observation.', '+2 Communication (négocier, interroger) en zone civilisée ; 1 contact par station.', '1×/session : annule 1 Essoufflement ou ignore un échec de moral/peur.'] },
+            giftNotes: ['+1 Essoufflement max ; ignore le climat léger (Livre II §8.1).', '+1 entraînement gratuit à la création (compétence non-magique).', '+2 Nature & Survie ; +1 Observation.', '+2 Communication (négocier, interroger) en zone civilisée ; 1 contact par station.', '1×/session : annule 1 Essoufflement ou ignore un échec de moral/peur.'] },
         derek: { label: 'Derek', sensMin: 3, magie: 'Limitée', note: 'Robuste des profondeurs, sens min 3',
             gifts: ['Ossature Dense', 'Sang des Profondeurs', 'Maître-Fondeur', 'Sens de la Pierre', 'Gueule de Granit'],
             giftNotes: ['+2 Encaissement ; -1 dégâts contondants et chutes.', 'Vision nocturne ; +2 Constitution vs froid, -2 dégâts de froid ; ébloui 1 tour en entrant dans une lumière vive.', '+2 Forger (Artisanat) ; armure forgée par soi +1 protection.', 'Sent le danger de la roche à ~30 m (gaz, éboulement, poches) ; +2 Nature & Survie en souterrain.', '+2 Constitution vs gaz et poisons des mines ; apnée 4× CON tours.'] },
@@ -140,7 +140,7 @@ function initCharacterSheet() {
     const ATTR_LABELS = { for: 'Force (FOR)', agi: 'Agilité (AGI)', con: 'Constitution (CON)', rap: 'Rapidité (RAP)', int: 'Intelligence (INT)', eru: 'Érudition (ÉRU)', cha: 'Charisme (CHA)', ins: 'Instinct (INS)', mag: 'Magie' };
     const CORE8 = ['for', 'agi', 'con', 'rap', 'int', 'eru', 'cha', 'ins'];
 
-    // Tables d'historique (Livre VII, chap. 28-30) — libellés courts pour le créateur.
+    // Tables d'historique (Livre VII, chap. 29-32) — libellés courts pour le créateur.
     const ENFANCES = [{n:'Soutes & Docks',d:'Enfant de station : +2 Subterfuge Manuel en milieu confiné.'},{n:'Rues & Bas-fonds',d:'Gamin des toits : +2 Observation en urbain.'},{n:'Ferme & Frontière',d:'Enfant des confins : +2 Nature & Survie en rural/sauvage.'},{n:'Clan & Tribu',d:'Sang des anciens : +2 Intuition en groupe.'},{n:'Cité & École',d:'Enfant instruit : +2 Académie (1 domaine).'},{n:'Caserne & Ordre',d:'Enfant de troupe : +2 Athlétisme.'}];
     const METIERS = [{n:'Milicien',d:'+2 Tir (1 arme) & Observation ; armure légère ; rappelable.'},{n:'Médic',d:'+2 Premiers Soins & triage ; kit de soin ; serment du blessé.'},{n:'Mécano',d:'+2 Ingénierie & dépannage ; caisse à outils ; dette atelier.'},{n:'Pilote',d:'+2 Pilotage & navigation ; licence + contact ; crédit nef.'},{n:'Prospecteur',d:'+2 Survie extrême & endurance ; équipement ; exclusivité.'},{n:'Négociant',d:'+2 Négocier & évaluer ; contact + licence ; dette.'},{n:'Archiviste',d:'+2 Académie & détails ; archives ; censure.'},{n:'Artisan',d:'+2 Artisanat & entretien ; établi ; commande en cours.'},{n:'Chasseur',d:'+2 Traque & discrétion (nature) ; pièges ; quota.'},{n:'Infiltré',d:'+2 Discrétion & tromper ; faux papiers + planque ; service dû.'},{n:'Herboriste',d:'+2 Botanique & pharmacopée ; remèdes ; clientèle dangereuse.'},{n:'Officier',d:'+2 Leadership & intimidation ; insigne ; responsabilité.'}];
     const EVENEMENTS = [{n:'Frôlé la mort',d:'1×/session : annule 1 Essoufflement (coup > Encaissement) ; cauchemars.'},{n:'Dette de vie',d:'+2 pour protéger un allié ; créancier rappelable.'},{n:'Trahison subie',d:'Relance un jet intuition ; traître actif.'},{n:'Long exil',d:'+2 Survie en terrain inconnu ; −2 premier contact.'},{n:'Contact 5e Force',d:'1 question fermée au MJ ; repérable par sens magiques.'},{n:'Miracle inexpliqué',d:'Ignore 1 échec moral/peur ; un culte s’intéresse à toi.'},{n:'Guerre intérieure',d:'+2 sang-froid (violence) ; fracas = test INS ou +1 Essoufflement.'},{n:'Crime impuni',d:'+2 couvrir ses traces ; un témoin existe.'},{n:'Mentor perdu',d:'+2 domaine du mentor ; promesse à honorer.'},{n:'Écho temporel',d:'1 question fermée (danger) ; +1 Essoufflement/usage.'},{n:'Ruine & misère',d:'+2 improviser avec rien ; −2 contact huppé.'},{n:'Gloire locale',d:'+2 Communication (zone exploit) ; rival jaloux.'}];
@@ -280,7 +280,7 @@ function initCharacterSheet() {
         return levels;
     }
 
-    // Score de base canon d'une compétence (Livre III §10.1, calcul_rang_base) :
+    // Score de base canon d'une compétence (Livre III §11.1, calcul_rang_base) :
     // moyenne de ses attributs associés, arrondie vers le haut ; un seul
     // attribut = sa valeur. 'vision'/'ouie' = sens 1d6 (Observation, Écoute, Ballistique).
     function skillBaseScore(attrList, ext) {
@@ -323,7 +323,7 @@ function initCharacterSheet() {
             if (!el) continue;
             const g = byBase[base];
             let score = skillBaseScore(g.attrs, ext);
-            // Corps Augmenté (Livre III §11.1) : en offensif, un éveillé retient
+            // Corps Augmenté (Livre III §12.1) : en offensif, un éveillé retient
             // le meilleur entre sa MAG et la moyenne FOR/AGI.
             if (g.mag && ext.mag > 0) score = Math.max(score, ext.mag);
             const baseDie = dieForValue(score);
@@ -2014,7 +2014,7 @@ function initDiceRoller() {
         '2d12+10': { count: 2, sides: 12, mod: 10, label: '2d12 + 10' }
     };
 
-    // Critical consequences lookup from Livre II Chapitre 8
+    // Critical consequences lookup from Livre II Chapitre 9
     const critTable = {
         1: { off: 'La cible tombe à terre', def: 'La cible tombe à terre', soc: 'Interlocuteur déstabilisé', util: 'Tâche accomplie sans bruit' },
         2: { off: 'Cible repoussée d\'1 case', def: '+1 EC bonus pour la cible', soc: 'Ascendant psychologique', util: 'Gain d\'élan cinétique' },
@@ -2235,7 +2235,7 @@ function initChallengeResolver() {
                     row.className = 'challenge-step-row failed';
                 } else if (action === 'retry') {
                     if (step.retries >= defiParams().rattrapagesMax) {
-                        showToast('Rattrapages épuisés (max ' + defiParams().rattrapagesMax + ', Livre II §9).');
+                        showToast('Rattrapages épuisés (max ' + defiParams().rattrapagesMax + ', Livre II §10).');
                         return;
                     }
                     step.retries++;
@@ -2261,7 +2261,7 @@ function initChallengeResolver() {
         });
 
         // Formule canon : Récompense = (Réussies × 2) − Rattrapages, plancher si validé.
-        // Livre II §9 + Livre I §5 : récompense = cases de progression (piste pleine = +1 XP lié).
+        // Livre II §10 + Livre I §5 : récompense = cases de progression (piste pleine = +1 XP lié).
         const P = defiParams();
         let reward = (successes * 2) - totalRetries;
         if (successes > 0 && reward < P.minimumValide) reward = P.minimumValide;

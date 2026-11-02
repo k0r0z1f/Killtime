@@ -5,7 +5,7 @@ using Killtime.Core.Rules;
 namespace Killtime.Core.Combat
 {
     /// <summary>
-    /// Préparation d'Action (RD-202, Livre V §20.3) :
+    /// Préparation d'Action (RD-202, Livre V §21.3) :
     /// 1 PA dépensé -> +2 au jet de l'action ou de la défense SUIVANTE.
     /// One-shot : la préparation est consommée au jet suivant, que ce soit
     /// une attaque (bonus offensif) ou une parade (bonus défensif).

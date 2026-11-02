@@ -8,7 +8,7 @@ namespace Killtime.Core.Combat
 {
     /// <summary>
     /// Étape 4 du duel aveugle : calcul des dégâts, armures, boucliers, statuts,
-    /// critiques §8.2, effets RD-082 sur marge élevée, moral RD-047.
+    /// critiques §9.2, effets RD-082 sur marge élevée, moral RD-047.
     /// Dépend du contexte (dés) et de la progression (tables, statuts).
     /// Corps copié à l'identique depuis l'ancien CombatCalculator.
     /// </summary>
@@ -133,7 +133,7 @@ namespace Killtime.Core.Combat
                 : "";
             string attackRollStr = $"{SkillDefinitions.GetDisplayName(attackSkill)} : {duel.AttackDie} [Tirage {attackRoll.RawRoll} + États {duel.AttackStatusMod} ({statusAttDetail}) + ({aimText}){paAttText}{entraveText}{coverText}{ecText}{elevationText}{stealthText}{channelText}{prepText}{nightText} = Total {attackRoll.Total}]{augText}{critAttText}";
 
-            // Traçabilité Livre V §20.1 (duel aveugle) : déclarations masquées puis révélation.
+            // Traçabilité Livre V §21.1 (duel aveugle) : déclarations masquées puis révélation.
             // RD-048 : la canalisation consommée à l'attaque est tracée, la punition
             // de progression du défenseur aussi.
             string channelDefTag = ChannelingState.IsChanneling(defender) ? " [Canalisation -1]" : "";
@@ -163,7 +163,7 @@ namespace Killtime.Core.Combat
                 if (defHasCrit)
                 {
                     defCrit = _ctx.DiceRoller.RollCriticalConsequence(duel.DefenseDie, CriticalEffectCategory.Defensive);
-                    blockLog += $"\n   ✨ <b>[CONSÉQUENCE CRITIQUE DÉFENSIVE §8.2]</b> Relance {duel.DefenseDie} ➔ <b>{defCrit.RawRoll}</b> (Palier {defCrit.Threshold} : <i>{defCrit.Title}</i>) — {defCrit.Description}";
+                    blockLog += $"\n   ✨ <b>[CONSÉQUENCE CRITIQUE DÉFENSIVE §9.2]</b> Relance {duel.DefenseDie} ➔ <b>{defCrit.RawRoll}</b> (Palier {defCrit.Threshold} : <i>{defCrit.Title}</i>) — {defCrit.Description}";
                     ApplyDefensiveCriticalEffect(defCrit, defender, attacker);
                 }
 
@@ -219,12 +219,12 @@ namespace Killtime.Core.Combat
                 if (attCrit.Threshold == 3 || attCrit.Threshold == 4)
                 {
                     rawDamage += 1;
-                    dmgFormula += $" + 1 ({attCrit.Title} §8.2)";
+                    dmgFormula += $" + 1 ({attCrit.Title} §9.2)";
                 }
                 else if (attCrit.Threshold == 5)
                 {
                     rawDamage += 2;
-                    dmgFormula += $" + 2 ({attCrit.Title} §8.2)";
+                    dmgFormula += $" + 2 ({attCrit.Title} §9.2)";
                 }
             }
 
@@ -360,13 +360,13 @@ namespace Killtime.Core.Combat
 
             int absorbed = Math.Min(totalArmor, rawDamage);
             int finalDamage = isThomasSymbioticImmune ? 0 : Math.Max(0, rawDamage - absorbed);
-            // Champs de force portés (Livre VIII §32.2) : la barrière absorbe avant la
+            // Champs de force portés (Livre VIII §33.2) : la barrière absorbe avant la
             // chair — aucun choc traumatique tant qu'elle encaisse tout.
             int shieldRemainder = defender.AbsorbShield(finalDamage);
             int shieldAbsorbed = Math.Max(0, finalDamage - shieldRemainder);
             finalDamage = Math.Max(0, shieldRemainder);
 
-            // RD-087 (Livre XII §49-50) : réactions des Boss Titans aux dégâts
+            // RD-087 (Livre XII §50-51) : réactions des Boss Titans aux dégâts
             // élémentaires (Mémoire des Flammes, Absorption Thermique, Choc
             // Thermique) — avant application létale, tracé log. Inerte sans
             // spé boss ni dégât typé (simple expiration de fissure).
@@ -437,7 +437,7 @@ namespace Killtime.Core.Combat
                 defender.ApplyStatus(StatusEffect.Sonne, 1);
             }
 
-            // RD-201 (Livre V §22.2) : Crosse — bruts (base + différentiel,
+            // RD-201 (Livre V §23.2) : Crosse — bruts (base + différentiel,
             // avant armure) > CON x2 (seuil d'encaissement) => Déstabilisé.
             if (!isThomasSymbioticImmune && duel.IsButtstroke)
             {
@@ -480,7 +480,7 @@ namespace Killtime.Core.Combat
             }
 
             // =====================================================================
-            // RD-082 (Livre VI §24.4) : DÉCLENCHEMENT DES EFFETS SUR MARGE ÉLEVÉE
+            // RD-082 (Livre VI §25.4) : DÉCLENCHEMENT DES EFFETS SUR MARGE ÉLEVÉE
             // =====================================================================
             bool bleedApplied = false;
             int bleedDoT = 0;
@@ -538,7 +538,7 @@ namespace Killtime.Core.Combat
                 }
             }
 
-            // RD-204 (Livre V §20.2) : choc traumatique lourd — dégâts nets sur
+            // RD-204 (Livre V §21.2) : choc traumatique lourd — dégâts nets sur
             // une zone > 2xCON en un coup = +1 Essoufflement auto + épreuve CON.
             bool traumaticShockApplied = false;
             bool traumaticShockConFailed = false;
@@ -597,7 +597,7 @@ namespace Killtime.Core.Combat
             log += $"   🎲 <b>RÉVÉLATION SIMULTANÉE :</b> Attaque {attackRollStr} vs Défense {defRollStr} ➔ <b>Différentiel Net : <color=#00E5FF>{(differential > 0 ? $"+{differential}" : "0")}</color></b>\n";
             if (attHasCrit)
             {
-                log += $"   💥 <b>[CONSÉQUENCE CRITIQUE §8.2]</b> Relance {duel.AttackDie} ➔ <b>{attCrit.RawRoll}</b> (Palier {attCrit.Threshold} : <i>{attCrit.Title}</i>) — {attCrit.Description}\n";
+                log += $"   💥 <b>[CONSÉQUENCE CRITIQUE §9.2]</b> Relance {duel.AttackDie} ➔ <b>{attCrit.RawRoll}</b> (Palier {attCrit.Threshold} : <i>{attCrit.Title}</i>) — {attCrit.Description}\n";
             }
             log += $"   ⚔️ <b>Dégâts :</b> [{dmgFormula} = {rawDamage} Bruts] &minus; [Armure {totalArmor} (Absorbé: {absorbed})]"
                 + (shieldAbsorbed > 0 ? $" &minus; [🔮Bouclier {shieldAbsorbed}]" : "")
@@ -631,12 +631,12 @@ namespace Killtime.Core.Combat
 
             if (bleedApplied)
             {
-                log += $" | 🩸 <b>HÉMORRAGIE (Livre VI §24.4)</b> : Saignement (DoT résiduel {bleedDoT})";
+                log += $" | 🩸 <b>HÉMORRAGIE (Livre VI §25.4)</b> : Saignement (DoT résiduel {bleedDoT})";
             }
 
             if (fireApplied)
             {
-                log += $" | 🔥 <b>COMBUSTION (Livre VI §24.4)</b> : En Feu pendant {fireTurns} tour(s)";
+                log += $" | 🔥 <b>COMBUSTION (Livre VI §25.4)</b> : En Feu pendant {fireTurns} tour(s)";
             }
 
             if (!string.IsNullOrEmpty(titanBossTag))
@@ -646,12 +646,12 @@ namespace Killtime.Core.Combat
 
             if (stunApplied)
             {
-                log += " | 😵 <b>ASSOMMEMENT NET (Livre VI §24.4)</b> : Inconscient 1 tour direct";
+                log += " | 😵 <b>ASSOMMEMENT NET (Livre VI §25.4)</b> : Inconscient 1 tour direct";
             }
 
             if (wasDisintegrated)
             {
-                log += " | ⚛️ <b>DÉSINTÉGRATION TOTALE (Livre VI §24.4 : Diff >= 20 & Destruction 6)</b> : Cible pulvérisée en poussière !";
+                log += " | ⚛️ <b>DÉSINTÉGRATION TOTALE (Livre VI §25.4 : Diff >= 20 & Destruction 6)</b> : Cible pulvérisée en poussière !";
             }
             else if (fatalRes == FatalBlowResolution.InstantDeath)
             {
@@ -675,7 +675,7 @@ namespace Killtime.Core.Combat
                 log += "\n   " + moraleRes.Log;
             }
 
-            // RD-201 (Livre V §22.2) : toute frappe à Mains Nues au contact
+            // RD-201 (Livre V §23.2) : toute frappe à Mains Nues au contact
             // refoule sur choc traumatique ou Delta >= 4 (généralisé depuis
             // la spé Arts Martiaux : l'option Mains Nues l'exige).
             bool causedKnockback = !isThomasSymbioticImmune && (critCausedKnockback
@@ -727,7 +727,7 @@ namespace Killtime.Core.Combat
             };
         }
 
-        // RD-051 hook (Livre V §22.3) : +100 armes lourdes vs véhicules /
+        // RD-051 hook (Livre V §23.3) : +100 armes lourdes vs véhicules /
         // structures. Le duel aveugle standard ne connaît pas de cible véhicule
         // (que des CharacterStats) : l'appelant véhicule (arène, grenades,
         // SpecialManeuverService.StrikeVehicleSubsystem) applique ce bonus via

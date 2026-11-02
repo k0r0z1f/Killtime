@@ -113,7 +113,7 @@ namespace Killtime.Core.Character
         }
 
         /// <summary>
-        /// Récompense de challenge (Livre II §9) : `ticks` coches à répartir dans la
+        /// Récompense de challenge (Livre II §10) : `ticks` coches à répartir dans la
         /// compétence utilisée pour l'étape. Chaque piste complétée convertit en XP lié.
         /// </summary>
         public static int RegisterChallengeTicks(CharacterSheet sheet, SkillType skill, int ticks, bool isOffensive = false)

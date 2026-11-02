@@ -454,7 +454,7 @@ namespace Killtime.UI
             _searchFilter = GUILayout.TextField(_searchFilter ?? "", GUILayout.ExpandWidth(true));
             GUILayout.EndHorizontal();
 
-            // 1. Filtrage par Ère Technologique (Livre VIII §30-32)
+            // 1. Filtrage par Ère Technologique (Livre VIII §31-33)
             GUILayout.Label("<b>Ère Technologique :</b>");
             string[] eras = ArmoryCatalog.Eras;
             string[] eraOptions = new string[eras.Length + 1];

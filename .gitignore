@@ -8,10 +8,12 @@ node_modules/
 .vscode/
 .agents/
 dist/
+__pycache__/
 
 # Ignore all files with a specific extension
 *.log
 *.tmp
+*.py[cod]
 
 *(Copy)*.*
 *~lock*.*

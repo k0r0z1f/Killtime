@@ -4,7 +4,7 @@ namespace Killtime.Core.Character
 {
     /// <summary>
     /// Compendium officiel des 16 États & Altérations de statut du Système RP (Livre VI)
-    /// complété par les états et bénédictions arcaniques modulaires (Livre IV §19).
+    /// complété par les états et bénédictions arcaniques modulaires (Livre IV §20).
     /// </summary>
     [Flags]
     public enum StatusEffect
@@ -25,12 +25,12 @@ namespace Killtime.Core.Character
         Empoisonne = 1 << 12,  // Dégâts toxiques par tour
         EnFeu = 1 << 13,       // Dégâts thermiques continus
         Saignement = 1 << 14,  // Hémorragie (perte de PV par tour sans compression)
-        // RD-083 (Livre VI §24.3 & §25.1) : blessure critique ouverte. Statut
+        // RD-083 (Livre VI §25.3 & §26.1) : blessure critique ouverte. Statut
         // persistant — seuls des Soins Majeurs (CON×2 en un seul soin
         // Premiers Soins / Chirurgie) le lèvent. Soins ordinaires inefficaces.
         Souffrant = 1 << 22,   // Blessure grave ouverte (Soins Majeurs requis)
 
-        // États & Bénédictions Arcaniques Modulaires (Livre IV §19)
+        // États & Bénédictions Arcaniques Modulaires (Livre IV §20)
         Debalance = 1 << 15,   // Débalancé pour 1 tour (perte d'équilibre)
         Rapide = 1 << 16,      // +3 PA dédiés au déplacement (1 tour)
         Survolte = 1 << 17,    // +1 EC, +3 PA (1 tour)

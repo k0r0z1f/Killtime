@@ -13,13 +13,13 @@
    "blocs": [
     {
      "type": "html",
-     "html": "\n\n                    <div class=\"doc-badge-row\">\n                        <span class=\"doc-badge-pill\">\n                            <svg width=\"12\" height=\"12\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\"\n                                stroke-width=\"2\">\n                                <path d=\"M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z\" />\n                                <circle cx=\"12\" cy=\"12\" r=\"3\" />\n                            </svg>\n                            Livre XII — Bestiaire &amp; Entités Hostiles\n                        </span>\n                        <span class=\"doc-badge-pill accent\">3 Rangs de Menace</span>\n                        <span class=\"doc-badge-pill live\">Homologué Tables de Jeu</span>\n                    </div>\n\n                    <h1 class=\"doc-title\">Livre XII : Le Bestiaire&nbsp;&amp; Menaces Cosmiques</h1>\n                    <p class=\"doc-lead\">\n                        Dans le Système RP, l'adversité ne se mesure pas à de simples sacs de points de vie passifs.\n                        Tout ennemi — du coupe-jarret embusqué dans les taillis jusqu'au titan de magma largué à travers\n                        les lignes temporelles par Capricius — opère sous la <strong>même rigueur mathématique que les\n                            héros</strong> : calcul dynamique des Points d'Action (PA), seuils d'encaissement\n                        anatomique, malus d'essoufflement et ripostes en réaction. Ce compendium rassemble l'ensemble\n                        des profils martiaux, faunes indigènes et avatars d'annihilation du multivers.\n                    </p>\n\n                    <hr class=\"doc-divider\">\n\n                    <!-- ================= CHAPITRE 43 ================= -->\n                    "
+     "html": "\n\n                    <div class=\"doc-badge-row\">\n                        <span class=\"doc-badge-pill\">\n                            <svg width=\"12\" height=\"12\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\"\n                                stroke-width=\"2\">\n                                <path d=\"M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z\" />\n                                <circle cx=\"12\" cy=\"12\" r=\"3\" />\n                            </svg>\n                            Livre XII — Bestiaire &amp; Entités Hostiles\n                        </span>\n                        <span class=\"doc-badge-pill accent\">3 Rangs de Menace</span>\n                        <span class=\"doc-badge-pill live\">Homologué Tables de Jeu</span>\n                    </div>\n\n                    <h1 class=\"doc-title\">Livre XII : Le Bestiaire&nbsp;&amp; Menaces Cosmiques</h1>\n                    <p class=\"doc-lead\">\n                        Dans le Système RP, l'adversité ne se mesure pas à de simples sacs de points de vie passifs.\n                        Tout ennemi — du coupe-jarret embusqué dans les taillis jusqu'au titan de magma largué à travers\n                        les lignes temporelles par Capricius — opère sous la <strong>même rigueur mathématique que les\n                            héros</strong> : calcul dynamique des Points d'Action (PA), seuils d'encaissement\n                        anatomique, malus d'essoufflement et ripostes en réaction. Ce compendium rassemble l'ensemble\n                        des profils martiaux, faunes indigènes et avatars d'annihilation du multivers.\n                    </p>\n\n                    <hr class=\"doc-divider\">\n\n                    <!-- ================= CHAPITRE 44 ================= -->\n                    "
     }
    ]
   },
   {
-   "id": "chap-50",
-   "symbole": "Chapitre 50.",
+   "id": "chap-51",
+   "symbole": "Chapitre 51.",
    "titre": "Typologie des Adversaires &amp; Calibrage Tactique",
    "blocs": [
     {
@@ -32,7 +32,7 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <h3>50.2 Table de Calibrage des Rencontres</h3>\n                    "
+     "html": "\n\n                    <h3>51.2 Table de Calibrage des Rencontres</h3>\n                    "
     },
     {
      "type": "ref",
@@ -40,13 +40,14 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <hr class=\"doc-divider\">\n\n                    <!-- ================= CHAPITRE 44 ================= -->\n                    "
+     "html": "\n\n                    <hr class=\"doc-divider\">\n\n                    <!-- ================= CHAPITRE 45 ================= -->\n                    "
     }
-   ]
+   ],
+   "nav": "Typologie & Calibrage"
   },
   {
-   "id": "chap-51",
-   "symbole": "Chapitre 51.",
+   "id": "chap-52",
+   "symbole": "Chapitre 52.",
    "titre": "Humanoïdes, Hors-la-Loi &amp; Factions Mortelles",
    "blocs": [
     {
@@ -91,13 +92,14 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <hr class=\"doc-divider\">\n\n                    <!-- ================= CHAPITRE 45 ================= -->\n                    "
+     "html": "\n\n                    <hr class=\"doc-divider\">\n\n                    <!-- ================= CHAPITRE 46 ================= -->\n                    "
     }
-   ]
+   ],
+   "nav": "Humanoïdes & Factions"
   },
   {
-   "id": "chap-52",
-   "symbole": "Chapitre 52.",
+   "id": "chap-53",
+   "symbole": "Chapitre 53.",
    "titre": "Faune Sauvage &amp; Monstres Telluriques d'Hybris",
    "blocs": [
     {
@@ -118,18 +120,19 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <hr class=\"doc-divider\">\n\n                    <!-- ================= CHAPITRE 46 ================= -->\n                    "
+     "html": "\n\n                    <hr class=\"doc-divider\">\n\n                    <!-- ================= CHAPITRE 47 ================= -->\n                    "
     }
-   ]
+   ],
+   "nav": "Faune & Monstres d'Hybris"
   },
   {
-   "id": "chap-53",
-   "symbole": "Chapitre 53.",
+   "id": "chap-54",
+   "symbole": "Chapitre 54.",
    "titre": "Entités Cosmiques, Arcaniques &amp; Disciples de l'Entropie",
    "blocs": [
     {
      "type": "html",
-     "html": "\n\n                    <p>\n                        Au sommet de l'échelle des périls trônent les manifestations de la crise cosmique causée par\n                        Capricius et l'inondation d'Eau Sombre.\n                    </p>\n\n                    <p>\n                        Les Disciples relèvent de <strong>deux générations</strong> : le <strong>prototype de\n                            Terre</strong>, œuvre solitaire de Capricius (~−1 Ga, tir balistique plasma à ~c,\n                        ré-impression lithosphérique à l'arrivée en 1772 HSC), puis la <strong>série industrielle\n                            impériale (Air, Feu, Eau)</strong>, projetée par trous de ver + 5e Force (Livre X §41.3) —\n                        plus rapide, mais dépendante d'un ancrage. Feu et Eau, largués en dormance, restent à ce jour\n                        <strong>non révélés</strong>.\n                    </p>\n\n                    <!-- FICHE MINULICAN -->\n                    "
+     "html": "\n\n                    <p>\n                        Au sommet de l'échelle des périls trônent les manifestations de la crise cosmique causée par\n                        Capricius et l'inondation d'Eau Sombre.\n                    </p>\n\n                    <p>\n                        Les Disciples relèvent de <strong>deux générations</strong> : le <strong>prototype de\n                            Terre</strong>, œuvre solitaire de Capricius (~−1 Ga, tir balistique plasma à ~c,\n                        ré-impression lithosphérique à l'arrivée en 1772 HSC), puis la <strong>série industrielle\n                            impériale (Air, Feu, Eau)</strong>, projetée par trous de ver + 5e Force (Livre X §42.3) —\n                        plus rapide, mais dépendante d'un ancrage. Feu et Eau, largués en dormance, restent à ce jour\n                        <strong>non révélés</strong>.\n                    </p>\n\n                    <!-- FICHE MINULICAN -->\n                    "
     },
     {
      "type": "ref",
@@ -169,13 +172,14 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <hr class=\"doc-divider\">\n\n                    <!-- ================= CHAPITRE 47 ================= -->\n                    "
+     "html": "\n\n                    <hr class=\"doc-divider\">\n\n                    <!-- ================= CHAPITRE 48 ================= -->\n                    "
     }
-   ]
+   ],
+   "nav": "Entités & Disciples"
   },
   {
-   "id": "chap-54",
-   "symbole": "Chapitre 54.",
+   "id": "chap-55",
+   "symbole": "Chapitre 55.",
    "titre": "Automates de Guerre &amp; Cybernétique Impériale",
    "blocs": [
     {
@@ -190,7 +194,8 @@
      "type": "html",
      "html": "\n\n                    <hr class=\"doc-divider\">\n\n                    <!-- ================= MODULE INTERACTIF ================= -->\n                    <h3>Module Interactif : Sélecteur &amp; Télémétrie du Bestiaire</h3>\n                    <p>\n                        Filtrez instantanément les menaces du multivers pour préparer vos tables de jeu ou consulter les\n                        caractéristiques à la volée :\n                    </p>\n\n                    <div class=\"bestiary-filter-bar\">\n                        <button class=\"bestiary-filter-btn active\" data-bfilter=\"all\">Toutes les Menaces (15+)</button>\n                        <button class=\"bestiary-filter-btn\" data-bfilter=\"minions\">Petites Merdes (Minions)</button>\n                        <button class=\"bestiary-filter-btn\" data-bfilter=\"bandits\">Bandits &amp; Hors-la-Loi</button>\n                        <button class=\"bestiary-filter-btn\" data-bfilter=\"monsters\">Faune &amp; Monstres\n                            d'Hybris</button>\n                        <button class=\"bestiary-filter-btn\" data-bfilter=\"boss\">Boss &amp; Disciples Cosmiques</button>\n                        <button class=\"bestiary-filter-btn\" data-bfilter=\"tech\">Automates &amp; Cybernétique</button>\n                    </div>\n\n                    <div id=\"bestiaryReport\"\n                        style=\"padding: 14px 18px; background: rgba(244, 63, 94, 0.06); border: 1px dashed var(--ruby-danger); border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 0.82rem; color: var(--ruby-danger); margin-bottom: 24px;\">\n                        Affichage Global : 15 entités répertoriées &bull; 3 Rangs de Danger &bull; 4 Boss Légendaires\n                        d'Élite &bull; 100% Calibré pour le Système RP.\n                    </div>\n\n                    <div class=\"codex-signature\">\n                        <div class=\"sig-meta\">\n                            <strong>LIVRE XII DU CODEX UNIVERSEL</strong><br>\n                            Compendium Officiel du Bestiaire &amp; Fléaux Cosmiques<br>\n                            <em>Approuvé pour l'ensemble des Maîtres de Jeu et tables d'affrontements tactiques.</em>\n                        </div>\n                        <div class=\"sig-stamp\">\n                            <span class=\"stamp-title\">BESTIAIRE HOMOLOGUÉ</span>\n                            <span class=\"stamp-date\">12 / 12 LIVRES DU CODEX VALIDÉS</span>\n                        </div>\n                    </div>\n\n                    <!-- PAGINATION ENTRE LIVRES -->\n                    <div class=\"chapter-pagination\">\n                        <a href=\"livre_11.html\" class=\"pagination-btn\">\n                            <div>\n                                <div class=\"pagination-label\">Livre Précédent</div>\n                                <div class=\"pagination-title\">← Livre XI : Cosmologie &amp; Atlas des Mondes</div>\n                            </div>\n                        </a>\n                        <a href=\"index.html\" class=\"pagination-btn\">\n                            <div>\n                                <div class=\"pagination-label\">Terminus du Codex</div>\n                                <div class=\"pagination-title\">Index Général du Système RP →</div>\n                            </div>\n                        </a>\n                    </div>\n\n                "
     }
-   ]
+   ],
+   "nav": "Automates & Cybernétique"
   }
  ],
  "donnees": {

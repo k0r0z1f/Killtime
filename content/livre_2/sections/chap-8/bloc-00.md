@@ -4,24 +4,17 @@ format: raw
 livre: 2
 ---
 
-
                     <p class="lead">
-                        Autour de la table, les moments les plus mémorables naissent d'un coup de génie inespéré ou d'une maladresse spectaculaire !
-                        Quand le destin bascule, voici comment les critiques pimentent la scène sans alourdir la partie.
+                        Tu peux être le meilleur tireur de la station : sous une tempête de sable, dans une galerie qui gronde ou enfoncé jusqu'aux genoux dans la boue, tes dés obéissent au décor. Ce chapitre pose les règles d'environnement du système : climat, chutes, souterrain, terrains, milieux. Elles s'appliquent comme des <strong>malus situationnels</strong> (Livre I §1) : un seul par jet, le plus fort l'emporte.
                     </p>
-
-                    <h3>8.1 Déclencher un Critique : Réussite ou Échec</h3>
+                    <h4 id="sec-8-1">8.1 Climat et météo : léger −1, fort −2</h4>
                     <p>
-                        La règle est limpide et grisante : les faces extrêmes de votre dé déclenchent un critique lors d'une épreuve — son <strong>score maximal</strong> (un 6 sur un d6, un 8 sur un d8...) donne une <strong>Réussite Critique</strong>, son <strong>1 naturel</strong> donne un <strong>Échec Critique</strong> (sauf si vous avez au moins <strong>1 entraînement</strong> dans la compétence : on ne se ridiculise plus sur les bases quand on est entraîné).
+                        La pluie fine, la brume légère, le vent modéré, le froid mordant, la chaleur lourde : c'est le palier <strong>léger (−1)</strong>. Il frappe tous les jets que le décor contrarie : tes tirs, ton <a class="rule-ref" href="livre_3.html#chap-13" data-tip="Observation : repérer un indice, un danger, un ennemi camouflé (Vision/Ouïe, §13.3).">Observation</a>, tes pistes de <a class="rule-ref" href="livre_3.html#chap-13" data-tip="Nature & Survie : pistage, orientation, abris (INS/INT/ÉRU, §13.3).">Nature & Survie</a>, ton pilotage. Si tu joues humain, bonne nouvelle : le don <em>Endurance Coloniale</em> ignore ce palier.
                     </p>
-                    <ul>
-                        <li>Si vous lancez plusieurs dés en même temps (par exemple 2d6, donc avec au moins 1 entraînement), il suffit qu'<strong>un seul des dés affiche son max</strong> pour la réussite critique — et l'échec critique devient impossible.</li>
-                        <li><strong>Le Jet de Conséquence :</strong> Dès que le critique retentit, le joueur relance immédiatement son palier de dé au complet (2d6 si le jet de base était en 2d6) et consulte la table ci-dessous. Que vous soyez en plein combat, en négociation serrée ou en pleine acrobatie, ce jet déclenche un effet spectaculaire adapté !</li>
-                    </ul>
                     <p>
-                        Échec critique : tu lis la <strong>table 8.2</strong> à l'envers : les bonus deviennent des malus, les gains deviennent des pertes, et les rôles s'échangent (c'est toi qui prends). Exemples : « Cible étourdie » → c'est toi qui es étourdi ; « La cible tombe à terre » → c'est toi qui tombes ; « Récupère 1 Essoufflement » → c'est toi qui en subis 1.
+                        La tempête, le blizzard, la canicule, le vent violent, le brouillard épais : c'est le palier <strong>fort (−2)</strong>. Mêmes jets à −2, et en plus ta portée de vue est <strong>divisée par deux</strong> (arrondie au supérieur). Pour la ligne de mire, voir <a href="livre_5.html#chap-23-3">Livre V §23.3</a>.
                     </p>
-
-                    <h3>8.2 Table Universelle des Effets Critiques (de 1 à 24)</h3>
-
+                    <p>
+                        <em>Exemple : tu tires au fusil (d8) contre un seuil de 4, en plein blizzard. Tu obtiens 5. 5 − 2 = 3 : le tir se perd dans la tourmente. Sans blizzard, il passait.</em>
+                    </p>
                     

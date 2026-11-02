@@ -13,18 +13,18 @@
    "blocs": [
     {
      "type": "html",
-     "html": "\n\n                    <div class=\"doc-badge-row\">\n                        <span class=\"doc-badge-pill\">\n                            <svg width=\"12\" height=\"12\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\"\n                                stroke-width=\"2\">\n                                <path d=\"M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z\" />\n                                <circle cx=\"12\" cy=\"12\" r=\"3\" />\n                            </svg>\n                            Livre VII — Historiques &amp; Passés\n                        </span>\n                        <span class=\"doc-badge-pill accent\">Création Étape 1bis</span>\n                        <span class=\"doc-badge-pill live\">Homologué Tables de Jeu</span>\n                    </div>\n\n                    <h1 class=\"doc-title\">Livre VII : Historiques&nbsp;&amp; Passés de Personnages</h1>\n                    <p class=\"doc-lead\">\n                        Avant de compter vos points, racontez d'où vous venez. Vous avez grandi où ?\n                        Vous faisiez quoi avant l'aventure ? Quel moment vous a changé ?\n                        Ce livre vous aide à répondre en cinq minutes, seul ou aux dés.\n                        Vous repartez avec du récit, un petit bonus d'enfance, un bonus\n                        de métier un peu plus costaud, et peut-être un événement marquant :\n                        un coup de pouce 1×/séance, à condition d'en jouer le prix.\n                        C'est l'<strong>Étape 1bis</strong>, juste après l'Étape 1 du\n                        Livre I, §3.\n                    </p>\n\n                    <hr class=\"doc-divider\">\n\n                    <!-- ================= CHAPITRE 26 ================= -->\n                    "
+     "html": "\n\n                    <div class=\"doc-badge-row\">\n                        <span class=\"doc-badge-pill\">\n                            <svg width=\"12\" height=\"12\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\"\n                                stroke-width=\"2\">\n                                <path d=\"M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z\" />\n                                <circle cx=\"12\" cy=\"12\" r=\"3\" />\n                            </svg>\n                            Livre VII — Historiques &amp; Passés\n                        </span>\n                        <span class=\"doc-badge-pill accent\">Création Étape 1bis</span>\n                        <span class=\"doc-badge-pill live\">Homologué Tables de Jeu</span>\n                    </div>\n\n                    <h1 class=\"doc-title\">Livre VII : Historiques&nbsp;&amp; Passés de Personnages</h1>\n                    <p class=\"doc-lead\">\n                        Avant de compter vos points, racontez d'où vous venez. Vous avez grandi où ?\n                        Vous faisiez quoi avant l'aventure ? Quel moment vous a changé ?\n                        Ce livre vous aide à répondre en cinq minutes, seul ou aux dés.\n                        Vous repartez avec du récit, un petit bonus d'enfance, un bonus\n                        de métier un peu plus costaud, et peut-être un événement marquant :\n                        un coup de pouce 1×/séance, à condition d'en jouer le prix.\n                        C'est l'<strong>Étape 1bis</strong>, juste après l'Étape 1 du\n                        Livre I, §3.\n                    </p>\n\n                    <hr class=\"doc-divider\">\n\n                    <!-- ================= CHAPITRE 27 ================= -->\n                    "
     }
    ]
   },
   {
-   "id": "chap-28",
-   "symbole": "28.",
+   "id": "chap-29",
+   "symbole": "29.",
    "titre": "Principes &amp; Procédure (Étape 1bis)",
    "blocs": [
     {
      "type": "html",
-     "html": "\n\n                    <p>\n                        Vous venez de poser l'identité, l'espèce et le concept (Étape 1,\n                        Livre I §3). Prenez deux minutes pour le passé, avant de répartir\n                        vos points (Étape 2). Tant que votre fiche n'est pas validée,\n                        vous pouvez encore tout changer : enfance, métier, même espèce\n                        ou concept si l'histoire vous emmène ailleurs.\n                    </p>\n\n                    <p>\n                        Vous avez <strong>4 cases</strong>, dont <strong>1 seule obligatoire</strong>\n                        (l'Enfance). Vous pouvez <strong>choisir</strong> ou <strong>lancer\n                        les dés</strong> (d6 enfance, d12 métier, d12 événement). Sur chaque\n                        case que vous prenez, notez une <strong>époque [E0–E5]</strong>\n                        (Échelle Technologique, Livre I §2.1, voir §28.4) : même bonus,\n                        juste le décor change.\n                    </p>\n\n                    "
+     "html": "\n\n                    <p>\n                        Vous venez de poser l'identité, l'espèce et le concept (Étape 1,\n                        Livre I §3). Prenez deux minutes pour le passé, avant de répartir\n                        vos points (Étape 2). Tant que votre fiche n'est pas validée,\n                        vous pouvez encore tout changer : enfance, métier, même espèce\n                        ou concept si l'histoire vous emmène ailleurs.\n                    </p>\n\n                    <p>\n                        Vous avez <strong>4 cases</strong>, dont <strong>1 seule obligatoire</strong>\n                        (l'Enfance). Vous pouvez <strong>choisir</strong> ou <strong>lancer\n                        les dés</strong> (d6 enfance, d12 métier, d12 événement). Sur chaque\n                        case que vous prenez, notez une <strong>époque [E0–E5]</strong>\n                        (Échelle Technologique, Livre I §2.1, voir §29.4) : même bonus,\n                        juste le décor change.\n                    </p>\n\n                    "
     },
     {
      "type": "ref",
@@ -32,7 +32,7 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <h3>28.1 Ce que les bonus modifient — et ne modifient pas</h3>\n                    <p>\n                        Concret : vos bonus d'historique s'ajoutent au <strong>total de votre jet</strong>\n                        (Tirage + PA + modificateurs, Livre II). C'est tout.\n                        Ils ne vous donnent <strong>jamais</strong> : un dé plus gros, un point\n                        d'attribut, des PA, des dégâts, de l'armure, un entraînement gratuit\n                        ou des points de Magie. Votre Érudition et ses entraînements gratuits\n                        (Étape 5) ne bougent pas.\n                    </p>\n\n                    <div class=\"callout arcane\">\n                        <div class=\"callout-header\">\n                            Pour vous repérer\n                        </div>\n                        <div class=\"callout-body\">\n                            Une <strong>enfance vaut environ la moitié d'un don racial</strong>.\n                            Un <strong>métier vaut à peu près un don racial</strong> quand vous\n                            jouez son attache. Pour comparer : un don racial\n                            (Livre I, §2.2), c'est à peu près +2 dans 2–3 compétences ou\n                            1 capacité 1×/session. Votre enfance (+2 dans 1 compétence\n                            bien précise) reste en dessous. Votre métier (+2/+2 + atout\n                            pratique + attache si vous la prenez) joue dans la même cour.\n                        </div>\n                    </div>\n\n                    <h3>28.2 Les 5 règles à garder autour de la table</h3>\n                    <ul>\n                        <li><strong>Une de chaque, pas plus.</strong> Vous prenez une enfance,\n                            et au plus un métier, même avec un passé chargé. Le reste,\n                            racontez-le dans l'Ancrage (récit pur, sans bonus).</li>\n                        <li><strong>On ne cumule pas, on élargit.</strong> Si votre enfance ou\n                            votre métier donne +2 là où votre don racial ou l'autre entrée\n                            donne déjà +2, vous ne les additionnez pas. Le second +2 se déplace\n                            vers la compétence voisine la plus proche. Exemple : votre Milicien\n                            donne +2 <em>Observation (vigilance)</em> mais votre espèce couvre\n                            déjà la vigilance ? Vous passez ce +2 en <em>Écoute</em>. Votre MJ valide.</li>\n                        <li><strong>L'attache, c'est d'accord avec votre MJ.</strong> Si vous prenez\n                            un métier, vous pouvez prendre son attache (dette, hiérarchie, ennemi,\n                            commande) ou la laisser de côté. Ce n'est pas un malus chiffré :\n                            c'est une prise que votre MJ <strong>peut</strong> activer quand ça\n                            sert l'histoire.</li>\n                        <li><strong>L'événement, c'est un contrat.</strong> Son effet 1×/session\n                            ne marche que si vous jouez vraiment sa séquelle. Si vous la refusez\n                            ou la contournez tout le temps, vous perdez l'effet. C'est votre MJ\n                            qui tranche, et c'est définitif.</li>\n                        <li><strong>Restez crédible.</strong> Un Cléien ne grandit pas forgeron\n                            médiéval sur Cléia sans bonne raison. Un Derek ne grandit pas en\n                            station orbitale sans explication. Chaque entrée se décline selon\n                            le niveau tech de votre monde d'origine (voir §28.4 et §30.2).</li>\n                    </ul>\n\n                    <h3>28.3 Où noter sur la fiche</h3>\n                    <p>\n                        Ouvrez le bloc <strong>Historique</strong> de votre fiche (Livre I,\n                        fiche prototype) et remplissez ce que vous avez pris, ligne par ligne :\n                        <em>Ancrage</em> ([Ex] + monde + 3 lignes), <em>Enfance</em> (nom + [Ex] + bonus),\n                        <em>Métier</em> (nom + [Ex] + bonus + atout + attache si vous la prenez),\n                        <em>Événement</em> (nom + [Ex] + effet + séquelle). Laissez vide ce que\n                        vous ne prenez pas. Ce qui n'est pas noté n'existe pas en jeu.\n                        Exemple : <em>Milicien [E2] — Hybris, cité de Ferron</em>.\n                    </p>\n\n                    <h3>28.4 Marqueur d'époque [E0–E5] (à noter à chaque fois)</h3>\n                    <p>\n                        Votre MJ fixe <strong>l'époque de campagne</strong> (une valeur E0–E5\n                        par défaut). Chaque case que vous prenez porte son propre marqueur.\n                        Par défaut, vous prenez celui de la campagne. Envie d'une époque\n                        différente (exil, voyage, monde d'origine décalé) ? Dites-le à votre\n                        MJ et ajoutez une ligne d'explication dans votre historique.\n                    </p>\n\n                    "
+     "html": "\n\n                    <h3>29.1 Ce que les bonus modifient — et ne modifient pas</h3>\n                    <p>\n                        Concret : vos bonus d'historique s'ajoutent au <strong>total de votre jet</strong>\n                        (Tirage + PA + modificateurs, Livre II). C'est tout.\n                        Ils ne vous donnent <strong>jamais</strong> : un dé plus gros, un point\n                        d'attribut, des PA, des dégâts, de l'armure, un entraînement gratuit\n                        ou des points de Magie. Votre Érudition et ses entraînements gratuits\n                        (Étape 5) ne bougent pas.\n                    </p>\n\n                    <div class=\"callout arcane\">\n                        <div class=\"callout-header\">\n                            Pour vous repérer\n                        </div>\n                        <div class=\"callout-body\">\n                            Une <strong>enfance vaut environ la moitié d'un don racial</strong>.\n                            Un <strong>métier vaut à peu près un don racial</strong> quand vous\n                            jouez son attache. Pour comparer : un don racial\n                            (Livre I, §2.2), c'est à peu près +2 dans 2–3 compétences ou\n                            1 capacité 1×/session. Votre enfance (+2 dans 1 compétence\n                            bien précise) reste en dessous. Votre métier (+2/+2 + atout\n                            pratique + attache si vous la prenez) joue dans la même cour.\n                        </div>\n                    </div>\n\n                    <h3>29.2 Les 5 règles à garder autour de la table</h3>\n                    <ul>\n                        <li><strong>Une de chaque, pas plus.</strong> Vous prenez une enfance,\n                            et au plus un métier, même avec un passé chargé. Le reste,\n                            racontez-le dans l'Ancrage (récit pur, sans bonus).</li>\n                        <li><strong>On ne cumule pas, on élargit.</strong> Si votre enfance ou\n                            votre métier donne +2 là où votre don racial ou l'autre entrée\n                            donne déjà +2, vous ne les additionnez pas. Le second +2 se déplace\n                            vers la compétence voisine la plus proche. Exemple : votre Milicien\n                            donne +2 <em>Observation (vigilance)</em> mais votre espèce couvre\n                            déjà la vigilance ? Vous passez ce +2 en <em>Écoute</em>. Votre MJ valide.</li>\n                        <li><strong>L'attache, c'est d'accord avec votre MJ.</strong> Si vous prenez\n                            un métier, vous pouvez prendre son attache (dette, hiérarchie, ennemi,\n                            commande) ou la laisser de côté. Ce n'est pas un malus chiffré :\n                            c'est une prise que votre MJ <strong>peut</strong> activer quand ça\n                            sert l'histoire.</li>\n                        <li><strong>L'événement, c'est un contrat.</strong> Son effet 1×/session\n                            ne marche que si vous jouez vraiment sa séquelle. Si vous la refusez\n                            ou la contournez tout le temps, vous perdez l'effet. C'est votre MJ\n                            qui tranche, et c'est définitif.</li>\n                        <li><strong>Restez crédible.</strong> Un Cléien ne grandit pas forgeron\n                            médiéval sur Cléia sans bonne raison. Un Derek ne grandit pas en\n                            station orbitale sans explication. Chaque entrée se décline selon\n                            le niveau tech de votre monde d'origine (voir §29.4 et §31.2).</li>\n                    </ul>\n\n                    <h3>29.3 Où noter sur la fiche</h3>\n                    <p>\n                        Ouvrez le bloc <strong>Historique</strong> de votre fiche (Livre I,\n                        fiche prototype) et remplissez ce que vous avez pris, ligne par ligne :\n                        <em>Ancrage</em> ([Ex] + monde + 3 lignes), <em>Enfance</em> (nom + [Ex] + bonus),\n                        <em>Métier</em> (nom + [Ex] + bonus + atout + attache si vous la prenez),\n                        <em>Événement</em> (nom + [Ex] + effet + séquelle). Laissez vide ce que\n                        vous ne prenez pas. Ce qui n'est pas noté n'existe pas en jeu.\n                        Exemple : <em>Milicien [E2] — Hybris, cité de Ferron</em>.\n                    </p>\n\n                    <h3>29.4 Marqueur d'époque [E0–E5] (à noter à chaque fois)</h3>\n                    <p>\n                        Votre MJ fixe <strong>l'époque de campagne</strong> (une valeur E0–E5\n                        par défaut). Chaque case que vous prenez porte son propre marqueur.\n                        Par défaut, vous prenez celui de la campagne. Envie d'une époque\n                        différente (exil, voyage, monde d'origine décalé) ? Dites-le à votre\n                        MJ et ajoutez une ligne d'explication dans votre historique.\n                    </p>\n\n                    "
     },
     {
      "type": "ref",
@@ -40,18 +40,19 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <div class=\"callout temporal\">\n                        <div class=\"callout-header\">\n                            Ce que le marqueur change — et ne change pas\n                        </div>\n                        <div class=\"callout-body\">\n                            Le marqueur ne change <strong>jamais</strong> votre bonus : un Mécano\n                            forgeron [E1] et un Mécano orbital [E3] donnent le même +2/+2.\n                            Seuls le décor, l'atout (caisse à outils → forge → atelier orbital)\n                            et l'attache (dette, guilde, commanditaire) changent de nom.\n                            Si votre atout ne sert à rien dans l'époque jouée (une licence\n                            d'astroport en campagne E1), votre MJ le convertit en contact\n                            ou droit équivalent.\n                        </div>\n                    </div>\n\n                    <!-- ================= CHAPITRE 27 ================= -->\n                    "
+     "html": "\n\n                    <div class=\"callout temporal\">\n                        <div class=\"callout-header\">\n                            Ce que le marqueur change — et ne change pas\n                        </div>\n                        <div class=\"callout-body\">\n                            Le marqueur ne change <strong>jamais</strong> votre bonus : un Mécano\n                            forgeron [E1] et un Mécano orbital [E3] donnent le même +2/+2.\n                            Seuls le décor, l'atout (caisse à outils → forge → atelier orbital)\n                            et l'attache (dette, guilde, commanditaire) changent de nom.\n                            Si votre atout ne sert à rien dans l'époque jouée (une licence\n                            d'astroport en campagne E1), votre MJ le convertit en contact\n                            ou droit équivalent.\n                        </div>\n                    </div>\n\n                    <!-- ================= CHAPITRE 28 ================= -->\n                    "
     }
-   ]
+   ],
+   "nav": "Principes & Procédure"
   },
   {
-   "id": "chap-29",
-   "symbole": "29.",
+   "id": "chap-30",
+   "symbole": "30.",
    "titre": "Enfances : 6 Milieux d'Origine (d6)",
    "blocs": [
     {
      "type": "html",
-     "html": "\n\n                    <p>\n                        Lancez <strong>1d6</strong> ou choisissez. Chaque enfance vous donne\n                        <strong>1 petit bonus</strong> : +2 à une compétence bien précise\n                        <strong>dans son contexte</strong>, ou un petit trait situatif.\n                        Hors contexte, pas de bonus. Exemple : votre +2 en ville ne vous\n                        aide pas en pleine forêt. Notez votre <strong>[E0–E5]</strong>\n                        (§28.4) : même bonus, juste le décor change.\n                    </p>\n\n                    "
+     "html": "\n\n                    <p>\n                        Lancez <strong>1d6</strong> ou choisissez. Chaque enfance vous donne\n                        <strong>1 petit bonus</strong> : +2 à une compétence bien précise\n                        <strong>dans son contexte</strong>, ou un petit trait situatif.\n                        Hors contexte, pas de bonus. Exemple : votre +2 en ville ne vous\n                        aide pas en pleine forêt. Notez votre <strong>[E0–E5]</strong>\n                        (§29.4) : même bonus, juste le décor change.\n                    </p>\n\n                    "
     },
     {
      "type": "ref",
@@ -59,18 +60,19 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <!-- ================= CHAPITRE 28 ================= -->\n                    "
+     "html": "\n\n                    <!-- ================= CHAPITRE 29 ================= -->\n                    "
     }
-   ]
+   ],
+   "nav": "Enfances (d6)"
   },
   {
-   "id": "chap-30",
-   "symbole": "30.",
+   "id": "chap-31",
+   "symbole": "31.",
    "titre": "Métiers : 12 Parcours (d12)",
    "blocs": [
     {
      "type": "html",
-     "html": "\n\n                    <p>\n                        Lancez <strong>1d12</strong> ou choisissez. Chaque métier vous donne :\n                        <strong>+2 à 2 compétences</strong> de son champ, <strong>1 atout</strong>\n                        concret (outil, contact, permis — jamais un bonus chiffré en plus)\n                        et <strong>1 attache si vous la voulez</strong> (voir §28.2).\n                        Notez votre <strong>[E0–E5]</strong> (§28.4) : le bonus ne change pas,\n                        seul le décor change (voir §30.2). Exemple : forgeron [E1] ou\n                        mécano orbital [E3], c'est le même +2.\n                    </p>\n\n                    "
+     "html": "\n\n                    <p>\n                        Lancez <strong>1d12</strong> ou choisissez. Chaque métier vous donne :\n                        <strong>+2 à 2 compétences</strong> de son champ, <strong>1 atout</strong>\n                        concret (outil, contact, permis — jamais un bonus chiffré en plus)\n                        et <strong>1 attache si vous la voulez</strong> (voir §29.2).\n                        Notez votre <strong>[E0–E5]</strong> (§29.4) : le bonus ne change pas,\n                        seul le décor change (voir §31.2). Exemple : forgeron [E1] ou\n                        mécano orbital [E3], c'est le même +2.\n                    </p>\n\n                    "
     },
     {
      "type": "ref",
@@ -78,18 +80,19 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <h3>30.1 Exemple autour de la table</h3>\n                    <p>\n                        Prenons Mara, Taurienne. Enfance Rues [E2], métier Milicienne [E2].\n                        Son don racial <em>Pas Feuillu</em>, son enfance +2 <em>Observation</em>\n                        en ville, son métier +2 Ballistique/Tir (fusil réglementaire) et +2\n                        <em>Observation (vigilance)</em>. En ville, sa vigilance ne prend\n                        <strong>+2 qu'une seule fois</strong> (on ne cumule pas, §28.2).\n                        Le second +2 se déplace en +2 <em>Écoute</em>, avec l'accord du MJ.\n                        Sur un jet de vigilance en ville, Mara lance donc :\n                        Tirage + PA + 2. Simple.\n                    </p>\n\n                    <h3>30.2 Le même métier, à toutes les époques [E0–E5]</h3>\n                    <p>\n                        Chaque métier existe à toutes les époques (Livre I, §2.1). Garde armé\n                        de lance [E0], forgeron [E1], chauffeur [E2], indexeur de trames [E5] :\n                        le bonus reste le même. Seuls le nom, l'outil et l'attache changent.\n                        La « caisse à outils » d'un forgeron vaut celle d'un mécano orbital\n                        en jeu. Notez <strong>Nom [Ex]</strong> sur votre fiche (§28.3).\n                        Si vous jouez une autre époque que celle de la campagne,\n                        prévoyez une ligne d'explication pour votre MJ (§28.4).\n                    </p>\n\n                    <!-- ================= CHAPITRE 29 ================= -->\n                    "
+     "html": "\n\n                    <h3>31.1 Exemple autour de la table</h3>\n                    <p>\n                        Prenons Mara, Taurienne. Enfance Rues [E2], métier Milicienne [E2].\n                        Son don racial <em>Pas Feuillu</em>, son enfance +2 <em>Observation</em>\n                        en ville, son métier +2 Ballistique/Tir (fusil réglementaire) et +2\n                        <em>Observation (vigilance)</em>. En ville, sa vigilance ne prend\n                        <strong>+2 qu'une seule fois</strong> (on ne cumule pas, §29.2).\n                        Le second +2 se déplace en +2 <em>Écoute</em>, avec l'accord du MJ.\n                        Sur un jet de vigilance en ville, Mara lance donc :\n                        Tirage + PA + 2. Simple.\n                    </p>\n\n                    <h3>31.2 Le même métier, à toutes les époques [E0–E5]</h3>\n                    <p>\n                        Chaque métier existe à toutes les époques (Livre I, §2.1). Garde armé\n                        de lance [E0], forgeron [E1], chauffeur [E2], indexeur de trames [E5] :\n                        le bonus reste le même. Seuls le nom, l'outil et l'attache changent.\n                        La « caisse à outils » d'un forgeron vaut celle d'un mécano orbital\n                        en jeu. Notez <strong>Nom [Ex]</strong> sur votre fiche (§29.3).\n                        Si vous jouez une autre époque que celle de la campagne,\n                        prévoyez une ligne d'explication pour votre MJ (§29.4).\n                    </p>\n\n                    <!-- ================= CHAPITRE 30 ================= -->\n                    "
     }
-   ]
+   ],
+   "nav": "Métiers (d12)"
   },
   {
-   "id": "chap-31",
-   "symbole": "31.",
+   "id": "chap-32",
+   "symbole": "32.",
    "titre": "Événement Marquant (optionnel, d12) &amp; Ancrage",
    "blocs": [
     {
      "type": "html",
-     "html": "\n\n                    <h3>31.1 Table des événements (d12)</h3>\n                    <p>\n                        C'est optionnel, et vous pouvez le refuser. Chacun vous donne\n                        <strong>1 effet à jouer 1×/session</strong> contre <strong>1 séquelle</strong>\n                        que votre MJ activera vraiment (§28.2). Lancez 1d12 ou choisissez.\n                        Notez votre <strong>[E0–E5]</strong> (§28.4, par défaut celle\n                        de la campagne).\n                    </p>\n\n                    "
+     "html": "\n\n                    <h3>32.1 Table des événements (d12)</h3>\n                    <p>\n                        C'est optionnel, et vous pouvez le refuser. Chacun vous donne\n                        <strong>1 effet à jouer 1×/session</strong> contre <strong>1 séquelle</strong>\n                        que votre MJ activera vraiment (§29.2). Lancez 1d12 ou choisissez.\n                        Notez votre <strong>[E0–E5]</strong> (§29.4, par défaut celle\n                        de la campagne).\n                    </p>\n\n                    "
     },
     {
      "type": "ref",
@@ -97,9 +100,10 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <h3>31.2 Note temporelle (Écho n°10)</h3>\n                    <p>\n                        L'Écho temporel, ce n'est pas de la clairsentience (Livre X, §43).\n                        C'est un déjà-vu brut, que vous ne contrôlez pas, et qui fait mal :\n                        votre MJ répond par oui / non / peut-être, jamais par des détails.\n                        C'est la seule entrée d'historique qui touche au Fleuve du Temps —\n                        d'où son coût : +1 Essoufflement à chaque usage.\n                    </p>\n\n                    <h3>31.3 Et la magie, là-dedans ?</h3>\n                    <p>\n                        Aucune entrée d'historique ne vous donne — ni ne vous retire —\n                        l'accès à la Cinquième Force. Si vous jouez un Éveillé\n                        (Magie &gt; 0), vous payez toujours votre éveil au prix fort\n                        (17 points secondaires, Livre I, §3). Votre historique dit juste\n                        <em>comment</em> ça s'est passé. Le n°5 (contact avec la 5e Force)\n                        est tout indiqué pour ça.\n                    </p>\n\n                    <h3>31.4 Ancrage : 3 questions + époque (récit pur, 0 mécanique)</h3>\n                    <p>\n                        L'Ancrage ne donne aucun bonus. Il vous donne mieux : de quoi jouer.\n                        Répondez en une ligne ou deux par question, avec votre époque et\n                        votre monde ([E0–E5] + lieu, §28.4 — par défaut ceux de la campagne) :\n                    </p>\n                    <ul>\n                        <li><strong>Votre époque + votre monde ?</strong> Notez [E0–E5] + lieu\n                            (§28.4 — par défaut ceux de la campagne).</li>\n                        <li><strong>D'où venez-vous vraiment ?</strong> Un lieu, un milieu, une langue,\n                            ce qui vous manque.</li>\n                        <li><strong>Qui vous a marqué ?</strong> 1 allié, 1 rival, 1 disparu —\n                            un nom et une ligne chacun.</li>\n                        <li><strong>Que fuyez-vous, que cherchez-vous ?</strong> Une peur qui vous\n                            pousse et un désir qui vous tire — une ligne chacun.</li>\n                    </ul>\n                    <div class=\"callout temporal\">\n                        <div class=\"callout-header\">\n                            Pour votre MJ — des prises pour la suite\n                        </div>\n                        <div class=\"callout-body\">\n                            Chaque réponse d'Ancrage vous prépare un levier : un lieu à menacer,\n                            un allié à compromettre, un désir à bousculer. Notez-les à part :\n                            ce sont vos idées d'arcs (Livre X, §44), pas des bonus.\n                        </div>\n                    </div>\n\n                    <!-- PAGINATION ENTRE LIVRES -->\n                    <div class=\"chapter-pagination\">\n                        <a href=\"livre_6.html\" class=\"pagination-btn\">\n                            <div>\n                                <div class=\"pagination-label\">Livre Précédent</div>\n                                <div class=\"pagination-title\">← Livre VI : Santé, États &amp; Blessures</div>\n                            </div>\n                        </a>\n                        <a href=\"livre_8.html\" class=\"pagination-btn\">\n                            <div>\n                                <div class=\"pagination-label\">Livre Suivant</div>\n                                <div class=\"pagination-title\">Livre VIII : Arsenal &amp; Arcanotech →</div>\n                            </div>\n                        </a>\n                    </div>\n\n                "
+     "html": "\n\n                    <h3>32.2 Note temporelle (Écho n°10)</h3>\n                    <p>\n                        L'Écho temporel, ce n'est pas de la clairsentience (Livre X, §44).\n                        C'est un déjà-vu brut, que vous ne contrôlez pas, et qui fait mal :\n                        votre MJ répond par oui / non / peut-être, jamais par des détails.\n                        C'est la seule entrée d'historique qui touche au Fleuve du Temps —\n                        d'où son coût : +1 Essoufflement à chaque usage.\n                    </p>\n\n                    <h3>32.3 Et la magie, là-dedans ?</h3>\n                    <p>\n                        Aucune entrée d'historique ne vous donne — ni ne vous retire —\n                        l'accès à la Cinquième Force. Si vous jouez un Éveillé\n                        (Magie &gt; 0), vous payez toujours votre éveil au prix fort\n                        (17 points secondaires, Livre I, §3). Votre historique dit juste\n                        <em>comment</em> ça s'est passé. Le n°5 (contact avec la 5e Force)\n                        est tout indiqué pour ça.\n                    </p>\n\n                    <h3>32.4 Ancrage : 3 questions + époque (récit pur, 0 mécanique)</h3>\n                    <p>\n                        L'Ancrage ne donne aucun bonus. Il vous donne mieux : de quoi jouer.\n                        Répondez en une ligne ou deux par question, avec votre époque et\n                        votre monde ([E0–E5] + lieu, §29.4 — par défaut ceux de la campagne) :\n                    </p>\n                    <ul>\n                        <li><strong>Votre époque + votre monde ?</strong> Notez [E0–E5] + lieu\n                            (§29.4 — par défaut ceux de la campagne).</li>\n                        <li><strong>D'où venez-vous vraiment ?</strong> Un lieu, un milieu, une langue,\n                            ce qui vous manque.</li>\n                        <li><strong>Qui vous a marqué ?</strong> 1 allié, 1 rival, 1 disparu —\n                            un nom et une ligne chacun.</li>\n                        <li><strong>Que fuyez-vous, que cherchez-vous ?</strong> Une peur qui vous\n                            pousse et un désir qui vous tire — une ligne chacun.</li>\n                    </ul>\n                    <div class=\"callout temporal\">\n                        <div class=\"callout-header\">\n                            Pour votre MJ — des prises pour la suite\n                        </div>\n                        <div class=\"callout-body\">\n                            Chaque réponse d'Ancrage vous prépare un levier : un lieu à menacer,\n                            un allié à compromettre, un désir à bousculer. Notez-les à part :\n                            ce sont vos idées d'arcs (Livre X, §45), pas des bonus.\n                        </div>\n                    </div>\n\n                    <!-- PAGINATION ENTRE LIVRES -->\n                    <div class=\"chapter-pagination\">\n                        <a href=\"livre_6.html\" class=\"pagination-btn\">\n                            <div>\n                                <div class=\"pagination-label\">Livre Précédent</div>\n                                <div class=\"pagination-title\">← Livre VI : Santé, États &amp; Blessures</div>\n                            </div>\n                        </a>\n                        <a href=\"livre_8.html\" class=\"pagination-btn\">\n                            <div>\n                                <div class=\"pagination-label\">Livre Suivant</div>\n                                <div class=\"pagination-title\">Livre VIII : Arsenal &amp; Arcanotech →</div>\n                            </div>\n                        </a>\n                    </div>\n\n                "
     }
-   ]
+   ],
+   "nav": "Événement & Ancrage"
   }
  ],
  "donnees": {
@@ -114,28 +118,28 @@
    ],
    "lignes": [
     [
-     "<strong>A. Ancrage</strong> (§31.4)",
+     "<strong>A. Ancrage</strong> (§32.4)",
      "Optionnel",
      "<strong>Aucun</strong> — 3 réponses de récit pur",
      "—",
      "<strong>[E0–E5]</strong> + monde"
     ],
     [
-     "<strong>B. Enfance</strong> (chap. 28)",
+     "<strong>B. Enfance</strong> (chap. 30)",
      "Obligatoire",
      "<strong>1 aptitude mineure</strong> : +2 à 1 compétence étroite, ou trait situatif",
      "1 seule",
      "<strong>[E0–E5]</strong>"
     ],
     [
-     "<strong>C. Métier</strong> (chap. 29)",
+     "<strong>C. Métier</strong> (chap. 31)",
      "Optionnel",
      "<strong>1 aptitude majeure</strong> : +2 à 2 compétences + 1 atout + 1 attache optionnelle",
      "1 seul",
      "<strong>[E0–E5]</strong>"
     ],
     [
-     "<strong>D. Événement marquant</strong> (§31.1)",
+     "<strong>D. Événement marquant</strong> (§32.1)",
      "Optionnel",
      "<strong>1 effet 1×/session</strong> + 1 séquelle narrative réelle",
      "1 seul, refusable",
@@ -444,7 +448,7 @@
   "note": "Genere depuis livre_7.html (motif RP-075/Livre II). Source unique : regenerer.",
   "etapes_historique": [
    {
-    "etape": "A. Ancrage (§31.4)",
+    "etape": "A. Ancrage (§32.4)",
     "statut": "Optionnel",
     "obligatoire": false,
     "effet": "Aucun — 3 réponses de récit pur",
@@ -452,7 +456,7 @@
     "epoque": "[E0–E5] + monde"
    },
    {
-    "etape": "B. Enfance (chap. 28)",
+    "etape": "B. Enfance (chap. 30)",
     "statut": "Obligatoire",
     "obligatoire": true,
     "effet": "1 aptitude mineure : +2 à 1 compétence étroite, ou trait situatif",
@@ -460,7 +464,7 @@
     "epoque": "[E0–E5]"
    },
    {
-    "etape": "C. Métier (chap. 29)",
+    "etape": "C. Métier (chap. 31)",
     "statut": "Optionnel",
     "obligatoire": false,
     "effet": "1 aptitude majeure : +2 à 2 compétences + 1 atout + 1 attache optionnelle",
@@ -468,7 +472,7 @@
     "epoque": "[E0–E5]"
    },
    {
-    "etape": "D. Événement marquant (§31.1)",
+    "etape": "D. Événement marquant (§32.1)",
     "statut": "Optionnel",
     "obligatoire": false,
     "effet": "1 effet 1×/session + 1 séquelle narrative réelle",

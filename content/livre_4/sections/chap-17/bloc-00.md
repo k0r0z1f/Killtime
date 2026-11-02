@@ -1,14 +1,16 @@
 ---
+livre: 4
 cible: sections.chap-17.blocs.0.html
 format: raw
-livre: 4
 ---
 
 
                     <p>
-                        Pour lancer un sort toi-même, il te faut une chose : l'attribut <strong>Magie
-                            (MAG)</strong>. Ensuite tu choisis ton canal. Il y en a trois familles.
-                        Choisis celle qui ressemble à ton perso, et lance-toi :
+                        Sur Hybris, les pods flottent sans bruit au-dessus du sol. Dedans : un
+                        <strong>Moteur Magique (*Magical Engine*)</strong>, la magitek d'ici — un petit
+                        bloc avec un cristal au centre. Transports des cités, patrouilleurs, modules
+                        d'assaut : tout ce qui vole sur Hybris en porte un. Ailleurs, l'Empire utilise
+                        d'autres technologies pour manier les arcanes et les forces de l'univers.
                     </p>
 
                     

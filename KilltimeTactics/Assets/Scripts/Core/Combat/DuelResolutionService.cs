@@ -415,14 +415,14 @@ namespace Killtime.Core.Combat
         }
 
         // =====================================================================
-        // RD-032 : GARDE DU CORPS / INTERCEPTION ALLIÉ (Livre V §20.5)
+        // RD-032 : GARDE DU CORPS / INTERCEPTION ALLIÉ (Livre V §21.5)
         // Coût 1 PA réaction : le protecteur au contact (distance <= 1) prend
         // le coup à la place de l'allié ciblé. Le duel est réorienté vers lui.
         // =====================================================================
 
         /// <summary>
         /// Réoriente un duel d'attaque vers un protecteur qui s'interpose pour
-        /// prendre le coup à la place de l'allié (RD-032, Livre V §20.5).
+        /// prendre le coup à la place de l'allié (RD-032, Livre V §21.5).
         /// Le protecteur devient le défenseur du duel avec son armure et ses défenses.
         /// </summary>
         public AttackDuel RedirectDuelToProtector(

@@ -8,11 +8,27 @@ Le JSON (`data/livre_N.json`) reste le format lu par le site : il est
 
 ```sh
 # 1. Editer un .md (texte + frontmatter : livre / cible / format)
-# 2. Regenerer le JSON
+# 2. Regenerer le JSON (les symboles "N." / "Chapitre N." sont recalcules
+#    depuis l'ordre des sections : jamais de numero saisi a la main)
 python3 tools/build_livres.py --build 1
 # 3. Verifier la synchro (utile avant de tester en jeu / relire le site)
 python3 tools/build_livres.py --check 1
+# 4. Verifier liens + numerotation (ancres mortes, § sans chapitre,
+#    § qui contredit son ancre, menus/badges incoherents)
+python3 tools/check_liens.py
+# 5. Menus lateraux : generes depuis les JSON (jamais edites a la main)
+python3 tools/build_nav.py --build   # --check pour verifier
 ```
+
+## Numerotation des chapitres (convention durable)
+
+- Les chapitres sont numerotes en continu (1..N) dans l'ordre de lecture.
+  `check_liens.py` refuse tout trou, doublon ou id non standard.
+- **Inserer un chapitre = renumeroter** (jamais de suffixe type `7b`) :
+  decaler les ids `chap-N` / `sec-N-` / symboles suivants, puis relancer
+  les deux checks. Les renvois croises suivent via leurs ancres.
+- Tout `§N` doit designer un chapitre existant et ne pas contredire
+  l'ancre voisine : ecrire `(Livre X §N)` colle a un lien vers N.
 
 ## Formats
 

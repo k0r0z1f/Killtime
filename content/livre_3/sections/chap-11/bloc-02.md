@@ -5,38 +5,39 @@ livre: 3
 ---
 
 
-                    <h4>Actions Physiques de Force & Difficultés Associées</h4>
-                    <ul>
-                        <li><strong>Courir / Nager</strong> : vous courez, vous nagez — facile (1–3) la plupart du
-                            temps.
-                            Si ça devient dur (<a class="rule-ref" href="livre_2.html#chap-7"
-                                data-tip="Difficulté : 1-3 facile, 5+ exige un jet, 12+ héroïque, 18+ cosmique (§7.1).">difficulté
-                                5+</a>, courant, bourbier), lancez votre Force.</li>
-                        <li><strong>Pousser / Soulever</strong> : vous poussez une herse, vous soulevez une poutre. Si
-                            quelqu'un
-                            s'oppose, faites un <a class="rule-ref" href="livre_2.html#chap-7"
-                                data-tip="Face-à-Face : chacun lance son dé + PA, le meilleur gagne. Seul le vainqueur coche (§7.3).">Face-à-Face</a> Force contre Force.</li>
-                        <li><strong>Agripper</strong> : vous attrapez quelqu'un — <a class="rule-ref"
-                                href="livre_2.html#chap-7"
-                                data-tip="Face-à-Face : chacun lance son dé + PA, le meilleur gagne. Seul le vainqueur coche (§7.3).">Face-à-Face</a> Force contre sa Défense. Réussi ?
-                            Il est <a class="rule-ref" href="livre_6.html#sec-24-1"
-                                data-tip="Immobilisé : impossible de faire la moindre action de mouvement (§24.1).">immobilisé</a>.
-                        </li>
-                        <li><strong>Porter une Armure Lourde</strong> : il faut la Force demandée pour la porter. En
-                            dessous ?
-                            Faites une <a class="rule-ref" href="livre_2.html#chap-7"
-                                data-tip="Épreuve : lance ton dé de compétence + PA − malus contre le seuil du MJ (§7.1).">épreuve
-                                de Force</a> toutes les 10 minutes, sinon vous vous <a class="rule-ref"
-                                href="livre_1.html#sec-4-2"
-                                data-tip="Essoufflement : 1 point = des PA d'urgence ; ne part pas tout seul, action dédiée pour souffler (§4.2).">épuisez</a>.
-                        </li>
-                    </ul>
+                    <div class="callout vital">
+                        <div class="callout-header">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                            </svg>
+                            Règle Cruciale : La Défense Non-Exclusive
+                        </div>
+                        <div class="callout-body">
+                            Vous pouvez parer avec une <a class="rule-ref" href="livre_2.html#chap-7"
+                                data-tip="Face-à-Face : attaquant et défenseur lancent en secret, dé + PA − malus. Seul le vainqueur coche (§7.3).">compétence
+                                défensive</a>. Pas de souci.
+                            <br>Mais si votre compétence n'est <strong>pas 100 % défensive</strong> — par exemple vous
+                            parez
+                            avec <em>Maniement d'Arme</em> ou <em>Mains Nues</em> — vous prenez <strong><a
+                                    class="rule-ref" href="livre_2.html#chap-6"
+                                    data-tip="Niveau de dé : chaque cran monte le dé — d2 ➔ d4 ➔ d6 ➔ d8 ➔ d10 ➔ d12 (§6.1).">-1
+                                    niveau
+                                    de dé</a></strong> sur la parade.
+                            <br>Vous avez la <strong><a class="rule-ref" href="#chap-14"
+                                    data-tip="Spécialisation : 5 XP banque liée/libre, 10 XP croisé. Annule le malus de parade non-exclusive (§14).">spécialisation
+                                    dédiée</a></strong> ? Le malus disparaît.
+                            <em>Spécialisation Épée</em>
+                            avec une épée, <em>Arts Martiaux</em> à mains nues, <em>Bloquer</em> au bouclier : vous
+                            parez à plein dé
+                            (ex: <em>Bloquer</em> ou <em>Maniement de l'épée</em>).
+                            <br>Et pour compter les points, une seule formule : <strong>ce que donne votre dé
+                                + les <a class="rule-ref" href="livre_1.html#chap-4"
+                                    data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a>
+                                que vous misez − les malus du moment</strong> (obscurité, blessure, portée...).
+                            Vos attributs ont déjà servi à choisir le dé : ils ne s'ajoutent pas une deuxième fois.
+                        </div>
+                    </div>
 
-                    <!-- ARBRE DE L'AGILITÉ -->
-                    <h3>11.2 Arbre de l'Agilité (AGI)</h3>
-                    <p>
-                        Ici, c'est votre souplesse et votre précision. Vous esquivez, vous visez,
-                        vous crochetez, vous pilotez.
-                    </p>
-
+                    <!-- ================= CHAPITRE 12 ================= -->
                     

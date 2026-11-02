@@ -8,7 +8,7 @@ namespace Killtime.Tests
 {
     /// <summary>
     /// RD-193 Rig critiques / marges : forçage dev-only des critiques par camp,
-    /// du différentiel net, de la déviation d6 et des conséquences §8.2.
+    /// du différentiel net, de la déviation d6 et des conséquences §9.2.
     /// Pur Core, aucune règle modifiée : tous les flags à false/null = jets live.
     /// Couvre RD-179 (terrain VATS).
     /// </summary>

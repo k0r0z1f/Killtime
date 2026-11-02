@@ -5,5 +5,5 @@ livre: 8
 ---
 
 
-                    <h3>33.3 Grenades & Munitions Explosives</h3>
+                    <h3>33.2 Armes Concasseuses, Haches & Armes d'Hast</h3>
                     

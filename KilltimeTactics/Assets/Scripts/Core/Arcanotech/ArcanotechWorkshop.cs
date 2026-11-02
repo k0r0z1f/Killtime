@@ -8,9 +8,9 @@ namespace Killtime.Core.Arcanotech
 {
     /// <summary>
     /// Moteur d'ingénierie arcanique conforme au Livre IV :
-    /// - Catalogue officiel modulaire (§19.2)
+    /// - Catalogue officiel modulaire (§20.2)
     /// - Règle d'or XP = PA et pénalité d'hybridation
-    /// - Calcul balistique de portée magique (§16)
+    /// - Calcul balistique de portée magique (§17)
     /// - Résolution d'incantation et application des effets
     /// </summary>
     public static class ArcanotechWorkshop
@@ -19,7 +19,7 @@ namespace Killtime.Core.Arcanotech
 
         private static readonly Dictionary<ArcanotechModuleId, PowerModuleDefinition> _catalog = new()
         {
-            // --- OFFENSIFS (Livre IV §19.2) ---
+            // --- OFFENSIFS (Livre IV §20.2) ---
             [ArcanotechModuleId.Offensive_TestBonus] = new PowerModuleDefinition(
                 ArcanotechModuleId.Offensive_TestBonus,
                 "+1 à l'Épreuve Offensive",
@@ -110,7 +110,7 @@ namespace Killtime.Core.Arcanotech
                 "4 dégâts résiduels continus dégressifs.",
                 PowerCategory.Offensif, 10, isStackable: false, valuePerRank: 4),
 
-            // --- DÉFENSIFS & UTILITAIRES (Livre IV §19.2) ---
+            // --- DÉFENSIFS & UTILITAIRES (Livre IV §20.2) ---
             [ArcanotechModuleId.Defensive_TestBonus] = new PowerModuleDefinition(
                 ArcanotechModuleId.Defensive_TestBonus,
                 "+1 à l'Épreuve Défensive/Utilitaire",

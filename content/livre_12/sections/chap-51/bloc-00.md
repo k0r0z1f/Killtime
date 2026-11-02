@@ -6,9 +6,8 @@ livre: 12
 
 
                     <p>
-                        Les adversaires humanoïdes constituent la majorité des affrontements dans les cités, les routes
-                        de campagne et les avant-postes coloniaux.
+                        Pour permettre au Maître de Jeu d'orchestrer des affrontements équilibrés et nerveux sans
+                        s'enliser dans la comptabilité, les adversaires sont scindés en trois calibres standardisés :
                     </p>
 
-                    <!-- FICHE BANDIT 1 -->
                     

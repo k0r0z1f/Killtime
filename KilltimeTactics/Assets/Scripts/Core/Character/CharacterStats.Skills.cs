@@ -76,11 +76,11 @@ namespace Killtime.Core.Character
             // Livre VI : Agonisant (-2 détresse vitale / panique)
             if (ActiveStatus.HasFlag(StatusEffect.Agonisant)) mod -= 2;
 
-            // RD-083 (Livre VI §25.3) : Poids du Trépas — ressuscité affaibli :
+            // RD-083 (Livre VI §26.3) : Poids du Trépas — ressuscité affaibli :
             // malus sur TOUS les jets pendant (10 - CON) jours réels.
             mod += GetResurrectionSequelaeModifier();
 
-            // Livre IV §19 : bénédictions arcanotech offensives (+EC au jet).
+            // Livre IV §20 : bénédictions arcanotech offensives (+EC au jet).
             // Survolte +1 EC, EnTranse +2 EC — offensif uniquement, cumulables.
             if (isOffensive)
             {

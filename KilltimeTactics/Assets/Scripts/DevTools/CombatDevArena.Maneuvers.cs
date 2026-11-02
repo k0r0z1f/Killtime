@@ -117,7 +117,7 @@ namespace Killtime.Tactics
         }
 
         /// <summary>
-        /// RD-084 : Exécute un assaut groupé (Livre V §21.2). Les participants
+        /// RD-084 : Exécute un assaut groupé (Livre V §22.2). Les participants
         /// sont synchronisés sur l'initiative du membre le plus lent, leurs
         /// résultats offensifs sommés face à l'unique défense de la cible.
         /// </summary>
@@ -127,7 +127,7 @@ namespace Killtime.Tactics
         }
 
         /// <summary>
-        /// RD-084 : Exécute un round de course-poursuite (Livre V §21.1) :
+        /// RD-084 : Exécute un round de course-poursuite (Livre V §22.1) :
         /// concours d'Athlétisme proie vs poursuivants. Succès proie = distance
         /// maintenue (≥ 1 case), faillite = terrain gagné. À 4 faillites cumulées :
         /// arrêt et capture immédiate (Immobilisé).

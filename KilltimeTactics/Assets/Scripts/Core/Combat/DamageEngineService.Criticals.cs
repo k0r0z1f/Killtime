@@ -5,7 +5,7 @@ using Killtime.Core.Dice;
 namespace Killtime.Core.Combat
 {
     /// <summary>
-    /// Effets des conséquences critiques §8.2 (Livre II) — extrait sans
+    /// Effets des conséquences critiques §9.2 (Livre II) — extrait sans
     /// modification depuis DamageEngineService.cs (split taille RD-201,
     /// règle fichiers &lt; ~800 lignes).
     /// </summary>

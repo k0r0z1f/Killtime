@@ -10,7 +10,7 @@ livre: 2
                         Sur le champ de bataille ou dans un bras de fer tendu, on n'agit pas contre une cible immobile : l'adversaire réagit !
                         Un jet d'attaque oppose donc la compétence offensive de l'attaquant (<em>Maniement d'Arme</em>, <em>Balistique</em>, <em>Mains Nues</em>)
                         à la compétence défensive choisie par la cible (<em>Esquive</em> ou <em>Défense Corporelle / Parade</em>).
-                        <strong>La cible peut aussi choisir de ne pas se défendre</strong> : dans ce cas, elle ne jette aucun dé, ne dépense aucun PA, et sa défense est considérée comme nulle (score de 0). Ne pas se défendre ne veut pas dire encaisser à nu : son armure absorbe toujours sa part des dégâts avant toute comparaison avec son <a class="rule-ref" href="livre_6.html#sec-23-2" data-tip="Encaissement = CON × 2 : seuil comparé aux dégâts du coup (§23.2).">Encaissement</a>.
+                        <strong>La cible peut aussi choisir de ne pas se défendre</strong> : dans ce cas, elle ne jette aucun dé, ne dépense aucun PA, et sa défense est considérée comme nulle (score de 0). Ne pas se défendre ne veut pas dire encaisser à nu : son armure absorbe toujours sa part des dégâts avant toute comparaison avec son <a class="rule-ref" href="livre_6.html#sec-25-2" data-tip="Encaissement = CON × 2 : seuil comparé aux dégâts du coup (§25.2).">Encaissement</a>.
                     </p>
                     <p>
                         <strong>La procédure du Face-à-Face (simple et pleine de tension) :</strong>
@@ -27,5 +27,5 @@ livre: 2
                         <li><strong>Différentiel supérieur à 0 :</strong> Touche franche ! L'attaque porte de plein fouet : elle inflige ses dégâts de base augmentés du différentiel net, avant comparaison avec l'armure et l'Encaissement de la cible.</li>
                     </ul>
 
-                    <!-- ================= CHAPITRE 8 ================= -->
+                    <!-- ================= CHAPITRE 9 ================= -->
                     

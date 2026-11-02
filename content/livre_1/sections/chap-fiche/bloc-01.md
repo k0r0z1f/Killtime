@@ -6,7 +6,7 @@ livre: 1
                     <div class="char-sheet-preview">
                         <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 12px;">
                             Copie statique du créateur avec les valeurs de Roger : le
-                            <a href="livre_9.html#chap-34" style="color: var(--arcane-cyan); font-weight: 700;">créateur du Livre IX</a>
+                            <a href="livre_9.html#chap-36" style="color: var(--arcane-cyan); font-weight: 700;">créateur du Livre IX</a>
                             et la fenêtre détachée affichent exactement cette fiche par défaut.
                             <span class="pill-badge cyan">Fiche validée — Total 24/24</span>
                         </p>
@@ -62,11 +62,11 @@ livre: 1
                         <div class="tool-grid-3">
                             <div class="tool-form-group">
                                 <label class="tool-label">Enfance (d6)</label>
-                                <div class="field-value">2. Rues & Bas-fonds <span class="tool-label-hint">Gamin des toits : +2 <a class="rule-ref" href="livre_3.html#chap-12" data-tip="Observation : repérer un indice, un danger, un ennemi camouflé (Vision/Ouïe, §12.3).">Observation</a> en urbain.</span></div>
+                                <div class="field-value">2. Rues & Bas-fonds <span class="tool-label-hint">Gamin des toits : +2 <a class="rule-ref" href="livre_3.html#chap-13" data-tip="Observation : repérer un indice, un danger, un ennemi camouflé (Vision/Ouïe, §13.3).">Observation</a> en urbain.</span></div>
                             </div>
                             <div class="tool-form-group">
                                 <label class="tool-label">Métier (d12)</label>
-                                <div class="field-value">1. Milicien <span class="tool-label-hint">+2 <a class="rule-ref" href="livre_3.html#chap-11" data-tip="Ballistique / Tir : tirer à distance (AGI/Vision, §11.2).">Tir</a> (1 arme) & <a class="rule-ref" href="livre_3.html#chap-12" data-tip="Observation : repérer un indice, un danger, un ennemi camouflé (Vision/Ouïe, §12.3).">Observation</a> ; armure légère ; rappelable.</span></div>
+                                <div class="field-value">1. Milicien <span class="tool-label-hint">+2 <a class="rule-ref" href="livre_3.html#chap-12" data-tip="Ballistique / Tir : tirer à distance (AGI/Vision, §12.2).">Tir</a> (1 arme) & <a class="rule-ref" href="livre_3.html#chap-13" data-tip="Observation : repérer un indice, un danger, un ennemi camouflé (Vision/Ouïe, §13.3).">Observation</a> ; armure légère ; rappelable.</span></div>
                             </div>
                             <div class="tool-form-group">
                                 <label class="tool-label">Événement Marquant (d12, optionnel)</label>
@@ -171,8 +171,8 @@ livre: 1
                             </div>
                             <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 12px;">
                                 Érudition 3 → <strong>3 entraînements gratuits</strong> (Étape 5) : <strong>3 cases par
-                                compétence, 1 case cochée = +1 palier de dé</strong> (plafond +3). Roger a coché 2 cases sur <strong><a class="rule-ref" href="livre_3.html#chap-11" data-tip="Mains Nues : combat à mains nues (FOR/AGI, §11.1).">Mains Nues</a></strong> (poings du milicien, dé 1d10)
-                                et 1 sur <strong><a class="rule-ref" href="livre_3.html#chap-11" data-tip="Esquive : éviter un coup au dernier moment (AGI/RAP/INS, §11.2).">Esquive</a></strong> (réflexes des rues, dé 1d6).
+                                compétence, 1 case cochée = +1 palier de dé</strong> (plafond +3). Roger a coché 2 cases sur <strong><a class="rule-ref" href="livre_3.html#chap-12" data-tip="Mains Nues : combat à mains nues (FOR/AGI, §12.1).">Mains Nues</a></strong> (poings du milicien, dé 1d10)
+                                et 1 sur <strong><a class="rule-ref" href="livre_3.html#chap-12" data-tip="Esquive : éviter un coup au dernier moment (AGI/RAP/INS, §12.2).">Esquive</a></strong> (réflexes des rues, dé 1d6).
                             </p>
                             <div class="tool-grid-4" style="font-size: 0.82rem;">
                                 <label style="display: flex; align-items: center; gap: 4px;"><input type="checkbox" disabled checked> <input type="checkbox" disabled checked> <input type="checkbox" disabled> Mains Nues (FOR) <span class="pill-badge amber skill-die" data-skillref="skMainsNues">1d10</span></label>
@@ -201,7 +201,7 @@ livre: 1
                             </div>
                             <div class="callout-body">
                                 Cet exemple est directement reproductible et modifiable dans le
-                                <a href="livre_9.html#chap-34"
+                                <a href="livre_9.html#chap-36"
                                     style="color: var(--arcane-cyan); font-weight: 700;">créateur du Livre IX</a> :
                                 choix des piliers FOR/CON, don racial colonial, tirages sensoriels au 1d6, passé de milicien des rues,
                                 dés de caractéristiques (FOR 5 → 1d6, CON 4 → 1d4, INS 3 → 1d4...), calcul automatique des 7 PA,

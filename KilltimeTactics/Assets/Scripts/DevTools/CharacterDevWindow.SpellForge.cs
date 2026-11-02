@@ -21,7 +21,7 @@ namespace Killtime.UI
         // ================= TAB 3 : FORGE DE SORTS (LIVRE IV) =================
         private void DrawSpellForgeTab()
         {
-            GUILayout.Label("<b>1. Presets Officiels du Codex (Livre IV §19.3) :</b>");
+            GUILayout.Label("<b>1. Presets Officiels du Codex (Livre IV §20.3) :</b>");
             GUILayout.BeginHorizontal(GUI.skin.box);
             if (GUILayout.Button("📖 Charger 'Ralentissement Gravitationnel' (3 XP / 3 PA)"))
             {
@@ -44,7 +44,7 @@ namespace Killtime.UI
             GUILayout.EndHorizontal();
 
             GUILayout.Space(6);
-            GUILayout.Label("<b>2. Fiche Technique du Pouvoir (Livre IV §19.1) :</b>");
+            GUILayout.Label("<b>2. Fiche Technique du Pouvoir (Livre IV §20.1) :</b>");
             GUILayout.BeginVertical(GUI.skin.box);
 
             GUILayout.BeginHorizontal();
@@ -94,7 +94,7 @@ namespace Killtime.UI
 
             GUILayout.Space(6);
             GUILayout.BeginHorizontal();
-            GUILayout.Label("<b>3. Catalogue Modulaire des Effets Achetables (Livre IV §19.2) :</b>");
+            GUILayout.Label("<b>3. Catalogue Modulaire des Effets Achetables (Livre IV §20.2) :</b>");
             GUILayout.FlexibleSpace();
             GUILayout.Label($"Solde : <color=yellow><b>{_currentSheet.AvailableXP} XP Libre</b></color>");
             GUILayout.EndHorizontal();

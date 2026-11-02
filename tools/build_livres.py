@@ -62,7 +62,10 @@ def resoudre(d, cible):
     if m:
         for s in d['sections']:
             if s['id'] == m.group(1):
-                b = s['blocs'][int(m.group(2))]
+                try:
+                    b = s['blocs'][int(m.group(2))]
+                except IndexError:
+                    raise KeyError(cible)
                 assert b.get('type') == 'html', cible
                 return (b, 'html')
         raise KeyError(cible)
@@ -98,6 +101,20 @@ def iter_md(n):
                 yield os.path.join(root, fn)
 
 
+def regenerer_symboles(d):
+    """Solution durable §1 : les numeros d'affichage ne sont jamais saisis
+    a la main. Le symbole decoule de l'id de section et du style du livre
+    (majorite des symboles existants : 'N.' ou 'Chapitre N.').
+    Id non chap-N (entete, chap-fiche...) : intouche."""
+    styles = [s.get('symbole', '') for s in d.get('sections', [])]
+    forme = 'Chapitre %s.' if sum(1 for x in styles if str(x).startswith('Chapitre')) >= \
+        sum(1 for x in styles if re.fullmatch(r'\d+\.', str(x))) else '%s.'
+    for s in d.get('sections', []):
+        m = re.fullmatch(r'chap-(\d+)', s['id'])
+        if m:
+            s['symbole'] = forme % m.group(1)
+
+
 def cmd_build(n):
     d = charger_json(n)
     nb = 0
@@ -107,6 +124,7 @@ def cmd_build(n):
         conteneur, cle = resoudre(d, meta['cible'])
         conteneur[cle] = convertir(corps, meta.get('format', 'raw'))
         nb += 1
+    regenerer_symboles(d)
     ecrire_json(n, d)
     print('build livre_%s OK : %d texte(s) -> data/livre_%s.json' % (n, nb, n))
 
@@ -117,7 +135,12 @@ def cmd_check(n):
     nb = 0
     for path in iter_md(n):
         meta, corps = lire_md(path)
-        conteneur, cle = resoudre(d, meta['cible'])
+        try:
+            conteneur, cle = resoudre(d, meta['cible'])
+        except (KeyError, AssertionError):
+            sales.append('%s (cible %s INEXISTANTE)' % (os.path.relpath(path, RACINE), meta.get('cible')))
+            nb += 1
+            continue
         if conteneur[cle] != convertir(corps, meta.get('format', 'raw')):
             sales.append('%s (cible %s)' % (os.path.relpath(path, RACINE), meta['cible']))
         nb += 1

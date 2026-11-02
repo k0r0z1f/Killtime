@@ -6,7 +6,7 @@ using Killtime.Tactics.Grid;
 namespace Killtime.Core.Combat
 {
     /// <summary>
-    /// RD-204 (Livre VI §24.4 & Livre V) : marges manquantes —
+    /// RD-204 (Livre VI §25.4 & Livre V) : marges manquantes —
     /// Possession (Diff 10+ voie Esprit, contrôle 1 tour),
     /// Attirer / Repousser en épreuve (Diff 1+, Refoulement déjà codé).
     /// Duels opposés aveugles, même assiette que lutte/bousculade RD-039/040.
@@ -88,7 +88,7 @@ namespace Killtime.Core.Combat
         }
 
         /// <summary>
-        /// RD-204 Possession (Livre VI §24.4) : duel opposé aveugle
+        /// RD-204 Possession (Livre VI §25.4) : duel opposé aveugle
         /// MagieEsprit (contrôleur) vs MagieEsprit (cible).
         /// Diff ≥ seuil (10, 15 si boss) : contrôle 1 tour (PossessionState).
         /// </summary>
@@ -124,7 +124,7 @@ namespace Killtime.Core.Combat
             {
                 PossessionState.SetPossession(attacker, defender);
                 opposed.AttackerWins = true;
-                opposed.CombatLog = $"🧠 <b>POSSESSION — CONTRÔLE (Livre VI §24.4)</b> : {attacker.Name} s'empare de l'esprit de {defender.Name} (Diff {opposed.Differential:+0;-0;0} ≥ {threshold}{(boss ? ", seuil boss" : "")}) — Cible <b>CONTRÔLÉE 1 tour</b> !\n" + opposed.CombatLog;
+                opposed.CombatLog = $"🧠 <b>POSSESSION — CONTRÔLE (Livre VI §25.4)</b> : {attacker.Name} s'empare de l'esprit de {defender.Name} (Diff {opposed.Differential:+0;-0;0} ≥ {threshold}{(boss ? ", seuil boss" : "")}) — Cible <b>CONTRÔLÉE 1 tour</b> !\n" + opposed.CombatLog;
             }
             else
             {

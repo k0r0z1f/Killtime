@@ -210,7 +210,7 @@ namespace Killtime.Tactics.AI
 
                 case AIIntent.TacticalRetreat:
                 {
-                    // 2. RETRAITE TACTIQUE SOUS COUVERT (Livre V §21)
+                    // 2. RETRAITE TACTIQUE SOUS COUVERT (Livre V §22)
                     visual?.SpawnFloatingText("🛡️ [REPLI] Rupture sous Couvert", new Color(1.0f, 0.35f, 0.35f));
                     yield return StartCoroutine(ExecuteCoveredRetreat(unit, frame.Target));
                     yield return new WaitForSeconds(_actionDelay);
@@ -262,7 +262,7 @@ namespace Killtime.Tactics.AI
 
                 case AIIntent.LivreXIManeuver:
                 {
-                    // 2c. MANŒUVRES AVANCÉES PNJ & AUTOMATES (Livre XII §48 & §51).
+                    // 2c. MANŒUVRES AVANCÉES PNJ & AUTOMATES (Livre XII §49 & §52).
                     if (TryExecuteLivreXIManeuver(unit, frame.Target, frame.Posture, frame.Dist, visual))
                     {
                         yield return new WaitForSeconds(_actionDelay);
@@ -322,7 +322,7 @@ namespace Killtime.Tactics.AI
 
                 case AIIntent.Grenade:
                 {
-                    // 4. GRENADES DE ZONE (Livre VIII §31.3)
+                    // 4. GRENADES DE ZONE (Livre VIII §32.3)
                     if (TryThrowGrenadeAI(unit, frame.Posture))
                     {
                         float waitElapsed = 0f;
@@ -439,7 +439,7 @@ namespace Killtime.Tactics.AI
 
                 case AIIntent.FlankToCover:
                 {
-                    // 7. MANŒUVRE DE FLANKING & PRISE DE COUVERT AVANT ATTAQUE (Livre V §21.3)
+                    // 7. MANŒUVRE DE FLANKING & PRISE DE COUVERT AVANT ATTAQUE (Livre V §22.3)
                     if (unit.Stats.CurrentActionPoints >= 3
                         && (frame.TargetCover == CoverType.ThreeQuarters || !frame.InAttackRange))
                     {

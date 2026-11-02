@@ -42,9 +42,9 @@ namespace Killtime.Core.Dice
         public static bool DevForceDefenseFumble = false;
         // Différentiel net forcé (attaque − défense) appliqué dans ResolveBlindDuel.
         public static int? DevForcedDifferential = null;
-        // Relance de conséquence critique (d2–d24, §8.2) forcée à ce brut.
+        // Relance de conséquence critique (d2–d24, §9.2) forcée à ce brut.
         public static int? DevForcedCritConsequenceRaw = null;
-        // Tirage d6 de déviation anatomique (Livre V §22.1) forcé (1–6).
+        // Tirage d6 de déviation anatomique (Livre V §23.1) forcé (1–6).
         public static int? DevForcedDeflectionRoll = null;
 
         public static void ClearDevRig()
@@ -149,7 +149,7 @@ namespace Killtime.Core.Dice
         }
 
         /// <summary>
-        /// Tirage d'un dé brut sans modificateur ni seuil (Livre II §8.1).
+        /// Tirage d'un dé brut sans modificateur ni seuil (Livre II §9.1).
         /// </summary>
         public virtual int RollRaw(DiceType dieType)
         {
@@ -175,7 +175,7 @@ namespace Killtime.Core.Dice
         }
 
         /// <summary>
-        /// Évalue le palier atteint dans la Table Universelle des Conséquences Critiques (Livre II §8.2).
+        /// Évalue le palier atteint dans la Table Universelle des Conséquences Critiques (Livre II §9.2).
         /// </summary>
         public static int GetCriticalThreshold(int consequenceRoll)
         {
@@ -195,7 +195,7 @@ namespace Killtime.Core.Dice
         }
 
         /// <summary>
-        /// Lookup universel des conséquences critiques d2-d24 (Livre II §8.2).
+        /// Lookup universel des conséquences critiques d2-d24 (Livre II §9.2).
         /// </summary>
         public static CriticalConsequence LookupCriticalConsequence(int consequenceRoll, CriticalEffectCategory category = CriticalEffectCategory.Offensive)
         {
@@ -298,11 +298,11 @@ namespace Killtime.Core.Dice
         }
 
         /// <summary>
-        /// Lance un jet de conséquence de même calibre et résout l'effet critique (Livre II §8.1 & §8.2).
+        /// Lance un jet de conséquence de même calibre et résout l'effet critique (Livre II §9.1 & §9.2).
         /// </summary>
         public virtual CriticalConsequence RollCriticalConsequence(DiceType dieType, CriticalEffectCategory category = CriticalEffectCategory.Offensive)
         {
-            // RD-193 (dev-only) : conséquence forcée (palier §8.2 déterministe).
+            // RD-193 (dev-only) : conséquence forcée (palier §9.2 déterministe).
             // Null par défaut = relance live verbatim. Clampé au calibre du dé.
             if (DevForcedCritConsequenceRaw.HasValue)
             {
