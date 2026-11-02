@@ -2880,6 +2880,80 @@ table.codex-table tr:hover td, table.data-table tr:hover td {
     color: var(--text-secondary);
     font-size: 0.84rem;
 }
+/* File des prérequis : cartes à part (M5), hors logements. */
+.fab-preq-lane {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    border-top: 1px dashed rgba(245, 158, 11, 0.35);
+    padding-top: 10px;
+    margin-top: 2px;
+}
+.fab-preq-title {
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--temporal-amber);
+}
+.fab-preq {
+    position: relative;
+    border: 1px solid var(--temporal-amber);
+    border-left-width: 4px;
+    border-radius: 10px;
+    background: linear-gradient(180deg, rgba(245, 158, 11, 0.10), rgba(0, 0, 0, 0.25));
+    padding: 7px 10px 7px 12px;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+.fab-preq:hover { filter: brightness(1.25); }
+.fab-preq strong { display: block; font-size: 0.8rem; }
+.fab-preq small { display: block; font-size: 0.7rem; color: var(--text-secondary); }
+.fab-preq-cost {
+    position: absolute;
+    top: 7px;
+    right: 10px;
+    font-family: var(--font-mono);
+    font-size: 0.64rem;
+    color: var(--temporal-amber);
+    font-weight: 700;
+}
+.fab-preq-slot {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    border: 2px dashed rgba(245, 158, 11, 0.45);
+    border-radius: 10px;
+    background: transparent;
+    color: var(--text-secondary);
+    padding: 9px 12px;
+    cursor: pointer;
+    font-size: 0.78rem;
+    transition: var(--transition-smooth);
+    font-family: var(--font-body);
+    position: relative;
+}
+.fab-preq-slot:hover { border-color: var(--temporal-amber); color: var(--text-primary); }
+.fab-preq-slot .fab-plus {
+    flex: 0 0 auto;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px dashed rgba(245, 158, 11, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+.fab-preq-empty {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    font-style: italic;
+    padding: 2px 2px 4px;
+}
+.fab-opt.fam-preq { border-left-color: var(--temporal-amber); }
 .fab-hint { font-size: 0.76rem; color: var(--text-muted); margin: 8px 2px 0; }
 /* Points d'occupation sur la racine. */
 .fab-dots { display: flex; gap: 5px; margin-top: 8px; }
@@ -2958,8 +3032,29 @@ table.codex-table tr:hover td, table.data-table tr:hover td {
     cursor: pointer;
     font-family: var(--font-body);
 }
-.fab-opt:hover:not(:disabled) { background: rgba(255, 255, 255, 0.07); }
-.fab-opt:disabled { opacity: 0.5; cursor: not-allowed; }
+.fab-opt:hover:not(.is-locked) { background: rgba(255, 255, 255, 0.07); }
+.fab-opt.is-locked { opacity: 0.62; cursor: default; }
+.fab-opt-preq {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 6px;
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+}
+.fab-preq-btn {
+    background: rgba(16, 185, 129, 0.12);
+    border: 1px solid var(--matrix-emerald);
+    border-radius: 7px;
+    color: var(--text-primary);
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    cursor: pointer;
+    font-family: var(--font-body);
+}
+.fab-preq-btn:hover { background: rgba(16, 185, 129, 0.28); }
 .fab-opt.fam-offensif { border-left-color: var(--vital-ruby); }
 .fab-opt.fam-defensif { border-left-color: var(--arcane-cyan); }
 .fab-opt.fam-utilitaire { border-left-color: var(--matrix-emerald); }

@@ -3363,6 +3363,22 @@
           "suggestedAsset": "js/fabrique.js",
           "updated": "2026-11-02",
           "details": "FAIT 2026-11-02 — Remplace le casier 45 cartes toujours listées par un graphe façon node graph KT : racine ◆ (ensemble) reliée par fils SVG aux nœuds pièces et logements ⊕. Clic gauche/droit/clavier ouvre un menu contextuel (titre → ?, recherche autofocus, Entrée = premier choix filtré, Échap/clic ailleurs = annuler) qui ne propose que les choix possibles ici, l'impossible restant grisé avec sa raison. Variantes O19/U7/U11 + quantités + retirer dans le menu du nœud. Moteur compute INCHANGÉ (octet près + fuzz 5000/5000). Bogues trouvés+réparés : U11 fantôme (base ignorée), Entrée qui ignorait le filtre, focus volé pendant la frappe. Vérifié : 37/37 Chrome headless réel, 0 erreur JS, 0 ID dupliqué, livre_9.html fabrique.js?v=3."
+        },
+        {
+          "id": "RD-221",
+          "title": "Fabrique : prérequis imposés chaînés + économie additive (C2 1 XP, O1 +1 ×5, fin du plancher)",
+          "epic": "Codex sysRP",
+          "status": "done",
+          "priority": "high",
+          "order": 38,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "js/fabrique.js",
+          "updated": "2026-11-02",
+          "details": "FAIT 2026-11-02 — Menu imposé après chaque effet : propose les prérequis compatibles (pièces-piliers et/ou conditions), insiste tant qu'il en manque, chaînage racine → prérequis → effet (plink persisté). C0 exige ≥1 prérequis ; O1 devient +1 dégât cumulable ×1-5 ; C2 passe à 1 XP de base (D4 5XP, fente 5XP, hache 5XP, miroir 3XP) ; plancher 4 XP retiré (livre + moteur) ; cartes prérequis hors monnaie (0 XP) ; nom/effet scalés (+5 dégâts) et coûts totaux sur les cartes ; verrous C0+PA et variantes 1 PA ; reset complet au changement d'ensemble ; fix focus input-avant-change (O19/U7/condskill). Vérifié : 134/134 Chrome headless, fuzz 8000 cas conforme (seuls écarts = nouvelles règles), 0 erreur JS, livre_3.json aligné (C2, O1, M5, plancher)."
         }
       ]
     },

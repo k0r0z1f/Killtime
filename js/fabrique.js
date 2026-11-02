@@ -1,7 +1,7 @@
 /* ==========================================================================
    FABRIQUE DE TECHNIQUES — ATELIER GRAPHE (Livre III chap-14, Livre IX chap-40).
    Moteur pur FabriqueEngine.compute (inchangé : châssis + 1-3 pièces,
-   paliers en filière, M1-M7, hybride auto, croisé ×2, plancher 4,
+   paliers en filière, M1-M7, hybride auto, croisé ×2,
    signature 7-8, plafond PA 6, incompatibilités, prérequis) + initFabrique()
    qui monte le graphe depuis data/livre_3.json (mecaniques.fabrique).
    Graphe : 1 ensemble (racine ◆) (châssis) + pièces qui s'emboîtent dans 3 logements.
@@ -26,10 +26,10 @@ function fabNum(v) {
 
 /* Pièces à coût variable : comportement spécial par id. */
 var KIND = {
-    O1:  { t: 'n', max: 2, unit: 'crans' },
+    O1:  { t: 'n', max: 5, unit: 'crans', plural: [['dégât', 'dégâts']] },
     O13: { t: 'n', max: 3, unit: 'cases' },
     D8:  { t: 'n', max: 3, unit: 'malus' },
-    S1:  { t: 'n', max: 3, unit: 'crans' },
+    S1:  { t: 'n', max: 3, unit: 'crans', plural: [['épreuve', 'épreuves']] },
     O19: { t: 'radio', opts: [
         { v: 'partiel', label: 'Partiel ignoré (2 XP)', xp: 2, pa: 0 },
         { v: 'total', label: 'Total à −2 (3 XP)', xp: 3, pa: 0 },
@@ -46,6 +46,25 @@ var KIND = {
         { v: 'p2x', label: '2×/combat (+2 XP)', dx: 2, dpa: 0 }
     ]}
 };
+
+/* Nom/texte affiché avec cumul : '+1 dégât' ×5 → '+5 dégâts'. */
+function scaledPieceText(s, id, q) {
+    var out = String(s == null ? '' : s);
+    if ((q | 0) > 1) {
+        var done = false;
+        out = out.replace(/\+(\d+)/, function (m, n) {
+            done = true;
+            return '+' + (parseInt(n, 10) * (q | 0));
+        });
+        if (done) {
+            var pl = (KIND[id] && KIND[id].plural) || [];
+            pl.forEach(function (pair) {
+                out = out.replace(new RegExp(pair[0] + '(?!s)', 'g'), pair[1]);
+            });
+        }
+    }
+    return out;
+}
 
 /* Paliers qui REMPLACENT leur prérequis (filière payée une fois). */
 var REPLACE = { O5: ['O4'], O6: ['O5', 'O4'], O14: ['O13'] };
@@ -153,7 +172,8 @@ var FabriqueEngine = {
             var k = KIND[id];
             if (k && k.t === 'n') {
                 var xn = fabNum(p.cout_xp), pn = fabNum(p.cout_pa);
-                lines.push({ id: id, label: p.nom + ' ×' + q, xp: (xn.b + xn.d) * q, pa: (pn.b + pn.d) * q, kind: 'piece', fam: p.famille });
+                var nm = scaledPieceText(p.nom, id, q);
+                lines.push({ id: id, label: nm + (nm === String(p.nom) ? ' ×' + q : ''), xp: (xn.b + xn.d) * q, pa: (pn.b + pn.d) * q, kind: 'piece', fam: p.famille });
                 return;
             }
             var xe = fabNum(p.cout_xp), pe = fabNum(p.cout_pa);
@@ -181,12 +201,6 @@ var FabriqueEngine = {
             warnings.push('Critique élargi (O18) : prérequis filière = 3 pièces de la même arme.');
         if (has('O8') && has('O9'))
             warnings.push('Règle 5 : un seul bonus chiffré par jet — O8 et O9 ne se cumulent pas.');
-        if (ch && ch.id === 'C0') {
-            var activePA = 0;
-            lines.forEach(function (l) { if (l.kind === 'piece') activePA += l.pa; });
-            if (activePA > 0)
-                warnings.push('Ensemble passif + pièces à PA : passe en action principale, ou justifie auprès du MJ.');
-        }
         /* Incompatibilités. */
         var INCOMP = [['O7', 'O15'], ['D6', 'D1'], ['D6', 'D2'], ['D6', 'D3'], ['D6', 'D4']];
         INCOMP.forEach(function (pair) {
@@ -223,8 +237,6 @@ var FabriqueEngine = {
         lines.forEach(function (l) { xp += l.xp; pa += l.pa; });
         var crossed = false;
         if (sel.cross) { xp = xp * 2; crossed = true; }
-        var floored = false;
-        if (xp < 4 && (lines.length > 0)) { xp = 4; floored = true; }
 
         var status = 'standard';
         if (xp >= 7 && xp <= 8) {
@@ -236,8 +248,11 @@ var FabriqueEngine = {
         }
         if (xp > 8) errors.push('Plafond 8 XP : découpe en deux techniques sœurs.');
         if (pa > 6) errors.push('Activation ' + pa + ' PA > 6 : ça doit tenir dans un tour.');
+        if (ch && ch.id === 'C0' && pa > 0)
+            errors.push('Passif conditionnel : 0 PA — ni pièce ni finition à activation (pas de jet, pas d’activation).');
+        if (ch && ch.id === 'C0' && counted > 0 && !(sel.conds && sel.conds.length))
+            errors.push('Passif conditionnel : au moins 1 prérequis (carte ci-dessus).');
         if (status !== 'signature' && xp >= 4 && xp <= 6) status = 'standard';
-        if (floored) warnings.push('Plancher appliqué : une technique coûte toujours 4 XP minimum.');
 
         return { xp: xp, pa: pa, lines: lines, errors: errors, warnings: warnings,
                  familles: famKeys, majeures: majeures, crossed: crossed,
@@ -255,6 +270,52 @@ var SAVE_KEY = 'fabrique-puzzle-v1';
 
 function chainOf(id) { return CHAINS[id] || [id]; }
 function spanOf(id) { return chainOf(id).length; }
+/* Prérequis-conditions : cartes à part, hors logements, hors monnaie (0 XP). */
+var CONDITIONS = [
+    { id: 'contact', nom: 'Au contact', texte: 'Ça ne marche qu\u2019au contact.' },
+    { id: 'arme', nom: 'Arme liée en main', texte: 'Ton arme liée est en main.' },
+    { id: 'immobile', nom: 'Immobile', texte: 'Tu ne te déplaces pas ce tour.' },
+    { id: 'critique', nom: 'Sur critique', texte: 'Seulement sur un critique.' },
+    { id: 'delta', nom: 'Si Δ≥2', texte: 'Seulement si tu gagnes de 2 ou plus.' },
+    { id: 'fois', nom: '1/combat', texte: 'Une seule fois par combat.' },
+    { id: 'essouf', nom: 'Avec essoufflement', texte: 'Tu prends 1 essoufflement.' },
+    { id: 'compet', nom: 'Compétence entraînée', texte: 'Tu as l\u2019entraînement requis.' }
+];
+/* Compétences de base (Livre III, arbres FOR/AGI/CON/INT-ÉRU/CHA/INS-SAG). */
+var SKILLS = [
+    ['FOR', ['Mains Nues', "Maniement d'Arme", 'Athlétisme', 'Défense Corporelle']],
+    ['AGI', ['Acrobatie', 'Discrétion', 'Esquive', 'Armes Perçantes & Fines', 'Ballistique / Tir', 'Conduite & Pilotage', 'Subterfuge Manuel']],
+    ['CON', ['Endurance Physique', 'Cardio', 'Système Immunitaire']],
+    ['INT-ÉRU', ['Académie', 'Premiers Soins', 'Médecine Avancée', 'Ingénierie & Arcanotech', 'Penser / Stratégie']],
+    ['CHA', ['Communication', 'Intimidation', 'Leadership']],
+    ['INS-SAG', ['Observation', 'Écoute', 'Intuition', 'Nature & Survie', 'Artisanat / Connaissance']]
+];
+var DEFAULT_SKILL = "Maniement d'Arme";
+function conditionById(id) {
+    for (var i = 0; i < CONDITIONS.length; i++)
+        if (CONDITIONS[i].id === id) return CONDITIONS[i];
+    return null;
+}
+/* PA d'activation d'une pièce (base). O19/U11 : selon la variante, gérée dans le menu du nœud. */
+function piecePA(p) {
+    if (!p || p.id === 'O19' || p.id === 'U11') return 0;
+    var pn = fabNum(p.cout_pa);
+    return pn.b + pn.d;
+}
+/* IDs de pièces cités dans les prérequis ('D1 ou D3' → D1, D3 ; narratif → rien). */
+function prereqPieceIds(CAT, p) {
+    var ids = [];
+    (p.prerequis || []).forEach(function (s) {
+        var m = String(s).match(/[A-Z]+\d+/g);
+        (m || []).forEach(function (id) {
+            var found = null;
+            for (var i = 0; i < CAT.pieces.length; i++)
+                if (CAT.pieces[i].id === id) found = CAT.pieces[i];
+            if (found && ids.indexOf(id) < 0) ids.push(id);
+        });
+    });
+    return ids;
+}
 
 function normSearch(s) {
     var n = String(s == null ? '' : s).toLowerCase();
@@ -275,9 +336,9 @@ function initFabrique() {
     }
 
     /* --- État : source unique, le DOM ne fait que l'afficher. --- */
-    var state = { chassis: null, qty: {}, order: [],
+    var state = { chassis: null, qty: {}, order: [], conds: [], plink: {}, condSkill: "Maniement d'Arme",
                   o19: 'partiel', u7: '5', u11: {},
-                  narrow: 0, range: 0, zone: false, dur: 0, cross: false };
+                  range: 0, zone: false, dur: 0, cross: false };
     var menu = null; /* {kind:'slot'|'piece'|'root', id, search} */
     var nodesEl = document.getElementById('fabNodes');
     var wiresEl = document.getElementById('fabWires');
@@ -331,6 +392,19 @@ function initFabrique() {
         }
         return null;
     }
+    /* Prérequis-pièces manquants, par groupes d'alternatives (D1 ou D3 = un seul suffit). */
+    function missingGroups(p) {
+        var groups = [];
+        (p.prerequis || []).forEach(function (s) {
+            var ids = [];
+            var m = String(s).match(/[A-Z]+\d+/g) || [];
+            (m || []).forEach(function (id) {
+                if (P(id) && ids.indexOf(id) < 0) ids.push(id);
+            });
+            if (ids.length && !ids.some(present)) groups.push(ids);
+        });
+        return groups;
+    }
 
     /* Pourquoi ce choix n'est pas possible ici (ou avec un avertissement). */
     function lockInfo(p) {
@@ -338,6 +412,8 @@ function initFabrique() {
         var k = KIND[id];
         var q = state.qty[id] | 0;
         if (!state.chassis) return { lock: true, reason: 'Choisis d\u2019abord un ensemble (◆).' };
+        if (state.chassis === 'C0' && piecePA(p) > 0)
+            return { lock: true, reason: 'Ne se branche pas sur un ensemble passif (0 PA, pas d\u2019activation).' };
         if (q > 0 && !(k && k.t === 'n')) {
             if (CHAIN_KEY[id]) {
                 var cur = null;
@@ -353,7 +429,7 @@ function initFabrique() {
         if (id === 'O17' && state.chassis !== 'C3')
             return { lock: true, reason: 'O17 ne se branche que sur l\u2019ensemble Réaction.' };
         if (id === 'D8' && !present('D1') && !present('D3'))
-            return { lock: true, reason: 'Demande D1 ou D3 sur le graphe.' };
+            return { lock: false, soft: 'Demande D1 ou D3 : choisis la pièce, le menu proposera.' };
         var bad = incompWith(id);
         if (bad) return { lock: true, reason: 'Refuse ' + bad + ' (règle 8).' };
         if (p.majeure && majeuresCount() >= 2)
@@ -378,7 +454,7 @@ function initFabrique() {
         return { lock: false };
     }
 
-    function addPiece(id) {
+    function doPlace(id) {
         var p = P(id);
         if (!p) return false;
         var info = lockInfo(p);
@@ -404,18 +480,82 @@ function initFabrique() {
             state.order.push(id);
             state.qty[id] = 1;
         }
-        closeMenu();
+        return true;
+    }
+    /* Prérequis encore manquants pour cet effet : pièces-piliers et, sur passif
+       sans condition, les 8 cartes conditions. */
+    function needFor(id) {
+        var p = P(id);
+        if (!p) return [];
+        var out = [];
+        missingGroups(p).forEach(function (g) {
+            g.forEach(function (mid) { out.push({ t: 'piece', id: mid }); });
+        });
+        if (state.chassis === 'C0' && state.conds.length === 0) {
+            CONDITIONS.forEach(function (cd) { out.push({ t: 'cond', id: cd.id }); });
+        }
+        return out;
+    }
+    function firstNeed() {
+        var q = menu ? normSearch(menu.search) : '';
+        var list = (menu && menu.id) ? needFor(menu.id) : [];
+        for (var i = 0; i < list.length; i++) {
+            var o = list[i];
+            var nm = o.t === 'cond' ? (conditionById(o.id).nom + ' ' + o.id) : (P(o.id).nom + ' ' + o.id);
+            if (q && normSearch(nm).indexOf(q) < 0) continue;
+            if (o.t === 'piece') {
+                var mp = P(o.id);
+                if (!mp || lockInfo(mp).lock) continue;
+            }
+            return o;
+        }
+        return null;
+    }
+    function addPiece(id, keepOpen) {
+        if (!doPlace(id)) return false;
+        if (!keepOpen) {
+            var needs = needFor(id);
+            if (needs.length) openMenu('need', id);
+            else closeMenu();
+        }
         render();
         return true;
     }
     function removePiece(id) {
         delete state.qty[id];
+        delete state.plink[id];
+        Object.keys(state.plink).forEach(function (eid) {
+            if (state.plink[eid].t === 'piece' && state.plink[eid].id === id) delete state.plink[eid];
+        });
         state.order = state.order.filter(function (t) { return t !== id; });
         closeMenu();
         render();
     }
     function setChassis(id) {
-        state.chassis = (state.chassis === id) ? null : id;
+        fullReset(id === state.chassis ? null : id);
+        if (id) toast('Ensemble ' + id + ' : graphe reconstruit.');
+    }
+    /* Remise à zéro complète (nom/description conservés) : changer d'ensemble refait le graphe. */
+    function fullReset(chassisId) {
+        state.chassis = chassisId || null;
+        state.qty = {};
+        state.order = [];
+        state.conds = [];
+        state.plink = {};
+        state.o19 = 'partiel'; state.u7 = '5'; state.u11 = {};
+        state.condSkill = DEFAULT_SKILL;
+        state.u11auto = false;
+        var rr0 = document.querySelector('input[name="fabRange"][value="0"]');
+        if (rr0) rr0.checked = true;
+        ['fabZone', 'fabCross'].forEach(function (cid) {
+            var c = document.getElementById(cid);
+            if (c) c.checked = false;
+        });
+        ['fabDur'].forEach(function (nid) {
+            var n = document.getElementById(nid);
+            if (n) n.value = '0';
+        });
+        try { localStorage.removeItem(SAVE_KEY); } catch (e) { /* vide */ }
         closeMenu();
         render();
     }
@@ -426,6 +566,14 @@ function initFabrique() {
         if (v <= 0) { removePiece(id); return; }
         if (v > max) return;
         state.qty[id] = v;
+        render();
+    }
+    function removeCond(id) {
+        state.conds = state.conds.filter(function (x) { return x !== id; });
+        Object.keys(state.plink).forEach(function (eid) {
+            if (state.plink[eid].t === 'cond' && state.plink[eid].id === id) delete state.plink[eid];
+        });
+        closeMenu();
         render();
     }
     function toggleU11(v) {
@@ -446,16 +594,20 @@ function initFabrique() {
         }
         if (!any && (state.qty.U11 | 0) > 0 && state.u11auto) {
             delete state.qty.U11;
+            delete state.plink.U11;
             state.order = state.order.filter(function (t) { return t !== 'U11'; });
             state.u11auto = false;
         }
+        if (present('U11') && needFor('U11').length) openMenu('need', 'U11');
         render();
     }
 
     /* --- Lecture des finitions (dans le DOM, construites une fois). --- */
     function buildSel() {
+        /* Les prérequis-conditions sont hors monnaie : ni coût, ni réduction. */
         var sel = { chassis: state.chassis, qty: {}, o19: state.o19, u7: state.u7, u11: {},
                     narrow: 0, range: 0, zone: false, dur: 0, cross: false };
+        sel.conds = state.conds.slice();
         Object.keys(state.qty).forEach(function (id) { sel.qty[id] = state.qty[id]; });
         Object.keys(state.u11).forEach(function (v) { if (state.u11[v]) sel.u11[v] = true; });
         var rr = document.querySelector('input[name="fabRange"]:checked');
@@ -464,8 +616,6 @@ function initFabrique() {
         sel.zone = !!(zo && zo.checked);
         var du = document.getElementById('fabDur');
         sel.dur = du ? Math.max(0, Math.min(2, parseInt(du.value, 10) || 0)) : 0;
-        var na = document.getElementById('fabNarrow');
-        sel.narrow = na ? Math.max(0, parseInt(na.value, 10) || 0) : 0;
         var cx = document.getElementById('fabCross');
         sel.cross = !!(cx && cx.checked);
         return sel;
@@ -493,12 +643,8 @@ function initFabrique() {
         dn.className = 'tool-input fab-input'; dn.style.width = '90px';
         d.appendChild(dn);
         mod.appendChild(d);
-        var n = el('div', 'fab-mod', '<b>Conditions étroites (M5 · −1 XP chacune)</b>');
-        var nr = document.createElement('input');
-        nr.type = 'number'; nr.min = '0'; nr.max = '4'; nr.value = '0'; nr.id = 'fabNarrow';
-        nr.className = 'tool-input fab-input'; nr.style.width = '90px';
-        n.appendChild(nr);
-        var nh = el('span', '', 'Critique, Δ≥2, immobile, 1/combat… (plancher 1 XP/pièce)');
+        var n = el('div', 'fab-mod', '<b>Prérequis (conditions · 0 XP)</b>');
+        var nh = el('span', '', 'Choisis des cartes <strong>Prérequis</strong> dans le graphe ci-dessus (gratuites, hors logements).');
         nh.style.cssText = 'font-size:0.72rem;opacity:.75;display:block;margin-top:4px;';
         n.appendChild(nh);
         mod.appendChild(n);
@@ -507,6 +653,19 @@ function initFabrique() {
         cr.appendChild(cl);
         mod.appendChild(cr);
     }
+
+    /* Coût affiché sur le nœud : total réel pour les cumulables (×n), base sinon. */
+    function nodeCost(p, id, isPa) {
+        var k = KIND[id];
+        var q = state.qty[id] | 0;
+        if (k && k.t === 'n' && q > 1) {
+            var n = fabNum(isPa ? p.cout_pa : p.cout_xp);
+            return String((n.b + n.d) * q);
+        }
+        return isPa ? p.cout_pa : p.cout_xp;
+    }
+    function nodeCostXp(p, id) { return nodeCost(p, id, false); }
+    function nodeCostPa(p, id) { return nodeCost(p, id, true); }
 
     /* --- Rendu du graphe : racine ◆ + nœuds pièces + logements ⊕, reliés. --- */
     var FAM_COLOR = { offensif: '#f43f5e', defensif: '#38bdf8', utilitaire: '#10b981', social: '#f59e0b' };
@@ -567,6 +726,28 @@ function initFabrique() {
                 'Le menu ne propose que les choix possibles ici.');
             branchcol.appendChild(hint);
         }
+        /* File des prérequis : cartes à part, avant les effets (0 XP, hors logements).
+           Pas d'ajout manuel : elles apparaissent quand un effet les exige. */
+        var lane = el('div', 'fab-preq-lane', '');
+        lane.appendChild(el('div', 'fab-preq-title', 'Prérequis (conditions · 0 XP · hors logements)'));
+        state.conds.forEach(function (cid) {
+            var cd = conditionById(cid);
+            if (!cd) return;
+            var card = el('div', 'fab-preq', '');
+            card.setAttribute('role', 'button');
+            card.setAttribute('tabindex', '0');
+            card.dataset.node = 'preq';
+            card.dataset.id = cid;
+            var sub = esc(cd.texte);
+            if (cid === 'compet') sub += ' — <strong>' + esc(state.condSkill) + '</strong>';
+            card.innerHTML = '<strong>' + esc(cd.nom) + '</strong>' +
+                '<span class="fab-preq-cost">0 XP</span>' +
+                '<small>' + sub + '</small>';
+            lane.appendChild(card);
+        });
+        if (!state.conds.length)
+            lane.appendChild(el('div', 'fab-preq-empty', 'Elles apparaîtront ici quand un effet les exigera.'));
+        branchcol.appendChild(lane);
         state.order.forEach(function (id) {
             var p = P(id);
             if (!p) return;
@@ -575,12 +756,14 @@ function initFabrique() {
             box.setAttribute('tabindex', '0');
             box.dataset.node = 'piece';
             box.dataset.id = id;
-            var head = '<div class="fab-placed-head"><strong>' + esc(p.nom) + '</strong>' +
-                '<span class="fab-placed-cost">' + esc(p.cout_xp) + ' XP + ' + esc(p.cout_pa) + ' PA</span></div>';
-            var sub = esc(p.cond || p.texte || '');
+            var qq = state.qty[id] | 0;
+            var nm = scaledPieceText(p.nom, id, qq);
+            var head = '<div class="fab-placed-head"><strong>' + esc(nm) + '</strong>' +
+                '<span class="fab-placed-cost">' + esc(nodeCostXp(p, id)) + ' XP + ' + esc(nodeCostPa(p, id)) + ' PA</span></div>';
+            var sub = esc(p.cond || scaledPieceText(p.texte, id, qq) || '');
             var vs = variantSummary(id);
             if (vs) sub += ' — ' + esc(vs);
-            if ((state.qty[id] | 0) > 1) sub += ' — ×' + (state.qty[id] | 0);
+            if (qq > 1 && sub.indexOf('×' + qq) < 0 && nm === String(p.nom)) sub += ' — ×' + qq;
             var flags = '<div class="fab-placed-flags">';
             chainOf(id).forEach(function (x) { flags += '<span class="fab-flag">' + esc(x) + '</span>'; });
             if (p.majeure) flags += '<span class="fab-flag star">★ majeure</span>';
@@ -611,27 +794,67 @@ function initFabrique() {
             if (gr.width <= 0) return;
             wiresEl.setAttribute('viewBox', '0 0 ' + gr.width + ' ' + gr.height);
             var rb = root.getBoundingClientRect();
-            var x1 = rb.right - gr.left, y1 = rb.top + rb.height / 2 - gr.top;
-            var rows = branchcol.children;
-            for (var ri = 0; ri < rows.length; ri++) {
-                var bb = rows[ri].getBoundingClientRect();
-                var x2 = bb.left - gr.left, y2 = bb.top + bb.height / 2 - gr.top;
-                var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-                var isSlot = rows[ri].dataset && rows[ri].dataset.node === 'slot';
-                var fam = null;
-                if (!isSlot) {
-                    var pid = rows[ri].dataset ? rows[ri].dataset.id : null;
-                    var pp = pid ? P(pid) : null;
-                    fam = pp ? FAM_COLOR[pp.famille] : null;
+            var rx = rb.right - gr.left, ry = rb.top + rb.height / 2 - gr.top;
+            var elByKey = { 'root:': root };
+            var items = [];
+            for (var ri = 0; ri < branchcol.children.length; ri++) {
+                var row = branchcol.children[ri];
+                if (row.classList && row.classList.contains('fab-preq-lane')) {
+                    for (var ci = 0; ci < row.children.length; ci++) {
+                        var cell = row.children[ci];
+                        if (cell.dataset && cell.dataset.node === 'preq') {
+                            elByKey['preq:' + cell.dataset.id] = cell;
+                            items.push({ elm: cell, from: 'root:', color: '#f59e0b', dash: false });
+                        }
+                    }
+                } else if (row.dataset && (row.dataset.node === 'piece' || row.dataset.node === 'slot')) {
+                    items.push(row);
                 }
+            }
+            items.forEach(function (it) {
+                var elm = it.elm || it;
+                var bb = elm.getBoundingClientRect();
+                var x2 = bb.left - gr.left, y2 = bb.top + bb.height / 2 - gr.top;
+                var x1 = rx, y1 = ry;
+                var stroke = null, dash = false;
+                if (it.elm) {
+                    stroke = it.color;
+                } else {
+                    var nd = elm.dataset.node;
+                    if (nd === 'slot') { dash = true; }
+                    else if (nd === 'piece') {
+                        var pid = elm.dataset.id;
+                        var pp = pid ? P(pid) : null;
+                        stroke = pp ? FAM_COLOR[pp.famille] : null;
+                        var tgt = linkTarget(pid);
+                        if (tgt) {
+                            var src = elByKey[tgt.node + ':' + tgt.id];
+                            if (src && src !== elm) {
+                                var sb = src.getBoundingClientRect();
+                                x1 = sb.right - gr.left; y1 = sb.top + sb.height / 2 - gr.top;
+                                if (tgt.node === 'preq') stroke = '#f59e0b';
+                            }
+                        }
+                    }
+                }
+                var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
                 path.setAttribute('d', 'M ' + x1 + ' ' + y1 + ' C ' + (x1 + 50) + ' ' + y1 + ', ' + (x2 - 50) + ' ' + y2 + ', ' + x2 + ' ' + y2);
                 path.setAttribute('fill', 'none');
-                path.setAttribute('stroke', fam || 'rgba(255,255,255,0.22)');
+                path.setAttribute('stroke', stroke || 'rgba(255,255,255,0.22)');
                 path.setAttribute('stroke-width', '2');
-                if (isSlot) path.setAttribute('stroke-dasharray', '5 4');
+                if (dash) path.setAttribute('stroke-dasharray', '5 4');
                 wiresEl.appendChild(path);
-            }
+            });
         } catch (e) { /* mesure indisponible : graphe sans fils */ }
+    }
+
+    /* Prérequis dont dépend cet effet : {t:'cond'|'piece', id} ou null. */
+    function linkTarget(id) {
+        var L = state.plink[id];
+        if (!L) return null;
+        if (L.t === 'cond' && state.conds.indexOf(L.id) >= 0) return { node: 'preq', id: L.id };
+        if (L.t === 'piece' && present(L.id)) return { node: 'piece', id: L.id };
+        return null;
     }
 
     /* --- Menu contextuel : que les choix possibles ici. --- */
@@ -658,8 +881,7 @@ function initFabrique() {
     }
     function optRow(o, fam) {
         var p = o.p, info = o.info;
-        var b = el('button', 'fab-opt fam-' + (fam || p.famille), '');
-        b.type = 'button';
+        var b = el('div', 'fab-opt fam-' + (fam || p.famille) + (info.lock ? ' is-locked' : ''), '');
         var h = '<span class="fab-opt-top"><strong>' + esc(p.nom) + '</strong>' +
             '<span class="fab-opt-cost">' + esc(p.id) + ' · ' + esc(p.cout_xp) + ' XP + ' + esc(p.cout_pa) + ' PA</span></span>';
         if (p.prerequis && p.prerequis.length)
@@ -667,13 +889,18 @@ function initFabrique() {
         if (p.incompatible && p.incompatible.length)
             h += '<div class="fab-opt-req"><span class="rf">Refuse ' + esc(p.incompatible.join(', ')) + '</span></div>';
         if (info.lock) {
-            b.disabled = true;
             h += '<div class="fab-opt-lock">🔒 ' + esc(info.reason) + '</div>';
         } else if (info.soft) {
             b.dataset.pick = p.id;
+            b.tabIndex = 0;
             h += '<div class="fab-opt-soft">⚠ ' + esc(info.soft) + '</div>';
         } else {
             b.dataset.pick = p.id;
+            b.tabIndex = 0;
+        }
+        /* O17 exige un autre ensemble : proposer le passage, pas une carte. */
+        if (p.id === 'O17' && state.chassis !== 'C3') {
+            h += '<div class="fab-opt-preq"><span>Brancher :</span> <button type="button" class="fab-preq-btn" data-preens="C3">◆ Ensemble Réaction</button></div>';
         }
         b.innerHTML = h;
         return b;
@@ -683,7 +910,9 @@ function initFabrique() {
         ctxEl.innerHTML = '';
         var head = el('div', 'fab-ctx-head', '');
         var title = menu.kind === 'root' ? '◆ Ensemble → ?' :
-                    menu.kind === 'piece' ? esc(menu.id || '') + ' → ?' : '⊕ Logement → ?';
+                    menu.kind === 'piece' ? esc(menu.id || '') + ' → ?' :
+                    menu.kind === 'need' ? 'Prérequis pour ' + esc(menu.id || '') + ' → ?' :
+                    menu.kind === 'preq' ? 'Prérequis ' + esc(menu.id || '') + ' → ?' : '⊕ Logement → ?';
         head.innerHTML = '<span class="fab-ctx-title">' + title + '</span>';
         var x0 = el('button', 'fab-ctx-close', '✕');
         x0.type = 'button';
@@ -743,6 +972,110 @@ function initFabrique() {
             });
             if (!shown) list.appendChild(el('div', 'fab-ctx-empty', '(aucun choix pour ce filtre — efface ta recherche)'));
             list.appendChild(el('div', 'fab-ctx-foot', 'Échap = annuler · Entrée = premier choix possible'));
+        } else if (menu.kind === 'need') {
+            /* Prérequis exigé par l'effet qui vient d'être posé : le joueur en choisit un.
+               La carte part en output de l'ensemble, l'effet en output de la carte. */
+            var effP = P(menu.id);
+            if (!effP) { closeMenu(); return; }
+            list.appendChild(el('div', 'fab-opt-sub', '« ' + esc(effP.nom) + ' » exige un prérequis — choisis-en un.'));
+            var s4 = document.createElement('input');
+            s4.className = 'fab-ctx-search';
+            s4.setAttribute('data-search', '1');
+            s4.placeholder = 'Filtrer…';
+            s4.value = menu.search;
+            ctxEl.appendChild(s4);
+            var q4 = normSearch(menu.search);
+            var needs = needFor(menu.id);
+            var nshown = 0;
+            var nGroups = { piece: [], cond: [] };
+            needs.forEach(function (o) { nGroups[o.t].push(o); });
+            if (nGroups.piece.length) {
+                list.appendChild(el('div', 'fab-ctx-group', 'Pièces requises'));
+                nGroups.piece.forEach(function (o) {
+                    var mp = P(o.id);
+                    if (!mp) return;
+                    if (q4 && normSearch(mp.nom + ' ' + o.id).indexOf(q4) < 0) return;
+                    nshown++;
+                    var li = lockInfo(mp);
+                    var nb = el('div', 'fab-opt fam-' + mp.famille + (li.lock ? ' is-locked' : ''), '');
+                    var nh = '<span class="fab-opt-top"><strong>' + esc(mp.nom) + '</strong>' +
+                        '<span class="fab-opt-cost">' + esc(o.id) + ' · ' + esc(mp.cout_xp) + ' XP + ' + esc(mp.cout_pa) + ' PA</span></span>';
+                    if (mp.prerequis && mp.prerequis.length)
+                        nh += '<div class="fab-opt-req"><span class="rq">Demande ' + esc(mp.prerequis.join(', ')) + '</span></div>';
+                    if (li.lock) {
+                        nh += '<div class="fab-opt-lock">🔒 ' + esc(li.reason) + '</div>';
+                    } else {
+                        nb.dataset.needpick = 'piece:' + o.id;
+                        nb.tabIndex = 0;
+                        if (li.soft) nh += '<div class="fab-opt-soft">⚠ ' + esc(li.soft) + '</div>';
+                    }
+                    nb.innerHTML = nh;
+                    list.appendChild(nb);
+                });
+            }
+            if (nGroups.cond.length) {
+                list.appendChild(el('div', 'fab-ctx-group', 'Conditions (gratuites, hors logements)'));
+                nGroups.cond.forEach(function (o) {
+                    var cd = conditionById(o.id);
+                    if (!cd) return;
+                    if (q4 && normSearch(cd.nom + ' ' + o.id).indexOf(q4) < 0) return;
+                    nshown++;
+                    var placed = state.conds.indexOf(o.id) >= 0;
+                    var cb2 = el('div', 'fab-opt fam-preq' + (placed ? ' is-locked' : ''), '');
+                    var sub2 = esc(cd.texte);
+                    if (o.id === 'compet') sub2 += ' — ' + esc(state.condSkill);
+                    var ch2 = '<span class="fab-opt-top"><strong>' + esc(cd.nom) + '</strong>' +
+                        '<span class="fab-opt-cost">0 XP</span></span>' +
+                        '<div class="fab-opt-sub">' + sub2 + '</div>';
+                    if (placed) {
+                        ch2 += '<div class="fab-opt-lock">✓ déjà branchée — clique pour lier l\u2019effet</div>';
+                        cb2.dataset.needpick = 'cond:' + o.id;
+                        cb2.tabIndex = 0;
+                    } else {
+                        cb2.dataset.needpick = 'cond:' + o.id;
+                        cb2.tabIndex = 0;
+                    }
+                    cb2.innerHTML = ch2;
+                    list.appendChild(cb2);
+                });
+            }
+            if (!nshown) list.appendChild(el('div', 'fab-ctx-empty', '(rien à choisir — reviens en arrière)'));
+            list.appendChild(el('div', 'fab-ctx-foot', 'Échap = annuler (la fiche signalera le manque) · Entrée = premier'));
+        } else if (menu.kind === 'preq') {
+            var cdp = conditionById(menu.id);
+            if (!cdp) { closeMenu(); return; }
+            list.appendChild(el('div', 'fab-opt-sub', esc(cdp.nom) + ' — ' + esc(cdp.texte)));
+            if (menu.id === 'compet') {
+                list.appendChild(el('div', 'fab-ctx-sec', 'Entraînement requis'));
+                var slab = el('label', '', 'Compétence ');
+                slab.style.cssText = 'font-size:0.78rem;display:flex;gap:6px;align-items:baseline;';
+                var ssel = document.createElement('select');
+                ssel.className = 'tool-select fab-input';
+                ssel.setAttribute('data-condskill', '1');
+                SKILLS.forEach(function (grp) {
+                    var og = document.createElement('optgroup');
+                    og.label = grp[0];
+                    grp[1].forEach(function (nm) {
+                        var op = document.createElement('option');
+                        op.value = nm; op.textContent = nm;
+                        if (state.condSkill === nm) op.selected = true;
+                        og.appendChild(op);
+                    });
+                    ssel.appendChild(og);
+                });
+                slab.appendChild(ssel);
+                var sv = el('div', 'fab-ctx-var', '');
+                sv.appendChild(slab);
+                list.appendChild(sv);
+            }
+            list.appendChild(el('div', 'fab-ctx-sec', 'Nœud'));
+            var prr = el('div', 'fab-ctx-row', '');
+            var pdel = el('button', 'fab-mini-btn', '⤴ Retirer ce prérequis');
+            pdel.type = 'button';
+            pdel.dataset.uncond = cdp.id;
+            prr.appendChild(pdel);
+            list.appendChild(prr);
+            list.appendChild(el('div', 'fab-ctx-foot', '0 XP · hors logements'));
         } else if (menu.kind === 'piece') {
             var p = P(menu.id);
             if (!p) { closeMenu(); return; }
@@ -752,11 +1085,14 @@ function initFabrique() {
                 list.appendChild(el('div', 'fab-ctx-sec', 'Variante'));
                 var vv = el('div', 'fab-ctx-var', '');
                 if (p.id === 'O19') {
+                    var c0 = state.chassis === 'C0';
                     KIND.O19.opts.forEach(function (o) {
+                        var dis = (c0 && (o.pa | 0) > 0) ? ' disabled title="1 PA : pas sur un ensemble passif."' : '';
                         var l = el('label', '', '<input type="radio" name="fabm_O19" value="' + o.v + '"' +
-                            (state.o19 === o.v ? ' checked' : '') + ' data-var-o19="1"> ' + esc(o.label));
+                            (state.o19 === o.v ? ' checked' : '') + dis + ' data-var-o19="1"> ' + esc(o.label));
                         vv.appendChild(l);
                     });
+                    if (c0) vv.appendChild(el('div', 'fab-ctx-foot', 'Suppression (1 PA) : pas sur un passif.'));
                 } else if (p.id === 'U7') {
                     var lab = el('label', '', 'Palier ');
                     var sel7 = document.createElement('select');
@@ -771,11 +1107,14 @@ function initFabrique() {
                     lab.appendChild(sel7);
                     vv.appendChild(lab);
                 } else if (p.id === 'U11') {
+                    var c0u = state.chassis === 'C0';
                     KIND.U11.opts.forEach(function (o) {
+                        var dis = (c0u && (o.dpa | 0) > 0) ? ' disabled title="+1 PA : pas sur un ensemble passif."' : '';
                         var l = el('label', '', '<input type="checkbox" data-var-u11="1" data-sub="' + o.v + '"' +
-                            (state.u11[o.v] ? ' checked' : '') + '> ' + esc(o.label));
+                            (state.u11[o.v] ? ' checked' : '') + dis + '> ' + esc(o.label));
                         vv.appendChild(l);
                     });
+                    if (c0u) vv.appendChild(el('div', 'fab-ctx-foot', 'Palier +1 PA : pas sur un passif.'));
                 }
                 list.appendChild(vv);
             }
@@ -794,6 +1133,43 @@ function initFabrique() {
             del.dataset.unfit = p.id;
             rr2.appendChild(del);
             list.appendChild(rr2);
+            /* Prérequis manquants : cartes à rebrancher sans quitter le menu. */
+            if (p.id === 'O17' && state.chassis !== 'C3') {
+                list.appendChild(el('div', 'fab-ctx-sec', 'Prérequis'));
+                var er = el('div', 'fab-ctx-row', '');
+                var eb = el('button', 'fab-preq-btn', '◆ Brancher l\u2019ensemble Réaction');
+                eb.type = 'button';
+                eb.dataset.preens = 'C3';
+                er.appendChild(eb);
+                list.appendChild(er);
+            } else {
+                var miss = [];
+                missingGroups(p).forEach(function (g) {
+                    g.forEach(function (mid) { if (miss.indexOf(mid) < 0) miss.push(mid); });
+                });
+                if (miss.length) {
+                    list.appendChild(el('div', 'fab-ctx-sec', 'Prérequis à rebrancher'));
+                    var pr = el('div', 'fab-ctx-row', '');
+                    miss.forEach(function (mid) {
+                        var mp = P(mid);
+                        var pb = el('button', 'fab-preq-btn', '⤓ ' + mid + ' — ' + (mp ? mp.nom : ''));
+                        pb.type = 'button';
+                        pb.dataset.prepick = mid;
+                        pr.appendChild(pb);
+                    });
+                    list.appendChild(pr);
+                }
+            }
+            /* Prérequis encore exigé : rouvre le menu imposé. */
+            if (needFor(p.id).length) {
+                list.appendChild(el('div', 'fab-ctx-sec', 'Prérequis manquant'));
+                var nr = el('div', 'fab-ctx-row', '');
+                var nb = el('button', 'fab-preq-btn', '⊕ Choisir le prérequis requis');
+                nb.type = 'button';
+                nb.dataset.needfor = p.id;
+                nr.appendChild(nb);
+                list.appendChild(nr);
+            }
             var meta = [];
             if (p.seuil) meta.push('Seuil : ' + p.seuil);
             if (p.portee) meta.push('Portée : ' + p.portee);
@@ -847,9 +1223,11 @@ function initFabrique() {
                 chainOf(id).forEach(function (x) { var q = P(x); if (q && q.seuil) hasSeuil = true; });
             });
             if (!narrow && !hasSeuil)
-                r.warnings.push('Opportunité : ajoute un déclencheur étroit (Δ≥2, critique, esquive…) ou une condition M5.');
+                r.warnings.push('Opportunité : ajoute un déclencheur étroit (Δ≥2, critique, esquive…) ou une carte Prérequis.');
         }
         if (menu && menu.kind === 'piece' && !present(menu.id)) menu = null;
+        if (menu && menu.kind === 'need' && !present(menu.id)) menu = null;
+        if (menu && menu.kind === 'preq' && state.conds.indexOf(menu.id) < 0) menu = null;
         renderGraph(sel);
         renderMenu();
         var name = (document.getElementById('fabName') || {}).value || '';
@@ -892,9 +1270,9 @@ function initFabrique() {
 
     /* --- Presets (montages vérifiés du Livre III §14). --- */
     var PRESETS = {
-        hache: { chassis: 'C0', qty: { O2: 1 }, name: 'Hache de Guerre (canonique)', desc: 'Sur succès net : +2 dégâts.' },
-        suture: { chassis: 'C0', qty: { U1: 1 }, name: 'Suture Réflexe (canonique)', desc: 'Les premiers soins d’urgence passent de 3 à 2 PA.' },
-        miroir: { chassis: 'C3', qty: { D1: 1 }, narrow: 1, name: 'Lame Miroir (canonique)', desc: 'Tu pares les tirs laser au contact (Delta ≥ 0).' },
+        hache: { chassis: 'C0', qty: { O2: 1 }, conds: ['arme'], plink: { O2: { t: 'cond', id: 'arme' } }, name: 'Hache de Guerre (canonique)', desc: 'Sur succès net : +2 dégâts.' },
+        suture: { chassis: 'C0', qty: { U1: 1 }, conds: ['contact'], plink: { U1: { t: 'cond', id: 'contact' } }, name: 'Suture Réflexe (canonique)', desc: 'Les premiers soins d’urgence passent de 3 à 2 PA.' },
+        miroir: { chassis: 'C3', qty: { D1: 1 }, conds: ['contact'], plink: { D1: { t: 'cond', id: 'contact' } }, name: 'Lame Miroir (canonique)', desc: 'Tu pares les tirs laser au contact (Delta ≥ 0).' },
         fente: { chassis: 'C2', qty: { O8: 1, O10: 1 }, name: 'Fente Basse', desc: 'Tu passes sous la garde et tu fauches le jarret.' }
     };
     function applyPreset(key) {
@@ -908,8 +1286,15 @@ function initFabrique() {
             state.order.push(id);
         });
         state.o19 = 'partiel'; state.u7 = '5'; state.u11 = {};
-        var na = document.getElementById('fabNarrow');
-        if (na) na.value = String(p.narrow || 0);
+        state.conds = (p.conds || []).filter(function (id) { return !!conditionById(id); });
+        state.plink = {};
+        Object.keys(p.plink || {}).forEach(function (eid) {
+            var L = p.plink[eid];
+            if (L && (state.qty[eid] | 0) > 0) {
+                if (L.t === 'cond' && state.conds.indexOf(L.id) >= 0) state.plink[eid] = { t: 'cond', id: L.id };
+                if (L.t === 'piece' && present(L.id)) state.plink[eid] = { t: 'piece', id: L.id };
+            }
+        });
         var fn = document.getElementById('fabName');
         if (fn) fn.value = p.name;
         var fd = document.getElementById('fabDesc');
@@ -922,9 +1307,10 @@ function initFabrique() {
         try {
             var sel = buildSel();
             localStorage.setItem(SAVE_KEY, JSON.stringify({
-                chassis: state.chassis, qty: state.qty, order: state.order,
+                chassis: state.chassis, qty: state.qty, order: state.order, conds: state.conds, plink: state.plink,
+                condSkill: state.condSkill,
                 o19: sel.o19, u7: sel.u7, u11: sel.u11,
-                narrow: sel.narrow, range: sel.range, zone: sel.zone, dur: sel.dur, cross: sel.cross,
+                range: sel.range, zone: sel.zone, dur: sel.dur, cross: sel.cross,
                 name: (document.getElementById('fabName') || {}).value || '',
                 desc: (document.getElementById('fabDesc') || {}).value || ''
             }));
@@ -950,6 +1336,28 @@ function initFabrique() {
             if (typeof d.o19 === 'string') state.o19 = d.o19;
             if (typeof d.u7 === 'string') state.u7 = d.u7;
             if (d.u11 && typeof d.u11 === 'object') state.u11 = d.u11;
+            if (typeof d.condSkill === 'string' && d.condSkill) {
+                var okSkill = false;
+                SKILLS.forEach(function (grp) { if (grp[1].indexOf(d.condSkill) >= 0) okSkill = true; });
+                if (okSkill) state.condSkill = d.condSkill;
+            }
+            if (d.conds && d.conds.forEach) {
+                d.conds.forEach(function (id) {
+                    if (conditionById(id) && state.conds.indexOf(id) < 0) state.conds.push(id);
+                });
+            } else if ((d.narrow | 0) > 0) {
+                /* Migration des sauvegardes à compteur : les premières conditions. */
+                for (var mi = 0; mi < CONDITIONS.length && state.conds.length < (d.narrow | 0); mi++)
+                    state.conds.push(CONDITIONS[mi].id);
+            }
+            if (d.plink && typeof d.plink === 'object') {
+                Object.keys(d.plink).forEach(function (eid) {
+                    var L = d.plink[eid];
+                    if (!L || (state.qty[eid] | 0) <= 0) return;
+                    if (L.t === 'cond' && state.conds.indexOf(L.id) >= 0) state.plink[eid] = { t: 'cond', id: L.id };
+                    if (L.t === 'piece' && present(L.id)) state.plink[eid] = { t: 'piece', id: L.id };
+                });
+            }
             var fn = document.getElementById('fabName');
             if (fn && d.name) fn.value = d.name;
             var fd = document.getElementById('fabDesc');
@@ -966,8 +1374,6 @@ function initFabrique() {
         if (zo) zo.checked = !!d.zone;
         var du = document.getElementById('fabDur');
         if (du) du.value = String(d.dur | 0);
-        var na = document.getElementById('fabNarrow');
-        if (na) na.value = String(d.narrow | 0);
         var cx = document.getElementById('fabCross');
         if (cx) cx.checked = !!d.cross;
         state._rest = null;
@@ -978,6 +1384,40 @@ function initFabrique() {
     function up(t, sel) { return (t && t.closest) ? t.closest(sel) : null; }
     root.addEventListener('click', function (ev) {
         var t = ev.target;
+        var pre = up(t, '[data-prepick]');
+        if (pre) {
+            if (addPiece(pre.dataset.prepick, true) && menu && menu.kind === 'piece')
+                state.plink[menu.id] = { t: 'piece', id: pre.dataset.prepick };
+            render();
+            return;
+        }
+        var pree = up(t, '[data-preens]');
+        if (pree) { setChassis(pree.dataset.preens); return; }
+        var unc = up(t, '[data-uncond]');
+        if (unc) { removeCond(unc.dataset.uncond); return; }
+        var nd = up(t, '[data-needpick]');
+        if (nd) {
+            var effId = menu && menu.id;
+            var parts = String(nd.dataset.needpick).split(':');
+            var ok2 = false;
+            if (parts[0] === 'cond') {
+                if (conditionById(parts[1])) {
+                    if (state.conds.indexOf(parts[1]) < 0) state.conds.push(parts[1]);
+                    ok2 = true;
+                }
+            } else {
+                ok2 = doPlace(parts[1]);
+            }
+            if (ok2 && effId) {
+                state.plink[effId] = { t: parts[0], id: parts[1] };
+                if (needFor(effId).length) openMenu('need', effId);
+                else closeMenu();
+            }
+            render();
+            return;
+        }
+        var nfd = up(t, '[data-needfor]');
+        if (nfd) { openMenu('need', nfd.dataset.needfor, ev.clientX, ev.clientY); return; }
         var pick = up(t, '[data-pick]');
         if (pick) { addPiece(pick.dataset.pick); return; }
         var ens = up(t, '[data-ens-pick]');
@@ -996,34 +1436,35 @@ function initFabrique() {
             return;
         }
         if (t.id === 'fabBtnReset' || up(t, '#fabBtnReset')) {
-            state.chassis = null;
-            state.qty = {};
-            state.order = [];
-            state.o19 = 'partiel'; state.u7 = '5'; state.u11 = {};
-            state.u11auto = false;
-            var rr0 = document.querySelector('input[name="fabRange"][value="0"]');
-            if (rr0) rr0.checked = true;
-            ['fabZone', 'fabCross'].forEach(function (id) {
-                var c = document.getElementById(id);
-                if (c) c.checked = false;
-            });
-            ['fabDur', 'fabNarrow'].forEach(function (id) {
-                var n = document.getElementById(id);
-                if (n) n.value = '0';
-            });
-            try { localStorage.removeItem(SAVE_KEY); } catch (e) { /* vide */ }
-            closeMenu();
-            render();
+            fullReset(null);
             return;
         }
         if (t.id === 'fabBtnCopy' || up(t, '#fabBtnCopy')) {
             var r = render();
+            var condNames = state.conds.map(function (cid) {
+                var cd = conditionById(cid);
+                if (!cd) return cid;
+                return cd.id === 'compet' ? cd.nom + ' (' + state.condSkill + ')' : cd.nom;
+            });
             var txt = '=== TECHNIQUE MAISON (Fabrique, Livre III §14) ===\n' +
                 'Nom : ' + prev.name.textContent + '\n' +
                 'Nature : ' + prev.type.textContent + '\n' +
                 'Activation : ' + r.pa + ' PA · Création : ' + r.xp + ' XP' + (r.crossed ? ' (croisé)' : '') + '\n\n' +
-                'Description : ' + prev.desc.textContent + '\n\nDétail :\n' +
-                r.lines.map(function (l) { return '- ' + l.label + ' (' + l.xp + ' XP + ' + l.pa + ' PA)'; }).join('\n') +
+                'Description : ' + prev.desc.textContent + '\n\n' +
+                'Prérequis : ' + (condNames.length ? condNames.join(', ') + ' (gratuits)' : 'aucun') + '\n\nDétail :\n' +
+                r.lines.map(function (l) {
+                    var lk = state.plink[l.id];
+                    var via = '';
+                    if (lk) {
+                        if (lk.t === 'cond') {
+                            var cd = conditionById(lk.id);
+                            via = ' — via ' + (cd ? cd.nom : lk.id);
+                        } else {
+                            via = ' — via ' + lk.id;
+                        }
+                    }
+                    return '- ' + l.label + ' (' + l.xp + ' XP + ' + l.pa + ' PA)' + via;
+                }).join('\n') +
                 (r.errors.length ? '\n\nÀ corriger :\n' + r.errors.map(function (e) { return '- ' + e; }).join('\n') : '') +
                 (r.warnings.length ? '\n\nNotes MJ :\n' + r.warnings.map(function (w) { return '- ' + w; }).join('\n') : '') +
                 '\n============================================';
@@ -1044,9 +1485,11 @@ function initFabrique() {
     root.addEventListener('change', function (ev) {
         var t = ev.target;
         if (!t || !t.dataset) return;
+        if (t.dataset.condskill) { state.condSkill = t.value; render(); return; }
         if (t.dataset.varO19) { state.o19 = t.value; render(); return; }
         if (t.dataset.varU7) { state.u7 = t.value; render(); return; }
         if (t.dataset.varU11) { toggleU11(t.dataset.sub); return; }
+        if (t.classList && t.classList.contains('fab-input')) { render(); return; }
     });
     root.addEventListener('input', function (ev) {
         var t = ev.target;
@@ -1056,23 +1499,38 @@ function initFabrique() {
             renderMenu(undefined, undefined, true);
             return;
         }
+        /* Listes et cases : on attend le 'change' (commit). Re-rendre ici
+           détruirait le contrôle en pleine interaction et le 'change'
+           partirait dans le vide. */
+        if (t.tagName === 'SELECT' || t.type === 'checkbox' || t.type === 'radio') return;
         if (t.classList && t.classList.contains('fab-input')) { render(); return; }
         if (t && (t.id === 'fabName' || t.id === 'fabDesc')) render();
     });
     document.addEventListener('keydown', function (ev) {
         if (ev.key === 'Escape' && menu) { closeMenu(); return; }
+        if ((ev.key === 'Enter' || ev.key === ' ') && ev.target && ev.target.dataset && (ev.target.dataset.pick || ev.target.dataset.needpick)) {
+            ev.target.click();
+            ev.preventDefault();
+            return;
+        }
         if ((ev.key === 'Enter' || ev.key === ' ') && ev.target && ev.target.dataset && ev.target.dataset.node) {
             var b = ev.target.getBoundingClientRect();
             openMenu(ev.target.dataset.node, ev.target.dataset.id || null, b.left + 20, b.top + 20);
             ev.preventDefault();
             return;
         }
-        if (ev.key === 'Enter' && menu && (menu.kind === 'slot' || menu.kind === 'root')) {
+        if (ev.key === 'Enter' && menu && (menu.kind === 'slot' || menu.kind === 'root' || menu.kind === 'need')) {
             var ae = document.activeElement;
             if (ae && ae.dataset && ae.dataset.search !== undefined) {
                 if (menu.kind === 'slot') {
                     var first = firstLegal();
                     if (first) addPiece(first);
+                } else if (menu.kind === 'need') {
+                    var firstN = firstNeed();
+                    if (firstN) {
+                        var btn = ctxEl.querySelector('[data-needpick="' + firstN.t + ':' + firstN.id + '"]');
+                        if (btn) btn.click();
+                    }
                 } else {
                     var firstCh = null;
                     var q = normSearch(menu.search);
@@ -1104,6 +1562,7 @@ function initFabrique() {
         }
     })();
     render();
+    if (window.__FABDEBUG) window.__FABDEBUG.state = state;
 }
 
 if (typeof window !== 'undefined') {
