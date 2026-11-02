@@ -125,7 +125,7 @@
     },
     {
      "type": "html",
-     "html": "\n                    <h3 id=\"sec-14-1\">14.1 Fiche technique d'une technique</h3>\n                    <p>\n                        Pour chaque technique, remplis ces rubriques avec ton MJ. Une ligne chacune, ça tient sur un post-it :\n                    </p>\n                    <ul>\n                        <li><strong>Nom :</strong> le titre de ta technique (gratuit). <em>Ex : Fente Basse, Voile de Poussière.</em></li>\n                        <li><strong>Châssis :</strong> un seul (table ci-dessous). Il dit quand ça se déclenche — et tes PA de base.</li>\n                        <li><strong>Pièces :</strong> 1 à 3, piochées dans les 4 familles. Recopie leurs textes : ta technique est écrite.</li>\n                        <li><strong>Famille :</strong> offensif, défensif, utilitaire, social — ou hybride (deux familles, +1 XP).</li>\n                        <li><strong>Coûts :</strong> l'addition XP d'un côté, l'addition PA de l'autre. Montre les deux au MJ.</li>\n                        <li><strong>Accord MJ :</strong> il vérifie les 9 règles ci-dessous, il signe, tu paies.</li>\n                    </ul>\n                    <h3 id=\"sec-14-regles\">Les 9 règles d'assemblage</h3>\n                    <ol>\n                        <li><strong>Un châssis, un seul.</strong> Il dit quand ta technique part — et ses PA de base.</li>\n                        <li><strong>Un châssis + 1 à 3 pièces, pas plus.</strong> Au-delà, ce sont deux techniques sœurs.</li>\n                        <li><strong>Budget : tu additionnes châssis + pièces.</strong> 1 XP de base + 1 XP par cran. À 7-8, c'est une signature (MJ obligatoire).</li>\n                        <li><strong>Activation à 6 PA max.</strong> Le châssis compte dedans. Si ça dépasse, découpe.</li>\n                        <li><strong>Un seul bonus chiffré par jet.</strong> Deux +2 à l'attaque ne s'additionnent pas — le meilleur gagne.</li>\n                        <li><strong>Les gros effets ont un seuil.</strong> Statuts majeurs à Δ≥2, critiques à Δ≥3 ou sur critique. La mort instantanée, c'est sbires seulement.</li>\n                        <li><strong>Les filières se montent dans l'ordre.</strong> Perce 2 avant Perce 3, Soin 5 avant Soin 10. On ne saute pas d'étage.</li>\n                        <li><strong>Deux incompatibilités.</strong> Immunité totale ⊕ bonus défensif ; dégâts Absolus ⊕ multi-cible. Le reste se combine.</li>\n                        <li><strong>Réaction = +2 PA, 1/round.</strong> Opportunité 0 PA = déclencheur étroit obligatoire, 1/round. Comme les sorts.</li>\n                    </ol>\n"
+     "html": "\n                    <h3 id=\"sec-14-1\">14.1 Fiche technique d'une technique</h3>\n                    <p>\n                        Pour chaque technique, remplis ces rubriques avec ton MJ. Une ligne chacune, ça tient sur un post-it :\n                    </p>\n                    <ul>\n                        <li><strong>Nom :</strong> le titre de ta technique (gratuit). <em>Ex : Fente Basse, Voile de Poussière.</em></li>\n                        <li><strong>Châssis :</strong> un seul (table ci-dessous). Il dit quand ça se déclenche — et tes PA de base.</li>\n                        <li><strong>Pièces :</strong> 1 à 3, piochées dans les 4 familles. Recopie leurs textes : ta technique est écrite.</li>\n                        <li><strong>Famille :</strong> offensif, défensif, utilitaire, social — ou hybride (deux familles, +1 XP).</li>\n                        <li><strong>Coûts :</strong> l'addition XP d'un côté, l'addition PA de l'autre. Montre les deux au MJ.</li>\n                        <li><strong>Accord MJ :</strong> il vérifie les 9 règles ci-dessous, il signe, tu paies.</li>\n                    </ul>\n                    <h3 id=\"sec-14-regles\">Les 9 règles d'assemblage</h3>\n                    <ol>\n                        <li><strong>Un châssis, un seul.</strong> Il dit quand ta technique part — et ses PA de base.</li>\n                        <li><strong>Un châssis + 1 à 3 pièces, pas plus.</strong> Au-delà, ce sont deux techniques sœurs.</li>\n                        <li><strong>Budget : tu additionnes châssis + pièces.</strong> Le châssis donne la base (1 XP, 3 pour un passif) + 1 XP par cran. À 7-8, c'est une signature (MJ obligatoire).</li>\n                        <li><strong>Activation à 6 PA max.</strong> Le châssis compte dedans. Si ça dépasse, découpe.</li>\n                        <li><strong>Un seul bonus chiffré par jet.</strong> Deux +2 à l'attaque ne s'additionnent pas — le meilleur gagne.</li>\n                        <li><strong>Les gros effets ont un seuil.</strong> Statuts majeurs à Δ≥2, critiques à Δ≥3 ou sur critique. La mort instantanée, c'est sbires seulement.</li>\n                        <li><strong>Les filières se montent dans l'ordre.</strong> Perce 2 avant Perce 3, Soin 5 avant Soin 10. On ne saute pas d'étage.</li>\n                        <li><strong>Deux incompatibilités.</strong> Immunité totale ⊕ bonus défensif ; dégâts Absolus ⊕ multi-cible. Le reste se combine.</li>\n                        <li><strong>Réaction = +2 PA, 1/round.</strong> Opportunité 0 PA = déclencheur étroit obligatoire, 1/round. Comme les sorts.</li>\n                    </ol>\n"
     },
     {
      "type": "html",
@@ -1866,7 +1866,7 @@
    "lignes": [
     [
      "Passif conditionnel",
-     "1",
+     "3",
      "0",
      "Toujours actif quand la condition tient : arme liée en main, au contact, immobile... Pas de jet, pas d'activation."
     ],
@@ -2297,13 +2297,13 @@
      ]
     },
     {
-     "titre": "Second Cœur — 5 XP // Passif",
+     "titre": "Second Cœur — 7 XP // Passif",
      "monde": "Cardio // CON",
-     "corps_html": "« Ton cœur cogne deux fois, et le corps suit. » Châssis passif (1 XP) + force 1 PA contre 1 essoufflement (2 XP) + palier +2 PA (2 XP). Prérequis : Poussée Cardiovasculaire (↳). Tu paies en souffle, pas en PA.",
+     "corps_html": "« Ton cœur cogne deux fois, et le corps suit. » Châssis passif (3 XP) + force 1 PA contre 1 essoufflement (2 XP) + palier +2 PA (2 XP). Prérequis : Poussée Cardiovasculaire (↳). Tu paies en souffle, pas en PA. Signature : fais signer ton MJ.",
      "pieds": [
       {
        "ton": "cyan",
-       "texte": "Création : 5 XP"
+       "texte": "Création : 7 XP (signature)"
       },
       {
        "ton": "amber",
@@ -5125,7 +5125,7 @@
     {
      "id": "C0",
      "nom": "Passif conditionnel",
-     "cout_xp": "1",
+     "cout_xp": "3",
      "cout_pa": "0",
      "cadre": "Toujours actif quand la condition tient : arme liée en main, au contact, immobile... Pas de jet, pas d'activation."
     },

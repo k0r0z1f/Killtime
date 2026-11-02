@@ -1663,12 +1663,22 @@
                                     <label class="tool-label" for="fabName">Nom de ta Technique</label>
                                     <input type="text" id="fabName" class="tool-input" value="Fente Basse"
                                         placeholder="Ex: Fente Basse">
+                                    <div style="display:flex;gap:8px;align-items:baseline;margin-top:6px;">
+                                        <button type="button" class="tool-btn" id="fabBtnAuto"
+                                            style="padding:4px 10px;font-size:0.72rem;">↻ Nom auto</button>
+                                        <span class="fab-hint" id="fabNameAuto" style="margin:0;"></span>
+                                    </div>
                                 </div>
                                 <div class="tool-form-group">
                                     <label class="tool-label" for="fabDesc">Description Narrative</label>
                                     <input type="text" id="fabDesc" class="tool-input"
                                         value="Tu passes sous la garde et tu fauches le jarret."
                                         placeholder="Ce qu'on voit, ce qu'on entend...">
+                                    <div style="display:flex;gap:8px;align-items:baseline;margin-top:6px;">
+                                        <button type="button" class="tool-btn" id="fabBtnDesc"
+                                            style="padding:4px 10px;font-size:0.72rem;">↻ Description auto</button>
+                                        <span class="fab-hint" id="fabDescAuto" style="margin:0;"></span>
+                                    </div>
                                 </div>
                             </div>
 
@@ -1692,10 +1702,10 @@
                                 Montages vérifiés (un clic = le puzzle se remplit)
                             </h4>
                             <div class="tool-btn-row">
-                                <button class="tool-btn" data-preset="hache">Hache de Guerre · 5 XP</button>
-                                <button class="tool-btn" data-preset="suture">Suture Réflexe · 4 XP</button>
+                                <button class="tool-btn" data-preset="hache">Hache de Guerre · 7 XP</button>
+                                <button class="tool-btn" data-preset="suture">Suture Réflexe · 6 XP</button>
                                 <button class="tool-btn" data-preset="miroir">Lame Miroir · 3 XP</button>
-                                <button class="tool-btn" data-preset="fente">Fente Basse · 5 XP</button>
+                                <button class="tool-btn" data-preset="fente">Fente Basse · 4 XP</button>
                             </div>
 
                             <!-- FICHE DE LA TECHNIQUE EN DIRECT -->
@@ -1854,7 +1864,7 @@
 
     <!-- Scripts partagés et interactifs -->
     <script src="js/codex.js"></script>
-    <script src="js/fabrique.js?v=11"></script>
+    <script src="js/fabrique.js?v=13"></script>
     <script src="js/tools.js?v=9"></script>
 
     <!-- Scripts Authentification -->

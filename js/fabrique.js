@@ -356,6 +356,143 @@ var FabriqueEngine = {
     }
 };
 
+/* Nom automatique live : fragments par carte + suffixes de modificateurs.
+   Pur : suggestName(CAT, sel) -> string. sel = {chassis, qty, order?, mods?, plink?, o19?, u7?}. */
+var NAME_BASE = {
+    O1: 'Frappe Lourde', O2: 'Hache de Guerre', O3: 'Coup de Grâce',
+    O4: 'Pointe Perçante', O5: 'Pointe Ciblée', O6: 'Transperçante',
+    O7: 'Lame Absolue', O8: 'Visée Sûre', O9: 'Élan Précis',
+    O12: 'Coup Fatal', O13: 'Balayage', O15: 'Frappe en Écho',
+    O16: 'Tourbillon', O17: 'Riposte', O18: 'Œil Critique',
+    O19: 'Traque', O20: 'Entrave', O21: 'Voile', O22: 'Feinte',
+    O23: 'Fauchage', O24: 'Chaîne', O25: 'Assommoir',
+    D1: 'Lame Miroir', D2: 'Rempart', D3: 'Peau de Fer', D4: 'Peau de Pierre',
+    D5: 'Immunité', D6: 'Garde Absolue', D7: 'Veille', D8: 'Assise',
+    U1: 'Geste Économe', U2: 'Second Souffle', U3: 'Élan Collectif',
+    U4: 'Pas Glissé', U5: 'Pas de Brume', U6: 'Foulée Sûre',
+    U7: 'Suture', U8: 'Œil Vital', U9: 'Regard Clair', U10: 'Réflexe Prêt',
+    U11: 'Souffle Maîtrisé', U12: 'Effort Forcé',
+    S1: 'Voix Assurée', S2: 'Intimidation', S3: 'Parole de Trêve',
+    S4: 'Marchandage', S5: 'Lame Silencieuse', S6: 'Ordre Bref'
+};
+var QTY_WORD = { 2: 'Double', 3: 'Triple', 4: 'Quadruple', 5: 'Quintuple' };
+function nameHas(s, words) {
+    var n = String(s || '').toLowerCase();
+    return words.some(function (w) { return n.indexOf(w) >= 0; });
+}
+function suggestName(CAT, sel) {
+    sel = sel || {};
+    var qty = sel.qty || {};
+    var tops = (sel.order && sel.order.length ? sel.order : Object.keys(qty))
+        .filter(function (id) { return (qty[id] | 0) > 0; });
+    if (!tops.length) return 'Technique Maison';
+    var bases = tops.map(function (id) {
+        var b = NAME_BASE[id] || id;
+        if (id === 'O19') {
+            if (sel.o19 === 'total') b = 'Traque Totale';
+            else if (sel.o19 === 'suppression') b = 'Traque Aveuglante';
+            else b = 'Traque Partielle';
+        }
+        if (id === 'U7') {
+            if (sel.u7 === '10') b = 'Suture Profonde';
+            else if (sel.u7 === '15') b = 'Suture Totale';
+            else b = 'Suture Légère';
+        }
+        var q = qty[id] | 0;
+        if (q > 1 && QTY_WORD[q]) b = QTY_WORD[q] + ' ' + b;
+        return b;
+    });
+    var name;
+    if (bases.length === 1) name = bases[0];
+    else if (bases.length === 2) name = bases[0] + ' et ' + bases[1];
+    else name = bases[0] + ', ' + bases[1] + ' et ' + bases[2];
+    /* Ensemble : Réaction et Opportunité signent le nom, sauf si la carte le dit déjà. */
+    if (sel.chassis === 'C3' && tops.indexOf('O17') < 0 &&
+        !nameHas(name, ['riposte', 'miroir', 'contre', 'revers']))
+        name = 'Riposte : ' + name;
+    if (sel.chassis === 'C4' && !nameHas(name, ['éclair', 'sursaut', 'pas', 'bond', 'élan', 'réflexe']))
+        name = 'Éclair : ' + name;
+    /* Modificateurs posés sur les cartes : un suffixe chacun, une seule fois. */
+    var mods = sel.mods || {};
+    var hasRange = false, hasZone = false, hasDur = false, hasCross = false;
+    tops.forEach(function (id) {
+        var m = mods[id];
+        if (!m) return;
+        if ((m.range | 0) > 0) hasRange = true;
+        if (m.zone) hasZone = true;
+        if ((m.dur | 0) > 0) hasDur = true;
+        if (m.cross) hasCross = true;
+    });
+    if (hasRange) name += ' à Distance';
+    if (hasZone && !nameHas(name, ['tourbillon', 'zone', 'éclat'])) name += ' en Tourbillon';
+    if (hasDur) name += ' Tenace';
+    var plink = sel.plink || {};
+    var hasCrit = tops.some(function (id) {
+        return (id === 'O1' || id === 'O13' || id === 'O15') &&
+            plink[id] && plink[id].t === 'cond' && plink[id].id === 'critique';
+    });
+    if (hasCrit) name += ' sur Critique';
+    if (hasCross) name += ' — Hors-compétence';
+    return name;
+}
+
+/* Description narrative automatique : 2e personne, phrases courtes,
+   assemblée depuis l'ensemble + le texte des cartes + les modifs + les conditions.
+   Pur : suggestDesc(CAT, sel) -> string ('' si rien à décrire). */var DESC_CHASSIS = {
+    C0: 'Toujours actif quand la condition tient.',
+    C2: 'Pendant ton tour, tu agis.',
+    C3: 'Hors de ton tour, 1/round.',
+    C4: '0 PA, 1/round, quand le déclencheur tombe.'
+};
+var DESC_O19 = {
+    partiel: ' Tu ignores le couvert partiel.',
+    total: ' Le couvert total passe à −2.',
+    suppression: ' Ta cible perd son couvert 1 tour.'
+};
+var DESC_U7 = { '5': ' (5 PV + purge 1 état).', '10': ' (10 PV + purge 1 état).', '15': ' (15 PV + immunité 3 tours).' };
+var DESC_U11 = { p3: '3 ESS', p4: '4 ESS + 1 PA', p2x: '2×/combat' };
+function suggestDesc(CAT, sel) {
+    sel = sel || {};
+    var qty = sel.qty || {};
+    var tops = (sel.order && sel.order.length ? sel.order : Object.keys(qty))
+        .filter(function (id) { return (qty[id] | 0) > 0; });
+    if (!sel.chassis && !tops.length) return '';
+    var out = [];
+    if (sel.chassis && DESC_CHASSIS[sel.chassis]) out.push(DESC_CHASSIS[sel.chassis]);
+    var pieces = (CAT && CAT.pieces) || [];
+    function pieceById(id) {
+        for (var i = 0; i < pieces.length; i++)
+            if (pieces[i].id === id) return pieces[i];
+        return null;
+    }
+    var mods = sel.mods || {};
+    tops.forEach(function (id) {
+        var p = pieceById(id);
+        if (!p) return;
+        var s = scaledPieceText(p.texte || p.nom, id, qty[id] | 0);
+        if (id === 'O19') s += DESC_O19[sel.o19] || DESC_O19.partiel;
+        if (id === 'U7') s = s.replace(/\.\s*$/, '') + (DESC_U7[sel.u7] || DESC_U7['5']);
+        if (id === 'U11') {
+            var subs = Object.keys(sel.u11 || {}).filter(function (v) { return sel.u11[v] && DESC_U11[v]; });
+            if (subs.length) s = s.replace(/\.\s*$/, '') + ' (paliers : ' + subs.map(function (v) { return DESC_U11[v]; }).join(', ') + ').';
+        }
+        out.push(s);
+        var m = mods[id];
+        if (m) {
+            if ((m.range | 0) > 0) out.push('Portée ' + ((m.range | 0) + 1) + ' cases.');
+            if (m.zone) out.push('En cône, en ligne ou en rayon +1.');
+            if ((m.dur | 0) > 0) out.push('L’effet tient +' + (m.dur | 0) + ' tour(s).');
+        }
+    });
+    var conds = sel.conds || sel.conditions || [];
+    var cnames = conds.map(function (cid) {
+        var cd = (typeof conditionById === 'function') ? conditionById(cid) : null;
+        return cd ? cd.nom : cid;
+    }).filter(Boolean);
+    if (cnames.length) out.push('Condition : ' + cnames.join(', ') + '.');
+    return out.join(' ');
+}
+
 /* ---------------------------------------------------------------- PUZZLE */
 // Filières = grosses pièces (prérequis inclus, 2-3 logements).
 var CHAINS = { O5: ['O4', 'O5'], O6: ['O4', 'O5', 'O6'] };
@@ -435,6 +572,8 @@ function initFabrique() {
     var state = { chassis: null, ensSkill: '', qty: {}, order: [], conds: [], plink: {}, condSkill: "Maniement d'Arme",
                   o19: 'partiel', u7: '5', u11: {}, mods: {} };
     var menu = null; /* {kind:'slot'|'piece'|'root', id, search} */
+    var lastAuto = ''; /* dernier nom automatique proposé : le champ se remplit seul tant qu'il le suit */
+    var lastDesc = ''; /* idem pour la description narrative */
     var nodesEl = document.getElementById('fabNodes');
     var wiresEl = document.getElementById('fabWires');
     var ctxEl = document.getElementById('fabCtx');
@@ -730,6 +869,7 @@ function initFabrique() {
             }
         });
         Object.keys(state.qty).forEach(function (id) { sel.qty[id] = state.qty[id]; });
+        sel.order = state.order.filter(function (id) { return (state.qty[id] | 0) > 0; });
         Object.keys(state.u11).forEach(function (v) { if (state.u11[v]) sel.u11[v] = true; });
         Object.keys(state.mods).forEach(function (id) {
             if ((state.qty[id] | 0) > 0) sel.mods[id] = getMod(id);
@@ -1441,8 +1581,64 @@ function initFabrique() {
         if (menu && menu.kind === 'preq' && state.conds.indexOf(menu.id) < 0) menu = null;
         renderGraph(sel, r);
         renderMenu();
-        var name = (document.getElementById('fabName') || {}).value || '';
-        var desc = (document.getElementById('fabDesc') || {}).value || '';
+        /* Nom automatique live : le champ suit la suggestion tant qu'il n'est pas personnalisé. */
+        var nameInput = document.getElementById('fabName');
+        var suggestion = '';
+        try { suggestion = FabriqueEngine.suggestName(CAT, sel); } catch (e) { suggestion = 'Technique Maison'; }
+        if (nameInput) {
+            if (!nameInput.value || nameInput.value === lastAuto) nameInput.value = suggestion;
+            lastAuto = suggestion;
+            var hint = document.getElementById('fabNameAuto');
+            if (hint) {
+                hint.innerHTML = '';
+                if (nameInput.value === suggestion) {
+                    hint.textContent = 'Nom automatique — renomme à ta main si tu veux, je continuerai de proposer à côté.';
+                } else {
+                    hint.appendChild(document.createTextNode('Suggestion : '));
+                    var b = document.createElement('strong');
+                    b.textContent = suggestion;
+                    hint.appendChild(b);
+                    hint.appendChild(document.createTextNode(' '));
+                    var ap = document.createElement('button');
+                    ap.type = 'button';
+                    ap.className = 'fab-mini-btn';
+                    ap.setAttribute('data-apply-auto', '1');
+                    ap.textContent = '↻ Reprendre';
+                    hint.appendChild(ap);
+                }
+            }
+        }
+        var name = (nameInput || {}).value || '';
+        /* Description narrative automatique : même suivi que le nom. */
+        var descInput = document.getElementById('fabDesc');
+        var descSug = '';
+        try { descSug = FabriqueEngine.suggestDesc(CAT, sel); } catch (e) { descSug = ''; }
+        if (descInput) {
+            if (!descInput.value || descInput.value === lastDesc) descInput.value = descSug;
+            lastDesc = descSug;
+            var dhint = document.getElementById('fabDescAuto');
+            if (dhint) {
+                dhint.innerHTML = '';
+                if (!descSug) {
+                    dhint.textContent = '';
+                } else if (descInput.value === descSug) {
+                    dhint.textContent = 'Description automatique — réécris à ta main si tu veux, je continuerai de proposer à côté.';
+                } else {
+                    dhint.appendChild(document.createTextNode('Suggestion : '));
+                    var db = document.createElement('em');
+                    db.textContent = descSug;
+                    dhint.appendChild(db);
+                    dhint.appendChild(document.createTextNode(' '));
+                    var dap = document.createElement('button');
+                    dap.type = 'button';
+                    dap.className = 'fab-mini-btn';
+                    dap.setAttribute('data-apply-desc', '1');
+                    dap.textContent = '↻ Reprendre';
+                    dhint.appendChild(dap);
+                }
+            }
+        }
+        var desc = (descInput || {}).value || '';
         prev.name.textContent = name.trim() || 'Technique Maison';
         var fams = r.familles.map(function (f) { return f.toUpperCase(); }).join(' / ') || '—';
         prev.type.textContent = fams + (r.status === 'signature' ? ' — SIGNATURE (accord MJ)' : r.status === 'invalide' ? ' — À CORRIGER' : '');
@@ -1702,6 +1898,16 @@ function initFabrique() {
         if (inc) { bumpQty(inc.dataset.inc, 1); return; }
         if (up(t, '[data-preset]')) { applyPreset(up(t, '[data-preset]').dataset.preset); return; }
         if (up(t, '.fab-ctx-close')) { closeMenu(); return; }
+        if (up(t, '[data-apply-auto]') || t.id === 'fabBtnAuto' || up(t, '#fabBtnAuto')) {
+            var ni = document.getElementById('fabName');
+            if (ni && lastAuto) { ni.value = lastAuto; render(); }
+            return;
+        }
+        if (up(t, '[data-apply-desc]') || t.id === 'fabBtnDesc' || up(t, '#fabBtnDesc')) {
+            var di = document.getElementById('fabDesc');
+            if (di && lastDesc) { di.value = lastDesc; render(); }
+            return;
+        }
         var node = up(t, '[data-node]');
         if (node) {
             openMenu(node.dataset.node, node.dataset.id || null, ev.clientX, ev.clientY);
@@ -1887,6 +2093,9 @@ FabriqueEngine.modRangeOk = modRangeOk;
 FabriqueEngine.modZoneOk = modZoneOk;
 FabriqueEngine.modDurOk = modDurOk;
 FabriqueEngine.modCrossOk = modCrossOk;
+FabriqueEngine.suggestName = suggestName;
+FabriqueEngine.NAME_BASE = NAME_BASE;
+FabriqueEngine.suggestDesc = suggestDesc;
 if (typeof window !== 'undefined') {
     window.FabriqueEngine = FabriqueEngine;
     window.initFabrique = initFabrique;
