@@ -30,9 +30,21 @@
       "permissions": [
         "kanban.roadmaps"
       ]
+    },
+    {
+      "id": "collaborateur",
+      "name": "Collaborateur",
+      "desc": "",
+      "permissions": [
+        "kanban.roadmaps",
+        "kanban.revue-rp",
+        "kanban.narratif",
+        "kanban.financement",
+        "atlas.write"
+      ]
     }
   ],
   "assignments": {
-    "usr_mtvzf3lr": "collaborateur-kt"
+    "usr_mtvzf3lr": "collaborateur"
   }
 }
