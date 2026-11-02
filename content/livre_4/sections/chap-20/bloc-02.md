@@ -1,11 +1,11 @@
 ---
-cible: sections.chap-19.blocs.2.html
+cible: sections.chap-20.blocs.2.html
 format: raw
 livre: 4
 ---
 
 
-                    <h3 id="sec-19-1">19.1 Fiche Technique d'un Pouvoir</h3>
+                    <h3 id="sec-20-1">20.1 Fiche Technique d'un Pouvoir</h3>
                     <p>
                         Pour chaque pouvoir que tu crées, remplis ces rubriques avec ton MJ :
                     </p>
@@ -19,17 +19,17 @@ livre: 4
                         <li><strong>Coût en PA & Type d'Action :</strong> Ça découle de ton total d'effets
                             (Action Principale, Réaction, etc.) (Gratuit). Un pouvoir lancé en
                             <strong>Réaction</strong> coûte <strong>+2</strong> (XP et PA — la
-                            <a class="rule-ref" href="#sec-19-regle" data-tip="Règle d'or : 1 XP dépensé à la création = 1 PA pour lancer en combat (§19).">règle d'or</a>
+                            <a class="rule-ref" href="#sec-20-regle" data-tip="Règle d'or : 1 XP dépensé à la création = 1 PA pour lancer en combat (§20).">règle d'or</a>
                             porte sur le total : un blast à 4 XP lancé en réaction coûte 6 PA).</li>
                         <li><strong>Mécanique & Effets :</strong> Tes briques choisies dans le catalogue
                             juste en dessous (Payant en XP).</li>
                     </ul>
 
-                    <h3 id="sec-19-2">19.2 Catalogue Officiel des Effets Achetables</h3>
+                    <h3 id="sec-20-2">20.2 Catalogue Officiel des Effets Achetables</h3>
                     <p>
                         Pioche ce qu'il te faut. Chaque brique a son prix. Tu additionnes, et tu as ton <a
-                            class="rule-ref" href="#sec-19-regle"
-                            data-tip="Règle d'or : 1 XP dépensé à la création = 1 PA pour lancer en combat (§19).">coût</a>.
+                            class="rule-ref" href="#sec-20-regle"
+                            data-tip="Règle d'or : 1 XP dépensé à la création = 1 PA pour lancer en combat (§20).">coût</a>.
                     </p>
 
                     <!-- EFFETS OFFENSIFS -->

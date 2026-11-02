@@ -1,6 +1,6 @@
 {
   "version": 3,
-  "updated": "2026-10-21",
+  "updated": "2026-11-02",
   "activeId": "board-demo-hors-lore",
   "boards": [
     {
@@ -3219,6 +3219,54 @@
           "suggestedAsset": "data/livre_1.json + js/tools.js + AttributeRulesService.cs + BestiaryCatalog.cs",
           "details": "FAIT (2026-11-01) : le sbire éveillé passait de 12 à 11 pts (anomalie import RP-086, strictement pire que non-éveillé ; le créateur appliquait 12 par tolérance MJ). Choix MJ : +2 comme Héros/Élite → 14 pts si éveillé à la Magie (Magie hors budget). Unifié le wording colonne Éveillé (fini étincelle magique / Magie > 0). Fichiers : profils sbire livre_1.json (12/14), validation + stepper tools.js (cap 14 si mag>0, note tolérance virée), AttributeRulesService (2 spots), BestiaryCatalog (budget 14 si MAG>0).",
           "updated": "2026-11-01"
+        },
+        {
+          "id": "RD-212",
+          "title": "Livre III chap-14 : Fabrique de Techniques Maison (sysRP)",
+          "epic": "Codex sysRP",
+          "status": "done",
+          "priority": "medium",
+          "order": 29,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "data/livre_3.json",
+          "updated": "2026-11-02",
+          "details": "FAIT 2026-11-02 — Nouvelle section chap-14 Fabrique de Techniques Maison après le compendium (inchangé). Règle des Deux Monnaies (création 4-6 XP, signature 7-8 XP MJ, activation ≤ 6 PA), fiche technique + 9 règles, 4 châssis, 45 pièces (19 off / 8 déf / 12 ut / 6 soc), 7 modificateurs, 5 cartes exemples (dont Soleil Noir refusée règle 8). Note migration : Course dEndurance / Franchissement restent légales. mecaniques.fabrique machine-ready pour le futur outil. Vérifié : rendu réel js/livre.js, refs OK, 0 ancre dupliquée."
+        },
+        {
+          "id": "RD-213",
+          "title": "Renumérotation chapitres : Fabrique=14, Livre IV 14-19 → 15-20",
+          "epic": "Codex sysRP",
+          "status": "done",
+          "priority": "medium",
+          "order": 30,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "data/livre_4.json",
+          "updated": "2026-11-02",
+          "details": "FAIT 2026-11-02 — Pas de 13bis : Fabrique = chap-14, Livre IV glisse 15-20 (sections, ancres sec-15..20, tips §15..§20.4, h3 15.1..20.2). data/livre_1/3/4.json + 17 HTML (nav globale, sidebar et sommaire livre_4, prose livre_9) + content/livre_4/sections/chap-14..19 → 15..20 (18 fichiers, frontmatter cible à jour). kanban_rp.json archive intouchée. Scories réparées : double-shift livre_11/12, label Fabrique. Vérifié : rendu réel L.III + L.IV, 0 errBox."
+        },
+        {
+          "id": "RD-214",
+          "title": "Formule Règle des Deux Monnaies en wide + math 3 segments",
+          "epic": "Codex sysRP",
+          "status": "done",
+          "priority": "low",
+          "order": 31,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "js/livre.js",
+          "updated": "2026-11-02",
+          "details": "FAIT 2026-11-02 — Mise en page : renderFormule (js/livre.js, 1 ligne) accepte wide:true → formula-box wide (gabarit CSS existant Livre V). fabrique_regle en wide + math 3 pastilles hl (4–6 XP / 7–8 XP / ≤ 6 PA). Vérifié : rendu réel, classe wide présente, L.III + L.IV verts."
         }
       ]
     },

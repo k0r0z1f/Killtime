@@ -68,7 +68,7 @@
     function renderFormule(f) {var tag = f.etiquette_tag || 'span';
         var label = '<' + tag + ' class="' + (f.etiquette_classe || 'formula-badge') + '">' +
             (f.etiquette_html !== undefined ? f.etiquette_html : (f.badge || '')) + '</' + tag + '>';
-        return '<div class="formula-box"' + (f.extra || '') + '>' + label +
+        return '<div class="formula-box' + (f.wide ? ' wide' : '') + '"' + (f.extra || '') + '>' + label +
             (((f.contenu === undefined || f.contenu) ? '<div class="formula-content">' : '') +
             '<div class="formula-math"' + (f.math_attrs || '') + '>' + f.math_html +
             '</div><div class="formula-desc"' + (f.desc_attrs || '') + '>' + f.desc_html + '</div>' +

@@ -1,11 +1,11 @@
 ---
-cible: sections.chap-19.blocs.8.html
+cible: sections.chap-20.blocs.8.html
 format: raw
 livre: 4
 ---
 
 
-                    <div class="callout vital" id="sec-19-hybride">
+                    <div class="callout vital" id="sec-20-hybride">
                         <div class="callout-header">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2">
@@ -24,7 +24,7 @@ livre: 4
                         </div>
                     </div>
 
-                    <h3 id="sec-19-3">19.3 Exemples Officiels de Sortilèges Conçus</h3>
+                    <h3 id="sec-20-3">20.3 Exemples Officiels de Sortilèges Conçus</h3>
                     <p>
                         Six sorts prêts à jouer, pour voir comment ça se monte. Copie la méthode pour les tiens.
                     </p>

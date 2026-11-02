@@ -1,11 +1,11 @@
 ---
-cible: sections.chap-19.blocs.10.html
+cible: sections.chap-20.blocs.10.html
 format: raw
 livre: 4
 ---
 
 
-                    <h3 id="sec-19-4">19.4 Compendium des Spécialisations Arcanes</h3>
+                    <h3 id="sec-20-4">20.4 Compendium des Spécialisations Arcanes</h3>
 
                     <p class="lead">
                         Tu veux un tour précis au lieu d'un sort maison ? Prends une spécialisation. Ça coûte

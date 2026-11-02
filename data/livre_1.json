@@ -239,7 +239,7 @@
    "dons": [
     {
      "effet": "-1 PA et +1 Magie Élémentale (terre/eau/vent/feu).",
-     "effet_html": "-1 PA et +1 aux jets de <a class=\"rule-ref\" href=\"livre_4.html#sec-16-1\" data-tip=\"Magie Élémentale : pyro, aéro, hydro, géo (MAG/INT, §16.1).\">Magie Élémentale</a> (tes pouvoirs de terre, d'eau, de vent et de feu).",
+     "effet_html": "-1 PA et +1 aux jets de <a class=\"rule-ref\" href=\"livre_4.html#sec-17-1\" data-tip=\"Magie Élémentale : pyro, aéro, hydro, géo (MAG/INT, §17.1).\">Magie Élémentale</a> (tes pouvoirs de terre, d'eau, de vent et de feu).",
      "id": "A",
      "nom": "Accord Sylvestre"
     },
@@ -287,7 +287,7 @@
     },
     {
      "effet": "+1 aux jets de Magie ; chaque réussite en Magie coche 2 cases de progression ; réussite critique en Magie coûte +1 Essoufflement.",
-     "effet_html": "+1 aux jets de <a class=\"rule-ref\" href=\"livre_4.html#sec-16-1\" data-tip=\"Magie Élémentale : pyro, aéro, hydro, géo (MAG/INT, §16.1).\">Magie</a> ; chaque réussite en Magie coche 2 cases de <a class=\"rule-ref\" href=\"#sec-5-2\" data-tip=\"Piste de progression : autant de cases que votre base — base 3 → 3 cases, base 5 → 5 cases (§5.1).\">progression</a> ; réussite <a class=\"rule-ref\" href=\"livre_2.html#chap-8\" data-tip=\"Critique : ton dé affiche son max (6 sur d6, 8 sur d8). Second jet sur la table (§8.1).\">critique</a> en Magie coûte +1 <a class=\"rule-ref\" href=\"#sec-4-2\" data-tip=\"Essoufflement : 1 point = des PA d’urgence ; ne part pas tout seul, action dédiée pour souffler (§4.2).\">Essoufflement</a>.",
+     "effet_html": "+1 aux jets de <a class=\"rule-ref\" href=\"livre_4.html#sec-17-1\" data-tip=\"Magie Élémentale : pyro, aéro, hydro, géo (MAG/INT, §17.1).\">Magie</a> ; chaque réussite en Magie coche 2 cases de <a class=\"rule-ref\" href=\"#sec-5-2\" data-tip=\"Piste de progression : autant de cases que votre base — base 3 → 3 cases, base 5 → 5 cases (§5.1).\">progression</a> ; réussite <a class=\"rule-ref\" href=\"livre_2.html#chap-8\" data-tip=\"Critique : ton dé affiche son max (6 sur d6, 8 sur d8). Second jet sur la table (§8.1).\">critique</a> en Magie coûte +1 <a class=\"rule-ref\" href=\"#sec-4-2\" data-tip=\"Essoufflement : 1 point = des PA d’urgence ; ne part pas tout seul, action dédiée pour souffler (§4.2).\">Essoufflement</a>.",
      "id": "B",
      "nom": "Résonance Arcanique"
     },

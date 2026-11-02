@@ -1,5 +1,5 @@
 ---
-cible: sections.chap-19.blocs.12.html
+cible: sections.chap-20.blocs.12.html
 format: raw
 livre: 4
 ---
