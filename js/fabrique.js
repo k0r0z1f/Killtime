@@ -8,7 +8,12 @@
    Modificateurs sur la carte effet (pas hors graphe) : Portée totale 1 à 3 cases
    (base 1 gratuite, +2 XP/case), Zone M3
    (O7 O20 O22 O23 O24 O25 O26 O27 O28 — O7 + zone
-   refusé règle 8), Durée M4 (O9/O20 « durée cumulable », 2 crans max), M7 ×2 (toute carte).
+   refusé règle 8), Durée M4 (O9/O20/D1/D2/D3/D5/D8 « durée cumulable », 2 crans max), M7 ×2 (toute carte).
+   Familles acceptées par compétence liée (types en mecaniques.competences_par_nom,
+   canon Livre II §7.3 / Livre V §22 : Esquive = défensif pur, ni utilitaire ni social) ;
+   D9 = repousse défensive (miroir de O13).
+   Un seul type par technique : le 1er effet posé fixe (off/def/soc/uti, affiché sous ◆),
+   les suivants suivent (familles incompatibles masquées du menu).
    ========================================================================== */
 (function () {
 'use strict';
@@ -32,6 +37,7 @@ var KIND = {
     O8:  { t: 'n', max: 5, unit: 'points' },
     O9:  { t: 'n', max: 5, unit: 'points' },
     O13: { t: 'n', max: 3, unit: 'cases' },
+    D9:  { t: 'n', max: 3, unit: 'cases' },
     O15: { t: 'n', max: 5, unit: 'cibles', plural: [['dégât', 'dégâts']] },
     D8:  { t: 'n', max: 3, unit: 'malus' },
     S1:  { t: 'n', max: 3, unit: 'crans', plural: [['épreuve', 'épreuves']] },
@@ -76,6 +82,59 @@ function scaledPieceText(s, id, q) {
     return out;
 }
 
+/* Durée M4 dans le texte : « cette attaque » devient
+   « jusqu’à la fin de ton X prochain tour » (pur, partagé graphe + desc). */
+function durPhrase(du) {
+    return du === 1 ? 'jusqu’à la fin de ton prochain tour' : 'jusqu’à la fin de ton ' + du + 'e prochain tour';
+}
+function applyDurText(s, du) {
+    if ((du | 0) > 0 && /\(cette attaque\)|cette attaque/.test(String(s)))
+        return { text: String(s).replace(/\(cette attaque\)|cette attaque/, durPhrase(du | 0)), said: true };
+    return { text: s, said: false };
+}
+
+/* Familles d'effets acceptées par la compétence liée (canon : types dans
+   mecaniques.competences_par_nom, Livre II §7.3 / Livre V §22).
+   Ex. 'Défensif Pur' → défensif seul ; 'Offensif, Défensif' → les deux ;
+   'Utilitaire' → utilitaire seul. NULL (inconnue) = aucun verrou.
+   L'hybride M6 reste pour les compétences mixtes (Mains Nues, Leadership…).
+   Une pièce double famille (champ aussi_famille) passe si l'une des deux convient. */
+function allowedFams(COMP, skillName) {
+    if (!COMP || !skillName) return null;
+    var key = null;
+    if (COMP[skillName]) key = skillName;
+    else Object.keys(COMP).forEach(function (k) { if (!key && k.indexOf(skillName) === 0) key = k; });
+    if (!key || !COMP[key] || !COMP[key].type) return null;
+    var s = String(COMP[key].type);
+    var out = {};
+    if (/offensif/i.test(s)) out.offensif = true;
+    if (/défensif|defensif/i.test(s)) out.defensif = true;
+    if (/utilitaire/i.test(s)) out.utilitaire = true;
+    if (/social/i.test(s)) out.social = true;
+    return Object.keys(out).length ? out : null;
+}
+/* Retrouve le type brut d'une compétence liée (nom exact, sinon préfixe :
+   'Maniement d'Arme' → 'Maniement d'Arme (Tranchantes / Contondantes)'). */
+function compType(COMP, skillName) {
+    if (!COMP || !skillName) return null;
+    var key = null;
+    if (COMP[skillName]) key = skillName;
+    else Object.keys(COMP).forEach(function (k) { if (!key && k.indexOf(skillName) === 0) key = k; });
+    return (key && COMP[key]) ? String(COMP[key].type || '') : null;
+}
+function famRefuse(p, allowed) {
+    if (!p || !allowed) return false;
+    if (allowed[p.famille]) return false;
+    if (p.aussi_famille && allowed[p.aussi_famille]) return false;
+    return true;
+}
+/* Famille effective : une double famille compte dans celle que la technique accepte. */
+function effFam(p, allowed) {
+    if (!p) return null;
+    if (allowed && !allowed[p.famille] && p.aussi_famille && allowed[p.aussi_famille]) return p.aussi_famille;
+    return p.famille;
+}
+
 /* Plus de palier remplaçant : objet conservé pour compatibilité. */
 var REPLACE = {};
 
@@ -83,11 +142,11 @@ var REPLACE = {};
    Portée : base 1 case gratuite, +1 case (+2 XP, total 2) ou +2 cases (+4 XP, total 3 max).
    Zone M3 : dégâts, statuts ou repoussée (O7 O20 O22 O23 O24 O25 O26 O27 O28) ; O7 + zone
    refusé règle 8 (Absolus multi-cible, comme O7 + O15).
-   Durée M4 : là où la table dit « durée cumulable » (O9, O20), 2 crans max.
+   Durée M4 : là où la table dit « durée cumulable » (O9, O20, D1, D2, D3, D5, D8), 2 crans max.
    Hors-compétence M7 ×2 : toute carte (pièce d'une autre compétence). */
 var MOD_RANGE_EXCL = { O1: 'dégât instantané mono-attaque, sans portée propre', O13: 'repoussée : la distance, c’est la quantité (x3)', O18: 'passif de critique, pas de portée', O20: 'statut délivré par la frappe, sans portée propre', O21: 'statut délivré par la frappe, sans portée propre', O22: 'statut délivré par la frappe, sans portée propre', O23: 'statut délivré par la frappe, sans portée propre', O24: 'statut délivré par la frappe, sans portée propre', O25: 'statut délivré par la frappe, sans portée propre', O26: 'statut délivré par la frappe, sans portée propre', O27: 'statut délivré par la frappe, sans portée propre', O28: 'saignement posé par la frappe, sans portée propre' };
 var MOD_ZONE_IDS = { O7: 1, O20: 1, O22: 1, O23: 1, O24: 1, O25: 1, O26: 1, O27: 1, O28: 1 };
-var MOD_DUR_IDS = { O9: 1, O20: 1 };
+var MOD_DUR_IDS = { O9: 1, O20: 1, D1: 1, D2: 1, D3: 1, D5: 1, D8: 1 };
 function modRangeOk(p) {
     if (!p) return { ok: false, reason: 'Carte inconnue.' };
     if (p.famille !== 'offensif') return { ok: false, reason: 'Portée : frappes à distance et ondes (offensif) uniquement.' };
@@ -102,7 +161,7 @@ function modZoneOk(p) {
 }
 function modDurOk(p) {
     if (!p) return { ok: false, reason: 'Carte inconnue.' };
-    if (!MOD_DUR_IDS[p.id]) return { ok: false, reason: 'Durée : là où la table dit « durée cumulable » (O9, O20).' };
+    if (!MOD_DUR_IDS[p.id]) return { ok: false, reason: 'Durée : là où la table dit « durée cumulable » (O9, O20, D1, D2, D3, D5, D8).' };
     return { ok: true };
 }
 function modCrossOk() { return { ok: true }; }
@@ -150,16 +209,17 @@ var FabriqueEngine = {
 
         /* 3. Lignes de pièces. */
         var counted = 0;
+        var ensAllow = sel.ensAllow || null;
         Object.keys(qty).forEach(function (id) {
             if ((qty[id] | 0) <= 0) return;
             var p = P(id);
             if (!p) return;
             counted++;
-            fams[p.famille] = true;
+            fams[effFam(p, ensAllow)] = true;
         });
         Object.keys(auto).forEach(function (id) {
             var p = P(id);
-            if (p) { counted++; fams[p.famille] = true; }
+            if (p) { counted++; fams[effFam(p, ensAllow)] = true; }
         });
 
         function chainCost(ids) {
@@ -240,6 +300,34 @@ var FabriqueEngine = {
             if (has(pair[0]) && has(pair[1]))
                 errors.push('Incompatible : ' + pair[0] + ' ⊕ ' + pair[1] + ' (règle 8).');
         });
+        /* Familles acceptées : la compétence liée n'ouvre que ses familles
+           (canon §7.3/§22 : Esquive = défensif pur, pas d'utilitaire ni de social).
+           Utilitaire/social ne passent plus partout : ils suivent le type. */
+        if (ensAllow) {
+            var skillNm = sel.ensSkill || 'Ta compétence';
+            var typeStr = sel.ensType || '';
+            var FAM_SG = { offensif: 'offensif', defensif: 'défensif', utilitaire: 'utilitaire', social: 'social' };
+            Object.keys(qty).forEach(function (id) {
+                if ((qty[id] | 0) <= 0) return;
+                var p = P(id);
+                if (p && famRefuse(p, ensAllow))
+                    errors.push(skillNm + (typeStr ? ' (' + typeStr + ')' : '') + ' : pas d’effet ' + (FAM_SG[p.famille] || p.famille) + ' (' + id + ' ' + p.nom + ').');
+            });
+        }
+        /* Un seul type par technique : le 1er effet posé fixe l'orientation
+           (off/def/soc/uti), les suivants doivent suivre. */
+        var techOri = null;
+        var oriTops = (sel.order && sel.order.length ? sel.order : Object.keys(qty))
+            .filter(function (id) { return (qty[id] | 0) > 0 && P(id); });
+        if (oriTops.length) techOri = effFam(P(oriTops[0]), ensAllow);
+        if (techOri) {
+            var FAM_NM = { offensif: 'offensif', defensif: 'défensif', utilitaire: 'utilitaire', social: 'social' };
+            oriTops.slice(1).forEach(function (id) {
+                var p = P(id);
+                if (p && effFam(p, ensAllow) !== techOri)
+                    errors.push('Un seul type par technique (' + (FAM_NM[techOri] || techOri) + ' ici) : ' + id + ' ' + p.nom + ' est ' + (FAM_NM[p.famille] || p.famille) + '.');
+            });
+        }
 
         /* 5. Conditions étroites M5 (−1 XP, plancher 1 XP/pièce). */
         var narrow = sel.narrow | 0;
@@ -357,7 +445,7 @@ var NAME_BASE = {
     O23: 'Fauchage', O24: 'Chaîne', O25: 'Assommoir',
     O26: 'Tétanie', O27: 'Panique', O28: 'Hémorragie',
     D1: 'Lame Miroir', D2: 'Rempart', D3: 'Peau de Fer', D4: 'Peau de Pierre',
-    D5: 'Immunité', D6: 'Garde Absolue', D7: 'Veille', D8: 'Assise',
+    D5: 'Immunité', D6: 'Garde Absolue', D7: 'Veille', D8: 'Assise', D9: 'Contre-Poussée',
     U1: 'Geste Économe', U2: 'Second Souffle', U3: 'Élan Collectif',
     U4: 'Pas Glissé', U5: 'Pas de Brume', U6: 'Foulée Sûre',
     U7: 'Suture', U8: 'Œil Vital', U9: 'Regard Clair', U10: 'Réflexe Prêt',
@@ -461,12 +549,16 @@ function suggestDesc(CAT, sel) {
             var subs = Object.keys(sel.u11 || {}).filter(function (v) { return sel.u11[v] && DESC_U11[v]; });
             if (subs.length) s = s.replace(/\.\s*$/, '') + ' (paliers : ' + subs.map(function (v) { return DESC_U11[v]; }).join(', ') + ').';
         }
-        out.push(s);
         var m = mods[id];
+        var du = m ? (m.dur | 0) : 0;
+        var dw = applyDurText(s, du);
+        s = dw.text;
+        var durDite = dw.said;
+        out.push(s);
         if (m) {
             if ((m.range | 0) > 0) out.push('Portée ' + ((m.range | 0) + 1) + ' cases.');
             if (m.zone) out.push('En cône, en ligne ou en rayon +1.');
-            if ((m.dur | 0) > 0) out.push('L’effet tient +' + (m.dur | 0) + ' tour(s).');
+            if (du > 0 && !durDite) out.push('L’effet tient +' + du + ' tour(s).');
         }
     });
     var conds = sel.conds || sel.conditions || [];
@@ -564,6 +656,8 @@ var CHAIN_KEY = {};
 var INCOMP = [['O7', 'O15'], ['D6', 'D1'], ['D6', 'D2'], ['D6', 'D3'], ['D6', 'D4']];
 var FAM_LABEL = { offensif: 'Offensif', defensif: 'Défensif', utilitaire: 'Utilitaire', social: 'Social' };
 var SAVE_KEY = 'fabrique-puzzle-v1';
+var LIB_KEY = 'fabrique-puzzle-v2';
+var LIB_MAX = 30;
 
 function chainOf(id) { return CHAINS[id] || [id]; }
 function spanOf(id) { return chainOf(id).length; }
@@ -625,6 +719,8 @@ function initFabrique() {
     if (!graphEl) return;
     var CAT = window.CodexData && window.CodexData.l3 &&
               window.CodexData.l3.mecaniques && window.CodexData.l3.mecaniques.fabrique;
+    var MEC = window.CodexData && window.CodexData.l3 && window.CodexData.l3.mecaniques;
+    var COMP = (MEC && MEC.competences_par_nom) || {};
     if (!CAT) {
         graphEl.innerHTML = '<div class="callout warning"><div class="callout-body">' +
             'Données de la Fabrique introuvables (data/livre_3.json). Ouvre cette page via le site, pas en fichier seul.' +
@@ -675,6 +771,15 @@ function initFabrique() {
         state.order.forEach(function (id) { n += spanOf(id); });
         return n;
     }
+    /* Type de la technique : famille du 1er effet posé (un seul type admis). */
+    function techOriPlaced() {
+        var allow = allowedFams(COMP, state.ensSkill);
+        for (var i = 0; i < state.order.length; i++) {
+            var oid = state.order[i];
+            if ((state.qty[oid] | 0) > 0) { var op = P(oid); if (op) return effFam(op, allow); }
+        }
+        return null;
+    }
     function incompWith(id) {
         for (var i = 0; i < INCOMP.length; i++) {
             var a = INCOMP[i][0], b = INCOMP[i][1];
@@ -703,6 +808,15 @@ function initFabrique() {
         var k = KIND[id];
         var q = state.qty[id] | 0;
         if (!state.chassis) return { lock: true, reason: 'Choisis d\u2019abord un ensemble (◆).' };
+        var allowL = allowedFams(COMP, state.ensSkill);
+        var techOriL = techOriPlaced();
+        if (techOriL && effFam(p, allowL) !== techOriL)
+            return { lock: true, reason: 'Un seul type par technique (' + (FAM_LABEL[techOriL] || techOriL) + ' ici).' };
+        if (famRefuse(p, allowL)) {
+            var typeL = compType(COMP, state.ensSkill);
+            var adjL = { offensif: 'offensif', defensif: 'défensif', utilitaire: 'utilitaire', social: 'social' }[p.famille] || p.famille;
+            return { lock: true, reason: state.ensSkill + (typeL ? ' (' + typeL + ')' : '') + ' : pas d’effet ' + adjL + ' ici.' };
+        }
         if (state.chassis === 'C0' && piecePA(p) > 0)
             return { lock: true, reason: 'Ne se branche pas sur un ensemble passif (0 PA, pas d\u2019activation).' };
         if (q > 0 && !(k && k.t === 'n')) {
@@ -820,9 +934,9 @@ function initFabrique() {
         fullReset(id === state.chassis ? null : id);
         if (id) toast('Ensemble ' + id + ' : graphe reconstruit.');
     }
-    /* Remise à zéro complète (nom/description conservés) : changer d'ensemble refait le graphe. */
-    function fullReset(chassisId) {
-        state.chassis = chassisId || null;
+    /* Remise à zéro du graphe (nom/description conservés, bibliothèque conservée). */
+    function resetState() {
+        state.chassis = null;
         state.qty = {};
         state.order = [];
         state.conds = [];
@@ -832,7 +946,11 @@ function initFabrique() {
         state.ensSkill = '';
         state.u11auto = false;
         state.mods = {};
-        try { localStorage.removeItem(SAVE_KEY); } catch (e) { /* vide */ }
+    }
+    /* Changer d'ensemble refait le graphe (l'entrée courante est écrasée au rendu). */
+    function fullReset(chassisId) {
+        resetState();
+        state.chassis = chassisId || null;
         closeMenu();
         render();
     }
@@ -908,6 +1026,8 @@ function initFabrique() {
     function buildSel() {
         var sel = { chassis: state.chassis, ensSkill: state.ensSkill || '', qty: {}, u7: state.u7, u11: {}, o28: state.o28,
                     narrow: 0, mods: {} };
+        sel.ensAllow = allowedFams(COMP, state.ensSkill);
+        sel.ensType = compType(COMP, state.ensSkill);
         sel.conds = state.conds.slice();
         sel.plink = {};
         Object.keys(state.plink).forEach(function (eid) {
@@ -1017,10 +1137,12 @@ function initFabrique() {
         dots += '</span>';
         if (ch) {
             var ensSkillTxt = sel.ensSkill ? esc(sel.ensSkill) : '⚠ choisis ta compétence entraînée';
+            var techOriTxt = techOriPlaced();
             root.innerHTML = '<span class="fab-ens-top"><span class="fab-ens-id">◆ ' + esc(ch.id) + '</span>' +
                 '<span class="fab-ens-cost">' + esc(ch.cout_xp) + ' XP + ' + esc(ch.cout_pa) + ' PA</span></span>' +
                 '<strong>' + esc(ch.nom) + '</strong><small>' + esc(ch.cadre) + '</small>' +
-                '<small>Compétence : ' + ensSkillTxt + '</small>' + dots;
+                '<small>Compétence : ' + ensSkillTxt + '</small>' +
+                (techOriTxt ? '<small>Type : <b>' + esc(FAM_LABEL[techOriTxt] || techOriTxt) + '</b> — un seul admis</small>' : '') + dots;
         } else {
             root.innerHTML = '<span class="fab-ens-top"><span class="fab-ens-id">◆ Ensemble</span></span>' +
                 '<strong>Choisis ton ensemble</strong><small>Clique ici : il dit quand ta technique part.</small>' + dots;
@@ -1070,7 +1192,7 @@ function initFabrique() {
             var costTxt = ec ? (ec.xp + ' XP + ' + ec.pa + ' PA') : (nodeCostXp(p, id) + ' XP + ' + nodeCostPa(p, id) + ' PA');
             var head = '<div class="fab-placed-head"><strong>' + esc(nm) + '</strong>' +
                 '<span class="fab-placed-cost">' + esc(costTxt) + '</span></div>';
-            var sub = esc(p.cond || scaledPieceText(p.texte, id, qq) || '');
+            var sub = esc(applyDurText(p.cond || scaledPieceText(p.texte, id, qq) || '', getMod(id).dur).text);
             if (id === 'O28') sub = sub.replace(/2 à 4/, state.o28 || '2');
             var vs = variantSummary(id);
             if (vs) sub += ' — ' + esc(vs);
@@ -1280,13 +1402,17 @@ function initFabrique() {
             var s2 = document.createElement('input');
             s2.className = 'fab-ctx-search';
             s2.setAttribute('data-search', '1');
-            s2.placeholder = 'Filtrer les 39 pièces…';
+            s2.placeholder = 'Filtrer les ' + CAT.pieces.length + ' pièces…';
             s2.value = menu.search;
             ctxEl.appendChild(s2);
             var q2 = normSearch(menu.search);
+            var allowH = allowedFams(COMP, state.ensSkill);
+            var techOriH = techOriPlaced();
             var groups = { offensif: [], defensif: [], utilitaire: [], social: [] };
             slotOptions().forEach(function (o) {
                 if (q2 && normSearch(o.p.nom + ' ' + o.p.id).indexOf(q2) < 0) return;
+                if (famRefuse(o.p, allowH)) return; /* famille incompatible : masquée, pas grisée */
+                if (techOriH && effFam(o.p, allowH) !== techOriH) return; /* 2e type : masqué */
                 groups[o.p.famille].push(o);
             });
             Object.keys(groups).forEach(function (k) {
@@ -1562,6 +1688,7 @@ function initFabrique() {
             if (p.portee) meta.push('Portée : ' + p.portee);
             if (p.prerequis && p.prerequis.length) meta.push('Demande : ' + p.prerequis.join(', '));
             if (p.incompatible && p.incompatible.length) meta.push('Refuse : ' + p.incompatible.join(', '));
+            if (p.aussi_famille) meta.push('Vaut aussi comme effet ' + p.aussi_famille);
             list.appendChild(el('div', 'fab-ctx-foot', esc(meta.join(' · '))));
             if (info.soft) {
                 var w = el('div', '', '');
@@ -1710,6 +1837,7 @@ function initFabrique() {
         });
         }
         save();
+        refreshLib(r);
         var pz = document.getElementById('fabPuzzle');
         if (pz) linkifyFab(pz);
         return r;
@@ -1754,26 +1882,46 @@ function initFabrique() {
         render();
     }
 
-    function save() {
-        try {
-            var sel = buildSel();
-            localStorage.setItem(SAVE_KEY, JSON.stringify({
-                chassis: state.chassis, qty: state.qty, order: state.order, conds: state.conds, plink: state.plink,
-                condSkill: state.condSkill,
-                ensSkill: state.ensSkill || '',
-                u7: sel.u7, u11: sel.u11, o28: sel.o28,
-                mods: sel.mods,
-                name: (document.getElementById('fabName') || {}).value || '',
-                desc: (document.getElementById('fabDesc') || {}).value || ''
-            }));
-        } catch (e) { /* stockage indisponible */ }
+    function snapshot() {
+        var sel = buildSel();
+        return {
+            chassis: state.chassis, qty: state.qty, order: state.order, conds: state.conds, plink: state.plink,
+            condSkill: state.condSkill,
+            ensSkill: state.ensSkill || '',
+            u7: sel.u7, u11: sel.u11, o28: sel.o28,
+            mods: sel.mods,
+            name: (document.getElementById('fabName') || {}).value || '',
+            desc: (document.getElementById('fabDesc') || {}).value || ''
+        };
     }
-    function load() {
+    /* Sauvegarde auto : chaque rendu persiste l'entrée courante. */
+    function save() {
+        var cur = libCurrent();
+        if (!cur) {
+            cur = { id: uid(), name: '', auto: '', desc: '', data: blankData() };
+            lib.list.push(cur);
+            lib.currentId = cur.id;
+        }
+        var snap = snapshot();
+        cur.name = snap.name || '';
+        cur.desc = snap.desc || '';
+        cur.auto = lastAuto || '';
+        delete snap.name; delete snap.desc;
+        cur.data = snap;
+        libWrite();
+    }
+    function loadV1() {
         try {
             var raw = localStorage.getItem(SAVE_KEY);
-            if (!raw) return;
+            if (!raw) return null;
             var d = JSON.parse(raw);
-            if (!d || typeof d !== 'object') return;
+            if (!d || typeof d !== 'object') return null;
+            return d;
+        } catch (e) { return null; }
+    }
+    function applyData(d) {
+        if (!d || typeof d !== 'object') return;
+        resetState();
             if (d.qty && (d.qty.O14 | 0) > 0) {
                 /* O14 supprimée : devient Repousse x3 + Sur critique liée. */
                 delete d.qty.O14;
@@ -1878,10 +2026,120 @@ function initFabrique() {
             var fd = document.getElementById('fabDesc');
             if (fd && d.desc) fd.value = d.desc;
             state._rest = d;
-        } catch (e) { /* sauvegarde illisible */ }
     }
     function restoreInputs() {
         state._rest = null;
+    }
+
+    /* --- Bibliothèque : une entrée par technique, autosave, dropdown en tête d'atelier. --- */
+    var lib = { list: [], currentId: null };
+    function uid() { return 't' + Date.now().toString(36) + Math.floor(Math.random() * 1e6).toString(36); }
+    function blankData() {
+        return { chassis: null, qty: {}, order: [], conds: [], plink: {}, condSkill: DEFAULT_SKILL,
+                 ensSkill: '', u7: '5', u11: {}, o28: '2', mods: {} };
+    }
+    function libWrite() {
+        try { localStorage.setItem(LIB_KEY, JSON.stringify(lib)); } catch (e) { /* stockage indisponible */ }
+    }
+    function libRead() {
+        try {
+            var raw = localStorage.getItem(LIB_KEY);
+            if (!raw) return false;
+            var d = JSON.parse(raw);
+            if (!d || !d.list || !d.list.forEach) return false;
+            lib.list = d.list;
+            lib.currentId = d.currentId || null;
+            return true;
+        } catch (e) { return false; }
+    }
+    function libCurrent() {
+        for (var i = 0; i < lib.list.length; i++)
+            if (lib.list[i].id === lib.currentId) return lib.list[i];
+        return null;
+    }
+    function setInputs(e) {
+        var fn = document.getElementById('fabName');
+        if (fn) fn.value = (e && e.name) || '';
+        var fd = document.getElementById('fabDesc');
+        if (fd) fd.value = (e && e.desc) || '';
+    }
+    function fixU11() {
+        var any = false;
+        Object.keys(state.u11).forEach(function (v) { if (state.u11[v]) any = true; });
+        if (any && (state.qty.U11 | 0) === 0 && P('U11')) {
+            state.order.push('U11');
+            state.qty.U11 = 1;
+            state.u11auto = true;
+        }
+    }
+    function libEnsure() {
+        if (!libRead()) { lib.list = []; lib.currentId = null; }
+        var v1 = loadV1();
+        if (v1 && !lib.list.length) {
+            lib.list.push({ id: uid(), name: v1.name || '', auto: '', desc: v1.desc || '', data: v1 });
+            try { localStorage.removeItem(SAVE_KEY); } catch (e) { /* vide */ }
+        }
+        if (!libCurrent()) {
+            if (!lib.list.length) lib.list.push({ id: uid(), name: '', auto: '', desc: '', data: blankData() });
+            lib.currentId = lib.list[0].id;
+        }
+        libWrite();
+    }
+    function refreshLib(r) {
+        var box = document.getElementById('fabLib');
+        if (!box) return;
+        box.innerHTML = '';
+        lib.list.forEach(function (e) {
+            var op = document.createElement('option');
+            op.value = e.id;
+            var label = e.name || e.auto || 'Technique sans nom';
+            if (e.id === lib.currentId && r) label += ' · ' + r.xp + ' XP + ' + r.pa + ' PA';
+            op.textContent = label;
+            if (e.id === lib.currentId) op.selected = true;
+            box.appendChild(op);
+        });
+    }
+    function switchEntry(id) {
+        var found = null;
+        lib.list.forEach(function (e) { if (e.id === id) found = e; });
+        if (!found) return;
+        lib.currentId = id;
+        applyData(found.data);
+        setInputs(found);
+        fixU11();
+        closeMenu();
+        render();
+        toast('Technique « ' + (found.name || found.auto || 'sans nom') + ' » chargée.');
+    }
+    function newEntry() {
+        if (lib.list.length >= LIB_MAX) { toast('Bibliothèque pleine (' + LIB_MAX + ' techniques max).'); return; }
+        var e = { id: uid(), name: '', auto: '', desc: '', data: blankData() };
+        lib.list.push(e);
+        lib.currentId = e.id;
+        resetState();
+        setInputs(e);
+        closeMenu();
+        render();
+    }
+    function deleteEntry() {
+        var cur = libCurrent();
+        if (!cur) return;
+        var label = cur.name || cur.auto || 'sans nom';
+        if (!window.confirm('Supprimer « ' + label + ' » ?')) return;
+        if (lib.list.length <= 1) {
+            lib.list[0] = { id: cur.id, name: '', auto: '', desc: '', data: blankData() };
+            resetState();
+            setInputs(lib.list[0]);
+        } else {
+            lib.list = lib.list.filter(function (e) { return e.id !== cur.id; });
+            lib.currentId = lib.list[0].id;
+            applyData(lib.list[0].data);
+            setInputs(lib.list[0]);
+            fixU11();
+        }
+        closeMenu();
+        render();
+        toast('Technique « ' + label + ' » supprimée.');
     }
 
     /* --- Événements (délégués). --- */
@@ -1952,6 +2210,8 @@ function initFabrique() {
             fullReset(null);
             return;
         }
+        if (t.id === 'fabBtnNew' || up(t, '#fabBtnNew')) { newEntry(); return; }
+        if (t.id === 'fabBtnDel' || up(t, '#fabBtnDel')) { deleteEntry(); return; }
         if (t.id === 'fabBtnCopy' || up(t, '#fabBtnCopy')) {
             var r = render();
             var condNames = state.conds.map(function (cid) {
@@ -1999,6 +2259,7 @@ function initFabrique() {
     root.addEventListener('change', function (ev) {
         var t = ev.target;
         if (!t || !t.dataset) return;
+        if (t.id === 'fabLib') { switchEntry(t.value); return; }
         if (t.dataset.condskill) { state.condSkill = t.value; render(); return; }
         if (t.dataset.ensSkill) { state.ensSkill = t.value || ''; render(); return; }
         if (t.dataset.varU7) { state.u7 = t.value; render(); return; }
@@ -2106,20 +2367,13 @@ function initFabrique() {
         }
     });
 
-    /* --- Montage initial. --- */
-    load();
+    /* --- Montage initial : bibliothèque (import v1 une fois), entrée courante. --- */
+    libEnsure();
+    var cur0 = libCurrent();
+    if (cur0) { applyData(cur0.data); setInputs(cur0); }
     buildModifs();
     restoreInputs();
-    /* U11 restaurée depuis la sauvegarde. */
-    (function () {
-        var any = false;
-        Object.keys(state.u11).forEach(function (v) { if (state.u11[v]) any = true; });
-        if (any && (state.qty.U11 | 0) === 0 && P('U11')) {
-            state.order.push('U11');
-            state.qty.U11 = 1;
-            state.u11auto = true;
-        }
-    })();
+    fixU11();
     render();
     if (window.__FABDEBUG) window.__FABDEBUG.state = state;
 }
@@ -2128,6 +2382,12 @@ FabriqueEngine.modRangeOk = modRangeOk;
 FabriqueEngine.modZoneOk = modZoneOk;
 FabriqueEngine.modDurOk = modDurOk;
 FabriqueEngine.modCrossOk = modCrossOk;
+FabriqueEngine.allowedFams = allowedFams;
+FabriqueEngine.compType = compType;
+FabriqueEngine.famRefuse = famRefuse;
+FabriqueEngine.effFam = effFam;
+FabriqueEngine.durPhrase = durPhrase;
+FabriqueEngine.applyDurText = applyDurText;
 FabriqueEngine.suggestName = suggestName;
 FabriqueEngine.NAME_BASE = NAME_BASE;
 FabriqueEngine.suggestDesc = suggestDesc;

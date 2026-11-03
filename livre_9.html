@@ -1569,11 +1569,16 @@
                         <h2>Fabrique de Techniques Maison (puzzle 4–6 XP)</h2>
 
                         <p>
-                            Tu as lu le <a href="livre_3.html#chap-15">chapitre 14 (Fabrique de Techniques)</a> ?
+                            Tu as lu le <a href="livre_3.html#chap-15">chapitre 15 (Fabrique de Techniques)</a> ?
                             Alors monte ta technique comme un nœud du graphe : clique ◆ pour l'ensemble,
                             ⊕ pour brancher 1 à 3 pièces. Le menu ne propose que ce qui se branche ici —
                             chaque choix dit ce qu'il demande et ce qu'il refuse.
                             L'atelier compte les <a class="rule-ref" href="livre_1.html#sec-5-3" data-tip="Spécialisation : 5 XP de la bonne banque ou du libre, au tarif normal (§5.3).">XP</a> et les <a class="rule-ref" href="livre_1.html#chap-4" data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a> tout seul, et il te dit quand ton MJ doit signer (7 XP et plus).
+                            <strong>Rappel :</strong> ta technique fait toujours deux choses — la base de ta
+                            compétence (ton <a class="rule-ref" href="livre_2.html#chap-7" data-tip="Face-à-Face : chacun lance son dé + PA, le meilleur gagne. Seul le vainqueur coche (§7.3).">Face-à-Face</a> normal),
+                            puis l'effet embarqué. <em>Exemple — ta technique repousse la cible d'1 case :</em>
+                            égalité ? Pas de dégâts, mais la cible recule quand même. Tu passes de 1 ou plus ?
+                            Dégâts de l'attaque (+1 par point d'écart) + repousse. Raté ? Rien ne part.
                         </p>
 
                         <div class="tool-section" id="fabPuzzle">
@@ -1591,6 +1596,18 @@
                                     <span class="pill-badge amber">Standard 4–6 XP · Signature 7+ XP (MJ)</span>
                                     <span class="pill-badge cyan" id="fabBudgetBadge">0 XP · 0 PA</span>
                                 </div>
+                            </div>
+
+                            <div class="fab-lib-bar"
+                                style="display:flex;gap:8px;align-items:center;margin:12px 0 4px;flex-wrap:wrap;">
+                                <label class="tool-label" for="fabLib" style="margin:0;">Mes techniques</label>
+                                <select id="fabLib" class="tool-select fab-input"
+                                    style="min-width:200px;flex:1;" title="Techniques enregistrées (sauvegarde auto)"></select>
+                                <button type="button" class="tool-btn" id="fabBtnNew"
+                                    style="padding:4px 10px;font-size:0.72rem;" title="Nouvelle technique vide">+
+                                    Nouvelle</button>
+                                <button type="button" class="tool-btn" id="fabBtnDel"
+                                    style="padding:4px 10px;font-size:0.72rem;" title="Supprimer la technique affichée">Supprimer</button>
                             </div>
 
                             <div class="tool-grid-2">
@@ -1798,7 +1815,7 @@
 
     <!-- Scripts partagés et interactifs -->
     <script src="js/codex.js"></script>
-    <script src="js/fabrique.js?v=14"></script>
+    <script src="js/fabrique.js?v=22"></script>
     <script src="js/tools.js?v=9"></script>
 
     <!-- Scripts Authentification -->

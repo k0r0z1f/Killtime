@@ -1,6 +1,6 @@
 {
  "version": 3,
- "updated": "2026-11-02",
+ "updated": "2026-11-03",
  "activeId": "board-revue-rp",
  "boards": [
   {
@@ -1942,6 +1942,21 @@
      "scale": null,
      "suggestedAsset": "js/codex.js",
      "details": "FAIT 2026-11-02 — le binding [data-popout] au DOMContentLoaded ratait les boutons rendus en dynamique (livre_1.html squelettisé, RP-086) : remplacé par une délégation document.click (closest, garde disabled/sans-closest, repli _blank si bloqueur). Vérifié harnais DOM simulé (ouverture ×1, hors-bouton rien, bloqueur, sans-closest) + node --check. Fichiers : js/codex.js."
+    },
+    {
+     "id": "RP-130",
+     "title": "Fabrique puzzle : durée D, verrou familles, D9, mono-type, bibliothèque",
+     "epic": "Fabrique — Système RP",
+     "status": "done",
+     "priority": "high",
+     "order": 129,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "js/fabrique.js",
+     "details": "FAIT 2026-11-03 — Durée M4 sur D1/D2/D3/D5/D8 (base « cette attaque », +1 tour +1XP+1PA, 3 tours max ; texte auto bascule vers « jusqu'à la fin de ton X prochain tour » sur carte + fiche) ; verrou familles par compétence liée (types competences_par_nom, §7.3/§22 : Esquive défensif pur, ni utilitaire ni social ; incompatibles masqués du menu) ; D9 Contre-Poussée (repousse défensive, miroir de O13 redevenu offensif pur) ; mono-type (1er effet fixe off/def/soc/uti, affiché sous ◆) ; bibliothèque autosave (dropdown Mes techniques, +Nouvelle, Supprimer, import v1 une fois). Vérifié : 25/25 cas moteur, harnais DOM 12/12, node --check, build_livres --check 3, build_nav --check, check_liens. Fichiers : js/fabrique.js (v22), data/livre_3.json (43 pièces), livre_9.html. Rappel Face-à-Face ajouté au §15 (contenu + JSON)."
     }
    ]
   }

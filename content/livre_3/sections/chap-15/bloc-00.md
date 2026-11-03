@@ -13,4 +13,15 @@ format: raw
                         <strong>4 à 6 <a class="rule-ref" href="livre_1.html#sec-5-3" data-tip="Spécialisation : 5 XP de la bonne banque ou du libre, au tarif normal (§5.3).">XP</a> (vise 5)</strong>, 10 en croisé. Un cran au-dessus (7-8 <a class="rule-ref" href="livre_1.html#sec-5-3" data-tip="Spécialisation : 5 XP de la bonne banque ou du libre, au tarif normal (§5.3).">XP</a>) ? C'est une
                         <em>signature</em>, une seule par personnage, avec l'accord du MJ.
                     </p>
+                    <p>
+                        <strong>Rappel :</strong> une technique basée sur une compétence fait toujours deux choses :
+                        la base de la compétence, puis ce que le pouvoir dicte.
+                        Tu jettes ton attaque normalement — ta compétence offensive contre la défense adverse, en
+                        <a class="rule-ref" href="livre_2.html#chap-7" data-tip="Face-à-Face : chacun lance son dé + PA, le meilleur gagne. Seul le vainqueur coche (§7.3).">Face-à-Face</a>
+                        — puis tu ajoutes l'effet acheté.
+                        <em>Exemple — ta technique repousse la cible d'1 case :</em>
+                        Égalité ? Pas de dégâts, mais la repousse part quand même.
+                        Tu passes de 1 ou plus ? Dégâts de l'attaque (+1 par point d'écart) + repousse.
+                        Raté ? Rien ne part — ni dégâts, ni effet.
+                    </p>
 

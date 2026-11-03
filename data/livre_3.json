@@ -121,7 +121,7 @@
    "blocs": [
     {
      "type": "html",
-     "html": "\n                    <p class=\"lead\">\n                        Pas envie de piocher dans le compendium ? Fabrique ta technique toi-même.\n                        Tu choisis un châssis, tu ajoutes 1 à 3 pièces, tu paies en <a class=\"rule-ref\" href=\"livre_1.html#sec-5-3\" data-tip=\"Spécialisation : 5 XP de la bonne banque ou du libre, au tarif normal (§5.3).\">XP</a> —\n                        et chaque pièce active te coûtera des <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a> à table.\n                        <br>Le compendium ne bouge pas : il reste là pour les soirs où tu veux jouer sans bricoler.\n                        La Fabrique, c'est une option de plus. Une technique maison coûte comme une spécialisation :\n                        <strong>4 à 6 <a class=\"rule-ref\" href=\"livre_1.html#sec-5-3\" data-tip=\"Spécialisation : 5 XP de la bonne banque ou du libre, au tarif normal (§5.3).\">XP</a> (vise 5)</strong>, 10 en croisé. Un cran au-dessus (7-8 <a class=\"rule-ref\" href=\"livre_1.html#sec-5-3\" data-tip=\"Spécialisation : 5 XP de la bonne banque ou du libre, au tarif normal (§5.3).\">XP</a>) ? C'est une\n                        <em>signature</em>, une seule par personnage, avec l'accord du MJ.\n                    </p>\n"
+     "html": "\n                    <p class=\"lead\">\n                        Pas envie de piocher dans le compendium ? Fabrique ta technique toi-même.\n                        Tu choisis un châssis, tu ajoutes 1 à 3 pièces, tu paies en <a class=\"rule-ref\" href=\"livre_1.html#sec-5-3\" data-tip=\"Spécialisation : 5 XP de la bonne banque ou du libre, au tarif normal (§5.3).\">XP</a> —\n                        et chaque pièce active te coûtera des <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a> à table.\n                        <br>Le compendium ne bouge pas : il reste là pour les soirs où tu veux jouer sans bricoler.\n                        La Fabrique, c'est une option de plus. Une technique maison coûte comme une spécialisation :\n                        <strong>4 à 6 <a class=\"rule-ref\" href=\"livre_1.html#sec-5-3\" data-tip=\"Spécialisation : 5 XP de la bonne banque ou du libre, au tarif normal (§5.3).\">XP</a> (vise 5)</strong>, 10 en croisé. Un cran au-dessus (7-8 <a class=\"rule-ref\" href=\"livre_1.html#sec-5-3\" data-tip=\"Spécialisation : 5 XP de la bonne banque ou du libre, au tarif normal (§5.3).\">XP</a>) ? C'est une\n                        <em>signature</em>, une seule par personnage, avec l'accord du MJ.\n                    </p>\n                    <p>\n                        <strong>Rappel :</strong> une technique basée sur une compétence fait toujours deux choses :\n                        la base de la compétence, puis ce que le pouvoir dicte.\n                        Tu jettes ton attaque normalement — ta compétence offensive contre la défense adverse, en\n                        <a class=\"rule-ref\" href=\"livre_2.html#chap-7\" data-tip=\"Face-à-Face : chacun lance son dé + PA, le meilleur gagne. Seul le vainqueur coche (§7.3).\">Face-à-Face</a>\n                        — puis tu ajoutes l'effet acheté.\n                        <em>Exemple — ta technique repousse la cible d'1 case :</em>\n                        Égalité ? Pas de dégâts, mais la repousse part quand même.\n                        Tu passes de 1 ou plus ? Dégâts de l'attaque (+1 par point d'écart) + repousse.\n                        Raté ? Rien ne part — ni dégâts, ni effet.\n                    </p>\n"
     },
     {
      "type": "ref",
@@ -2014,20 +2014,20 @@
     [
      "2",
      "0",
-     "<strong>Parade sans malus</strong> — Tu pares à plein dé avec cette approche.",
-     "Compétence liée. Le socle : Épée, Bloquer, Arts Martiaux..."
+     "<strong>Parade sans malus</strong> — Tu pares à plein dé avec cette approche, cette attaque.",
+     "Compétence liée. Le socle : Épée, Bloquer, Arts Martiaux... Durée cumulable (+1 tour : +1 XP +1 PA, 3 tours max)."
     ],
     [
      "3",
      "0",
-     "<strong>Absorbe 3 / dégâts ÷2</strong> — Absorbe 3 dégâts de plus au blocage, ou dégâts interceptés divisés par deux.",
-     "Une seule absorption par parade."
+     "<strong>Absorbe 3 / dégâts ÷2</strong> — Absorbe 3 dégâts de plus au blocage, ou dégâts interceptés divisés par deux, cette attaque.",
+     "Une seule absorption par parade. Durée cumulable (+1 tour : +1 XP +1 PA, 3 tours max)."
     ],
     [
      "3",
      "0",
-     "<strong>+2 Encaissement</strong> — +2 à ton Encaissement, en passif.",
-     "Non cumulable : le meilleur s’applique."
+     "<strong>+2 Encaissement</strong> — +2 à ton Encaissement, cette attaque.",
+     "Non cumulable : le meilleur s’applique. Durée cumulable (+1 tour : +1 XP +1 PA, 3 tours max)."
     ],
     [
      "4",
@@ -2038,8 +2038,8 @@
     [
      "3",
      "0",
-     "<strong>Immunité 1 statut</strong> — Immunité complète à un statut écrit : poison, gaz, Ralenti...",
-     "Précise le statut. Les dégâts directs passent quand même."
+     "<strong>Immunité 1 statut</strong> — Immunité complète à un statut écrit (cette attaque) : poison, gaz, Ralenti...",
+     "Précise le statut. Les dégâts directs passent quand même. Durée cumulable (+1 tour : +1 XP +1 PA, 3 tours max)."
     ],
     [
      "5",
@@ -2056,8 +2056,14 @@
     [
      "2",
      "0",
-     "<strong>Ignore un malus</strong> — Ignore le malus d’À Terre, d’Étourdi, ou le double coût du Ralenti.",
-     "Un malus par achat. Prérequis filière défensive."
+     "<strong>Ignore un malus</strong> — Ignore le malus d’À Terre, d’Étourdi, ou le double coût du Ralenti, cette attaque.",
+     "Un malus par achat. Prérequis filière défensive. Durée cumulable (+1 tour : +1 XP +1 PA, 3 tours max)."
+    ],
+    [
+     "2",
+     "0",
+     "<strong>Repousse 1 case</strong> — Sur parade réussie, tu repousses ton agresseur d’1 case.",
+     "Cumulable +1 case par achat (+2 XP par case)."
     ]
    ]
   },
@@ -5391,7 +5397,7 @@
      "prerequis": [],
      "seuil": null,
      "incompatible": [],
-     "texte": "Tu pares sans malus avec cette approche."
+     "texte": "Tu pares sans malus cette attaque."
     },
     {
      "id": "D2",
@@ -5404,7 +5410,7 @@
      "prerequis": [],
      "seuil": null,
      "incompatible": [],
-     "texte": "Ton blocage absorbe 3 dégâts de plus."
+     "texte": "Ton blocage absorbe 3 dégâts de plus, cette attaque."
     },
     {
      "id": "D3",
@@ -5417,7 +5423,7 @@
      "prerequis": [],
      "seuil": null,
      "incompatible": [],
-     "texte": "Ton Encaissement gagne +2."
+     "texte": "Ton Encaissement gagne +2, cette attaque."
     },
     {
      "id": "D4",
@@ -5443,7 +5449,7 @@
      "prerequis": [],
      "seuil": null,
      "incompatible": [],
-     "texte": "Tu es immunisé au statut écrit."
+     "texte": "Tu es immunisé au statut écrit, cette attaque."
     },
     {
      "id": "D6",
@@ -5489,7 +5495,20 @@
      ],
      "seuil": null,
      "incompatible": [],
-     "texte": "Tu ignores le malus écrit."
+     "texte": "Tu ignores le malus écrit, cette attaque."
+    },
+    {
+     "id": "D9",
+     "nom": "Repousse 1 case",
+     "famille": "defensif",
+     "cout_xp": "2",
+     "cout_pa": "0",
+     "cumul": true,
+     "portee": "contact",
+     "prerequis": [],
+     "seuil": "parade réussie",
+     "incompatible": [],
+     "texte": "Sur parade réussie, tu repousses ton agresseur d’1 case."
     },
     {
      "id": "U1",
