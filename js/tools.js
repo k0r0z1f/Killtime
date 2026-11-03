@@ -692,6 +692,7 @@ function initCharacterSheet() {
             if (!getActiveTab()) setActiveTabId(roster.tabs[0].id);
             persistRoster();
             renderTabs();
+            notifyTechsContextChanged();
             suppressSync = true;
             try {
                 const tab = getActiveTab();
@@ -795,6 +796,7 @@ function initCharacterSheet() {
             suppressSync = false;
         }
         renderTabs();
+        notifyTechsContextChanged();
     }
     function addTab(data, opts) {
         opts = opts || {};
@@ -813,6 +815,7 @@ function initCharacterSheet() {
         }
         renderTabs();
         broadcastTab();
+        notifyTechsContextChanged();
         return tab;
     }
     function createNewTab() {
@@ -823,9 +826,18 @@ function initCharacterSheet() {
         const src = getActiveTab();
         if (!src) return;
         updateActiveFromForm();
+        const srcId = src.id;
         const data = JSON.parse(JSON.stringify(src.data));
         data.name = (data.name || 'Sans nom') + ' (copie)';
         const tab = addTab(data, {});
+        // La copie hérite des techniques du personnage source (rangées par onglet).
+        if (tab && window.FabriqueCharStore) {
+            try {
+                const srcLib = window.FabriqueCharStore.read(srcId);
+                if (srcLib) window.FabriqueCharStore.write(tab.id, JSON.parse(JSON.stringify(srcLib)));
+            } catch (e) { /* ignore */ }
+            notifyTechsContextChanged(true);
+        }
         if (tab) showToast('Onglet dupliqué : ' + tabDisplayName(tab));
     }
     function renameTab(id) {
@@ -851,6 +863,8 @@ function initCharacterSheet() {
         const tab = roster.tabs[idx];
         if (!confirm('Supprimer l\'onglet « ' + tabDisplayName(tab) + ' » ? Sa fiche sera perdue (pensez à Exporter JSON avant).')) return;
         const wasActive = targetId === activeTabId();
+        // Les techniques rangées sur cet onglet partent avec lui.
+        if (window.FabriqueCharStore) { try { window.FabriqueCharStore.remove(targetId); } catch (e) { /* ignore */ } }
         roster.tabs.splice(idx, 1);
         if (!roster.tabs.length) {
             roster.tabs.push({ id: newTabId(), label: '', customLabel: false, updatedAt: Date.now(), data: buildDefaultData('Nouveau héros 1') });
@@ -866,6 +880,7 @@ function initCharacterSheet() {
         }
         renderTabs();
         broadcastTab();
+        notifyTechsContextChanged();
         showToast('Onglet supprimé.');
     }
     function scheduleSync() {
@@ -1145,6 +1160,7 @@ function initCharacterSheet() {
 
         updateSkillsLimit(eff.eru);
         refreshStepperTitles();
+        refreshFicheTechs();
         scheduleSync();
     }
 
@@ -1199,6 +1215,115 @@ function initCharacterSheet() {
     function syncPillarPrev() {
         if (pillarMajorSelect) pillarMajorSelect.dataset.prev = pillarMajorSelect.value;
         if (pillarMinorSelect) pillarMinorSelect.dataset.prev = pillarMinorSelect.value;
+    }
+
+    // ---- TECHNIQUES ASSOCIÉES (Fabrique puzzle, Livre III §15 / chap-41) ----
+    // Bibliothèque rangée par personnage (clé par onglet, pont
+    // FabriqueCharStore js/fabrique.js, même origine : Livre IX + popout).
+    // Une technique est « associée » au personnage affiché quand sa
+    // compétence liée est entraînée sur cette fiche (comparaison par
+    // préfixe : 'Maniement d'Arme' couvre 'Maniement d'Arme (...)').
+    const FAB_LIB_KEY = 'fabrique-puzzle-v2'; /* legs global (repli sans pont) */
+    function readFabLibrary() {
+        try {
+            // Rangement par personnage : la fiche lit la bibliothèque de
+            // l'onglet affiché (pont FabriqueCharStore, js/fabrique.js).
+            if (window.FabriqueCharStore) {
+                const id = activeTabId();
+                if (!id) return [];
+                const per = window.FabriqueCharStore.read(id);
+                if (per && Array.isArray(per.list)) return per.list;
+                return [];
+            }
+            const raw = localStorage.getItem(FAB_LIB_KEY);
+            if (!raw) return [];
+            const parsed = JSON.parse(raw);
+            if (!parsed || !Array.isArray(parsed.list)) return [];
+            return parsed.list;
+        } catch (e) { return []; }
+    }
+    function normSkill(s) { return String(s || '').toLowerCase().trim(); }
+    function trainedSkillNames() {
+        const out = [];
+        document.querySelectorAll('.skill-check:checked').forEach(cb => {
+            const n = cb.getAttribute('data-skill') || '';
+            if (n && out.indexOf(n) < 0) out.push(n);
+        });
+        return out;
+    }
+    function techIsLinked(entrySkill, trained) {
+        const e = normSkill(entrySkill);
+        if (!e) return false;
+        return trained.some(t => {
+            const n = normSkill(t);
+            return n === e || n.indexOf(e) === 0 || e.indexOf(n) === 0;
+        });
+    }
+    function refreshFicheTechs() {
+        const list = document.getElementById('csTechList');
+        if (!list) return;
+        const count = document.getElementById('csTechCount');
+        // Seules les techniques avec un contenu (ensemble ou pièces) comptent :
+        // les brouillons vides (nom auto « Technique Maison ») restent cachés.
+        const lib = readFabLibrary().filter(e => e && e.data &&
+            (e.data.chassis || (e.data.order && e.data.order.length)));
+        const trained = trainedSkillNames();
+        const rows = lib.map(e => ({
+            e,
+            label: (e.name || e.auto || 'Technique sans nom'),
+            skill: e.skill || (e.data && e.data.ensSkill) || '',
+            linked: false
+        }));
+        rows.forEach(r => { r.linked = techIsLinked(r.skill, trained); });
+        rows.sort((a, b) => ((b.linked ? 1 : 0) - (a.linked ? 1 : 0)));
+        list.innerHTML = '';
+        const nbLinked = rows.filter(r => r.linked).length;
+        if (count) {
+            count.textContent = lib.length
+                ? (nbLinked + ' associée' + (nbLinked > 1 ? 's' : '') + ' / ' + lib.length)
+                : '0 technique forgée';
+            count.className = 'pill-badge ' + (nbLinked ? 'amber' : 'cyan');
+        }
+        if (!lib.length) {
+            const li = document.createElement('li');
+            const em = document.createElement('em');
+            em.textContent = 'Aucune technique forgée pour l’instant — ouvre la Fabrique ci-dessous.';
+            li.appendChild(em);
+            list.appendChild(li);
+            return;
+        }
+        rows.forEach(r => {
+            const li = document.createElement('li');
+            if (!r.linked) li.style.opacity = '0.62';
+            const b = document.createElement('strong');
+            b.textContent = r.label;
+            li.appendChild(b);
+            const meta = [];
+            if (typeof r.e.xp === 'number' && typeof r.e.pa === 'number')
+                meta.push(r.e.xp + ' XP + ' + r.e.pa + ' PA');
+            if (r.skill) meta.push('liée : ' + r.skill);
+            if (r.e.status === 'signature') meta.push('SIGNATURE (MJ)');
+            else if (r.e.status === 'invalide') meta.push('à corriger');
+            if (meta.length) li.appendChild(document.createTextNode(' — ' + meta.join(' · ')));
+            if (r.linked) {
+                li.appendChild(document.createTextNode(' '));
+                const badge = document.createElement('span');
+                badge.className = 'pill-badge amber';
+                badge.textContent = 'associée';
+                badge.title = 'Compétence liée entraînée sur cette fiche.';
+                li.appendChild(badge);
+            }
+            list.appendChild(li);
+        });
+    }
+    window.refreshFicheTechs = refreshFicheTechs;
+
+    /* La fabrique intégrée suit le personnage affiché : changement d'onglet,
+       duplication, import, transfert serveur. Force = recharge même si l'id
+       n'a pas changé (import de techniques). */
+    function notifyTechsContextChanged(forceFab) {
+        if (window.refreshFabriqueLib) { try { window.refreshFabriqueLib(forceFab); } catch (e) { /* ignore */ } }
+        refreshFicheTechs();
     }
 
     // Listes croisées : le majeur n'apparaît pas dans la droplist mineur et inversement.
@@ -1611,6 +1736,13 @@ function initCharacterSheet() {
     if (btnExport) {
         btnExport.addEventListener('click', () => {
             const data = collectSheetData();
+            // Les techniques rangées sur cet onglet voyagent avec la fiche.
+            if (window.FabriqueCharStore) {
+                try {
+                    const id = activeTabId();
+                    if (id) data.techs = window.FabriqueCharStore.read(id) || { list: [], currentId: null };
+                } catch (e) { /* ignore */ }
+            }
             const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
             const a = document.createElement('a');
             const safeName = (data.name || 'heros').toLowerCase().replace(/[^a-z0-9àâäéèêëîïôöùûüç_-]+/gi, '_');
@@ -1635,6 +1767,14 @@ function initCharacterSheet() {
                 try {
                     const data = JSON.parse(reader.result);
                     applySheetData(data);
+                    // Les techniques exportées avec la fiche retrouvent l'onglet actif.
+                    if (data && data.techs && data.techs.list && window.FabriqueCharStore) {
+                        try {
+                            const id = activeTabId();
+                            if (id) window.FabriqueCharStore.write(id, data.techs);
+                        } catch (e) { /* ignore */ }
+                    }
+                    notifyTechsContextChanged(true);
                     showToast('Fiche importée avec succès !');
                 } catch (e) {
                     showToast('Fichier JSON invalide.');
@@ -1666,6 +1806,7 @@ function initCharacterSheet() {
                 applySheetData(JSON.parse(raw));
                 try { lastSyncJson = JSON.stringify(collectSheetData()); } catch (e) { /* ignore */ }
                 suppressSync = false;
+                notifyTechsContextChanged();
                 showToast('Fiche rechargée avec succès !');
             } catch (e) {
                 suppressSync = false;
@@ -1816,6 +1957,22 @@ function initCharacterSheet() {
         // aussi ROSTER_KEY (traité ci-dessus). L'ancien écho SYNC_KEY
         // réappliquait un état périmé et écrasait la frappe en cours.
         // SYNC_KEY reste écrit pour le bouton « Charger la Sauvegarde ».
+    });
+    // Fabrique (même fenêtre : autre section ; autre fenêtre : même origine) :
+    // sa bibliothèque du personnage affiché a changé — la liste suit.
+    window.addEventListener('storage', (e) => {
+        if (!e || !e.key) return;
+        if (e.key === FAB_LIB_KEY) { refreshFicheTechs(); return; }
+        try {
+            if (window.FabriqueCharStore && e.key === window.FabriqueCharStore.keyFor(activeTabId())) refreshFicheTechs();
+        } catch (err) { /* ignore */ }
+    });
+    // Quitter la page (ex. suivre le lien Fabrique depuis la fenêtre
+    // détachée) : purge le debounce pour ne jamais perdre la frappe en cours.
+    window.addEventListener('beforeunload', () => {
+        if (syncTimer) {
+            try { doSync(); } catch (e) { /* ignore */ }
+        }
     });
     // Connexion : transfert du local vers le serveur, puis autosave.
     // Déconnexion : retour au local seul.

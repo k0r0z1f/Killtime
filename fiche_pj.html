@@ -29,6 +29,9 @@
         <span style="font-family: var(--font-mono); font-weight: 700; font-size: 0.9rem;">Fiche PJ</span>
         <span class="pill-badge cyan">Fenêtre détachée</span>
         <span style="flex: 1;"></span>
+        <a href="#fabPuzzle"
+            style="font-size: 0.82rem; color: var(--arcane-cyan); font-weight: 700; text-decoration: none;">Fabrique
+            puzzle (ci-dessous)</a>
         <a href="livre_9.html#chap-36"
             style="font-size: 0.82rem; color: var(--arcane-cyan); font-weight: 700; text-decoration: none;">←
             Retour Livre IX (chap. 36)</a>
@@ -384,6 +387,45 @@
                 </div>
             </div>
 
+            <!-- TECHNIQUES ASSOCIÉES (Fabrique puzzle, Livre III §15 / chap-41) -->
+            <div
+                style="margin-top: 20px; padding: 16px; background: rgba(0,0,0,0.25); border-radius: 8px; border: 1px dashed var(--border-subtle);">
+                <div
+                    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; gap: 8px; flex-wrap: wrap;">
+                    <span
+                        style="font-family: var(--font-mono); font-size: 0.8rem; font-weight: 700; color: var(--text-primary);">
+                        Techniques associées au personnage (Fabrique puzzle, Livre III §15)
+                    </span>
+                    <span class="pill-badge cyan" id="csTechCount">0 technique forgée</span>
+                </div>
+                <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 12px;">
+                    Tes techniques forgées à la
+                    <a href="#fabPuzzle"
+                        style="color: var(--arcane-cyan); font-weight: 700;">Fabrique puzzle
+                        (intégrée ci-dessous)</a>
+                    apparaissent ici en direct, rangées par personnage : chaque onglet
+                    a ses techniques. Celles dont la compétence liée est
+                    entraînée sur cette fiche sont marquées
+                    <strong>associée</strong> — entraîne-la ci-dessus pour l'associer.
+                </p>
+                <ul class="spell-effects-list" id="csTechList">
+                    <li><em>Aucune technique forgée pour l’instant — ouvre la Fabrique
+                            ci-dessous.</em></li>
+                </ul>
+                <div class="tool-btn-row">
+                    <a class="tool-btn primary" href="#fabPuzzle" style="text-decoration: none;"
+                        title="Aller à la Fabrique de Techniques puzzle intégrée (ci-dessous)">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <polygon points="12 2 2 7 12 12 22 7 12 2" />
+                            <polyline points="2 17 12 22 22 17" />
+                            <polyline points="2 12 12 17 22 12" />
+                        </svg>
+                        Aller à la Fabrique intégrée (puzzle)
+                    </a>
+                </div>
+            </div>
+
             <!-- DASHBOARD VITAL EN DIRECT -->
             <h4
                 style="margin: 24px 0 10px; font-family: var(--font-mono); font-size: 0.85rem; color: var(--temporal-amber); text-transform: uppercase;">
@@ -476,11 +518,135 @@
             </div>
 
         </div>
+
+        <!-- FABRIQUE INTÉGRÉE (puzzle, Livre III §15 — rangée par personnage : bibliothèques par onglet) -->
+        <div class="tool-section" id="fabPuzzle" style="margin-top: 24px;">
+            <div class="tool-header-bar">
+                <div class="tool-title">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2">
+                        <polygon points="12 2 2 7 12 12 22 7 12 2" />
+                        <polyline points="2 17 12 22 22 17" />
+                        <polyline points="2 12 12 17 22 12" />
+                    </svg>
+                    Atelier puzzle de la Fabrique
+                </div>
+                <div class="tool-badge-row">
+                    <span class="pill-badge amber">Standard 4–6 XP · Signature 7+ XP (MJ)</span>
+                    <span class="pill-badge cyan" id="fabBudgetBadge">0 XP · 0 PA</span>
+                </div>
+            </div>
+
+            <p style="font-size: 0.8rem; color: var(--text-secondary); margin: 12px 0 4px;">
+                Monte ta technique comme un nœud du graphe : clique ◆ pour l'ensemble,
+                ⊕ pour brancher 1 à 3 pièces. Tes techniques sont rangées par
+                personnage — changer d'onglet change d'atelier.
+                Règles : <a href="livre_3.html#chap-15"
+                    style="color: var(--arcane-cyan); font-weight: 700;">Livre III §15</a>.
+            </p>
+
+            <div class="fab-lib-bar"
+                style="display:flex;gap:8px;align-items:center;margin:12px 0 4px;flex-wrap:wrap;">
+                <label class="tool-label" for="fabLib" style="margin:0;">Mes techniques</label>
+                <select id="fabLib" class="tool-select fab-input"
+                    style="min-width:200px;flex:1;" title="Techniques enregistrées (sauvegarde auto)"></select>
+                <button type="button" class="tool-btn" id="fabBtnNew"
+                    style="padding:4px 10px;font-size:0.72rem;" title="Nouvelle technique vide">+
+                    Nouvelle</button>
+                <button type="button" class="tool-btn" id="fabBtnDel"
+                    style="padding:4px 10px;font-size:0.72rem;" title="Supprimer la technique affichée">Supprimer</button>
+            </div>
+
+            <div class="tool-grid-2">
+                <div class="tool-form-group">
+                    <label class="tool-label" for="fabName">Nom de ta Technique</label>
+                    <input type="text" id="fabName" class="tool-input" value="Fente Basse"
+                        placeholder="Ex: Fente Basse">
+                    <div style="display:flex;gap:8px;align-items:baseline;margin-top:6px;">
+                        <button type="button" class="tool-btn" id="fabBtnAuto"
+                            style="padding:4px 10px;font-size:0.72rem;">↻ Nom auto</button>
+                        <span class="fab-hint" id="fabNameAuto" style="margin:0;"></span>
+                    </div>
+                </div>
+                <div class="tool-form-group">
+                    <label class="tool-label" for="fabDesc">Description Narrative</label>
+                    <input type="text" id="fabDesc" class="tool-input"
+                        value="Tu passes sous la garde et tu fauches le jarret."
+                        placeholder="Ce qu'on voit, ce qu'on entend...">
+                    <div style="display:flex;gap:8px;align-items:baseline;margin-top:6px;">
+                        <button type="button" class="tool-btn" id="fabBtnDesc"
+                            style="padding:4px 10px;font-size:0.72rem;">↻ Description auto</button>
+                        <span class="fab-hint" id="fabDescAuto" style="margin:0;"></span>
+                    </div>
+                </div>
+            </div>
+
+            <h4
+                style="margin: 20px 0 10px; font-family: var(--font-mono); font-size: 0.85rem; color: var(--temporal-amber); text-transform: uppercase;">
+                1. Graphe — clique un nœud, le menu propose les choix possibles
+            </h4>
+            <div id="fabGraph" class="fab-graph" aria-live="polite">
+                <svg id="fabWires" class="fab-wires" aria-hidden="true"></svg>
+                <div id="fabNodes" class="fab-nodes"></div>
+                <div id="fabCtx" class="fab-ctx" hidden></div>
+            </div>
+            <p class="fab-hint">
+                Clic gauche ou clic droit sur ◆, ⊕ ou une pièce : le menu ne montre que ce qui
+                se branche ici — les prérequis s'imposent d'eux-mêmes quand un effet les exige.
+                Échap ou clic ailleurs = annuler.
+            </p>
+
+            <h4
+                style="margin: 20px 0 10px; font-family: var(--font-mono); font-size: 0.85rem; color: var(--arcane-cyan); text-transform: uppercase;">
+                Montages vérifiés (un clic = le puzzle se remplit)
+            </h4>
+            <div class="tool-btn-row">
+                <button class="tool-btn" data-preset="suture">Suture Réflexe · 6 XP</button>
+                <button class="tool-btn" data-preset="miroir">Lame Miroir · 3 XP</button>
+                <button class="tool-btn" data-preset="fente">Fente Basse · 4 XP</button>
+            </div>
+
+            <!-- FICHE DE LA TECHNIQUE EN DIRECT -->
+            <div class="spell-card-preview">
+                <div class="spell-card-header">
+                    <div>
+                        <div class="spell-card-name" id="fabCardName">Fente Basse</div>
+                        <div class="spell-card-type" id="fabCardType">—</div>
+                    </div>
+                    <div class="spell-card-costs">
+                        <div class="spell-pa-tag" id="fabCardPa">0 PA</div>
+                        <div class="spell-xp-tag" id="fabCardXp">Création : 0 XP</div>
+                    </div>
+                </div>
+                <div class="spell-card-body">
+                    <p id="fabCardDesc">Tu passes sous la garde et tu fauches le jarret.</p>
+                    <ul class="spell-effects-list" id="fabCardEffectsList">
+                        <li><em>Choisis un ensemble puis 1 à 3 pièces.</em></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="tool-btn-row">
+                <button class="tool-btn primary" id="fabBtnCopy">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="0" />
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                    </svg>
+                    Copier la Fiche de Technique
+                </button>
+                <button class="tool-btn" id="fabBtnReset">
+                    Tout effacer
+                </button>
+            </div>
+
+        </div>
     </main>
 
     <!-- Scripts partagés : le créateur réutilise le même moteur (mêmes IDs) -->
     <script src="js/codex.js"></script>
-    <script src="js/tools.js?v=9"></script>
+    <script src="js/fabrique.js?v=24"></script>
+    <script src="js/tools.js?v=11"></script>
 
     <!-- Scripts Authentification -->
     <script src="users/user_store.js"></script>

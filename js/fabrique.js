@@ -657,6 +657,10 @@ var INCOMP = [['O7', 'O15'], ['D6', 'D1'], ['D6', 'D2'], ['D6', 'D3'], ['D6', 'D
 var FAM_LABEL = { offensif: 'Offensif', defensif: 'Défensif', utilitaire: 'Utilitaire', social: 'Social' };
 var SAVE_KEY = 'fabrique-puzzle-v1';
 var LIB_KEY = 'fabrique-puzzle-v2';
+var CHAR_PREFIX = 'fabrique-puzzle-char-'; /* une bibliothèque par personnage (id d'onglet fiche) */
+var MIGRATE_FLAG = 'fabrique-puzzle-migrated-v1';
+var ROSTER_KEY_FAB = 'rp_codex_characters_v1';
+var ACTIVE_KEY_FAB = 'rp_codex_active_tab';
 var LIB_MAX = 30;
 
 function chainOf(id) { return CHAINS[id] || [id]; }
@@ -686,6 +690,51 @@ function conditionById(id) {
     for (var i = 0; i < CONDITIONS.length; i++)
         if (CONDITIONS[i].id === id) return CONDITIONS[i];
     return null;
+}
+
+/* Rangement par personnage : la bibliothèque lue/écrite est celle de
+   l'onglet fiche affiché dans cette fenêtre (même règle que la fiche :
+   actif de session, sinon dernier actif, sinon premier). */
+function currentCharId() {
+    try {
+        var raw = localStorage.getItem(ROSTER_KEY_FAB);
+        if (!raw) return null;
+        var roster = JSON.parse(raw);
+        if (!roster || !roster.tabs || !roster.tabs.length) return null;
+        var sid = null;
+        try { sid = sessionStorage.getItem(ACTIVE_KEY_FAB); } catch (e) { sid = null; }
+        var i;
+        for (i = 0; i < roster.tabs.length; i++)
+            if (roster.tabs[i].id === sid) return sid;
+        if (roster.lastActiveId) {
+            for (i = 0; i < roster.tabs.length; i++)
+                if (roster.tabs[i].id === roster.lastActiveId) return roster.lastActiveId;
+        }
+        return roster.tabs[0].id;
+    } catch (e) { return null; }
+}
+function keyForChar(id) { return id ? CHAR_PREFIX + id : LIB_KEY; }
+
+/* Pont utilisé par la fiche (onglets, import/export, nettoyage). */
+if (typeof window !== 'undefined' && !window.FabriqueCharStore) {
+    window.FabriqueCharStore = {
+        keyFor: keyForChar,
+        currentId: currentCharId,
+        read: function (id) {
+            try {
+                var raw = localStorage.getItem(keyForChar(id));
+                if (!raw) return null;
+                var d = JSON.parse(raw);
+                return (d && d.list) ? d : null;
+            } catch (e) { return null; }
+        },
+        write: function (id, lib) {
+            try { localStorage.setItem(keyForChar(id), JSON.stringify(lib)); } catch (e) { /* ignore */ }
+        },
+        remove: function (id) {
+            try { localStorage.removeItem(keyForChar(id)); } catch (e) { /* ignore */ }
+        }
+    };
 }
 /* PA d'activation d'une pièce (base). U11 : selon la variante, gérée dans le menu du nœud. */
 function piecePA(p) {
@@ -1836,8 +1885,11 @@ function initFabrique() {
             prev.check.appendChild(li);
         });
         }
-        save();
+        save(r);
         refreshLib(r);
+        /* Fiche PJ du même document : sa liste « Techniques associées »
+           suit la fabrique en direct (gardé : fiche absente de cette page). */
+        if (window.refreshFicheTechs) { try { window.refreshFicheTechs(); } catch (e) { /* ignore */ } }
         var pz = document.getElementById('fabPuzzle');
         if (pz) linkifyFab(pz);
         return r;
@@ -1894,8 +1946,9 @@ function initFabrique() {
             desc: (document.getElementById('fabDesc') || {}).value || ''
         };
     }
-    /* Sauvegarde auto : chaque rendu persiste l'entrée courante. */
-    function save() {
+    /* Sauvegarde auto : chaque rendu persiste l'entrée courante (+ snapshot
+       XP/PA/statut/compétence liée pour la fiche PJ « Techniques associées »). */
+    function save(r) {
         var cur = libCurrent();
         if (!cur) {
             cur = { id: uid(), name: '', auto: '', desc: '', data: blankData() };
@@ -1906,6 +1959,10 @@ function initFabrique() {
         cur.name = snap.name || '';
         cur.desc = snap.desc || '';
         cur.auto = lastAuto || '';
+        if (r) {
+            cur.xp = r.xp; cur.pa = r.pa; cur.status = r.status;
+            cur.skill = state.ensSkill || '';
+        }
         delete snap.name; delete snap.desc;
         cur.data = snap;
         libWrite();
@@ -2031,24 +2088,60 @@ function initFabrique() {
         state._rest = null;
     }
 
-    /* --- Bibliothèque : une entrée par technique, autosave, dropdown en tête d'atelier. --- */
+    /* --- Bibliothèque : une entrée par technique, autosave, dropdown en tête d'atelier.
+       Rangée par personnage : la clé lue/écrite est celle de l'onglet fiche
+       affiché (libCharId), repli global historique sans fiche. --- */
     var lib = { list: [], currentId: null };
+    var libCharId = null;
+    var lastLibJson = '';
     function uid() { return 't' + Date.now().toString(36) + Math.floor(Math.random() * 1e6).toString(36); }
     function blankData() {
         return { chassis: null, qty: {}, order: [], conds: [], plink: {}, condSkill: DEFAULT_SKILL,
                  ensSkill: '', u7: '5', u11: {}, o28: '2', mods: {} };
     }
     function libWrite() {
-        try { localStorage.setItem(LIB_KEY, JSON.stringify(lib)); } catch (e) { /* stockage indisponible */ }
+        try { localStorage.setItem(keyForChar(libCharId), JSON.stringify(lib)); } catch (e) { /* stockage indisponible */ }
+        try { lastLibJson = JSON.stringify(lib); } catch (e) { /* ignore */ }
+    }
+    /* Première ouverture après mise à jour : l'ancienne bibliothèque
+       globale déménage vers le premier personnage (une fois, drapeau).
+       La clé globale reste en place, inerte (sauvegarde de secours). */
+    function maybeMigrateLegacy() {
+        try {
+            if (localStorage.getItem(MIGRATE_FLAG)) return;
+            var firstId = null;
+            try {
+                var roster = JSON.parse(localStorage.getItem(ROSTER_KEY_FAB) || 'null');
+                if (roster && roster.tabs && roster.tabs.length) firstId = roster.tabs[0].id;
+            } catch (e) { firstId = null; }
+            if (firstId) {
+                var legacy = localStorage.getItem(LIB_KEY);
+                if (legacy) {
+                    var d = JSON.parse(legacy);
+                    if (d && d.list && d.list.length) localStorage.setItem(keyForChar(firstId), legacy);
+                }
+            }
+            localStorage.setItem(MIGRATE_FLAG, '1');
+        } catch (e) { /* ignore */ }
     }
     function libRead() {
+        libCharId = currentCharId();
+        var raw = null;
+        try { raw = localStorage.getItem(keyForChar(libCharId)); } catch (e) { raw = null; }
+        if (raw == null && libCharId) {
+            maybeMigrateLegacy();
+            try { raw = localStorage.getItem(keyForChar(libCharId)); } catch (e) { raw = null; }
+        }
+        if (raw == null && !libCharId) {
+            try { raw = localStorage.getItem(LIB_KEY); } catch (e) { raw = null; }
+        }
+        if (!raw) return false;
         try {
-            var raw = localStorage.getItem(LIB_KEY);
-            if (!raw) return false;
             var d = JSON.parse(raw);
             if (!d || !d.list || !d.list.forEach) return false;
             lib.list = d.list;
             lib.currentId = d.currentId || null;
+            try { lastLibJson = JSON.stringify(lib); } catch (e) { /* ignore */ }
             return true;
         } catch (e) { return false; }
     }
@@ -2140,6 +2233,23 @@ function initFabrique() {
         closeMenu();
         render();
         toast('Technique « ' + label + ' » supprimée.');
+    }
+    /* Recharge la bibliothèque du personnage affiché (changement d'onglet
+       fiche, import, suppression). Exposé : window.refreshFabriqueLib. */
+    function refreshFabriqueLib(force) {
+        var id = currentCharId();
+        if (!force && id === libCharId) return;
+        libCharId = id;
+        if (!libRead()) { lib.list = []; lib.currentId = null; }
+        if (!libCurrent()) {
+            if (!lib.list.length) lib.list.push({ id: uid(), name: '', auto: '', desc: '', data: blankData() });
+            lib.currentId = lib.list[0].id;
+        }
+        var cur = libCurrent();
+        if (cur) { applyData(cur.data); setInputs(cur); }
+        fixU11();
+        closeMenu();
+        render();
     }
 
     /* --- Événements (délégués). --- */
@@ -2248,6 +2358,26 @@ function initFabrique() {
             return;
         }
         if (menu && !up(t, '.fab-ctx')) closeMenu();
+    });
+    /* Autre fenêtre : la bibliothèque de ce personnage a changé (même
+       onglet affiché des deux côtés) — on l'adopte, sauf si l'utilisateur
+       édite dans cette fenêtre (elle a le focus : sa prochaine sauvegarde
+       gagne, comme avant le rangement par personnage). */
+    window.addEventListener('storage', function (ev) {
+        if (!ev || !ev.key || ev.key !== keyForChar(libCharId)) return;
+        if (!ev.newValue || ev.newValue === lastLibJson) return;
+        if (document.hasFocus && document.hasFocus()) return;
+        var d = null;
+        try { d = JSON.parse(ev.newValue); } catch (e) { return; }
+        if (!d || !d.list) return;
+        lib.list = d.list;
+        lib.currentId = d.currentId || null;
+        try { lastLibJson = ev.newValue; } catch (e) { /* ignore */ }
+        var cur = libCurrent();
+        if (cur) { applyData(cur.data); setInputs(cur); }
+        fixU11();
+        closeMenu();
+        render();
     });
     /* Clic droit sur le graphe = même menu, comme un nœud KT. */
     graphEl.addEventListener('contextmenu', function (ev) {
@@ -2376,6 +2506,7 @@ function initFabrique() {
     fixU11();
     render();
     if (window.__FABDEBUG) window.__FABDEBUG.state = state;
+    window.refreshFabriqueLib = refreshFabriqueLib;
 }
 
 FabriqueEngine.modRangeOk = modRangeOk;

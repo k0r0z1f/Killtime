@@ -873,6 +873,47 @@
                                 </div>
                             </div>
 
+                            <!-- TECHNIQUES ASSOCIÉES (Fabrique puzzle, Livre III §15 / chap-41) -->
+                            <div
+                                style="margin-top: 20px; padding: 16px; background: rgba(0,0,0,0.25); border-radius: 8px; border: 1px dashed var(--border-subtle);">
+                                <div
+                                    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; gap: 8px; flex-wrap: wrap;">
+                                    <span
+                                        style="font-family: var(--font-mono); font-size: 0.8rem; font-weight: 700; color: var(--text-primary);">
+                                        Techniques associées au personnage (Fabrique puzzle, Livre III §15)
+                                    </span>
+                                    <span class="pill-badge cyan" id="csTechCount">0 technique forgée</span>
+                                </div>
+                                <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 12px;">
+                                    Tes techniques forgées à la
+                                    <a href="#chap-41"
+                                        style="color: var(--arcane-cyan); font-weight: 700;">Fabrique (chap.
+                                        41)</a>
+                                    apparaissent ici en direct, rangées par personnage : chaque
+                                    onglet a ses techniques. Celles dont la compétence liée est
+                                    entraînée sur cette fiche sont marquées
+                                    <strong>associée</strong>. Une technique se lie toujours à une
+                                    compétence entraînée — entraîne-la ci-dessus pour l'associer.
+                                </p>
+                                <ul class="spell-effects-list" id="csTechList">
+                                    <li><em>Aucune technique forgée pour l’instant — ouvre la Fabrique
+                                            ci-dessous.</em></li>
+                                </ul>
+                                <div class="tool-btn-row">
+                                    <a class="tool-btn primary" href="#chap-41"
+                                        style="text-decoration: none;"
+                                        title="Ouvrir la Fabrique de Techniques puzzle (chap. 41, même page)">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2">
+                                            <polygon points="12 2 2 7 12 12 22 7 12 2" />
+                                            <polyline points="2 17 12 22 22 17" />
+                                            <polyline points="2 12 12 17 22 12" />
+                                        </svg>
+                                        Ouvrir la Fabrique de Techniques (puzzle)
+                                    </a>
+                                </div>
+                            </div>
+
                             <!-- DASHBOARD VITAL EN DIRECT -->
                             <h4
                                 style="margin: 24px 0 10px; font-family: var(--font-mono); font-size: 0.85rem; color: var(--temporal-amber); text-transform: uppercase;">
@@ -1815,8 +1856,8 @@
 
     <!-- Scripts partagés et interactifs -->
     <script src="js/codex.js"></script>
-    <script src="js/fabrique.js?v=22"></script>
-    <script src="js/tools.js?v=9"></script>
+    <script src="js/fabrique.js?v=24"></script>
+    <script src="js/tools.js?v=11"></script>
 
     <!-- Scripts Authentification -->
     <script src="users/user_store.js"></script>
