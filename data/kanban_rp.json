@@ -1092,7 +1092,7 @@
      "id": "RP-073",
      "title": "Ajouter l'espèce Nain (Montagnes de l'Ouest) — distincte des Dereks",
      "epic": "Livre I — Bases & Création",
-     "status": "todo",
+     "status": "done",
      "priority": "high",
      "order": 44,
      "scene": "",
@@ -1101,7 +1101,7 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_1.html#chap-2",
-     "details": "Les Dereks (S/C telluriques, indigènes des cavernes) ne sont PAS les Nains (exilés de l'An 0, cités creusées des Montagnes Naines de l'Ouest — non souterrains biologiques ; maîtres des alliages élastiques recyclés, forges géothermiques, surfréquence nytharite ; schisme Sent Ones/Unbound — cf. atlas). À créer : carte espèce Livre I §2.2 (fluff + 5 dons + Tech/Magie/Sens), entrée js/tools.js (espèce + dons + notes), sans toucher à la carte Derek. Attention : js/tools.js:95 a un alias 'nain' → 'derek' (anciennes sauvegardes) — prévoir la migration quand la clé 'nain' existera."
+     "details": "FAIT 2026-11-03 — Espèce Nain ajoutée, distincte des Dereks : carte Livre I §2.2 (fluff validé : exilés An 0, cages fondues en forges, non-souterrains biologiques ; canon : grande majorité disciplinée, aucun bord à choisir, cultes Sent/Unbound minoritaires) + 5 dons (Mémoire des Cages, Sang des Forges, Oreille de la Surfréquence, Pas des Crêtes, Longue Mémoire ; Tech Vapeur ➔ Magi-Tech, Magie Limitée à Normale, sens min 3) + js/tools.js (RACE_DATA/SLUGS/giftNotes, alias nain→derek retiré : saves normales stockent derek, inchangées) + options fiche_pj.html et livre_9.html. Carte Derek intouchée. Preuves : build_livres --check 1 OK (53 textes), build_nav --check OK, check_liens OK (ch. 1-55), node --check tools.js OK, overlay SLUGS résout nain 5 dons."
     },
     {
      "id": "RP-074",
@@ -1887,7 +1887,7 @@
      "id": "RP-126",
      "title": "Définir l'encombrement des armures (Livre VIII §34.1)",
      "epic": "Livre VIII — Arsenal",
-     "status": "todo",
+     "status": "done",
      "priority": "medium",
      "order": 97,
      "scene": "",
@@ -1896,7 +1896,7 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_8.html#chap-35",
-     "details": "Écrire la règle d'encombrement des armures : barème par armure (légère/lourde/motorisée), effet (surcoût PA ? malus ?), cas zéro encombrement (boucliers, Force perso). Raccorder : Technicien-Guerrier Mikyai (Livre I §2.2 : ignore 1 point) + mentions Livre VIII (zéro encombrement en PA) + valeur Unity ArmoryCatalog. DONE = §34.1 rempli + exemples chiffrés + liens rule-ref OK."
+     "details": "FAIT 2026-11-03 — Encombrement défini au §35.1 (titre disait §34.1, blindages au chap. 35) : 0/1/2 (Légères et champs/boucliers 0 ; Lourdes Prot 3-5 et 7 Optimisée 1 ; Prot 6-7 2), +X PA par action, mises aveugles et cumul Milkor -1 exclus, Ralenti double le total, don Mikyai C ignore 1 point. Barème ancré Unity ApCostModifier + RD-078. Fichiers : bloc-00.md (règle + exemples), lien rule-ref don Mikyai C vers livre_8.html#chap-35. Cartes armures inchangées. Note : commentaires Unity Fate.cs/Actions.cs citent encore §33.1/§33.2 (obsolète, hors scope RP). Preuves : check 8 OK (13 textes), nav OK, liens OK (1-55)."
     },
     {
      "id": "RP-127",

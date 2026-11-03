@@ -131,10 +131,13 @@ function initCharacterSheet() {
             giftNotes: ['+1 Armure naturelle contre tranchant/perforant ; +2 Encaissement ; +1 dégât froid subi.', '1×/combat : -1 valeur d\u2019un résiduel posé ; stoppe un Saignement de valeur 1 sans soin.', '+2 Armes Lourdes et r\u00e9paration imp\u00e9riale ; ignore 1 point d\u2019encombrement.', 'Griffes et crocs (2 dégâts, jamais désarmé) ; +1 Athlétisme pour grimper.', '3e main (5 kg max, pas d\u2019attaque) ; +1 Athl\u00e9tisme pour grimper/nager.'] },
         vardien: { label: 'Vardien / Frontalier', sensMin: 3, magie: 'Variable', note: 'Volonté d\u2019acier des bordures, sens min 3',
             gifts: ['Trempe des Bordures', 'Gueule des Mines', 'Système Récup', 'Ne Lâche Rien', 'Contrebandier'],
-            giftNotes: ['+2 Intimidation, pour intimider comme pour résister ; +1 Essoufflement max.', '+2 Système Immunitaire (toxines, gaz, radiations faibles) ; réduit de 1 la valeur des résiduels Empoisonné et Asphyxie.', '+2 pour bricoler, récupérer et saboter ; réparations à moitié prix.', '1×/session : à 0 PV sur coup sous Encaissement, conscient 1 tour en Dernier Souffle gratuit.', '+2 Discrétion pour faux papiers et douanes ; 1 contact marché noir par zone.'] }
+            giftNotes: ['+2 Intimidation, pour intimider comme pour résister ; +1 Essoufflement max.', '+2 Système Immunitaire (toxines, gaz, radiations faibles) ; réduit de 1 la valeur des résiduels Empoisonné et Asphyxie.', '+2 pour bricoler, récupérer et saboter ; réparations à moitié prix.', '1×/session : à 0 PV sur coup sous Encaissement, conscient 1 tour en Dernier Souffle gratuit.', '+2 Discrétion pour faux papiers et douanes ; 1 contact marché noir par zone.'] },
+        nain: { label: 'Nain', sensMin: 3, magie: 'Limitée à Normale', note: 'Forgeron des crêtes, sens min 3',
+            gifts: ['Mémoire des Cages', 'Sang des Forges', 'Oreille de la Surfréquence', 'Pas des Crêtes', 'Longue Mémoire'],
+            giftNotes: ['-2 dégâts explosions et éboulements ; +2 Constitution contre projections et ondes de choc.', '+2 Constitution contre chaleur et fumées ; -1 dégât de feu ; ignore le climat chaud léger.', 'Sent la nytharite en résonance à ~50 m (Observation) ; +2 Observation arcanotech dissimulée/en panne/piégée.', '+2 Athlétisme en montagne ; ignore terrains escarpés, neige et glace.', '+2 Académie (histoire, métallurgie, généalogies) ; 1 contact érudit ou artisan par cité naine.'] }
     };
-    // Alias de compatibilité (anciennes sauvegardes 'nain' = Derek canon).
-    const RACE_ALIASES = { nain: 'derek' };
+    // RP-073 : 'nain' est désormais une vraie espèce (les sauvegardes normales stockent 'derek', inchangées).
+    const RACE_ALIASES = {};
     function resolveRace(r) { return RACE_DATA[r] ? r : (RACE_ALIASES[r] || 'humain'); }
 
     const ATTR_LABELS = { for: 'Force (FOR)', agi: 'Agilité (AGI)', con: 'Constitution (CON)', rap: 'Rapidité (RAP)', int: 'Intelligence (INT)', eru: 'Érudition (ÉRU)', cha: 'Charisme (CHA)', ins: 'Instinct (INS)', mag: 'Magie' };
@@ -172,7 +175,7 @@ function initCharacterSheet() {
     (function overlayCodexData() {
         const L1 = CodexData.l1, L7 = CodexData.l7, L2 = CodexData.l2;
         if (L1 && L1.mecaniques && L1.mecaniques.especes_par_nom) {
-            const SLUGS = { 'Humain': 'humain', 'Derek': 'derek', 'Taurien': 'taurien', 'Cléien': 'cleien', 'Mikyai': 'mikyai', 'Vardien / Frontaliers': 'vardien' };
+            const SLUGS = { 'Humain': 'humain', 'Derek': 'derek', 'Taurien': 'taurien', 'Cléien': 'cleien', 'Mikyai': 'mikyai', 'Vardien / Frontaliers': 'vardien', 'Nain': 'nain' };
             const raw = {};
             (L1.especes || []).forEach(s => { raw[s.nom] = s; });
             Object.keys(SLUGS).forEach(nom => {

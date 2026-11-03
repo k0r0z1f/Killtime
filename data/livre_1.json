@@ -335,7 +335,7 @@
     },
     {
      "effet": "+2 Armes Lourdes (Ballistique) ; +2 Ingénierie pour réparer le matériel impérial ; ignore 1 point d'encombrement d'armure.",
-     "effet_html": "+2 <a class=\"rule-ref\" href=\"livre_3.html#chap-13\" data-tip=\"Armes Lourdes (Canons) : +100 dégâts de masse contre structures, fortifications et blindages (§13).\">Armes Lourdes</a> (Ballistique) ; +2 <a class=\"rule-ref\" href=\"livre_3.html#chap-12\" data-tip=\"Ingénierie & Arcanotech : réparation, réacteurs, piratage (INT/ÉRU, §12.1).\">Ingénierie</a> pour réparer le matériel impérial ; ignore 1 point d'encombrement d'armure.",
+     "effet_html": "+2 <a class=\"rule-ref\" href=\"livre_3.html#chap-13\" data-tip=\"Armes Lourdes (Canons) : +100 dégâts de masse contre structures, fortifications et blindages (§13).\">Armes Lourdes</a> (Ballistique) ; +2 <a class=\"rule-ref\" href=\"livre_3.html#chap-12\" data-tip=\"Ingénierie & Arcanotech : réparation, réacteurs, piratage (INT/ÉRU, §12.1).\">Ingénierie</a> pour réparer le matériel impérial ; ignore 1 point d'<a class=\"rule-ref\" href=\"livre_8.html#chap-35\" data-tip=\"Encombrement : +1 ou +2 PA par action selon la lourde portée (§35.1).\">encombrement</a> d'armure.",
      "id": "C",
      "nom": "Technicien-Guerrier"
     },
@@ -400,6 +400,48 @@
    "origine": "Vardis & Bordures",
    "sens_min": 3,
    "tech": "Hybride Récup",
+   "magie_ton": "amber"
+  },
+  {
+   "description": "Tu viens des Montagnes Naines de l'Ouest. Tes ancêtres sont arrivés dans les cages de l'An 0 — et ils ont fondu leurs prisons pour en faire des forges. Tu ne vis pas dans la roche comme un Derek : tu la creuses, tu la tailles, tu la fais chanter. Ton clan t'a appris la montagne, la forge et la mémoire. Chez toi, on ne prête pas serment à un culte : on tient son poste, on paie ses dettes, on finit son ouvrage. Les Sent Ones et les Unbound prêchent dans les galeries — la plupart des Nains les laissent prêcher.",
+   "dons": [
+    {
+     "effet": "-2 dégâts des explosions et des éboulements ; +2 aux jets de Constitution contre les projections et les ondes de choc.",
+     "effet_html": "-2 dégâts des explosions et des éboulements ; +2 aux jets de Constitution contre les projections et les ondes de choc.",
+     "id": "A",
+     "nom": "Mémoire des Cages"
+    },
+    {
+     "effet": "+2 aux jets de Constitution contre la chaleur et les fumées ; -1 dégât de feu subi ; ignore le climat chaud léger (Livre II §8.1).",
+     "effet_html": "+2 aux jets de Constitution contre la chaleur et les fumées ; -1 dégât de feu subi ; ignore le <a class=\"rule-ref\" href=\"livre_2.html#sec-8-1\" data-tip=\"Climat léger (−1) : pluie fine, brume, vent modéré, froid mordant, chaleur lourde (§8.1).\">climat chaud léger</a>.",
+     "id": "B",
+     "nom": "Sang des Forges"
+    },
+    {
+     "effet": "sent la nytharite en résonance et les moteurs actifs à ~50 m (épreuve d'Observation) ; +2 aux jets d'Observation pour repérer une arcanotech dissimulée, en panne ou piégée.",
+     "effet_html": "tu sens la nytharite en résonance et les moteurs actifs à ~50 m (épreuve d'<a class=\"rule-ref\" href=\"livre_3.html#chap-12\" data-tip=\"Observation : repérer un indice, un danger, un ennemi camouflé (Vision/Ouïe, §12.3).\">Observation</a>) ; +2 aux jets d'<a class=\"rule-ref\" href=\"livre_3.html#chap-12\" data-tip=\"Observation : repérer un indice, un danger, un ennemi camouflé (Vision/Ouïe, §12.3).\">Observation</a> pour repérer une arcanotech dissimulée, en panne ou piégée.",
+     "id": "C",
+     "nom": "Oreille de la Surfréquence"
+    },
+    {
+     "effet": "+2 aux jets d'Athlétisme pour grimper et progresser en montagne ; ignore les terrains difficiles escarpés, la neige et la glace.",
+     "effet_html": "+2 aux jets d'<a class=\"rule-ref\" href=\"livre_3.html#chap-11\" data-tip=\"Athlétisme : effort physique, escalade, nage (CON/FOR/AGI, §11.1).\">Athlétisme</a> pour grimper et progresser en montagne ; ignore les terrains difficiles escarpés, la neige et la glace.",
+     "id": "D",
+     "nom": "Pas des Crêtes"
+    },
+    {
+     "effet": "+2 aux jets d'Académie (histoire, métallurgie, généalogies) ; dans chaque cité naine, connaît forcément un ancien : 1 contact érudit ou artisan par cité.",
+     "effet_html": "+2 aux jets d'<a class=\"rule-ref\" href=\"livre_3.html#chap-13\" data-tip=\"Académie : savoirs, histoire, métallurgie, généalogies (ÉRU).\">Académie</a> (histoire, métallurgie, généalogies) ; dans chaque cité naine, tu connais forcément un ancien : 1 contact érudit ou artisan par cité.",
+     "id": "E",
+     "nom": "Longue Mémoire"
+    }
+   ],
+   "id": "nain",
+   "magie": "Limitée à Normale",
+   "nom": "Nain",
+   "origine": "Montagnes Naines de l'Ouest",
+   "sens_min": 3,
+   "tech": "Vapeur ➔ Magi-Tech",
    "magie_ton": "amber"
   }
  ],
@@ -759,6 +801,17 @@
      "+2 aux jets pour bricoler, récupérer et saboter ; réparations à moitié prix ; -1 aux jets de Communication en milieu impérial.",
      "1×/session : à 0 PV sur un coup qui reste sous ton Encaissement, reste conscient et agis 1 tour en Dernier Souffle, sans son coût d'Essoufflement.",
      "+2 aux jets de Discrétion pour la falsification et le passage des douanes ; 1 contact marché noir par zone."
+    ]
+   },
+   "Nain": {
+    "origine": "Montagnes Naines de l'Ouest",
+    "description": "Tu viens des Montagnes Naines de l'Ouest. Tes ancêtres sont arrivés dans les cages de l'An 0 — et ils ont fondu leurs prisons pour en faire des forges. Tu ne vis pas dans la roche comme un Derek : tu la creuses, tu la tailles, tu la fais chanter. Ton clan t'a appris la montagne, la forge et la mémoire. Chez toi, on ne prête pas serment à un culte : on tient son poste, on paie ses dettes, on finit son ouvrage. Les Sent Ones et les Unbound prêchent dans les galeries — la plupart des Nains les laissent prêcher.",
+    "dons": [
+     "-2 dégâts des explosions et des éboulements ; +2 aux jets de Constitution contre les projections et les ondes de choc.",
+     "+2 aux jets de Constitution contre la chaleur et les fumées ; -1 dégât de feu subi ; ignore le climat chaud léger (Livre II §8.1).",
+     "tu sens la nytharite en résonance et les moteurs actifs à ~50 m (épreuve d'Observation) ; +2 aux jets d'Observation pour repérer une arcanotech dissimulée, en panne ou piégée.",
+     "+2 aux jets d'Athlétisme pour grimper et progresser en montagne ; ignore les terrains difficiles escarpés, la neige et la glace.",
+     "+2 aux jets d'Académie (histoire, métallurgie, généalogies) ; dans chaque cité naine, tu connais forcément un ancien : 1 contact érudit ou artisan par cité."
     ]
    }
   },
