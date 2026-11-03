@@ -121,7 +121,7 @@
    "blocs": [
     {
      "type": "html",
-     "html": "\n                    <p class=\"lead\">\n                        Pas envie de piocher dans le compendium ? Fabrique ta technique toi-même.\n                        Tu choisis un châssis, tu ajoutes 1 à 3 pièces, tu paies en <a class=\"rule-ref\" href=\"livre_1.html#sec-5-3\" data-tip=\"Spécialisation : 5 XP de la bonne banque ou du libre, au tarif normal (§5.3).\">XP</a> —\n                        et chaque pièce active te coûtera des <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a> à table.\n                        <br>Le compendium ne bouge pas : il reste là pour les soirs où tu veux jouer sans bricoler.\n                        La Fabrique, c'est une option de plus. Une technique maison coûte comme une spécialisation :\n                        <strong>4 à 6 <a class=\"rule-ref\" href=\"livre_1.html#sec-5-3\" data-tip=\"Spécialisation : 5 XP de la bonne banque ou du libre, au tarif normal (§5.3).\">XP</a> (vise 5)</strong>, 10 en croisé. Un cran au-dessus (7-8 <a class=\"rule-ref\" href=\"livre_1.html#sec-5-3\" data-tip=\"Spécialisation : 5 XP de la bonne banque ou du libre, au tarif normal (§5.3).\">XP</a>) ? C'est une\n                        <em>signature</em>, une seule par personnage, avec l'accord du MJ.\n                    </p>\n                    <p>\n                        <strong>Rappel :</strong> une technique basée sur une compétence fait toujours deux choses :\n                        la base de la compétence, puis ce que le pouvoir dicte.\n                        Tu jettes ton attaque normalement — ta compétence offensive contre la défense adverse, en\n                        <a class=\"rule-ref\" href=\"livre_2.html#chap-7\" data-tip=\"Face-à-Face : chacun lance son dé + PA, le meilleur gagne. Seul le vainqueur coche (§7.3).\">Face-à-Face</a>\n                        — puis tu ajoutes l'effet acheté.\n                        <em>Exemple — ta technique repousse la cible d'1 case :</em>\n                        Égalité ? Pas de dégâts, mais la repousse part quand même.\n                        Tu passes de 1 ou plus ? Dégâts de l'attaque (+1 par point d'écart) + repousse.\n                        Raté ? Rien ne part — ni dégâts, ni effet.\n                    </p>\n"
+     "html": "\n                    <p class=\"lead\">\n                        Pas envie de piocher dans le compendium ? Fabrique ta technique toi-même.\n                        Tu poses un ensemble ◆ lié à une compétence entraînée, tu branches 1 à 3 pièces, tu paies en <a class=\"rule-ref\" href=\"livre_1.html#sec-5-3\" data-tip=\"Spécialisation : 5 XP de la bonne banque ou du libre, au tarif normal (§5.3).\">XP</a> —\n                        et à table tu paies les <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a> des pièces actives.\n                        <br>Le compendium ne bouge pas : il reste là pour les soirs où tu veux jouer sans bricoler.\n                        La Fabrique, c'est une option de plus. Vise <strong>4 à 6 <a class=\"rule-ref\" href=\"livre_1.html#sec-5-3\" data-tip=\"Spécialisation : 5 XP de la bonne banque ou du libre, au tarif normal (§5.3).\">XP</a></strong> : c'est le standard.\n                        <strong>7 <a class=\"rule-ref\" href=\"livre_1.html#sec-5-3\" data-tip=\"Spécialisation : 5 XP de la bonne banque ou du libre, au tarif normal (§5.3).\">XP</a> et plus</strong> ? C'est une\n                        <em>signature</em>, une seule par personnage, avec l'accord du MJ.\n                        <br>Mêmes cartes, mêmes prix : le puzzle du <a href=\"livre_9.html#chap-41\">chapitre 41</a> monte exactement ce chapitre.\n                    </p>\n                    <p>\n                        <strong>Rappel :</strong> une technique basée sur une compétence fait toujours deux choses :\n                        la base de la compétence, puis ce que le pouvoir dicte.\n                        Tu jettes ton attaque normalement — ta compétence offensive contre la défense adverse, en\n                        <a class=\"rule-ref\" href=\"livre_2.html#chap-7\" data-tip=\"Face-à-Face : chacun lance son dé + PA, le meilleur gagne. Seul le vainqueur coche (§7.3).\">Face-à-Face</a>\n                        — puis tu ajoutes l'effet acheté.\n                        <em>Exemple — ta technique repousse la cible d'1 case :</em>\n                        Égalité ? Pas de dégâts, mais la repousse part quand même.\n                        Tu passes de 1 ou plus ? Dégâts de l'attaque (+1 par point d'écart) + repousse.\n                        Raté ? Rien ne part — ni dégâts, ni effet.\n                    </p>\n"
     },
     {
      "type": "ref",
@@ -129,11 +129,11 @@
     },
     {
      "type": "html",
-     "html": "\n                    <h3 id=\"sec-15-1\">15.1 Fiche technique d'une technique</h3>\n                    <p>\n                        Pour chaque technique, remplis ces rubriques avec ton MJ. Une ligne chacune, ça tient sur un post-it :\n                    </p>\n                    <ul>\n                        <li><strong>Nom :</strong> le titre de ta technique (gratuit). <em>Ex : Fente Basse, Voile de Poussière.</em></li>\n                        <li><strong>Châssis :</strong> un seul (table ci-dessous). Il dit quand ça se déclenche — et tes PA de base.</li>\n                        <li><strong>Pièces :</strong> 1 à 3, piochées dans les 4 familles. Recopie leurs textes : ta technique est écrite.</li>\n                        <li><strong>Famille :</strong> offensif, défensif, utilitaire, social — ou hybride (deux familles, +1 XP).</li>\n                        <li><strong>Coûts :</strong> l'addition XP d'un côté, l'addition PA de l'autre. Montre les deux au MJ.</li>\n                        <li><strong>Accord MJ :</strong> il vérifie les 9 règles ci-dessous, il signe, tu paies.</li>\n                    </ul>\n                    <h3 id=\"sec-15-regles\">Les 9 règles d'assemblage</h3>\n                    <ol>\n                        <li><strong>Un châssis, un seul.</strong> Il dit quand ta technique part — et ses PA de base.</li>\n                        <li><strong>Un châssis + 1 à 3 pièces, pas plus.</strong> Au-delà, ce sont deux techniques sœurs.</li>\n                        <li><strong>Budget : tu additionnes châssis + pièces.</strong> Le châssis donne la base (1 XP, 3 pour un passif) + 1 XP par cran. À 7-8, c'est une signature (MJ obligatoire).</li>\n                        <li><strong>Activation à 6 PA max.</strong> Le châssis compte dedans. Si ça dépasse, découpe.</li>\n                        <li><strong>Un seul bonus chiffré par jet.</strong> Deux +2 à l'attaque ne s'additionnent pas — le meilleur gagne.</li>\n                        <li><strong>Les gros effets ont un seuil.</strong> Critiques à Δ≥3 ou sur critique, le reste part sur touche. La mort instantanée, c'est sbires seulement.</li>\n                        <li><strong>Les paliers se montent dans l'ordre.</strong> Soin 5 avant Soin 10 : on ne saute pas d'étage.</li>\n                        <li><strong>Deux incompatibilités.</strong> Immunité totale ⊕ bonus défensif ; dégâts Absolus ⊕ multi-cible. Le reste se combine.</li>\n                        <li><strong>Réaction = +2 PA, 1/round.</strong> Opportunité 0 PA = déclencheur étroit obligatoire, 1/round. Comme les sorts.</li>\n                    </ol>\n"
+     "html": "\n                    <h3 id=\"sec-15-1\">15.1 Fiche technique d'une technique</h3>\n                    <p>\n                        Pour chaque technique, remplis ces rubriques avec ton MJ. Une ligne chacune, ça tient sur un post-it :\n                    </p>\n                    <ul>\n                        <li><strong>Nom :</strong> le titre de ta technique (gratuit). <em>Ex : Fente Basse, Suture Réflexe.</em></li>\n                        <li><strong>Ensemble ◆ :</strong> un seul, lié à une compétence entraînée (table ci-dessous). Il dit quand ça se déclenche — et tes PA de base. Sans compétence liée, rien ne se branche.</li>\n                        <li><strong>Pièces :</strong> 1 à 3, 3 logements max. Recopie leurs textes : ta technique est écrite. Les 8 cartes Conditions (contact, arme en main, immobile, critique, Δ≥2, 1/combat, essoufflement, entraînement) se branchent gratis, hors logements.</li>\n                        <li><strong>Famille :</strong> un seul type par technique — le 1er effet posé fixe le type (affiché sous ◆). Ta compétence liée n'ouvre que ses familles (Esquive = défensif pur). Deux types = +1 XP d'hybride, jamais de PA en plus.</li>\n                        <li><strong>Finitions :</strong> sur chaque carte, pas à côté — portée, zone, durée, hors-compétence (voir 15.7).</li>\n                        <li><strong>Coûts :</strong> l'addition XP d'un côté, l'addition PA de l'autre. Montre les deux au MJ.</li>\n                        <li><strong>Accord MJ :</strong> il vérifie les 9 règles ci-dessous, il signe, tu paies.</li>\n                    </ul>\n                    <h3 id=\"sec-15-regles\">Les 9 règles d'assemblage</h3>\n                    <ol>\n                        <li><strong>Un ensemble ◆, un seul — et une compétence entraînée liée.</strong> Il dit quand ta technique part, et ses PA de base.</li>\n                        <li><strong>Un ensemble + 1 à 3 pièces, pas plus.</strong> 3 logements : au-delà, ce sont deux techniques sœurs.</li>\n                        <li><strong>Budget : tu additionnes ensemble + pièces + finitions.</strong> Vise 4 à 6 XP. À 7 XP et plus, c'est une signature : une seule par personnage, MJ obligatoire.</li>\n                        <li><strong>Activation à 6 PA max, ensemble compté.</strong> Si ça dépasse, découpe. Passif C0 : 0 PA strict — ni pièce ni finition à PA.</li>\n                        <li><strong>Un seul bonus chiffré par jet.</strong> O8 et O9 ne se cumulent pas — le meilleur gagne.</li>\n                        <li><strong>Chaque effet a son seuil, écrit sur sa carte.</strong> Sur touche, Δ≥0, Δ≥3, succès net, parade réussie, critique ou condition. Raté ? Rien ne part — ni dégâts, ni effet.</li>\n                        <li><strong>Paliers = variantes au menu, pas des achats à empiler.</strong> Soin U7 (5, 10 ou 15 PV), Saignement O28 (2, 3 ou 4 résiduels), Souffle U11 (cases à cocher). D8 exige D1 ou D3. O18 exige 3 pièces de la même arme.</li>\n                        <li><strong>Incompatibilités.</strong> O7 ⊕ O15 : l'Absolu ne frappe jamais en zone ni sur deux cibles. D6 ⊕ D1, D2, D3, D4 : la garde totale joue seule. Le reste se combine.</li>\n                        <li><strong>Réaction C3 = +2 PA, 1/round.</strong> Opportunité C4 = 0 PA, 1/round, déclencheur étroit obligatoire (Δ≥2, critique, esquive…). Passif C0 = au moins 1 prérequis. Comme les sorts.</li>\n                    </ol>\n"
     },
     {
      "type": "html",
-     "html": "\n                    <h3 id=\"sec-15-chassis\">15.2 Châssis : choisis ton cadre</h3>\n                    <p>\n                        Tout commence ici. Le passif ne coûte presque rien mais ne fait rien tout seul ;\n                        la réaction frappe fort mais te mange ton unique réaction du round.\n                    </p>\n"
+     "html": "\n                    <h3 id=\"sec-15-chassis\">15.2 Ensembles ◆ : choisis ton cadre</h3>\n                    <p>\n                        Quatre ensembles (les anciens châssis), un seul par technique.\n                        C0 travaille tout seul, sans PA, tant que sa condition tient — mais il exige au moins un prérequis.\n                        C2, c'est ton tour. C3 te mange ton unique réaction. C4 ne coûte rien mais ne part que sur un déclencheur étroit.\n                        Clique ◆, choisis ton cadre, lie ta compétence entraînée.\n                    </p>\n"
     },
     {
      "type": "ref",
@@ -141,7 +141,7 @@
     },
     {
      "type": "html",
-     "html": "\n                    <h3 id=\"sec-15-off\">15.3 Pièces offensives</h3>\n                    <p>\n                        Pour frapper, bousculer.\n                    </p>\n"
+     "html": "\n                    <h3 id=\"sec-15-off\">15.3 Pièces offensives</h3>\n                    <p>\n                        Pour frapper, bousculer, coller un état.\n                        Chaque carte affiche son ID (O1 à O28), son seuil, sa portée, ce qu'elle Demande et ce qu'elle Refuse.\n                        Les cumulables se posent en plusieurs exemplaires (×5, ×3 cases).\n                        Sur critique lié : −1 XP par cumul sur O1, O8, O13 et O15.\n                        La portée se pose sur la frappe (O7, O8, O9, O15) — les statuts O20 à O28 partent avec elle.\n                    </p>\n"
     },
     {
      "type": "ref",
@@ -149,7 +149,7 @@
     },
     {
      "type": "html",
-     "html": "\n                    <h3 id=\"sec-15-def\">15.4 Pièces défensives</h3>\n                    <p>\n                        Pour parer, encaisser, ignorer. Le socle du jeu, c'est la parade sans malus (2 XP) :\n                        presque toutes les gardes du compendium sont bâties dessus.\n                    </p>\n"
+     "html": "\n                    <h3 id=\"sec-15-def\">15.4 Pièces défensives</h3>\n                    <p>\n                        Pour parer, encaisser, ignorer. Le socle du jeu, c'est la parade sans malus (D1, 2 XP) :\n                        presque toutes les gardes du compendium sont bâties dessus.\n                        D9, c'est le miroir de O13 : sur parade réussie, tu repousses d'1 case.\n                        D8 exige D1 ou D3. D6 joue seule (⊕ D1 à D4).\n                        D1, D2, D3, D5 et D8 acceptent la durée +1 tour (+1 XP +1 PA, 2 crans max).\n                    </p>\n"
     },
     {
      "type": "ref",
@@ -157,7 +157,7 @@
     },
     {
      "type": "html",
-     "html": "\n                    <h3 id=\"sec-15-ut\">15.5 Pièces utilitaires</h3>\n                    <p>\n                        Pour bouger, souffler, soigner, comprendre. C'est ici que vivent les −1 PA\n                        (une seule réduction par action) et les paliers de souffle et de soin.\n                    </p>\n"
+     "html": "\n                    <h3 id=\"sec-15-ut\">15.5 Pièces utilitaires</h3>\n                    <p>\n                        Pour bouger, souffler, soigner, comprendre.\n                        U1 : −1 PA sur une action précise (une seule réduction par action).\n                        U7 se règle au menu (5, 10 ou 15 PV). U11 se coche (3 ESS, 4 ESS + 1 PA, 2×/combat).\n                        Ni portée ni zone ici : l'utilitaire ne frappe pas.\n                    </p>\n"
     },
     {
      "type": "ref",
@@ -165,7 +165,7 @@
     },
     {
      "type": "html",
-     "html": "\n                    <h3 id=\"sec-15-soc\">15.6 Pièces sociales</h3>\n                    <p>\n                        Pour parler, effrayer, mener. Deux limites qui ne négocient pas : les sbires obéissent,\n                        les personnages majeurs résistent (Δ≥3 ou immunité).\n                    </p>\n"
+     "html": "\n                    <h3 id=\"sec-15-soc\">15.6 Pièces sociales</h3>\n                    <p>\n                        Pour parler, effrayer, mener. Deux limites qui ne négocient pas : les sbires obéissent,\n                        les personnages majeurs résistent (Δ≥3 ou immunité).\n                        S1 se cumule (×3). S3, c'est 1/combat, sbires seulement.\n                        Ni portée, ni zone, ni durée ici : le social frappe par la parole.\n                    </p>\n"
     },
     {
      "type": "ref",
@@ -173,7 +173,7 @@
     },
     {
      "type": "html",
-     "html": "\n                    <div class=\"callout vital\">\n                        <div class=\"callout-header\">\n                            <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\"\n                                stroke-width=\"2\">\n                                <polyline points=\"16 18 22 12 16 6\" />\n                                <polyline points=\"8 6 2 12 8 18\" />\n                            </svg>\n                            Le secret du puzzle : la contrainte paie\n                        </div>\n                        <div class=\"callout-body\">\n                            Chaque condition étroite que tu acceptes (critique, Δ≥2, immobile, 1/combat,\n                            essoufflement) retire 1 XP — sans jamais descendre une pièce sous 1 XP.\n                            C'est comme ça que Lame Miroir (parade des tirs laser <em>au contact seulement</em>)\n                            tient son prix. Et l'hybride (frappe + intimidation, soin + commandement) coûte\n                            +1 XP à la création, jamais en PA — comme l'Injonction Douce du Livre IV.\n                        </div>\n                    </div>\n                    <h3 id=\"sec-15-modif\">15.7 Modificateurs</h3>\n"
+     "html": "\n                    <div class=\"callout vital\">\n                        <div class=\"callout-header\">\n                            <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\"\n                                stroke-width=\"2\">\n                                <polyline points=\"16 18 22 12 16 6\" />\n                                <polyline points=\"8 6 2 12 8 18\" />\n                            </svg>\n                            Les prérequis ne coûtent rien\n                        </div>\n                        <div class=\"callout-body\">\n                            Les 8 cartes Conditions (contact, arme en main, immobile, critique, Δ≥2, 1/combat,\n                            essoufflement, entraînement) se branchent gratis, hors logements — C0 en exige au moins une.\n                            La seule remise du puzzle : Sur critique lié à O1, O8, O13 ou O15 (−1 XP par cumul).\n                            C'est comme ça que Lame Miroir tient ses 3 XP : ◆ C3 (1 XP) + parade sans malus D1 (2 XP), contact gratuit.\n                            Et l'hybride (frappe + intimidation, soin + commandement) coûte\n                            +1 XP à la création, jamais en PA.\n                        </div>\n                    </div>\n                    <h3 id=\"sec-15-modif\">15.7 Modificateurs</h3>\n                    <p>\n                        Les finitions vivent sur chaque carte, pas à côté. Clique une carte posée :\n                        Portée (1 → 3 cases, +2 XP/case), Zone M3 (+2 XP +1 PA),\n                        Durée M4 (+1 XP +1 PA par cran, 2 max), Hors-compétence M7 (la carte paie double).\n                        L'incompatible ne s'affiche même pas. Sur passif C0, tout ce qui coûte des PA reste grisé.\n                    </p>\n"
     },
     {
      "type": "ref",
@@ -181,7 +181,7 @@
     },
     {
      "type": "html",
-     "html": "\n                    <h3 id=\"sec-15-ex\">15.8 Quatre techniques montées (et une refusée)</h3>\n                    <p>\n                        Lis les additions : chaque carte montre son calcul. La dernière montre ce que le MJ refuse —\n                        et pourquoi. Quand tu monteras les tiennes, présente-les comme ça.\n                    </p>\n"
+     "html": "\n                    <h3 id=\"sec-15-ex\">15.8 Trois techniques montées (et une refusée)</h3>\n                    <p>\n                        Mêmes additions que le puzzle, au point près. Les trois premières passent telles quelles —\n                        copie-les pour tes premiers montages. La dernière montre ce que le MJ refuse, et pourquoi.\n                    </p>\n"
     },
     {
      "type": "ref",
@@ -1855,7 +1855,7 @@
    "etiquette_tag": "span",
    "etiquette_classe": "formula-badge",
    "etiquette_html": "La Règle des Deux Monnaies",
-   "math_html": "<span class=\"hl-gold\">châssis + pièces</span> en création (tu additionnes)  ·  <span class=\"hl-cyan\">7–8 XP</span> en signature (MJ)  ·  <span class=\"hl-ruby\">≤ 6 PA</span> par activation",
+   "math_html": "<span class=\"hl-gold\">ensemble ◆ + pièces</span> en création (tu additionnes)  ·  <span class=\"hl-cyan\">7 XP et plus</span> en signature (MJ)  ·  <span class=\"hl-ruby\">≤ 6 PA</span> par activation",
    "desc_html": "Tu paies deux fois, mais pas pareil. À la création, tu additionnes les pièces en <a class=\"rule-ref\" href=\"livre_1.html#sec-5-3\" data-tip=\"Spécialisation : 5 XP de la bonne banque ou du libre, au tarif normal (§5.3).\">XP</a> (banque liée ou libre, <a class=\"rule-ref\" href=\"livre_1.html#sec-5-3\" data-tip=\"Coût croisé ×2 : dépenser l'XP d'une autre compétence coûte double (§5.3).\">×2 en croisé</a>). À table, tu paies seulement les pièces actives en <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a> : tes passifs (parade sans malus, +2 Encaissement) travaillent gratis une fois payés. Jamais plus de 6 PA par activation : ça doit tenir dans un tour (tu tournes à 8-11 PA).",
    "extra": " id=\"sec-15-regle\"",
    "wide": true
@@ -1870,28 +1870,28 @@
    ],
    "lignes": [
     [
-     "Passif conditionnel",
+     "◆ C0 · Passif conditionnel",
      "3",
      "0",
-     "Toujours actif quand la condition tient : arme liée en main, au contact, immobile... Pas de jet, pas d'activation."
+     "Toujours actif quand la condition tient : arme liée en main, au contact, immobile... Pas de jet, pas d'activation. Au moins 1 prérequis (cartes Conditions, gratuites). 0 PA strict."
     ],
     [
-     "Action principale",
+     "◆ C2 · Action principale",
      "1",
      "1 de base",
      "Tu agis pendant ton tour. Coût final = 1 + les PA des pièces actives."
     ],
     [
-     "Réaction",
+     "◆ C3 · Réaction",
      "1",
      "+2",
      "Hors de ton tour, 1/round. Le +2 s'ajoute aux PA des pièces (comme les sorts, Livre IV §22)."
     ],
     [
-     "Opportunité",
+     "◆ C4 · Opportunité",
      "2",
      "0",
-     "0 PA, 1/round max. Déclencheur étroit obligatoire : Δ≥2, critique, esquive réussie..."
+     "0 PA, 1/round max. Déclencheur étroit obligatoire : Δ≥2, critique, esquive réussie... Sans déclencheur ni seuil, l’atelier t’alerte."
     ]
    ]
   },
@@ -1907,98 +1907,98 @@
     [
      "2",
      "1",
-     "<strong>+1 dégât, cette attaque</strong> — +1 dégât sur une attaque.",
-     "Toutes armes. Cumulable ×5 (chaque achat = +1 dégât pour 2 XP + 1 PA). Sur critique (carte Prérequis liée) : −1 XP par cumul."
+     "<strong>O1 · +1 dégât, cette attaque</strong> — +1 dégât sur une attaque.",
+     "Toutes armes. Cumulable ×5 (chaque achat = +1 dégât pour 2 XP + 1 PA). Sur critique (carte Prérequis liée) : −1 XP par cumul. Pas de portée (dégât instantané)."
     ],
     [
      "3",
      "0",
-     "<strong>Dégâts Absolus</strong> — Tes dégâts deviennent Absolus (ni armure, ni Encaissement).",
-     "Sur critique, ou condition écrite. Incompatible multi-cible."
+     "<strong>O7 · Dégâts Absolus</strong> — Tes dégâts deviennent Absolus (ni armure, ni Encaissement).",
+     "Sur critique, ou condition écrite. Incompatible multi-cible. Portée 2 à 3 cases (+2 XP/case). Zone : refusée avec Absolus (règle 8)."
     ],
     [
      "2",
      "0",
-     "<strong>+1 au jet, cette attaque</strong> — +1 au jet d'une de tes attaques.",
-     "Cumulable ×5 (chaque achat = +1 pour 2 XP). Sur critique (carte Prérequis liée) : −1 XP par cumul. Un seul bonus par jet."
+     "<strong>O8 · +1 au jet, cette attaque</strong> — +1 au jet d'une de tes attaques.",
+     "Cumulable ×5 (chaque achat = +1 pour 2 XP). Sur critique (carte Prérequis liée) : −1 XP par cumul. Un seul bonus par jet. Portée 2 à 3 cases (+2 XP/case)."
     ],
     [
      "1",
      "1",
-     "<strong>+1 à ton prochain jet</strong> — +1 à ton prochain jet, actif.",
-     "Cumulable ×5 (chaque achat = +1 pour 1 XP + 1 PA). Un seul bonus par jet. Cumulable en durée (+1 tour : +1 XP +1 PA)."
+     "<strong>O9 · +1 à ton prochain jet</strong> — +1 à ton prochain jet, actif.",
+     "Cumulable ×5 (chaque achat = +1 pour 1 XP + 1 PA). Un seul bonus par jet. Cumulable en durée (+1 tour : +1 XP +1 PA, 2 crans max). Portée 2 à 3 cases (+2 XP/case)."
     ],
     [
      "1",
      "1",
-     "<strong>Ralenti</strong> — La cible est Ralentie jusqu'à la fin de son prochain tour.",
-     "Seuil Δ≥0. Durée cumulable (+1 tour : +1 XP +1 PA)."
+     "<strong>O20 · Ralenti</strong> — La cible est Ralentie jusqu'à la fin de son prochain tour.",
+     "Seuil Δ≥0. Durée cumulable (+1 tour : +1 XP +1 PA, 2 crans max). Zone M3 possible (+2 XP +1 PA). Pas de portée sur le statut : porte la frappe."
     ],
     [
      "1",
      "1",
-     "<strong>Étourdi</strong> — La cible est Étourdie jusqu'à la fin de son prochain tour.",
-     "Sur touche."
+     "<strong>O21 · Étourdi</strong> — La cible est Étourdie jusqu'à la fin de son prochain tour.",
+     "Sur touche. Zone M3 possible (+2 XP +1 PA). Pas de portée sur le statut : porte la frappe."
     ],
     [
      "1",
      "1",
-     "<strong>Déstabilisé</strong> — La cible est Déstabilisée jusqu'à la fin de son prochain tour.",
-     "Seuil Δ≥0."
-    ],
-    [
-     "2",
-     "1",
-     "<strong>À Terre</strong> — La cible est À Terre (se relever coûte des PA).",
-     "Sur touche."
+     "<strong>O22 · Déstabilisé</strong> — La cible est Déstabilisée jusqu'à la fin de son prochain tour.",
+     "Sur touche. Zone M3 possible (+2 XP +1 PA). Pas de portée sur le statut : porte la frappe."
     ],
     [
      "2",
      "1",
-     "<strong>Immobilisé</strong> — La cible est Immobilisée jusqu'à la fin de son prochain tour.",
-     "Sur touche."
+     "<strong>O23 · À Terre</strong> — La cible est À Terre (se relever coûte des PA).",
+     "Sur touche. Zone M3 possible (+2 XP +1 PA). Pas de portée sur le statut : porte la frappe."
     ],
     [
      "2",
      "1",
-     "<strong>Sonné</strong> — La cible est Sonnée jusqu'à la fin de son prochain tour.",
-     "Sur touche."
+     "<strong>O24 · Immobilisé</strong> — La cible est Immobilisée jusqu'à la fin de son prochain tour.",
+     "Sur touche. Zone M3 possible (+2 XP +1 PA). Pas de portée sur le statut : porte la frappe."
+    ],
+    [
+     "2",
+     "1",
+     "<strong>O25 · Sonné</strong> — La cible est Sonnée jusqu'à la fin de son prochain tour.",
+     "Sur touche. Zone M3 possible (+2 XP +1 PA). Pas de portée sur le statut : porte la frappe."
     ],
     [
      "3",
      "1",
-     "<strong>Paralysé</strong> — La cible est Paralysée jusqu'à la fin de son prochain tour (aucune action ni réaction).",
-     "Sur touche."
+     "<strong>O26 · Paralysé</strong> — La cible est Paralysée jusqu'à la fin de son prochain tour (aucune action ni réaction).",
+     "Sur touche. Zone M3 possible (+2 XP +1 PA). Pas de portée sur le statut : porte la frappe."
     ],
     [
      "2",
      "1",
-     "<strong>Agonisant</strong> — La cible panique et fuit (6 cases) jusqu'à la fin de son prochain tour (affolée).",
-     "Sur touche."
+     "<strong>O27 · Agonisant</strong> — La cible panique et fuit (6 cases) jusqu'à la fin de son prochain tour (affolée).",
+     "Sur touche. Zone M3 possible (+2 XP +1 PA). Pas de portée sur le statut : porte la frappe."
     ],
     [
      "2",
      "1",
-     "<strong>Saignement</strong> — La cible subit 2 à 4 résiduels.",
-     "Sur touche. Paliers 2 (inclus) · 3 (+1 XP) · 4 (+2 XP)."
+     "<strong>O28 · Saignement</strong> — La cible subit 2 à 4 résiduels.",
+     "Sur touche. Paliers 2 (inclus) · 3 (+1 XP) · 4 (+2 XP). Zone M3 possible (+2 XP +1 PA). Pas de portée sur le statut : porte la frappe."
     ],
     [
      "2",
      "0",
-     "<strong>Repousse 1 case</strong> — Sur succès net, la cible recule d’1 case.",
-     "Cumulable +1 case par achat (+2 XP par case). Sur critique (carte Prérequis liée) : −1 XP par case."
+     "<strong>O13 · Repousse 1 case</strong> — Sur succès net, la cible recule d’1 case.",
+     "Cumulable +1 case par achat (+2 XP par case). Sur critique (carte Prérequis liée) : −1 XP par case. Pas de portée M1 (la distance, c’est la quantité)."
     ],
     [
      "2",
      "1",
-     "<strong>Seconde cible</strong> — +1 dégât auto sur la seconde cible, adjacente à toi.",
-     "Cumulable ×5 (chaque achat = +1 dégât auto pour 2 XP + 1 PA). Portée 2 à 3 cases (+2 XP/case). Sur critique liée : −1 XP par cumul. Incompatible Absolus."
+     "<strong>O15 · Seconde cible</strong> — +1 dégât auto sur la seconde cible, adjacente à toi.",
+     "Cumulable ×5 (chaque achat = +1 dégât auto pour 2 XP + 1 PA). Portée 2 à 3 cases (+2 XP/case). Sur critique liée : −1 XP par cumul. Incompatible Absolus. Déjà multi-cible : pas de zone."
     ],
     [
      "4",
      "0",
-     "<strong>Critique élargi</strong> — Critique sur le max ou la face juste en dessous (ex : 5-6 sur d6, 11-12 sur d12).",
-     "Prérequis filière : 3 pièces de la même arme."
+     "<strong>O18 · Critique élargi</strong> — Critique sur le max ou la face juste en dessous (ex : 5-6 sur d6, 11-12 sur d12).",
+     "Prérequis filière : 3 pièces de la même arme. Pas de portée (passif de critique)."
     ]
    ]
   },
@@ -2014,55 +2014,55 @@
     [
      "2",
      "0",
-     "<strong>Parade sans malus</strong> — Tu pares à plein dé avec cette approche, cette attaque.",
+     "<strong>D1 · Parade sans malus</strong> — Tu pares à plein dé avec cette approche, cette attaque.",
      "Compétence liée. Le socle : Épée, Bloquer, Arts Martiaux... Durée cumulable (+1 tour : +1 XP +1 PA, 3 tours max)."
     ],
     [
      "3",
      "0",
-     "<strong>Absorbe 3 / dégâts ÷2</strong> — Absorbe 3 dégâts de plus au blocage, ou dégâts interceptés divisés par deux, cette attaque.",
+     "<strong>D2 · Absorbe 3 / dégâts ÷2</strong> — Absorbe 3 dégâts de plus au blocage, ou dégâts interceptés divisés par deux, cette attaque.",
      "Une seule absorption par parade. Durée cumulable (+1 tour : +1 XP +1 PA, 3 tours max)."
     ],
     [
      "3",
      "0",
-     "<strong>+2 Encaissement</strong> — +2 à ton Encaissement, cette attaque.",
+     "<strong>D3 · +2 Encaissement</strong> — +2 à ton Encaissement, cette attaque.",
      "Non cumulable : le meilleur s’applique. Durée cumulable (+1 tour : +1 XP +1 PA, 3 tours max)."
     ],
     [
      "4",
      "0",
-     "<strong>+1 armure naturelle</strong> — +1 armure naturelle permanente.",
+     "<strong>D4 · +1 armure naturelle</strong> — +1 armure naturelle permanente.",
      "Non cumulable."
     ],
     [
      "3",
      "0",
-     "<strong>Immunité 1 statut</strong> — Immunité complète à un statut écrit (cette attaque) : poison, gaz, Ralenti...",
+     "<strong>D5 · Immunité 1 statut</strong> — Immunité complète à un statut écrit (cette attaque) : poison, gaz, Ralenti...",
      "Précise le statut. Les dégâts directs passent quand même. Durée cumulable (+1 tour : +1 XP +1 PA, 3 tours max)."
     ],
     [
      "5",
      "0",
-     "<strong>Immunité totale de garde</strong> — Pendant ta garde : immunité aux critiques, au Déstabilisé et à À Terre.",
+     "<strong>D6 · Immunité totale de garde</strong> — Pendant ta garde : immunité aux critiques, au Déstabilisé et à À Terre.",
      "Une technique entière à elle seule. Incompatible avec tout bonus défensif."
     ],
     [
      "3",
      "0",
-     "<strong>Immunité embuscade et dos</strong> — Ni surprise, ni attaques de dos : tu gardes ta réaction en embuscade.",
+     "<strong>D7 · Immunité embuscade et dos</strong> — Ni surprise, ni attaques de dos : tu gardes ta réaction en embuscade.",
      "Ne donne pas la vision à 360° (voir Perception Panoramique au compendium)."
     ],
     [
      "2",
      "0",
-     "<strong>Ignore un malus</strong> — Ignore le malus d’À Terre, d’Étourdi, ou le double coût du Ralenti, cette attaque.",
+     "<strong>D8 · Ignore un malus</strong> — Ignore le malus d’À Terre, d’Étourdi, ou le double coût du Ralenti, cette attaque.",
      "Un malus par achat. Prérequis filière défensive. Durée cumulable (+1 tour : +1 XP +1 PA, 3 tours max)."
     ],
     [
      "2",
      "0",
-     "<strong>Repousse 1 case</strong> — Sur parade réussie, tu repousses ton agresseur d’1 case.",
+     "<strong>D9 · Repousse 1 case</strong> — Sur parade réussie, tu repousses ton agresseur d’1 case.",
      "Cumulable +1 case par achat (+2 XP par case)."
     ]
    ]
@@ -2079,74 +2079,74 @@
     [
      "3",
      "0",
-     "<strong>−1 PA, action précise</strong> — Premier tir, premier déplacement, 2e attaque ou soin d’urgence : −1 PA.",
+     "<strong>U1 · −1 PA, action précise</strong> — Premier tir, premier déplacement, 2e attaque ou soin d’urgence : −1 PA.",
      "Une seule réduction par action. Non cumulable."
     ],
     [
      "3",
      "0",
-     "<strong>+1 PA de réserve</strong> — +1 PA au tour suivant.",
+     "<strong>U2 · +1 PA de réserve</strong> — +1 PA au tour suivant.",
      "Déclencheur écrit : esquive parfaite, parade critique..."
     ],
     [
      "4",
      "2",
-     "<strong>+2 PA escouade / +3 PA mouvement</strong> — +2 PA à l’escouade proche, ou +3 PA de mouvement pour toi.",
+     "<strong>U3 · +2 PA escouade / +3 PA mouvement</strong> — +2 PA à l’escouade proche, ou +3 PA de mouvement pour toi.",
      "1/combat, ou coût en essoufflement écrit."
     ],
     [
      "2",
      "0",
-     "<strong>Mouvement gratuit 1 case</strong> — 1 case offerte : recul après esquive, pas vers l’ennemi avant la frappe...",
+     "<strong>U4 · Mouvement gratuit 1 case</strong> — 1 case offerte : recul après esquive, pas vers l’ennemi avant la frappe...",
      "Opportunité : 1/round, déclencheur écrit."
     ],
     [
      "4",
      "0",
-     "<strong>Téléport 2 cases sur esquive</strong> — Esquive réussie Δ≥2 : tu te téléportes de 2 cases.",
-     "Prérequis esquive parfaite. 1/round."
+     "<strong>U5 · Téléport 2 cases sur esquive</strong> — Esquive réussie Δ≥2 : tu te téléportes de 2 cases.",
+     "Prérequis : Roulade ou esquive Δ≥2. 1/round."
     ],
     [
      "2",
      "0",
-     "<strong>Ignore le terrain difficile</strong> — Murets, tranchées, demi-couverts : sans surcoût.",
+     "<strong>U6 · Ignore le terrain difficile</strong> — Murets, tranchées, demi-couverts : sans surcoût.",
      "Ne vole pas et ne traverse pas les murs."
     ],
     [
      "2",
      "2",
-     "<strong>Soin + purge</strong> — Au contact : 4-5 PV rendus + 1 état purgé.",
+     "<strong>U7 · Soin + purge</strong> — Au contact : 4-5 PV rendus + 1 état purgé.",
      "Paliers : 10 PV +2 XP · 15 PV + immunité 3 tours +3 XP."
     ],
     [
      "2",
      "1",
-     "<strong>Lecture vitale</strong> — Tu lis PV, seuils et armure exacts d’une unité examinée.",
+     "<strong>U8 · Lecture vitale</strong> — Tu lis PV, seuils et armure exacts d’une unité examinée.",
      "Au contact ou à 2 cases. Le MJ te donne les vrais chiffres."
     ],
     [
      "3",
      "1",
-     "<strong>Révèle les mises</strong> — Tu révèles les mises de PA adverses avant ta défense.",
+     "<strong>U9 · Révèle les mises</strong> — Tu révèles les mises de PA adverses avant ta défense.",
      "1/combat. Puis le duel se joue normalement."
     ],
     [
      "2",
      "0",
-     "<strong>Initiative réglée</strong> — Ton Instinct compte en Initiative, ou +1 palier au dé.",
+     "<strong>U10 · Initiative réglée</strong> — Ton Instinct compte en Initiative, ou +1 palier au dé.",
      "L’un ou l’autre, pas les deux."
     ],
     [
      "2",
      "0",
-     "<strong>Souffle maîtrisé</strong> — 1/combat : souffler efface 2 essoufflement (voire 0 PA).",
+     "<strong>U11 · Souffle maîtrisé</strong> — 1/combat : souffler efface 2 essoufflement (voire 0 PA).",
      "Paliers : 3 ESS +2 XP · 4 ESS +1 PA immédiat +2 XP · 2×/combat +2 XP."
     ],
     [
      "2",
      "−1*",
-     "<strong>Force contre essoufflement</strong> — *Tu gagnes 1 PA d’action et tu prends 1 essoufflement.",
-     "Palier +2 PA au lieu d’1 : +2 XP."
+     "<strong>U12 · Force contre essoufflement</strong> — *Tu gagnes 1 PA d’action et tu prends 1 essoufflement.",
+     "1 PA d’action contre 1 essoufflement, sans variante."
     ]
    ]
   },
@@ -2162,37 +2162,37 @@
     [
      "1",
      "0",
-     "<strong>+1 épreuve sociale</strong> — +1 à une épreuve sociale écrite.",
-     "Cumulable, comme les modules arcaniques."
+     "<strong>S1 · +1 épreuve sociale</strong> — +1 à une épreuve sociale écrite.",
+     "Cumulable ×3 (chaque achat = +1 pour 1 XP)."
     ],
     [
      "3",
      "1",
-     "<strong>Fuite d’un sbire</strong> — Sur Δ≥3, un sbire fuit le champ de bataille.",
+     "<strong>S2 · Fuite d’un sbire</strong> — Sur Δ≥3, un sbire fuit le champ de bataille.",
      "Sbires seulement. Contre un majeur : Δ≥3 = Déstabilisé."
     ],
     [
      "4",
      "2",
-     "<strong>Conversion / cessez-le-feu</strong> — Convertis un sbire pour le combat, ou suspends les attaques 1 tour.",
+     "<strong>S3 · Conversion / cessez-le-feu</strong> — Convertis un sbire pour le combat, ou suspends les attaques 1 tour.",
      "Sbires seulement. 1/combat."
     ],
     [
      "2",
      "0",
-     "<strong>Prix et marché noir</strong> — Remise de 10 à 50 % ou accès aux prototypes.",
+     "<strong>S4 · Prix et marché noir</strong> — Remise de 10 à 50 % ou accès aux prototypes.",
      "Hors combat. Le MJ fixe la remise selon ton Delta."
     ],
     [
      "2",
      "0",
-     "<strong>Frappe silencieuse</strong> — Abattre un isolé ne donne pas l’alerte ; +2 en Discrétion après.",
+     "<strong>S5 · Frappe silencieuse</strong> — Abattre un isolé ne donne pas l’alerte ; +2 en Discrétion après.",
      "Cible isolée. Hors combat ou 1/combat."
     ],
     [
      "3",
      "1",
-     "<strong>Ordre simple</strong> — Lâche ton arme, fuis, reste immobile 1 tour.",
+     "<strong>S6 · Ordre simple</strong> — Lâche ton arme, fuis, reste immobile 1 tour.",
      "Sbires seulement. Contre un majeur : Delta ≥ 3 requis."
     ]
    ]
@@ -2208,22 +2208,22 @@
     [
      "+2 XP/case",
      "<strong>Portée 2 à 3 cases</strong> (+0 PA)",
-     "Base 1 case gratuite. +1 case (+2 XP), +2 cases (+4 XP), 3 max. Pour les frappes à distance et les ondes."
+     "Base 1 case gratuite. +1 case (+2 XP), +2 cases (+4 XP), 3 max. Offensif uniquement : O7, O8, O9, O15. Pas sur O1, O13, O18 ni sur les statuts O20–O28 (la portée se pose sur la frappe)."
     ],
     [
      "+2 XP",
      "<strong>Forme de zone</strong> (+1 PA)",
-     "Cône, ligne ou rayon +1, si l’effet n’en avait pas."
+     "Cône, ligne ou rayon +1. Cartes dégâts, statuts ou repoussée : O7, O20, O22–O28. O7 + zone refusé (règle 8). O15 déjà multi-cible : pas de zone."
     ],
     [
      "+1 XP",
      "<strong>Durée +1 tour</strong> (+1 PA)",
-     "Là où la table dit « durée cumulable »."
+     "Là où la table dit « durée cumulable » : O9, O20, D1, D2, D3, D5, D8. 2 crans max."
     ],
     [
      "−1 XP",
      "<strong>Condition étroite</strong> (—)",
-     "Critique, Δ≥2, immobile, 1/combat, essoufflement... Minimum 1 XP par pièce. La contrainte paie : c’est le levier du puzzle."
+     "Sur critique lié (carte Prérequis) : −1 XP par cumul — O1, O8, O13, O15 uniquement. Les 8 cartes Conditions sont gratuites, hors logements."
     ],
     [
      "+1 XP",
@@ -2242,75 +2242,60 @@
    "grille": 2,
    "cartes": [
     {
-     "titre": "Fente Basse — 4 XP // Action Principale",
+     "corps_html": "« Tu passes sous la garde et tu fauches le jarret. » Ensemble ◆ C2 action principale (1 XP, 1 PA) + O8 +1 au jet (2 XP) + O20 Ralenti sur touche (1 XP, 1 PA). Tu jettes ton attaque normalement ; touche ? la cible est Ralentie jusqu’à la fin de son prochain tour.",
      "monde": "Maniement d'Arme // FOR, AGI",
-     "corps_html": "« Tu passes sous la garde et tu fauches le jarret. » Châssis action principale (0 XP, 1 PA) + visée Jambes sans malus (2 XP, 0 PA) + Ralenti sur touche (2 XP, 1 PA). Fais ton épreuve normalement ; touche ? la cible est <a class=\"rule-ref\" href=\"livre_6.html#sec-26-1\" data-tip=\"Ralenti : toute action coûte le DOUBLE de PA (§26.1).\">Ralenti</a> jusqu'à la fin de son prochain tour.",
      "pieds": [
       {
-       "ton": "cyan",
-       "texte": "Création : 4 XP"
+       "texte": "Création : 4 XP",
+       "ton": "cyan"
       },
       {
-       "ton": "amber",
-       "texte": "Activation : 2 PA"
+       "texte": "Activation : 2 PA",
+       "ton": "amber"
       }
-     ]
+     ],
+     "titre": "Fente Basse — 4 XP // Action principale"
     },
     {
-     "titre": "Voile de Poussière — 4 XP // Action Principale",
-     "monde": "Observation // VUE, INS",
-     "corps_html": "« Tu soulèves un nuage qui mange la lumière. » Châssis action principale (0 XP, 1 PA) −2 aux tirs à travers (2 XP, 1 PA) + forme 1 hexagone (+2 XP, +1 PA). La nappe tient 1 tour ; tirer à travers, c’est −2.",
+     "corps_html": "« Le geste qui referme. » Ensemble ◆ C0 passif conditionnel (3 XP, 0 PA) + U1 −1 PA, action précise (3 XP) + Au contact (carte Condition, gratuite). Les premiers soins d’urgence passent de 3 à 2 PA, au contact.",
+     "monde": "Premiers Soins // ÉRU",
      "pieds": [
       {
-       "ton": "cyan",
-       "texte": "Création : 4 XP"
+       "texte": "Création : 6 XP",
+       "ton": "cyan"
       },
       {
-       "ton": "amber",
-       "texte": "Activation : 3 PA"
+       "texte": "Activation : 0 PA",
+       "ton": "amber"
       }
-     ]
+     ],
+     "titre": "Suture Réflexe (canonique) — 6 XP // Passif"
     },
     {
-     "titre": "Second Cœur — 7 XP // Passif",
-     "monde": "Cardio // CON",
-     "corps_html": "« Ton cœur cogne deux fois, et le corps suit. » Châssis passif (3 XP) + force 1 PA contre 1 essoufflement (2 XP) + palier +2 PA (2 XP). Prérequis : Poussée Cardiovasculaire (↳). Tu paies en souffle, pas en PA. Signature : fais signer ton MJ.",
-     "pieds": [
-      {
-       "ton": "cyan",
-       "texte": "Création : 7 XP (signature)"
-      },
-      {
-       "ton": "amber",
-       "texte": "Activation : 0 PA + 1 ESS"
-      }
-     ]
-    },
-    {
-     "titre": "Lame Miroir (canonique) — 4 XP // Réaction",
+     "corps_html": "« La lame était déjà là. » Ensemble ◆ C3 réaction (1 XP, +2 PA) + D1 parade sans malus (2 XP) + Au contact (carte Condition, gratuite). Tu pares à plein dé, même les tirs laser — au contact.",
      "monde": "Maniement d'Arme // FOR, AGI",
-     "corps_html": "« La lame était déjà là. » Châssis réaction (1 XP, +2 PA) + parade sans malus (2 XP) + contact seulement (−1 XP). Total 3 XP. Tu pares les tirs laser au contact, Delta ≥ 0.",
      "pieds": [
       {
-       "ton": "cyan",
-       "texte": "Création : 4 XP (plancher)"
+       "texte": "Création : 3 XP",
+       "ton": "cyan"
       },
       {
-       "ton": "amber",
-       "texte": "Activation : 2 PA"
+       "texte": "Activation : 2 PA",
+       "ton": "amber"
       }
-     ]
+     ],
+     "titre": "Lame Miroir (canonique) — 3 XP // Réaction"
     },
     {
-     "titre": "Soleil Noir — REFUSÉE",
+     "corps_html": "« Je veux du Absolu sur tout le monde. » O7 Dégâts Absolus (3 XP) + O15 seconde cible (2 XP) + ensemble ◆ C2 action (1 XP) = 6 XP : ça passe le budget — mais la règle 8 dit non. Absolus ⊕ multi-cible, jamais ensemble. Reviens avec un choix : la puissance ou la foule.",
      "monde": "Contrôle du MJ // règle 8",
-     "corps_html": "« Je veux du Absolu sur tout le monde. » Dégâts Absolus (3 XP) + seconde cible (2 XP) + châssis action (1 XP) = 6 XP : ça passe le budget — mais la règle 8 dit non. Absolus ⊕ multi-cible, jamais ensemble. Reviens avec un choix : la puissance ou la foule.",
      "pieds": [
       {
-       "ton": "ruby",
-       "texte": "Refusée : règle 8 (incompatibilité)"
+       "texte": "Refusée : règle 8 (incompatibilité)",
+       "ton": "ruby"
       }
-     ]
+     ],
+     "titre": "Soleil Noir — REFUSÉE"
     }
    ]
   }
@@ -5083,7 +5068,7 @@
   },
   "nb_specialisations": 163,
   "fabrique": {
-   "note": "Fabrique de Techniques (sysRP). Standard 4-6 XP, signature 7-8 XP (MJ), activation ≤ 6 PA.",
+   "note": "Fabrique de Techniques (sysRP). Standard 4-6 XP, signature 7+ XP (MJ), activation ≤ 6 PA.",
    "budgets": {
     "standard_xp": [
      4,
@@ -5091,7 +5076,7 @@
     ],
     "signature_xp": [
      7,
-     8
+     null
     ],
     "plafond_pa": 6,
     "cout_croise_x2": true

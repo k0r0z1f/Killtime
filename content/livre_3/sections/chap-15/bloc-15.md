@@ -4,9 +4,9 @@ cible: sections.chap-15.blocs.15.html
 format: raw
 ---
 
-                    <h3 id="sec-15-ex">15.8 Quatre techniques montées (et une refusée)</h3>
+                    <h3 id="sec-15-ex">15.8 Trois techniques montées (et une refusée)</h3>
                     <p>
-                        Lis les additions : chaque carte montre son calcul. La dernière montre ce que le MJ refuse —
-                        et pourquoi. Quand tu monteras les tiennes, présente-les comme ça.
+                        Mêmes additions que le puzzle, au point près. Les trois premières passent telles quelles —
+                        copie-les pour tes premiers montages. La dernière montre ce que le MJ refuse, et pourquoi.
                     </p>
 

@@ -9,23 +9,24 @@ format: raw
                         Pour chaque technique, remplis ces rubriques avec ton MJ. Une ligne chacune, ça tient sur un post-it :
                     </p>
                     <ul>
-                        <li><strong>Nom :</strong> le titre de ta technique (gratuit). <em>Ex : Fente Basse, Voile de Poussière.</em></li>
-                        <li><strong>Châssis :</strong> un seul (table ci-dessous). Il dit quand ça se déclenche — et tes PA de base.</li>
-                        <li><strong>Pièces :</strong> 1 à 3, piochées dans les 4 familles. Recopie leurs textes : ta technique est écrite.</li>
-                        <li><strong>Famille :</strong> offensif, défensif, utilitaire, social — ou hybride (deux familles, +1 XP).</li>
+                        <li><strong>Nom :</strong> le titre de ta technique (gratuit). <em>Ex : Fente Basse, Suture Réflexe.</em></li>
+                        <li><strong>Ensemble ◆ :</strong> un seul, lié à une compétence entraînée (table ci-dessous). Il dit quand ça se déclenche — et tes PA de base. Sans compétence liée, rien ne se branche.</li>
+                        <li><strong>Pièces :</strong> 1 à 3, 3 logements max. Recopie leurs textes : ta technique est écrite. Les 8 cartes Conditions (contact, arme en main, immobile, critique, Δ≥2, 1/combat, essoufflement, entraînement) se branchent gratis, hors logements.</li>
+                        <li><strong>Famille :</strong> un seul type par technique — le 1er effet posé fixe le type (affiché sous ◆). Ta compétence liée n'ouvre que ses familles (Esquive = défensif pur). Deux types = +1 XP d'hybride, jamais de PA en plus.</li>
+                        <li><strong>Finitions :</strong> sur chaque carte, pas à côté — portée, zone, durée, hors-compétence (voir 15.7).</li>
                         <li><strong>Coûts :</strong> l'addition XP d'un côté, l'addition PA de l'autre. Montre les deux au MJ.</li>
                         <li><strong>Accord MJ :</strong> il vérifie les 9 règles ci-dessous, il signe, tu paies.</li>
                     </ul>
                     <h3 id="sec-15-regles">Les 9 règles d'assemblage</h3>
                     <ol>
-                        <li><strong>Un châssis, un seul.</strong> Il dit quand ta technique part — et ses PA de base.</li>
-                        <li><strong>Un châssis + 1 à 3 pièces, pas plus.</strong> Au-delà, ce sont deux techniques sœurs.</li>
-                        <li><strong>Budget : tu additionnes châssis + pièces.</strong> Le châssis donne la base (1 XP, 3 pour un passif) + 1 XP par cran. À 7-8, c'est une signature (MJ obligatoire).</li>
-                        <li><strong>Activation à 6 PA max.</strong> Le châssis compte dedans. Si ça dépasse, découpe.</li>
-                        <li><strong>Un seul bonus chiffré par jet.</strong> Deux +2 à l'attaque ne s'additionnent pas — le meilleur gagne.</li>
-                        <li><strong>Les gros effets ont un seuil.</strong> Critiques à Δ≥3 ou sur critique, le reste part sur touche. La mort instantanée, c'est sbires seulement.</li>
-                        <li><strong>Les paliers se montent dans l'ordre.</strong> Soin 5 avant Soin 10 : on ne saute pas d'étage.</li>
-                        <li><strong>Deux incompatibilités.</strong> Immunité totale ⊕ bonus défensif ; dégâts Absolus ⊕ multi-cible. Le reste se combine.</li>
-                        <li><strong>Réaction = +2 PA, 1/round.</strong> Opportunité 0 PA = déclencheur étroit obligatoire, 1/round. Comme les sorts.</li>
+                        <li><strong>Un ensemble ◆, un seul — et une compétence entraînée liée.</strong> Il dit quand ta technique part, et ses PA de base.</li>
+                        <li><strong>Un ensemble + 1 à 3 pièces, pas plus.</strong> 3 logements : au-delà, ce sont deux techniques sœurs.</li>
+                        <li><strong>Budget : tu additionnes ensemble + pièces + finitions.</strong> Vise 4 à 6 XP. À 7 XP et plus, c'est une signature : une seule par personnage, MJ obligatoire.</li>
+                        <li><strong>Activation à 6 PA max, ensemble compté.</strong> Si ça dépasse, découpe. Passif C0 : 0 PA strict — ni pièce ni finition à PA.</li>
+                        <li><strong>Un seul bonus chiffré par jet.</strong> O8 et O9 ne se cumulent pas — le meilleur gagne.</li>
+                        <li><strong>Chaque effet a son seuil, écrit sur sa carte.</strong> Sur touche, Δ≥0, Δ≥3, succès net, parade réussie, critique ou condition. Raté ? Rien ne part — ni dégâts, ni effet.</li>
+                        <li><strong>Paliers = variantes au menu, pas des achats à empiler.</strong> Soin U7 (5, 10 ou 15 PV), Saignement O28 (2, 3 ou 4 résiduels), Souffle U11 (cases à cocher). D8 exige D1 ou D3. O18 exige 3 pièces de la même arme.</li>
+                        <li><strong>Incompatibilités.</strong> O7 ⊕ O15 : l'Absolu ne frappe jamais en zone ni sur deux cibles. D6 ⊕ D1, D2, D3, D4 : la garde totale joue seule. Le reste se combine.</li>
+                        <li><strong>Réaction C3 = +2 PA, 1/round.</strong> Opportunité C4 = 0 PA, 1/round, déclencheur étroit obligatoire (Δ≥2, critique, esquive…). Passif C0 = au moins 1 prérequis. Comme les sorts.</li>
                     </ol>
 

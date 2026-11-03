@@ -2,7 +2,7 @@
    FABRIQUE DE TECHNIQUES — ATELIER GRAPHE (Livre III chap-15, Livre IX chap-41).
    Moteur pur FabriqueEngine.compute (châssis + 1-3 pièces,
    M1-M4/M7 par carte effet, M6 hybride auto, croisé ×2
-   par carte, signature 7-8, plafond PA 6, incompatibilités, prérequis) + initFabrique()
+   par carte, signature 7+, plafond PA 6, incompatibilités, prérequis) + initFabrique()
    qui monte le graphe depuis data/livre_3.json (mecaniques.fabrique).
    Graphe : 1 ensemble (racine ◆) (châssis) + 1 à 3 pièces dans 3 logements.
    Modificateurs sur la carte effet (pas hors graphe) : Portée totale 1 à 3 cases

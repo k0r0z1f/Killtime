@@ -8,5 +8,7 @@ format: raw
                     <p>
                         Pour parler, effrayer, mener. Deux limites qui ne négocient pas : les sbires obéissent,
                         les personnages majeurs résistent (Δ≥3 ou immunité).
+                        S1 se cumule (×3). S3, c'est 1/combat, sbires seulement.
+                        Ni portée, ni zone, ni durée ici : le social frappe par la parole.
                     </p>
 
