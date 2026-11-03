@@ -2,6 +2,8 @@
 <html lang="fr" data-theme="dark">
 <head>
     <meta charset="UTF-8">
+    <!-- Thème : application précoce (anti-flash) -->
+    <script src="js/theme-init.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Atlas des Mondes — Killtime Tactics</title>
     <meta name="description" content="Atlas complet et dynamique de tous les mondes, systèmes, régions, cités, lieux, espèces et entités : tableau triable, arbre cosmique, carte d'Hybris, matrice des espèces, gravités, bulles Tech/Magie, donut des souches, réseau et corrélations.">
@@ -35,7 +37,7 @@
             font-family: var(--font-body); transition: all .15s;
         }
         .fam-pill:hover { border-color: var(--border-glow); color: var(--text-primary); }
-        .fam-pill.on { background: rgba(56,189,248,.16); border-color: var(--arcane-cyan); color: #fff; }
+        .fam-pill.on { background: color-mix(in srgb, var(--arcane-cyan) 16%, transparent); border-color: var(--arcane-cyan); color: var(--text-primary); }
 
         .filter-bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 10px 0 6px; }
         .filter-bar input[type="text"], .filter-bar select {
@@ -85,12 +87,12 @@
         .rm-btn { background: var(--bg-surface); border: 1px solid var(--border-subtle); color: var(--text-primary);
             border-radius: 10px; padding: 8px 13px; font-size: 12.5px; font-weight: 600; cursor: pointer; font-family: var(--font-body); }
         .rm-btn:hover { border-color: var(--border-glow); }
-        .del-btn { background: transparent; border: 1px solid rgba(244,63,94,.4); color: #fda4af;
+        .del-btn { background: transparent; border: 1px solid var(--vital-ruby-glow); color: var(--vital-ruby);
             border-radius: 8px; padding: 3px 9px; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap; }
-        .del-btn:hover { background: rgba(244,63,94,.15); color: #fff; }
-        .insp-btn { background: rgba(56,189,248,.1); border: 1px solid rgba(56,189,248,.35); color: #7dd3fc;
+        .del-btn:hover { background: var(--vital-ruby-glow); color: var(--text-primary); }
+        .insp-btn { background: color-mix(in srgb, var(--arcane-cyan) 10%, transparent); border: 1px solid var(--border-glow); color: var(--text-accent);
             border-radius: 7px; padding: 3px 7px; font-size: 11.5px; cursor: pointer; }
-        .insp-btn:hover { background: rgba(56,189,248,.25); color: #fff; }
+        .insp-btn:hover { background: color-mix(in srgb, var(--arcane-cyan) 22%, transparent); color: var(--text-primary); }
         .cell-editor { width: 100%; min-width: 120px; background: var(--bg-canvas); border: 1px solid var(--arcane-cyan);
             color: var(--text-primary); border-radius: 8px; padding: 6px 8px; font-family: var(--font-body); font-size: 13px; outline: none; }
         textarea.cell-editor { min-height: 56px; resize: vertical; }
@@ -112,15 +114,15 @@
             padding: 2px 8px; border-radius: 99px; margin: 1px 2px; border: 1px solid var(--border-subtle); white-space: nowrap; }
         .type-badge {
             display: inline-block; font-family: var(--font-mono); font-size: 10.5px; font-weight: 700;
-            padding: 2px 8px; border-radius: 6px; border: 1px solid rgba(255,255,255,.15); white-space: nowrap;
+            padding: 2px 8px; border-radius: 6px; border: 1px solid var(--border-subtle); white-space: nowrap;
             text-transform: uppercase; letter-spacing: .03em;
         }
         .hote-chip {
-            display: inline-block; font-size: 11.5px; color: #7dd3fc; background: rgba(56,189,248,.08);
-            border: 1px solid rgba(56,189,248,.28); border-radius: 6px; padding: 1px 7px; cursor: pointer;
+            display: inline-block; font-size: 11.5px; color: var(--text-accent); background: color-mix(in srgb, var(--arcane-cyan) 8%, transparent);
+            border: 1px solid var(--border-glow); border-radius: 6px; padding: 1px 7px; cursor: pointer;
             margin: 1px 2px; text-decoration: none;
         }
-        .hote-chip:hover { background: rgba(56,189,248,.22); color: #fff; }
+        .hote-chip:hover { background: color-mix(in srgb, var(--arcane-cyan) 20%, transparent); color: var(--text-primary); }
         .esp { font-size: 12.5px; color: var(--text-secondary); line-height: 1.5; }
         .todo-list { font-size: 13px; color: var(--text-secondary); }
         .graph-wrap { border: 1px solid var(--border-subtle); border-radius: 14px; padding: 16px; margin-top: 10px; background: var(--bg-surface); }
@@ -132,13 +134,13 @@
         /* Detailed Inspector Panel */
         #infoPanel {
             margin: 12px 0; font-size: 13px; color: var(--text-secondary);
-            border: 1px solid rgba(56,189,248,.38); border-left: 4px solid var(--arcane-cyan);
-            background: linear-gradient(135deg, rgba(15,23,42,.92), rgba(2,6,23,.92));
+            border: 1px solid var(--border-glow); border-left: 4px solid var(--arcane-cyan);
+            background: linear-gradient(135deg, var(--bg-surface-elevated), var(--bg-surface));
             padding: 14px 18px; border-radius: 12px; line-height: 1.55;
-            box-shadow: 0 6px 24px rgba(0,0,0,.35);
+            box-shadow: 0 6px 24px rgba(0,0,0,.22);
         }
         #infoPanel strong { color: var(--text-primary); }
-        .insp-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 8px 14px; margin: 10px 0; padding: 10px 12px; background: rgba(0,0,0,.28); border-radius: 8px; border: 1px solid var(--border-subtle); }
+        .insp-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 8px 14px; margin: 10px 0; padding: 10px 12px; background: var(--bg-canvas); border-radius: 8px; border: 1px solid var(--border-subtle); }
         .insp-kv { font-size: 12px; }
         .insp-kv .k { color: var(--text-muted); font-family: var(--font-mono); font-size: 11px; display: block; }
         .insp-kv .v { color: var(--text-primary); font-weight: 600; }
@@ -146,21 +148,21 @@
         .insp-links { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
         .insp-link-btn {
             display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; font-weight: 600;
-            padding: 4px 10px; border-radius: 7px; background: rgba(56,189,248,.12);
-            border: 1px solid rgba(56,189,248,.35); color: #7dd3fc; text-decoration: none;
+            padding: 4px 10px; border-radius: 7px; background: color-mix(in srgb, var(--arcane-cyan) 12%, transparent);
+            border: 1px solid var(--border-glow); color: var(--text-accent); text-decoration: none;
         }
-        .insp-link-btn:hover { background: rgba(56,189,248,.25); color: #fff; }
+        .insp-link-btn:hover { background: color-mix(in srgb, var(--arcane-cyan) 22%, transparent); color: var(--text-primary); }
 
         .axis { font-family: var(--font-mono); font-size: 10px; fill: var(--text-muted); }
-        .grid { stroke: rgba(255,255,255,.08); stroke-width: 1; }
-        .empire-banner { border: 1px solid rgba(244,63,94,.45); border-radius: 12px; padding: 12px 14px;
-            background: rgba(244,63,94,.07); margin-bottom: 10px; font-size: 13px; line-height: 1.6; color: var(--text-secondary); }
+        .grid { stroke: var(--border-subtle); stroke-width: 1; }
+        .empire-banner { border: 1px solid var(--vital-ruby-glow); border-radius: 12px; padding: 12px 14px;
+            background: color-mix(in srgb, var(--vital-ruby) 7%, transparent); margin-bottom: 10px; font-size: 13px; line-height: 1.6; color: var(--text-secondary); }
         .empire-banner strong { color: var(--text-primary); font-family: var(--font-title); font-size: 15px; }
-        .empire-scale { font-family: var(--font-mono); font-size: 12px; color: #fda4af; }
+        .empire-scale { font-family: var(--font-mono); font-size: 12px; color: var(--vital-ruby); }
         .statut { display: inline-block; font-family: var(--font-mono); font-size: 10.5px; font-weight: 700;
             padding: 2px 8px; border-radius: 99px; border: 1px solid var(--border-subtle); }
-        .statut.canon { color: #6ee7b7; border-color: rgba(16,185,129,.5); background: rgba(16,185,129,.08); }
-        .statut.auteur { color: #fbbf24; border-color: rgba(251,191,36,.5); background: rgba(251,191,36,.08); }
+        .statut.canon { color: var(--matrix-emerald); border-color: var(--matrix-glow); background: color-mix(in srgb, var(--matrix-emerald) 10%, transparent); }
+        .statut.auteur { color: var(--text-gold); border-color: var(--temporal-glow); background: color-mix(in srgb, var(--temporal-amber) 10%, transparent); }
         details.cols { margin: 6px 2px 0; font-size: 12.5px; color: var(--text-secondary); }
         details.cols summary { cursor: pointer; font-weight: 700; }
         details.cols summary:hover { color: var(--text-primary); }
@@ -190,16 +192,16 @@
         .sys-title { font-family: var(--font-title); font-size: 15px; font-weight: 700; color: var(--text-primary); }
         .sys-zone { font-family: var(--font-mono); font-size: 11px; color: var(--arcane-cyan); }
         .planet-block {
-            background: rgba(0,0,0,.22); border: 1px solid var(--border-subtle); border-left: 3px solid var(--arcane-cyan);
+            background: var(--bg-canvas); border: 1px solid var(--border-subtle); border-left: 3px solid var(--arcane-cyan);
             border-radius: 9px; padding: 9px 12px; cursor: pointer; transition: border-color .15s;
         }
-        .planet-block:hover { border-color: var(--arcane-cyan); background: rgba(56,189,248,.05); }
+        .planet-block:hover { border-color: var(--arcane-cyan); background: color-mix(in srgb, var(--arcane-cyan) 6%, var(--bg-canvas)); }
         .planet-children { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
         .child-tag {
             font-size: 11px; padding: 2px 7px; border-radius: 6px; cursor: pointer;
             border: 1px solid var(--border-subtle); background: var(--bg-surface-elevated); color: var(--text-secondary);
         }
-        .child-tag:hover { border-color: var(--arcane-cyan); color: #fff; }
+        .child-tag:hover { border-color: var(--arcane-cyan); color: var(--text-primary); }
 
         /* Species & Bestiary Matrix */
         .species-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); gap: 12px; margin-top: 10px; }
@@ -212,7 +214,7 @@
         .sp-name { font-family: var(--font-title); font-size: 14.5px; font-weight: 700; color: var(--text-primary); }
         .sp-bars { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 4px 0; }
         .sp-bar-wrap { font-family: var(--font-mono); font-size: 10.5px; color: var(--text-muted); }
-        .sp-bar-track { height: 6px; background: rgba(255,255,255,.08); border-radius: 99px; overflow: hidden; margin-top: 3px; }
+        .sp-bar-track { height: 6px; background: var(--border-subtle); border-radius: 99px; overflow: hidden; margin-top: 3px; }
         .sp-bar-fill { height: 100%; border-radius: 99px; }
 
         /* Donut + Multi-charts layout */
@@ -220,7 +222,7 @@
         @media (max-width: 980px) { .donut-multi { grid-template-columns: 1fr; } }
         .hbar-list { display: flex; flex-direction: column; gap: 7px; margin-top: 8px; }
         .hbar-row { display: grid; grid-template-columns: 135px 1fr 42px; gap: 8px; align-items: center; font-size: 12px; }
-        .hbar-track { height: 9px; background: rgba(255,255,255,.07); border-radius: 99px; overflow: hidden; }
+        .hbar-track { height: 9px; background: var(--border-subtle); border-radius: 99px; overflow: hidden; }
         .hbar-fill { height: 100%; border-radius: 99px; }
 
         /* Locations / Worlds cards */
@@ -234,6 +236,7 @@
     body.ro #addEntry, body.ro #linkFile, body.ro .del-btn { display: none !important; }
     body.ro #rows td { cursor: default; }
 </style>
+    <link rel="stylesheet" href="css/themes.css">
 </head>
 <body>
     <div class="app-container">
@@ -1107,7 +1110,7 @@
                 if (stars.length) {
                     out += '<div style="display:flex;flex-wrap:wrap;gap:6px">';
                     stars.forEach(function (st) {
-                        out += '<span class="child-tag" data-id="' + esc(st.id) + '" style="border-color:#fbbf2466;color:#fde68a">☀️ ' + esc(st.planete) + ' (' + esc(st.atmosphere || "étoile") + ')</span>';
+                        out += '<span class="child-tag" data-id="' + esc(st.id) + '" style="border-color:var(--border-accent);color:var(--text-gold)">☀️ ' + esc(st.planete) + ' (' + esc(st.atmosphere || "étoile") + ')</span>';
                     });
                     out += '</div>';
                 }
@@ -1272,7 +1275,7 @@
                     var n = regByCode[code];
                     if (n) {
                         var p = document.getElementById("infoPanel");
-                        p.insertAdjacentHTML("afterbegin", '<div style="margin-bottom:8px;padding:6px 10px;background:rgba(56,189,248,.12);border-radius:7px;font-family:var(--font-mono);font-size:12px;color:#7dd3fc">📍 <strong>Marqueur Carte Hybris [' + esc(n.code) + '] — ' + esc(n.nom) + '</strong> · Hex (' + n.q + ', ' + n.r + ') · Peuple dominant : ' + esc(n.espece) + ' — ' + esc(n.notes) + '</div>');
+                        p.insertAdjacentHTML("afterbegin", '<div style="margin-bottom:8px;padding:6px 10px;background:color-mix(in srgb, var(--arcane-cyan) 12%, transparent);border-radius:7px;font-family:var(--font-mono);font-size:12px;color:var(--text-accent)">📍 <strong>Marqueur Carte Hybris [' + esc(n.code) + '] — ' + esc(n.nom) + '</strong> · Hex (' + n.q + ', ' + n.r + ') · Peuple dominant : ' + esc(n.espece) + ' — ' + esc(n.notes) + '</div>');
                     }
                 });
             });
@@ -1543,11 +1546,11 @@
                 var anchor = leftSide ? "end" : "start";
                 out += '<g data-id="' + esc(m.id) + '" class="pnode" style="cursor:pointer">'
                     + "<title>" + svgEsc(m.planete + " — " + (m.souche_vie || []).join(", ")) + "</title>"
-                    + '<circle cx="' + m._nx.toFixed(1) + '" cy="' + m._ny.toFixed(1) + '" r="7.5" fill="#0b1120" stroke="' + col + '" stroke-width="2"/>'
+                    + '<circle cx="' + m._nx.toFixed(1) + '" cy="' + m._ny.toFixed(1) + '" r="7.5" fill="var(--bg-surface)" stroke="' + col + '" stroke-width="2"/>'
                     + '<text class="axis" x="' + tx.toFixed(1) + '" y="' + (m._ny + 3.5).toFixed(1) + '" text-anchor="' + anchor + '">' + svgEsc(m.planete.slice(0, 24)) + "</text></g>";
             });
             document.getElementById("network").innerHTML = '<svg viewBox="0 0 ' + W + " " + H + '">' + out + "</svg>";
-            document.getElementById("networkLegend").innerHTML = '<span><span class="dot" style="background:#38bdf8"></span>pastille centrale = souche de vie</span><span><span class="dot" style="background:#0b1120;border:1px solid #94a3b8"></span>pastille externe = monde / entrée (cliquer pour inspecter)</span>';
+            document.getElementById("networkLegend").innerHTML = '<span><span class="dot" style="background:var(--arcane-cyan)"></span>pastille centrale = souche de vie</span><span><span class="dot" style="background:var(--bg-surface);border:1px solid var(--text-secondary)"></span>pastille externe = monde / entrée (cliquer pour inspecter)</span>';
             bindNodes("network");
         }
 
@@ -1824,5 +1827,6 @@
         });
     })();
     </script>
+    <script src="js/theme.js"></script>
 </body>
 </html>

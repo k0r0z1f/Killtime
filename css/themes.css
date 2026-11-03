@@ -1,0 +1,593 @@
+/* ==========================================================================
+   CODEX UNIVERSEL DU SYSTÈME RP — THÈMES
+   Source unique des variables de couleur (dark, light, sepia, night, emerald,
+   contrast). Les feuilles css/style.css, users/auth.css et css/table-dock.css
+   ne définissent plus de palette : elles consomment ces variables.
+   ========================================================================== */
+
+:root {
+    /* Alias historiques : suivent automatiquement le thème courant. */
+    --emerald-success: var(--matrix-emerald);
+    --ruby-danger: var(--vital-ruby);
+    --void-purple: var(--void-violet);
+
+    /* Alias utilisés par les pages autonomes (cartographies, atlas 3D). */
+    --bg-elevated: var(--bg-surface-elevated);
+    --matrix-green: var(--matrix-emerald);
+    --panel-bg: color-mix(in srgb, var(--bg-surface) 88%, transparent);
+}
+
+/* --------------------------------------------------------------------------
+   Sombre arcanique — thème historique par défaut
+   -------------------------------------------------------------------------- */
+:root,
+[data-theme="dark"] {
+    color-scheme: dark;
+
+    --bg-void: #06080d;
+    --bg-canvas: #0b0f19;
+    --bg-surface: #111827;
+    --bg-surface-elevated: #182235;
+    --bg-surface-hover: #1f2d47;
+
+    --border-subtle: rgba(255, 255, 255, 0.08);
+    --border-glow: rgba(56, 189, 248, 0.25);
+    --border-accent: rgba(245, 158, 11, 0.3);
+
+    --text-primary: #f1f5f9;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --text-accent: #38bdf8;
+    --text-gold: #fbbf24;
+
+    --arcane-cyan: #38bdf8;
+    --arcane-cyan-glow: rgba(56, 189, 248, 0.35);
+    --on-arcane-cyan: #06080d;
+    --temporal-amber: #f59e0b;
+    --temporal-glow: rgba(245, 158, 11, 0.25);
+    --vital-ruby: #f43f5e;
+    --vital-ruby-glow: rgba(244, 63, 94, 0.25);
+    --void-violet: #8b5cf6;
+    --matrix-emerald: #10b981;
+    --matrix-glow: rgba(16, 185, 129, 0.25);
+}
+
+/* --------------------------------------------------------------------------
+   Clair — thème historique clair
+   -------------------------------------------------------------------------- */
+[data-theme="light"] {
+    color-scheme: light;
+
+    --bg-void: #f8fafc;
+    --bg-canvas: #f1f5f9;
+    --bg-surface: #ffffff;
+    --bg-surface-elevated: #e2e8f0;
+    --bg-surface-hover: #cbd5e1;
+
+    --border-subtle: rgba(0, 0, 0, 0.12);
+    --border-glow: rgba(2, 132, 199, 0.3);
+    --border-accent: rgba(217, 119, 6, 0.35);
+
+    --text-primary: #0f172a;
+    --text-secondary: #334155;
+    --text-muted: #64748b;
+    --text-accent: #0284c7;
+    --text-gold: #b45309;
+
+    --arcane-cyan: #0284c7;
+    --arcane-cyan-glow: rgba(2, 132, 199, 0.2);
+    --on-arcane-cyan: #ffffff;
+    --temporal-amber: #d97706;
+    --temporal-glow: rgba(217, 119, 6, 0.2);
+    --vital-ruby: #e11d48;
+    --vital-ruby-glow: rgba(225, 29, 72, 0.2);
+    --void-violet: #7c3aed;
+    --matrix-emerald: #059669;
+    --matrix-glow: rgba(5, 150, 105, 0.2);
+}
+
+/* --------------------------------------------------------------------------
+   Sépia parchemin — lecture longue, papier chaud
+   -------------------------------------------------------------------------- */
+[data-theme="sepia"] {
+    color-scheme: light;
+
+    --bg-void: #f3ead5;
+    --bg-canvas: #ece0c6;
+    --bg-surface: #fbf5e4;
+    --bg-surface-elevated: #e7d9bb;
+    --bg-surface-hover: #dccba6;
+
+    --border-subtle: rgba(92, 64, 26, 0.18);
+    --border-glow: rgba(154, 52, 18, 0.28);
+    --border-accent: rgba(180, 83, 9, 0.35);
+
+    --text-primary: #3a2a15;
+    --text-secondary: #5b4527;
+    --text-muted: #7a6444;
+    --text-accent: #9a3412;
+    --text-gold: #92400e;
+
+    --arcane-cyan: #0f766e;
+    --arcane-cyan-glow: rgba(15, 118, 110, 0.22);
+    --on-arcane-cyan: #ffffff;
+    --temporal-amber: #b45309;
+    --temporal-glow: rgba(180, 83, 9, 0.22);
+    --vital-ruby: #b91c1c;
+    --vital-ruby-glow: rgba(185, 28, 28, 0.2);
+    --void-violet: #6d28d9;
+    --matrix-emerald: #15803d;
+    --matrix-glow: rgba(21, 128, 61, 0.2);
+}
+
+/* --------------------------------------------------------------------------
+   Nuit bleue — veilleuse froide, bleu profond
+   -------------------------------------------------------------------------- */
+[data-theme="night"] {
+    color-scheme: dark;
+
+    --bg-void: #030b1c;
+    --bg-canvas: #061530;
+    --bg-surface: #0b2144;
+    --bg-surface-elevated: #11305c;
+    --bg-surface-hover: #183f73;
+
+    --border-subtle: rgba(148, 197, 255, 0.13);
+    --border-glow: rgba(96, 165, 250, 0.3);
+    --border-accent: rgba(251, 191, 36, 0.3);
+
+    --text-primary: #e8f1ff;
+    --text-secondary: #a9c1e8;
+    --text-muted: #7189b3;
+    --text-accent: #7dd3fc;
+    --text-gold: #fcd34d;
+
+    --arcane-cyan: #60a5fa;
+    --arcane-cyan-glow: rgba(96, 165, 250, 0.35);
+    --on-arcane-cyan: #06080d;
+    --temporal-amber: #fbbf24;
+    --temporal-glow: rgba(251, 191, 36, 0.25);
+    --vital-ruby: #fb7185;
+    --vital-ruby-glow: rgba(251, 113, 133, 0.25);
+    --void-violet: #a78bfa;
+    --matrix-emerald: #34d399;
+    --matrix-glow: rgba(52, 211, 153, 0.25);
+}
+
+/* --------------------------------------------------------------------------
+   Émeraude matrice — terminal végétal, vert phosphore
+   -------------------------------------------------------------------------- */
+[data-theme="emerald"] {
+    color-scheme: dark;
+
+    --bg-void: #03100a;
+    --bg-canvas: #06180f;
+    --bg-surface: #0a2117;
+    --bg-surface-elevated: #0e2c1f;
+    --bg-surface-hover: #143a2a;
+
+    --border-subtle: rgba(110, 231, 183, 0.14);
+    --border-glow: rgba(52, 211, 153, 0.3);
+    --border-accent: rgba(251, 191, 36, 0.3);
+
+    --text-primary: #e8fff3;
+    --text-secondary: #a7d8c2;
+    --text-muted: #6ea58c;
+    --text-accent: #34d399;
+    --text-gold: #fbbf24;
+
+    --arcane-cyan: #34d399;
+    --arcane-cyan-glow: rgba(52, 211, 153, 0.35);
+    --on-arcane-cyan: #06080d;
+    --temporal-amber: #f59e0b;
+    --temporal-glow: rgba(245, 158, 11, 0.25);
+    --vital-ruby: #fb7185;
+    --vital-ruby-glow: rgba(251, 113, 133, 0.25);
+    --void-violet: #a78bfa;
+    --matrix-emerald: #10b981;
+    --matrix-glow: rgba(16, 185, 129, 0.3);
+}
+
+/* --------------------------------------------------------------------------
+   Contraste élevé — accessibilité, noir absolu + accents saturés
+   -------------------------------------------------------------------------- */
+[data-theme="contrast"] {
+    color-scheme: dark;
+
+    --bg-void: #000000;
+    --bg-canvas: #000000;
+    --bg-surface: #0b0b0b;
+    --bg-surface-elevated: #161616;
+    --bg-surface-hover: #242424;
+
+    --border-subtle: rgba(255, 255, 255, 0.4);
+    --border-glow: rgba(255, 255, 0, 0.7);
+    --border-accent: rgba(255, 255, 0, 0.7);
+
+    --text-primary: #ffffff;
+    --text-secondary: #e8e8e8;
+    --text-muted: #cfcfcf;
+    --text-accent: #ffff00;
+    --text-gold: #ffff00;
+
+    --arcane-cyan: #00e5ff;
+    --arcane-cyan-glow: rgba(0, 229, 255, 0.55);
+    --on-arcane-cyan: #000000;
+    --temporal-amber: #ffff00;
+    --temporal-glow: rgba(255, 255, 0, 0.45);
+    --vital-ruby: #ff5c5c;
+    --vital-ruby-glow: rgba(255, 92, 92, 0.45);
+    --void-violet: #d8b4fe;
+    --matrix-emerald: #00ff9d;
+    --matrix-glow: rgba(0, 255, 157, 0.4);
+}
+
+/* --------------------------------------------------------------------------
+   Personnalisé — surchargé dynamiquement par js/theme-init.js & js/theme.js
+   (lié au compte de l'utilisateur connecté ou localStorage si non connecté).
+   -------------------------------------------------------------------------- */
+[data-theme="custom"] {
+    color-scheme: dark;
+
+    --bg-void: #06080d;
+    --bg-canvas: #0b0f19;
+    --bg-surface: #111827;
+    --bg-surface-elevated: #182235;
+    --bg-surface-hover: #1f2d47;
+
+    --border-subtle: rgba(255, 255, 255, 0.1);
+    --border-glow: rgba(56, 189, 248, 0.3);
+    --border-accent: rgba(245, 158, 11, 0.35);
+
+    --text-primary: #f1f5f9;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --text-accent: #38bdf8;
+    --text-gold: #fbbf24;
+
+    --arcane-cyan: #38bdf8;
+    --arcane-cyan-glow: rgba(56, 189, 248, 0.35);
+    --on-arcane-cyan: #06080d;
+    --temporal-amber: #f59e0b;
+    --temporal-glow: rgba(245, 158, 11, 0.25);
+    --vital-ruby: #f43f5e;
+    --vital-ruby-glow: rgba(244, 63, 94, 0.25);
+    --void-violet: #8b5cf6;
+    --matrix-emerald: #10b981;
+    --matrix-glow: rgba(16, 185, 129, 0.25);
+}
+
+[data-theme="contrast"] :focus-visible {
+    outline: 2px solid var(--text-accent);
+    outline-offset: 2px;
+}
+
+::selection {
+    background: var(--arcane-cyan-glow);
+    color: var(--text-primary);
+}
+
+/* ==========================================================================
+   SÉLECTEUR DE THÈME (partagé par toutes les pages)
+   Le bouton #themeToggle existant est conservé ; le menu est créé par
+   js/theme.js et positionné en fixed pour ne pas être rogné par la topbar.
+   Sur les pages sans #themeToggle, theme.js injecte un bouton flottant.
+   ========================================================================== */
+
+.theme-menu {
+    position: fixed;
+    z-index: 10050;
+    min-width: 248px;
+    max-width: min(320px, calc(100vw - 16px));
+    max-height: calc(100vh - 16px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 6px;
+    background: var(--bg-surface-elevated);
+    color: var(--text-primary);
+    border: 1px solid var(--border-glow);
+    border-radius: 12px;
+    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.45), 0 0 26px var(--arcane-cyan-glow);
+    font-family: var(--font-body, 'Plus Jakarta Sans', sans-serif);
+    font-size: 0.82rem;
+}
+
+.theme-menu[hidden] {
+    display: none !important;
+}
+
+.theme-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    min-height: 36px;
+    padding: 7px 9px;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--text-primary);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.theme-option:hover,
+.theme-option:focus-visible {
+    background: var(--bg-surface-hover);
+    outline: none;
+}
+
+.theme-option[aria-checked="true"] {
+    color: var(--text-accent);
+    background: color-mix(in srgb, var(--text-accent) 10%, transparent);
+}
+
+.theme-swatch {
+    width: 18px;
+    height: 18px;
+    flex: none;
+    border-radius: 5px;
+    border: 1px solid var(--border-subtle);
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.12);
+}
+
+.theme-option .theme-check {
+    margin-left: auto;
+    font-weight: 700;
+    opacity: 0;
+}
+
+.theme-option[aria-checked="true"] .theme-check {
+    opacity: 1;
+}
+
+.theme-separator {
+    height: 1px;
+    margin: 5px 8px;
+    background: var(--border-subtle);
+}
+
+.theme-menu-note {
+    padding: 5px 9px 3px;
+    color: var(--text-muted);
+    font-size: 0.7rem;
+    letter-spacing: 0.02em;
+    line-height: 1.35;
+}
+
+.theme-custom-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 6px 9px;
+    border: 1px dashed var(--border-subtle);
+    border-radius: 8px;
+    background: color-mix(in srgb, var(--bg-surface) 60%, transparent);
+    color: var(--text-secondary);
+    font: inherit;
+    font-size: 0.76rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 2px;
+}
+
+.theme-custom-toggle:hover,
+.theme-custom-toggle:focus-visible,
+.theme-custom-toggle[aria-expanded="true"] {
+    border-color: var(--arcane-cyan);
+    color: var(--text-accent);
+    background: var(--bg-surface-hover);
+    outline: none;
+}
+
+.theme-custom-panel {
+    margin-top: 6px;
+    padding: 8px;
+    border-radius: 9px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.theme-custom-panel[hidden] {
+    display: none !important;
+}
+
+.theme-custom-presets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    align-items: center;
+}
+
+.theme-custom-presets-label {
+    width: 100%;
+    font-size: 0.68rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-family: var(--font-mono, monospace);
+}
+
+.theme-preset-chip {
+    padding: 2px 7px;
+    border-radius: 99px;
+    border: 1px solid var(--border-subtle);
+    background: var(--bg-surface-elevated);
+    color: var(--text-secondary);
+    font: inherit;
+    font-size: 0.68rem;
+    cursor: pointer;
+}
+
+.theme-preset-chip:hover,
+.theme-preset-chip:focus-visible {
+    border-color: var(--arcane-cyan);
+    color: var(--text-accent);
+    outline: none;
+}
+
+.theme-custom-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+}
+
+.theme-color-field {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 6px;
+    border-radius: 7px;
+    background: var(--bg-surface-elevated);
+    border: 1px solid var(--border-subtle);
+    cursor: pointer;
+}
+
+.theme-color-field:hover,
+.theme-color-field:focus-within {
+    border-color: var(--arcane-cyan);
+}
+
+.theme-color-input {
+    width: 22px;
+    height: 22px;
+    padding: 0;
+    border: 1px solid var(--border-subtle);
+    border-radius: 5px;
+    background: transparent;
+    cursor: pointer;
+    flex: none;
+}
+
+.theme-color-input::-webkit-color-swatch-wrapper {
+    padding: 0;
+}
+
+.theme-color-input::-webkit-color-swatch {
+    border: none;
+    border-radius: 4px;
+}
+
+.theme-color-input::-moz-color-swatch {
+    border: none;
+    border-radius: 4px;
+}
+
+.theme-color-meta {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    line-height: 1.15;
+}
+
+.theme-color-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.theme-color-hex {
+    font-family: var(--font-mono, monospace);
+    font-size: 0.62rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+}
+
+.theme-custom-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 6px;
+    padding-top: 2px;
+}
+
+.theme-custom-btn {
+    padding: 4px 8px;
+    border-radius: 6px;
+    border: 1px solid var(--border-subtle);
+    background: var(--bg-surface-elevated);
+    color: var(--text-secondary);
+    font: inherit;
+    font-size: 0.72rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.theme-custom-btn:hover,
+.theme-custom-btn:focus-visible {
+    border-color: var(--arcane-cyan);
+    color: var(--text-accent);
+    outline: none;
+}
+
+/* Bouton compact pour les pages sans bouton de topbar (atlas, tactics, tables). */
+.theme-toggle-inline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    border: 1px solid var(--border-subtle);
+    border-radius: 9px;
+    background: color-mix(in srgb, var(--text-primary) 6%, transparent);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: var(--transition-smooth, all 0.22s cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.theme-toggle-inline:hover,
+.theme-toggle-inline:focus-visible,
+.theme-toggle-inline[aria-expanded="true"] {
+    border-color: var(--border-glow);
+    background: var(--bg-surface-hover);
+    color: var(--text-accent);
+    outline: none;
+}
+
+/* Bouton flottant pour les pages sans barre d'outils (admin, plein écran). */
+.theme-fab {
+    position: fixed;
+    right: 18px;
+    bottom: 18px;
+    z-index: 9000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 1px solid var(--border-glow);
+    border-radius: 50%;
+    background: var(--bg-surface-elevated);
+    color: var(--text-primary);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35), 0 0 18px var(--arcane-cyan-glow);
+    cursor: pointer;
+    transition: var(--transition-smooth, all 0.22s cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.theme-fab:hover,
+.theme-fab:focus-visible {
+    border-color: var(--arcane-cyan);
+    color: var(--text-accent);
+    transform: translateY(-1px);
+}
+
+.theme-fab[aria-expanded="true"] {
+    border-color: var(--arcane-cyan);
+    color: var(--text-accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .theme-fab {
+        transition: none;
+    }
+}

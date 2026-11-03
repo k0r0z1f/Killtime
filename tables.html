@@ -3,6 +3,8 @@
 
 <head>
     <meta charset="UTF-8">
+    <!-- Thème : application précoce (anti-flash) -->
+    <script src="js/theme-init.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tables de groupe — Système RP</title>
     <meta name="description"
@@ -35,10 +37,10 @@
         .tb-item .meta { font-size: 11px; color: var(--text-muted); font-family: var(--font-mono); margin-top: 2px; }
         .tb-badge { display: inline-block; font-size: 10px; font-weight: 800; border-radius: 99px; padding: 1px 8px;
             margin-left: 6px; vertical-align: middle; }
-        .tb-badge.mj { background: rgba(192,132,252,.18); color: #e9d5ff; border: 1px solid rgba(192,132,252,.5); }
-        .tb-badge.helper { background: rgba(56,189,248,.15); color: #bae6fd; border: 1px solid rgba(56,189,248,.45); }
+        .tb-badge.mj { background: color-mix(in srgb, var(--void-violet) 18%, transparent); color: var(--void-violet); border: 1px solid color-mix(in srgb, var(--void-violet) 50%, transparent); }
+        .tb-badge.helper { background: color-mix(in srgb, var(--arcane-cyan) 15%, transparent); color: var(--text-accent); border: 1px solid var(--border-glow); }
         .tb-badge.joueur { background: var(--bg-canvas); color: var(--text-muted); border: 1px solid var(--border-subtle); }
-        .tb-badge.priv { background: rgba(251,191,36,.15); color: #fde68a; border: 1px solid rgba(251,191,36,.45); }
+        .tb-badge.priv { background: color-mix(in srgb, var(--temporal-amber) 15%, transparent); color: var(--text-gold); border: 1px solid var(--border-accent); }
         .tb-field { margin-bottom: 10px; }
         .tb-field label { display: block; font-size: 12px; color: var(--text-secondary); margin-bottom: 4px; }
         .tb-field input, .tb-field textarea, .tb-field select { width: 100%; background: var(--bg-canvas);
@@ -50,7 +52,7 @@
             padding: 8px 14px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: var(--font-body); }
         .tb-btn:hover { border-color: var(--border-glow); }
         .tb-btn.primary { background: var(--arcane-cyan-glow); border-color: var(--arcane-cyan); }
-        .tb-btn.danger { border-color: var(--vital-ruby); color: #fca5a5; }
+        .tb-btn.danger { border-color: var(--vital-ruby); color: var(--vital-ruby); }
         .tb-btn:disabled { opacity: .5; cursor: not-allowed; }
         .tb-ava { width: 22px; height: 22px; border-radius: 50%; object-fit: cover; vertical-align: -5px; margin-right: 4px; background: var(--bg-canvas); }
         .tb-ava.big { width: 44px; height: 44px; vertical-align: middle; margin-right: 8px; }
@@ -96,9 +98,10 @@
         .tb-member .kick { background: none; border: none; color: var(--text-muted); cursor: pointer; }
         .tb-member .kick:hover { color: var(--vital-ruby); }
         .tb-status { font-size: 12px; color: var(--text-muted); font-family: var(--font-mono); }
-        .tb-status.ok { color: #6ee7b7; } .tb-status.err { color: #fca5a5; }
+        .tb-status.ok { color: var(--matrix-emerald); } .tb-status.err { color: var(--vital-ruby); }
         .tb-login-wall { text-align: center; padding: 40px 20px; }
     </style>
+    <link rel="stylesheet" href="css/themes.css">
 </head>
 
 <body>
@@ -196,6 +199,7 @@
     <script src="users/auth.js"></script>
     <script src="js/tables.js?v=1.0"></script>
     <script src="js/tables-voice.js?v=1.1"></script>
+    <script src="js/theme.js"></script>
 </body>
 
 </html>

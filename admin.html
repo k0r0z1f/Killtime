@@ -2,6 +2,8 @@
 <html lang="fr" data-theme="dark">
 <head>
 <meta charset="UTF-8">
+    <!-- Thème : application précoce (anti-flash) -->
+    <script src="js/theme-init.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex,nofollow">
 <title>Administration — Killtime Codex (local uniquement)</title>
@@ -9,54 +11,55 @@
   :root { color-scheme: dark; }
   * { box-sizing: border-box; }
   body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-    background: #0d1117; color: #e6edf3; line-height: 1.5; }
+    background: var(--bg-void); color: var(--text-primary); line-height: 1.5; }
   .wrap { max-width: 960px; margin: 0 auto; padding: 24px 16px 64px; }
   h1 { font-size: 1.3rem; margin: 0 0 4px; }
-  .sub { color: #8b949e; font-size: .85rem; margin-bottom: 20px; }
-  .card { background: #161b22; border: 1px solid #30363d; border-radius: 10px;
+  .sub { color: var(--text-muted); font-size: .85rem; margin-bottom: 20px; }
+  .card { background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 10px;
     padding: 16px; margin-bottom: 16px; }
-  .card h2 { font-size: 1rem; margin: 0 0 12px; color: #f0b429; }
+  .card h2 { font-size: 1rem; margin: 0 0 12px; color: var(--text-gold); }
   table { width: 100%; border-collapse: collapse; font-size: .85rem; }
-  th, td { text-align: left; padding: 8px 6px; border-bottom: 1px solid #21262d; }
-  th { color: #8b949e; font-weight: 600; }
+  th, td { text-align: left; padding: 8px 6px; border-bottom: 1px solid var(--bg-surface-elevated); }
+  th { color: var(--text-muted); font-weight: 600; }
   .badge { display: inline-block; padding: 1px 8px; border-radius: 20px; font-size: .75rem;
-    border: 1px solid #30363d; }
-  .badge.admin { color: #f0b429; border-color: #9e6a03; background: rgba(240,180,41,.08); }
-  .badge.user { color: #7ee787; border-color: #1a7f37; }
-  button { background: #21262d; color: #e6edf3; border: 1px solid #30363d; border-radius: 6px;
+    border: 1px solid var(--border-subtle); }
+  .badge.admin { color: var(--text-gold); border-color: var(--border-accent); background: color-mix(in srgb, var(--text-gold) 10%, transparent); }
+  .badge.user { color: var(--matrix-emerald); border-color: color-mix(in srgb, var(--matrix-emerald) 45%, transparent); }
+  button { background: var(--bg-surface-elevated); color: var(--text-primary); border: 1px solid var(--border-subtle); border-radius: 6px;
     padding: 6px 12px; font-size: .82rem; cursor: pointer; }
-  button:hover { background: #30363d; }
-  button.primary { background: #1f6feb; border-color: #1f6feb; }
-  button.primary:hover { background: #388bfd; }
-  button.danger { color: #ffa198; border-color: #8c1515; }
-  button.danger:hover { background: rgba(248,81,73,.15); }
+  button:hover { background: var(--border-subtle); }
+  button.primary { background: var(--arcane-cyan); border-color: var(--arcane-cyan); color: var(--on-arcane-cyan, var(--bg-void)); }
+  button.primary:hover { background: var(--text-accent); }
+  button.danger { color: var(--vital-ruby); border-color: color-mix(in srgb, var(--vital-ruby) 55%, transparent); }
+  button.danger:hover { background: color-mix(in srgb, var(--vital-ruby) 16%, transparent); }
   button:disabled { opacity: .5; cursor: default; }
-  input[type=text], input[type=password], input[type=email] { background: #0d1117; color: #e6edf3;
-    border: 1px solid #30363d; border-radius: 6px; padding: 7px 10px; font-size: .85rem; width: 100%; }
+  input[type=text], input[type=password], input[type=email] { background: var(--bg-void); color: var(--text-primary);
+    border: 1px solid var(--border-subtle); border-radius: 6px; padding: 7px 10px; font-size: .85rem; width: 100%; }
   .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
   .row input { flex: 1; min-width: 200px; }
   .kv { display: grid; grid-template-columns: auto 1fr; gap: 4px 16px; font-size: .85rem; }
-  .kv dt { color: #8b949e; } .kv dd { margin: 0; font-family: monospace; word-break: break-all; }
-  .ok { color: #7ee787; } .ko { color: #ffa198; } .warn { color: #f0b429; }
-  .hint { background: rgba(240,180,41,.08); border: 1px solid #9e6a03; border-radius: 10px;
+  .kv dt { color: var(--text-muted); } .kv dd { margin: 0; font-family: monospace; word-break: break-all; }
+  .ok { color: var(--matrix-emerald); } .ko { color: var(--vital-ruby); } .warn { color: var(--text-gold); }
+  .hint { background: color-mix(in srgb, var(--text-gold) 10%, transparent); border: 1px solid var(--border-accent); border-radius: 10px;
     padding: 16px; margin-bottom: 16px; }
-  .hint a { color: #79c0ff; }
+  .hint a { color: var(--text-accent); }
   [hidden] { display: none !important; }
-  .perm-check { display: inline-flex; align-items: center; gap: 6px; background: #0d1117;
-    border: 1px solid #30363d; border-radius: 6px; padding: 6px 10px; font-size: .8rem;
+  .perm-check { display: inline-flex; align-items: center; gap: 6px; background: var(--bg-void);
+    border: 1px solid var(--border-subtle); border-radius: 6px; padding: 6px 10px; font-size: .8rem;
     margin: 0 6px 6px 0; cursor: pointer; }
-  .perm-check input { accent-color: #1f6feb; }
-  select.role-select { background: #0d1117; color: #e6edf3; border: 1px solid #30363d;
+  .perm-check input { accent-color: var(--arcane-cyan); }
+  select.role-select { background: var(--bg-void); color: var(--text-primary); border: 1px solid var(--border-subtle);
     border-radius: 6px; padding: 5px 8px; font-size: .8rem; max-width: 170px; }
-  .role-row { border: 1px solid #30363d; border-radius: 8px; padding: 10px 12px; margin-bottom: 8px; }
-  .chip { display: inline-flex; align-items: center; gap: 6px; background: #0d1117;
-    border: 1px solid #30363d; border-radius: 20px; padding: 3px 6px 3px 12px;
+  .role-row { border: 1px solid var(--border-subtle); border-radius: 8px; padding: 10px 12px; margin-bottom: 8px; }
+  .chip { display: inline-flex; align-items: center; gap: 6px; background: var(--bg-void);
+    border: 1px solid var(--border-subtle); border-radius: 20px; padding: 3px 6px 3px 12px;
     font-size: .8rem; font-family: monospace; margin: 0 6px 6px 0; }
   .chip button { padding: 1px 8px; font-size: .75rem; }
   #msg { position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%);
-    background: #161b22; border: 1px solid #30363d; border-radius: 8px;
+    background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 8px;
     padding: 10px 18px; font-size: .85rem; max-width: 90vw; }
 </style>
+    <link rel="stylesheet" href="css/themes.css">
 </head>
 <body>
 <div class="wrap">
@@ -375,7 +378,7 @@
         div.innerHTML = '<strong></strong> <span class="badge">' + role.users + ' user(s)</span>' +
           (role.builtin ? ' <span class="badge admin">système</span>' : '') +
           '<div class="sub" style="margin:4px 0"></div>' +
-          '<div style="font-size:.8rem;color:#8b949e"></div>';
+          '<div style="font-size:.8rem;color:var(--text-muted)"></div>';
         div.querySelector('strong').textContent = role.name;
         div.querySelector('.sub').textContent = role.desc || '';
         div.lastChild.textContent = 'Accès : ' + perms;
@@ -460,5 +463,6 @@
   boot();
 })();
 </script>
+    <script src="js/theme.js"></script>
 </body>
 </html>

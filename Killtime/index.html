@@ -6,6 +6,8 @@
     <link rel="stylesheet" href="./Killtime/css/theme.css">
     <!-- Authentification partagée avec le Codex -->
     <link rel="stylesheet" href="../users/auth.css">
+    <!-- Voile photosensible du lore caché (avertissement + skip + mémoire) -->
+    <link rel="stylesheet" href="../css/secret-veil.css">
     <script src="./Killtime/scripts_and_data/theme.js"></script>
     <script src="./Killtime/scripts_and_data/metrics.js"></script>
     <script src="./Killtime/scripts_and_data/reader-progress.js"></script>
@@ -1932,8 +1934,32 @@
             });
         }
 
-        function triggerAnomaly() {
+        var _veilDecision = null;   // décision voile en cours (anti double-effet)
+        var _veilCooldownUntil = 0; // après « Rester ici » : pas de re-modale immédiate
+        async function triggerAnomaly() {
+            if (_anomalyTriggered) return;
+            if (Date.now() < _veilCooldownUntil) return;
+            if (_veilDecision) {
+                // Un appel a déjà la main : on s'y rattache sans rejouer d'effet.
+                try { await _veilDecision; } catch (e) {}
+                return;
+            }
+            // Voile photosensible : avertissement Killtime + option skip.
+            // Mémoire : localStorage si pas connecté, serveur si connecté.
+            _veilDecision = (async function () {
+                try { if (window.KTSecretVeil) return await window.KTSecretVeil.requestAccess(); } catch (e) {}
+                return 'full';
+            })();
+            var acces = 'full';
+            try { acces = await _veilDecision; }
+            finally { _veilDecision = null; }
+            if (_anomalyTriggered) return; // un autre appel a pris le relais
+            if (!acces) { _veilCooldownUntil = Date.now() + 4000; return; } // « Rester ici »
             _anomalyTriggered = true;
+            if (acces === 'safe') { // Skip : passage direct, sans flashs
+                window.location.href = './Killtime/lore/timelines/truth.html';
+                return;
+            }
 
             const effects = [
                 effectMatrix,
@@ -2671,6 +2697,8 @@
     <!-- Système d'authentification partagé avec le Codex -->
     <script src="../users/user_store.js"></script>
     <script src="../users/auth.js"></script>
+    <!-- Voile photosensible du lore caché (avertissement + skip + mémoire) -->
+    <script src="../js/secret-veil.js"></script>
 
 
     <!-- ================================================================= -->

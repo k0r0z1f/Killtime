@@ -3,6 +3,8 @@
 
 <head>
     <meta charset="UTF-8">
+    <!-- Thème : application précoce (anti-flash) -->
+    <script src="js/theme-init.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Système de Jeu RP — Livre IX : Outils Web Interactifs</title>
     <meta name="description"
@@ -20,6 +22,7 @@
 
     <!-- Feuille de styles partagée de l'authentification -->
     <link rel="stylesheet" href="users/auth.css">
+    <link rel="stylesheet" href="css/themes.css">
 </head>
 
 <body>
@@ -806,7 +809,7 @@
 
                             <!-- COMPÉTENCES ENTRAÎNÉES -->
                             <div
-                                style="margin-top: 20px; padding: 16px; background: rgba(0,0,0,0.25); border-radius: 8px; border: 1px dashed var(--border-subtle);">
+                                style="margin-top: 20px; padding: 16px; background: var(--bg-canvas); border-radius: 8px; border: 1px dashed var(--border-subtle);">
                                 <div
                                     style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
                                     <span
@@ -875,7 +878,7 @@
 
                             <!-- TECHNIQUES ASSOCIÉES (Fabrique puzzle, Livre III §15 / chap-41) -->
                             <div
-                                style="margin-top: 20px; padding: 16px; background: rgba(0,0,0,0.25); border-radius: 8px; border: 1px dashed var(--border-subtle);">
+                                style="margin-top: 20px; padding: 16px; background: var(--bg-canvas); border-radius: 8px; border: 1px dashed var(--border-subtle);">
                                 <div
                                     style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; gap: 8px; flex-wrap: wrap;">
                                     <span
@@ -955,7 +958,7 @@
 
                             <!-- CONFORMITÉ BUDGET (dés intégrés à chaque caractéristique, Livre II §6.1) -->
                             <div
-                                style="margin-top: 14px; padding: 12px 14px; background: rgba(0,0,0,0.25); border-radius: 8px; border: 1px dashed var(--border-subtle);">
+                                style="margin-top: 14px; padding: 12px 14px; background: var(--bg-canvas); border-radius: 8px; border: 1px dashed var(--border-subtle);">
                                 <div id="csValidationMsg"></div>
                             </div>
 
@@ -1085,7 +1088,7 @@
                             <div class="tool-grid-2">
                                 <!-- SECTION OFFENSIVE -->
                                 <div
-                                    style="background: rgba(0,0,0,0.25); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 14px;">
+                                    style="background: var(--bg-canvas); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 14px;">
                                     <h5
                                         style="color: var(--vital-ruby); font-family: var(--font-mono); font-size: 0.82rem; margin-bottom: 10px; text-transform: uppercase;">
                                         Effets Offensifs & Dégâts
@@ -1186,7 +1189,7 @@
 
                                 <!-- SECTION DÉFENSIVE & UTILITAIRE -->
                                 <div
-                                    style="background: rgba(0,0,0,0.25); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 14px;">
+                                    style="background: var(--bg-canvas); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 14px;">
                                     <h5
                                         style="color: var(--arcane-cyan); font-family: var(--font-mono); font-size: 0.82rem; margin-bottom: 10px; text-transform: uppercase;">
                                         Effets Défensifs & Utilitaires
@@ -1272,7 +1275,7 @@
                                 </div>
                             </div>
 
-                            <div style="background: rgba(0,0,0,0.25); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 14px; margin-top: 12px;">
+                            <div style="background: var(--bg-canvas); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 14px; margin-top: 12px;">
                                 <h5
                                     style="color: var(--text-secondary); font-family: var(--font-mono); font-size: 0.82rem; margin-bottom: 10px; text-transform: uppercase;">
                                     Effets Sociaux
@@ -1862,6 +1865,7 @@
     <!-- Scripts Authentification -->
     <script src="users/user_store.js"></script>
     <script src="users/auth.js"></script>
+    <script src="js/theme.js"></script>
 </body>
 
 </html>

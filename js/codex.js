@@ -122,21 +122,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 5. Thème toggle (avec persistance via localStorage)
-    const themeToggle = document.getElementById('themeToggle');
-    const savedTheme = localStorage.getItem('codex-theme');
-    if (savedTheme) {
-        document.documentElement.setAttribute('data-theme', savedTheme);
-    }
-
-    if (themeToggle) {
-        themeToggle.addEventListener('click', () => {
-            const currentTheme = document.documentElement.getAttribute('data-theme');
-            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-            document.documentElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('codex-theme', newTheme);
-        });
-    }
+    // 5. Thèmes : gérés par js/theme-init.js (application anti-flash) et
+    // js/theme.js (menu multi-thèmes, persistance, préférence système).
+    // Ne pas réintroduire ici de bascule binaire dark/light.
 
     // 6. Scrollspy automatique pour surligner les ancres actives
     // (panneau droit + menu lateral gauche).

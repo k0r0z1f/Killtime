@@ -4,33 +4,8 @@
    ========================================================================== */
 
 :root {
-    /* Palette Dark Arcanique & Sci-Fi */
-    --bg-void: #06080d;
-    --bg-canvas: #0b0f19;
-    --bg-surface: #111827;
-    --bg-surface-elevated: #182235;
-    --bg-surface-hover: #1f2d47;
-    
-    --border-subtle: rgba(255, 255, 255, 0.08);
-    --border-glow: rgba(56, 189, 248, 0.25);
-    --border-accent: rgba(245, 158, 11, 0.3);
-
-    --text-primary: #f1f5f9;
-    --text-secondary: #94a3b8;
-    --text-muted: #64748b;
-    --text-accent: #38bdf8;
-    --text-gold: #fbbf24;
-
-    /* Accents Vivants */
-    --arcane-cyan: #38bdf8;
-    --arcane-cyan-glow: rgba(56, 189, 248, 0.35);
-    --temporal-amber: #f59e0b;
-    --temporal-glow: rgba(245, 158, 11, 0.25);
-    --vital-ruby: #f43f5e;
-    --vital-ruby-glow: rgba(244, 63, 94, 0.25);
-    --void-violet: #8b5cf6;
-    --matrix-emerald: #10b981;
-    --matrix-glow: rgba(16, 185, 129, 0.25);
+    /* Palettes de couleurs : css/themes.css (dark, light, sepia, night,
+       emerald, contrast). Ici, uniquement les jetons de structure. */
 
     /* Polices */
     --font-title: 'Cinzel', serif;
@@ -42,36 +17,12 @@
     --sidebar-width: clamp(240px, 17vw, 340px);
     --topbar-height: 68px;
     --inspector-width: clamp(220px, 15vw, 320px);
-    
-    /* Transitions */
+
+    /* Rayons & transitions */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --transition-fast: all 0.15s ease;
     --transition-smooth: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-[data-theme="light"] {
-    --bg-void: #f8fafc;
-    --bg-canvas: #f1f5f9;
-    --bg-surface: #ffffff;
-    --bg-surface-elevated: #e2e8f0;
-    --bg-surface-hover: #cbd5e1;
-    
-    --border-subtle: rgba(0, 0, 0, 0.12);
-    --border-glow: rgba(2, 132, 199, 0.3);
-    --border-accent: rgba(217, 119, 6, 0.35);
-
-    --text-primary: #0f172a;
-    --text-secondary: #334155;
-    --text-muted: #64748b;
-    --text-accent: #0284c7;
-    --text-gold: #b45309;
-
-    --arcane-cyan: #0284c7;
-    --arcane-cyan-glow: rgba(2, 132, 199, 0.2);
-    --temporal-amber: #d97706;
-    --temporal-glow: rgba(217, 119, 6, 0.2);
-    --vital-ruby: #e11d48;
-    --vital-ruby-glow: rgba(225, 29, 72, 0.2);
-    --matrix-emerald: #059669;
-    --matrix-glow: rgba(5, 150, 105, 0.2);
 }
 
 * {
@@ -100,8 +51,8 @@ body::before {
     width: 100vw;
     height: 100vh;
     background: 
-        radial-gradient(circle at 15% 15%, rgba(56, 189, 248, 0.05) 0%, transparent 40%),
-        radial-gradient(circle at 85% 85%, rgba(245, 158, 11, 0.04) 0%, transparent 45%),
+        radial-gradient(circle at 15% 15%, color-mix(in srgb, var(--arcane-cyan) 5%, transparent) 0%, transparent 40%),
+        radial-gradient(circle at 85% 85%, color-mix(in srgb, var(--temporal-amber) 4%, transparent) 0%, transparent 45%),
         linear-gradient(180deg, var(--bg-void) 0%, var(--bg-canvas) 100%);
     z-index: -1;
     pointer-events: none;
@@ -150,7 +101,7 @@ body::before {
     width: 36px;
     height: 36px;
     border-radius: 9px;
-    background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(245, 158, 11, 0.2));
+    background: linear-gradient(135deg, color-mix(in srgb, var(--arcane-cyan) 20%, transparent), color-mix(in srgb, var(--temporal-amber) 20%, transparent));
     border: 1px solid var(--arcane-cyan);
     display: flex;
     align-items: center;
@@ -176,9 +127,9 @@ body::before {
     font-size: 0.65rem;
     padding: 2px 6px;
     border-radius: 4px;
-    background: rgba(56, 189, 248, 0.15);
+    background: color-mix(in srgb, var(--arcane-cyan) 15%, transparent);
     color: var(--arcane-cyan);
-    border: 1px solid rgba(56, 189, 248, 0.3);
+    border: 1px solid color-mix(in srgb, var(--arcane-cyan) 30%, transparent);
 }
 
 .breadcrumbs {
@@ -218,8 +169,8 @@ body::before {
     align-items: center;
     gap: 8px;
     padding: 6px 12px;
-    background: rgba(0, 240, 255, 0.08);
-    border: 1px solid rgba(0, 240, 255, 0.25);
+    background: color-mix(in srgb, var(--arcane-cyan) 10%, transparent);
+    border: 1px solid var(--border-glow);
     border-radius: 8px;
     color: var(--arcane-cyan);
     font-size: 0.82rem;
@@ -229,10 +180,10 @@ body::before {
 }
 
 .topbar-site-link:hover {
-    background: rgba(0, 240, 255, 0.16);
+    background: color-mix(in srgb, var(--arcane-cyan) 18%, transparent);
     border-color: var(--arcane-cyan);
-    color: #ffffff;
-    box-shadow: 0 0 12px rgba(0, 240, 255, 0.25);
+    color: var(--text-primary);
+    box-shadow: 0 0 12px var(--arcane-cyan-glow);
     transform: translateY(-1px);
 }
 
@@ -248,8 +199,8 @@ body::before {
     justify-content: space-between;
     padding: 8px 12px;
     border-radius: 8px;
-    background: rgba(0, 240, 255, 0.06);
-    border: 1px solid rgba(0, 240, 255, 0.2);
+    background: color-mix(in srgb, var(--arcane-cyan) 8%, transparent);
+    border: 1px solid var(--border-glow);
     color: var(--arcane-cyan);
     text-decoration: none;
     font-size: 0.84rem;
@@ -258,9 +209,9 @@ body::before {
 }
 
 .nav-external-link:hover {
-    background: rgba(0, 240, 255, 0.14);
+    background: color-mix(in srgb, var(--arcane-cyan) 16%, transparent);
     border-color: var(--arcane-cyan);
-    color: #ffffff;
+    color: var(--text-primary);
     transform: translateX(3px);
 }
 
@@ -541,7 +492,7 @@ body::before {
 
 .nav-item-link.active {
     color: var(--arcane-cyan);
-    background: rgba(56, 189, 248, 0.1);
+    background: color-mix(in srgb, var(--arcane-cyan) 10%, transparent);
     font-weight: 600;
     border-left: 2px solid var(--arcane-cyan);
     border-radius: 0 6px 6px 0;
@@ -555,15 +506,15 @@ body::before {
 }
 
 .badge-live {
-    background: rgba(56, 189, 248, 0.15);
+    background: color-mix(in srgb, var(--arcane-cyan) 15%, transparent);
     color: var(--arcane-cyan);
-    border: 1px solid rgba(56, 189, 248, 0.3);
+    border: 1px solid color-mix(in srgb, var(--arcane-cyan) 30%, transparent);
 }
 
 .badge-locked {
-    background: rgba(244, 63, 94, 0.1);
+    background: color-mix(in srgb, var(--vital-ruby) 10%, transparent);
     color: var(--vital-ruby);
-    border: 1px solid rgba(244, 63, 94, 0.3);
+    border: 1px solid color-mix(in srgb, var(--vital-ruby) 30%, transparent);
 }
 
 /* ================= MAIN CONTENT ================= */
@@ -611,27 +562,27 @@ body::before {
 }
 
 .pill-badge.cyan, .doc-badge-pill.accent {
-    background: rgba(56, 189, 248, 0.12);
+    background: color-mix(in srgb, var(--arcane-cyan) 12%, transparent);
     color: var(--arcane-cyan);
-    border-color: rgba(56, 189, 248, 0.3);
+    border-color: color-mix(in srgb, var(--arcane-cyan) 30%, transparent);
 }
 
 .pill-badge.amber, .doc-badge-pill.amber {
-    background: rgba(245, 158, 11, 0.12);
+    background: color-mix(in srgb, var(--temporal-amber) 12%, transparent);
     color: var(--temporal-amber);
-    border-color: rgba(245, 158, 11, 0.3);
+    border-color: color-mix(in srgb, var(--temporal-amber) 30%, transparent);
 }
 
 .pill-badge.ruby, .doc-badge-pill.ruby {
-    background: rgba(244, 63, 94, 0.12);
+    background: color-mix(in srgb, var(--vital-ruby) 12%, transparent);
     color: var(--vital-ruby);
-    border-color: rgba(244, 63, 94, 0.3);
+    border-color: color-mix(in srgb, var(--vital-ruby) 30%, transparent);
 }
 
 .pill-badge.emerald, .doc-badge-pill.live, .doc-badge-pill.green {
-    background: rgba(16, 185, 129, 0.12);
+    background: color-mix(in srgb, var(--matrix-emerald) 12%, transparent);
     color: var(--matrix-emerald);
-    border-color: rgba(16, 185, 129, 0.3);
+    border-color: color-mix(in srgb, var(--matrix-emerald) 30%, transparent);
 }
 
 /* Onglets personnages — créateur de fiche (Livre IX chap. 34 + fiche_pj). */
@@ -643,7 +594,7 @@ body::before {
     justify-content: space-between;
     padding: 10px 12px;
     margin-bottom: 14px;
-    background: rgba(0, 0, 0, 0.25);
+    background: var(--bg-canvas);
     border: 1px solid var(--border-subtle);
     border-radius: 10px;
 }
@@ -677,7 +628,7 @@ body::before {
 }
 
 .cs-tab.active {
-    background: rgba(56, 189, 248, 0.15);
+    background: color-mix(in srgb, var(--arcane-cyan) 15%, transparent);
     border-color: var(--arcane-cyan);
     color: var(--arcane-cyan);
 }
@@ -729,7 +680,7 @@ body::before {
     text-transform: uppercase;
     letter-spacing: 1px;
     color: var(--arcane-cyan);
-    background: rgba(56, 189, 248, 0.1);
+    background: color-mix(in srgb, var(--arcane-cyan) 10%, transparent);
     border: 1px solid var(--border-glow);
     padding: 3px 8px;
     border-radius: 4px;
@@ -834,22 +785,22 @@ body::before {
 
 .callout.arcane {
     border-left: 4px solid var(--arcane-cyan);
-    background: linear-gradient(90deg, rgba(56, 189, 248, 0.05) 0%, var(--bg-surface) 100%);
+    background: linear-gradient(90deg, color-mix(in srgb, var(--arcane-cyan) 5%, transparent) 0%, var(--bg-surface) 100%);
 }
 
 .callout.temporal {
     border-left: 4px solid var(--temporal-amber);
-    background: linear-gradient(90deg, rgba(245, 158, 11, 0.05) 0%, var(--bg-surface) 100%);
+    background: linear-gradient(90deg, color-mix(in srgb, var(--temporal-amber) 5%, transparent) 0%, var(--bg-surface) 100%);
 }
 
 .callout.vital {
     border-left: 4px solid var(--vital-ruby);
-    background: linear-gradient(90deg, rgba(244, 63, 94, 0.05) 0%, var(--bg-surface) 100%);
+    background: linear-gradient(90deg, color-mix(in srgb, var(--vital-ruby) 5%, transparent) 0%, var(--bg-surface) 100%);
 }
 
 .callout.matrix {
     border-left: 4px solid var(--matrix-emerald);
-    background: linear-gradient(90deg, rgba(16, 185, 129, 0.05) 0%, var(--bg-surface) 100%);
+    background: linear-gradient(90deg, color-mix(in srgb, var(--matrix-emerald) 5%, transparent) 0%, var(--bg-surface) 100%);
 }
 
 .callout-header {
@@ -944,6 +895,20 @@ body::before {
 /* Formules standards : empile la description sous la formule sur écran
    étroit pour éviter l'écrasement latéral (ex. PA Livre I). */
 @media (max-width: 760px) {
+    .topbar-right {
+        gap: 8px;
+    }
+    .search-trigger {
+        padding: 7px;
+    }
+    .search-trigger span,
+    .search-kbd,
+    .auth-trigger-btn span {
+        display: none;
+    }
+    .auth-trigger-btn {
+        padding: 6px 9px;
+    }
     .formula-content {
         flex-direction: column;
         align-items: stretch;
@@ -1012,27 +977,27 @@ table.codex-table tr:hover td, table.data-table tr:hover td {
 }
 
 .table-badge.ruby {
-    background: rgba(244, 63, 94, 0.12);
+    background: color-mix(in srgb, var(--vital-ruby) 12%, transparent);
     color: var(--vital-ruby);
-    border-color: rgba(244, 63, 94, 0.3);
+    border-color: color-mix(in srgb, var(--vital-ruby) 30%, transparent);
 }
 
 .table-badge.cyan {
-    background: rgba(56, 189, 248, 0.12);
+    background: color-mix(in srgb, var(--arcane-cyan) 12%, transparent);
     color: var(--arcane-cyan);
-    border-color: rgba(56, 189, 248, 0.3);
+    border-color: color-mix(in srgb, var(--arcane-cyan) 30%, transparent);
 }
 
 .table-badge.amber, .table-badge.warning {
-    background: rgba(245, 158, 11, 0.12);
+    background: color-mix(in srgb, var(--temporal-amber) 12%, transparent);
     color: var(--temporal-amber);
-    border-color: rgba(245, 158, 11, 0.3);
+    border-color: color-mix(in srgb, var(--temporal-amber) 30%, transparent);
 }
 
 .table-badge.green, .table-badge.emerald {
-    background: rgba(16, 185, 129, 0.12);
+    background: color-mix(in srgb, var(--matrix-emerald) 12%, transparent);
     color: var(--matrix-emerald);
-    border-color: rgba(16, 185, 129, 0.3);
+    border-color: color-mix(in srgb, var(--matrix-emerald) 30%, transparent);
 }
 
 /* ================= CARDS & GRIDS ================= */
@@ -1114,9 +1079,9 @@ table.codex-table tr:hover td, table.data-table tr:hover td {
     border: 1px solid var(--border-subtle);
 }
 
-.tag-pill.cyan { color: var(--arcane-cyan); border-color: rgba(56, 189, 248, 0.3); }
-.tag-pill.amber { color: var(--temporal-amber); border-color: rgba(245, 158, 11, 0.3); }
-.tag-pill.ruby { color: var(--vital-ruby); border-color: rgba(244, 63, 94, 0.3); }
+.tag-pill.cyan { color: var(--arcane-cyan); border-color: color-mix(in srgb, var(--arcane-cyan) 30%, transparent); }
+.tag-pill.amber { color: var(--temporal-amber); border-color: color-mix(in srgb, var(--temporal-amber) 30%, transparent); }
+.tag-pill.ruby { color: var(--vital-ruby); border-color: color-mix(in srgb, var(--vital-ruby) 30%, transparent); }
 
 /* Grille des 4 Piliers */
 .pillars-grid {
@@ -1144,7 +1109,7 @@ table.codex-table tr:hover td, table.data-table tr:hover td {
     width: 36px;
     height: 36px;
     border-radius: 8px;
-    background: rgba(56, 189, 248, 0.1);
+    background: color-mix(in srgb, var(--arcane-cyan) 10%, transparent);
     color: var(--arcane-cyan);
     display: flex;
     align-items: center;
@@ -1217,7 +1182,7 @@ table.codex-table tr:hover td, table.data-table tr:hover td {
 
 .stat-badge-box.highlight {
     border-color: var(--arcane-cyan);
-    background: rgba(56, 189, 248, 0.05);
+    background: color-mix(in srgb, var(--arcane-cyan) 5%, transparent);
 }
 
 .stat-badge-name {
@@ -1323,7 +1288,7 @@ table.codex-table tr:hover td, table.data-table tr:hover td {
     border-radius: 6px;
     padding: 8px 14px;
     text-align: center;
-    background: rgba(245, 158, 11, 0.05);
+    background: color-mix(in srgb, var(--temporal-amber) 5%, transparent);
     box-shadow: 0 0 12px var(--temporal-glow);
 }
 
@@ -1427,7 +1392,7 @@ table.codex-table tr:hover td, table.data-table tr:hover td {
 }
 
 .next-stage-card {
-    background: linear-gradient(135deg, rgba(56, 189, 248, 0.08), rgba(245, 158, 11, 0.08));
+    background: linear-gradient(135deg, color-mix(in srgb, var(--arcane-cyan) 8%, transparent), color-mix(in srgb, var(--temporal-amber) 8%, transparent));
     border: 1px solid var(--border-glow);
     border-radius: 8px;
     padding: 14px;
@@ -1454,7 +1419,7 @@ table.codex-table tr:hover td, table.data-table tr:hover td {
     align-items: center;
     gap: 6px;
     background: var(--arcane-cyan);
-    color: #06080d;
+    color: var(--on-arcane-cyan, #06080d);
     border: none;
     padding: 7px 12px;
     border-radius: 6px;
@@ -1482,7 +1447,7 @@ table.codex-table tr:hover td, table.data-table tr:hover td {
 }
 
 .tool-section:hover {
-    border-color: rgba(56, 189, 248, 0.3);
+    border-color: color-mix(in srgb, var(--arcane-cyan) 30%, transparent);
 }
 
 .tool-header-bar {
@@ -1604,10 +1569,10 @@ table.codex-table tr:hover td, table.data-table tr:hover td {
     font-size: 0.82rem;
 }
 .cs-dd-item:hover {
-    background: rgba(0, 0, 0, 0.35);
+    background: var(--bg-surface-hover);
 }
 .cs-dd-item.selected {
-    background: rgba(0, 0, 0, 0.35);
+    background: var(--bg-surface-hover);
     box-shadow: inset 2px 0 0 var(--arcane-cyan);
 }
 
@@ -1710,7 +1675,7 @@ table.codex-table tr:hover td, table.data-table tr:hover td {
 }
 
 .stepper-btn:hover {
-    background: rgba(56, 189, 248, 0.15);
+    background: color-mix(in srgb, var(--arcane-cyan) 15%, transparent);
     color: var(--arcane-cyan);
 }
 
@@ -1729,7 +1694,7 @@ table.codex-table tr:hover td, table.data-table tr:hover td {
 /* Dé d'attribut intégré à gauche de chaque caractéristique (Livre II §6.1) */
 /* Effet tableau : chaque caractéristique = cellule, dé + sélecteur liés. */
 .tool-form-group:has(.attr-row) {
-    background: rgba(0, 0, 0, 0.22);
+    background: var(--bg-canvas);
     border: 1px solid var(--border-subtle);
     border-radius: 10px;
     padding: 8px;
@@ -1757,7 +1722,7 @@ table.codex-table tr:hover td, table.data-table tr:hover td {
     min-width: 62px;
     justify-content: center;
     padding: 0 8px;
-    background: rgba(56, 189, 248, 0.08);
+    background: color-mix(in srgb, var(--arcane-cyan) 8%, transparent);
     border-right: 1px solid var(--border-subtle);
 }
 .attr-row .attr-die {
@@ -1770,7 +1735,7 @@ table.codex-table tr:hover td, table.data-table tr:hover td {
     white-space: nowrap;
 }
 .attr-die-wrap:has(.amber) {
-    background: rgba(245, 158, 11, 0.08);
+    background: color-mix(in srgb, var(--temporal-amber) 8%, transparent);
 }
 
 /* Steppers de caractéristiques : le dé occupe la gauche, le stepper le reste. */
@@ -1862,7 +1827,7 @@ table.codex-table tr:hover td, table.data-table tr:hover td {
 
 .tool-btn.primary {
     background: var(--arcane-cyan);
-    color: #06080d;
+    color: var(--on-arcane-cyan, #06080d);
     box-shadow: 0 0 12px var(--arcane-cyan-glow);
 }
 
@@ -1884,8 +1849,8 @@ table.codex-table tr:hover td, table.data-table tr:hover td {
 }
 
 .tool-btn.danger {
-    background: rgba(244, 63, 94, 0.1);
-    border-color: rgba(244, 63, 94, 0.3);
+    background: color-mix(in srgb, var(--vital-ruby) 10%, transparent);
+    border-color: color-mix(in srgb, var(--vital-ruby) 30%, transparent);
     color: var(--vital-ruby);
 }
 
@@ -1896,7 +1861,7 @@ table.codex-table tr:hover td, table.data-table tr:hover td {
 
 /* Arena Lanceur de Dés */
 .dice-arena {
-    background: radial-gradient(circle at center, rgba(56, 189, 248, 0.08) 0%, var(--bg-surface-elevated) 75%);
+    background: radial-gradient(circle at center, color-mix(in srgb, var(--arcane-cyan) 8%, transparent) 0%, var(--bg-surface-elevated) 75%);
     border: 1px solid var(--border-glow);
     border-radius: 14px;
     padding: 26px;
@@ -1924,7 +1889,7 @@ table.codex-table tr:hover td, table.data-table tr:hover td {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 0 20px var(--arcane-cyan-glow), inset 0 0 10px rgba(56, 189, 248, 0.15);
+    box-shadow: 0 0 20px var(--arcane-cyan-glow), inset 0 0 10px color-mix(in srgb, var(--arcane-cyan) 15%, transparent);
     transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
@@ -1963,13 +1928,13 @@ table.codex-table tr:hover td, table.data-table tr:hover td {
     margin: 14px 0;
 }
 
-.dice-total-banner.success { color: #10b981; text-shadow: 0 0 15px rgba(16, 185, 129, 0.35); }
-.dice-total-banner.fail { color: var(--vital-ruby); text-shadow: 0 0 15px rgba(244, 63, 94, 0.35); }
-.dice-total-banner.crit-success { color: var(--temporal-amber); text-shadow: 0 0 20px rgba(245, 158, 11, 0.5); }
+.dice-total-banner.success { color: var(--matrix-emerald); text-shadow: 0 0 15px color-mix(in srgb, var(--matrix-emerald) 35%, transparent); }
+.dice-total-banner.fail { color: var(--vital-ruby); text-shadow: 0 0 15px color-mix(in srgb, var(--vital-ruby) 35%, transparent); }
+.dice-total-banner.crit-success { color: var(--temporal-amber); text-shadow: 0 0 20px color-mix(in srgb, var(--temporal-amber) 50%, transparent); }
 
 /* Crit Consequence Card */
 .crit-consequence-card {
-    background: rgba(245, 158, 11, 0.08);
+    background: color-mix(in srgb, var(--temporal-amber) 8%, transparent);
     border: 1px solid var(--temporal-amber);
     border-radius: 10px;
     padding: 16px;
@@ -2054,7 +2019,7 @@ table.codex-table tr:hover td, table.data-table tr:hover td {
 
 .spell-pa-tag {
     background: var(--arcane-cyan);
-    color: #06080d;
+    color: var(--on-arcane-cyan, #06080d);
     font-family: var(--font-mono);
     font-weight: 800;
     font-size: 0.82rem;
@@ -2107,13 +2072,13 @@ table.codex-table tr:hover td, table.data-table tr:hover td {
 }
 
 .challenge-step-row.success {
-    border-color: #10b981;
-    background: rgba(16, 185, 129, 0.08);
+    border-color: var(--matrix-emerald);
+    background: color-mix(in srgb, var(--matrix-emerald) 8%, transparent);
 }
 
 .challenge-step-row.failed {
     border-color: var(--vital-ruby);
-    background: rgba(244, 63, 94, 0.08);
+    background: color-mix(in srgb, var(--vital-ruby) 8%, transparent);
 }
 
 .step-info {
@@ -2126,7 +2091,7 @@ table.codex-table tr:hover td, table.data-table tr:hover td {
     width: 26px;
     height: 26px;
     border-radius: 50%;
-    background: rgba(56, 189, 248, 0.15);
+    background: color-mix(in srgb, var(--arcane-cyan) 15%, transparent);
     color: var(--arcane-cyan);
     font-family: var(--font-mono);
     font-weight: 700;
@@ -2204,7 +2169,7 @@ table.codex-table tr:hover td, table.data-table tr:hover td {
     display: flex;
     flex-direction: column;
     gap: 8px;
-    background: linear-gradient(135deg, rgba(6, 182, 212, 0.08), rgba(245, 158, 11, 0.05));
+    background: linear-gradient(135deg, color-mix(in srgb, var(--arcane-cyan) 8%, transparent), color-mix(in srgb, var(--temporal-amber) 5%, transparent));
     border: 1px solid var(--border-subtle);
     border-left: 4px solid var(--arcane-cyan);
     border-radius: var(--radius-md);
@@ -2236,7 +2201,7 @@ table.codex-table tr:hover td, table.data-table tr:hover td {
 .step-node.active {
     border-color: var(--arcane-cyan);
     color: var(--arcane-cyan);
-    background: rgba(6, 182, 212, 0.12);
+    background: color-mix(in srgb, var(--arcane-cyan) 12%, transparent);
 }
 
 .step-sep {
@@ -2314,7 +2279,7 @@ table.codex-table tr:hover td, table.data-table tr:hover td {
     gap: 12px;
     margin: 16px 0;
     padding: 14px;
-    background: rgba(0, 0, 0, 0.2);
+    background: var(--bg-canvas);
     border-radius: var(--radius-sm);
     border: 1px dashed var(--border-subtle);
 }
@@ -2422,7 +2387,7 @@ table.codex-table tr:hover td, table.data-table tr:hover td {
 
 .atlas-filter-btn.active {
     background: var(--arcane-cyan);
-    color: #050811;
+    color: var(--on-arcane-cyan, #050811);
     border-color: var(--arcane-cyan);
     font-weight: 700;
 }
@@ -2500,7 +2465,7 @@ table.codex-table tr:hover td, table.data-table tr:hover td {
     grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
     gap: 8px;
     margin: 16px 0;
-    background: rgba(0, 0, 0, 0.22);
+    background: var(--bg-canvas);
     padding: 12px;
     border-radius: var(--radius-sm);
     border: 1px solid var(--border-subtle);
@@ -2514,7 +2479,7 @@ table.codex-table tr:hover td, table.data-table tr:hover td {
     padding: 6px 4px;
     background: var(--bg-surface-elevated);
     border-radius: 4px;
-    border: 1px solid rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border-subtle);
 }
 
 .stat-cell-label {
@@ -2538,7 +2503,7 @@ table.codex-table tr:hover td, table.data-table tr:hover td {
 }
 
 .tactics-box {
-    background: rgba(0, 0, 0, 0.15);
+    background: var(--bg-canvas);
     border-left: 3px solid var(--temporal-amber);
     padding: 12px 16px;
     margin: 14px 0;
@@ -2574,19 +2539,19 @@ table.codex-table tr:hover td, table.data-table tr:hover td {
 }
 
 .danger-level-badge.regular {
-    background: rgba(6, 182, 212, 0.15);
+    background: color-mix(in srgb, var(--arcane-cyan) 15%, transparent);
     color: var(--arcane-cyan);
     border: 1px solid var(--arcane-cyan);
 }
 
 .danger-level-badge.elite {
-    background: rgba(245, 158, 11, 0.15);
+    background: color-mix(in srgb, var(--temporal-amber) 15%, transparent);
     color: var(--temporal-amber);
     border: 1px solid var(--temporal-amber);
 }
 
 .danger-level-badge.boss {
-    background: rgba(244, 63, 94, 0.15);
+    background: color-mix(in srgb, var(--vital-ruby) 15%, transparent);
     color: var(--ruby-danger);
     border: 1px solid var(--ruby-danger);
 }
@@ -2666,6 +2631,7 @@ table.codex-table tr:hover td, table.data-table tr:hover td {
     .vitals-dashboard { grid-template-columns: 1fr; }
     .sheet-stats-grid { grid-template-columns: 1fr; }
     .topbar-site-link span { display: none; }
+    .brand-badge { display: none; }
 }
 
 /* ==========================================================================
@@ -2744,7 +2710,7 @@ table.codex-table tr:hover td, table.data-table tr:hover td {
    ========================================================================== */
 .fab-graph {
     position: relative;
-    background: rgba(0, 0, 0, 0.28);
+    background: var(--bg-canvas);
     border: 1px solid var(--border-subtle);
     border-radius: 12px;
     padding: 16px;
@@ -2781,7 +2747,7 @@ table.codex-table tr:hover td, table.data-table tr:hover td {
 .fab-rootnode {
     width: 100%;
     text-align: left;
-    background: linear-gradient(180deg, rgba(245, 158, 11, 0.12), rgba(0, 0, 0, 0.3));
+    background: linear-gradient(180deg, color-mix(in srgb, var(--temporal-amber) 12%, var(--bg-surface)), var(--bg-surface));
     border: 2px solid var(--temporal-amber);
     border-radius: 12px;
     padding: 12px;
@@ -2815,7 +2781,7 @@ table.codex-table tr:hover td, table.data-table tr:hover td {
 .fab-rootnode small { display: block; font-size: 0.74rem; color: var(--text-secondary); line-height: 1.4; }
 /* Nœud pièce : reprend la carte emboîtée, cliquable. */
 .fab-placed[data-node] { cursor: pointer; }
-.fab-placed[data-node]:hover { filter: brightness(1.25); }
+.fab-placed[data-node]:hover { filter: brightness(1.1); }
 .fab-placed::after {
     content: "";
     position: absolute;
@@ -2848,7 +2814,7 @@ table.codex-table tr:hover td, table.data-table tr:hover td {
     align-items: center;
     gap: 10px;
     width: 100%;
-    border: 2px dashed rgba(255, 255, 255, 0.22);
+    border: 2px dashed color-mix(in srgb, var(--text-muted) 45%, transparent);
     border-radius: 12px;
     background: transparent;
     color: var(--text-secondary);
@@ -2865,7 +2831,7 @@ table.codex-table tr:hover td, table.data-table tr:hover td {
     width: 30px;
     height: 30px;
     border-radius: 50%;
-    border: 2px dashed rgba(255, 255, 255, 0.3);
+    border: 2px dashed color-mix(in srgb, var(--text-muted) 55%, transparent);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -2873,7 +2839,7 @@ table.codex-table tr:hover td, table.data-table tr:hover td {
     font-weight: 700;
 }
 .fab-graph-hint {
-    border: 2px dashed rgba(255, 255, 255, 0.14);
+    border: 2px dashed var(--border-subtle);
     border-radius: 12px;
     padding: 22px 14px;
     text-align: center;
@@ -2885,7 +2851,7 @@ table.codex-table tr:hover td, table.data-table tr:hover td {
     display: flex;
     flex-direction: column;
     gap: 6px;
-    border-top: 1px dashed rgba(245, 158, 11, 0.35);
+    border-top: 1px dashed color-mix(in srgb, var(--temporal-amber) 35%, transparent);
     padding-top: 10px;
     margin-top: 2px;
 }
@@ -2901,12 +2867,12 @@ table.codex-table tr:hover td, table.data-table tr:hover td {
     border: 1px solid var(--temporal-amber);
     border-left-width: 4px;
     border-radius: 10px;
-    background: linear-gradient(180deg, rgba(245, 158, 11, 0.10), rgba(0, 0, 0, 0.25));
+    background: linear-gradient(180deg, color-mix(in srgb, var(--temporal-amber) 10%, var(--bg-surface)), var(--bg-surface));
     padding: 7px 10px 7px 12px;
     cursor: pointer;
     transition: var(--transition-smooth);
 }
-.fab-preq:hover { filter: brightness(1.25); }
+.fab-preq:hover { filter: brightness(1.1); }
 .fab-preq strong { display: block; font-size: 0.8rem; }
 .fab-preq small { display: block; font-size: 0.7rem; color: var(--text-secondary); }
 .fab-preq-cost {
@@ -2923,7 +2889,7 @@ table.codex-table tr:hover td, table.data-table tr:hover td {
     align-items: center;
     gap: 10px;
     width: 100%;
-    border: 2px dashed rgba(245, 158, 11, 0.45);
+    border: 2px dashed color-mix(in srgb, var(--temporal-amber) 45%, transparent);
     border-radius: 10px;
     background: transparent;
     color: var(--text-secondary);
@@ -2940,7 +2906,7 @@ table.codex-table tr:hover td, table.data-table tr:hover td {
     width: 24px;
     height: 24px;
     border-radius: 50%;
-    border: 2px dashed rgba(245, 158, 11, 0.5);
+    border: 2px dashed color-mix(in srgb, var(--temporal-amber) 50%, transparent);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -2961,7 +2927,7 @@ table.codex-table tr:hover td, table.data-table tr:hover td {
     width: 26px;
     height: 8px;
     border-radius: 4px;
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--border-subtle);
 }
 .fab-dots i.on { background: var(--matrix-emerald); }
 /* ---- Menu contextuel (façon quick-create KT : titre → ?, recherche, Entrée = 1er). ---- */
@@ -2973,11 +2939,11 @@ table.codex-table tr:hover td, table.data-table tr:hover td {
     max-height: 62vh;
     display: flex;
     flex-direction: column;
-    background: rgba(2, 3, 5, 0.97);
+    background: var(--bg-surface-elevated);
     border: 1px solid var(--border-subtle);
     border-top: 2px solid var(--temporal-amber);
     border-radius: 10px;
-    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.65);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45);
     overflow: hidden;
 }
 .fab-ctx[hidden] { display: none; }
@@ -3000,7 +2966,7 @@ table.codex-table tr:hover td, table.data-table tr:hover td {
 }
 .fab-ctx-search {
     margin: 0 10px 8px;
-    background: var(--bg-surface-elevated);
+    background: var(--bg-surface);
     border: 1px solid var(--border-subtle);
     border-radius: 8px;
     padding: 7px 10px;
@@ -3022,7 +2988,7 @@ table.codex-table tr:hover td, table.data-table tr:hover td {
     display: block;
     width: 100%;
     text-align: left;
-    background: rgba(255, 255, 255, 0.03);
+    background: var(--bg-surface);
     border: 1px solid transparent;
     border-left: 3px solid var(--border-subtle);
     border-radius: 8px;
@@ -3032,7 +2998,7 @@ table.codex-table tr:hover td, table.data-table tr:hover td {
     cursor: pointer;
     font-family: var(--font-body);
 }
-.fab-opt:hover:not(.is-locked) { background: rgba(255, 255, 255, 0.07); }
+.fab-opt:hover:not(.is-locked) { background: var(--bg-surface-hover); }
 .fab-opt.is-locked { opacity: 0.62; cursor: default; }
 .fab-opt-preq {
     display: flex;
@@ -3044,7 +3010,7 @@ table.codex-table tr:hover td, table.data-table tr:hover td {
     color: var(--text-secondary);
 }
 .fab-preq-btn {
-    background: rgba(16, 185, 129, 0.12);
+    background: color-mix(in srgb, var(--matrix-emerald) 12%, transparent);
     border: 1px solid var(--matrix-emerald);
     border-radius: 7px;
     color: var(--text-primary);
@@ -3054,7 +3020,7 @@ table.codex-table tr:hover td, table.data-table tr:hover td {
     cursor: pointer;
     font-family: var(--font-body);
 }
-.fab-preq-btn:hover { background: rgba(16, 185, 129, 0.28); }
+.fab-preq-btn:hover { background: color-mix(in srgb, var(--matrix-emerald) 28%, transparent); }
 .fab-opt.fam-offensif { border-left-color: var(--vital-ruby); }
 .fab-opt.fam-defensif { border-left-color: var(--arcane-cyan); }
 .fab-opt.fam-utilitaire { border-left-color: var(--matrix-emerald); }
@@ -3086,7 +3052,7 @@ table.codex-table tr:hover td, table.data-table tr:hover td {
     position: relative;
     border: 2px solid var(--border-glow);
     border-radius: 10px 10px 14px 14px;
-    background: linear-gradient(180deg, rgba(56, 189, 248, 0.10), rgba(0, 0, 0, 0.25));
+    background: linear-gradient(180deg, color-mix(in srgb, var(--arcane-cyan) 10%, var(--bg-surface)), var(--bg-surface));
     padding: 26px 10px 10px;
 }
 .fab-placed::before {
@@ -3157,7 +3123,7 @@ table.codex-table tr:hover td, table.data-table tr:hover td {
     padding: 4px 8px;
     font-size: 0.72rem;
     color: var(--text-secondary);
-    background: rgba(0, 0, 0, 0.3);
+    background: var(--bg-canvas);
 }
 .fab-chain-tier + .fab-chain-tier { margin-top: -1px; border-top-style: dashed; }
 .fab-chain-tier b { color: var(--text-primary); }
@@ -3173,7 +3139,7 @@ table.codex-table tr:hover td, table.data-table tr:hover td {
     flex: 1;
     height: 10px;
     border-radius: 5px;
-    background: rgba(255, 255, 255, 0.08);
+    background: var(--border-subtle);
 }
 .fab-sockets i.on { background: var(--matrix-emerald); }
 

@@ -244,6 +244,8 @@ def build_html(data):
 <html lang="fr" data-theme="dark">
 <head>
     <meta charset="UTF-8">
+    <!-- Thème : application précoce (anti-flash) -->
+    <script src="js/theme-init.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Killtime Tactics — Cartographie des Fichiers</title>
     <meta name="description" content="Treemap interactive du code maison de Killtime Tactics : {t["files"]} fichiers, {fr(t["loc"])} lignes, {t["classes"]} classes, {t["partial_groups"]} groupes partiels.">
@@ -271,27 +273,27 @@ def build_html(data):
         html, body {{ width: 100%; height: 100%; overflow: hidden; background: var(--bg-void); font-family: var(--font-body); color: var(--text-primary); }}
         #app-root {{ display: flex; flex-direction: column; width: 100vw; height: 100vh; }}
 
-        .topbar {{ height: 64px; flex-shrink: 0; background: rgba(6,10,20,.78); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border-subtle); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; z-index: 50; }}
+        .topbar {{ height: 64px; flex-shrink: 0; background: color-mix(in srgb, var(--bg-surface) 86%, transparent); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border-subtle); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; z-index: 50; }}
         .topbar-left {{ display: flex; align-items: center; gap: 16px; }}
         .brand {{ display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text-primary); }}
         .brand-icon {{ width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, rgba(56,189,248,.25), rgba(251,191,36,.25)); border: 1px solid rgba(251,191,36,.4); display: flex; align-items: center; justify-content: center; font-size: 18px; }}
-        .brand-info h1 {{ font-family: var(--font-title); font-size: 15px; letter-spacing: .05em; display: flex; align-items: center; gap: 8px; color: #fff; }}
-        .brand-badge {{ font-family: var(--font-mono); font-size: 10px; padding: 2px 7px; border-radius: 999px; background: rgba(251,191,36,.15); border: 1px solid rgba(251,191,36,.4); color: #fde68a; text-transform: uppercase; letter-spacing: .08em; }}
+        .brand-info h1 {{ font-family: var(--font-title); font-size: 15px; letter-spacing: .05em; display: flex; align-items: center; gap: 8px; color: var(--text-primary); }}
+        .brand-badge {{ font-family: var(--font-mono); font-size: 10px; padding: 2px 7px; border-radius: 999px; background: rgba(251,191,36,.15); border: 1px solid rgba(251,191,36,.4); color: var(--text-gold); text-transform: uppercase; letter-spacing: .08em; }}
         .breadcrumbs {{ display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-muted); border-left: 1px solid var(--border-subtle); padding-left: 16px; }}
         .breadcrumbs a {{ color: var(--text-secondary); text-decoration: none; }}
         .breadcrumbs a:hover {{ color: var(--text-accent); }}
         .breadcrumbs .current {{ color: var(--text-primary); font-weight: 600; }}
-        .metrics-hud {{ display: flex; align-items: center; gap: 14px; background: rgba(255,255,255,.03); border: 1px solid var(--border-subtle); padding: 4px 14px; border-radius: 999px; font-size: 12px; color: var(--text-secondary); }}
+        .metrics-hud {{ display: flex; align-items: center; gap: 14px; background: color-mix(in srgb, var(--text-primary) 6%, transparent); border: 1px solid var(--border-subtle); padding: 4px 14px; border-radius: 999px; font-size: 12px; color: var(--text-secondary); }}
         .metric-item {{ display: flex; align-items: center; gap: 5px; }}
-        .metric-val {{ color: #38bdf8; font-weight: 700; font-family: var(--font-mono); }}
+        .metric-val {{ color: var(--text-accent); font-weight: 700; font-family: var(--font-mono); }}
         .topbar-right {{ display: flex; align-items: center; gap: 10px; }}
-        .btn-ghost {{ background: rgba(255,255,255,.05); border: 1px solid var(--border-subtle); color: var(--text-secondary); padding: 7px 12px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; text-decoration: none; transition: all .2s ease; }}
-        .btn-ghost:hover {{ background: rgba(255,255,255,.12); color: var(--text-primary); }}
+        .btn-ghost {{ background: color-mix(in srgb, var(--text-primary) 7%, transparent); border: 1px solid var(--border-subtle); color: var(--text-secondary); padding: 7px 12px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; text-decoration: none; transition: all .2s ease; }}
+        .btn-ghost:hover {{ background: color-mix(in srgb, var(--text-primary) 14%, transparent); color: var(--text-primary); }}
 
         #main-layout {{ flex: 1; display: flex; min-height: 0; }}
 
         /* ---------- Sidebar ---------- */
-        #sidebar {{ width: 320px; flex-shrink: 0; background: rgba(6,10,20,.6); border-right: 1px solid var(--border-subtle); overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 18px; }}
+        #sidebar {{ width: 320px; flex-shrink: 0; background: color-mix(in srgb, var(--bg-canvas) 72%, transparent); border-right: 1px solid var(--border-subtle); overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 18px; }}
         .side-section {{ background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 14px; padding: 14px; }}
         .side-title {{ font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; color: var(--text-secondary); margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }}
         .side-title .hint {{ font-weight: 400; text-transform: none; letter-spacing: 0; color: var(--text-muted); font-size: 10px; }}
@@ -300,7 +302,7 @@ def build_html(data):
         #donut-center {{ font-family: var(--font-mono); }}
         #donut-legend {{ display: flex; flex-direction: column; gap: 3px; font-size: 11px; max-height: 150px; overflow-y: auto; flex: 1; }}
         .legend-row {{ display: flex; align-items: center; gap: 6px; color: var(--text-secondary); cursor: pointer; padding: 1px 4px; border-radius: 4px; }}
-        .legend-row:hover {{ background: rgba(255,255,255,.06); }}
+        .legend-row:hover {{ background: var(--bg-surface-hover); }}
         .legend-row.off {{ opacity: .35; }}
         .legend-dot {{ width: 9px; height: 9px; border-radius: 3px; flex-shrink: 0; }}
         .legend-row .pct {{ margin-left: auto; font-family: var(--font-mono); color: var(--text-muted); }}
@@ -309,11 +311,11 @@ def build_html(data):
         .bar-top {{ display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 3px; }}
         .bar-top .bname {{ color: var(--text-primary); font-weight: 600; display: flex; align-items: center; gap: 6px; }}
         .bar-top .bval {{ font-family: var(--font-mono); color: var(--text-muted); }}
-        .bar-track {{ height: 8px; background: rgba(255,255,255,.07); border-radius: 999px; overflow: hidden; }}
+        .bar-track {{ height: 8px; background: var(--border-subtle); border-radius: 999px; overflow: hidden; }}
         .bar-fill {{ height: 100%; border-radius: 999px; transition: width .4s ease; }}
         .bar-row.off {{ opacity: .35; }}
         .topfile-row {{ display: flex; align-items: center; gap: 8px; font-size: 11px; font-family: var(--font-mono); padding: 4px 6px; border-radius: 6px; cursor: pointer; color: var(--text-secondary); }}
-        .topfile-row:hover {{ background: rgba(56,189,248,.12); color: #fff; }}
+        .topfile-row:hover {{ background: color-mix(in srgb, var(--arcane-cyan) 12%, transparent); color: var(--text-primary); }}
         .topfile-row .rank {{ color: var(--text-muted); width: 18px; flex-shrink: 0; }}
         .topfile-row .tloc {{ margin-left: auto; color: var(--text-accent); flex-shrink: 0; }}
         .topfile-row .tname {{ overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }}
@@ -322,7 +324,7 @@ def build_html(data):
         .group-card:last-child {{ margin-bottom: 0; }}
         .group-head {{ display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; margin-bottom: 6px; }}
         .group-head .gloc {{ font-family: var(--font-mono); color: var(--text-muted); font-weight: 400; font-size: 11px; }}
-        .stack-bar {{ display: flex; height: 10px; border-radius: 999px; overflow: hidden; background: rgba(255,255,255,.05); }}
+        .stack-bar {{ display: flex; height: 10px; border-radius: 999px; overflow: hidden; background: color-mix(in srgb, var(--text-primary) 7%, transparent); }}
         .stack-bar div {{ height: 100%; }}
         .group-sub {{ font-size: 10px; color: var(--text-muted); font-family: var(--font-mono); margin-top: 4px; }}
 
@@ -336,48 +338,49 @@ def build_html(data):
         .search-box {{ margin-left: auto; background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 10px; display: flex; align-items: center; padding: 5px 12px; width: 240px; }}
         .search-box:focus-within {{ border-color: rgba(56,189,248,.5); }}
         .search-input {{ background: transparent; border: none; outline: none; color: var(--text-primary); font-size: 12px; margin-left: 8px; width: 100%; font-family: var(--font-body); }}
-        .size-toggle {{ display: flex; background: rgba(255,255,255,.05); border-radius: 8px; padding: 2px; border: 1px solid var(--border-subtle); }}
+        .size-toggle {{ display: flex; background: color-mix(in srgb, var(--text-primary) 7%, transparent); border-radius: 8px; padding: 2px; border: 1px solid var(--border-subtle); }}
         .size-btn {{ background: transparent; border: none; color: var(--text-muted); font-size: 11px; font-family: var(--font-mono); font-weight: 700; padding: 5px 10px; border-radius: 6px; cursor: pointer; }}
-        .size-btn.active {{ background: rgba(251,191,36,.2); color: #fbbf24; }}
+        .size-btn.active {{ background: rgba(251,191,36,.2); color: var(--text-gold); }}
         #pills-bar {{ display: flex; gap: 6px; padding: 0 16px 10px; overflow-x: auto; flex-shrink: 0; }}
         .pill {{ background: transparent; border: 1px solid var(--border-subtle); color: var(--text-muted); padding: 4px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; cursor: pointer; white-space: nowrap; display: flex; align-items: center; gap: 5px; }}
         .pill .dot {{ width: 8px; height: 8px; border-radius: 50%; }}
         .pill.off {{ opacity: .35; }}
         #treemap-wrap {{ flex: 1; position: relative; margin: 0 16px 16px; border: 1px solid var(--border-subtle); border-radius: 16px; overflow: hidden; min-height: 0; }}
         #treemap {{ position: absolute; inset: 0; width: 100%; height: 100%; display: block; }}
-        #map-tooltip {{ position: absolute; pointer-events: none; background: rgba(10,16,30,.94); border: 1px solid rgba(251,191,36,.4); border-radius: 10px; padding: 8px 12px; font-size: 12px; z-index: 40; display: none; max-width: 320px; box-shadow: 0 8px 24px rgba(0,0,0,.5); }}
-        #map-tooltip .tt-title {{ font-weight: 700; color: #fbbf24; font-family: var(--font-mono); font-size: 12px; word-break: break-all; }}
+        #map-tooltip {{ position: absolute; pointer-events: none; background: var(--bg-surface-elevated); border: 1px solid var(--border-accent); border-radius: 10px; padding: 8px 12px; font-size: 12px; z-index: 40; display: none; max-width: 320px; box-shadow: 0 8px 24px rgba(0,0,0,.5); }}
+        #map-tooltip .tt-title {{ font-weight: 700; color: var(--text-gold); font-family: var(--font-mono); font-size: 12px; word-break: break-all; }}
         #map-tooltip .tt-sub {{ color: var(--text-secondary); font-size: 11px; font-family: var(--font-mono); margin-top: 2px; }}
-        #map-hint {{ position: absolute; bottom: 10px; left: 12px; font-size: 11px; color: var(--text-muted); background: rgba(6,10,20,.7); padding: 4px 10px; border-radius: 8px; border: 1px solid var(--border-subtle); z-index: 10; }}
+        #map-hint {{ position: absolute; bottom: 10px; left: 12px; font-size: 11px; color: var(--text-muted); background: color-mix(in srgb, var(--bg-surface) 88%, transparent); padding: 4px 10px; border-radius: 8px; border: 1px solid var(--border-subtle); z-index: 10; }}
 
         /* ---------- Inspector ---------- */
-        #inspector {{ position: absolute; top: 76px; right: -430px; width: 400px; bottom: 16px; background: rgba(18,28,51,.95); backdrop-filter: blur(24px); border: 1px solid var(--border-subtle); border-radius: 20px; padding: 22px; display: flex; flex-direction: column; gap: 14px; z-index: 60; box-shadow: -15px 0 40px rgba(0,0,0,.6); transition: right .35s cubic-bezier(.16,1,.3,1); overflow-y: auto; }}
+        #inspector {{ position: absolute; top: 76px; right: -430px; width: 400px; bottom: 16px; background: var(--bg-surface-elevated); backdrop-filter: blur(24px); border: 1px solid var(--border-subtle); border-radius: 20px; padding: 22px; display: flex; flex-direction: column; gap: 14px; z-index: 60; box-shadow: -15px 0 40px rgba(0,0,0,.6); transition: right .35s cubic-bezier(.16,1,.3,1); overflow-y: auto; }}
         #inspector.open {{ right: 16px; }}
         .insp-head {{ border-bottom: 1px solid var(--border-subtle); padding-bottom: 14px; display: flex; justify-content: space-between; gap: 10px; }}
         .insp-module {{ display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; padding: 3px 8px; border-radius: 6px; margin-bottom: 8px; }}
-        .insp-title {{ font-family: var(--font-mono); font-size: 14px; color: #fff; word-break: break-all; line-height: 1.4; }}
+        .insp-title {{ font-family: var(--font-mono); font-size: 14px; color: var(--text-primary); word-break: break-all; line-height: 1.4; }}
         .insp-path {{ font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); margin-top: 4px; }}
-        .insp-close {{ background: rgba(255,255,255,.06); border: 1px solid var(--border-subtle); color: var(--text-secondary); width: 32px; height: 32px; border-radius: 8px; cursor: pointer; flex-shrink: 0; }}
-        .insp-close:hover {{ color: #fff; background: rgba(255,255,255,.15); }}
+        .insp-close {{ background: var(--bg-surface); border: 1px solid var(--border-subtle); color: var(--text-secondary); width: 32px; height: 32px; border-radius: 8px; cursor: pointer; flex-shrink: 0; }}
+        .insp-close:hover {{ color: var(--text-primary); background: var(--bg-surface-hover); }}
         .meta-grid {{ display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }}
-        .meta-cell {{ background: rgba(0,0,0,.25); border: 1px solid var(--border-subtle); border-radius: 10px; padding: 8px 10px; }}
+        .meta-cell {{ background: var(--bg-canvas); border: 1px solid var(--border-subtle); border-radius: 10px; padding: 8px 10px; }}
         .meta-cell label {{ display: block; font-size: 10px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 2px; }}
         .meta-cell span {{ font-family: var(--font-mono); font-weight: 700; font-size: 14px; color: var(--text-primary); }}
-        .comp-bar {{ display: flex; height: 14px; border-radius: 999px; overflow: hidden; background: rgba(255,255,255,.05); }}
+        .comp-bar {{ display: flex; height: 14px; border-radius: 999px; overflow: hidden; background: color-mix(in srgb, var(--text-primary) 7%, transparent); }}
         .comp-legend {{ display: flex; gap: 12px; font-size: 11px; color: var(--text-secondary); margin-top: 6px; }}
         .comp-legend i {{ display: inline-block; width: 9px; height: 9px; border-radius: 3px; margin-right: 4px; }}
         .sec-title {{ font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; color: var(--text-secondary); }}
         .class-chips {{ display: flex; flex-wrap: wrap; gap: 6px; }}
-        .chip {{ font-family: var(--font-mono); font-size: 11px; background: rgba(56,189,248,.12); border: 1px solid rgba(56,189,248,.35); color: #7dd3fc; padding: 3px 8px; border-radius: 6px; }}
-        .chip.kind-struct, .chip.kind-enum {{ background: rgba(251,191,36,.1); border-color: rgba(251,191,36,.35); color: #fcd34d; }}
-        .chip.kind-interface {{ background: rgba(192,132,252,.1); border-color: rgba(192,132,252,.35); color: #d8b4fe; }}
-        .sib-btn {{ display: block; width: 100%; text-align: left; background: rgba(255,255,255,.04); border: 1px solid var(--border-subtle); color: var(--text-secondary); padding: 6px 10px; border-radius: 8px; font-size: 11px; font-family: var(--font-mono); cursor: pointer; margin-bottom: 5px; }}
-        .sib-btn:hover {{ border-color: var(--border-glow); color: #fff; }}
+        .chip {{ font-family: var(--font-mono); font-size: 11px; background: color-mix(in srgb, var(--arcane-cyan) 12%, transparent); border: 1px solid var(--border-glow); color: var(--text-accent); padding: 3px 8px; border-radius: 6px; }}
+        .chip.kind-struct, .chip.kind-enum {{ background: color-mix(in srgb, var(--temporal-amber) 12%, transparent); border-color: var(--border-accent); color: var(--text-gold); }}
+        .chip.kind-interface {{ background: color-mix(in srgb, var(--void-violet) 12%, transparent); border-color: color-mix(in srgb, var(--void-violet) 40%, transparent); color: var(--void-violet); }}
+        .sib-btn {{ display: block; width: 100%; text-align: left; background: var(--bg-surface); border: 1px solid var(--border-subtle); color: var(--text-secondary); padding: 6px 10px; border-radius: 8px; font-size: 11px; font-family: var(--font-mono); cursor: pointer; margin-bottom: 5px; }}
+        .sib-btn:hover {{ border-color: var(--border-glow); color: var(--text-primary); }}
 
         #help-modal {{ position: fixed; inset: 0; background: rgba(0,0,0,.7); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; z-index: 200; }}
-        .modal-content {{ width: 560px; max-width: 92vw; background: rgba(18,28,51,.97); border: 1px solid var(--border-glow); border-radius: 20px; padding: 28px; display: flex; flex-direction: column; gap: 14px; }}
+        .modal-content {{ width: 560px; max-width: 92vw; background: var(--bg-surface-elevated); border: 1px solid var(--border-glow); border-radius: 20px; padding: 28px; display: flex; flex-direction: column; gap: 14px; }}
         @media (max-width: 1100px) {{ #sidebar {{ display: none; }} #inspector {{ width: calc(100% - 32px); }} }}
     </style>
+    <link rel="stylesheet" href="css/themes.css">
 </head>
 <body>
 <div id="app-root">
@@ -762,7 +765,7 @@ function renderSide() {{
         html += `<circle cx="60" cy="60" r="${{R}}" fill="none" stroke="${{m.color}}" stroke-width="16" stroke-dasharray="${{len.toFixed(1)}} ${{(C-len).toFixed(1)}}" stroke-dashoffset="${{(-acc*C).toFixed(1)}}" transform="rotate(-90 60 60)" opacity="0.9"><title>${{m.label}} — ${{fmt(m.loc)}} lignes</title></circle>`;
         acc += frac;
     }});
-    html += `<text x="60" y="56" text-anchor="middle" fill="#fff" font-size="15" font-weight="700" font-family="JetBrains Mono, monospace">${{TOTALS.files}}</text><text x="60" y="72" text-anchor="middle" fill="#64748b" font-size="10" font-family="JetBrains Mono, monospace">fichiers</text>`;
+    html += `<text x="60" y="56" text-anchor="middle" fill="var(--text-primary)" font-size="15" font-weight="700" font-family="JetBrains Mono, monospace">${{TOTALS.files}}</text><text x="60" y="72" text-anchor="middle" fill="var(--text-muted)" font-size="10" font-family="JetBrains Mono, monospace">fichiers</text>`;
     svg.innerHTML = html;
     // Legende
     document.getElementById('donut-legend').innerHTML = MODULES.map(m =>
@@ -859,6 +862,7 @@ renderSide();
 resize();
 }})();
 </script>
+    <script src="js/theme.js"></script>
 </body>
 </html>
 '''

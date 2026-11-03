@@ -679,6 +679,101 @@ async function handleRequest(req, res, isAdminListener) {
     }
 
     /* ================================================================
+       PRÉFÉRENCES — stockage serveur par utilisateur (connecté)
+       ----------------------------------------------------------------
+       GET /api/prefs : relit user.prefs (secretVeil, theme, customTheme).
+       PUT /api/prefs : fusionne {prefs:{...}} validé dans user.prefs.
+       Sans session srv_ : 401 → le client garde tout en localStorage.
+       ================================================================ */
+    const VALID_PREF_THEMES = ['dark', 'light', 'sepia', 'night', 'emerald', 'contrast', 'custom'];
+    const CUSTOM_THEME_COLOR_KEYS = [
+        'bgVoid', 'bgCanvas', 'bgSurface', 'bgSurfaceElevated', 'bgSurfaceHover',
+        'textPrimary', 'textSecondary', 'textMuted', 'textAccent', 'textGold',
+        'arcaneCyan', 'temporalAmber', 'vitalRuby', 'voidViolet', 'matrixEmerald'
+    ];
+    if (isRoute('/api/prefs')) {
+        const sessionUserId = getSessionUserId(req);
+        if (!sessionUserId) {
+            return sendJson(res, 401, { error: 'Connexion requise.' });
+        }
+        const users = loadUsers();
+        const user = users.find(u => u.id === sessionUserId);
+        if (!user) {
+            return sendJson(res, 401, { error: 'Session invalide.' });
+        }
+        if (req.method === 'GET') {
+            const prefs = (user.prefs && typeof user.prefs === 'object') ? user.prefs : {};
+            return sendJson(res, 200, { success: true, prefs });
+        }
+        if (req.method === 'PUT' || req.method === 'POST') {
+            try {
+                const body = await parseBody(req);
+                if (!body || typeof body.prefs !== 'object' || !body.prefs) {
+                    return sendJson(res, 400, { error: 'prefs{} manquant.' });
+                }
+                const json = JSON.stringify(body.prefs);
+                if (json.length > 4096) {
+                    return sendJson(res, 413, { error: 'Payload trop volumineux.' });
+                }
+                const next = (user.prefs && typeof user.prefs === 'object') ? { ...user.prefs } : {};
+                if ('secretVeil' in body.prefs) {
+                    const v = body.prefs.secretVeil;
+                    if (v !== 'full' && v !== 'safe' && v !== null) {
+                        return sendJson(res, 400, { error: 'secretVeil invalide (full|safe|null).' });
+                    }
+                    if (v === null) delete next.secretVeil;
+                    else next.secretVeil = v;
+                }
+                if ('theme' in body.prefs) {
+                    const t = body.prefs.theme;
+                    if (t !== null && !VALID_PREF_THEMES.includes(t)) {
+                        return sendJson(res, 400, { error: 'theme invalide.' });
+                    }
+                    if (t === null) delete next.theme;
+                    else next.theme = t;
+                }
+                if ('customTheme' in body.prefs && body.prefs.customTheme !== undefined) {
+                    const ct = body.prefs.customTheme;
+                    if (ct === null) {
+                        delete next.customTheme;
+                    } else if (typeof ct === 'object' && !Array.isArray(ct)) {
+                        const cleanCt = {};
+                        for (const k of CUSTOM_THEME_COLOR_KEYS) {
+                            if (k in ct && ct[k] !== null && ct[k] !== undefined && ct[k] !== '') {
+                                let hex = String(ct[k]).trim().toLowerCase();
+                                if (/^#[0-9a-f]{3}$/.test(hex)) {
+                                    hex = '#' + hex[1] + hex[1] + hex[2] + hex[2] + hex[3] + hex[3];
+                                }
+                                if (!/^#[0-9a-f]{6}$/.test(hex)) {
+                                    return sendJson(res, 400, { error: `Couleur invalide pour ${k} (#rrggbb attendu).` });
+                                }
+                                cleanCt[k] = hex;
+                            }
+                        }
+                        if ('basePreset' in ct && typeof ct.basePreset === 'string') {
+                            const bp = ct.basePreset.trim();
+                            if (VALID_PREF_THEMES.includes(bp) && bp !== 'custom') cleanCt.basePreset = bp;
+                        }
+                        if ('name' in ct && typeof ct.name === 'string') {
+                            cleanCt.name = ct.name.trim().slice(0, 32);
+                        }
+                        next.customTheme = cleanCt;
+                    } else {
+                        return sendJson(res, 400, { error: 'customTheme invalide (objet ou null attendu).' });
+                    }
+                }
+                next.updatedAt = Date.now();
+                user.prefs = next;
+                saveUsers(users);
+                return sendJson(res, 200, { success: true, prefs: next });
+            } catch (e) {
+                return sendJson(res, 400, { error: e.message });
+            }
+        }
+        return sendJson(res, 405, { error: 'Méthode non autorisée.' });
+    }
+
+    /* ================================================================
        GOOGLE OAUTH 2.0
        ================================================================ */
 

@@ -3,6 +3,8 @@
 
 <head>
     <meta charset="UTF-8">
+    <!-- Thème : application précoce (anti-flash) -->
+    <script src="js/theme-init.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Financement Kickstarter — Kanban (solo)</title>
     <meta name="description"
@@ -201,7 +203,7 @@
         .rm-btn.primary {
             background: var(--arcane-cyan);
             border-color: transparent;
-            color: #04121d;
+            color: var(--on-arcane-cyan, #04121d);
         }
 
         .rm-btn.primary:hover {
@@ -552,7 +554,7 @@
             font-weight: 700;
             padding: 2px 9px;
             border-radius: 99px;
-            background: rgba(56, 189, 248, .14);
+            background: color-mix(in srgb, var(--arcane-cyan) 14%, transparent);
             color: var(--arcane-cyan);
             border: 1px solid var(--border-glow);
         }
@@ -951,6 +953,7 @@
     body.ro .rm-card-actions, body.ro .rm-grip, body.ro .rm-tab-add, body.ro .edit { display: none !important; }
     body.ro .rm-card { cursor: default; }
 </style>
+    <link rel="stylesheet" href="css/themes.css">
 </head>
 
 <body>
@@ -1421,6 +1424,7 @@
     <script src="users/user_store.js"></script>
     <script src="users/auth.js"></script>
     <script src="js/financement.js?v=1.2"></script>
+    <script src="js/theme.js"></script>
 </body>
 
 </html>

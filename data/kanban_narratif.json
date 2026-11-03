@@ -1,6 +1,6 @@
 {
   "version": 3,
-  "updated": "2026-10-20",
+  "updated": "2026-11-03",
   "activeId": "board-narratif",
   "boards": [
     {
@@ -359,6 +359,22 @@
           "suggestedAsset": "",
           "updated": "2026-10-20",
           "details": "Integrate dynamic 3-volume and 4-volume progression widgets across index.html and truth.html with live manuscript word-count polling."
+        },
+        {
+          "id": "task_eng_05",
+          "title": "Voile photosensible du lore caché (avertissement + skip + mémoire)",
+          "epic": "Moteurs & 4e mur",
+          "status": "done",
+          "priority": "high",
+          "order": 22,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "",
+          "updated": "2026-11-03",
+          "details": "FAIT (2026-11-03) : gate avant les transitions flash vers le lore caché (spirale souris / mot hybris -> truth.html). 1) js/secret-veil.js (KTSecretVeil.requestAccess/isSafe/reset) : modale Killtime « Le Voile de l'Architecte », Entrer sans flashs / avec effets / Rester ici, case mémoire cochée, safe-mode html.kt-no-flash + data-kt-motion, interception [data-secret], respect prefers-reduced-motion. 2) css/secret-veil.css : carte + boutons + kill animations. 3) Mémoire : localStorage si pas connecté, serveur si connecté (GET/PUT /api/prefs user.prefs.secretVeil + miroir local, reset depuis menu thème). Preuve : harness node 20/20 vert + endpoint live (PUT/GET/401/rejet/clear) + check_liens OK. Patch appliqué dans Killtime/Killtime/index.html : gate dans triggerAnomaly() + verrou anti ré-entrées. Correctif (2026-11-03) : effets parfois absents à cause de ré-entrées — le seuil spirale re-déclenche à chaque mousemove pendant la modale/await, N continuations jouaient N effets empilés en course. Fix : décision partagée (_veilDecision, un seul relais), re-check flag après await, cooldown 4 s après « Rester ici ». Preuve : harness 17/17."
         }
       ]
     }

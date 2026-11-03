@@ -1032,7 +1032,7 @@
      "id": "RP-069",
      "title": "Écrire le test de moral dans le codex (28 % PV, reddition/déroute)",
      "epic": "Livre VI — Santé & États",
-     "status": "todo",
+     "status": "done",
      "priority": "high",
      "order": 40,
      "scene": "",
@@ -1041,13 +1041,13 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_6.html#chap-25",
-     "details": "Le test de moral n'existe que dans le code Unity (RD-047) : rien dans les livres, mais le don E Humain (Livre I §2) et un événement Livre VII promettent d'en ignorer l'échec. À écrire : déclencheur (28 % PV), jet (Max(CHA,INS) vs SD — attention : la Règle d'Or interdit les jets de carac brute, à trancher), échec = reddition ou déroute/Agonisant, lien Livre V. Puis réaligner don E + événement Livre VII."
+     "details": "FAIT 2026-11-03 — §22.8 Cran, Déroute & Reddition créé (Livre V, content/livre_5/sections/chap-22/bloc-14.md, build+check OK). Choix validés : jet de compétence Mener ou Intuition au choix (Règle d'Or), règle unique (échec = Déroute Agonisant pour tous, reddition = acte volontaire), déclencheur 28% max 1×/combat réarmé si soin >28%, SD 10. Don Humain E Sang-Froid + événement Miracle inexpliqué désormais cohérents (annulent une Déroute). Divergence Unity assumée : RD-047 auto-reddition Survivor à rouvrir (IsSurrendered auto → option MJ)."
     },
     {
      "id": "RP-070",
      "title": "Écrire les règles de nuit/lumière (vision nocturne, éblouissement, soleil)",
      "epic": "Livre V — Combat Tactique",
-     "status": "todo",
+     "status": "done",
      "priority": "high",
      "order": 41,
      "scene": "",
@@ -1056,13 +1056,13 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_5.html#sec-22-4",
-     "details": "La nuit n'a de règles que dans le code Unity (RD-053 : vue 4 cases, -1 au tir sans lampe/thermique) ; le don B Derek (Livre I §2) promet vision nocturne et craint le plein soleil/les éclats, mais 'Ébloui' n'est pas un état et 'plein soleil' n'existe nulle part. À écrire : nuit (portée de vue, -1 tir, lampe/thermique), vision nocturne (Derek), éblouissement (soleil, flash → Aveugle ?). Puis réaligner don B Derek."
+     "details": "FAIT 2026-11-03 — §8.6 Nuit & lumière créé (Livre II chap-8, content/livre_2/sections/chap-8/bloc-02.md, build+check OK). Choix validés : 8.6 en chap-8 + rappels Livre V §23.3, nuit graduée (claire : vue 8, -0 tir, -1 Obs loin ; noire : vue 4, -1 tir sans lampe/thermique ; cumul météo : malus max + vue re-bridée, ex. 2 cases), lampe (ignore nuit mais trahit, furtivité brisée), thermique (ignore + perce fumée/murs à demi-portée), vision nocturne Derek (ignore nuit, Aveugle 1 tour en entrant en lumière vive), éblouissement = Aveugle temporaire (flash 1 tour, 2 si ≤3 cases, Masque Filtrant neutralise). Don B Derek Sang des Profondeurs désormais cohérent. Reste RP-071 (définition Aveugle §26)."
     },
     {
      "id": "RP-071",
      "title": "Définir le statut Aveugle (compendium des États, flash, éblouissement)",
      "epic": "Livre VI — Santé & États",
-     "status": "todo",
+     "status": "done",
      "priority": "high",
      "order": 42,
      "scene": "",
@@ -1071,13 +1071,13 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_6.html#chap-26",
-     "details": "Ni Aveugle ni Ébloui n'existent dans les livres ; le flash n'a de règles que dans Unity (statut Aveugle, -4 au tir côté IA, Masque Filtrant). À écrire : statut Aveugle (effets chiffrés, durée, sources : flash, éclat, soleil), lien RP-070 (éblouissement Derek = Aveugle 1 tour ?). Puis réaligner don B Derek."
+     "details": "FAIT 2026-11-03 — Aveugle défini au compendium §26.1 : entrée mecaniques (etats_prejudiciables 9→10 + etats_par_nom) avec malus Unity exacts (-4 distance, -2 mêlée/défense, vision nulle), durées (flash 1 tour / 2 si ≤3 cases, zones M18/CM-6 2 tours ou sortie, Masque Filtrant immunise) + prose MJ en chap-26/bloc-00 + lien §8.6. Tips §8.6 finalisés (mention RP-071 retirée). Don B Derek inchangé (cohérent via §8.6). build+check 6/2 OK, liens OK."
     },
     {
      "id": "RP-072",
      "title": "Écrire le cycle jour/repos (recharge 1×/jour, soins du repos)",
      "epic": "Livre VI — Santé & États",
-     "status": "todo",
+     "status": "done",
      "priority": "medium",
      "order": 43,
      "scene": "",
@@ -1086,7 +1086,7 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_6.html#chap-26",
-     "details": "Le don E Taurien (Sève Vive, Livre I §2) se recharge '1×/jour', fréquence unique sans règle de recharge (jour en jeu ? repos ?). Le repos soigne (§26, convalescence) mais le cycle jour/repos n'est écrit nulle part. À écrire : jour de jeu, repos (court/long ?), ce qui se recharge quand (dons 1×/jour, ESS, résiduels ?). Règle posée : les dons s'activent gratuitement quand on veut (Livre I §2.2)."
+     "details": "FAIT 2026-11-03 — §27.2 complété (stub 2 lignes → nuit sûre 6-8h : CON PV, x2 si magie/arcanotech, ex. Roger CON 4 ; répare ESS→0, réveil stabilisé, stoppe Saignement, réarme moral §22.8, recharge dons 1x/jour ; ne lève jamais Souffrant/poisons/Miracle ; bouffe renvoyée à RP-125). Choix validés : nuit sûre seule (pas de halte), forfait simplifié, chiffres bouffe en 125. build+check 6 OK, liens OK."
     },
     {
      "id": "RP-073",
@@ -1662,7 +1662,7 @@
      "id": "RP-111",
      "title": "Thèmes CSS multi-thèmes sur tout le site (Système RP + pages)",
      "epic": "Outillage — Thèmes CSS",
-     "status": "todo",
+     "status": "done",
      "priority": "medium",
      "order": 82,
      "scene": "",
@@ -1670,8 +1670,8 @@
      "primitive": "",
      "pos": null,
      "scale": null,
-     "suggestedAsset": "css/style.css",
-     "details": "État actuel : 2 thèmes (dark arcanique / light via [data-theme] dans css/style.css, toggle binaire #themeToggle dans js/codex.js, clé localStorage codex-theme, duplication des variables dans users/auth.css, défaut data-theme=\"dark\" sur chaque HTML). Demande : prise en charge de plusieurs thèmes transverses au Système RP et au site entier. Périmètre : index.html, livre_1..12.html, tables.html, fiche_pj.html, kanban_rp/narratif.html, roadmap.html, financement.html, admin.html, atlas_*.html, tactics_*.html, users/* ; CSS : css/style.css, css/table-dock.css, users/auth.css ; JS : js/codex.js, users/auth.js (slot themeToggle). Spec : 1) créer css/themes.css central avec un bloc de variables par thème ([data-theme=dark] = actuel par défaut, light existant conservé, + sépia/parchemin, nuit bleue, émeraude matrice, contraste élevé accessibilité — noms/ids à figer) ; 2) remplacer le toggle binaire par un sélecteur multi-thèmes (dropdown ou cycle, id themeToggle conservé pour compat), persistance localStorage (clé codex-theme conservée + migration dark/light existants), prefers-color-scheme au premier chargement, script précoce anti-flash dans <head> ; 3) migrer les 3 CSS vers les variables (supprimer les duplications) ; 4) vérifier table-dock + auth (panneau latéral, login). DONE = N thèmes sélectionnables et persistés, tour visuel de toutes les pages OK sans régression, aucun flash au reload, contraste texte/fond vérifié par thème."
+     "suggestedAsset": "css/themes.css",
+     "details": "FAIT 2026-11-03 — 6 thèmes prédéfinis (Sombre arcanique, Clair, Sépia parchemin, Nuit bleue, Émeraude matrice, Contraste élevé) + 1 thème Personnalisé (custom) configurable en direct (9 couleurs maîtresses + copie en 1 clic depuis tout préréglage + calcul auto des surfaces/bordures/halos/--on-arcane-cyan/color-scheme). Persistance selon l'utilisateur connecté (GET/PUT /api/prefs user.prefs.theme & customTheme + UserStore + cache local par user.id anti-flash dans theme-init.js, bascule auto au login/logout) ou localStorage (codex-theme / codex-custom-theme) si non connecté. Chasse aux bogues corrigée : 1) générateurs tools/generate_tactics_*.py synchronisés avec theme-init.js, themes.css, theme.js ; 2) menu contextuel Fabrique (.fab-ctx), inspecteur Atlas des Mondes (#infoPanel), tiroirs/modales/donut tactics_* et badges tables.html illisibles en thème clair/sépia migrés vers les variables de thème ; 3) contraste des boutons primaires via --on-arcane-cyan ; 4) repli :where(:root) dans users/auth.css et css/secret-veil.css pour les pages hors Codex ; 5) scroll interne du menu #themeMenu ne fermant plus le menu. Vérifié : node --check, check_liens, build_nav --check, build_livres --check, tests unitaires et live /api/prefs."
     },
     {
      "id": "RP-112",

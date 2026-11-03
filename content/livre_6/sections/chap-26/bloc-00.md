@@ -15,4 +15,12 @@ livre: 6
                     </p>
 
                     <h3 id="sec-26-1">26.1 États Préjudiciables & Afflictions en Combat</h3>
+                    <p>
+                        Tu connais la douleur. Voici sa petite sœur : la cécité.
+                        Un flash en pleine face, un éclat de nytharite, le plein soleil au sortir d'une galerie —
+                        et le monde s'éteint. Tu deviens <strong>Aveugle</strong> : vision nulle,
+                        −4 à distance, −2 en mêlée et en défense. Compte tes tours, protège tes yeux,
+                        et pense au <strong>Masque Filtrant</strong>. Pour la nuit et la lumière, voir
+                        <a class="rule-ref" href="livre_2.html#chap-8" data-tip="Nuit & lumière : claire, noire, éblouissante (§8.6).">Livre II §8.6</a>.
+                    </p>
                     

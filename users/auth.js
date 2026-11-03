@@ -457,8 +457,8 @@
                 a.href = this.tablesRootPrefix() + 'tables.html';
                 a.title = 'Tables de groupe : chat, images, messages privés';
                 a.style.cssText = 'display:inline-flex;align-items:center;gap:6px;text-decoration:none;' +
-                    'border:1px solid rgba(56,189,248,.45);border-radius:9px;padding:6px 10px;' +
-                    'font:700 13px system-ui,sans-serif;color:inherit;background:rgba(56,189,248,.08);' +
+                    'border:1px solid var(--border-glow, rgba(56,189,248,.45));border-radius:9px;padding:6px 10px;' +
+                    'font:700 13px system-ui,sans-serif;color:inherit;background:color-mix(in srgb, var(--arcane-cyan, #38bdf8) 10%, transparent);' +
                     'margin-right:8px;white-space:nowrap;';
                 a.innerHTML = '<span>💬 Tables</span>' +
                     '<span id="tablesUnreadBadge" style="display:none;min-width:18px;height:18px;' +
@@ -704,7 +704,7 @@
                     document.body.appendChild(wrap);
                 }
                 const el = document.createElement('div');
-                el.style.cssText = 'background:#0f172a;color:#e2e8f0;border:1px solid #38bdf8;' +
+                el.style.cssText = 'background:var(--bg-surface-elevated, #0f172a);color:var(--text-primary, #e2e8f0);border:1px solid var(--arcane-cyan, #38bdf8);' +
                     'border-radius:12px;padding:10px 12px;font:13px system-ui,sans-serif;' +
                     'box-shadow:0 8px 30px rgba(0,0,0,.5);cursor:pointer;display:flex;gap:8px;align-items:flex-start;';
                 const fMime = (m.file && m.file.mime) || '';
@@ -715,7 +715,7 @@
                 const av = m.fromAvatar
                     ? '<img src="' + m.fromAvatar + '" alt="" style="width:28px;height:28px;border-radius:50%;object-fit:cover;flex:none;">'
                     : '';
-                el.innerHTML = av + '<div style="min-width:0;"><div style="font-size:11px;color:#7dd3fc;font-weight:700;margin-bottom:2px;">' +
+                el.innerHTML = av + '<div style="min-width:0;"><div style="font-size:11px;color:var(--text-accent, #7dd3fc);font-weight:700;margin-bottom:2px;">' +
                     head + '</div>' +
                     '<div>' + esc(body.slice(0, 140)) + '</div></div>';
                 el.addEventListener('click', () => {
@@ -892,6 +892,7 @@
                 try {
                     const res = await fetch(`${getApiBase()}/api/auth/login`, {
                         method: 'POST',
+                        credentials: 'include',
                         headers: { 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': 'true' },
                         body: JSON.stringify({ identifier: id, password: pass })
                     });
@@ -942,6 +943,7 @@
                 try {
                     const res = await fetch(`${getApiBase()}/api/auth/register`, {
                         method: 'POST',
+                        credentials: 'include',
                         headers: { 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': 'true' },
                         body: JSON.stringify({
                             username: user,

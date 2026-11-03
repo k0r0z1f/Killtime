@@ -38,6 +38,8 @@ def build_html():
 <html lang="fr" data-theme="dark">
 <head>
     <meta charset="UTF-8">
+    <!-- Thème : application précoce (anti-flash) -->
+    <script src="js/theme-init.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Killtime Tactics — La Fleur des Fichiers</title>
     <meta name="description" content="Fleur neuronale des fichiers de Killtime Tactics : {total_commits} fichiers avec historique git complet, pétales par module, synapses de co-évolution et chronologie de création.">
@@ -109,7 +111,7 @@ def build_html():
         /* ================== TOPBAR ================== */
         .topbar {{
             height: 64px;
-            background: rgba(6, 10, 20, 0.78);
+            background: color-mix(in srgb, var(--bg-surface) 86%, transparent);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border-subtle);
@@ -156,7 +158,7 @@ def build_html():
             display: flex;
             align-items: center;
             gap: 8px;
-            color: #ffffff;
+            color: var(--text-primary);
         }}
 
         .brand-badge {{
@@ -166,7 +168,7 @@ def build_html():
             border-radius: 999px;
             background: rgba(192, 132, 252, 0.18);
             border: 1px solid rgba(192, 132, 252, 0.4);
-            color: #e9d5ff;
+            color: var(--void-violet);
             text-transform: uppercase;
             letter-spacing: 0.08em;
         }}
@@ -206,7 +208,7 @@ def build_html():
             display: flex;
             align-items: center;
             gap: 14px;
-            background: rgba(255, 255, 255, 0.03);
+            background: color-mix(in srgb, var(--text-primary) 6%, transparent);
             border: 1px solid var(--border-subtle);
             padding: 4px 14px;
             border-radius: 999px;
@@ -220,7 +222,7 @@ def build_html():
             gap: 5px;
         }}
         .metric-val {{
-            color: #38bdf8;
+            color: var(--text-accent);
             font-weight: 700;
             font-family: var(--font-mono);
         }}
@@ -232,7 +234,7 @@ def build_html():
         }}
 
         .btn-ghost {{
-            background: rgba(255, 255, 255, 0.05);
+            background: color-mix(in srgb, var(--text-primary) 7%, transparent);
             border: 1px solid var(--border-subtle);
             color: var(--text-secondary);
             padding: 7px 12px;
@@ -248,9 +250,9 @@ def build_html():
         }}
 
         .btn-ghost:hover {{
-            background: rgba(255, 255, 255, 0.12);
+            background: color-mix(in srgb, var(--text-primary) 14%, transparent);
             color: var(--text-primary);
-            border-color: rgba(255, 255, 255, 0.25);
+            border-color: var(--border-glow);
         }}
 
         .sound-toggle.active {{
@@ -322,7 +324,7 @@ def build_html():
 
         .mode-btn.active {{
             background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(192, 132, 252, 0.2));
-            color: #fff;
+            color: var(--text-primary);
             border: 1px solid rgba(56, 189, 248, 0.4);
             box-shadow: 0 0 12px rgba(56, 189, 248, 0.25);
         }}
@@ -583,7 +585,7 @@ def build_html():
 
         .active-epoch-badge {{
             font-size: 12px;
-            color: #e2e8f0;
+            color: var(--text-primary);
             display: flex;
             align-items: center;
             gap: 6px;
@@ -608,7 +610,7 @@ def build_html():
             width: 100%;
             height: 6px;
             border-radius: 999px;
-            background: rgba(255, 255, 255, 0.12);
+            background: var(--border-subtle);
             outline: none;
             cursor: pointer;
             transition: background 0.2s;
@@ -710,12 +712,12 @@ def build_html():
         .drawer-title {{
             font-family: var(--font-title);
             font-size: 18px;
-            color: #fff;
+            color: var(--text-primary);
             line-height: 1.35;
         }}
 
         .drawer-close-btn {{
-            background: rgba(255, 255, 255, 0.06);
+            background: var(--bg-surface);
             border: 1px solid var(--border-subtle);
             color: var(--text-secondary);
             width: 32px;
@@ -729,15 +731,15 @@ def build_html():
             flex-shrink: 0;
         }}
         .drawer-close-btn:hover {{
-            color: #fff;
-            background: rgba(255, 255, 255, 0.15);
+            color: var(--text-primary);
+            background: var(--bg-surface-hover);
         }}
 
         .drawer-meta-grid {{
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 10px;
-            background: rgba(0, 0, 0, 0.25);
+            background: var(--bg-canvas);
             padding: 12px;
             border-radius: 12px;
             border: 1px solid var(--border-subtle);
@@ -760,11 +762,11 @@ def build_html():
         .drawer-summary {{
             font-size: 13px;
             line-height: 1.6;
-            color: #cbd5e1;
-            background: rgba(255, 255, 255, 0.02);
+            color: var(--text-secondary);
+            background: var(--bg-canvas);
             padding: 12px;
             border-radius: 10px;
-            border-left: 3px solid #38bdf8;
+            border-left: 3px solid var(--arcane-cyan);
         }}
 
         .drawer-section-title {{
@@ -841,7 +843,7 @@ def build_html():
         }}
         .causal-jump-btn:hover {{
             background: rgba(56, 189, 248, 0.15);
-            color: #fff;
+            color: var(--text-primary);
             border-color: rgba(56, 189, 248, 0.4);
         }}
 
@@ -931,6 +933,7 @@ def build_html():
             #inspector-drawer.open {{ right: 0; }}
         }}
     </style>
+    <link rel="stylesheet" href="css/themes.css">
 </head>
 <body>
 
@@ -1191,7 +1194,7 @@ def build_html():
                         <span>Époque I : Fondation & Arène</span>
                     </div>
                     <div style="font-family: var(--font-mono); font-size: 12px; color: var(--text-muted);">
-                        <span id="hudActiveCommitIndex" style="color:#fff; font-weight:700;">1</span> / {total_commits} fichiers
+                        <span id="hudActiveCommitIndex" style="color:var(--text-primary); font-weight:700;">1</span> / {total_commits} fichiers
                     </div>
                 </div>
 
@@ -1216,14 +1219,14 @@ def build_html():
 <!-- ================= HELP & LORE MODAL ================= -->
 <div id="help-modal">
     <div class="modal-content">
-        <h2 style="font-family: var(--font-title); color: #38bdf8; display: flex; align-items: center; gap: 10px;">
+        <h2 style="font-family: var(--font-title); color: var(--arcane-cyan); display: flex; align-items: center; gap: 10px;">
             <span>🌺</span>
             <span>La Fleur des Fichiers de Killtime Tactics</span>
         </h2>
-        <p style="font-size: 13px; line-height: 1.6; color: #cbd5e1;">
+        <p style="font-size: 13px; line-height: 1.6; color: var(--text-secondary);">
             Chaque <strong>pétale est un fichier</strong> du code maison, qui éclot à la date de sa <strong>création git</strong> ({total_commits} fichiers, {range_long}). La couleur indique son module, la chronologie sa naissance.
         </p>
-        <div style="background: rgba(0,0,0,0.3); border-radius: 12px; padding: 14px; border: 1px solid var(--border-subtle); font-size: 12px; display: flex; flex-direction: column; gap: 8px;">
+        <div style="background: var(--bg-canvas); border-radius: 12px; padding: 14px; border: 1px solid var(--border-subtle); font-size: 12px; display: flex; flex-direction: column; gap: 8px;">
             <div>🌸 <strong>Pétales métier :</strong> 13 domaines (Personnage, Combat, Tactique, Récit, Ateliers, Arène, Interface, Multijoueur, Audio, Caméra, Tests, Données, Visuels) — regroupés par usage, pas par dossier.</div>
             <div>🔗 <strong>4 couches de liaisons commutables</strong> (interrupteurs sous les vues) : <strong>Synapses</strong> violettes = co-évolution (épaisseur = commits communs), <strong>Héritage</strong> cyan fléché = classe fille → parente, <strong>Partials</strong> pointillés = satellite → fichier principal, <strong>Tests</strong> verts = test → testé.</div>
             <div>🔥 <strong>Halo de churn :</strong> l'auréole orange pulse selon l'instabilité (nombre de commits). Anneau rouge tournant = ⚠️ hotspot (gros et instable).</div>
@@ -1231,9 +1234,9 @@ def build_html():
             <div>📏 <strong>Taille vivante :</strong> le rayon de chaque nœud = ses lignes réelles à la date affichée — les fichiers gonflent et maigrissent pendant la lecture.</div>
             <div>🎵 <strong>Synthèse Sonore :</strong> Harmonie céleste pentatonique générée en temps réel à chaque floraison.</div>
             <div>🕹️ <strong>Navigation :</strong> Glissez pour déplacer la vue, molette pour zoomer, cliquez sur un nœud pour voir l'historique complet du fichier.</div>
-            <div>⌨️ <strong>Raccourcis :</strong> <kbd style="background: #1e293b; padding: 2px 5px; border-radius: 4px;">Espace</kbd> Play/Pause, <kbd style="background: #1e293b; padding: 2px 5px; border-radius: 4px;">←</kbd> / <kbd style="background: #1e293b; padding: 2px 5px; border-radius: 4px;">→</kbd> Reculer/Avancer.</div>
+            <div>⌨️ <strong>Raccourcis :</strong> <kbd style="background: var(--bg-surface); border: 1px solid var(--border-subtle); padding: 2px 5px; border-radius: 4px;">Espace</kbd> Play/Pause, <kbd style="background: var(--bg-surface); border: 1px solid var(--border-subtle); padding: 2px 5px; border-radius: 4px;">←</kbd> / <kbd style="background: var(--bg-surface); border: 1px solid var(--border-subtle); padding: 2px 5px; border-radius: 4px;">→</kbd> Reculer/Avancer.</div>
         </div>
-        <button class="btn-ghost" id="helpModalCloseBtn" style="align-self: flex-end; padding: 8px 18px; color: #fff; border-color: #38bdf8;">
+        <button class="btn-ghost" id="helpModalCloseBtn" style="align-self: flex-end; padding: 8px 18px; color: var(--text-primary); border-color: var(--arcane-cyan);">
             Compris, explorer l'arbre !
         </button>
     </div>
@@ -2519,6 +2522,7 @@ def build_html():
 
 }})();
 </script>
+    <script src="js/theme.js"></script>
 </body>
 </html>
 '''

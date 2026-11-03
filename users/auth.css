@@ -3,7 +3,11 @@
    users/auth.css
    ========================================================================== */
 
-:root, [data-theme="dark"] {
+/* Palette : css/themes.css (source unique). Les règles :where(...) de
+   spécificité 0 ci-dessous servent uniquement de repli pour les pages hors
+   Codex qui chargent auth.css sans css/themes.css. */
+:where(:root),
+:where([data-theme="dark"]) {
     --bg-void: #06080d;
     --bg-canvas: #0b0f19;
     --bg-surface: #111827;
@@ -11,44 +15,44 @@
     --bg-surface-hover: #1f2d47;
     --border-subtle: rgba(255, 255, 255, 0.08);
     --border-glow: rgba(56, 189, 248, 0.25);
-    --border-accent: rgba(245, 158, 11, 0.3);
     --text-primary: #f1f5f9;
     --text-secondary: #94a3b8;
     --text-muted: #64748b;
     --text-accent: #38bdf8;
+    --text-gold: #fbbf24;
     --arcane-cyan: #38bdf8;
     --arcane-cyan-glow: rgba(56, 189, 248, 0.35);
+    --on-arcane-cyan: #06080d;
     --temporal-amber: #f59e0b;
     --temporal-glow: rgba(245, 158, 11, 0.25);
     --vital-ruby: #f43f5e;
-    --vital-ruby-glow: rgba(244, 63, 94, 0.25);
     --void-violet: #8b5cf6;
-    --font-title: 'Cinzel', serif;
-    --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-    --font-mono: 'JetBrains Mono', monospace;
-    --transition-smooth: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    --matrix-emerald: #10b981;
+    --matrix-glow: rgba(16, 185, 129, 0.25);
 }
 
-[data-theme="light"] {
+:where([data-theme="light"]) {
     --bg-void: #f8fafc;
     --bg-canvas: #f1f5f9;
     --bg-surface: #ffffff;
-    --bg-surface-elevated: #f8fafc;
-    --bg-surface-hover: #e2e8f0;
-    --border-subtle: rgba(0, 0, 0, 0.1);
-    --border-glow: rgba(2, 132, 199, 0.25);
-    --border-accent: rgba(217, 119, 6, 0.3);
+    --bg-surface-elevated: #e2e8f0;
+    --bg-surface-hover: #cbd5e1;
+    --border-subtle: rgba(0, 0, 0, 0.12);
+    --border-glow: rgba(2, 132, 199, 0.3);
     --text-primary: #0f172a;
-    --text-secondary: #475569;
+    --text-secondary: #334155;
     --text-muted: #64748b;
     --text-accent: #0284c7;
+    --text-gold: #b45309;
     --arcane-cyan: #0284c7;
     --arcane-cyan-glow: rgba(2, 132, 199, 0.2);
+    --on-arcane-cyan: #ffffff;
     --temporal-amber: #d97706;
     --temporal-glow: rgba(217, 119, 6, 0.2);
     --vital-ruby: #e11d48;
-    --vital-ruby-glow: rgba(225, 29, 72, 0.2);
     --void-violet: #7c3aed;
+    --matrix-emerald: #059669;
+    --matrix-glow: rgba(5, 150, 105, 0.2);
 }
 
 /* Bouton Déclencheur Topbar */
@@ -57,7 +61,7 @@
     align-items: center;
     gap: 8px;
     padding: 6px 14px;
-    background: linear-gradient(135deg, rgba(56, 189, 248, 0.12), rgba(245, 158, 11, 0.08));
+    background: linear-gradient(135deg, color-mix(in srgb, var(--arcane-cyan) 12%, transparent), color-mix(in srgb, var(--temporal-amber) 8%, transparent));
     border: 1px solid var(--border-glow);
     border-radius: 8px;
     color: var(--arcane-cyan);
@@ -70,9 +74,9 @@
 }
 
 .auth-trigger-btn:hover {
-    background: rgba(56, 189, 248, 0.2);
+    background: color-mix(in srgb, var(--arcane-cyan) 20%, transparent);
     border-color: var(--arcane-cyan);
-    color: #ffffff;
+    color: var(--text-primary);
     box-shadow: 0 0 14px var(--arcane-cyan-glow);
     transform: translateY(-1px);
 }
@@ -199,7 +203,7 @@
 }
 
 .user-dropdown-item.logout:hover {
-    background: rgba(244, 63, 94, 0.1);
+    background: color-mix(in srgb, var(--vital-ruby) 10%, transparent);
     color: var(--vital-ruby);
 }
 
@@ -365,7 +369,7 @@
     width: 100%;
     padding: 11px;
     background: var(--arcane-cyan);
-    color: #06080d;
+    color: var(--on-arcane-cyan, #06080d);
     border: none;
     border-radius: 8px;
     font-family: var(--font-body);
@@ -471,14 +475,14 @@
 
 .auth-alert-box.error {
     display: block;
-    background: rgba(244, 63, 94, 0.12);
+    background: color-mix(in srgb, var(--vital-ruby) 12%, transparent);
     border: 1px solid var(--vital-ruby);
     color: var(--vital-ruby);
 }
 
 .auth-alert-box.success {
     display: block;
-    background: rgba(16, 185, 129, 0.12);
+    background: color-mix(in srgb, var(--matrix-emerald) 12%, transparent);
     border: 1px solid var(--matrix-emerald);
     color: var(--matrix-emerald);
 }

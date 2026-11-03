@@ -320,6 +320,20 @@ class UserStore {
         return safeUser;
     }
 
+    getUserPrefs(userId) {
+        const user = this.findById(userId);
+        if (!user || !user.prefs || typeof user.prefs !== 'object') return {};
+        return { ...user.prefs };
+    }
+
+    updateUserPrefs(userId, patch) {
+        const user = this.findById(userId);
+        if (!user || !patch || typeof patch !== 'object') return null;
+        user.prefs = Object.assign({}, (user.prefs && typeof user.prefs === 'object') ? user.prefs : {}, patch);
+        this.persist();
+        return { ...user.prefs };
+    }
+
     exportDatabaseJson() {
         return JSON.stringify(this.users, null, 2);
     }

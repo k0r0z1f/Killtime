@@ -1322,7 +1322,7 @@ function initFabrique() {
                 var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
                 path.setAttribute('d', 'M ' + x1 + ' ' + y1 + ' C ' + (x1 + 50) + ' ' + y1 + ', ' + (x2 - 50) + ' ' + y2 + ', ' + x2 + ' ' + y2);
                 path.setAttribute('fill', 'none');
-                path.setAttribute('stroke', stroke || 'rgba(255,255,255,0.22)');
+                path.setAttribute('stroke', stroke || 'var(--text-muted)');
                 path.setAttribute('stroke-width', '2');
                 if (dash) path.setAttribute('stroke-dasharray', '5 4');
                 wiresEl.appendChild(path);
