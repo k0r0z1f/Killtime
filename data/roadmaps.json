@@ -3411,6 +3411,22 @@
      "suggestedAsset": "fiche_pj.html#fabPuzzle",
      "updated": "2026-11-03",
      "details": "FAIT 2026-11-03 — Accès fabrique depuis la fiche créateur (chap-36 + popout) + section « Techniques associées » live (compétence liée entraînée = badge associée, snapshot XP/PA/statut par entrée). Fabrique puzzle INTÉGRÉE à fiche_pj.html (même bloc #fabPuzzle, ancres #fabPuzzle, pas de 2e popout). Rangement par personnage : clé fabrique-puzzle-char-<id onglet> (pont FabriqueCharStore), migration unique du legs global vers 1er perso, duplication hérite, suppression nettoie, export/import embarquent techs, brouillons vides filtrés, sync inter-fenêtres (storage + garde focus). Moteur compute INCHANGÉ. Vérifié : node --check ×2, check_liens (262), build_nav (17), 0 ID dupliqué, HTML équilibré, 15/15 Chrome headless réel (migration, isolation onglets, duplication, inter-fenêtres, 0 erreur hors 401 auth préexistante). Fichiers : fiche_pj.html, livre_9.html, js/tools.js?v=11, js/fabrique.js?v=24."
+    },
+    {
+     "id": "RD-224",
+     "title": "Mains nues : 0 dégât de base, +1 Essoufflement cible sur touche franche (§24.1)",
+     "epic": "Codex sysRP",
+     "status": "done",
+     "priority": "medium",
+     "order": 41,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "livre_5.html#sec-24-1",
+     "updated": "2026-11-03",
+     "details": "FAIT 2026-11-03 — §24.1 (content/livre_5 chap-24/bloc-00) : 4e puce — poings/pieds (Mains Nues) sans dégâts de base (touche franche = 0 + différentiel) mais 1 point d'Essoufflement cible en plus des dégâts diff (Δ>0 seul ; Δ=0 = 0 dégât sans essoufflement, Δ<0 bloqué, plafond §4.2 inchangé). Moteur/JSON : build_livres 5 (19 textes sync). Vérifié : check 5, check_liens (262), rendu headless réel (puce présente, rule-ref intacts)."
     }
    ]
   },

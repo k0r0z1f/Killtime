@@ -30,6 +30,9 @@ livre: 5
                         <li><strong>Différentiel Négatif :</strong> Si le total de l'attaque plus les dégâts de l'arme
                             reste inférieur ou égal à la parade, le coup est <strong>parfaitement bloqué</strong> (aucun
                             dégât).</li>
+                        <li><strong>Poings et Pieds (<a class="rule-ref" href="livre_3.html#chap-12" data-tip="Mains Nues : combat à mains nues (FOR/AGI, §12.1).">Mains Nues</a>) :</strong> Tes poings n'ont pas de
+                            dégâts de base : touche franche = <strong>0 + différentiel</strong>. Mais le coup secoue :
+                            la cible prend aussi <strong>1 point d'<a class="rule-ref" href="livre_1.html#sec-4-2" data-tip="Essoufflement : 1 point = des PA d'urgence ; ne part pas tout seul, action dédiée pour souffler (§4.2).">Essoufflement</a></strong>.</li>
                     </ul>
 
                     
