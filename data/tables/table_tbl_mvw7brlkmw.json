@@ -5,7 +5,7 @@
   "mjId": "usr_mtvzf3lr",
   "mjName": "k0r0",
   "createdAt": 1793439060000,
-  "updatedAt": 1793548141323,
+  "updatedAt": 1793815949359,
   "maxMembers": 12,
   "inviteCode": "inv_BgCO6QCJUnID",
   "members": [
@@ -583,6 +583,19 @@
       "toName": null,
       "toExcept": [],
       "createdAt": 1793548141323
+    },
+    {
+      "id": "m_mw2fp8vjx4",
+      "fromId": "usr_mtvzf3lr",
+      "fromName": "k0r0",
+      "fromRole": "mj",
+      "text": "📖 Système de Jeu RP — Codex Universel : Préface — codex« Si vous ouvrez ce codex, c'est pour jouer. Alors disons les choses simplement : ce système veut que chaque combat respire, que chaque choix coûte quelque chose, et que même la magie et le voyage dans le temps se comprennent en quelques phrases autour d'une table. »",
+      "image": null,
+      "file": null,
+      "toUserId": null,
+      "toName": null,
+      "toExcept": [],
+      "createdAt": 1793815949359
     }
   ],
   "listed": true,
