@@ -4,7 +4,7 @@ format: raw
 livre: 1
 ---
                     <p>
-                        Créez votre personnage en <strong>5 étapes simples</strong>. Suivez le guide
+                        Créez votre personnage en <strong>6 étapes simples</strong>. Suivez le guide
                         pas-à-pas et repartez avec un héros solide, plein de caractère, prêt à jouer
                         dès ce soir.
                     </p>

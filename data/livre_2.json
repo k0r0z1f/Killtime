@@ -292,15 +292,15 @@
   },
   {
    "resultat": "20",
-   "offensif_html": "<strong><a class=\"rule-ref\" href=\"livre_6.html#sec-26-1bis\" data-tip=\"Dégâts Résiduels : PV directs qui baissent de 1 par tour. Seul un soin les stoppe (§26.1bis).\">3 Dégâts Résiduels</a></strong>",
+   "offensif_html": "<strong><a class=\"rule-ref\" href=\"livre_6.html#sec-26-2\" data-tip=\"Dégâts Résiduels : PV directs qui baissent de 1 par tour. Seul un soin les stoppe (§26.2).\">3 Dégâts Résiduels</a></strong>",
    "defensif_html": "Contre-attaque automatique : riposte après résolution de l’attaque en cours, équivalente à une <a class=\"rule-ref\" href=\"livre_5.html#sec-22-4\" data-tip=\"Frappe d’opportunité : frappe réflexe gratuite (0 PA) en Face-à-Face auto, mises à 0 (§22.4).\">frappe d’opportunité</a> (0 PA), sans consommer ta réaction du round.",
    "social_html": "Ralliement inconditionnel",
    "utilitaire_html": "Survoltage arcanique total"
   },
   {
    "resultat": "24",
-   "offensif_html": "<span class=\"pill-badge ruby\"><a class=\"rule-ref\" href=\"livre_6.html#sec-26-3\" data-tip=\"Inconscient : aucune action ni réaction. Réveil par secousse vigoureuse (1 PA) ou premiers soins.\">Cible Inconsciente</a></span> jusqu’à la fin de son prochain tour.",
-   "defensif_html": "<span class=\"pill-badge ruby\"><a class=\"rule-ref\" href=\"livre_6.html#sec-26-3\" data-tip=\"Inconscient : aucune action ni réaction. Réveil par secousse vigoureuse (1 PA) ou premiers soins.\">Attaquant inconscient</a></span> jusqu’à la fin de son prochain tour.",
+   "offensif_html": "<span class=\"pill-badge ruby\"><a class=\"rule-ref\" href=\"livre_6.html#sec-26-5\" data-tip=\"Inconscient : aucune action ni réaction. Réveil par secousse vigoureuse (1 PA) ou premiers soins.\">Cible Inconsciente</a></span> jusqu’à la fin de son prochain tour.",
+   "defensif_html": "<span class=\"pill-badge ruby\"><a class=\"rule-ref\" href=\"livre_6.html#sec-26-5\" data-tip=\"Inconscient : aucune action ni réaction. Réveil par secousse vigoureuse (1 PA) ou premiers soins.\">Attaquant inconscient</a></span> jusqu’à la fin de son prochain tour.",
    "social_html": "Soumission absolue",
    "utilitaire_html": "Succès mirifique critique"
   }

@@ -12,7 +12,7 @@ format: raw
                         Ils ne vous donnent <strong>jamais</strong> : un dé plus gros, un point
                         d'attribut, des PA, des dégâts, de l'armure, un entraînement gratuit
                         ou des points de Magie. Votre Érudition et ses entraînements gratuits
-                        (Étape 5) ne bougent pas.
+                        (Étape 6) ne bougent pas.
                     </p>
 
                     <div class="callout arcane">

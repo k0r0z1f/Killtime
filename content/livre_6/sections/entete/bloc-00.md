@@ -23,7 +23,7 @@ livre: 6
                         jusqu'à zéro. La chair encaisse, se déchire, s'asphyxie et réagit selon des <strong>seuils
                             physiologiques stricts</strong> dérivés de la Constitution. Ce livre rassemble les règles
                         d'encaissement, le seuil létal (<span class="hl-ruby">Constitution &times; 5</span>), le
-                        compendium officiel complet des <strong>16 états et altérations de statut</strong>, la médecine
+                        compendium officiel complet des <strong>18 états et altérations de statut</strong>, la médecine
                         de premiers soins et le protocole de résurrection.
                     </p>
 

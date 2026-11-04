@@ -37,7 +37,7 @@ livre: 5
                             Exemple : CON 4 → max 20 → seuil 6 (20 × 0,28 = 5,6, arrondi au-dessus).
                             À 6 PV ou moins, tu testes. Une seule fois par combat.
                             Si un soin te remonte au-dessus du seuil, ton cran se réarme.
-                            Pas de test si tu es pulvérisé, <a class="rule-ref" href="livre_6.html#sec-26-3" data-tip="Inconscient : aucune action ni réaction. Réveil par secousse vigoureuse (1 PA) ou premiers soins.">Inconscient</a>,
+                            Pas de test si tu es pulvérisé, <a class="rule-ref" href="livre_6.html#sec-26-5" data-tip="Inconscient : aucune action ni réaction. Réveil par secousse vigoureuse (1 PA) ou premiers soins.">Inconscient</a>,
                             mort, ou déjà testé.</li>
                         <li><strong>Jet de Cran (compétence, jamais de carac brute) :</strong> tu choisis
                             ton meilleur outil entre <strong>Mener</strong> et <strong>Intuition</strong>
@@ -52,7 +52,7 @@ livre: 5
                             Tu fuis le danger en panique, −2 à tes jets, sans action raisonnée.
                             Un allié au chevet peut te stabiliser aux
                             <a class="rule-ref" href="livre_6.html#chap-27" data-tip="Premiers Soins (3 PA, dif. 12) : stabilise un Agonisant en Inconscient stable (Livre VI §27.1).">Premiers Soins (3 PA, dif. 12)</a>
-                            vers un <a class="rule-ref" href="livre_6.html#sec-26-3" data-tip="Inconscient : aucune action ni réaction. Réveil par secousse vigoureuse (1 PA) ou premiers soins.">Inconscient stable</a>.
+                            vers un <a class="rule-ref" href="livre_6.html#sec-26-5" data-tip="Inconscient : aucune action ni réaction. Réveil par secousse vigoureuse (1 PA) ou premiers soins.">Inconscient stable</a>.
                             Ne confonds pas avec le <a class="rule-ref" href="livre_6.html#sec-25-2" data-tip="Dernier Souffle : à 0 PV (coup sous Encaissement), reste conscient et agis, +1 Essoufflement par jet (§25.2).">Dernier Souffle</a> :
                             lui, c'est ton choix héroïque à 0 PV. La déroute, elle, te choisit.</li>
                         <li><strong>Reddition = ton choix, pas un jet :</strong> à ton tour, tu peux déposer

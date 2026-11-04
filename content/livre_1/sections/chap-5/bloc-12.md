@@ -12,6 +12,6 @@ livre: 1
                         <li><strong>Conséquences immédiates :</strong> Dès qu'une caractéristique augmente, toutes vos jauges dérivées sont recalculées
                             (vos PA avec <code>Max(Agi, Int) + Rap + Min</code>, votre <a class="rule-ref" href="#sec-4-1" data-tip="Encaissement = CON × 2 : ce que ton corps encaisse en un coup sans traumatisme (§4.1).">Encaissement</a> à <code>CON × 2</code>, votre <a class="rule-ref" href="#sec-4-1" data-tip="Seuil Létal = CON × 5 : blessures cumulées qui l’atteignent = effondrement (§4.1).">Seuil Létal</a> à <code>CON × 5</code>, votre <a class="rule-ref" href="#sec-4-2" data-tip="Souffle : ta réserve d’Essoufflement, calibrée sur ta Constitution (§4.2).">Souffle</a> à <code>CON</code>)
                             et vos futures pistes de progression s'ajustent à votre nouveau rang. Et chaque nouveau point investi en <strong>Érudition</strong>
-                            débloque immédiatement <strong>+1 <a class="rule-ref" href="#sec-etape-5" data-tip="Entraînements gratuits : ton rang d’Érudition = autant de compétences montées d’un palier de dé (Étape 5).">entraînement gratuit</a></strong> permanent sur votre fiche.
+                            débloque immédiatement <strong>+1 <a class="rule-ref" href="#sec-etape-6" data-tip="Entraînements gratuits : ton rang d’Érudition = autant de compétences montées d’un palier de dé (Étape 6).">entraînement gratuit</a></strong> permanent sur votre fiche.
                         </li>
                     </ul>

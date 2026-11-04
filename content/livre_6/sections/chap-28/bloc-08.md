@@ -12,7 +12,7 @@ livre: 6
                         <li><strong>Traitement :</strong> Premiers Soins (3 PA, §27.1) dif. = Virulence ; kit requis
                             (chirurgie si parasitaire, extinction si En Feu, désobstruction si Asphyxie) ; seringues
                             (Livre VIII §35.3) rendent des PV mais <strong>ne lèvent pas le DoT pathologique</strong>
-                            (cf. §26.1bis : Empoisonné/Feu/Asphyxie exigent traitement dédié) ; convalescence
+                            (cf. §26.2 : Empoisonné/Feu/Asphyxie exigent traitement dédié) ; convalescence
                             Con + Endurance / nuit (§27.2).</li>
                         <li><strong>Terrain :</strong> CON 1–2 : +1 stade initial ; résistances raciales §25.4
                             (résiduel à &minus;1, +2 CON vs élément) ; Automates : immunisés aux organiques sauf mention.</li>

@@ -5,5 +5,5 @@ livre: 6
 ---
 
 
-                    <h3 id="sec-26-1bis">26.1bis États à Dégâts Résiduels (DoT) : tick, aggravation, soin</h3>
+                    <h3 id="sec-26-2">26.2 États à Dégâts Résiduels (DoT) : tick, aggravation, soin</h3>
                     

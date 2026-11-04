@@ -19,7 +19,7 @@ format: raw
                                     permet de survivre in extremis à 1 PV (coma profond).</li>
                                 <li><strong>Impact au Cœur / Cou :</strong> Coma immédiat et agonie rapide (hémorragie
                                     mortelle en <code>CON / 2</code> tours).</li>
-                                <li><strong>Torse &amp; Membres :</strong> Syncope forcée (état <a class="rule-ref" href="#sec-26-3" data-tip="Inconscient : aucune action ni réaction. Réveil par secousse vigoureuse (1 PA) ou premiers soins.">Inconscient</a> et
+                                <li><strong>Torse &amp; Membres :</strong> Syncope forcée (état <a class="rule-ref" href="#sec-26-5" data-tip="Inconscient : aucune action ni réaction. Réveil par secousse vigoureuse (1 PA) ou premiers soins.">Inconscient</a> et
                                     <a class="rule-ref" href="#sec-26-1" data-tip="À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.">À Terre</a> immédiat).
                                 </li>
                             </ul>
@@ -28,7 +28,7 @@ format: raw
                             Le corps s'éteint par pure décharge vitale. Le combattant choisit :
                             <ul>
                                 <li><strong>Sombrer (La Syncope Protectrice) :</strong> Tu t'évanouis
-                                    et tu restes stable au sol (<a class="rule-ref" href="#sec-26-3" data-tip="Inconscient : aucune action ni réaction. Réveil par secousse vigoureuse (1 PA) ou premiers soins.">Inconscient</a>, <a class="rule-ref" href="#sec-26-1" data-tip="À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.">À Terre</a>).
+                                    et tu restes stable au sol (<a class="rule-ref" href="#sec-26-5" data-tip="Inconscient : aucune action ni réaction. Réveil par secousse vigoureuse (1 PA) ou premiers soins.">Inconscient</a>, <a class="rule-ref" href="#sec-26-1" data-tip="À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.">À Terre</a>).
                                     En général, tes adversaires te laissent là où tu es tombé et passent à une
                                     autre cible : tu ne bouges plus, tu ne les menaces plus. Exemple : tu t'effondres
                                     au milieu d'une fusillade, le tireur en face réoriente son arme vers ton

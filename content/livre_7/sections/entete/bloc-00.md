@@ -14,7 +14,7 @@ livre: 7
                             </svg>
                             Livre VII — Historiques &amp; Passés
                         </span>
-                        <span class="doc-badge-pill accent">Création Étape 1bis</span>
+                        <span class="doc-badge-pill accent">Création Étape 2</span>
                         <span class="doc-badge-pill live">Homologué Tables de Jeu</span>
                     </div>
 
@@ -26,7 +26,7 @@ livre: 7
                         Vous repartez avec du récit, un petit bonus d'enfance, un bonus
                         de métier un peu plus costaud, et peut-être un événement marquant :
                         un coup de pouce 1×/séance, à condition d'en jouer le prix.
-                        C'est l'<strong>Étape 1bis</strong>, juste après l'Étape 1 du
+                        C'est l'<strong>Étape 2</strong>, juste après l'Étape 1 du
                         Livre I, §3.
                     </p>
 

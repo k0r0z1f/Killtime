@@ -8,7 +8,7 @@ livre: 5
                     <ul>
                         <li><strong>🔥 Sillage Igné :</strong> <em>Parfaite</em> — Mina dash gratuitement le long de
                             la ligne (arrivée = case libre la plus proche si occupée) : <strong>4 dégâts</strong> par
-                            cible traversée + <strong>3 feu + <a class="rule-ref" href="livre_6.html#sec-26-1bis" data-tip="En Feu : 2 PV/tour (bouclier d'abord), puis −1/tour. Il faut l'éteindre (§26.1bis).">En Feu</a></strong>. <em>Semi</em> — dash + 4 + 1, et Mina
+                            cible traversée + <strong>3 feu + <a class="rule-ref" href="livre_6.html#sec-26-2" data-tip="En Feu : 2 PV/tour (bouclier d'abord), puis −1/tour. Il faut l'éteindre (§26.2).">En Feu</a></strong>. <em>Semi</em> — dash + 4 + 1, et Mina
                             encaisse <strong>2 dégâts</strong> (exposée au bout de la ligne). <em>Ratée</em> — PA
                             perdus, Mina reste sur place.</li>
                         <li><strong>🪢 Lacet de Nytharite :</strong> <em>Parfaite</em> — cible
@@ -26,7 +26,7 @@ livre: 5
                             (ignore la moitié de l'armure) sur la cible dure. <em>Semi</em> — 5 dégâts, armure
                             normale. <em>Ratée</em> — le couloir se referme.</li>
                         <li><strong>✖️ Cisaille Entropique :</strong> <em>Parfaite</em> — <strong>5 dégâts +
-                            <a class="rule-ref" href="livre_6.html#sec-26-1bis" data-tip="Saignement : PV directs en début de tour, puis −1/tour. Tout soin le stoppe (§26.1bis).">Saignement</a></strong> sur chaque cible à l'intersection. <em>Semi</em> — 3 dégâts.
+                            <a class="rule-ref" href="livre_6.html#sec-26-2" data-tip="Saignement : PV directs en début de tour, puis −1/tour. Tout soin le stoppe (§26.2).">Saignement</a></strong> sur chaque cible à l'intersection. <em>Semi</em> — 3 dégâts.
                             <em>Ratée</em> — les branches se désynchronisent.</li>
                         <li><strong>⧉ Parallaxe :</strong> <em>Parfaite</em> — la cible <strong>ne peut pas se
                             défendre</strong> (score 0, comme une défense passive §22.1) contre la frappe conjointe

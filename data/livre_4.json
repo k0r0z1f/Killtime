@@ -245,7 +245,7 @@
      "<strong>Magie Primale</strong>",
      "Corps, Manipulation, Destruction, Ombre, Lumière, Poison",
      "Offensif, Utilitaire",
-     "Altération biologique, pourrissement, éclairs aveuglants, <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-26-1bis\"\n                                            data-tip=\"Dégâts Résiduels : PV directs qui baissent de 1 par tour. Seul un soin les stoppe (§26.1bis).\">dégâts\n                                            résiduels</a>\n                                        toxiques."
+     "Altération biologique, pourrissement, éclairs aveuglants, <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-26-2\"\n                                            data-tip=\"Dégâts Résiduels : PV directs qui baissent de 1 par tour. Seul un soin les stoppe (§26.2).\">dégâts\n                                            résiduels</a>\n                                        toxiques."
     ],
     [
      "<strong>Magie de l'Esprit (Psyché)</strong>",
@@ -427,7 +427,7 @@
     ],
     [
      "<span class=\"pill-badge amber\">3 points</span>",
-     "La cible subit <strong>2 <a class=\"rule-ref\" href=\"livre_6.html#sec-26-1bis\"\n                                                data-tip=\"Dégâts Résiduels : PV directs qui baissent de 1 par tour. Seul un soin les stoppe (§26.1bis).\">Dégâts\n                                                Résiduels</a></strong> continus",
+     "La cible subit <strong>2 <a class=\"rule-ref\" href=\"livre_6.html#sec-26-2\"\n                                                data-tip=\"Dégâts Résiduels : PV directs qui baissent de 1 par tour. Seul un soin les stoppe (§26.2).\">Dégâts\n                                                Résiduels</a></strong> continus",
      "Dégressif par tour (-1/tour)"
     ],
     [
@@ -457,7 +457,7 @@
     ],
     [
      "<span class=\"pill-badge ruby\">6 points</span>",
-     "La cible subit <strong>3 <a class=\"rule-ref\" href=\"livre_6.html#sec-26-1bis\"\n                                                data-tip=\"Dégâts Résiduels : PV directs qui baissent de 1 par tour. Seul un soin les stoppe (§26.1bis).\">Dégâts\n                                                Résiduels</a></strong> continus",
+     "La cible subit <strong>3 <a class=\"rule-ref\" href=\"livre_6.html#sec-26-2\"\n                                                data-tip=\"Dégâts Résiduels : PV directs qui baissent de 1 par tour. Seul un soin les stoppe (§26.2).\">Dégâts\n                                                Résiduels</a></strong> continus",
      "Dégressif par tour"
     ],
     [
@@ -472,7 +472,7 @@
     ],
     [
      "<span class=\"pill-badge ruby\">10 points</span>",
-     "La cible subit <strong>4 <a class=\"rule-ref\" href=\"livre_6.html#sec-26-1bis\"\n                                                data-tip=\"Dégâts Résiduels : PV directs qui baissent de 1 par tour. Seul un soin les stoppe (§26.1bis).\">Dégâts\n                                                Résiduels</a></strong> continus",
+     "La cible subit <strong>4 <a class=\"rule-ref\" href=\"livre_6.html#sec-26-2\"\n                                                data-tip=\"Dégâts Résiduels : PV directs qui baissent de 1 par tour. Seul un soin les stoppe (§26.2).\">Dégâts\n                                                Résiduels</a></strong> continus",
      "Dégressif par tour"
     ]
    ]
@@ -732,7 +732,7 @@
      },
      "Magie Primale (MAG, INT)",
      "Offensif",
-     "En plus d'Immobilisé, ta cible subit <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-26-1bis\"\n                                            data-tip=\"Asphyxie : PV + drain de 1 PA par tour. Soin : désobstruction (premiers soins + kit).\">Asphyxie</a>\n                                        : elle perd aussi 1 PA par tour."
+     "En plus d'Immobilisé, ta cible subit <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-26-2\"\n                                            data-tip=\"Asphyxie : PV + drain de 1 PA par tour. Soin : désobstruction (premiers soins + kit).\">Asphyxie</a>\n                                        : elle perd aussi 1 PA par tour."
     ],
     [
      {
@@ -750,7 +750,7 @@
      },
      "Magie Primale (MAG, INT)",
      "Offensif",
-     "Ta cible entravée devient <a class=\"rule-ref\" href=\"livre_6.html#sec-26-1\"\n                                            data-tip=\"Paralysé : aucune action ni réaction, incapacité totale (§26.1).\">Paralysée</a>\n                                        et <a class=\"rule-ref\" href=\"livre_6.html#sec-26-1bis\"\n                                            data-tip=\"Empoisonné : PV directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonnée</a>\n                                        en continu."
+     "Ta cible entravée devient <a class=\"rule-ref\" href=\"livre_6.html#sec-26-1\"\n                                            data-tip=\"Paralysé : aucune action ni réaction, incapacité totale (§26.1).\">Paralysée</a>\n                                        et <a class=\"rule-ref\" href=\"livre_6.html#sec-26-2\"\n                                            data-tip=\"Empoisonné : PV directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonnée</a>\n                                        en continu."
     ],
     [
      "<strong>Catalyse Tissulaire</strong>",
@@ -765,7 +765,7 @@
      },
      "Magie Primale (MAG, INT)",
      "Utilitaire",
-     "Tu soignes 10 PV au lieu de 5 et tu purges aussi le <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-26-1bis\"\n                                            data-tip=\"Saignement : PV directs en début de tour, puis −1/tour. Tout soin le stoppe (§26.1bis).\">Saignement</a>."
+     "Tu soignes 10 PV au lieu de 5 et tu purges aussi le <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-26-2\"\n                                            data-tip=\"Saignement : PV directs en début de tour, puis −1/tour. Tout soin le stoppe (§26.2).\">Saignement</a>."
     ],
     [
      {
@@ -798,7 +798,7 @@
      },
      "Magie Primale (MAG, INT)",
      "Offensif",
-     "Zone de 2 cases : <a class=\"rule-ref\" href=\"livre_6.html#sec-26-1bis\"\n                                            data-tip=\"Empoisonné : PV directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonné</a>\n                                        et <a class=\"rule-ref\" href=\"livre_6.html#sec-26-1\"\n                                            data-tip=\"Ralenti : toute action coûte le double de PA.\">Ralenti</a>."
+     "Zone de 2 cases : <a class=\"rule-ref\" href=\"livre_6.html#sec-26-2\"\n                                            data-tip=\"Empoisonné : PV directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonné</a>\n                                        et <a class=\"rule-ref\" href=\"livre_6.html#sec-26-1\"\n                                            data-tip=\"Ralenti : toute action coûte le double de PA.\">Ralenti</a>."
     ],
     [
      {
@@ -837,7 +837,7 @@
      "<strong>Incinération Pyrocinétique</strong>",
      "Magie Élémentale (MAG, INT)",
      "Offensif",
-     "Tu projettes un jet de flammes : 6 dégâts de brûlure et l'état <a\n                                            class=\"rule-ref\" href=\"livre_6.html#sec-26-1bis\"\n                                            data-tip=\"En Feu : 2 PV/tour (bouclier d'abord), puis −1/tour. Il faut l'éteindre (§26.1bis).\">En\n                                            Feu</a>."
+     "Tu projettes un jet de flammes : 6 dégâts de brûlure et l'état <a\n                                            class=\"rule-ref\" href=\"livre_6.html#sec-26-2\"\n                                            data-tip=\"En Feu : 2 PV/tour (bouclier d'abord), puis −1/tour. Il faut l'éteindre (§26.2).\">En\n                                            Feu</a>."
     ],
     [
      {

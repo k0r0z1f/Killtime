@@ -8,7 +8,7 @@ format: raw
                     <p>
                         Vous venez de poser l'identité, l'espèce et le concept (Étape 1,
                         Livre I §3). Prenez deux minutes pour le passé, avant de répartir
-                        vos points (Étape 2). Tant que votre fiche n'est pas validée,
+                        vos points (Étape 3). Tant que votre fiche n'est pas validée,
                         vous pouvez encore tout changer : enfance, métier, même espèce
                         ou concept si l'histoire vous emmène ailleurs.
                     </p>

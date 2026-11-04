@@ -162,7 +162,7 @@ function initCharacterSheet() {
         if (v <= 2) return '1d2'; if (v <= 4) return '1d4'; if (v <= 6) return '1d6'; if (v <= 8) return '1d8'; return '1d10';
     }
 
-    // Palier d'entraînement (Livre I Étape 5) : +1 palier = +1 cran sur l'échelle, plafond 1d12.
+    // Palier d'entraînement (Livre I Étape 6) : +1 palier = +1 cran sur l'échelle, plafond 1d12.
     const DIE_LADDER = ['1d2', '1d4', '1d6', '1d8', '1d10', '1d12'];
     function stepDie(die, steps) {
         let i = DIE_LADDER.indexOf(die);
@@ -1508,7 +1508,7 @@ function initCharacterSheet() {
         });
     });
 
-    // Skill checkboxes (plafond = ÉRU effective, Livre I Étape 5) : une case
+    // Skill checkboxes (plafond = ÉRU effective, Livre I Étape 6) : une case
     // cochée au-delà du quota est refusée avec la bulle d'avertissement.
     document.querySelectorAll('.skill-check').forEach(cb => {
         cb.addEventListener('change', () => {
@@ -1532,7 +1532,7 @@ function initCharacterSheet() {
     }
     document.querySelectorAll('.skill-check').forEach(cb => cb.addEventListener('change', flushSync));
 
-    // Sens : tirage 1d6 clampé au minimum racial (Livre I Étape 4).
+    // Sens : tirage 1d6 clampé au minimum racial (Livre I Étape 5).
     function clampSenses() {
         const min = RACE_DATA[currentRace()].sensMin;
         for (const inp of [visionInput, ouieInput]) {
@@ -1542,7 +1542,7 @@ function initCharacterSheet() {
             inp.setAttribute('min', min);
         }
         const sensNote = document.getElementById('csSensNote');
-        if (sensNote) sensNote.textContent = 'Min racial : ' + min + ' (1d6, Livre I Étape 4)';
+        if (sensNote) sensNote.textContent = 'Min racial : ' + min + ' (1d6, Livre I Étape 5)';
     }
     const btnVision = document.getElementById('csBtnVision');
     const btnOuie = document.getElementById('csBtnOuie');
@@ -1710,7 +1710,7 @@ function initCharacterSheet() {
             `PA/tour : ${vitals.pa.textContent} (= Max(AGI,INT) + RAP + Min)\n` +
             `Encaissement : ${vitals.cap.textContent} (CON×2 + don) | Maximum Létal : ${vitals.max.textContent} (CON×5)\n` +
             `Essoufflement : ${vitals.ess.textContent} | Initiative : ${document.getElementById('vitalInit').textContent} | Miracle : ${document.getElementById('vitalMiracle').textContent}\n\n` +
-            `-- HISTORIQUE (Livre VII, Étape 1bis) --\n` +
+            `-- HISTORIQUE (Livre VII, Étape 2) --\n` +
             `Enfance : ${enfTxt}\nMétier : ${metTxt}\nÉvénement : ${eveTxt}\nAncrage : ${d.ancrage || '—'}\n\n` +
             `Compétences Entraînées (gratuites = ÉRU, +1 palier) :\n${trainedSkills}\n` +
             `==============================`;

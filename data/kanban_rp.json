@@ -1,6 +1,6 @@
 {
  "version": 3,
- "updated": "2026-11-03",
+ "updated": "2026-11-04",
  "activeId": "board-revue-rp",
  "boards": [
   {
@@ -745,7 +745,7 @@
     },
     {
      "id": "RP-050",
-     "title": "Relire chap. 29. Principes & Procédure (Étape 1bis)",
+     "title": "Relire chap. 29. Principes & Procédure (Étape 2)",
      "epic": "Livre VII — Historiques",
      "status": "todo",
      "priority": "high",
@@ -1872,7 +1872,7 @@
      "id": "RP-125",
      "title": "Système bouffe/privation — états Affamé / Privation (eau, nourriture)",
      "epic": "Livre VI — Santé & États",
-     "status": "todo",
+     "status": "done",
      "priority": "medium",
      "order": 96,
      "scene": "",
@@ -1881,7 +1881,7 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_6.html#chap-26",
-     "details": "Développer le système de bouffe : seuils eau/nourriture (rations/jour), états Privation (soif) et/ou Affamé (faim) au chap. 24 (tick, soin, cumul), épreuves CON associées, interaction Frugalité Cleyane (Livre I §2.2 : besoins ÷2, +2 CON vs privation). DONE = états définis + exemples chiffrés + liens rule-ref OK."
+     "details": "FAIT 2026-11-04 — §26.3 créé (sec-26-3) : besoins 2 L + 1 ration / 24 h (Cléien Frugalité : 1 L + 1 ration/2 j, +2 CON vs privation, Livre I §2.2) ; Privation auto à 24 h sans eau puis épreuve CON Diff 4+2/niveau (max 3 : −1/−2/−2+Ralenti+2 PV directs/j, tick aube, ignore armure/bouclier) ; Affamé auto à 48 h sans ration puis épreuve CON Diff 3+1/niveau (max 3 : −1/−2/−2+nuit÷2+1 PV direct/j) ; cumul Affamé+Privation ; soin = eau/nourriture seule (2 L/1 ration = −1 niveau, 24 h hydraté / 48 h nourri = levé) ; nuit §27.2 branchée (sans eau = 0 PV + Essoufflement conservé, sans ration = moitié) ; 2 exemples chiffrés (Roger CON 4 d4, Kader Cléien CON 3 d4) ; rule-refs §§25.2/26/27.2 + Livres I/II/III. Table états +11 lignes (Affamé, Privation, donnees+mecaniques+par_nom). Fichiers : chap-26/bloc-04.md, chap-27/bloc-00.md. Checks : build_livres 6 OK, nav OK, liens OK (266 textes). Suivi 2026-11-04 — suppression bis/ter : chap-26 renuméroté 26.1–26.7 (DoT §26.2, Faim §26.3, Bénéfiques §26.4, Vitaux §26.5, Effets §26.6, Objets §26.7, ~70 refs MAJ), création en 6 étapes (1bis→2, 2→3, 3→4, 4→5, 5→6 + sec-etape-6), liens morts §25.1bis réparés (→§26.2), 16→18 États, RP-050 '(Étape 2)'. Checks : build 11/11 + nav + liens verts."
     },
     {
      "id": "RP-126",

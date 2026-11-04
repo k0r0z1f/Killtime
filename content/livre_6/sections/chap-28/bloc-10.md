@@ -14,7 +14,7 @@ livre: 6
                     <div class="codex-signature">
                         <div class="sig-meta">
                             <strong>LIVRE VI DU CODEX UNIVERSEL</strong><br>
-                            Traumatologie, Compendium des 16 États & Chirurgie de Champ de Bataille<br>
+                            Traumatologie, Compendium des 18 États & Chirurgie de Champ de Bataille<br>
                             <em>Validé par les chirurgiens impériaux et les guérisseurs de la Cinquième Force.</em>
                         </div>
                         <div class="sig-stamp">

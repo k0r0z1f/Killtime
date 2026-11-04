@@ -57,11 +57,11 @@ livre: 3
                         <a class="rule-ref" href="livre_1.html#sec-5-3"
                             data-tip="Coût croisé ×2 : dépenser l'XP d'une autre compétence coûte double (§5.3).">croisé
                             <strong>×2</strong></a>.
-                        <br><strong>Vos <a class="rule-ref" href="livre_1.html#sec-etape-5"
-                                data-tip="Entraînements gratuits : ton rang d'Érudition = autant de compétences montées d'un palier de dé (Étape 5).">entraînements
+                        <br><strong>Vos <a class="rule-ref" href="livre_1.html#sec-etape-6"
+                                data-tip="Entraînements gratuits : ton rang d'Érudition = autant de compétences montées d'un palier de dé (Étape 6).">entraînements
                                 gratuits</a> :</strong> c'est votre <strong><a class="rule-ref"
-                                href="livre_1.html#sec-etape-5"
-                                data-tip="Érudition : ton score donne autant d'entraînements gratuits (ÉRU 3 → 3 gratuits) (Étape 5).">Érudition</a></strong>
+                                href="livre_1.html#sec-etape-6"
+                                data-tip="Érudition : ton score donne autant d'entraînements gratuits (ÉRU 3 → 3 gratuits) (Étape 6).">Érudition</a></strong>
                         qui les
                         donne
                         (ÉRU 3 → 3 gratuits, +1 ÉRU = +1 gratuit). Ils coûtent 0 XP et restent

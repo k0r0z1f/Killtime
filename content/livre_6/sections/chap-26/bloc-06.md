@@ -5,5 +5,5 @@ livre: 6
 ---
 
 
-                    <h3 id="sec-26-3">26.3 Statuts Vitaux Majeurs : Souffrant, Inconscient & Mort</h3>
+                    <h3 id="sec-26-5">26.5 Statuts Vitaux Majeurs : Souffrant, Inconscient & Mort</h3>
                     
