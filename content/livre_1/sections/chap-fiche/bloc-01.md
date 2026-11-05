@@ -170,8 +170,8 @@ livre: 1
                                 <span class="pill-badge cyan">3 / 3</span>
                             </div>
                             <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 12px;">
-                                Érudition 3 → <strong>3 entraînements gratuits</strong> (Étape 6) : <strong>3 cases par
-                                compétence, 1 case cochée = +1 palier de dé</strong> (plafond +3). Roger a coché 2 cases sur <strong><a class="rule-ref" href="livre_3.html#chap-12" data-tip="Mains Nues : combat à mains nues (FOR/AGI, §12.1).">Mains Nues</a></strong> (poings du milicien, dé 1d10)
+                                Érudition 3 → <strong>3 entraînements gratuits</strong> (Étape 6) : <strong>6 cases par
+                                compétence, 1 case cochée = +1 palier de dé</strong> (plafond 3, +3 déblocables quand ton dé atteint 2d6). Roger a coché 2 cases sur <strong><a class="rule-ref" href="livre_3.html#chap-12" data-tip="Mains Nues : combat à mains nues (FOR/AGI, §12.1).">Mains Nues</a></strong> (poings du milicien, dé 1d10)
                                 et 1 sur <strong><a class="rule-ref" href="livre_3.html#chap-12" data-tip="Esquive : éviter un coup au dernier moment (AGI/RAP/INS, §12.2).">Esquive</a></strong> (réflexes des rues, dé 1d6).
                             </p>
                             <div class="tool-grid-4" style="font-size: 0.82rem;">

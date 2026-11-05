@@ -69,9 +69,9 @@ livre: 3
                                 data-tip="XP Total : tout l'XP investi depuis le début, hors réserves et hors entraînements gratuits (§5.4).">hors
                                 de votre total</a></strong>.
                         <br><strong>Maximum 3 <a class="rule-ref" href="livre_2.html#chap-6"
-                                data-tip="Entraînement : +1 palier de dé chacun, max +3 par compétence, 5 XP (10 si croisé) (§6.1).">entraînements
-                                par compétence</a> :</strong> vous ne pouvez jamais dépasser 3,
-                        gratuits et achetés confondus. Ce sont les 3 cases de votre fiche. Chaque entraînement donne
+                                data-tip="Entraînement : +1 palier chacun, plafond 3 (+3 déblocables à 2d6, max 6), 5 XP (10 si croisé) (§6.1).">entraînements
+                                par compétence</a> :</strong> vous ne pouvez jamais dépasser 3 au départ,
+                        gratuits et achetés confondus — <strong>6 si votre dé a atteint 2d6</strong> (3 déblocables : 2d6 ➔ 2d8 ➔ 2d10 ➔ 2d12). Ce sont les 6 cases de votre fiche. Chaque entraînement donne
                         <strong>+1 niveau de dé</strong>.
                     </p>
 

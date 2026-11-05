@@ -30,6 +30,9 @@ livre: 2
                         <strong>d2 ➔ d4 ➔ d6 ➔ d8 ➔ d10 ➔ d12 ➔ 2d6 ➔ 2d8 ➔ 2d10 ➔ 2d12 ➔ 2d12+10</strong>.<br>
                         <em>Exemple :</em> Un personnage ayant <strong>5 en Magie</strong> (+2 crans de base) et <strong>3 entraînements</strong> progresse de <strong>5 crans au total</strong> depuis le d2 : il lance donc un magnifique <strong>d12</strong> lorsqu'il canalise la Cinquième Force !
                     </p>
+                    <p>
+                        <strong>Ton plafond : 3 entraînements par compétence.</strong> Quand ton dé atteint <strong>2d6</strong>, tu débloques <strong>3 entraînements supplémentaires</strong> (6 au total). Tu peux alors grimper jusqu'à <strong>2d12</strong> — et jusqu'à <strong>2d12+10</strong> si ta base est à 9-10. <em>Exemple :</em> base 7-8 (1d8) + 3 = <strong>2d6</strong>, puis +3 = <strong>2d12</strong>.
+                    </p>
 
                     <div class="callout ruby"
                         style="border-left: 4px solid var(--ruby-danger); background: rgba(244, 63, 94, 0.05); padding: 14px 18px; margin-bottom: 20px;">

@@ -17,7 +17,7 @@ livre: 4
                         de tes attributs liés, arrondie vers le haut : (MAG + INT) / 2.
                         Exemple : MAG 5 et INT 3 → base 4. Ensuite, chaque
                         <a class="rule-ref" href="livre_2.html#chap-6"
-                            data-tip="Entraînement : +1 palier de dé chacun, max +3 par compétence, 5 XP (10 si croisé) (§6.1).">entraînement</a>
+                            data-tip="Entraînement : +1 palier chacun, plafond 3 (+3 déblocables à 2d6, max 6), 5 XP (10 si croisé) (§6.1).">entraînement</a>
                         te fait monter d'un palier de dé.
                         <br>La dernière colonne liste les branches que tu peux acheter : le détail est au
                         <a class="rule-ref" href="#sec-21-4"

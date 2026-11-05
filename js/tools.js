@@ -162,7 +162,7 @@ function initCharacterSheet() {
         if (v <= 2) return '1d2'; if (v <= 4) return '1d4'; if (v <= 6) return '1d6'; if (v <= 8) return '1d8'; return '1d10';
     }
 
-    // Palier d'entraînement (Livre I Étape 6) : +1 palier = +1 cran sur l'échelle, plafond 1d12.
+    // Palier d'entraînement (Livre I Étape 6) : +1 palier = +1 cran sur l'échelle complète (Livre II §6.1).
     const DIE_LADDER = ['1d2', '1d4', '1d6', '1d8', '1d10', '1d12'];
     function stepDie(die, steps) {
         let i = DIE_LADDER.indexOf(die);
@@ -271,7 +271,7 @@ function initCharacterSheet() {
         if (legacy) legacy.remove();
     }
 
-    // Niveau 0-3 par compétence (3 cases) : { 'Nom compétence': niveau }.
+    // Niveau 0-6 par compétence (3 cases + 3 déblocables à 2d6, RP-134) : { 'Nom compétence': niveau }.
     function getSkillLevels() {
         const levels = {};
         document.querySelectorAll('.skill-check').forEach(cb => {
@@ -1508,10 +1508,66 @@ function initCharacterSheet() {
         });
     });
 
+    // RP-134 : 6 cases par compétence (3 + 3 déblocables quand le dé atteint 2d6).
+    // Ajoute les cases 4-6 manquantes à chaque compétence du créateur.
+    (function extendSkillBoxes() {
+        const seen = {};
+        document.querySelectorAll('.skill-check').forEach(cb => {
+            const base = cb.id.replace(/-\d$/, '');
+            (seen[base] = seen[base] || []).push(cb);
+        });
+        Object.keys(seen).forEach(base => {
+            if (document.getElementById(base + '-4')) return;
+            const boxes = seen[base].sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
+            if (boxes.length !== 3) return;
+            let ref = boxes[boxes.length - 1];
+            for (let i = 4; i <= 6; i++) {
+                const c = document.createElement('input');
+                c.type = 'checkbox';
+                c.className = 'skill-check';
+                c.id = base + '-' + i;
+                c.setAttribute('data-skill', boxes[0].getAttribute('data-skill') || base);
+                const attrs = boxes[0].getAttribute('data-attrs') || boxes[0].getAttribute('data-attr');
+                if (attrs) c.setAttribute('data-attrs', attrs);
+                if (boxes[0].hasAttribute('data-mag')) c.setAttribute('data-mag', '');
+                c.title = 'Cases 4-6 : déblocables quand ton dé atteint 2d6 (Livre II §6.1).';
+                ref.after(c);
+                ref = c;
+            }
+        });
+    })();
+
+    // Cran de base depuis un score (Livre II §6.1) : 1-2 +0, 3-4 +1, 5-6 +2, 7-8 +3, 9-10 +4.
+    function baseCrans(score) {
+        if (score >= 9) return 4;
+        if (score >= 7) return 3;
+        if (score >= 5) return 2;
+        if (score >= 3) return 1;
+        return 0;
+    }
+
     // Skill checkboxes (plafond = ÉRU effective, Livre I Étape 6) : une case
     // cochée au-delà du quota est refusée avec la bulle d'avertissement.
     document.querySelectorAll('.skill-check').forEach(cb => {
         cb.addEventListener('change', () => {
+            if (cb.checked) {
+                const m = cb.id.match(/-(\d+)$/);
+                if (m && parseInt(m[1], 10) > 3) {
+                    const info = skillBaseInfo(cb.getAttribute('data-skill') || cb.id);
+                    const ext = {};
+                    for (const k of Object.keys(attrInputs)) ext[k] = parseInt(attrInputs[k].value) || 0;
+                    ext.vision = parseInt(visionInput.value) || 3;
+                    ext.ouie = parseInt(ouieInput.value) || 3;
+                    let score = skillBaseScore(info.attrs, ext);
+                    if (info.mag && ext.mag > 0) score = Math.max(score, ext.mag);
+                    if (baseCrans(score) + 3 < 6) {
+                        cb.checked = false;
+                        showStepBlockTip(cb, 'Cases 4-6 verrouillées : atteins 2d6 avec 3 entraînements pour les débloquer (Livre II §6.1).');
+                        updateCharacterCalculations();
+                        return;
+                    }
+                }
+            }
             const eru = parseInt(attrInputs.eru.value) || 1;
             const max = Math.max(1, eru);
             if (cb.checked && document.querySelectorAll('.skill-check:checked').length > max) {
