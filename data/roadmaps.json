@@ -1,6 +1,6 @@
 {
  "version": 3,
- "updated": "2026-11-03",
+ "updated": "2026-11-05",
  "activeId": "board-demo-hors-lore",
  "boards": [
   {
@@ -3734,6 +3734,61 @@
      "pos": null,
      "scale": null,
      "details": "FAIT (2026-10-09, RD-110 v21) : Ajustements optiques fins. 1) Disparition rapide du point focal central : atténuation quadratique (coreFade = smoothstep(0.82, 0.99, warp)^2) dès que l'expansion s'enclenche, s'éteignant totalement dès warp <= 0.82 pour laisser la place au flux stellaire. 2) Atténuation adaptative des étoiles contractées : étoiles assombries et douces (~20% d'éclat) au centre lors de la phase contractée, montant progressivement vers 100% de leur luminosité naturelle au fur et à mesure que la voûte s'étend et se normalise (warp -> 0)."
+    }
+   ]
+  },
+  {
+   "id": "board-jalons",
+   "name": "10 Jalons Alpha/Bêta",
+   "desc": "Jalons 6 mois (M4-M6 : mars-mai 2027) : alpha/bêta Tactics + démo publique. Les critères renvoient aux tâches existantes.",
+   "tasks": [
+    {
+     "id": "RD-228",
+     "title": "Jalon Alpha Tactics — fin mars 2027 (M4)",
+     "epic": "Jalons",
+     "status": "todo",
+     "priority": "high",
+     "order": 0,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "Board 08 Tests Terrain",
+     "updated": "2026-11-05",
+     "details": "Jalon M4. ENTRÉE : moteur 83/83 (RD-206 états objets, RD-225 Mikyai encombrement, RD-226 refs Livre VIII, RD-227 RP-125 Unity clos), RD-170 vigilance <800 l. traitée. SORTIE : RD-171..185 validés en jeu (batchmode + test MJ), RD-072 builds Win/WebGL/Linux verts, RD-186 re-validation démo 60s OK. DONE = tout vert + tag alpha."
+    },
+    {
+     "id": "RD-229",
+     "title": "Jalon Bêta Tactics — fin mai 2027 (M6)",
+     "epic": "Jalons",
+     "status": "todo",
+     "priority": "high",
+     "order": 1,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "FK-004 + FK-021",
+     "updated": "2026-11-05",
+     "details": "Jalon M6. ENTRÉE : RD-228 alpha taguée. SORTIE : anims RD-024/208/209/210, prefabs RD-167/168/169, RD-122 runtime OK, playtest externe FK-021 (2 MJ, retours intégrés), trailer + démo publique FK-004 en ligne. DONE = bêta jouable par des tiers + retours tracés."
+    },
+    {
+     "id": "RD-230",
+     "title": "Démo publique jouable — avril 2027 (enabler FK-004)",
+     "epic": "Jalons",
+     "status": "todo",
+     "priority": "medium",
+     "order": 2,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "FK-012 page itch.io",
+     "updated": "2026-11-05",
+     "details": "Enabler FK-004. Contenu : build WebGL RD-072, capture RD-029 (vidéo + screenshots LinkedIn), re-validation post-refactor RD-186, page itch FK-012. DONE = lien public jouable + FK-004 débloquée."
     }
    ]
   }

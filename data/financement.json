@@ -1,6 +1,6 @@
 {
   "version": 3,
-  "updated": "2026-10-21",
+  "updated": "2026-11-05",
   "activeId": "board-financement",
   "boards": [
     {
@@ -343,6 +343,22 @@
           "suggestedAsset": "",
           "updated": "2026-10-21",
           "details": "TODO : dès FK-011 live : 1 message CasusNO/Discord JDR (système tactique gratuit, kit fourni). Kit minimal : règles d'essai + fiche PJ + scénario court + fiche retour. Porte d'entrée testeurs > contributeurs > associé."
+        },
+        {
+          "id": "FK-022",
+          "title": "Séquence d'activation : légal → vitrine → campagne",
+          "epic": "Cadrage",
+          "status": "todo",
+          "priority": "high",
+          "order": 21,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "data/financement.json",
+          "updated": "2026-11-05",
+          "details": "Ordre d'activation du board (intact depuis 21/10). Phase 0 Légal : FK-001, FK-007, FK-019 (aucun encaissement avant). Phase 1 Cadrage/Budget : FK-003, FK-002, FK-008, FK-010. Phase 2 Vitrine : FK-011 (codex), FK-012, FK-021 (kit playtest, dépend RD-171..186 + RD-072), FK-004 (trailer, dépend RD-029/RD-186/RD-072). Phase 3 Audience : FK-005, FK-009, FK-013, FK-018, FK-020. Phase 4 Campagne : FK-006. Phase 5 Revenus récurrents : FK-014..017. DONE = phases exécutées dans l'ordre, dépendances croisées levées."
         }
       ]
     }
