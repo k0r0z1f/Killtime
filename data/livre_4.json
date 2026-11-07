@@ -270,7 +270,7 @@
      "<strong>Magie Élémentale</strong>",
      "Magie, Intelligence",
      "Offensif, Défensif, Utilitaire",
-     "<strong>Incinération Pyrocinétique</strong> → Flamme Bleue → Fournaise\n                                        Déferlante → Nova Thermique\n                                        <br><strong>Aéromancie</strong> → Lame de Vent → Tempête de Lames\n                                        <br>↳ Courant Porteur\n                                        <br><strong>Hydromancie</strong> → Étreinte Abyssale → Raz-de-Marée\n                                        <br>↳ Brume Aveuglante\n                                        <br><strong>Géomancie</strong> → Poing Tellurique → Séisme Localisé\n                                        <br>↳ Peau de Pierre"
+     "<strong>Incinération Pyrocinétique</strong><br>└─ Flamme Bleue<br>&nbsp;&nbsp;&nbsp;├─ Fournaise Déferlante → Nova Thermique<br><span style=\"visibility:hidden\">&nbsp;&nbsp;&nbsp;├─ Fournaise Déferlante → </span>├─ Soleil Captif<br><span style=\"visibility:hidden\">&nbsp;&nbsp;&nbsp;├─ Fournaise Déferlante → </span>└─ Incandescence<br>&nbsp;&nbsp;&nbsp;└─ Langue de Braise → Trait Solaire<br><span style=\"visibility:hidden\">&nbsp;&nbsp;&nbsp;└─ Langue de Braise → </span>├─ Rayon Zénithal<br><span style=\"visibility:hidden\">&nbsp;&nbsp;&nbsp;└─ Langue de Braise → </span>└─ Lance de l'Horizon<br><strong>Voile de Braise</strong><br>├─ Mur de Flammes → Couronne de Cendres → Dôme de Braise<br><span style=\"visibility:hidden\">├─ Mur de Flammes → Couronne de Cendres → </span>├─ Sanctuaire du Phénix<br><span style=\"visibility:hidden\">├─ Mur de Flammes → Couronne de Cendres → </span>└─ Vengeance du Phénix<br>└─ Cape de Fumée → Éclipse de Cendres → Cendres Mordantes<br><span style=\"visibility:hidden\">└─ Cape de Fumée → Éclipse de Cendres → </span>├─ Hiver de Cendres<br><span style=\"visibility:hidden\">└─ Cape de Fumée → Éclipse de Cendres → </span>└─ Pluie de Cendres<br><strong>Main de Forge</strong><br>├─ Sang Braise → Peau de Lave → Fourneau Vivant<br><span style=\"visibility:hidden\">├─ Sang Braise → Peau de Lave → </span>├─ Cœur de Fournaise<br><span style=\"visibility:hidden\">├─ Sang Braise → Peau de Lave → </span>└─ Brasier Partagé<br>└─ Lanterne Vivante → Œil du Brasier → Marque du Forgeron<br><span style=\"visibility:hidden\">└─ Lanterne Vivante → Œil du Brasier → </span>├─ Chef-d'Œuvre<br><span style=\"visibility:hidden\">└─ Lanterne Vivante → Œil du Brasier → </span>└─ Égide Forgée<br><strong>Aéromancie</strong><br>├─ Courant Porteur → Souffle Lointain → Marche des Nuées<br><span style=\"visibility:hidden\">├─ Courant Porteur → Souffle Lointain → </span>├─ Caravane Céleste<br><span style=\"visibility:hidden\">├─ Courant Porteur → Souffle Lointain → </span>└─ Chute Douce<br>└─ Lame de Vent → Vent Tranchant → Tempête de Lames<br><span style=\"visibility:hidden\">└─ Lame de Vent → Vent Tranchant → </span>├─ Ouragan<br><span style=\"visibility:hidden\">└─ Lame de Vent → Vent Tranchant → </span>└─ Œil du Cyclone<br><strong>Voile de Vent</strong><br>├─ Foulée Légère → Glissade → Sprint du Zéphyr<br><span style=\"visibility:hidden\">├─ Foulée Légère → Glissade → </span>├─ Chevauchée du Vent<br><span style=\"visibility:hidden\">├─ Foulée Légère → Glissade → </span>└─ Vol du Faucon<br>└─ Mur de Vent → Cercle du Zéphyr → Dôme de Vent<br><span style=\"visibility:hidden\">└─ Mur de Vent → Cercle du Zéphyr → </span>├─ Sanctuaire des Vents<br><span style=\"visibility:hidden\">└─ Mur de Vent → Cercle du Zéphyr → </span>└─ Vengeance des Vents<br><strong>Vent du Voyageur</strong><br>├─ Bise Sèche → Manteau Tiède → Voile de Poussière<br><span style=\"visibility:hidden\">├─ Bise Sèche → Manteau Tiède → </span>├─ Sillage Silencieux<br><span style=\"visibility:hidden\">├─ Bise Sèche → Manteau Tiède → </span>└─ Tourbillon de Poussière<br>└─ Oreille du Vent → Sentinelle Invisible → Voix du Lointain<br><span style=\"visibility:hidden\">└─ Oreille du Vent → Sentinelle Invisible → </span>├─ Chœur des Vents<br><span style=\"visibility:hidden\">└─ Oreille du Vent → Sentinelle Invisible → </span>└─ Hurlement\n                                        <br><strong>Hydromancie</strong><br>├─ Brume Aveuglante → Eau Pure → Flot Porteur<br><span style=\"visibility:hidden\">├─ Brume Aveuglante → Eau Pure → </span>├─ Source Vive<br><span style=\"visibility:hidden\">├─ Brume Aveuglante → Eau Pure → </span>└─ Déluge<br>└─ Étreinte Abyssale → Mâchoire du Gouffre → Raz-de-Marée<br><span style=\"visibility:hidden\">└─ Étreinte Abyssale → Mâchoire du Gouffre → </span>├─ Fosse Abyssale<br><span style=\"visibility:hidden\">└─ Étreinte Abyssale → Mâchoire du Gouffre → </span>└─ Prison d'Écume<br><strong>Peau d'Écume</strong><br>├─ Souffle Marin → Corps Fluide → Torrent<br><span style=\"visibility:hidden\">├─ Souffle Marin → Corps Fluide → </span>├─ Forme du Courant<br><span style=\"visibility:hidden\">├─ Souffle Marin → Corps Fluide → </span>└─ Vague Brutale<br>└─ Mur d'Écume → Anneau de Marée → Cloche Abyssale<br><span style=\"visibility:hidden\">└─ Mur d'Écume → Anneau de Marée → </span>├─ Sanctuaire des Profondeurs<br><span style=\"visibility:hidden\">└─ Mur d'Écume → Anneau de Marée → </span>└─ Vengeance des Profondeurs<br><strong>Appel de la Pluie</strong><br>├─ Puits de Poche → Bain Réparateur → Brume Légère<br><span style=\"visibility:hidden\">├─ Puits de Poche → Bain Réparateur → </span>├─ Miroir Liquide<br><span style=\"visibility:hidden\">├─ Puits de Poche → Bain Réparateur → </span>└─ Linceul de Brume<br>└─ Lecture des Flots → Oreille des Profondeurs → Gardien des Rives<br><span style=\"visibility:hidden\">└─ Lecture des Flots → Oreille des Profondeurs → </span>├─ Voix des Flots<br><span style=\"visibility:hidden\">└─ Lecture des Flots → Oreille des Profondeurs → </span>└─ Mascaret\n                                        <br><strong>Géomancie</strong><br>├─ Peau de Pierre → Mains du Maçon → Pas de la Montagne<br><span style=\"visibility:hidden\">├─ Peau de Pierre → Mains du Maçon → </span>├─ Statue Vivante<br><span style=\"visibility:hidden\">├─ Peau de Pierre → Mains du Maçon → </span>└─ Étreinte de la Terre<br>└─ Poing Tellurique → Choc Tellurique → Séisme Localisé<br><span style=\"visibility:hidden\">└─ Poing Tellurique → Choc Tellurique → </span>├─ Cataclysme<br><span style=\"visibility:hidden\">└─ Poing Tellurique → Choc Tellurique → </span>└─ Ancrage<br><strong>Levée de Terre</strong><br>├─ Écoute Tellurique → Pistage → Fosse<br><span style=\"visibility:hidden\">├─ Écoute Tellurique → Pistage → </span>├─ Galerie<br><span style=\"visibility:hidden\">├─ Écoute Tellurique → Pistage → </span>└─ Sables Mouvants<br>└─ Mur de Roc → Bastion de Roc → Donjon<br><span style=\"visibility:hidden\">└─ Mur de Roc → Bastion de Roc → </span>├─ Citadelle<br><span style=\"visibility:hidden\">└─ Mur de Roc → Bastion de Roc → </span>└─ Contre-Secousse<br><strong>Sens de la Pierre</strong><br>├─ Abri de Pierre → Four de Pierre → Dalle Protectrice<br><span style=\"visibility:hidden\">├─ Abri de Pierre → Four de Pierre → </span>├─ Rideau de Gravats<br><span style=\"visibility:hidden\">├─ Abri de Pierre → Four de Pierre → </span>└─ Pierre à Aiguiser<br>└─ Sonar de Roche → Mémoire des Pierres → Faille<br><span style=\"visibility:hidden\">└─ Sonar de Roche → Mémoire des Pierres → </span>├─ Trésor Enfoui<br><span style=\"visibility:hidden\">└─ Sonar de Roche → Mémoire des Pierres → </span>└─ Colère Tellurique"
     ],
     [
      "<strong>Magie Primale</strong>",
@@ -845,6 +845,42 @@
     [
      {
       "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Langue de Braise</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Offensif",
+     "Tu prolonges Flamme Bleue : ton jet s'affine et porte plus loin : +MAG cases de portée, et tu ignores le couvert partiel. Idéal pour piquer le guetteur."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:5em;\"",
+      "html": "↳ <strong>Trait Solaire</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Offensif",
+     "Tu concentres tout en un dard : 8 <a class=\"rule-ref\" href=\"livre_6.html#chap-24\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).\">Dégâts Absolus</a> sur une cible à 6 cases (Delta ≥ 2 requis contre PJ/PNJ majeur). Un seul trou, mais net."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Rayon Zénithal</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Offensif",
+     "Tu fais tomber un rayon du ciel sur un hexagone à 8 cases : 10 <a class=\"rule-ref\" href=\"livre_6.html#chap-24\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).\">Dégâts Absolus</a>. Ça tombe d'en haut : ignore le couvert (Delta ≥ 2 requis contre PJ/PNJ majeur)."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Lance de l'Horizon</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Offensif",
+     "Tu tires un trait horizontal : ligne de 4 cases, 8 <a class=\"rule-ref\" href=\"livre_6.html#chap-24\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).\">Dégâts Absolus</a> à tous ceux dessus (Delta ≥ 2 requis contre PJ/PNJ majeur)."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:3.5em;\"",
       "html": "↳ <strong>Fournaise Déferlante</strong>"
      },
      "Magie Élémentale (MAG, INT)",
@@ -861,19 +897,220 @@
      "Tu exploses : 12 <a class=\"rule-ref\" href=\"livre_6.html#chap-24\"\n                                            data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).\">dégâts\n                                            absolus</a> dans un rayon de 2 cases."
     ],
     [
-     "<strong>Aéromancie</strong>",
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Soleil Captif</strong>"
+     },
      "Magie Élémentale (MAG, INT)",
-     "Offensif, Utilitaire",
-     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\"\n                                            data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2\n                                            PA</a> : rafale à 4 cases — tu refoules ta cible d'1 case et elle prend -1 à\n                                        sa prochaine attaque."
+     "Offensif",
+     "Tu lances un petit soleil : 14 <a class=\"rule-ref\" href=\"livre_6.html#chap-24\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).\">dégâts absolus</a> dans un rayon de 3 cases. Contrecoup : même abrité, tu prends 4 dégâts et <a class=\"rule-ref\" href=\"livre_6.html#sec-25-2\" data-tip=\"En Feu : 2 PV/tour (bouclier d'abord), puis −1/tour. Il faut l'éteindre (§25.2).\">En Feu</a>. À sortir quand il le faut."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Incandescence</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Offensif",
+     "Tu deviens un brasier vivant pendant 3 tours : celui qui te frappe au contact prend 4 dégâts et <a class=\"rule-ref\" href=\"livre_6.html#sec-25-2\" data-tip=\"En Feu : 2 PV/tour (bouclier d'abord), puis −1/tour. Il faut l'éteindre (§25.2).\">En Feu</a>, et tous tes dégâts de feu gagnent +1."
+    ],
+    [
+     "<strong>Voile de Braise</strong>",
+     "Magie Élémentale (MAG, INT)",
+     "Défensif",
+     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : tu lèves une chaleur tremblante sur toi pendant 1 tour. Les tirs qui te visent prennent -1. Celui qui te frappe au contact prend <a class=\"rule-ref\" href=\"livre_6.html#sec-25-2\" data-tip=\"En Feu : 2 PV/tour (bouclier d'abord), puis −1/tour. Il faut l'éteindre (§25.2).\">En Feu</a>."
     ],
     [
      {
       "attrs": " style=\"padding-left:2em;\"",
-      "html": "↳ <strong>Lame de Vent</strong>"
+      "html": "↳ <strong>Cape de Fumée</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Défensif, Utilitaire",
+     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : tu t'enveloppes de fumée chaude pendant 1 tour. Les tirs contre toi prennent -2, et tu glisses d'1 case sans attaque d'opportunité."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Éclipse de Cendres</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Défensif",
+     "Tu poses une nappe de cendres sur 2 hexagones contigus pendant 2 tours : -2 aux attaques à travers, et les ennemis dedans sont <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\" data-tip=\"Ralenti : toute action coûte le double de PA.\">Ralentis</a> (ça pique les yeux)."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:5em;\"",
+      "html": "↳ <strong>Cendres Mordantes</strong>"
      },
      "Magie Élémentale (MAG, INT)",
      "Offensif",
-     "Ta rafale inflige 4 <a class=\"rule-ref\" href=\"livre_6.html#chap-24\"\n                                            data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).\">dégâts\n                                            Absolus</a> et ignore le couvert partiel."
+     "Tes cendres mordent : les ennemis qui commencent leur tour dans ta nappe (Éclipse de Cendres) prennent 3 dégâts et <a class=\"rule-ref\" href=\"livre_6.html#sec-25-2\" data-tip=\"En Feu : 2 PV/tour (bouclier d'abord), puis −1/tour. Il faut l'éteindre (§25.2).\">En Feu</a>."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Hiver de Cendres</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Défensif, Offensif",
+     "Tu étends la nuit : nappe de 3 hexagones contigus pendant 3 tours. -2 aux attaques effectuées à travers. L'ennemi qui commence dedans prend 2 dégâts et est <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\" data-tip=\"Ralenti : toute action coûte le double de PA.\">Ralenti</a>."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Pluie de Cendres</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Offensif",
+     "Tu fais pleuvoir la cendre sur 3 hexagones contigus pendant 2 tours : 3 dégâts et <a class=\"rule-ref\" href=\"livre_6.html#sec-25-2\" data-tip=\"En Feu : 2 PV/tour (bouclier d'abord), puis −1/tour. Il faut l'éteindre (§25.2).\">En Feu</a> à qui commence dedans."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:2em;\"",
+      "html": "↳ <strong>Mur de Flammes</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Défensif, Utilitaire",
+     "Tu poses un mur de flammes sur 2 hexagones contigus à 4 cases, pendant 2 tours. Tu bloques la vue à travers (-2 aux attaques qui passent au travers). Celui qui traverse prend 3 dégâts de brûlure et <a class=\"rule-ref\" href=\"livre_6.html#sec-25-2\" data-tip=\"En Feu : 2 PV/tour (bouclier d'abord), puis −1/tour. Il faut l'éteindre (§25.2).\">En Feu</a>."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Couronne de Cendres</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Défensif, Offensif",
+     "Tu t'entoures de braises (rayon 1 case) pendant 2 tours. L'ennemi qui commence son tour dedans prend 3 dégâts et <a class=\"rule-ref\" href=\"livre_6.html#sec-25-2\" data-tip=\"En Feu : 2 PV/tour (bouclier d'abord), puis −1/tour. Il faut l'éteindre (§25.2).\">En Feu</a>. Tes alliés dedans purgent <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\" data-tip=\"Ralenti : toute action coûte le double de PA.\">Ralenti</a> (tu réchauffes les muscles)."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:5em;\"",
+      "html": "↳ <strong>Dôme de Braise</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Défensif",
+     "Tu fermes les braises en dôme (rayon 1 case autour de toi) pendant 2 tours. Dedans, tu protèges les tiens : <a class=\"rule-ref\" href=\"livre_5.html#chap-22-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§22.3).\">Couvert Total</a> contre les tirs venus de l'extérieur. L'ennemi qui entre prend 3 dégâts et <a class=\"rule-ref\" href=\"livre_6.html#sec-25-2\" data-tip=\"En Feu : 2 PV/tour (bouclier d'abord), puis −1/tour. Il faut l'éteindre (§25.2).\">En Feu</a>."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Sanctuaire du Phénix</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Défensif, Utilitaire",
+     "Ton dôme devient un sanctuaire : <a class=\"rule-ref\" href=\"livre_5.html#chap-22-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§22.3).\">Couvert Total</a> contre les tirs extérieurs, et tes alliés dedans récupèrent 4 PV et purgent <a class=\"rule-ref\" href=\"livre_6.html#sec-25-2\" data-tip=\"En Feu : 2 PV/tour (bouclier d'abord), puis −1/tour. Il faut l'éteindre (§25.2).\">En Feu</a> et <a class=\"rule-ref\" href=\"livre_6.html#sec-25-2\" data-tip=\"Saignement : PV directs en début de tour, puis −1/tour. Tout soin le stoppe (§25.2).\">Saignement</a>. Souffle un coup."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Vengeance du Phénix</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Défensif, Offensif",
+     "Pendant 2 tours, chaque ennemi qui te blesse prend 4 dégâts et <a class=\"rule-ref\" href=\"livre_6.html#sec-25-2\" data-tip=\"En Feu : 2 PV/tour (bouclier d'abord), puis −1/tour. Il faut l'éteindre (§25.2).\">En Feu</a> en retour."
+    ],
+    [
+     "<strong>Main de Forge</strong>",
+     "Magie Élémentale (MAG, INT)",
+     "Utilitaire",
+     "Tu chauffes sans brûler. Au contact : tu allumes ou tu éteins une flamme, tu sèches, tu réchauffes un repas. Tu gagnes +1 à ta prochaine <a class=\"rule-ref\" href=\"livre_2.html#chap-7\" data-tip=\"Épreuve : lance ton dé de compétence + PA − malus contre le seuil du MJ (§7.1).\">épreuve</a> de réparation ou de forge dans l'heure. Pratique au bivouac."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:2em;\"",
+      "html": "↳ <strong>Lanterne Vivante</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Utilitaire",
+     "Tu fais flotter une flamme froide qui te suit pendant 1 heure. Elle éclaire à MAG cases sans rien brûler, et tu gagnes +1 en Observation dans le noir."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Œil du Brasier</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Utilitaire",
+     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : pendant 1 tour, ta flamme sent la chaleur des corps. À MAG cases, tu perçois les vivants à travers une paroi légère (+2 en Observation pour les repérer)."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:5em;\"",
+      "html": "↳ <strong>Marque du Forgeron</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Utilitaire",
+     "Touche une arme : tu graves ton sceau (une seule marquée à la fois). Sa première <a class=\"rule-ref\" href=\"livre_2.html#chap-7\" data-tip=\"Épreuve : lance ton dé de compétence + PA − malus contre le seuil du MJ (§7.1).\">épreuve</a> d'attaque de chaque combat gagne +1."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Chef-d'Œuvre</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Utilitaire",
+     "Avec une nuit de travail et l'accord de ton MJ, tu forges un chef-d'œuvre : une arme gagne +1 dégât jusqu'à la fin du scénario (une seule à la fois)."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Égide Forgée</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Utilitaire, Défensif",
+     "Avec une nuit de travail et l'accord de ton MJ, tu forges une égide : une armure gagne +1 jusqu'à la fin du scénario (une seule à la fois)."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:2em;\"",
+      "html": "↳ <strong>Sang Braise</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Utilitaire, Défensif",
+     "Ton sang chauffe. Touche un allié (ou toi) : tu cautérises — tu purges <a class=\"rule-ref\" href=\"livre_6.html#sec-25-2\" data-tip=\"Saignement : PV directs en début de tour, puis −1/tour. Tout soin le stoppe (§25.2).\">Saignement</a> — et il gagne +2 contre le prochain <a class=\"rule-ref\" href=\"livre_6.html#sec-25-2\" data-tip=\"En Feu : 2 PV/tour (bouclier d'abord), puis −1/tour. Il faut l'éteindre (§25.2).\">En Feu</a> pendant 2 tours."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Peau de Lave</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Défensif",
+     "Touche un allié (ou toi) : une croûte de lave froide le couvre pendant 3 tours (+2 armure naturelle). Celui qui le frappe au contact prend <a class=\"rule-ref\" href=\"livre_6.html#sec-25-2\" data-tip=\"En Feu : 2 PV/tour (bouclier d'abord), puis −1/tour. Il faut l'éteindre (§25.2).\">En Feu</a>."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:5em;\"",
+      "html": "↳ <strong>Fourneau Vivant</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Utilitaire, Offensif",
+     "Touche une arme (une seule à la fois) : pendant 3 tours, elle frappe en teinte feu (+2 dégâts de feu, <a class=\"rule-ref\" href=\"livre_6.html#chap-24\" data-tip=\"Résistances : certaines espèces ignorent ou subissent plus selon le type (§24.4).\">résistances</a>). Hors combat, tu fais fondre une serrure simple ou une tôle fine (d'accord avec ton MJ)."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Cœur de Fournaise</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Utilitaire, Offensif",
+     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">3 PA</a> : tu deviens le fourneau pendant 2 tours. Tous tes dégâts de feu gagnent +2, et tu purges <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\" data-tip=\"Ralenti : toute action coûte le double de PA.\">Ralenti</a> au début de chacun de tes tours."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Brasier Partagé</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Utilitaire",
+     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">3 PA</a> : pendant 2 tours, les armes de tes alliés à 2 cases frappent en teinte feu (+1 dégât de feu)."
+    ],
+    [
+     "<strong>Aéromancie</strong>",
+     "Magie Élémentale (MAG, INT)",
+     "Offensif, Utilitaire",
+     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\"\n                                            data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2\n                                            PA</a> : rafale à 4 cases — tu refoules ta cible d'1 case et elle prend -1 à\n                                        sa prochaine attaque."
     ],
     [
      {
@@ -887,6 +1124,60 @@
     [
      {
       "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Souffle Lointain</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Utilitaire",
+     "Même courant, plus loin : à 4 cases, tu déplaces un allié consentant d'1 case (0 PA, sans attaque d'opportunité)."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:5em;\"",
+      "html": "↳ <strong>Marche des Nuées</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Utilitaire",
+     "Pendant 2 tours, tu marches sur le vent : tu ignores les terrains difficiles et les attaques d'opportunité contre toi."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Caravane Céleste</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Utilitaire",
+     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : tu étends le courant. Tous tes alliés à 2 cases glissent d'1 case (sans opportunité)."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Chute Douce</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Utilitaire, Défensif",
+     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : filet de vent pendant 3 tours. Toi et tes alliés à 2 cases ignorez les dégâts de chute et ne tombez jamais <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À Terre</a>."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:2em;\"",
+      "html": "↳ <strong>Lame de Vent</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Offensif",
+     "Ta rafale inflige 4 <a class=\"rule-ref\" href=\"livre_6.html#chap-24\"\n                                            data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).\">dégâts\n                                            Absolus</a> et ignore le couvert partiel."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Vent Tranchant</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Offensif",
+     "Ta lame s'élargit : ligne de 2 cases, 4 <a class=\"rule-ref\" href=\"livre_6.html#chap-24\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).\">dégâts Absolus</a> à tous ceux dessus."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:5em;\"",
       "html": "↳ <strong>Tempête de Lames</strong>"
      },
      "Magie Élémentale (MAG, INT)",
@@ -894,19 +1185,220 @@
      "Zone de 2 cases de rayon : 8 <a class=\"rule-ref\" href=\"livre_6.html#chap-24\"\n                                            data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).\">dégâts\n                                            Absolus</a> et cibles <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À\n                                            Terre</a>."
     ],
     [
-     "<strong>Hydromancie</strong>",
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Ouragan</strong>"
+     },
      "Magie Élémentale (MAG, INT)",
-     "Offensif, Utilitaire",
-     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\"\n                                            data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2\n                                            PA</a> : jet à 4 cases — 3 <a class=\"rule-ref\" href=\"livre_6.html#chap-24\"\n                                            data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).\">dégâts\n                                            Absolus</a> et <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Ralenti : toute action coûte le double de PA.\">Ralenti</a> pendant\n                                        1 tour."
+     "Offensif",
+     "Tu déchaînes l'ouragan : zone de 3 cases de rayon pendant 2 tours. L'ennemi qui commence dedans prend 6 <a class=\"rule-ref\" href=\"livre_6.html#chap-24\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).\">dégâts Absolus</a> et tombe <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À Terre</a>."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Œil du Cyclone</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Défensif, Utilitaire",
+     "Tu fixes un œil calme autour de toi (rayon 1 case) pendant 2 tours : tes alliés dedans gagnent +2 en Esquive et ignorent Ralenti."
+    ],
+    [
+     "<strong>Voile de Vent</strong>",
+     "Magie Élémentale (MAG, INT)",
+     "Défensif",
+     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : air dense sur toi pendant 1 tour. Les tirs contre toi prennent -1. Le premier ennemi qui te frappe au contact est refoulé d'1 case."
     ],
     [
      {
       "attrs": " style=\"padding-left:2em;\"",
-      "html": "↳ <strong>Étreinte Abyssale</strong>"
+      "html": "↳ <strong>Foulée Légère</strong>"
      },
      "Magie Élémentale (MAG, INT)",
+     "Utilitaire",
+     "Pendant 1 heure hors combat, tu marches sans trace ni bruit (+1 pour passer inaperçu)."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Glissade</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Utilitaire",
+     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : glisse de 2 cases sans attaque d'opportunité."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:5em;\"",
+      "html": "↳ <strong>Sprint du Zéphyr</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Utilitaire",
+     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : pendant 2 tours, chacun de tes déplacements coûte 1 PA de moins (minimum 1)."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Chevauchée du Vent</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Utilitaire",
+     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">3 PA</a> : pendant 2 tours, tu traverses les cases ennemies sans surcoût ni opportunité ; chaque ennemi traversé est refoulé d'1 case."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Vol du Faucon</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Utilitaire",
+     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">3 PA</a> : tu t'envoles pendant 1 tour (ignore obstacles et opportunités)."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:2em;\"",
+      "html": "↳ <strong>Mur de Vent</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Défensif",
+     "Tu dresses un mur d'air sur 2 hexagones contigus à 4 cases, pendant 2 tours. Les tirs qui passent prennent -2. Celui qui traverse est refoulé d'1 case."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Cercle du Zéphyr</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Défensif",
+     "Cercle d'air vif autour de toi (rayon 1 case) pendant 2 tours : les tirs contre toi prennent -1 et l'ennemi qui entre est refoulé d'1 case."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:5em;\"",
+      "html": "↳ <strong>Dôme de Vent</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Défensif",
+     "Dôme d'air (rayon 1 case autour de toi) pendant 2 tours : <a class=\"rule-ref\" href=\"livre_5.html#chap-22-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§22.3).\">Couvert Total</a> contre les tirs extérieurs. L'ennemi qui entre est refoulé d'1 case."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Sanctuaire des Vents</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Défensif, Utilitaire",
+     "Ton dôme devient sanctuaire pendant 2 tours : <a class=\"rule-ref\" href=\"livre_5.html#chap-22-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§22.3).\">Couvert Total</a> contre les tirs extérieurs, et tes alliés dedans récupèrent 2 PA et purgent <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\" data-tip=\"Ralenti : toute action coûte le double de PA.\">Ralenti</a>."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Vengeance des Vents</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Défensif, Offensif",
+     "Pendant 2 tours, chaque ennemi qui te frappe est refoulé de 2 cases et tombe <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À Terre</a>."
+    ],
+    [
+     "<strong>Vent du Voyageur</strong>",
+     "Magie Élémentale (MAG, INT)",
+     "Utilitaire",
+     "Tu lis le vent : +1 en Observation pour repérer ce qui s'approche, pendant 1 heure. Et tu sens venir la pluie avant tout le monde."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:2em;\"",
+      "html": "↳ <strong>Bise Sèche</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Utilitaire",
+     "En quelques minutes, tu fais sécher tentes et vêtements, et tu ravives (ou éteins) un feu de camp d'un souffle."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Manteau Tiède</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Utilitaire, Défensif",
+     "Touche un allié : enveloppé d'air tiède pendant 1 heure, il ignore le froid et purge <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\" data-tip=\"Ralenti : toute action coûte le double de PA.\">Ralenti</a>."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:5em;\"",
+      "html": "↳ <strong>Voile de Poussière</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Défensif",
+     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : rideau de poussière sur toi pendant 1 tour. Les tirs contre toi prennent -1, et tu ne laisses aucune trace pendant 1 heure."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Sillage Silencieux</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Utilitaire",
+     "Pendant 1 heure, ton groupe ne laisse aucune trace et marche sans bruit (+1 pour passer inaperçu à tout le groupe)."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Tourbillon de Poussière</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Offensif",
+     "Tu soulèves un tourbillon : nappe d'1 hexagone pendant 1 tour. -2 aux attaques effectuées à travers, et l'ennemi dedans prend -1 à sa prochaine attaque."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:2em;\"",
+      "html": "↳ <strong>Oreille du Vent</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Utilitaire",
+     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : pendant 1 tour, tu perçois les sons à MAG cases à travers une paroi légère (+2 en Observation pour repérer les vivants)."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Sentinelle Invisible</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Utilitaire",
+     "Tu postes un courant guetteur : pendant 1 heure hors combat, il te prévient si quelqu'un approche à MAG cases. Toi seul l'entends."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:5em;\"",
+      "html": "↳ <strong>Voix du Lointain</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Utilitaire",
+     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : porte ta voix jusqu'à MAG × 2 cases, à une personne précise. Elle seule l'entend."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Chœur des Vents</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Utilitaire",
+     "Tout ton escouade s'entend en murmures à MAG cases pendant 1 heure (réseau discret, mains libres)."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Hurlement</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Offensif",
+     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : pousse un hurlement — les ennemis à 2 cases prennent -1 à leur prochaine <a class=\"rule-ref\" href=\"livre_2.html#chap-7\" data-tip=\"Épreuve : lance ton dé de compétence + PA − malus contre le seuil du MJ (§7.1).\">épreuve</a>."
+    ],
+    [
+     "<strong>Hydromancie</strong>",
+     "Magie Élémentale (MAG, INT)",
      "Offensif, Utilitaire",
-     "Cible à 4 cases : <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Immobilisé : impossible de faire la moindre action de mouvement (§25.1).\">Immobilisée</a>\n                                        pendant 1 tour (Delta ≥ 2 requis contre PJ/PNJ majeur)."
+     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\"\n                                            data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2\n                                            PA</a> : jet à 4 cases — 3 <a class=\"rule-ref\" href=\"livre_6.html#chap-24\"\n                                            data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).\">dégâts\n                                            Absolus</a> et <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Ralenti : toute action coûte le double de PA.\">Ralenti</a> pendant\n                                        1 tour."
     ],
     [
      {
@@ -920,6 +1412,60 @@
     [
      {
       "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Eau Pure</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Utilitaire",
+     "Touche un allié : tu le laves — purge <a class=\"rule-ref\" href=\"livre_6.html#sec-25-2\" data-tip=\"Empoisonné : PV directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonné</a> et <a class=\"rule-ref\" href=\"livre_6.html#sec-25-2\" data-tip=\"En Feu : 2 PV/tour (bouclier d'abord), puis −1/tour. Il faut l'éteindre (§25.2).\">En Feu</a>."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:5em;\"",
+      "html": "↳ <strong>Flot Porteur</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Utilitaire",
+     "Tu poses un allié sur un flot : déplace-le de 2 cases (0 PA, sans attaque d'opportunité)."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Source Vive</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Utilitaire",
+     "Touche un allié : il récupère 6 PV et purge <a class=\"rule-ref\" href=\"livre_6.html#sec-25-2\" data-tip=\"Saignement : PV directs en début de tour, puis −1/tour. Tout soin le stoppe (§25.2).\">Saignement</a>."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Déluge</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Offensif",
+     "Tu crèves les nuages : nappe de 2 hexagones contigus pendant 2 tours. L'ennemi qui commence dedans prend 3 dégâts et est Ralenti."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:2em;\"",
+      "html": "↳ <strong>Étreinte Abyssale</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Offensif, Utilitaire",
+     "Cible à 4 cases : <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Immobilisé : impossible de faire la moindre action de mouvement (§25.1).\">Immobilisée</a>\n                                        pendant 1 tour (Delta ≥ 2 requis contre PJ/PNJ majeur)."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Mâchoire du Gouffre</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Offensif",
+     "Cible à 4 cases : 4 <a class=\"rule-ref\" href=\"livre_6.html#chap-24\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).\">dégâts Absolus</a> et <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\" data-tip=\"Immobilisé : impossible de faire la moindre action de mouvement (§25.1).\">Immobilisée</a> pendant 1 tour (Delta ≥ 2 requis contre PJ/PNJ majeur)."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:5em;\"",
       "html": "↳ <strong>Raz-de-Marée</strong>"
      },
      "Magie Élémentale (MAG, INT)",
@@ -927,19 +1473,220 @@
      "Ligne de 3 cases : 8 <a class=\"rule-ref\" href=\"livre_6.html#chap-24\"\n                                            data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).\">dégâts\n                                            Absolus</a> et cibles <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À\n                                            Terre</a>."
     ],
     [
-     "<strong>Géomancie</strong>",
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Fosse Abyssale</strong>"
+     },
      "Magie Élémentale (MAG, INT)",
      "Offensif, Utilitaire",
-     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\"\n                                            data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2\n                                            PA</a> : secousse à 4 cases — <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).\">Déstabilisé</a>\n                                        pendant 1 tour."
+     "Tu ouvres une fosse : zone de 2 cases de rayon pendant 2 tours. L'ennemi qui commence dedans prend 6 <a class=\"rule-ref\" href=\"livre_6.html#chap-24\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).\">dégâts Absolus</a> et est <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\" data-tip=\"Immobilisé : impossible de faire la moindre action de mouvement (§25.1).\">Immobilisé</a>. Le sol reste détrempé (terrain difficile) pendant 2 tours."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Prison d'Écume</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Offensif, Défensif",
+     "Cible à 6 cases : <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\" data-tip=\"Immobilisé : impossible de faire la moindre action de mouvement (§25.1).\">Immobilisée</a> et Ralentie pendant 2 tours (Delta ≥ 3 requis contre PJ/PNJ majeur). Elle prend 2 dégâts au début de chacun de ses tours."
+    ],
+    [
+     "<strong>Peau d'Écume</strong>",
+     "Magie Élémentale (MAG, INT)",
+     "Défensif",
+     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : pellicule d'eau sur toi pendant 1 tour. Les tirs contre toi prennent -1. Si on t'enflamme, les flammes meurent aussitôt (pas d'<a class=\"rule-ref\" href=\"livre_6.html#sec-25-2\" data-tip=\"En Feu : 2 PV/tour (bouclier d'abord), puis −1/tour. Il faut l'éteindre (§25.2).\">En Feu</a>)."
     ],
     [
      {
       "attrs": " style=\"padding-left:2em;\"",
-      "html": "↳ <strong>Poing Tellurique</strong>"
+      "html": "↳ <strong>Souffle Marin</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Utilitaire",
+     "Pendant 1 heure, tu respires sous l'eau et tu t'y déplaces sans effort (ni malus, ni essoufflement)."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Corps Fluide</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Utilitaire",
+     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : purge <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\" data-tip=\"Immobilisé : impossible de faire la moindre action de mouvement (§25.1).\">Immobilisé</a> et <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\" data-tip=\"Ralenti : toute action coûte le double de PA.\">Ralenti</a> sur toi. Ton corps coule comme l'eau."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:5em;\"",
+      "html": "↳ <strong>Torrent</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Utilitaire",
+     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : laisse-toi porter — glisse de 3 cases en ligne droite, sans attaque d'opportunité."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Forme du Courant</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Utilitaire",
+     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">3 PA</a> : pendant 2 tours, tu es insaisissable — les attaques contre toi prennent -2 et tu traverses les cases ennemies sans opportunité."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Vague Brutale</strong>"
      },
      "Magie Élémentale (MAG, INT)",
      "Offensif",
-     "Cible à 2 cases : 4 <a class=\"rule-ref\" href=\"livre_6.html#chap-24\"\n                                            data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).\">dégâts\n                                            Absolus</a> et <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À\n                                            Terre</a> sur Delta ≥ 2."
+     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">3 PA</a> : vague autour de toi (rayon 1 case) : 4 dégâts à tous les ennemis dedans, refoulés de 2 cases."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:2em;\"",
+      "html": "↳ <strong>Mur d'Écume</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Défensif",
+     "Tu dresses un mur d'eau sur 2 hexagones contigus à 4 cases, pendant 2 tours. Les tirs qui passent prennent -2. Celui qui traverse est Ralenti pendant 1 tour."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Anneau de Marée</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Défensif",
+     "Anneau d'eau vive autour de toi (rayon 1 case) pendant 2 tours : les tirs contre toi prennent -1 et l'ennemi qui entre est Ralenti pendant 1 tour."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:5em;\"",
+      "html": "↳ <strong>Cloche Abyssale</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Défensif",
+     "Cloche d'eau (rayon 1 case autour de toi) pendant 2 tours : <a class=\"rule-ref\" href=\"livre_5.html#chap-22-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§22.3).\">Couvert Total</a> contre les tirs extérieurs. L'ennemi qui entre est Ralenti pendant 1 tour."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Sanctuaire des Profondeurs</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Défensif, Utilitaire",
+     "Ta cloche devient sanctuaire pendant 2 tours : <a class=\"rule-ref\" href=\"livre_5.html#chap-22-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§22.3).\">Couvert Total</a> contre les tirs extérieurs, et tes alliés dedans récupèrent 4 PV et purgent <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\" data-tip=\"Ralenti : toute action coûte le double de PA.\">Ralenti</a>."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Vengeance des Profondeurs</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Défensif, Offensif",
+     "Pendant 2 tours, chaque ennemi qui te frappe est Ralenti et prend 2 dégâts."
+    ],
+    [
+     "<strong>Appel de la Pluie</strong>",
+     "Magie Élémentale (MAG, INT)",
+     "Utilitaire",
+     "En 10 minutes, tu fais venir une pluie fine sur quelques cases : elle éteint les feux, remplit gourdes et marmites, et lave les traces."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:2em;\"",
+      "html": "↳ <strong>Puits de Poche</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Utilitaire",
+     "Tu tires l'eau du sol : en 10 minutes, de quoi remplir outres et marmites, même en terrain sec (si ton MJ est d'accord)."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Bain Réparateur</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Utilitaire",
+     "10 minutes d'eau chaude : un allié récupère 2 PV et purge <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\" data-tip=\"Ralenti : toute action coûte le double de PA.\">Ralenti</a>."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:5em;\"",
+      "html": "↳ <strong>Brume Légère</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Défensif",
+     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : voile de bruine sur toi pendant 1 tour. Les tirs contre toi prennent -1."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Miroir Liquide</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Utilitaire",
+     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : pendant 1 tour, tu vois à travers une surface d'eau calme jusqu'à MAG cases (+2 en Observation)."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Linceul de Brume</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Défensif",
+     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : nappe de brume sur 2 hexagones contigus pendant 2 tours : -2 aux attaques effectuées à travers."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:2em;\"",
+      "html": "↳ <strong>Lecture des Flots</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Utilitaire",
+     "Tu lis l'eau : +1 en Observation près d'un point d'eau pendant 1 heure, et tu sens ce qui trouble les flots."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Oreille des Profondeurs</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Utilitaire",
+     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : pendant 1 tour, tu perçois les sons portés par l'eau à MAG cases, même à travers une paroi légère (+2 en Observation pour repérer)."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:5em;\"",
+      "html": "↳ <strong>Gardien des Rives</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Utilitaire",
+     "Tu postes une flaque guetteuse : pendant 1 heure hors combat, l'eau te prévient si quelqu'un approche à MAG cases."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Voix des Flots</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Utilitaire",
+     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : murmure porté par l'eau jusqu'à MAG × 2 cases, à une personne précise. Elle seule l'entend."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Mascaret</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Offensif",
+     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : vague de choc — les ennemis à 2 cases prennent -1 à leur prochaine <a class=\"rule-ref\" href=\"livre_2.html#chap-7\" data-tip=\"Épreuve : lance ton dé de compétence + PA − malus contre le seuil du MJ (§7.1).\">épreuve</a> et sont Ralentis pendant 1 tour."
+    ],
+    [
+     "<strong>Géomancie</strong>",
+     "Magie Élémentale (MAG, INT)",
+     "Offensif, Utilitaire",
+     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\"\n                                            data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2\n                                            PA</a> : secousse à 4 cases — <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).\">Déstabilisé</a>\n                                        pendant 1 tour."
     ],
     [
      {
@@ -953,11 +1700,275 @@
     [
      {
       "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Mains du Maçon</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Utilitaire",
+     "Tu façonnes la pierre à mains nues : en 10 minutes, répare un mur, taille des marches, scelle une porte (d'accord avec ton MJ)."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:5em;\"",
+      "html": "↳ <strong>Pas de la Montagne</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Utilitaire",
+     "Pendant 2 tours, tu ignores les terrains difficiles et on ne peut pas te refouler."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Statue Vivante</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Défensif",
+     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : statue pendant 2 tours. Tu gagnes +3 d'armure naturelle mais tu es <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\" data-tip=\"Ralenti : toute action coûte le double de PA.\">Ralenti</a> (poids de la pierre)."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Étreinte de la Terre</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Offensif, Utilitaire",
+     "Le sol agrippe : les ennemis à 2 cases sont <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\" data-tip=\"Immobilisé : impossible de faire la moindre action de mouvement (§25.1).\">Immobilisés</a> pendant 1 tour (Delta ≥ 2 requis contre PJ/PNJ majeur)."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:2em;\"",
+      "html": "↳ <strong>Poing Tellurique</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Offensif",
+     "Cible à 2 cases : 4 <a class=\"rule-ref\" href=\"livre_6.html#chap-24\"\n                                            data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).\">dégâts\n                                            Absolus</a> et <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À\n                                            Terre</a> sur Delta ≥ 2."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Choc Tellurique</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Offensif",
+     "Onde à 4 cases : 6 <a class=\"rule-ref\" href=\"livre_6.html#chap-24\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).\">dégâts Absolus</a> et <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À Terre</a> sur Delta ≥ 2."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:5em;\"",
       "html": "↳ <strong>Séisme Localisé</strong>"
      },
      "Magie Élémentale (MAG, INT)",
      "Offensif, Utilitaire",
      "Zone de 2 cases de rayon : 8 <a class=\"rule-ref\" href=\"livre_6.html#chap-24\"\n                                            data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).\">dégâts\n                                            Absolus</a>, cibles <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À\n                                            Terre</a>, terrain difficile pendant 2 tours."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Cataclysme</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Offensif",
+     "Tu fends le sol : zone de 3 cases de rayon pendant 2 tours. L'ennemi qui commence dedans prend 6 <a class=\"rule-ref\" href=\"livre_6.html#chap-24\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).\">dégâts Absolus</a> et tombe <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À Terre</a>."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Ancrage</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Défensif",
+     "Pendant 2 tours, on ne peut ni te refouler ni te mettre <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À Terre</a>, et tu gagnes +2 d'armure naturelle."
+    ],
+    [
+     "<strong>Levée de Terre</strong>",
+     "Magie Élémentale (MAG, INT)",
+     "Défensif",
+     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : tu lèves un talus sur ton hexagone pendant 2 tours (<a class=\"rule-ref\" href=\"livre_5.html#chap-22-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§22.3).\">Couvert 3/4</a> contre les tirs)."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:2em;\"",
+      "html": "↳ <strong>Écoute Tellurique</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Utilitaire",
+     "Oreille au sol : +1 en Observation pour repérer ce qui marche ou s'approche, pendant 1 heure."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Pistage</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Utilitaire",
+     "Tu lis le sol : suis une piste de moins de 24 heures (+1 pour pister, d'après ton MJ)."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:5em;\"",
+      "html": "↳ <strong>Fosse</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Utilitaire",
+     "Avec 10 minutes de travail : fosse camouflée sur 1 hexagone. Le premier qui marche dessus tombe <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À Terre</a> et prend 2 dégâts."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Galerie</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Utilitaire",
+     "Avec 1 heure de travail, tu creuses un tunnel de quelques cases sous un obstacle (d'accord avec ton MJ)."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Sables Mouvants</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Offensif, Utilitaire",
+     "Sable traître : zone de 2 hexagones pendant 2 tours. L'ennemi qui commence dedans prend 2 dégâts et est <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\" data-tip=\"Ralenti : toute action coûte le double de PA.\">Ralenti</a>."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:2em;\"",
+      "html": "↳ <strong>Mur de Roc</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Défensif",
+     "Mur de pierre sur 2 hexagones contigus à 4 cases, pendant 2 tours : -2 aux tirs qui passent au travers, et la traversée devient terrain difficile."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Bastion de Roc</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Défensif",
+     "Enceinte de 3 hexagones contigus pendant 3 tours : -2 aux tirs qui passent au travers, traversée en terrain difficile."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:5em;\"",
+      "html": "↳ <strong>Donjon</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Défensif",
+     "Tour de pierre d'1 hexagone pendant 2 tours : <a class=\"rule-ref\" href=\"livre_5.html#chap-22-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§22.3).\">Couvert Total</a>, et tu vois par-dessus les murs (+1 en Observation)."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Citadelle</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Défensif",
+     "Citadelle de 3 hexagones pendant 3 tours : <a class=\"rule-ref\" href=\"livre_5.html#chap-22-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§22.3).\">Couvert Total</a> contre l'extérieur, et tes alliés dedans gagnent +2 d'armure naturelle."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Contre-Secousse</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Défensif, Offensif",
+     "Pendant 2 tours, chaque ennemi qui te frappe tombe <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À Terre</a> (la terre répond)."
+    ],
+    [
+     "<strong>Sens de la Pierre</strong>",
+     "Magie Élémentale (MAG, INT)",
+     "Utilitaire",
+     "Tu sens la pierre : +1 en Observation sous terre ou en montagne pendant 1 heure, et tu sens les cavités (pièges, souterrains)."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:2em;\"",
+      "html": "↳ <strong>Abri de Pierre</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Utilitaire",
+     "En 10 minutes, tu montes un abri de pierre : à l'abri du vent et des regards (+1 pour camper discret)."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Four de Pierre</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Utilitaire",
+     "Tu montes un four en pierre en 10 minutes : repas chauds pour le groupe et eau chaude à volonté."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:5em;\"",
+      "html": "↳ <strong>Dalle Protectrice</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Défensif",
+     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : dalle levée pendant 1 tour : <a class=\"rule-ref\" href=\"livre_5.html#chap-22-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§22.3).\">Couvert 3/4</a> contre les tirs (toi seul)."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Rideau de Gravats</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Défensif",
+     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : rideau de gravats sur 2 hexagones pendant 2 tours : -2 aux attaques effectuées à travers."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Pierre à Aiguiser</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Utilitaire",
+     "10 minutes : affûte les lames du groupe. Chacune gagne +1 à sa première <a class=\"rule-ref\" href=\"livre_2.html#chap-7\" data-tip=\"Épreuve : lance ton dé de compétence + PA − malus contre le seuil du MJ (§7.1).\">épreuve</a> d'attaque au prochain combat."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:2em;\"",
+      "html": "↳ <strong>Sonar de Roche</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Utilitaire",
+     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : pendant 1 tour, tu sens les vibrations à MAG cases à travers la pierre (+2 en Observation pour repérer les vivants)."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Mémoire des Pierres</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Utilitaire",
+     "Touche une pierre : tu vois ce qui s'est passé ici dans les dernières 24 heures (vision brève, d'après ton MJ)."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:5em;\"",
+      "html": "↳ <strong>Faille</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Offensif",
+     "Fissure sous un ennemi à 4 cases : il tombe <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À Terre</a> sur Delta ≥ 2, et son hexagone devient terrain difficile."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Trésor Enfoui</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Utilitaire",
+     "Avec une heure de travail et l'accord de ton MJ, tu extrais un filon (métal, gemme) : de quoi équiper le groupe ou payer une dette."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Colère Tellurique</strong>"
+     },
+     "Magie Élémentale (MAG, INT)",
+     "Offensif",
+     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">3 PA</a> : pilier de roc sous un ennemi à 6 cases : 8 <a class=\"rule-ref\" href=\"livre_6.html#chap-24\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).\">Dégâts Absolus</a> et <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À Terre</a> (Delta ≥ 2 requis contre PJ/PNJ majeur)."
     ],
     [
      "<strong>Télékinésie</strong>",
@@ -1163,7 +2174,7 @@
     "magie": "Magie Élémentale",
     "attributs": "Magie, Intelligence",
     "type": "Offensif, Défensif, Utilitaire",
-    "specialisations": "Incinération Pyrocinétique → Flamme Bleue → Fournaise Déferlante → Nova Thermique Aéromancie → Lame de Vent → Tempête de Lames ↳ Courant Porteur Hydromancie → Étreinte Abyssale → Raz-de-Marée ↳ Brume Aveuglante Géomancie → Poing Tellurique → Séisme Localisé ↳ Peau de Pierre"
+    "specialisations": "Incinération Pyrocinétique\n└─ Flamme Bleue\n   ├─ Fournaise Déferlante → Nova Thermique\n      ├─ Soleil Captif\n      └─ Incandescence\n   └─ Langue de Braise → Trait Solaire\n      ├─ Rayon Zénithal\n      └─ Lance de l'Horizon\nVoile de Braise\n├─ Mur de Flammes → Couronne de Cendres → Dôme de Braise\n   ├─ Sanctuaire du Phénix\n   └─ Vengeance du Phénix\n└─ Cape de Fumée → Éclipse de Cendres → Cendres Mordantes\n   ├─ Hiver de Cendres\n   └─ Pluie de Cendres\nMain de Forge\n├─ Sang Braise → Peau de Lave → Fourneau Vivant\n   ├─ Cœur de Fournaise\n   └─ Brasier Partagé\n└─ Lanterne Vivante → Œil du Brasier → Marque du Forgeron\n   ├─ Chef-d'Œuvre\n   └─ Égide ForgéeAéromancie\n├─ Courant Porteur → Souffle Lointain → Marche des Nuées\n      ├─ Caravane Céleste\n      └─ Chute Douce\n└─ Lame de Vent → Vent Tranchant → Tempête de Lames\n      ├─ Ouragan\n      └─ Œil du Cyclone\nVoile de Vent\n├─ Foulée Légère → Glissade → Sprint du Zéphyr\n   ├─ Chevauchée du Vent\n   └─ Vol du Faucon\n└─ Mur de Vent → Cercle du Zéphyr → Dôme de Vent\n   ├─ Sanctuaire des Vents\n   └─ Vengeance des Vents\nVent du Voyageur\n├─ Bise Sèche → Manteau Tiède → Voile de Poussière\n   ├─ Sillage Silencieux\n   └─ Tourbillon de Poussière\n└─ Oreille du Vent → Sentinelle Invisible → Voix du Lointain\n   ├─ Chœur des Vents\n   └─ Hurlement Hydromancie\n├─ Brume Aveuglante → Eau Pure → Flot Porteur\n      ├─ Source Vive\n      └─ Déluge\n└─ Étreinte Abyssale → Mâchoire du Gouffre → Raz-de-Marée\n      ├─ Fosse Abyssale\n      └─ Prison d'Écume\nPeau d'Écume\n├─ Souffle Marin → Corps Fluide → Torrent\n   ├─ Forme du Courant\n   └─ Vague Brutale\n└─ Mur d'Écume → Anneau de Marée → Cloche Abyssale\n      ├─ Sanctuaire des Profondeurs\n      └─ Vengeance des Profondeurs\nAppel de la Pluie\n├─ Puits de Poche → Bain Réparateur → Brume Légère\n   ├─ Miroir Liquide\n   └─ Linceul de Brume\n└─ Lecture des Flots → Oreille des Profondeurs → Gardien des Rives\n      ├─ Voix des Flots\n      └─ Mascaret Géomancie\n├─ Peau de Pierre → Mains du Maçon → Pas de la Montagne\n      ├─ Statue Vivante\n      └─ Étreinte de la Terre\n└─ Poing Tellurique → Choc Tellurique → Séisme Localisé\n      ├─ Cataclysme\n      └─ Ancrage\nLevée de Terre\n├─ Écoute Tellurique → Pistage → Fosse\n   ├─ Galerie\n   └─ Sables Mouvants\n└─ Mur de Roc → Bastion de Roc → Donjon\n   ├─ Citadelle\n   └─ Contre-Secousse\nSens de la Pierre\n├─ Abri de Pierre → Four de Pierre → Dalle Protectrice\n   ├─ Rideau de Gravats\n   └─ Pierre à Aiguiser\n└─ Sonar de Roche → Mémoire des Pierres → Faille\n   ├─ Trésor Enfoui\n   └─ Colère Tellurique"
    },
    {
     "magie": "Magie Primale",
@@ -1615,6 +2626,30 @@
     "effets": "Ton incinération ignore totalement l'armure physique balistique."
    },
    {
+    "nom": "↳ Langue de Braise",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "+MAG cases de portée, ignore le couvert partiel."
+   },
+   {
+    "nom": "↳ Trait Solaire",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "Dard concentré : 8 dégâts Absolus à 6 cases, une cible (Delta ≥ 2 vs PJ/PNJ majeur)."
+   },
+   {
+    "nom": "↳ Rayon Zénithal",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "Rayon du ciel sur 1 hex à 8 cases : 10 dégâts Absolus, ignore le couvert (Delta ≥ 2 vs PJ/PNJ majeur)."
+   },
+   {
+    "nom": "↳ Lance de l'Horizon",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "Ligne 4 cases : 8 dégâts Absolus à tous dessus (Delta ≥ 2 vs PJ/PNJ majeur)."
+   },
+   {
     "nom": "↳ Fournaise Déferlante",
     "source": "Magie Élémentale (MAG, INT)",
     "type": "Offensif",
@@ -1627,16 +2662,154 @@
     "effets": "Tu exploses : 12 dégâts absolus dans un rayon de 2 cases."
    },
    {
+    "nom": "↳ Soleil Captif",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "Petit soleil : 14 dégâts absolus rayon 3 cases. Contrecoup : 4 dégâts + En Feu même abrité."
+   },
+   {
+    "nom": "↳ Incandescence",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "Brasier vivant 3 tours : attaquant au contact 4 dégâts + En Feu, tes dégâts de feu +1."
+   },
+   {
+    "nom": "Voile de Braise",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Défensif",
+    "effets": "Dépense 2 PA : chaleur tremblante sur toi pendant 1 tour. Tirs contre toi à -1. Attaquant au contact : En Feu."
+   },
+   {
+    "nom": "↳ Cape de Fumée",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Défensif, Utilitaire",
+    "effets": "2 PA : fumée chaude 1 tour, -2 aux tirs contre toi + glisse d'1 case sans opportunité."
+   },
+   {
+    "nom": "↳ Éclipse de Cendres",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Défensif",
+    "effets": "Nappe 2 hex contigus 2 tours : -2 à travers, ennemis dedans Ralentis."
+   },
+   {
+    "nom": "↳ Cendres Mordantes",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "Ennemis qui commencent dans ta nappe (Éclipse) : 3 dégâts + En Feu."
+   },
+   {
+    "nom": "↳ Hiver de Cendres",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Défensif, Offensif",
+    "effets": "Nappe 3 hex contigus 3 tours : -2 à travers, ennemis qui commencent dedans : 2 dégâts + Ralentis."
+   },
+   {
+    "nom": "↳ Pluie de Cendres",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "3 hex contigus 2 tours : 3 dégâts + En Feu à qui commence dedans."
+   },
+   {
+    "nom": "↳ Mur de Flammes",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Défensif, Utilitaire",
+    "effets": "Mur de flammes sur 2 hexagones contigus à 4 cases, 2 tours. -2 aux attaques à travers. Traversée : 3 dégâts de brûlure + En Feu."
+   },
+   {
+    "nom": "↳ Couronne de Cendres",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Défensif, Offensif",
+    "effets": "Aura rayon 1 case pendant 2 tours : ennemis qui commencent dedans : 3 dégâts + En Feu. Alliés dedans purgent Ralenti."
+   },
+   {
+    "nom": "↳ Dôme de Braise",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Défensif",
+    "effets": "Dôme rayon 1 case autour de toi, 2 tours : Couvert Total contre tirs extérieurs. Entrée ennemie : 3 dégâts + En Feu."
+   },
+   {
+    "nom": "↳ Sanctuaire du Phénix",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Défensif, Utilitaire",
+    "effets": "Dôme + Couvert Total : alliés dedans récupèrent 4 PV et purgent En Feu et Saignement."
+   },
+   {
+    "nom": "↳ Vengeance du Phénix",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Défensif, Offensif",
+    "effets": "2 tours : chaque ennemi qui te blesse prend 4 dégâts + En Feu."
+   },
+   {
+    "nom": "Main de Forge",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Au contact : allume/éteint une flamme, sèche, réchauffe. +1 à la prochaine épreuve de réparation/forge dans l'heure."
+   },
+   {
+    "nom": "↳ Lanterne Vivante",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Flamme froide qui te suit 1 heure : éclaire à MAG cases, +1 Observation dans le noir."
+   },
+   {
+    "nom": "↳ Œil du Brasier",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "2 PA : 1 tour, sens la chaleur à MAG cases à travers paroi légère (+2 Observation vs vivants)."
+   },
+   {
+    "nom": "↳ Marque du Forgeron",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Grave ton sceau sur une arme (une seule) : +1 à sa première épreuve d'attaque de chaque combat."
+   },
+   {
+    "nom": "↳ Chef-d'Œuvre",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Nuit de travail + accord MJ : une arme gagne +1 dégât jusqu'à la fin du scénario (une seule)."
+   },
+   {
+    "nom": "↳ Égide Forgée",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Utilitaire, Défensif",
+    "effets": "Nuit + accord MJ : une armure +1 jusqu'à fin de scénario (une seule)."
+   },
+   {
+    "nom": "↳ Sang Braise",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Utilitaire, Défensif",
+    "effets": "Contact (toi ou allié) : purge Saignement (cautérise) + +2 contre le prochain En Feu pendant 2 tours."
+   },
+   {
+    "nom": "↳ Peau de Lave",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Défensif",
+    "effets": "Contact (toi ou allié) : +2 armure naturelle pendant 3 tours. Attaquant au contact : En Feu."
+   },
+   {
+    "nom": "↳ Fourneau Vivant",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Utilitaire, Offensif",
+    "effets": "Touche une arme (une seule) : teinte feu +2 dégâts de feu pendant 3 tours. Hors combat : fond serrure simple/tôle fine (MJ)."
+   },
+   {
+    "nom": "↳ Cœur de Fournaise",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Utilitaire, Offensif",
+    "effets": "3 PA : pendant 2 tours, dégâts de feu +2 et purge Ralenti à chacun de tes tours."
+   },
+   {
+    "nom": "↳ Brasier Partagé",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "3 PA : 2 tours, armes des alliés à 2 cases en teinte feu (+1)."
+   },
+   {
     "nom": "Aéromancie",
     "source": "Magie Élémentale (MAG, INT)",
     "type": "Offensif, Utilitaire",
     "effets": "Dépense 2 PA : rafale à 4 cases — tu refoules ta cible d'1 case et elle prend -1 à sa prochaine attaque."
-   },
-   {
-    "nom": "↳ Lame de Vent",
-    "source": "Magie Élémentale (MAG, INT)",
-    "type": "Offensif",
-    "effets": "Ta rafale inflige 4 dégâts Absolus et ignore le couvert partiel."
    },
    {
     "nom": "↳ Courant Porteur",
@@ -1645,10 +2818,190 @@
     "effets": "Tu déplaces un allié consentant d'1 case : 0 PA, pas d'attaque d'opportunité."
    },
    {
+    "nom": "↳ Souffle Lointain",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "À 4 cases : déplace un allié d'1 case (0 PA, sans opportunité)."
+   },
+   {
+    "nom": "↳ Marche des Nuées",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "2 tours : marche sur le vent, ignore terrains + opportunités contre toi."
+   },
+   {
+    "nom": "↳ Caravane Céleste",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "2 PA : alliés à 2 cases glissent d'1 case (sans opportunité)."
+   },
+   {
+    "nom": "↳ Chute Douce",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Utilitaire, Défensif",
+    "effets": "2 PA : 3 tours, toi + alliés à 2 cases ignorez chutes et À Terre."
+   },
+   {
+    "nom": "↳ Lame de Vent",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "Ta rafale inflige 4 dégâts Absolus et ignore le couvert partiel."
+   },
+   {
+    "nom": "↳ Vent Tranchant",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "Ligne 2 cases : 4 dégâts Absolus à tous dessus."
+   },
+   {
     "nom": "↳ Tempête de Lames",
     "source": "Magie Élémentale (MAG, INT)",
     "type": "Offensif",
     "effets": "Zone de 2 cases de rayon : 8 dégâts Absolus et cibles À Terre."
+   },
+   {
+    "nom": "↳ Ouragan",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "Zone 3 cases 2 tours : 6 dégâts Absolus + À Terre à qui commence dedans."
+   },
+   {
+    "nom": "↳ Œil du Cyclone",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Défensif, Utilitaire",
+    "effets": "Œil calme rayon 1, 2 tours : alliés +2 Esquive, ignorent Ralenti."
+   },
+   {
+    "nom": "Voile de Vent",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Défensif",
+    "effets": "2 PA : air dense 1 tour, tirs -1, 1er contact refoulé d'1 case."
+   },
+   {
+    "nom": "↳ Foulée Légère",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "1h hors combat : sans trace ni bruit (+1 inaperçu)."
+   },
+   {
+    "nom": "↳ Glissade",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "2 PA : glisse de 2 cases sans opportunité."
+   },
+   {
+    "nom": "↳ Sprint du Zéphyr",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "2 PA : 2 tours, déplacements -1 PA (min 1)."
+   },
+   {
+    "nom": "↳ Chevauchée du Vent",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "3 PA : 2 tours, traverse cases ennemies sans surcoût ni opportunité, refoule d'1 case."
+   },
+   {
+    "nom": "↳ Vol du Faucon",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "3 PA : vol 1 tour (ignore obstacles et opportunités)."
+   },
+   {
+    "nom": "↳ Mur de Vent",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Défensif",
+    "effets": "Mur d'air 2 hex à 4 cases 2 tours : tirs -2 à travers, traverse = refoulé d'1 case."
+   },
+   {
+    "nom": "↳ Cercle du Zéphyr",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Défensif",
+    "effets": "Cercle rayon 1 sur toi 2 tours : tirs -1, entrant refoulé d'1 case."
+   },
+   {
+    "nom": "↳ Dôme de Vent",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Défensif",
+    "effets": "Dôme rayon 1, 2 tours : Couvert Total vs tirs extérieurs, entrant refoulé d'1 case."
+   },
+   {
+    "nom": "↳ Sanctuaire des Vents",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Défensif, Utilitaire",
+    "effets": "Dôme + Couvert Total : alliés dedans +2 PA et purgent Ralenti."
+   },
+   {
+    "nom": "↳ Vengeance des Vents",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Défensif, Offensif",
+    "effets": "2 tours : qui te frappe est refoulé de 2 cases et À Terre."
+   },
+   {
+    "nom": "Vent du Voyageur",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "+1 Observation 1h pour repérer, sens venir la pluie."
+   },
+   {
+    "nom": "↳ Bise Sèche",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Sèche tentes/vêtements en minutes, ravive ou éteint un feu de camp."
+   },
+   {
+    "nom": "↳ Manteau Tiède",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Utilitaire, Défensif",
+    "effets": "Contact : air tiède 1h, ignore froid + purge Ralenti."
+   },
+   {
+    "nom": "↳ Voile de Poussière",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Défensif",
+    "effets": "2 PA : rideau 1 tour, tirs -1, aucune trace 1h."
+   },
+   {
+    "nom": "↳ Sillage Silencieux",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "1h : groupe sans trace ni bruit (+1 inaperçu collectif)."
+   },
+   {
+    "nom": "↳ Tourbillon de Poussière",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "Nappe 1 hex 1 tour : -2 à travers, ennemi -1 prochaine attaque."
+   },
+   {
+    "nom": "↳ Oreille du Vent",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "2 PA : 1 tour, sons à MAG cases à travers paroi légère (+2 Observation)."
+   },
+   {
+    "nom": "↳ Sentinelle Invisible",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Courant guetteur 1h hors combat : prévient si approche à MAG cases."
+   },
+   {
+    "nom": "↳ Voix du Lointain",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "2 PA : voix à MAG×2 cases, une personne, elle seule entend."
+   },
+   {
+    "nom": "↳ Chœur des Vents",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Escouade en murmures à MAG cases 1h (discret, mains libres)."
+   },
+   {
+    "nom": "↳ Hurlement",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "2 PA : hurlement, ennemis à 2 cases -1 prochaine épreuve."
    },
    {
     "nom": "Hydromancie",
@@ -1657,16 +3010,46 @@
     "effets": "Dépense 2 PA : jet à 4 cases — 3 dégâts Absolus et Ralenti pendant 1 tour."
    },
    {
+    "nom": "↳ Brume Aveuglante",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Défensif, Utilitaire",
+    "effets": "Nappe sur 1 hexagone pendant 1 tour : -2 à toutes les attaques effectuées à travers."
+   },
+   {
+    "nom": "↳ Eau Pure",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Contact : lave — purge Empoisonné et En Feu."
+   },
+   {
+    "nom": "↳ Flot Porteur",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Pose un allié sur un flot : 2 cases (0 PA, sans opportunité)."
+   },
+   {
+    "nom": "↳ Source Vive",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Contact : +6 PV et purge Saignement."
+   },
+   {
+    "nom": "↳ Déluge",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "Nappe 2 hex 2 tours : 3 dégâts + Ralenti à qui commence dedans."
+   },
+   {
     "nom": "↳ Étreinte Abyssale",
     "source": "Magie Élémentale (MAG, INT)",
     "type": "Offensif, Utilitaire",
     "effets": "Cible à 4 cases : Immobilisée pendant 1 tour (Delta ≥ 2 requis contre PJ/PNJ majeur)."
    },
    {
-    "nom": "↳ Brume Aveuglante",
+    "nom": "↳ Mâchoire du Gouffre",
     "source": "Magie Élémentale (MAG, INT)",
-    "type": "Défensif, Utilitaire",
-    "effets": "Nappe sur 1 hexagone pendant 1 tour : -2 à toutes les attaques effectuées à travers."
+    "type": "Offensif",
+    "effets": "4 cases : 4 dégâts Absolus + Immobilisée 1 tour (Delta ≥ 2 vs PJ majeur)."
    },
    {
     "nom": "↳ Raz-de-Marée",
@@ -1675,16 +3058,154 @@
     "effets": "Ligne de 3 cases : 8 dégâts Absolus et cibles À Terre."
    },
    {
+    "nom": "↳ Fosse Abyssale",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Offensif, Utilitaire",
+    "effets": "Zone 2 cases 2 tours : 6 dégâts Absolus + Immobilisé + terrain difficile."
+   },
+   {
+    "nom": "↳ Prison d'Écume",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Offensif, Défensif",
+    "effets": "6 cases : Immobilisée + Ralentie 2 tours (Delta ≥ 3), 2 dégâts/tour."
+   },
+   {
+    "nom": "Peau d'Écume",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Défensif",
+    "effets": "2 PA : pellicule 1 tour, tirs -1, En Feu éteint aussitôt."
+   },
+   {
+    "nom": "↳ Souffle Marin",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "1h : respire sous l'eau, nage sans effort ni malus."
+   },
+   {
+    "nom": "↳ Corps Fluide",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "2 PA : purge Immobilisé + Ralenti."
+   },
+   {
+    "nom": "↳ Torrent",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "2 PA : glisse de 3 cases en ligne droite, sans opportunité."
+   },
+   {
+    "nom": "↳ Forme du Courant",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "3 PA : 2 tours insaisissable, attaques -2, traverse sans opportunité."
+   },
+   {
+    "nom": "↳ Vague Brutale",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "3 PA : rayon 1 : 4 dégâts, refoulés de 2 cases."
+   },
+   {
+    "nom": "↳ Mur d'Écume",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Défensif",
+    "effets": "Mur 2 hex à 4 cases 2 tours : tirs -2, traverse = Ralenti 1 tour."
+   },
+   {
+    "nom": "↳ Anneau de Marée",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Défensif",
+    "effets": "Anneau rayon 1, 2 tours : tirs -1, entrant Ralenti 1 tour."
+   },
+   {
+    "nom": "↳ Cloche Abyssale",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Défensif",
+    "effets": "Cloche rayon 1, 2 tours : Couvert Total, entrant Ralenti 1 tour."
+   },
+   {
+    "nom": "↳ Sanctuaire des Profondeurs",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Défensif, Utilitaire",
+    "effets": "Cloche + Couvert Total : alliés +4 PV et purgent Ralenti."
+   },
+   {
+    "nom": "↳ Vengeance des Profondeurs",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Défensif, Offensif",
+    "effets": "2 tours : qui te frappe est Ralenti + 2 dégâts."
+   },
+   {
+    "nom": "Appel de la Pluie",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "10 min : pluie fine, éteint feux, remplit gourdes, lave traces."
+   },
+   {
+    "nom": "↳ Puits de Poche",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "10 min : eau du sol, outres+marmites, même terrain sec (MJ)."
+   },
+   {
+    "nom": "↳ Bain Réparateur",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "10 min eau chaude : +2 PV et purge Ralenti."
+   },
+   {
+    "nom": "↳ Brume Légère",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Défensif",
+    "effets": "2 PA : voile 1 tour, tirs -1."
+   },
+   {
+    "nom": "↳ Miroir Liquide",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "2 PA : 1 tour, voit à travers eau calme à MAG cases (+2 Observation)."
+   },
+   {
+    "nom": "↳ Linceul de Brume",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Défensif",
+    "effets": "2 PA : nappe 2 hex 2 tours : -2 à travers."
+   },
+   {
+    "nom": "↳ Lecture des Flots",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "+1 Observation 1h près de l'eau, sens ce qui trouble les flots."
+   },
+   {
+    "nom": "↳ Oreille des Profondeurs",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "2 PA : 1 tour, sons portés par l'eau à MAG cases (+2 Observation)."
+   },
+   {
+    "nom": "↳ Gardien des Rives",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Flaque guetteuse 1h hors combat : prévient si approche à MAG cases."
+   },
+   {
+    "nom": "↳ Voix des Flots",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "2 PA : murmure à MAG×2 cases, une personne, elle seule entend."
+   },
+   {
+    "nom": "↳ Mascaret",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "2 PA : ennemis à 2 cases -1 prochaine épreuve + Ralentis 1 tour."
+   },
+   {
     "nom": "Géomancie",
     "source": "Magie Élémentale (MAG, INT)",
     "type": "Offensif, Utilitaire",
     "effets": "Dépense 2 PA : secousse à 4 cases — Déstabilisé pendant 1 tour."
-   },
-   {
-    "nom": "↳ Poing Tellurique",
-    "source": "Magie Élémentale (MAG, INT)",
-    "type": "Offensif",
-    "effets": "Cible à 2 cases : 4 dégâts Absolus et À Terre sur Delta ≥ 2."
    },
    {
     "nom": "↳ Peau de Pierre",
@@ -1693,10 +3214,190 @@
     "effets": "Toi ou un allié au contact : +2 armure naturelle pendant 2 tours."
    },
    {
+    "nom": "↳ Mains du Maçon",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "10 min : répare mur, taille marches, scelle porte (MJ)."
+   },
+   {
+    "nom": "↳ Pas de la Montagne",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "2 tours : ignore terrains difficiles, pas de refoulement."
+   },
+   {
+    "nom": "↳ Statue Vivante",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Défensif",
+    "effets": "2 PA : +3 armure 2 tours mais Ralenti."
+   },
+   {
+    "nom": "↳ Étreinte de la Terre",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Offensif, Utilitaire",
+    "effets": "Ennemis à 2 cases Immobilisés 1 tour (Delta ≥ 2 vs PJ majeur)."
+   },
+   {
+    "nom": "↳ Poing Tellurique",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "Cible à 2 cases : 4 dégâts Absolus et À Terre sur Delta ≥ 2."
+   },
+   {
+    "nom": "↳ Choc Tellurique",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "Onde à 4 cases : 6 dégâts Absolus + À Terre (Delta ≥ 2)."
+   },
+   {
     "nom": "↳ Séisme Localisé",
     "source": "Magie Élémentale (MAG, INT)",
     "type": "Offensif, Utilitaire",
     "effets": "Zone de 2 cases de rayon : 8 dégâts Absolus, cibles À Terre, terrain difficile pendant 2 tours."
+   },
+   {
+    "nom": "↳ Cataclysme",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "Zone 3 cases 2 tours : 6 dégâts Absolus + À Terre."
+   },
+   {
+    "nom": "↳ Ancrage",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Défensif",
+    "effets": "2 tours : ni refoulé ni À Terre, +2 armure."
+   },
+   {
+    "nom": "Levée de Terre",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Défensif",
+    "effets": "2 PA : talus 2 tours, Couvert 3/4 vs tirs."
+   },
+   {
+    "nom": "↳ Écoute Tellurique",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "+1 Observation 1h (bruits de pas, approches)."
+   },
+   {
+    "nom": "↳ Pistage",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Piste < 24h, +1 pour pister (MJ)."
+   },
+   {
+    "nom": "↳ Fosse",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "10 min : fosse camouflée 1 hex, À Terre + 2 dégâts."
+   },
+   {
+    "nom": "↳ Galerie",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "1h : tunnel de quelques cases sous obstacle (MJ)."
+   },
+   {
+    "nom": "↳ Sables Mouvants",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Offensif, Utilitaire",
+    "effets": "Zone 2 hex 2 tours : 2 dégâts + Ralenti."
+   },
+   {
+    "nom": "↳ Mur de Roc",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Défensif",
+    "effets": "Mur 2 hex à 4 cases 2 tours : tirs -2, traversée difficile."
+   },
+   {
+    "nom": "↳ Bastion de Roc",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Défensif",
+    "effets": "Enceinte 3 hex 3 tours : tirs -2, traversée difficile."
+   },
+   {
+    "nom": "↳ Donjon",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Défensif",
+    "effets": "Tour 1 hex 2 tours : Couvert Total + vue (+1 Observation)."
+   },
+   {
+    "nom": "↳ Citadelle",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Défensif",
+    "effets": "3 hex 3 tours : Couvert Total + alliés +2 armure."
+   },
+   {
+    "nom": "↳ Contre-Secousse",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Défensif, Offensif",
+    "effets": "2 tours : qui te frappe tombe À Terre."
+   },
+   {
+    "nom": "Sens de la Pierre",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "+1 Observation 1h (souterrain/montagne), sens les cavités."
+   },
+   {
+    "nom": "↳ Abri de Pierre",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "10 min : abri pierre, +1 camper discret."
+   },
+   {
+    "nom": "↳ Four de Pierre",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "10 min : four, repas chauds + eau chaude."
+   },
+   {
+    "nom": "↳ Dalle Protectrice",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Défensif",
+    "effets": "2 PA : Couvert 3/4 perso 1 tour."
+   },
+   {
+    "nom": "↳ Rideau de Gravats",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Défensif",
+    "effets": "2 PA : nappe 2 hex 2 tours : -2 à travers."
+   },
+   {
+    "nom": "↳ Pierre à Aiguiser",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "10 min : +1 première attaque (chaque lame, prochain combat)."
+   },
+   {
+    "nom": "↳ Sonar de Roche",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "2 PA : 1 tour, vibrations à MAG cases (+2 Observation)."
+   },
+   {
+    "nom": "↳ Mémoire des Pierres",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Touche pierre : revois 24h (vision brève, MJ)."
+   },
+   {
+    "nom": "↳ Faille",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "Fissure à 4 cases : À Terre (Delta ≥ 2) + terrain difficile."
+   },
+   {
+    "nom": "↳ Trésor Enfoui",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "1h + MJ : filon (métal/gemme) pour le groupe."
+   },
+   {
+    "nom": "↳ Colère Tellurique",
+    "source": "Magie Élémentale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "3 PA : pilier à 6 cases, 8 dégâts Absolus + À Terre (Delta ≥ 2)."
    },
    {
     "nom": "Télékinésie",
