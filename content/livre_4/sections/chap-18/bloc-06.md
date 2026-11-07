@@ -14,7 +14,8 @@ livre: 4
                             Exemple de Portée & Malus de Distance
                         </div>
                         <div class="callout-body">
-                            Prends Menna. Elle a <strong>5 en Magie</strong>, 1 entraînement en Magie et 1 entraînement
+                            Prends Menna. Elle a <strong>5 en Magie</strong>, 1 entraînement en Magie
+                            Élémentale et 1 entraînement
                             en
                             Magie de Feu.<br>
                             <strong>Sa portée :</strong> 5 + (5 × 2) = <strong>15 cases</strong> (le premier

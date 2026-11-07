@@ -69,7 +69,7 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <div class=\"callout arcane\">\n                        <div class=\"callout-header\">\n                            <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\"\n                                stroke-width=\"2\">\n                                <polyline points=\"22 12 18 12 15 21 9 3 6 12 2 12\" />\n                            </svg>\n                            Exemple de Portée & Malus de Distance\n                        </div>\n                        <div class=\"callout-body\">\n                            Prends Menna. Elle a <strong>5 en Magie</strong>, 1 entraînement en Magie et 1 entraînement\n                            en\n                            Magie de Feu.<br>\n                            <strong>Sa portée :</strong> 5 + (5 × 2) = <strong>15 cases</strong> (le premier\n                            rang est offert).<br>\n                            Sa cible est à <strong>20 cases</strong> ? Compte par tranches de 5 (sa MAG) :\n                            [1-15 : 0 malus], [16-20 : -1], [21-25 : -2].\n                            Elle lance avec un <strong>malus de 1</strong> (1 palier de dé en moins).\n                        </div>\n                    </div>\n\n                    <!-- ================= CHAPITRE 18 ================= -->\n                    "
+     "html": "\n\n                    <div class=\"callout arcane\">\n                        <div class=\"callout-header\">\n                            <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\"\n                                stroke-width=\"2\">\n                                <polyline points=\"22 12 18 12 15 21 9 3 6 12 2 12\" />\n                            </svg>\n                            Exemple de Portée & Malus de Distance\n                        </div>\n                        <div class=\"callout-body\">\n                            Prends Menna. Elle a <strong>5 en Magie</strong>, 1 entraînement en Magie\n                            Élémentale et 1 entraînement\n                            en\n                            Magie de Feu.<br>\n                            <strong>Sa portée :</strong> 5 + (5 × 2) = <strong>15 cases</strong> (le premier\n                            rang est offert).<br>\n                            Sa cible est à <strong>20 cases</strong> ? Compte par tranches de 5 (sa MAG) :\n                            [1-15 : 0 malus], [16-20 : -1], [21-25 : -2].\n                            Elle lance avec un <strong>malus de 1</strong> (1 palier de dé en moins).\n                        </div>\n                    </div>\n\n                    <!-- ================= CHAPITRE 18 ================= -->\n                    "
     }
    ],
    "nav": "Voies Arcaniques & Portée"
@@ -237,15 +237,15 @@
    "lignes": [
     [
      "<strong>Magie Élémentale</strong>",
-     "Feu, Air, Eau, Terre, Foudre, Glace",
+     "Feu, Air, Eau, Terre",
      "Offensif, Défensif, Utilitaire",
-     "Manifestations thermodynamiques tangibles : flammes, blasts de vent, gel, arcs\n                                        électriques."
+     "Manifestations tangibles : flammes, rafales de vent, trombes d'eau, secousses\n                                        telluriques."
     ],
     [
      "<strong>Magie Primale</strong>",
-     "Corps, Manipulation, Destruction, Ombre, Lumière, Poison",
-     "Offensif, Utilitaire",
-     "Altération biologique, pourrissement, éclairs aveuglants, <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-26-2\"\n                                            data-tip=\"Dégâts Résiduels : PV directs qui baissent de 1 par tour. Seul un soin les stoppe (§26.2).\">dégâts\n                                            résiduels</a>\n                                        toxiques."
+     "Vie, Création, Destruction",
+     "Offensif, Défensif, Utilitaire",
+     "Vivant au sens large : ton corps et ceux des tiens (soin, boost, symbiose), apparitions\n                                        d'ombre et de lumière, pourrissement et <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-26-2\"\n                                            data-tip=\"Dégâts Résiduels : PV directs qui baissent de 1 par tour. Seul un soin les stoppe (§26.2).\">dégâts\n                                            résiduels</a> et poisons (dont vieillissement forcé)."
     ],
     [
      "<strong>Magie de l'Esprit (Psyché)</strong>",
@@ -262,7 +262,8 @@
    "etiquette_html": "Règle de Portée des Sorts",
    "math_html": "Portée = <span class=\"hl-cyan\">Rang de Magie</span> + (<span class=\"hl-cyan\">Rang de\n                                    Magie</span> ×\n                                <span class=\"hl-gold\"><a class=\"rule-ref\" href=\"livre_2.html#chap-6\"\n                                        data-tip=\"Entraînement : +1 palier chacun, plafond 3 (+3 déblocables à 2d6, max 6), 5 XP (10 si croisé) (§6.1).\">Entraînements</a></span>)",
    "desc_html": "Ton premier rang est offert : même sans entraînement acheté, tu portes à\n                                MAG cases. Chaque entraînement ajoute un nouveau multiple.\n                                Tu lances un <em>Projectile Magique</em> ? Il porte sans malus jusqu'à sa portée\n                                de base en cases. Plus loin, chaque tranche de MAG cases te coûte\n                                <strong>1 <a class=\"rule-ref\" href=\"livre_2.html#chap-6\"\n                                        data-tip=\"Niveau de dé : chaque cran monte le dé — d2 ➔ d4 ➔ d6 ➔ d8 ➔ d10 ➔ d12 (§6.1).\">niveau\n                                        de dé</a></strong> en moins sur ton jet.",
-   "extra": " id=\"sec-18-portee\""
+   "extra": " id=\"sec-18-portee\"",
+   "wide": true
   },
   "magies": {
    "type": "table",
@@ -282,8 +283,8 @@
     [
      "<strong>Magie Primale</strong>",
      "Magie, Intelligence",
-     "Offensif, Utilitaire",
-     "<strong>Barricade de Racines</strong> → Épines de Granit → Bastion Vivant →\n                                        Mur d'Orichalque Végétal\n                                        <br><strong>Vignes Constrictrices</strong> → Étau Végétal → Moisson Sanguine\n                                        → Étranglement Toxique\n                                        <br><strong>Catalyse Tissulaire</strong> → Surcroît Vital → Bouclier Végétal\n                                        → Transfusion Symbiotique\n                                        <br><strong>Champ de Ronces</strong> → Ronces Neurotoxiques →\n                                        Enchevêtrement Explosif\n                                        <br><strong>Greffe Cinétique</strong> → Osmose d'Escouade → Frappe\n                                        Symbiotique"
+     "Offensif, Défensif, Utilitaire",
+     "<strong>Vie</strong> (ton corps et ceux des tiens : soin, boost, symbiose) → Catalyse\n                                        Tissulaire → Surcroît Vital → Bouclier Végétal → Transfusion\n                                        Symbiotique\n                                        <br>↳ Greffe Cinétique → Osmose d'Escouade → Frappe\n                                        Symbiotique\n                                        <br><strong>Création</strong> (ombre, lumière, matière : tu fais apparaître) →\n                                        Barricade de Racines → Épines de Granit → Bastion Vivant →\n                                        Mur d'Orichalque Végétal\n                                        <br><strong>Destruction</strong> (tu défais : entrave, pourrissement, poisons) →\n                                        Vignes Constrictrices → Étau Végétal → Moisson Sanguine\n                                        → Étranglement Toxique\n                                        <br>↳ Champ de Ronces → Ronces Neurotoxiques →\n                                        Enchevêtrement Explosif"
     ],
     [
      "<strong>Magie de l'Esprit</strong>",
@@ -1127,15 +1128,15 @@
   "voies": [
    {
     "voie": "Magie Élémentale",
-    "elements_canaux": "Feu, Air, Eau, Terre, Foudre, Glace",
+    "elements_canaux": "Feu, Air, Eau, Terre",
     "actions_typiques": "Offensif, Défensif, Utilitaire",
-    "caracteristiques": "Manifestations thermodynamiques tangibles : flammes, blasts de vent, gel, arcs électriques."
+    "caracteristiques": "Manifestations tangibles : flammes, rafales de vent, trombes d'eau, secousses telluriques."
    },
    {
     "voie": "Magie Primale",
-    "elements_canaux": "Corps, Manipulation, Destruction, Ombre, Lumière, Poison",
-    "actions_typiques": "Offensif, Utilitaire",
-    "caracteristiques": "Altération biologique, pourrissement, éclairs aveuglants, dégâts résiduels toxiques."
+    "elements_canaux": "Vie, Création, Destruction",
+    "actions_typiques": "Offensif, Défensif, Utilitaire",
+    "caracteristiques": "Vivant au sens large : ton corps et ceux des tiens (soin, boost, symbiose), apparitions d'ombre et de lumière, pourrissement et poisons (dont vieillissement forcé)."
    },
    {
     "voie": "Magie de l'Esprit (Psyché)",
@@ -1147,15 +1148,15 @@
   "voies_par_nom": {
    "Magie Élémentale": {
     "voie": "Magie Élémentale",
-    "elements_canaux": "Feu, Air, Eau, Terre, Foudre, Glace",
+    "elements_canaux": "Feu, Air, Eau, Terre",
     "actions_typiques": "Offensif, Défensif, Utilitaire",
-    "caracteristiques": "Manifestations thermodynamiques tangibles : flammes, blasts de vent, gel, arcs électriques."
+    "caracteristiques": "Manifestations tangibles : flammes, rafales de vent, trombes d'eau, secousses telluriques."
    },
    "Magie Primale": {
     "voie": "Magie Primale",
-    "elements_canaux": "Corps, Manipulation, Destruction, Ombre, Lumière, Poison",
-    "actions_typiques": "Offensif, Utilitaire",
-    "caracteristiques": "Altération biologique, pourrissement, éclairs aveuglants, dégâts résiduels toxiques."
+    "elements_canaux": "Vie, Création, Destruction",
+    "actions_typiques": "Offensif, Défensif, Utilitaire",
+    "caracteristiques": "Vivant au sens large : ton corps et ceux des tiens (soin, boost, symbiose), apparitions d'ombre et de lumière, pourrissement et poisons (dont vieillissement forcé)."
    },
    "Magie de l'Esprit (Psyché)": {
     "voie": "Magie de l'Esprit (Psyché)",
@@ -1174,8 +1175,8 @@
    {
     "magie": "Magie Primale",
     "attributs": "Magie, Intelligence",
-    "type": "Offensif, Utilitaire",
-    "specialisations": "Barricade de Racines → Épines de Granit → Bastion Vivant → Mur d'Orichalque Végétal Vignes Constrictrices → Étau Végétal → Moisson Sanguine → Étranglement Toxique Catalyse Tissulaire → Surcroît Vital → Bouclier Végétal → Transfusion Symbiotique Champ de Ronces → Ronces Neurotoxiques → Enchevêtrement Explosif Greffe Cinétique → Osmose d'Escouade → Frappe Symbiotique"
+    "type": "Offensif, Défensif, Utilitaire",
+    "specialisations": "Vie (ton corps et ceux des tiens : soin, boost, symbiose) → Catalyse Tissulaire → Surcroît Vital → Bouclier Végétal → Transfusion Symbiotique ↳ Greffe Cinétique → Osmose d'Escouade → Frappe Symbiotique Création (ombre, lumière, matière : tu fais apparaître) → Barricade de Racines → Épines de Granit → Bastion Vivant → Mur d'Orichalque Végétal Destruction (tu défais : entrave, pourrissement, poisons) → Vignes Constrictrices → Étau Végétal → Moisson Sanguine → Étranglement Toxique ↳ Champ de Ronces → Ronces Neurotoxiques → Enchevêtrement Explosif"
    },
    {
     "magie": "Magie de l'Esprit",

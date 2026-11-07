@@ -892,6 +892,12 @@ body::before {
     max-width: 100%;
 }
 
+/* Termes cliquables (rule-ref) : jamais coupés en deux lignes,
+   sinon le pointillé se casse entre deux mots (ex. « niveau / de dé »). */
+.formula-box .rule-ref {
+    white-space: nowrap;
+}
+
 /* Formules standards : empile la description sous la formule sur écran
    étroit pour éviter l'écrasement latéral (ex. PA Livre I). */
 @media (max-width: 760px) {

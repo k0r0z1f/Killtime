@@ -36,4 +36,7 @@ opencode.json
 # Exports locaux du Test Runner (référence de session, jamais committés)
 KilltimeTactics/TestResults_*.xml
 
+# Tri conversations Gemini (chantier, 1.2 Go, jamais committé)
+chantier-aistudio/
+
 .env.example

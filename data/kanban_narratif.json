@@ -1,6 +1,6 @@
 {
   "version": 3,
-  "updated": "2026-11-03",
+  "updated": "2026-11-05",
   "activeId": "board-narratif",
   "boards": [
     {
@@ -375,6 +375,22 @@
           "suggestedAsset": "",
           "updated": "2026-11-03",
           "details": "FAIT (2026-11-03) : gate avant les transitions flash vers le lore caché (spirale souris / mot hybris -> truth.html). 1) js/secret-veil.js (KTSecretVeil.requestAccess/isSafe/reset) : modale Killtime « Le Voile de l'Architecte », Entrer sans flashs / avec effets / Rester ici, case mémoire cochée, safe-mode html.kt-no-flash + data-kt-motion, interception [data-secret], respect prefers-reduced-motion. 2) css/secret-veil.css : carte + boutons + kill animations. 3) Mémoire : localStorage si pas connecté, serveur si connecté (GET/PUT /api/prefs user.prefs.secretVeil + miroir local, reset depuis menu thème). Preuve : harness node 20/20 vert + endpoint live (PUT/GET/401/rejet/clear) + check_liens OK. Patch appliqué dans Killtime/Killtime/index.html : gate dans triggerAnomaly() + verrou anti ré-entrées. Correctif (2026-11-03) : effets parfois absents à cause de ré-entrées — le seuil spirale re-déclenche à chaque mousemove pendant la modale/await, N continuations jouaient N effets empilés en course. Fix : décision partagée (_veilDecision, un seul relais), re-check flag après await, cooldown 4 s après « Rester ici ». Preuve : harness 17/17."
+        },
+        {
+          "id": "task_lore_05",
+          "title": "Trier conversations Gemini (dossier AI Studio) pour lore et alignements projet",
+          "epic": "Lore",
+          "status": "done",
+          "priority": "medium",
+          "order": 23,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "chantier-aistudio/lore-projet + perso-philo",
+          "updated": "2026-11-05",
+          "details": "FAIT (2026-11-05) : 5 exports, 9369 fichiers, 3.7 Go triés. perso-philo/ (14 fichiers, 5.7 Mo). lore-projet/ (~1500 fichiers, 972 Mo dédupliqués) : Killtime Universe, convos à marqueurs, volumes/compressed, River of Time, codex mirrors, art, Cleya.pdf, 8 .cs orphelins + tools.js.aistudio en scratch. Détruit (validé x2) : PDFs D&D, .cs redondants, node_modules, McDo, Strahd, Webserver/DnD, mp4, admin, doublons. Chasse math : aucun formalisme champ, que vocable 5e Force/nytharite + règle jeu XP=PA. 5 dossiers exports supprimés, git status propre."
         }
       ]
     }
