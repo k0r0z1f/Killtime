@@ -360,6 +360,35 @@ body::before {
     pointer-events: none;
 }
 
+.nav-collapse-all {
+    width: 100%;
+    margin: 2px 0 3px;
+    padding: 7px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: transparent;
+    border: 1px solid var(--border-subtle);
+    border-radius: 6px;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.nav-collapse-all:hover {
+    color: var(--arcane-cyan);
+    border-color: var(--arcane-cyan);
+}
+
+.nav-collapse-all svg {
+    flex-shrink: 0;
+}
+
 .sidebar-nav {
     padding: 14px 10px 60px;
     display: flex;

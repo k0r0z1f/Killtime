@@ -4,21 +4,21 @@
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Gestion de l'accordéon dans la sidebar (état persisté : un groupe
-    // refermé le reste après navigation, fini les réouvertures à chaque page).
-    // Exécuté immédiatement (pas en DOMContentLoaded) pour éviter le flash
-    // ouvert → fermé : le script est en fin de body, la sidebar existe déjà.
+    // 1. Gestion de l'accordéon dans la sidebar : tout est replié par
+    // défaut, seul un groupe explicitement déplié (stocké '1') s'ouvre.
+    // Le HTML ne contient aucun "expanded" codé en dur : pas de flash
+    // ouvert → fermé au chargement.
     const navKey = t => 'codex-nav:' + t;
     const restoreNav = () => {
         document.querySelectorAll('.nav-group').forEach(group => {
             const tag = group.querySelector('.group-tag');
             const id = tag ? tag.textContent.trim() : null;
             if (id) {
+                let saved = null;
                 try {
-                    const saved = localStorage.getItem(navKey(id));
-                    if (saved === '0') group.classList.remove('expanded');
-                    else if (saved === '1') group.classList.add('expanded');
+                    saved = localStorage.getItem(navKey(id));
                 } catch (e) {}
+                group.classList.toggle('expanded', saved === '1');
                 group.dataset.navId = id;
             }
         });
@@ -39,6 +39,52 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+
+    // 1b. Bouton "Tout replier / Tout déplier" (injecté : s'applique aux
+    // 16 pages sans toucher au HTML généré). Placé après le bloc Site
+    // Killtime, avant Pilotage. Replie tous les .nav-group ouverts et
+    // persiste l'état (même clé codex-nav:* que l'accordéon).
+    const sidebarNav = document.getElementById('sidebarNav');
+    const killtimeLink = sidebarNav ? sidebarNav.querySelector('.external-site-group') : null;
+    if (sidebarNav && killtimeLink && !document.getElementById('collapseAllBtn')) {
+        const btn = document.createElement('button');
+        btn.id = 'collapseAllBtn';
+        btn.type = 'button';
+        btn.className = 'nav-collapse-all';
+        killtimeLink.after(btn);
+        const allGroups = () => Array.from(document.querySelectorAll('.nav-group'));
+        const ICON = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" ' +
+            'stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15" /></svg>';
+        const refreshLabel = () => {
+            const anyOpen = allGroups().some(g => g.classList.contains('expanded'));
+            btn.innerHTML = ICON + '<span>' + (anyOpen ? 'Tout replier' : 'Tout déplier') + '</span>';
+            btn.dataset.action = anyOpen ? 'collapse' : 'expand';
+            btn.setAttribute('aria-expanded', anyOpen ? 'true' : 'false');
+            btn.title = anyOpen ? 'Fermer tous les sous-menus' : 'Ouvrir tous les sous-menus';
+        };
+        btn.addEventListener('click', () => {
+            const anyOpen = allGroups().some(g => g.classList.contains('expanded'));
+            const expand = !anyOpen;
+            if (filterInput && filterInput.value) {
+                filterInput.value = '';
+                allGroups().forEach(g => { g.style.display = ''; });
+            }
+            allGroups().forEach(group => {
+                group.classList.toggle('expanded', expand);
+                const id = group.dataset.navId;
+                if (id) {
+                    try {
+                        localStorage.setItem(navKey(id), expand ? '1' : '0');
+                    } catch (e) {}
+                }
+            });
+            refreshLabel();
+        });
+        document.querySelectorAll('.nav-group-header').forEach(h => {
+            h.addEventListener('click', () => setTimeout(refreshLabel, 0));
+        });
+        refreshLabel();
+    }
 
     // 2. Filtrage en direct de la table des matières
     const filterInput = document.getElementById('filterInput');
