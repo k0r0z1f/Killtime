@@ -262,13 +262,13 @@
    "colonnes": [],
    "lignes": [
     [
-     "<div style=\"border:1px solid var(--border-subtle);border-radius:10px;padding:20px 14px 12px;margin:18px 0;position:relative\"><span style=\"position:absolute;top:-0.72em;left:12px;background:var(--bg-surface);padding:0 10px;font-weight:700\">Magie Élémentale (Magie, Intelligence)</span><div style=\"border:1px solid var(--border-subtle);border-radius:10px;background:var(--bg-surface);padding:20px 14px 12px;margin:26px 0;position:relative\"><span style=\"position:absolute;top:-0.72em;left:12px;background:var(--bg-surface);padding:0 10px;font-weight:700\">Feu (Offensif, Défensif, Utilitaire)</span><div style=\"background:rgba(239,68,68,0.10);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Incinération Pyrocinétique</strong> (Offensif)<br>└─ Flamme Bleue<br>&emsp;&emsp;├─ Fournaise Déferlante → Nova Thermique<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Fournaise Déferlante → </span>├─ Soleil Captif<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Fournaise Déferlante → </span>└─ Incandescence<br>&emsp;&emsp;└─ Langue de Braise → Trait Solaire<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Langue de Braise → </span>├─ Rayon Zénithal<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Langue de Braise → </span>└─ Lance de l'Horizon</div><div style=\"background:rgba(34,197,94,0.10);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Voile de Braise</strong> (Défensif)<br>├─ Mur de Flammes → Couronne de Cendres → Dôme de Braise<br><span style=\"visibility:hidden\">├─ Mur de Flammes → Couronne de Cendres → </span>├─ Sanctuaire du Phénix<br><span style=\"visibility:hidden\">├─ Mur de Flammes → Couronne de Cendres → </span>└─ Vengeance du Phénix<br>└─ Cape de Fumée → Éclipse de Cendres → Cendres Mordantes<br><span style=\"visibility:hidden\">└─ Cape de Fumée → Éclipse de Cendres → </span>├─ Hiver de Cendres<br><span style=\"visibility:hidden\">└─ Cape de Fumée → Éclipse de Cendres → </span>└─ Pluie de Cendres</div><div style=\"background:rgba(59,130,246,0.12);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Main de Forge</strong> (Utilitaire)<br>├─ Sang Braise → Peau de Lave → Fourneau Vivant<br><span style=\"visibility:hidden\">├─ Sang Braise → Peau de Lave → </span>├─ Cœur de Fournaise<br><span style=\"visibility:hidden\">├─ Sang Braise → Peau de Lave → </span>└─ Brasier Partagé<br>└─ Lanterne Vivante → Œil du Brasier → Marque du Forgeron<br><span style=\"visibility:hidden\">└─ Lanterne Vivante → Œil du Brasier → </span>├─ Chef-d'Œuvre<br><span style=\"visibility:hidden\">└─ Lanterne Vivante → Œil du Brasier → </span>└─ Égide Forgée</div></div><div style=\"border:1px solid var(--border-subtle);border-radius:10px;background:var(--bg-surface);padding:20px 14px 12px;margin:26px 0;position:relative\"><span style=\"position:absolute;top:-0.72em;left:12px;background:var(--bg-surface);padding:0 10px;font-weight:700\">Air (Offensif, Défensif, Utilitaire)</span><div style=\"background:rgba(239,68,68,0.10);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Aéromancie</strong> (Offensif, Utilitaire)<br>├─ Courant Porteur → Souffle Lointain → Marche des Nuées<br><span style=\"visibility:hidden\">├─ Courant Porteur → Souffle Lointain → </span>├─ Caravane Céleste<br><span style=\"visibility:hidden\">├─ Courant Porteur → Souffle Lointain → </span>└─ Chute Douce<br>└─ Lame de Vent → Vent Tranchant → Tempête de Lames<br><span style=\"visibility:hidden\">└─ Lame de Vent → Vent Tranchant → </span>├─ Ouragan<br><span style=\"visibility:hidden\">└─ Lame de Vent → Vent Tranchant → </span>└─ Œil du Cyclone</div><div style=\"background:rgba(34,197,94,0.10);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Voile de Vent</strong> (Défensif)<br>├─ Foulée Légère → Glissade → Sprint du Zéphyr<br><span style=\"visibility:hidden\">├─ Foulée Légère → Glissade → </span>├─ Chevauchée du Vent<br><span style=\"visibility:hidden\">├─ Foulée Légère → Glissade → </span>└─ Vol du Faucon<br>└─ Mur de Vent → Cercle du Zéphyr → Dôme de Vent<br><span style=\"visibility:hidden\">└─ Mur de Vent → Cercle du Zéphyr → </span>├─ Sanctuaire des Vents<br><span style=\"visibility:hidden\">└─ Mur de Vent → Cercle du Zéphyr → </span>└─ Vengeance des Vents</div><div style=\"background:rgba(59,130,246,0.12);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Vent du Voyageur</strong> (Utilitaire)<br>├─ Bise Sèche → Manteau Tiède → Voile de Poussière<br><span style=\"visibility:hidden\">├─ Bise Sèche → Manteau Tiède → </span>├─ Sillage Silencieux<br><span style=\"visibility:hidden\">├─ Bise Sèche → Manteau Tiède → </span>└─ Tourbillon de Poussière<br>└─ Oreille du Vent → Sentinelle Invisible → Voix du Lointain<br><span style=\"visibility:hidden\">└─ Oreille du Vent → Sentinelle Invisible → </span>├─ Chœur des Vents<br><span style=\"visibility:hidden\">└─ Oreille du Vent → Sentinelle Invisible → </span>└─ Hurlement\n                                        </div></div><div style=\"border:1px solid var(--border-subtle);border-radius:10px;background:var(--bg-surface);padding:20px 14px 12px;margin:26px 0;position:relative\"><span style=\"position:absolute;top:-0.72em;left:12px;background:var(--bg-surface);padding:0 10px;font-weight:700\">Eau (Offensif, Défensif, Utilitaire)</span><div style=\"background:rgba(239,68,68,0.10);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Hydromancie</strong> (Offensif, Utilitaire)<br>├─ Brume Aveuglante → Eau Pure → Flot Porteur<br><span style=\"visibility:hidden\">├─ Brume Aveuglante → Eau Pure → </span>├─ Source Vive<br><span style=\"visibility:hidden\">├─ Brume Aveuglante → Eau Pure → </span>└─ Déluge<br>└─ Étreinte Abyssale → Mâchoire du Gouffre → Raz-de-Marée<br><span style=\"visibility:hidden\">└─ Étreinte Abyssale → Mâchoire du Gouffre → </span>├─ Fosse Abyssale<br><span style=\"visibility:hidden\">└─ Étreinte Abyssale → Mâchoire du Gouffre → </span>└─ Prison d'Écume</div><div style=\"background:rgba(34,197,94,0.10);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Peau d'Écume</strong> (Défensif)<br>├─ Souffle Marin → Corps Fluide → Torrent<br><span style=\"visibility:hidden\">├─ Souffle Marin → Corps Fluide → </span>├─ Forme du Courant<br><span style=\"visibility:hidden\">├─ Souffle Marin → Corps Fluide → </span>└─ Vague Brutale<br>└─ Mur d'Écume → Anneau de Marée → Cloche Abyssale<br><span style=\"visibility:hidden\">└─ Mur d'Écume → Anneau de Marée → </span>├─ Sanctuaire des Profondeurs<br><span style=\"visibility:hidden\">└─ Mur d'Écume → Anneau de Marée → </span>└─ Vengeance des Profondeurs</div><div style=\"background:rgba(59,130,246,0.12);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Appel de la Pluie</strong> (Utilitaire)<br>├─ Puits de Poche → Bain Réparateur → Brume Légère<br><span style=\"visibility:hidden\">├─ Puits de Poche → Bain Réparateur → </span>├─ Miroir Liquide<br><span style=\"visibility:hidden\">├─ Puits de Poche → Bain Réparateur → </span>└─ Linceul de Brume<br>└─ Lecture des Flots → Oreille des Profondeurs → Gardien des Rives<br><span style=\"visibility:hidden\">└─ Lecture des Flots → Oreille des Profondeurs → </span>├─ Voix des Flots<br><span style=\"visibility:hidden\">└─ Lecture des Flots → Oreille des Profondeurs → </span>└─ Mascaret\n                                        </div></div><div style=\"border:1px solid var(--border-subtle);border-radius:10px;background:var(--bg-surface);padding:20px 14px 12px;margin:26px 0;position:relative\"><span style=\"position:absolute;top:-0.72em;left:12px;background:var(--bg-surface);padding:0 10px;font-weight:700\">Terre (Offensif, Défensif, Utilitaire)</span><div style=\"background:rgba(239,68,68,0.10);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Géomancie</strong> (Offensif, Utilitaire)<br>├─ Peau de Pierre → Mains du Maçon → Pas de la Montagne<br><span style=\"visibility:hidden\">├─ Peau de Pierre → Mains du Maçon → </span>├─ Statue Vivante<br><span style=\"visibility:hidden\">├─ Peau de Pierre → Mains du Maçon → </span>└─ Étreinte de la Terre<br>└─ Poing Tellurique → Choc Tellurique → Séisme Localisé<br><span style=\"visibility:hidden\">└─ Poing Tellurique → Choc Tellurique → </span>├─ Cataclysme<br><span style=\"visibility:hidden\">└─ Poing Tellurique → Choc Tellurique → </span>└─ Ancrage</div><div style=\"background:rgba(34,197,94,0.10);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Levée de Terre</strong> (Défensif)<br>├─ Écoute Tellurique → Pistage → Fosse<br><span style=\"visibility:hidden\">├─ Écoute Tellurique → Pistage → </span>├─ Galerie<br><span style=\"visibility:hidden\">├─ Écoute Tellurique → Pistage → </span>└─ Sables Mouvants<br>└─ Mur de Roc → Bastion de Roc → Donjon<br><span style=\"visibility:hidden\">└─ Mur de Roc → Bastion de Roc → </span>├─ Citadelle<br><span style=\"visibility:hidden\">└─ Mur de Roc → Bastion de Roc → </span>└─ Contre-Secousse</div><div style=\"background:rgba(59,130,246,0.12);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Sens de la Pierre</strong> (Utilitaire)<br>├─ Abri de Pierre → Four de Pierre → Dalle Protectrice<br><span style=\"visibility:hidden\">├─ Abri de Pierre → Four de Pierre → </span>├─ Rideau de Gravats<br><span style=\"visibility:hidden\">├─ Abri de Pierre → Four de Pierre → </span>└─ Pierre à Aiguiser<br>└─ Sonar de Roche → Mémoire des Pierres → Faille<br><span style=\"visibility:hidden\">└─ Sonar de Roche → Mémoire des Pierres → </span>├─ Trésor Enfoui<br><span style=\"visibility:hidden\">└─ Sonar de Roche → Mémoire des Pierres → </span>└─ Colère Tellurique</div></div></div>"
+     "<div style=\"border:1px solid var(--border-subtle);border-radius:10px;padding:20px 14px 12px;margin:18px 0;position:relative\"><span style=\"position:absolute;top:-0.72em;left:12px;background:var(--bg-surface);padding:0 10px;font-weight:700\">Magie Élémentale (Magie, Intelligence)</span><div style=\"border:1px solid var(--border-subtle);border-radius:10px;background:var(--bg-surface);padding:20px 14px 12px;margin:26px 0;position:relative\"><span style=\"position:absolute;top:-0.72em;left:12px;background:var(--bg-surface);padding:0 10px;font-weight:700\">Feu</span><div style=\"background:rgba(239,68,68,0.10);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Incinération Pyrocinétique</strong> (Offensif)<br>└─ Flamme Bleue<br>&emsp;&emsp;├─ Fournaise Déferlante → Nova Thermique<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Fournaise Déferlante → </span>├─ Soleil Captif<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Fournaise Déferlante → </span>└─ Incandescence<br>&emsp;&emsp;└─ Langue de Braise → Trait Solaire<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Langue de Braise → </span>├─ Rayon Zénithal<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Langue de Braise → </span>└─ Lance de l'Horizon</div><div style=\"background:rgba(34,197,94,0.10);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Voile de Braise</strong> (Défensif)<br>├─ Mur de Flammes → Couronne de Cendres → Dôme de Braise<br><span style=\"visibility:hidden\">├─ Mur de Flammes → Couronne de Cendres → </span>├─ Sanctuaire du Phénix<br><span style=\"visibility:hidden\">├─ Mur de Flammes → Couronne de Cendres → </span>└─ Vengeance du Phénix<br>└─ Cape de Fumée → Éclipse de Cendres → Cendres Mordantes<br><span style=\"visibility:hidden\">└─ Cape de Fumée → Éclipse de Cendres → </span>├─ Hiver de Cendres<br><span style=\"visibility:hidden\">└─ Cape de Fumée → Éclipse de Cendres → </span>└─ Pluie de Cendres</div><div style=\"background:rgba(59,130,246,0.12);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Main de Forge</strong> (Utilitaire)<br>├─ Sang Braise → Peau de Lave → Fourneau Vivant<br><span style=\"visibility:hidden\">├─ Sang Braise → Peau de Lave → </span>├─ Cœur de Fournaise<br><span style=\"visibility:hidden\">├─ Sang Braise → Peau de Lave → </span>└─ Brasier Partagé<br>└─ Lanterne Vivante → Œil du Brasier → Marque du Forgeron<br><span style=\"visibility:hidden\">└─ Lanterne Vivante → Œil du Brasier → </span>├─ Chef-d'Œuvre<br><span style=\"visibility:hidden\">└─ Lanterne Vivante → Œil du Brasier → </span>└─ Égide Forgée</div></div><div style=\"border:1px solid var(--border-subtle);border-radius:10px;background:var(--bg-surface);padding:20px 14px 12px;margin:26px 0;position:relative\"><span style=\"position:absolute;top:-0.72em;left:12px;background:var(--bg-surface);padding:0 10px;font-weight:700\">Air</span><div style=\"background:rgba(239,68,68,0.10);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Aéromancie</strong> (Offensif, Utilitaire)<br>├─ Courant Porteur → Souffle Lointain → Marche des Nuées<br><span style=\"visibility:hidden\">├─ Courant Porteur → Souffle Lointain → </span>├─ Caravane Céleste<br><span style=\"visibility:hidden\">├─ Courant Porteur → Souffle Lointain → </span>└─ Chute Douce<br>└─ Lame de Vent → Vent Tranchant → Tempête de Lames<br><span style=\"visibility:hidden\">└─ Lame de Vent → Vent Tranchant → </span>├─ Ouragan<br><span style=\"visibility:hidden\">└─ Lame de Vent → Vent Tranchant → </span>└─ Œil du Cyclone</div><div style=\"background:rgba(34,197,94,0.10);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Voile de Vent</strong> (Défensif)<br>├─ Foulée Légère → Glissade → Sprint du Zéphyr<br><span style=\"visibility:hidden\">├─ Foulée Légère → Glissade → </span>├─ Chevauchée du Vent<br><span style=\"visibility:hidden\">├─ Foulée Légère → Glissade → </span>└─ Vol du Faucon<br>└─ Mur de Vent → Cercle du Zéphyr → Dôme de Vent<br><span style=\"visibility:hidden\">└─ Mur de Vent → Cercle du Zéphyr → </span>├─ Sanctuaire des Vents<br><span style=\"visibility:hidden\">└─ Mur de Vent → Cercle du Zéphyr → </span>└─ Vengeance des Vents</div><div style=\"background:rgba(59,130,246,0.12);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Vent du Voyageur</strong> (Utilitaire)<br>├─ Bise Sèche → Manteau Tiède → Voile de Poussière<br><span style=\"visibility:hidden\">├─ Bise Sèche → Manteau Tiède → </span>├─ Sillage Silencieux<br><span style=\"visibility:hidden\">├─ Bise Sèche → Manteau Tiède → </span>└─ Tourbillon de Poussière<br>└─ Oreille du Vent → Sentinelle Invisible → Voix du Lointain<br><span style=\"visibility:hidden\">└─ Oreille du Vent → Sentinelle Invisible → </span>├─ Chœur des Vents<br><span style=\"visibility:hidden\">└─ Oreille du Vent → Sentinelle Invisible → </span>└─ Hurlement\n                                        </div></div><div style=\"border:1px solid var(--border-subtle);border-radius:10px;background:var(--bg-surface);padding:20px 14px 12px;margin:26px 0;position:relative\"><span style=\"position:absolute;top:-0.72em;left:12px;background:var(--bg-surface);padding:0 10px;font-weight:700\">Eau</span><div style=\"background:rgba(239,68,68,0.10);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Hydromancie</strong> (Offensif, Utilitaire)<br>├─ Brume Aveuglante → Eau Pure → Flot Porteur<br><span style=\"visibility:hidden\">├─ Brume Aveuglante → Eau Pure → </span>├─ Source Vive<br><span style=\"visibility:hidden\">├─ Brume Aveuglante → Eau Pure → </span>└─ Déluge<br>└─ Étreinte Abyssale → Mâchoire du Gouffre → Raz-de-Marée<br><span style=\"visibility:hidden\">└─ Étreinte Abyssale → Mâchoire du Gouffre → </span>├─ Fosse Abyssale<br><span style=\"visibility:hidden\">└─ Étreinte Abyssale → Mâchoire du Gouffre → </span>└─ Prison d'Écume</div><div style=\"background:rgba(34,197,94,0.10);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Peau d'Écume</strong> (Défensif)<br>├─ Souffle Marin → Corps Fluide → Torrent<br><span style=\"visibility:hidden\">├─ Souffle Marin → Corps Fluide → </span>├─ Forme du Courant<br><span style=\"visibility:hidden\">├─ Souffle Marin → Corps Fluide → </span>└─ Vague Brutale<br>└─ Mur d'Écume → Anneau de Marée → Cloche Abyssale<br><span style=\"visibility:hidden\">└─ Mur d'Écume → Anneau de Marée → </span>├─ Sanctuaire des Profondeurs<br><span style=\"visibility:hidden\">└─ Mur d'Écume → Anneau de Marée → </span>└─ Vengeance des Profondeurs</div><div style=\"background:rgba(59,130,246,0.12);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Appel de la Pluie</strong> (Utilitaire)<br>├─ Puits de Poche → Bain Réparateur → Brume Légère<br><span style=\"visibility:hidden\">├─ Puits de Poche → Bain Réparateur → </span>├─ Miroir Liquide<br><span style=\"visibility:hidden\">├─ Puits de Poche → Bain Réparateur → </span>└─ Linceul de Brume<br>└─ Lecture des Flots → Oreille des Profondeurs → Gardien des Rives<br><span style=\"visibility:hidden\">└─ Lecture des Flots → Oreille des Profondeurs → </span>├─ Voix des Flots<br><span style=\"visibility:hidden\">└─ Lecture des Flots → Oreille des Profondeurs → </span>└─ Mascaret\n                                        </div></div><div style=\"border:1px solid var(--border-subtle);border-radius:10px;background:var(--bg-surface);padding:20px 14px 12px;margin:26px 0;position:relative\"><span style=\"position:absolute;top:-0.72em;left:12px;background:var(--bg-surface);padding:0 10px;font-weight:700\">Terre</span><div style=\"background:rgba(239,68,68,0.10);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Géomancie</strong> (Offensif, Utilitaire)<br>├─ Peau de Pierre → Mains du Maçon → Pas de la Montagne<br><span style=\"visibility:hidden\">├─ Peau de Pierre → Mains du Maçon → </span>├─ Statue Vivante<br><span style=\"visibility:hidden\">├─ Peau de Pierre → Mains du Maçon → </span>└─ Étreinte de la Terre<br>└─ Poing Tellurique → Choc Tellurique → Séisme Localisé<br><span style=\"visibility:hidden\">└─ Poing Tellurique → Choc Tellurique → </span>├─ Cataclysme<br><span style=\"visibility:hidden\">└─ Poing Tellurique → Choc Tellurique → </span>└─ Ancrage</div><div style=\"background:rgba(34,197,94,0.10);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Levée de Terre</strong> (Défensif)<br>├─ Écoute Tellurique → Pistage → Fosse<br><span style=\"visibility:hidden\">├─ Écoute Tellurique → Pistage → </span>├─ Galerie<br><span style=\"visibility:hidden\">├─ Écoute Tellurique → Pistage → </span>└─ Sables Mouvants<br>└─ Mur de Roc → Bastion de Roc → Donjon<br><span style=\"visibility:hidden\">└─ Mur de Roc → Bastion de Roc → </span>├─ Citadelle<br><span style=\"visibility:hidden\">└─ Mur de Roc → Bastion de Roc → </span>└─ Contre-Secousse</div><div style=\"background:rgba(59,130,246,0.12);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Sens de la Pierre</strong> (Utilitaire)<br>├─ Abri de Pierre → Four de Pierre → Dalle Protectrice<br><span style=\"visibility:hidden\">├─ Abri de Pierre → Four de Pierre → </span>├─ Rideau de Gravats<br><span style=\"visibility:hidden\">├─ Abri de Pierre → Four de Pierre → </span>└─ Pierre à Aiguiser<br>└─ Sonar de Roche → Mémoire des Pierres → Faille<br><span style=\"visibility:hidden\">└─ Sonar de Roche → Mémoire des Pierres → </span>├─ Trésor Enfoui<br><span style=\"visibility:hidden\">└─ Sonar de Roche → Mémoire des Pierres → </span>└─ Colère Tellurique</div></div></div>"
     ],
     [
-     "<div style=\"border:1px solid var(--border-subtle);border-radius:10px;padding:20px 14px 12px;margin:18px 0;position:relative\"><span style=\"position:absolute;top:-0.72em;left:12px;background:var(--bg-surface);padding:0 10px;font-weight:700\">Magie Primale (Magie, Intelligence)</span><div style=\"border:1px solid var(--border-subtle);border-radius:10px;background:var(--bg-surface);padding:20px 14px 12px;margin:26px 0;position:relative\"><span style=\"position:absolute;top:-0.72em;left:12px;background:var(--bg-surface);padding:0 10px;font-weight:700\">Vie (Offensif, Défensif, Utilitaire)</span><div style=\"background:rgba(239,68,68,0.10);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Greffe Cinétique</strong> (Offensif, Utilitaire)<br>&emsp;&emsp;├─ Sang Chaud → Sang Bouillant → Fureur de la Canopée<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Sang Chaud → Sang Bouillant → </span>├─ Colère du Vieux Chêne<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Sang Chaud → Sang Bouillant → </span>└─ Rafale d'Épines<br>&emsp;&emsp;└─ Osmose d'Escouade → Frappe Symbiotique → Lien Profond<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Osmose d'Escouade → Frappe Symbiotique → </span>├─ Élan Symbiotique<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Osmose d'Escouade → Frappe Symbiotique → </span>└─ Cocon Symbiotique</div><div style=\"background:rgba(34,197,94,0.10);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Écorce Gardienne</strong> (Défensif)<br>&emsp;&emsp;├─ Ronces Vengeresses → Carapace Ancienne → Bastion d'Écorce<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Ronces Vengeresses → Carapace Ancienne → </span>├─ Sanctuaire d'Écorce<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Ronces Vengeresses → Carapace Ancienne → </span>└─ Vengeance de la Forêt<br>&emsp;&emsp;└─ Garde d'Écorce → Écorce d'Escouade → Cocon de Guerre<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Garde d'Écorce → Écorce d'Escouade → </span>├─ Égide de la Forêt<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Garde d'Écorce → Écorce d'Escouade → </span>└─ Cocon Impénétrable</div><div style=\"background:rgba(59,130,246,0.12);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Catalyse Tissulaire</strong> (Utilitaire)<br>&emsp;&emsp;├─ Surcroît Vital → Bouclier Végétal → Sève Partagée<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Surcroît Vital → Bouclier Végétal → </span>├─ Transfusion Symbiotique<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Surcroît Vital → Bouclier Végétal → </span>└─ Renaissance Symbiotique<br>&emsp;&emsp;└─ Sève Claire → Sang Clair → Fontaine Claire<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Sève Claire → Sang Clair → </span>├─ Purification Totale<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Sève Claire → Sang Clair → </span>└─ Sève Immunisante</div></div><div style=\"border:1px solid var(--border-subtle);border-radius:10px;background:var(--bg-surface);padding:20px 14px 12px;margin:26px 0;position:relative\"><span style=\"position:absolute;top:-0.72em;left:12px;background:var(--bg-surface);padding:0 10px;font-weight:700\">Création (Offensif, Défensif, Utilitaire)</span><div style=\"background:rgba(34,197,94,0.10);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Barricade de Racines</strong> (Défensif, Utilitaire)<br>&emsp;&emsp;├─ Épines de Granit → Bastion Vivant → Haie Fortifiée<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Épines de Granit → Bastion Vivant → </span>├─ Mur d'Orichalque Végétal<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Épines de Granit → Bastion Vivant → </span>└─ Donjon Végétal<br>&emsp;&emsp;└─ Lanterne d'Ombre → Manteau d'Ombre → Dôme d'Ombre<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Lanterne d'Ombre → Manteau d'Ombre → </span>├─ Sanctuaire d'Ombre<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Lanterne d'Ombre → Manteau d'Ombre → </span>└─ Vengeance de l'Ombre</div><div style=\"background:rgba(239,68,68,0.10);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Dard d'Épine</strong> (Offensif)<br>&emsp;&emsp;├─ Épine Vive → Volée d'Épines → Pluie d'Épines<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Épine Vive → Volée d'Épines → </span>├─ Forêt de Lances<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Épine Vive → Volée d'Épines → </span>└─ Cercle de Ronces<br>&emsp;&emsp;└─ Fouet d'Ombre → Lames d'Ombre → Mâchoire d'Ombre<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Fouet d'Ombre → Lames d'Ombre → </span>├─ Nuit Dévorante<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Fouet d'Ombre → Lames d'Ombre → </span>└─ Soleil Noir</div><div style=\"background:rgba(59,130,246,0.12);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Outil de Sève</strong> (Utilitaire)<br>&emsp;&emsp;├─ Arme de Ronces → Armure d'Écorce → Marque du Jardinier<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Arme de Ronces → Armure d'Écorce → </span>├─ Chef-d'Œuvre Vivant<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Arme de Ronces → Armure d'Écorce → </span>└─ Égide Vivante<br>&emsp;&emsp;└─ Pont de Lianes → Sentier Vivant → Canopée Voyageuse<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Pont de Lianes → Sentier Vivant → </span>├─ Grande Traversée<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Pont de Lianes → Sentier Vivant → </span>└─ Forteresse de Lianes</div></div><div style=\"border:1px solid var(--border-subtle);border-radius:10px;background:var(--bg-surface);padding:20px 14px 12px;margin:26px 0;position:relative\"><span style=\"position:absolute;top:-0.72em;left:12px;background:var(--bg-surface);padding:0 10px;font-weight:700\">Destruction (Offensif, Défensif, Utilitaire)</span><div style=\"background:rgba(239,68,68,0.10);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Vignes Constrictrices</strong> (Offensif, Utilitaire)<br>&emsp;&emsp;├─ Étau Végétal → Moisson Sanguine → Étreinte Putride<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Étau Végétal → Moisson Sanguine → </span>├─ Étranglement Toxique<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Étau Végétal → Moisson Sanguine → </span>└─ Étreinte Finale<br>&emsp;&emsp;└─ Champ de Ronces → Ronces Neurotoxiques → Enchevêtrement Explosif<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Champ de Ronces → Ronces Neurotoxiques → </span>├─ Pluie de Ronces<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Champ de Ronces → Ronces Neurotoxiques → </span>└─ Floraison Funeste</div><div style=\"background:rgba(34,197,94,0.10);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Écorce Putride</strong> (Défensif)<br>&emsp;&emsp;├─ Sève Corrompue → Chair Putride → Cocon de Pourriture<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Sève Corrompue → Chair Putride → </span>├─ Tombeau Putride<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Sève Corrompue → Chair Putride → </span>└─ Sang Pourri<br>&emsp;&emsp;└─ Flaque Fangeuse → Bourbier → Tourbière<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Flaque Fangeuse → Bourbier → </span>├─ Enlisement<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Flaque Fangeuse → Bourbier → </span>└─ Déluge de Boue</div><div style=\"background:rgba(59,130,246,0.12);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Herbier Toxique</strong> (Utilitaire)<br>&emsp;&emsp;├─ Enduit Persistant → Toxine Puissante → Alambic Vivant<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Enduit Persistant → Toxine Puissante → </span>├─ Grand Œuvre Toxique<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Enduit Persistant → Toxine Puissante → </span>└─ Nuage Toxique<br>&emsp;&emsp;└─ Sève Dissolvante → Brèche → Sape<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Sève Dissolvante → Brèche → </span>├─ Grand Passage<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Sève Dissolvante → Brèche → </span>└─ Effondrement</div></div></div>"
+     "<div style=\"border:1px solid var(--border-subtle);border-radius:10px;padding:20px 14px 12px;margin:18px 0;position:relative\"><span style=\"position:absolute;top:-0.72em;left:12px;background:var(--bg-surface);padding:0 10px;font-weight:700\">Magie Primale (Magie, Intelligence)</span><div style=\"border:1px solid var(--border-subtle);border-radius:10px;background:var(--bg-surface);padding:20px 14px 12px;margin:26px 0;position:relative\"><span style=\"position:absolute;top:-0.72em;left:12px;background:var(--bg-surface);padding:0 10px;font-weight:700\">Vie</span><div style=\"background:rgba(239,68,68,0.10);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Greffe Cinétique</strong> (Offensif, Utilitaire)<br>&emsp;&emsp;├─ Sang Chaud → Sang Bouillant → Fureur de la Canopée<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Sang Chaud → Sang Bouillant → </span>├─ Colère du Vieux Chêne<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Sang Chaud → Sang Bouillant → </span>└─ Rafale d'Épines<br>&emsp;&emsp;└─ Osmose d'Escouade → Frappe Symbiotique → Lien Profond<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Osmose d'Escouade → Frappe Symbiotique → </span>├─ Élan Symbiotique<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Osmose d'Escouade → Frappe Symbiotique → </span>└─ Cocon Symbiotique</div><div style=\"background:rgba(34,197,94,0.10);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Écorce Gardienne</strong> (Défensif)<br>&emsp;&emsp;├─ Ronces Vengeresses → Carapace Ancienne → Bastion d'Écorce<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Ronces Vengeresses → Carapace Ancienne → </span>├─ Sanctuaire d'Écorce<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Ronces Vengeresses → Carapace Ancienne → </span>└─ Vengeance de la Forêt<br>&emsp;&emsp;└─ Garde d'Écorce → Écorce d'Escouade → Cocon de Guerre<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Garde d'Écorce → Écorce d'Escouade → </span>├─ Égide de la Forêt<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Garde d'Écorce → Écorce d'Escouade → </span>└─ Cocon Impénétrable</div><div style=\"background:rgba(59,130,246,0.12);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Catalyse Tissulaire</strong> (Utilitaire)<br>&emsp;&emsp;├─ Surcroît Vital → Bouclier Végétal → Sève Partagée<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Surcroît Vital → Bouclier Végétal → </span>├─ Transfusion Symbiotique<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Surcroît Vital → Bouclier Végétal → </span>└─ Renaissance Symbiotique<br>&emsp;&emsp;└─ Sève Claire → Sang Clair → Fontaine Claire<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Sève Claire → Sang Clair → </span>├─ Purification Totale<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Sève Claire → Sang Clair → </span>└─ Sève Immunisante</div></div><div style=\"border:1px solid var(--border-subtle);border-radius:10px;background:var(--bg-surface);padding:20px 14px 12px;margin:26px 0;position:relative\"><span style=\"position:absolute;top:-0.72em;left:12px;background:var(--bg-surface);padding:0 10px;font-weight:700\">Création</span><div style=\"background:rgba(34,197,94,0.10);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Barricade de Racines</strong> (Défensif, Utilitaire)<br>&emsp;&emsp;├─ Épines de Granit → Bastion Vivant → Haie Fortifiée<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Épines de Granit → Bastion Vivant → </span>├─ Mur d'Orichalque Végétal<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Épines de Granit → Bastion Vivant → </span>└─ Donjon Végétal<br>&emsp;&emsp;└─ Lanterne d'Ombre → Manteau d'Ombre → Dôme d'Ombre<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Lanterne d'Ombre → Manteau d'Ombre → </span>├─ Sanctuaire d'Ombre<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Lanterne d'Ombre → Manteau d'Ombre → </span>└─ Vengeance de l'Ombre</div><div style=\"background:rgba(239,68,68,0.10);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Dard d'Épine</strong> (Offensif)<br>&emsp;&emsp;├─ Épine Vive → Volée d'Épines → Pluie d'Épines<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Épine Vive → Volée d'Épines → </span>├─ Forêt de Lances<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Épine Vive → Volée d'Épines → </span>└─ Cercle de Ronces<br>&emsp;&emsp;└─ Fouet d'Ombre → Lames d'Ombre → Mâchoire d'Ombre<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Fouet d'Ombre → Lames d'Ombre → </span>├─ Nuit Dévorante<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Fouet d'Ombre → Lames d'Ombre → </span>└─ Soleil Noir</div><div style=\"background:rgba(59,130,246,0.12);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Outil de Sève</strong> (Utilitaire)<br>&emsp;&emsp;├─ Arme de Ronces → Armure d'Écorce → Marque du Jardinier<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Arme de Ronces → Armure d'Écorce → </span>├─ Chef-d'Œuvre Vivant<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Arme de Ronces → Armure d'Écorce → </span>└─ Égide Vivante<br>&emsp;&emsp;└─ Pont de Lianes → Sentier Vivant → Canopée Voyageuse<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Pont de Lianes → Sentier Vivant → </span>├─ Grande Traversée<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Pont de Lianes → Sentier Vivant → </span>└─ Forteresse de Lianes</div></div><div style=\"border:1px solid var(--border-subtle);border-radius:10px;background:var(--bg-surface);padding:20px 14px 12px;margin:26px 0;position:relative\"><span style=\"position:absolute;top:-0.72em;left:12px;background:var(--bg-surface);padding:0 10px;font-weight:700\">Destruction</span><div style=\"background:rgba(239,68,68,0.10);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Vignes Constrictrices</strong> (Offensif, Utilitaire)<br>&emsp;&emsp;├─ Étau Végétal → Moisson Sanguine → Étreinte Putride<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Étau Végétal → Moisson Sanguine → </span>├─ Étranglement Toxique<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Étau Végétal → Moisson Sanguine → </span>└─ Étreinte Finale<br>&emsp;&emsp;└─ Champ de Ronces → Ronces Neurotoxiques → Enchevêtrement Explosif<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Champ de Ronces → Ronces Neurotoxiques → </span>├─ Pluie de Ronces<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Champ de Ronces → Ronces Neurotoxiques → </span>└─ Floraison Funeste</div><div style=\"background:rgba(34,197,94,0.10);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Écorce Putride</strong> (Défensif)<br>&emsp;&emsp;├─ Sève Corrompue → Chair Putride → Cocon de Pourriture<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Sève Corrompue → Chair Putride → </span>├─ Tombeau Putride<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Sève Corrompue → Chair Putride → </span>└─ Sang Pourri<br>&emsp;&emsp;└─ Flaque Fangeuse → Bourbier → Tourbière<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Flaque Fangeuse → Bourbier → </span>├─ Enlisement<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Flaque Fangeuse → Bourbier → </span>└─ Déluge de Boue</div><div style=\"background:rgba(59,130,246,0.12);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Herbier Toxique</strong> (Utilitaire)<br>&emsp;&emsp;├─ Enduit Persistant → Toxine Puissante → Alambic Vivant<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Enduit Persistant → Toxine Puissante → </span>├─ Grand Œuvre Toxique<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Enduit Persistant → Toxine Puissante → </span>└─ Nuage Toxique<br>&emsp;&emsp;└─ Sève Dissolvante → Brèche → Sape<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Sève Dissolvante → Brèche → </span>├─ Grand Passage<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Sève Dissolvante → Brèche → </span>└─ Effondrement</div></div></div>"
     ],
     [
-     "<div style=\"border:1px solid var(--border-subtle);border-radius:10px;padding:20px 14px 12px;margin:18px 0;position:relative\"><span style=\"position:absolute;top:-0.72em;left:12px;background:var(--bg-surface);padding:0 10px;font-weight:700\">Magie de l'Esprit (Magie, Intelligence)</span><div style=\"border:1px solid var(--border-subtle);border-radius:10px;background:var(--bg-surface);padding:20px 14px 12px;margin:26px 0;position:relative\"><span style=\"position:absolute;top:-0.72em;left:12px;background:var(--bg-surface);padding:0 10px;font-weight:700\">Télékinésie (Utilitaire)</span><strong>Télékinésie</strong> → Projection d'Objets → Barrière Cinétique →\n                                        Fissure Gravifique\n                                        </div><div style=\"border:1px solid var(--border-subtle);border-radius:10px;background:var(--bg-surface);padding:20px 14px 12px;margin:26px 0;position:relative\"><span style=\"position:absolute;top:-0.72em;left:12px;background:var(--bg-surface);padding:0 10px;font-weight:700\">Télépathie (Social, Utilitaire)</span><strong>Télépathie</strong> → Lien Empathique → Sondage de Surface →\n                                        Injonction Impérieuse\n                                        </div><div style=\"border:1px solid var(--border-subtle);border-radius:10px;background:var(--bg-surface);padding:20px 14px 12px;margin:26px 0;position:relative\"><span style=\"position:absolute;top:-0.72em;left:12px;background:var(--bg-surface);padding:0 10px;font-weight:700\">Clairvoyance (Utilitaire)</span><strong>Clairvoyance</strong> → Œil Distant → Prescience du Danger →\n                                        Champ de Prescience</div></div>"
+     "<div style=\"border:1px solid var(--border-subtle);border-radius:10px;padding:20px 14px 12px;margin:18px 0;position:relative\"><span style=\"position:absolute;top:-0.72em;left:12px;background:var(--bg-surface);padding:0 10px;font-weight:700\">Magie de l'Esprit (Magie, Intelligence)</span><div style=\"border:1px solid var(--border-subtle);border-radius:10px;background:var(--bg-surface);padding:20px 14px 12px;margin:26px 0;position:relative\"><span style=\"position:absolute;top:-0.72em;left:12px;background:var(--bg-surface);padding:0 10px;font-weight:700\">Télékinésie</span><div style=\"background:rgba(239,68,68,0.10);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Projection d'Objets</strong> (Offensif)<br>&emsp;&emsp;├─ Propulsion Lourde → Compression Gravifique → Masse Critique<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Propulsion Lourde → Compression Gravifique → </span>├─ Fissure Gravifique<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Propulsion Lourde → Compression Gravifique → </span>└─ Singularité<br>&emsp;&emsp;└─ Dard Cinétique → Lames de Force → Cône de Gravité<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Dard Cinétique → Lames de Force → </span>├─ Tempête Cinétique<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Dard Cinétique → Lames de Force → </span>└─ Point Zéro</div><div style=\"background:rgba(34,197,94,0.10);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Barrière Cinétique</strong> (Défensif)<br>&emsp;&emsp;├─ Mur de Force → Dôme de Force → Cocon de Force<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Mur de Force → Dôme de Force → </span>├─ Bastion Cinétique<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Mur de Force → Dôme de Force → </span>└─ Vengeance Cinétique<br>&emsp;&emsp;└─ Garde de Force → Armure de Force → Abri Sûr<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Garde de Force → Armure de Force → </span>├─ Égide Cinétique<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Garde de Force → Armure de Force → </span>└─ Refuge Absolu</div><div style=\"background:rgba(59,130,246,0.12);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Main Invisible</strong> (Utilitaire)<br>&emsp;&emsp;├─ Lévitation → Apesanteur → Flottement<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Lévitation → Apesanteur → </span>├─ Caravane Gravifique<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Lévitation → Apesanteur → </span>└─ Chute Annulée<br>&emsp;&emsp;└─ Palan Cinétique → Plateforme → Pont Céleste<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Palan Cinétique → Plateforme → </span>├─ Vol Groupé<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Palan Cinétique → Plateforme → </span>└─ Bastion Céleste</div><div style=\"border:1px solid var(--border-subtle);border-radius:10px;background:var(--bg-surface);padding:20px 14px 12px;margin:26px 0;position:relative\"><span style=\"position:absolute;top:-0.72em;left:12px;background:var(--bg-surface);padding:0 10px;font-weight:700\">Télépathie</span><div style=\"background:rgba(239,68,68,0.10);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Assaut Psychique</strong> (Offensif, Social)<br>&emsp;&emsp;├─ Injonction Impérieuse → Ordre de Combat → Marionnette<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Injonction Impérieuse → Ordre de Combat → </span>├─ Domination<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Injonction Impérieuse → Ordre de Combat → </span>└─ Rupture Psychique<br>&emsp;&emsp;└─ Frappe Psychique → Échardes Mentales → Tempête d'Idées<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Frappe Psychique → Échardes Mentales → </span>├─ Abîme Intérieur<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Frappe Psychique → Échardes Mentales → </span>└─ Cri du Vide</div><div style=\"background:rgba(34,197,94,0.10);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Rempart Mental</strong> (Défensif, Social)<br>&emsp;&emsp;├─ Clarté → Sérénité → Bastion Intérieur<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Clarté → Sérénité → </span>├─ Sanctuaire Mental<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Clarté → Sérénité → </span>└─ Renvoi<br>&emsp;&emsp;└─ Berceuse → Rêve Partagé → Graine d'Idée<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Berceuse → Rêve Partagé → </span>├─ Confession<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Berceuse → Rêve Partagé → </span>└─ Oubli Doux</div><div style=\"background:rgba(59,130,246,0.12);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Lien Empathique</strong> (Utilitaire)<br>&emsp;&emsp;├─ Sondage de Surface → Lecture Profonde → Mémoire Vive<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Sondage de Surface → Lecture Profonde → </span>├─ Conscience Partagée<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Sondage de Surface → Lecture Profonde → </span>└─ Vérité Nue<br>&emsp;&emsp;└─ Fil Tenu → Toile d'Escouade → Coordination Parfaite<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Fil Tenu → Toile d'Escouade → </span>├─ Esprit de Corps<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Fil Tenu → Toile d'Escouade → </span>└─ Chœur Mental</div><div style=\"border:1px solid var(--border-subtle);border-radius:10px;background:var(--bg-surface);padding:20px 14px 12px;margin:26px 0;position:relative\"><span style=\"position:absolute;top:-0.72em;left:12px;background:var(--bg-surface);padding:0 10px;font-weight:700\">Clairvoyance</span><div style=\"background:rgba(239,68,68,0.10);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Regard Perçant</strong> (Offensif, Utilitaire)<br>&emsp;&emsp;├─ Œil Inquisiteur → Marque Révélée → Point Faible<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Œil Inquisiteur → Marque Révélée → </span>├─ Exécution<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Œil Inquisiteur → Marque Révélée → </span>└─ Rayon de l'Œil<br>&emsp;&emsp;└─ Éblouissement → Cécité Partielle → Halo Révélateur<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Éblouissement → Cécité Partielle → </span>├─ Jour Artificiel<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Éblouissement → Cécité Partielle → </span>└─ Flash Originel</div><div style=\"background:rgba(34,197,94,0.10);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Prescience du Danger</strong> (Défensif)<br>&emsp;&emsp;├─ Champ de Prescience → Sixième Sens → Danger Écarté<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Champ de Prescience → Sixième Sens → </span>├─ Prescience Totale<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Champ de Prescience → Sixième Sens → </span>└─ Destin Détourné<br>&emsp;&emsp;└─ Alerte → Vision du Péril → Anticipation<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Alerte → Vision du Péril → </span>├─ Intuition Parfaite<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Alerte → Vision du Péril → </span>└─ Esquive Absolue</div><div style=\"background:rgba(59,130,246,0.12);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Œil Distant</strong> (Utilitaire)<br>&emsp;&emsp;├─ Regard Aiguisé → Vision Traversante → Vue d'Ensemble<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Regard Aiguisé → Vision Traversante → </span>├─ Vision Vraie<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Regard Aiguisé → Vision Traversante → </span>└─ Œil du Stratège<br>&emsp;&emsp;└─ Lecture d'Objet → Écho du Passé → Fouille des Lieux<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Lecture d'Objet → Écho du Passé → </span>├─ Témoin du Passé<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Lecture d'Objet → Écho du Passé → </span>└─ Oracle</div></div>"
     ]
    ],
    "extra": " style=\"border:none;background:transparent;box-shadow:none;\""
@@ -2675,32 +2675,86 @@
      "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">3 PA</a> : pilier de roc sous un ennemi à 6 cases : 8 <a class=\"rule-ref\" href=\"livre_6.html#chap-24\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).\">Dégâts Absolus</a> et <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À Terre</a> (Delta ≥ 2 requis contre PJ/PNJ majeur)."
     ],
     [
-     "<strong>Télékinésie</strong>",
-     "Magie de l'Esprit (MAG, INT)",
-     "Utilitaire",
-     "Tu déplaces des objets à distance ou tu projettes des ennemis (décrite au\n                                        <a class=\"rule-ref\" href=\"#sec-19-2\"\n                                            data-tip=\"Télékinésie : 6 paliers, des objets légers jusqu'à la gravité inversée (§19.2).\">§19.2</a>)."
-    ],
-    [
-     {
-      "attrs": " style=\"padding-left:2em;\"",
-      "html": "↳ <strong>Projection d'Objets</strong>"
-     },
+     "<strong>Projection d'Objets</strong>",
      "Magie de l'Esprit (MAG, INT)",
      "Offensif",
      "Tu projettes un bloc ou une caisse : 6 dégâts contondants jusqu'à 6 cases."
     ],
     [
      {
-      "attrs": " style=\"padding-left:3.5em;\"",
-      "html": "↳ <strong>Barrière Cinétique</strong>"
+      "attrs": " style=\"padding-left:2em;\"",
+      "html": "↳ <strong>Dard Cinétique</strong>"
      },
      "Magie de l'Esprit (MAG, INT)",
-     "Défensif",
-     "Tu arrêtes tous les projectiles physiques et grenades pendant 1 tour."
+     "Offensif",
+     "Tu projettes un éclat à 6 cases : 4 <a class=\"rule-ref\" href=\"livre_6.html#chap-24\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).\">Dégâts Absolus</a>, et tu ignores le couvert partiel. Exemple : entre les deux piliers."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Lames de Force</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Offensif",
+     "Tes lames tranchent à 6 cases : 6 <a class=\"rule-ref\" href=\"livre_6.html#chap-24\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).\">Dégâts Absolus</a> (Delta ≥ 2 requis contre PJ/PNJ majeur). Exemple : deux entailles nettes."
     ],
     [
      {
       "attrs": " style=\"padding-left:5em;\"",
+      "html": "↳ <strong>Cône de Gravité</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Offensif",
+     "La gravité balaie un cône de 3 hexagones : 6 dégâts et <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À Terre</a>. Exemple : tout s'aplatit."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Tempête Cinétique</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Offensif",
+     "La tempête frappe tout à 1 case de toi : 8 <a class=\"rule-ref\" href=\"livre_6.html#chap-24\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).\">Dégâts Absolus</a> (Delta ≥ 2 requis contre PJ/PNJ majeur). Exemple : un cercle de poussière."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Point Zéro</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Offensif",
+     "Tu crées un point zéro de 3 cases de rayon : 14 <a class=\"rule-ref\" href=\"livre_6.html#chap-24\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).\">Dégâts Absolus</a>. Contrecoup : tu prends 4 dégâts et es <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Ralenti : toute action coûte le double de PA.\">Ralenti</a>. À sortir quand il le faut."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:2em;\"",
+      "html": "↳ <strong>Propulsion Lourde</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Offensif",
+     "À 4 cases, tu projettes un meuble sur ta cible : 6 dégâts et <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À Terre</a>. Exemple : l'armoire s'envole."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Compression Gravifique</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Offensif",
+     "Tu comprimes ta cible à 4 cases : 8 <a class=\"rule-ref\" href=\"livre_6.html#chap-24\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).\">Dégâts Absolus</a> (Delta ≥ 2 requis contre PJ/PNJ majeur). Exemple : l'armure se froisse comme du papier."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:5em;\"",
+      "html": "↳ <strong>Masse Critique</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Offensif",
+     "À 6 cases, tu concentres la gravité : 10 <a class=\"rule-ref\" href=\"livre_6.html#chap-24\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).\">Dégâts Absolus</a> (Delta ≥ 2 requis contre PJ/PNJ majeur). Exemple : l'air se plisse."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
       "html": "↳ <strong>Fissure Gravifique</strong>"
      },
      "Magie de l'Esprit (MAG, INT)",
@@ -2708,23 +2762,449 @@
      "Tu ouvres un puits de gravité : il attire tous les ennemis dans un rayon de\n                                        3 cases et les projette <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À\n                                            Terre</a>."
     ],
     [
-     "<strong>Télépathie</strong>",
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Singularité</strong>"
+     },
      "Magie de l'Esprit (MAG, INT)",
-     "Social, Utilitaire",
-     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\"\n                                            data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2\n                                            PA</a> : lien silencieux avec un allié consentant à 6 cases pendant 1 tour,\n                                        +1 en Intuition contre les mensonges (les 6 stades sont au\n                                        <a class=\"rule-ref\" href=\"#sec-19-1\"\n                                            data-tip=\"Télépathie : 6 stades, de la lecture de surface jusqu'à la possession (§19.1).\">§19.1</a>)."
+     "Offensif",
+     "Tu crées une singularité sur 1 hexagone à 6 cases : 12 <a class=\"rule-ref\" href=\"livre_6.html#chap-24\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).\">Dégâts Absolus</a> (Delta ≥ 2 requis contre PJ/PNJ majeur). Contrecoup : tu prends 4 dégâts. Exemple : tout s'écrase au centre."
+    ],
+    [
+     "<strong>Barrière Cinétique</strong>",
+     "Magie de l'Esprit (MAG, INT)",
+     "Défensif",
+     "Tu arrêtes tous les projectiles physiques et grenades pendant 1 tour."
     ],
     [
      {
       "attrs": " style=\"padding-left:2em;\"",
-      "html": "↳ <strong>Lien Empathique</strong>"
+      "html": "↳ <strong>Garde de Force</strong>"
      },
+     "Magie de l'Esprit (MAG, INT)",
+     "Défensif",
+     "<a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : deux alliés adjacents gagnent +2 d'armure pendant 2 tours. Exemple : le champ les couvre."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Armure de Force</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Défensif",
+     "<a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">3 PA</a> : tous tes alliés à 2 cases gagnent +2 d'armure pendant 2 tours. Exemple : l'escouade durcit."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:5em;\"",
+      "html": "↳ <strong>Abri Sûr</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Défensif, Utilitaire",
+     "Tu lèves un abri sur 2 hexagones : <a class=\"rule-ref\" href=\"livre_5.html#chap-22-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§22.3).\">Couvert 3/4</a> pendant 2 tours. Exemple : on souffle derrière."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Égide Cinétique</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Défensif, Utilitaire",
+     "Avec une nuit de travail et l'accord de ton MJ, tu renforces une armure : elle gagne +1 jusqu'à la fin du scénario (une seule à la fois)."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Refuge Absolu</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Défensif",
+     "<a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : pendant 2 tours, tu es <a class=\"rule-ref\" href=\"livre_5.html#chap-22-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§22.3).\">Couvert Total</a> contre les tirs venus de l'extérieur. Exemple : plus rien ne passe."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:2em;\"",
+      "html": "↳ <strong>Mur de Force</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Défensif",
+     "Tu lèves un mur invisible sur 2 hexagones contigus à 4 cases, pendant 2 tours (-2 aux attaques qui passent au travers). Exemple : les tirs s'arrêtent dans le vide."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Dôme de Force</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Défensif",
+     "Tu fermes la force en dôme (rayon 1 case autour de toi) pendant 2 tours : <a class=\"rule-ref\" href=\"livre_5.html#chap-22-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§22.3).\">Couvert Total</a> contre les tirs venus de l'extérieur. Exemple : la bulle tient."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:5em;\"",
+      "html": "↳ <strong>Cocon de Force</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Défensif, Utilitaire",
+     "Touche un allié : un bouclier invisible absorbe 8 dégâts. Exemple : la bulle tient un coup."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Bastion Cinétique</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Défensif",
+     "Tu poses un mur invisible de 3 hexagones contigus : <a class=\"rule-ref\" href=\"livre_5.html#chap-22-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§22.3).\">Couvert Total</a> indestructible. Exemple : le couloir est condamné."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Vengeance Cinétique</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Défensif, Offensif",
+     "Pendant 2 tours, chaque ennemi qui te blesse prend 4 dégâts et <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Ralenti : toute action coûte le double de PA.\">Ralenti</a> en retour. Exemple : la gravité renvoie le coup."
+    ],
+    [
+     "<strong>Main Invisible</strong>",
+     "Magie de l'Esprit (MAG, INT)",
+     "Utilitaire",
+     "Tu agis à distance comme avec tes mains : +1 à ta prochaine épreuve de crochetage, de mécanique ou de sabotage à MAG cases. Exemple : le verrou tourne tout seul."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:2em;\"",
+      "html": "↳ <strong>Palan Cinétique</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Utilitaire",
+     "Tu soulèves une charge lourde (caisse, meuble, coffre) à 2 cases. Exemple : la caisse monte toute seule."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Plateforme</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Utilitaire",
+     "Tu crées une plateforme invisible d'1 hexagone pendant 2 tours : praticable, même en l'air. Exemple : une marche vers le toit."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:5em;\"",
+      "html": "↳ <strong>Pont Céleste</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Utilitaire",
+     "Tu jettes un pont invisible de 2 hexagones praticable pendant 2 tours. Exemple : on traverse le vide."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Vol Groupé</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Utilitaire",
+     "<a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : toi et tes alliés à 2 cases glissez de 2 cases (sans attaque d'opportunité). Exemple : l'escouade vole en formation."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Bastion Céleste</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Défensif, Utilitaire",
+     "Plateforme invisible de 2 hexagones pendant 3 tours : praticable et <a class=\"rule-ref\" href=\"livre_5.html#chap-22-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§22.3).\">Couvert 3/4</a>. Exemple : un poste de tir dans le ciel."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:2em;\"",
+      "html": "↳ <strong>Lévitation</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Utilitaire",
+     "Tu soulèves un allié consentant et le poses à 1 case : 0 PA, sans attaque d'opportunité. Exemple : tu le passes par-dessus le fossé."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Apesanteur</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Utilitaire",
+     "Pendant 2 tours, la gravité te porte : tu ignores les terrains difficiles et les attaques d'opportunité contre toi. Exemple : tu flottes au-dessus des débris."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:5em;\"",
+      "html": "↳ <strong>Flottement</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Utilitaire",
+     "Touche un allié consentant : il flotte pendant 3 tours (il ignore les terrains difficiles et les chutes). Exemple : il passe au-dessus du précipice."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Caravane Gravifique</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Utilitaire",
+     "<a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : tous tes alliés à 2 cases glissent d'1 case (sans attaque d'opportunité). Exemple : la gravité les pousse d'un coup."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Chute Annulée</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Utilitaire, Défensif",
+     "<a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : filet invisible pendant 3 tours. Toi et tes alliés à 2 cases ignorez les dégâts de chute et ne tombez jamais <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À Terre</a>. Exemple : le vide vous retient."
+    ],
+    [
+     "<strong>Assaut Psychique</strong>",
+     "Magie de l'Esprit (MAG, INT)",
+     "Offensif, Social",
+     "Tu frappes l'esprit : 4 dégâts et <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Étourdi : −1 ec sur tous les jets.\">Étourdi</a>. Exemple : elle se tient le crâne."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:2em;\"",
+      "html": "↳ <strong>Frappe Psychique</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Offensif",
+     "À 4 cases, tu frappes l'esprit : 6 dégâts et <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Étourdi : −1 ec sur tous les jets.\">Étourdi</a>. Exemple : il chancelle sans comprendre."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Échardes Mentales</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Offensif",
+     "Tes échardes tranchent à 6 cases : 8 <a class=\"rule-ref\" href=\"livre_6.html#chap-24\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).\">Dégâts Absolus</a> (Delta ≥ 2 requis contre PJ/PNJ majeur). Exemple : deux entailles nettes, sans bruit."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:5em;\"",
+      "html": "↳ <strong>Tempête d'Idées</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Offensif",
+     "Tes idées balaient un cône de 3 hexagones : 6 dégâts et <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Étourdi : −1 ec sur tous les jets.\">Étourdi</a>. Exemple : la confusion les cloue."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Abîme Intérieur</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Offensif",
+     "Le moi se referme : 12 <a class=\"rule-ref\" href=\"livre_6.html#chap-24\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).\">Dégâts Absolus</a> à tous ceux dans un rayon de 2 cases (Delta ≥ 2 requis contre PJ/PNJ majeur). Exemple : chacun affronte son propre gouffre."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Cri du Vide</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Offensif",
+     "Tu pousses le cri du vide : 14 <a class=\"rule-ref\" href=\"livre_6.html#chap-24\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).\">Dégâts Absolus</a> dans un rayon de 3 cases. Contrecoup : tu prends 4 dégâts et es <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Étourdi : −1 ec sur tous les jets.\">Étourdi</a>. À sortir quand il le faut."
+    ],
+    [
+     "<strong>Injonction Impérieuse</strong>",
+     "Magie de l'Esprit (MAG, INT)",
+     "Social, Offensif",
+     "Tu imposes un ordre simple à un sbire (lâcher son arme, fuir, rester\n                                        immobile 1 tour). Contre un PJ/PNJ majeur : Delta ≥ 3."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Ordre de Combat</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Social, Offensif",
+     "<a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : une cible à 4 cases attaque aussitôt un adjacent de ton choix (Delta ≥ 2 requis contre PJ/PNJ majeur). Exemple : il frappe son propre garde."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:5em;\"",
+      "html": "↳ <strong>Marionnette</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Social, Offensif",
+     "Pendant 2 tours, la cible fait 1 action que tu choisis à chacun de tes tours (Delta ≥ 2 requis contre PJ/PNJ majeur). Exemple : tu la fais avancer dans le vide."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Domination</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Social, Offensif",
+     "Pendant 3 tours, la cible obéit à tes ordres simples (Delta ≥ 3 requis contre PJ/PNJ majeur ou élite). Exemple : elle pose son arme et s'assoit."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Rupture Psychique</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Offensif",
+     "Tu brises ses défenses : 12 <a class=\"rule-ref\" href=\"livre_6.html#chap-24\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).\">Dégâts Absolus</a> (Delta ≥ 2 requis contre PJ/PNJ majeur), et <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Étourdi : −1 ec sur tous les jets.\">Étourdi</a>. Contrecoup : tu prends 4 dégâts. Exemple : il s'effondre en hurlant."
+    ],
+    [
+     "<strong>Rempart Mental</strong>",
+     "Magie de l'Esprit (MAG, INT)",
+     "Défensif, Social",
+     "Tu purges <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Étourdi : −1 ec sur tous les jets.\">Étourdi</a> sur un allié touché (ou toi). Exemple : tu lui remets les idées en place."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:2em;\"",
+      "html": "↳ <strong>Berceuse</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Social, Utilitaire",
+     "<a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : une cible est <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Ralenti : toute action coûte le double de PA.\">Ralenti</a> pendant 1 tour (assoupie). Hors combat, tu endors un consentant (d'accord avec ton MJ). Exemple : ses paupières tombent."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Rêve Partagé</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Social, Utilitaire",
+     "Tu communiques en rêve avec un dormeur (d'accord avec ton MJ). Au réveil, tu gagnes +1 à ta prochaine épreuve sociale contre lui. Exemple : tu le rencontres dans son sommeil."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:5em;\"",
+      "html": "↳ <strong>Graine d'Idée</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Social",
+     "Tu glisses une idée : +2 à ta prochaine épreuve sociale contre la cible (Delta ≥ 2 requis contre PJ/PNJ majeur). Exemple : elle croit que c'est son idée."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Confession</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Social",
+     "Pendant 3 tours, la cible te dit la vérité (Delta ≥ 2 requis contre PJ/PNJ majeur) (d'accord avec ton MJ). Exemple : elle avoue tout."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Oubli Doux</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Social, Utilitaire",
+     "La cible oublie un souvenir récent (moins de 24h) te concernant (Delta ≥ 2 requis contre PJ/PNJ majeur) (d'accord avec ton MJ). Exemple : il ne t'a jamais vu."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:2em;\"",
+      "html": "↳ <strong>Clarté</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Défensif, Social",
+     "Touche un allié : tu purges son <a\n                                            class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).\">Déstabilisé</a> et son <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Étourdi : −1 ec sur tous les jets.\">Étourdi</a>. Exemple : son regard redevient net."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Sérénité</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Défensif, Social",
+     "Touche un allié : tu purges son <a\n                                            class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).\">Déstabilisé</a> et son <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Étourdi : −1 ec sur tous les jets.\">Étourdi</a>, et il gagne +2 contre les prochains pendant 2 tours. Exemple : plus rien ne le trouble."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:5em;\"",
+      "html": "↳ <strong>Bastion Intérieur</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Défensif",
+     "Touche un allié : un bastion invisible absorbe 8 dégâts. Exemple : son calme le protège."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Sanctuaire Mental</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Défensif, Utilitaire",
+     "Tes alliés à 2 cases purgent <a\n                                            class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).\">Déstabilisé</a> et <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Étourdi : −1 ec sur tous les jets.\">Étourdi</a>, et récupèrent 4 PV. Exemple : un moment de paix partagée."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Renvoi</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Défensif, Offensif",
+     "Pendant 2 tours, chaque ennemi qui te blesse prend 4 dégâts et <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Étourdi : −1 ec sur tous les jets.\">Étourdi</a> en retour. Exemple : son attaque lui revient en pleine face."
+    ],
+    [
+     "<strong>Lien Empathique</strong>",
      "Magie de l'Esprit (MAG, INT)",
      "Utilitaire",
      "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\"\n                                            data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2\n                                            PA</a> : tu purges <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).\">Déstabilisé</a>\n                                        d'un allié à 3 cases et tu lui rends 1 PA."
     ],
     [
      {
+      "attrs": " style=\"padding-left:2em;\"",
+      "html": "↳ <strong>Fil Tenu</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Utilitaire",
+     "Touche un allié : lien silencieux pendant 1 heure (messages courts). Exemple : vous parlez sans ouvrir la bouche."
+    ],
+    [
+     {
       "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Toile d'Escouade</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Utilitaire",
+     "Tous tes alliés à 2 cases : lien silencieux pendant 1 heure. Exemple : l'escouade pense d'un seul tenant."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:5em;\"",
+      "html": "↳ <strong>Coordination Parfaite</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Utilitaire",
+     "<a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : tous tes alliés liés gagnent +1 à leur prochaine épreuve ce tour. Exemple : chacun sait où frapper."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Esprit de Corps</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Utilitaire",
+     "<a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">3 PA</a> : tes alliés liés gagnent +1 en épreuve et +1 en Esquive pendant 2 tours. Exemple : un seul organisme."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Chœur Mental</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Offensif, Utilitaire",
+     "<a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : deux alliés liés portent aussitôt leur attaque, chacun la sienne. Exemple : ils frappent comme un seul."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:2em;\"",
       "html": "↳ <strong>Sondage de Surface</strong>"
      },
      "Magie de l'Esprit (MAG, INT)",
@@ -2733,45 +3213,327 @@
     ],
     [
      {
+      "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Lecture Profonde</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Social, Utilitaire",
+     "<a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : +2 en Observation pour lire les intentions d'une cible à MAG cases. Exemple : tu vois son prochain geste avant lui."
+    ],
+    [
+     {
       "attrs": " style=\"padding-left:5em;\"",
-      "html": "↳ <strong>Injonction Impérieuse</strong>"
+      "html": "↳ <strong>Mémoire Vive</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Social, Utilitaire",
+     "Tu explores les souvenirs récents de la cible (d'accord avec ton MJ) (Delta ≥ 2 requis contre PJ/PNJ majeur). Exemple : tu revois la porte par ses yeux."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Conscience Partagée</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Utilitaire",
+     "Touche un allié : pendant 1 heure, vous partagez vos perceptions (+1 en Observation chacun). Exemple : tu vois par ses yeux."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Vérité Nue</strong>"
      },
      "Magie de l'Esprit (MAG, INT)",
      "Social",
-     "Tu imposes un ordre simple à un sbire (lâcher son arme, fuir, rester\n                                        immobile 1 tour). Contre un PJ/PNJ majeur : Delta ≥ 3."
+     "Pendant 3 tours, tu sais quand on te ment (Delta ≥ 2 requis contre PJ/PNJ majeur). Exemple : son sourire ne te trompe plus."
     ],
     [
-     "<strong>Clairvoyance</strong>",
+     "<strong>Regard Perçant</strong>",
      "Magie de l'Esprit (MAG, INT)",
-     "Utilitaire",
-     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\"\n                                            data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2\n                                            PA</a> : tu perçois à travers une paroi légère et tu gagnes +2 en\n                                        Observation pendant 1 tour."
+     "Offensif, Utilitaire",
+     "Tes attaques ignorent le couvert partiel. Exemple : tu vises à travers la fumée."
     ],
     [
      {
       "attrs": " style=\"padding-left:2em;\"",
-      "html": "↳ <strong>Œil Distant</strong>"
+      "html": "↳ <strong>Éblouissement</strong>"
      },
      "Magie de l'Esprit (MAG, INT)",
-     "Utilitaire",
-     "Tu projettes ta perception jusqu'à 6 cases sans ligne de vue (immobile, 1\n                                        tour)."
+     "Offensif",
+     "<a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : une cible à 4 cases prend -1 à sa prochaine épreuve. Exemple : elle cligne des yeux."
     ],
     [
      {
       "attrs": " style=\"padding-left:3.5em;\"",
-      "html": "↳ <strong>Prescience du Danger</strong>"
+      "html": "↳ <strong>Cécité Partielle</strong>"
      },
+     "Magie de l'Esprit (MAG, INT)",
+     "Offensif",
+     "La cible est <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Ralenti : toute action coûte le double de PA.\">Ralenti</a> pendant 1 tour (éblouie). Exemple : elle avance à l'aveugle."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:5em;\"",
+      "html": "↳ <strong>Halo Révélateur</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Offensif, Utilitaire",
+     "<a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : pendant 2 tours, les ennemis à 2 cases ne bénéficient d'aucun couvert contre toi et tes alliés. Exemple : la lumière les déshabille."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Jour Artificiel</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Offensif, Utilitaire",
+     "Zone de 3 hexagones pendant 2 tours : aucun couvert possible dedans, et 3 dégâts à qui commence son tour dedans. Exemple : il fait jour en pleine nuit."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Flash Originel</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Offensif",
+     "Le flash originel : 14 <a class=\"rule-ref\" href=\"livre_6.html#chap-24\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).\">Dégâts Absolus</a> dans un rayon de 3 cases. Contrecoup : tu prends 4 dégâts et es <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Étourdi : −1 ec sur tous les jets.\">Étourdi</a>. À sortir quand il le faut."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:2em;\"",
+      "html": "↳ <strong>Œil Inquisiteur</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Utilitaire",
+     "Tu repères les cachés : +2 en Observation pour repérer les ennemis cachés ou invisibles à MAG cases. Exemple : tu vois son ombre derrière le rideau."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Marque Révélée</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Utilitaire, Offensif",
+     "<a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : une cible à MAG cases est marquée : +1 aux attaques contre elle pendant 2 tours. Exemple : un éclat la désigne."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:5em;\"",
+      "html": "↳ <strong>Point Faible</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Utilitaire, Offensif",
+     "<a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : pendant 2 tours, tes dégâts contre une cible à MAG cases gagnent +2. Exemple : tu frappes où ça fait mal."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Exécution</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Offensif",
+     "Tu exécutes : 12 <a class=\"rule-ref\" href=\"livre_6.html#chap-24\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).\">Dégâts Absolus</a> contre une cible à 6 cases sans Couvert Total (Delta ≥ 2 requis contre PJ/PNJ majeur). Exemple : une seule balle de lumière."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Rayon de l'Œil</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Offensif",
+     "Ton regard frappe à 6 cases : 8 <a class=\"rule-ref\" href=\"livre_6.html#chap-24\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).\">Dégâts Absolus</a> (Delta ≥ 2 requis contre PJ/PNJ majeur). Exemple : un trait blanc, un trou net."
+    ],
+    [
+     "<strong>Prescience du Danger</strong>",
      "Magie de l'Esprit (MAG, INT)",
      "Défensif",
      "En cas d'<a class=\"rule-ref\" href=\"livre_5.html#chap-22-4\"\n                                            data-tip=\"Embuscade : sans Vigilance, pas de réaction défensive. Détection au brouillard (§22.4).\">embuscade</a>,\n                                        tu gardes une réaction défensive à -1 au lieu d'aucune."
     ],
     [
      {
+      "attrs": " style=\"padding-left:2em;\"",
+      "html": "↳ <strong>Alerte</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Défensif, Utilitaire",
+     "<a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : tes alliés à 2 cases gagnent +1 en Esquive pendant 1 tour. Exemple : tu cries avant l'impact."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Vision du Péril</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Défensif",
+     "Tu vois l'attaque venir : un ennemi prend -1 à sa prochaine attaque contre toi. Exemple : tu n'es plus là quand ça tombe."
+    ],
+    [
+     {
       "attrs": " style=\"padding-left:5em;\"",
+      "html": "↳ <strong>Anticipation</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Défensif, Utilitaire",
+     "Tu purges <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Ralenti : toute action coûte le double de PA.\">Ralenti</a> et tu gagnes +2 en Esquive pendant 2 tours. Exemple : tu avais tout prévu."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Intuition Parfaite</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Défensif, Utilitaire",
+     "Pendant 3 tours, +2 en Esquive et +1 en Observation. Exemple : rien ne te surprend."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Esquive Absolue</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Défensif",
+     "Une fois par combat, tu esquives automatiquement une attaque. Exemple : la lame passe à travers ton image."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:2em;\"",
       "html": "↳ <strong>Champ de Prescience</strong>"
      },
      "Magie de l'Esprit (MAG, INT)",
      "Défensif, Utilitaire",
      "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\"\n                                            data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">3\n                                            PA</a> : tous tes alliés à 2 cases gagnent +2 en Esquive pendant 1 tour."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Sixième Sens</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Défensif",
+     "Tu sens le danger : +1 en Esquive pendant 3 tours. Exemple : tu te baisses avant le coup."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:5em;\"",
+      "html": "↳ <strong>Danger Écarté</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Défensif",
+     "<a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : tu déplaces un allié consentant d'1 case hors de danger (sans attaque d'opportunité). Exemple : tu le tires de la trajectoire."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Prescience Totale</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Défensif, Utilitaire",
+     "<a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">3 PA</a> : tes alliés à 2 cases gagnent +2 en Esquive pendant 2 tours. Exemple : tout le monde bouge avant."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Destin Détourné</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Défensif",
+     "Une fois par combat, tu annules une attaque qui te vise (d'accord avec ton MJ). Exemple : tu n'étais déjà plus là."
+    ],
+    [
+     "<strong>Œil Distant</strong>",
+     "Magie de l'Esprit (MAG, INT)",
+     "Utilitaire",
+     "Tu projettes ta perception jusqu'à 6 cases sans ligne de vue (immobile, 1\n                                        tour)."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:2em;\"",
+      "html": "↳ <strong>Lecture d'Objet</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Utilitaire",
+     "Tu lis l'histoire d'un objet touché (d'accord avec ton MJ). Exemple : le couteau te montre son dernier maître."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Écho du Passé</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Utilitaire",
+     "Tu revois une scène passée d'un lieu, en 1 heure (Delta ≥ 2 requis contre PJ/PNJ majeur). Exemple : la pièce rejoue la dispute."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:5em;\"",
+      "html": "↳ <strong>Fouille des Lieux</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Utilitaire",
+     "Tu explores le passé d'un lieu en 1 heure de concentration (d'accord avec ton MJ). Exemple : les pierres te racontent."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Témoin du Passé</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Utilitaire",
+     "Tu assistes à une scène passée comme si tu y étais (d'accord avec ton MJ) (Delta ≥ 2 requis contre PJ/PNJ majeur). Exemple : tu étais là sans y être."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Oracle</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Social, Utilitaire",
+     "Une seule fois par scénario, tu poses 1 question sur l'avenir proche (d'accord avec ton MJ). Exemple : tu demandes où frappera l'orage."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:2em;\"",
+      "html": "↳ <strong>Regard Aiguisé</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Utilitaire",
+     "Tu lis les lèvres et les écritures à MAG cases. Exemple : tu lis le message sur la table d'en face."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Vision Traversante</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Utilitaire",
+     "<a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : pendant 1 tour, tu vois à travers les parois légères à MAG cases (+2 en Observation pour repérer). Exemple : la cloison devient vitre."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:5em;\"",
+      "html": "↳ <strong>Vue d'Ensemble</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Utilitaire",
+     "<a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">3 PA</a> : pendant 2 tours, +2 en Observation, et tes alliés à 2 cases gagnent +1 en Observation. Exemple : tu diriges depuis le ciel."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Vision Vraie</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Utilitaire",
+     "Pendant 3 tours, tu vois le vrai : illusions et invisibles révélés à MAG cases (d'accord avec ton MJ). Exemple : le déguisement tombe."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Œil du Stratège</strong>"
+     },
+     "Magie de l'Esprit (MAG, INT)",
+     "Utilitaire",
+     "<a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">3 PA</a> : +2 à la prochaine épreuve de tes alliés à 2 cases. Exemple : tu vois trois coups d'avance."
     ]
    ]
   }
@@ -2890,7 +3652,7 @@
     "magie": "Magie de l'Esprit",
     "attributs": "Magie, Intelligence",
     "type": "Offensif, Défensif, Social, Utilitaire",
-    "specialisations": "Télékinésie → Projection d'Objets → Barrière Cinétique → Fissure Gravifique Télépathie → Lien Empathique → Sondage de Surface → Injonction Impérieuse Clairvoyance → Œil Distant → Prescience du Danger → Champ de Prescience"
+    "specialisations": "Projection d'Objets ├─ Propulsion Lourde → Compression Gravifique → Masse Critique ├─ Fissure Gravifique └─ Singularité └─ Dard Cinétique → Lames de Force → Cône de Gravité ├─ Tempête Cinétique └─ Point Zéro Barrière Cinétique ├─ Mur de Force → Dôme de Force → Cocon de Force ├─ Bastion Cinétique └─ Vengeance Cinétique └─ Garde de Force → Armure de Force → Abri Sûr ├─ Égide Cinétique └─ Refuge Absolu Main Invisible ├─ Lévitation → Apesanteur → Flottement ├─ Caravane Gravifique └─ Chute Annulée └─ Palan Cinétique → Plateforme → Pont Céleste ├─ Vol Groupé └─ Bastion Céleste Assaut Psychique ├─ Injonction Impérieuse → Ordre de Combat → Marionnette ├─ Domination └─ Rupture Psychique └─ Frappe Psychique → Échardes Mentales → Tempête d'Idées ├─ Abîme Intérieur └─ Cri du Vide Rempart Mental ├─ Clarté → Sérénité → Bastion Intérieur ├─ Sanctuaire Mental └─ Renvoi └─ Berceuse → Rêve Partagé → Graine d'Idée ├─ Confession └─ Oubli Doux Lien Empathique ├─ Sondage de Surface → Lecture Profonde → Mémoire Vive ├─ Conscience Partagée └─ Vérité Nue └─ Fil Tenu → Toile d'Escouade → Coordination Parfaite ├─ Esprit de Corps └─ Chœur Mental Regard Perçant ├─ Œil Inquisiteur → Marque Révélée → Point Faible ├─ Exécution └─ Rayon de l'Œil └─ Éblouissement → Cécité Partielle → Halo Révélateur ├─ Jour Artificiel └─ Flash Originel Prescience du Danger ├─ Champ de Prescience → Sixième Sens → Danger Écarté ├─ Prescience Totale └─ Destin Détourné └─ Alerte → Vision du Péril → Anticipation ├─ Intuition Parfaite └─ Esquive Absolue Œil Distant ├─ Regard Aiguisé → Vision Traversante → Vue d'Ensemble ├─ Vision Vraie └─ Œil du Stratège └─ Lecture d'Objet → Écho du Passé → Fouille des Lieux ├─ Témoin du Passé └─ Oracle"
    }
   ],
   "stades_neuronaux": [
@@ -4590,22 +5352,58 @@
     "effets": "3 PA : pilier à 6 cases, 8 dégâts Absolus + À Terre (Delta ≥ 2)."
    },
    {
-    "nom": "Télékinésie",
-    "source": "Magie de l'Esprit (MAG, INT)",
-    "type": "Utilitaire",
-    "effets": "Tu déplaces des objets à distance ou tu projettes des ennemis (décrite au §19.2)."
-   },
-   {
     "nom": "↳ Projection d'Objets",
     "source": "Magie de l'Esprit (MAG, INT)",
     "type": "Offensif",
     "effets": "Tu projettes un bloc ou une caisse : 6 dégâts contondants jusqu'à 6 cases."
    },
    {
-    "nom": "↳ Barrière Cinétique",
+    "nom": "↳ Dard Cinétique",
     "source": "Magie de l'Esprit (MAG, INT)",
-    "type": "Défensif",
-    "effets": "Tu arrêtes tous les projectiles physiques et grenades pendant 1 tour."
+    "type": "Offensif",
+    "effets": "4 Dégâts Absolus à 6 cases, ignore couvert partiel."
+   },
+   {
+    "nom": "↳ Lames de Force",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Offensif",
+    "effets": "6 Dégâts Absolus à 6 cases (Delta ≥ 2 vs majeur)."
+   },
+   {
+    "nom": "↳ Cône de Gravité",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Offensif",
+    "effets": "Cône 3 hex : 6 dégâts + À Terre."
+   },
+   {
+    "nom": "↳ Tempête Cinétique",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Offensif",
+    "effets": "8 Dégâts Absolus à 1 case (Delta ≥ 2 vs majeur)."
+   },
+   {
+    "nom": "↳ Point Zéro",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Offensif",
+    "effets": "14 Dégâts Absolus r3. Tu prends 4 dégâts + Ralenti."
+   },
+   {
+    "nom": "↳ Propulsion Lourde",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Offensif",
+    "effets": "Projette un meuble (4 cases) : 6 dégâts + À Terre."
+   },
+   {
+    "nom": "↳ Compression Gravifique",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Offensif",
+    "effets": "8 Dégâts Absolus à 4 cases (Delta ≥ 2 vs majeur)."
+   },
+   {
+    "nom": "↳ Masse Critique",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Offensif",
+    "effets": "10 Dégâts Absolus à 6 cases (Delta ≥ 2 vs majeur)."
    },
    {
     "nom": "↳ Fissure Gravifique",
@@ -4614,16 +5412,310 @@
     "effets": "Tu ouvres un puits de gravité : il attire tous les ennemis dans un rayon de 3 cases et les projette À Terre."
    },
    {
-    "nom": "Télépathie",
+    "nom": "↳ Singularité",
     "source": "Magie de l'Esprit (MAG, INT)",
-    "type": "Social, Utilitaire",
-    "effets": "Dépense 2 PA : lien silencieux avec un allié consentant à 6 cases pendant 1 tour, +1 en Intuition contre les mensonges (les 6 stades sont au §19.1)."
+    "type": "Offensif",
+    "effets": "12 Dégâts Absolus (1 hex, 6 cases). Tu prends 4 dégâts."
    },
    {
-    "nom": "↳ Lien Empathique",
+    "nom": "↳ Barrière Cinétique",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Défensif",
+    "effets": "Tu arrêtes tous les projectiles physiques et grenades pendant 1 tour."
+   },
+   {
+    "nom": "↳ Garde de Force",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Défensif",
+    "effets": "2 PA : deux alliés adjacents +2 armure (2 tours)."
+   },
+   {
+    "nom": "↳ Armure de Force",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Défensif",
+    "effets": "3 PA : alliés à 2 cases +2 armure (2 tours)."
+   },
+   {
+    "nom": "↳ Abri Sûr",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Défensif, Utilitaire",
+    "effets": "Abri 2 hex : Couvert 3/4 (2 tours)."
+   },
+   {
+    "nom": "↳ Égide Cinétique",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Défensif, Utilitaire",
+    "effets": "Nuit + MJ : +1 armure jusqu'à fin scénario (une seule)."
+   },
+   {
+    "nom": "↳ Refuge Absolu",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Défensif",
+    "effets": "2 PA : Couvert Total contre les tirs (2 tours)."
+   },
+   {
+    "nom": "↳ Mur de Force",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Défensif",
+    "effets": "Mur invisible 2 hex (4 cases) 2 tours, -2 à travers."
+   },
+   {
+    "nom": "↳ Dôme de Force",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Défensif",
+    "effets": "Couvert Total r1 (2 tours)."
+   },
+   {
+    "nom": "↳ Cocon de Force",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Défensif, Utilitaire",
+    "effets": "Un allié touché : bouclier absorbe 8 dégâts."
+   },
+   {
+    "nom": "↳ Bastion Cinétique",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Défensif",
+    "effets": "Mur invisible 3 hex : Couvert Total indestructible."
+   },
+   {
+    "nom": "↳ Vengeance Cinétique",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Défensif, Offensif",
+    "effets": "2 tours : qui te blesse prend 4 dégâts + Ralenti."
+   },
+   {
+    "nom": "↳ Main Invisible",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "+1 prochaine épreuve crochetage/mécanique/sabotage (MAG cases)."
+   },
+   {
+    "nom": "↳ Palan Cinétique",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Soulève une charge lourde à 2 cases."
+   },
+   {
+    "nom": "↳ Plateforme",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Plateforme invisible 1 hex praticable 2 tours."
+   },
+   {
+    "nom": "↳ Pont Céleste",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Pont invisible 2 hex praticable 2 tours."
+   },
+   {
+    "nom": "↳ Vol Groupé",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "2 PA : toi + alliés à 2 cases glissez de 2 cases."
+   },
+   {
+    "nom": "↳ Bastion Céleste",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Défensif, Utilitaire",
+    "effets": "Plateforme 2 hex 3 tours : praticable + Couvert 3/4."
+   },
+   {
+    "nom": "↳ Lévitation",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Allié consentant déplacé d'1 case (0 PA, sans opportunité)."
+   },
+   {
+    "nom": "↳ Apesanteur",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Ignore terrains difficiles + opportunités (2 tours)."
+   },
+   {
+    "nom": "↳ Flottement",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Allié consentant flotte 3 tours (ignore terrains + chutes)."
+   },
+   {
+    "nom": "↳ Caravane Gravifique",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "2 PA : alliés à 2 cases glissent d'1 case."
+   },
+   {
+    "nom": "↳ Chute Annulée",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Utilitaire, Défensif",
+    "effets": "2 PA : ignore chutes + jamais À Terre (3 tours)."
+   },
+   {
+    "nom": "Assaut Psychique",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Offensif, Social",
+    "effets": "Esprit frappé : 4 dégâts + Étourdi."
+   },
+   {
+    "nom": "↳ Frappe Psychique",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Offensif",
+    "effets": "6 dégâts + Étourdi (4 cases)."
+   },
+   {
+    "nom": "↳ Échardes Mentales",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Offensif",
+    "effets": "8 Absolus à 6 cases (Delta ≥ 2 vs majeur)."
+   },
+   {
+    "nom": "↳ Tempête d'Idées",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Offensif",
+    "effets": "Cône 3 hex : 6 dégâts + Étourdi."
+   },
+   {
+    "nom": "↳ Abîme Intérieur",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Offensif",
+    "effets": "12 Absolus r2 (Delta ≥ 2 vs majeur)."
+   },
+   {
+    "nom": "↳ Cri du Vide",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Offensif",
+    "effets": "14 Absolus r3. Tu prends 4 dégâts + Étourdi."
+   },
+   {
+    "nom": "Injonction Impérieuse",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Social, Offensif",
+    "effets": "Tu imposes un ordre simple à un sbire (lâcher son arme, fuir, rester immobile 1 tour). Contre un PJ/PNJ majeur : Delta ≥ 3."
+   },
+   {
+    "nom": "↳ Ordre de Combat",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Social, Offensif",
+    "effets": "2 PA : une cible attaque un adjacent (Delta ≥ 2 vs majeur)."
+   },
+   {
+    "nom": "↳ Marionnette",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Social, Offensif",
+    "effets": "2 tours : 1 action choisie par tour (Delta ≥ 2 vs majeur)."
+   },
+   {
+    "nom": "↳ Domination",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Social, Offensif",
+    "effets": "3 tours d'ordres simples (Delta ≥ 3 vs majeur/élite)."
+   },
+   {
+    "nom": "↳ Rupture Psychique",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Offensif",
+    "effets": "12 Absolus + Étourdi (Delta ≥ 2). Tu prends 4 dégâts."
+   },
+   {
+    "nom": "Rempart Mental",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Défensif, Social",
+    "effets": "Purge Étourdi (allié touché ou toi)."
+   },
+   {
+    "nom": "↳ Berceuse",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Social, Utilitaire",
+    "effets": "2 PA : Ralenti 1 tour. Hors combat : endors (MJ)."
+   },
+   {
+    "nom": "↳ Rêve Partagé",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Social, Utilitaire",
+    "effets": "Rêve communiqué (MJ). +1 prochaine épreuve sociale vs lui."
+   },
+   {
+    "nom": "↳ Graine d'Idée",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Social",
+    "effets": "+2 prochaine épreuve sociale (Delta ≥ 2 vs majeur)."
+   },
+   {
+    "nom": "↳ Confession",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Social",
+    "effets": "Vérité 3 tours (Delta ≥ 2, MJ)."
+   },
+   {
+    "nom": "↳ Oubli Doux",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Social, Utilitaire",
+    "effets": "Oublie un souvenir <24h (Delta ≥ 2, MJ)."
+   },
+   {
+    "nom": "↳ Clarté",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Défensif, Social",
+    "effets": "Purge Déstabilisé + Étourdi (allié touché)."
+   },
+   {
+    "nom": "↳ Sérénité",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Défensif, Social",
+    "effets": "Purge +2 contre prochains (2 tours)."
+   },
+   {
+    "nom": "↳ Bastion Intérieur",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Défensif",
+    "effets": "Un allié touché : bouclier absorbe 8 dégâts."
+   },
+   {
+    "nom": "↳ Sanctuaire Mental",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Défensif, Utilitaire",
+    "effets": "Alliés à 2 cases : purge + 4 PV."
+   },
+   {
+    "nom": "↳ Renvoi",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Défensif, Offensif",
+    "effets": "2 tours : qui te blesse prend 4 dégâts + Étourdi."
+   },
+   {
+    "nom": "Lien Empathique",
     "source": "Magie de l'Esprit (MAG, INT)",
     "type": "Utilitaire",
     "effets": "Dépense 2 PA : tu purges Déstabilisé d'un allié à 3 cases et tu lui rends 1 PA."
+   },
+   {
+    "nom": "↳ Fil Tenu",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Lien silencieux 1 allié, 1h."
+   },
+   {
+    "nom": "↳ Toile d'Escouade",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Lien silencieux escouade (2 cases), 1h."
+   },
+   {
+    "nom": "↳ Coordination Parfaite",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "2 PA : alliés liés +1 prochaine épreuve."
+   },
+   {
+    "nom": "↳ Esprit de Corps",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "3 PA : +1 épreuve +1 Esquive, 2 tours."
+   },
+   {
+    "nom": "↳ Chœur Mental",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Offensif, Utilitaire",
+    "effets": "2 PA : deux alliés liés attaquent aussitôt."
    },
    {
     "nom": "↳ Sondage de Surface",
@@ -4632,34 +5724,226 @@
     "effets": "Tu lis les intentions immédiates d'une cible consentante ou d'un sbire (Delta ≥ 2 requis contre PJ/PNJ majeur)."
    },
    {
-    "nom": "↳ Injonction Impérieuse",
+    "nom": "↳ Lecture Profonde",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Social, Utilitaire",
+    "effets": "2 PA : +2 Observation intentions (MAG cases)."
+   },
+   {
+    "nom": "↳ Mémoire Vive",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Social, Utilitaire",
+    "effets": "Souvenirs récents (MJ, Delta ≥ 2 vs majeur)."
+   },
+   {
+    "nom": "↳ Conscience Partagée",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Perceptions partagées 1h (+1 Observation chacun)."
+   },
+   {
+    "nom": "↳ Vérité Nue",
     "source": "Magie de l'Esprit (MAG, INT)",
     "type": "Social",
-    "effets": "Tu imposes un ordre simple à un sbire (lâcher son arme, fuir, rester immobile 1 tour). Contre un PJ/PNJ majeur : Delta ≥ 3."
+    "effets": "Détecte les mensonges 3 tours (Delta ≥ 2 vs majeur)."
    },
    {
-    "nom": "Clairvoyance",
+    "nom": "Regard Perçant",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Offensif, Utilitaire",
+    "effets": "Tes attaques ignorent le couvert partiel."
+   },
+   {
+    "nom": "↳ Éblouissement",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Offensif",
+    "effets": "2 PA : -1 prochaine épreuve (4 cases)."
+   },
+   {
+    "nom": "↳ Cécité Partielle",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Offensif",
+    "effets": "Ralenti 1 tour (éblouie)."
+   },
+   {
+    "nom": "↳ Halo Révélateur",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Offensif, Utilitaire",
+    "effets": "2 PA : pas de couvert vs toi+alliés, 2 tours."
+   },
+   {
+    "nom": "↳ Jour Artificiel",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Offensif, Utilitaire",
+    "effets": "Zone 3 hex 2 tours : pas de couvert + 3 dégâts."
+   },
+   {
+    "nom": "↳ Flash Originel",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Offensif",
+    "effets": "14 Absolus r3. Tu prends 4 dégâts + Étourdi."
+   },
+   {
+    "nom": "↳ Œil Inquisiteur",
     "source": "Magie de l'Esprit (MAG, INT)",
     "type": "Utilitaire",
-    "effets": "Dépense 2 PA : tu perçois à travers une paroi légère et tu gagnes +2 en Observation pendant 1 tour."
+    "effets": "+2 Observation repérer cachés/invisibles (MAG cases)."
    },
    {
-    "nom": "↳ Œil Distant",
+    "nom": "↳ Marque Révélée",
     "source": "Magie de l'Esprit (MAG, INT)",
-    "type": "Utilitaire",
-    "effets": "Tu projettes ta perception jusqu'à 6 cases sans ligne de vue (immobile, 1 tour)."
+    "type": "Utilitaire, Offensif",
+    "effets": "2 PA : +1 attaques vs cible marquée (2 tours)."
    },
    {
-    "nom": "↳ Prescience du Danger",
+    "nom": "↳ Point Faible",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Utilitaire, Offensif",
+    "effets": "2 PA : +2 dégâts tiens vs cible (2 tours)."
+   },
+   {
+    "nom": "↳ Exécution",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Offensif",
+    "effets": "12 Absolus (6 cases, sans Couvert Total, Delta ≥ 2)."
+   },
+   {
+    "nom": "↳ Rayon de l'Œil",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Offensif",
+    "effets": "8 Absolus à 6 cases (Delta ≥ 2 vs majeur)."
+   },
+   {
+    "nom": "Prescience du Danger",
     "source": "Magie de l'Esprit (MAG, INT)",
     "type": "Défensif",
     "effets": "En cas d'embuscade, tu gardes une réaction défensive à -1 au lieu d'aucune."
+   },
+   {
+    "nom": "↳ Alerte",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Défensif, Utilitaire",
+    "effets": "2 PA : alliés à 2 cases +1 Esquive (1 tour)."
+   },
+   {
+    "nom": "↳ Vision du Péril",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Défensif",
+    "effets": "Un ennemi -1 prochaine attaque vs toi."
+   },
+   {
+    "nom": "↳ Anticipation",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Défensif, Utilitaire",
+    "effets": "Purge Ralenti + +2 Esquive (2 tours)."
+   },
+   {
+    "nom": "↳ Intuition Parfaite",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Défensif, Utilitaire",
+    "effets": "+2 Esquive +1 Observation (3 tours)."
+   },
+   {
+    "nom": "↳ Esquive Absolue",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Défensif",
+    "effets": "1/combat : esquive automatique."
    },
    {
     "nom": "↳ Champ de Prescience",
     "source": "Magie de l'Esprit (MAG, INT)",
     "type": "Défensif, Utilitaire",
     "effets": "Dépense 3 PA : tous tes alliés à 2 cases gagnent +2 en Esquive pendant 1 tour."
+   },
+   {
+    "nom": "↳ Sixième Sens",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Défensif",
+    "effets": "+1 Esquive 3 tours."
+   },
+   {
+    "nom": "↳ Danger Écarté",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Défensif",
+    "effets": "2 PA : déplace un allié d'1 case (sans opportunité)."
+   },
+   {
+    "nom": "↳ Prescience Totale",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Défensif, Utilitaire",
+    "effets": "3 PA : alliés à 2 cases +2 Esquive (2 tours)."
+   },
+   {
+    "nom": "↳ Destin Détourné",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Défensif",
+    "effets": "1/combat : annule une attaque vs toi (MJ)."
+   },
+   {
+    "nom": "Œil Distant",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Tu projettes ta perception jusqu'à 6 cases sans ligne de vue (immobile, 1 tour)."
+   },
+   {
+    "nom": "↳ Lecture d'Objet",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Histoire d'un objet touché (MJ)."
+   },
+   {
+    "nom": "↳ Écho du Passé",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Scène passée 1h (MJ, Delta ≥ 2)."
+   },
+   {
+    "nom": "↳ Fouille des Lieux",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Passé d'un lieu 1h (MJ)."
+   },
+   {
+    "nom": "↳ Témoin du Passé",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Scène vécue (MJ, Delta ≥ 2)."
+   },
+   {
+    "nom": "↳ Oracle",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Social, Utilitaire",
+    "effets": "1/scénario : 1 question avenir (MJ)."
+   },
+   {
+    "nom": "↳ Regard Aiguisé",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Lis lèvres/écritures à MAG cases."
+   },
+   {
+    "nom": "↳ Vision Traversante",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "2 PA : voir parois légères 1 tour (+2 Observation)."
+   },
+   {
+    "nom": "↳ Vue d'Ensemble",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "3 PA : +2 Observation, alliés +1 (2 tours)."
+   },
+   {
+    "nom": "↳ Vision Vraie",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Vrai révélé 3 tours (MJ)."
+   },
+   {
+    "nom": "↳ Œil du Stratège",
+    "source": "Magie de l'Esprit (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "3 PA : +2 prochaine épreuve alliés (2 cases)."
    }
   ],
   "specialisations_par_nom": {

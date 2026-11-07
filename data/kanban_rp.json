@@ -2307,7 +2307,7 @@
      "id": "RP-154",
      "title": "Étendre Primale + Esprit comme l'Élémentale (chap. 18)",
      "epic": "Livre IV — 5e Force & Magie",
-     "status": "doing",
+     "status": "done",
      "priority": "medium",
      "order": 13,
      "scene": "",
@@ -2316,7 +2316,7 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_4.html#chap-18",
-     "details": "Moule validé sur l'Élémentale (commit 1234b67 : Feu 32, Air/Eau/Terre 33 chacune, compendium 161). Reste : Primale (18 spés : Vie/Création/Destruction) + Esprit (12 : TK/TP/Clairvoyance) → même forme (principale en 5 + latérale en 4 + 2 options au 5e cran, mini-arbres §18.1 + compendium §20.4 + mécaniques sync). Handout : summaries/2026-11-07-handoff-magies-primale-esprit.md (formats, invariant d'alignement, ancres, calibrages, checks). Point ouvert : trancher Clairsentience (voies) vs Clairvoyance (tableau/compendium). DONE = même densité + checks verts. | 2026-11-07 : Primale DONE (Vie/Création/Destruction 33 chacune, compendium 242, §18.1 cadres imbriqués + teintes off/def/uti, checks verts, rendu vérifié). Reste Esprit (12→33)."
+     "details": "Moule validé sur l'Élémentale (commit 1234b67 : Feu 32, Air/Eau/Terre 33 chacune, compendium 161). Reste : Primale (18 spés : Vie/Création/Destruction) + Esprit (12 : TK/TP/Clairvoyance) → même forme (principale en 5 + latérale en 4 + 2 options au 5e cran, mini-arbres §18.1 + compendium §20.4 + mécaniques sync). Handout : summaries/2026-11-07-handoff-magies-primale-esprit.md (formats, invariant d'alignement, ancres, calibrages, checks). Point ouvert : trancher Clairsentience (voies) vs Clairvoyance (tableau/compendium). DONE = même densité + checks verts. | 2026-11-07 : Primale DONE (Vie/Création/Destruction 33 chacune, compendium 242, §18.1 cadres imbriqués + teintes off/def/uti, checks verts, rendu vérifié). Esprit DONE le même jour (TK/TP/Clairvoyance 33 chacune : TK 3 bases off/def/uti teintées, TP Assaut/Rempart/Lien, Clairvoyance Regard/Prescience/Œil ; compendium 300→329, bases génériques retirées, checks verts, rendu vérifié). Clairsentience vs Clairvoyance : ouvert."
     }
    ]
   }
