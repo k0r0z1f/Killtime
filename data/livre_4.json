@@ -368,7 +368,8 @@
    "etiquette_html": "La Règle d'Or de Création",
    "math_html": "<span class=\"hl-gold\">Coût de Création (XP)</span> = <span class=\"hl-cyan\">Coût\n                                    d'Activation (PA)</span>",
    "desc_html": "1 XP dépensé = 1 <a class=\"rule-ref\" href=\"livre_1.html#chap-4\"\n                                    data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a>\n                                pour lancer en combat. Tu montes un pouvoir à 6 XP ?\n                                Il te coûtera 6 PA à table. Fais le calcul avec ton MJ, sans prise de tête.",
-   "extra": " id=\"sec-20-regle\""
+   "extra": " id=\"sec-20-regle\"",
+   "wide": true
   },
   "modules_offensifs": {
    "type": "table",
