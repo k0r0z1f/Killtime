@@ -16,13 +16,17 @@ livre: 4
                     <p>
                         Pour le tisser, en dehors du combat : 4 heures d'entraînement ensemble, comme
                         entre compagnons (<a class="rule-ref" href="livre_1.html#chap-5" data-tip="Entraînement entre compagnons : 4 heures d'exercices avec un camarade pendant les moments calmes (§5).">Livre I §5</a>),
-                        puis le télépathe fait une
-                        <a class="rule-ref" href="livre_2.html#chap-7" data-tip="Épreuve : lance ton dé de compétence + PA − malus contre le seuil du MJ (§7.1).">épreuve</a>
-                        de Télépathie, Delta ≥ 2. Raté ? On réessaie le lendemain, après un repos
+                        puis c'est au télépathe de jouer : il
+                        <a class="rule-ref" href="livre_2.html#chap-7" data-tip="Épreuve : lance ton dé de compétence + PA − malus contre le seuil du MJ (§7.1).">lance
+                            son dé de Télépathie</a>,
+                        plus les PA qu'il veut y mettre, contre la difficulté fixée par ton MJ.
+                        Il doit la dépasser de 2 ou plus. En dessous ? C'est raté.
+                        On réessaie le lendemain, après un repos
                         (d'habitude le matin).
                         Réussi ? Chacun paie <strong>5 <a class="rule-ref" href="livre_1.html#sec-5-3" data-tip="Dépenser son XP : dans sa compétence au tarif normal, ×2 en croisé, libre partout (§5.3).">XP</a></strong>,
                         télépathe compris — même tarif qu'une spécialisation. Un nouveau membre plus tard :
                         même épreuve, et lui seul paie les 5 XP.
+                        Pas besoin de réunir tout le groupe : seuls le télépathe et le nouveau doivent être là.
                     </p>
                     <p>
                         Une fois tissé, ça change tout en combat :
@@ -41,7 +45,10 @@ livre: 4
                         </li>
                         <li><strong>Ancrage Thermodynamique :</strong> Tu <a class="rule-ref" href="#sec-16-2"
                                 data-tip="Saturation : trop d'énergie non dissipée = surcharge pour toi ou ton moteur (§16).">surchauffes</a>
-                            ? Un autre membre du lien absorbe une partie du trop-plein et te stabilise.</li>
+                            ? Un autre membre du lien absorbe une partie du trop-plein et te stabilise :
+                            concrètement, il prend à ta place l'<a class="rule-ref" href="livre_1.html#sec-4-2"
+                                data-tip="Essoufflement : 1 point = des PA d'urgence ; ne part pas tout seul, action dédiée pour souffler (§4.2).">Essoufflement</a>
+                            de la surchauffe — pas celui que tu avais déjà.</li>
                     </ul>
                     <p>
                         Le lien ne casse pas : ni la distance, ni l'anti-magie ne le tuent (il dort, c'est

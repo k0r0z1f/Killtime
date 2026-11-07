@@ -5,7 +5,7 @@
   "mjId": "usr_mtvzf3lr",
   "mjName": "k0r0",
   "createdAt": 1793439060000,
-  "updatedAt": 1793815949359,
+  "updatedAt": 1794060912596,
   "maxMembers": 12,
   "inviteCode": "inv_BgCO6QCJUnID",
   "members": [
@@ -596,6 +596,19 @@
       "toName": null,
       "toExcept": [],
       "createdAt": 1793815949359
+    },
+    {
+      "id": "m_mw6hjnpwdx",
+      "fromId": "usr_mtvzf3lr",
+      "fromName": "k0r0",
+      "fromRole": "mj",
+      "text": "📖 Système de Jeu RP — Livre IV : La Cinquième Force & La Magie — livre_4.html#chap-18« Vie (ton corps et ceux des tiens : soin, boost, symbiose) → Catalyse Tissulaire → Surcroît Vital → Bouclier »",
+      "image": null,
+      "file": null,
+      "toUserId": null,
+      "toName": null,
+      "toExcept": [],
+      "createdAt": 1794060912596
     }
   ],
   "listed": true,

@@ -128,8 +128,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 6. Scrollspy automatique pour surligner les ancres actives
     // (panneau droit + menu lateral gauche).
+    // 6b. L'adresse suit la section lue (molette, tactile...) via replaceState
+    // (pas d'entree d'historique, pas de saut) : recharger ramene ou on lit.
+    let lastSyncedId = null;
     const updateSpy = () => {
-        const headings = document.querySelectorAll('h2[id], section[id]');
+        const headings = document.querySelectorAll('h2[id], section[id], h3[id]');
         let currentId = '';
         headings.forEach(heading => {
             const top = heading.offsetTop - 110;
@@ -139,6 +142,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         if (currentId) {
+            // Chapitre parent pour le menu gauche (sec-N-... -> chap-N).
+            const chapId = currentId.replace(/^sec-(\d+)-.*$/, 'chap-$1');
             document.querySelectorAll('.toc-on-page a').forEach(link => {
                 link.style.color = '';
                 link.style.borderLeftColor = 'transparent';
@@ -150,9 +155,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const page = location.pathname.split('/').pop();
             document.querySelectorAll('.nav-items-list .nav-item-link').forEach(link => {
                 const href = link.getAttribute('href') || '';
-                const ici = href === '#' + currentId || href === page + '#' + currentId;
+                const ici = href === '#' + currentId || href === page + '#' + currentId ||
+                    href === '#' + chapId || href === page + '#' + chapId;
                 link.classList.toggle('active', ici);
             });
+            if (currentId !== lastSyncedId) {
+                lastSyncedId = currentId;
+                try { history.replaceState(null, '', '#' + currentId); } catch (e) { /* file:// */ }
+            }
         }
     };
     window.addEventListener('scroll', updateSpy, { passive: true });
@@ -244,4 +254,22 @@ document.addEventListener('click', (e) => {
     } else {
         window.open(url, '_blank'); // bloqueur de popups : repli nouvel onglet
     }
+});
+/* ==========================================================================
+   8b. LIENS RULE-REF INTERNES — défiler sans toucher à l'adresse.
+   Un clic sur un renvoi interne (href="#...") réécrivait le hash : recharger
+   la page ramenait alors au renvoi au lieu de l'endroit lu. Ici on défile
+   jusqu'à la cible sans modifier location.hash (clic gauche simple seul :
+   Ctrl/Cmd+clic = nouvel onglet préservé). Navigation latérale et liens
+   inter-livres inchangés.
+   ========================================================================== */
+document.addEventListener('click', (e) => {
+    if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    const a = e.target && e.target.closest ? e.target.closest('a.rule-ref[href^="#"]') : null;
+    if (!a) return;
+    const id = (a.getAttribute('href') || '').slice(1);
+    if (!id) return;
+    e.preventDefault();
+    const target = document.getElementById(id);
+    if (target && target.scrollIntoView) target.scrollIntoView();
 });
