@@ -259,32 +259,19 @@
   },
   "magies": {
    "type": "table",
-   "colonnes": [
-    "Compétence de Base",
-    "Attributs Liés",
-    "Type",
-    "Spécialisations Disponibles"
-   ],
+   "colonnes": [],
    "lignes": [
     [
-     "<strong>Magie Élémentale</strong>",
-     "Magie, Intelligence",
-     "Offensif, Défensif, Utilitaire",
-     "<strong>Incinération Pyrocinétique</strong><br>└─ Flamme Bleue<br>&nbsp;&nbsp;&nbsp;├─ Fournaise Déferlante → Nova Thermique<br><span style=\"visibility:hidden\">&nbsp;&nbsp;&nbsp;├─ Fournaise Déferlante → </span>├─ Soleil Captif<br><span style=\"visibility:hidden\">&nbsp;&nbsp;&nbsp;├─ Fournaise Déferlante → </span>└─ Incandescence<br>&nbsp;&nbsp;&nbsp;└─ Langue de Braise → Trait Solaire<br><span style=\"visibility:hidden\">&nbsp;&nbsp;&nbsp;└─ Langue de Braise → </span>├─ Rayon Zénithal<br><span style=\"visibility:hidden\">&nbsp;&nbsp;&nbsp;└─ Langue de Braise → </span>└─ Lance de l'Horizon<br><strong>Voile de Braise</strong><br>├─ Mur de Flammes → Couronne de Cendres → Dôme de Braise<br><span style=\"visibility:hidden\">├─ Mur de Flammes → Couronne de Cendres → </span>├─ Sanctuaire du Phénix<br><span style=\"visibility:hidden\">├─ Mur de Flammes → Couronne de Cendres → </span>└─ Vengeance du Phénix<br>└─ Cape de Fumée → Éclipse de Cendres → Cendres Mordantes<br><span style=\"visibility:hidden\">└─ Cape de Fumée → Éclipse de Cendres → </span>├─ Hiver de Cendres<br><span style=\"visibility:hidden\">└─ Cape de Fumée → Éclipse de Cendres → </span>└─ Pluie de Cendres<br><strong>Main de Forge</strong><br>├─ Sang Braise → Peau de Lave → Fourneau Vivant<br><span style=\"visibility:hidden\">├─ Sang Braise → Peau de Lave → </span>├─ Cœur de Fournaise<br><span style=\"visibility:hidden\">├─ Sang Braise → Peau de Lave → </span>└─ Brasier Partagé<br>└─ Lanterne Vivante → Œil du Brasier → Marque du Forgeron<br><span style=\"visibility:hidden\">└─ Lanterne Vivante → Œil du Brasier → </span>├─ Chef-d'Œuvre<br><span style=\"visibility:hidden\">└─ Lanterne Vivante → Œil du Brasier → </span>└─ Égide Forgée<br><strong>Aéromancie</strong><br>├─ Courant Porteur → Souffle Lointain → Marche des Nuées<br><span style=\"visibility:hidden\">├─ Courant Porteur → Souffle Lointain → </span>├─ Caravane Céleste<br><span style=\"visibility:hidden\">├─ Courant Porteur → Souffle Lointain → </span>└─ Chute Douce<br>└─ Lame de Vent → Vent Tranchant → Tempête de Lames<br><span style=\"visibility:hidden\">└─ Lame de Vent → Vent Tranchant → </span>├─ Ouragan<br><span style=\"visibility:hidden\">└─ Lame de Vent → Vent Tranchant → </span>└─ Œil du Cyclone<br><strong>Voile de Vent</strong><br>├─ Foulée Légère → Glissade → Sprint du Zéphyr<br><span style=\"visibility:hidden\">├─ Foulée Légère → Glissade → </span>├─ Chevauchée du Vent<br><span style=\"visibility:hidden\">├─ Foulée Légère → Glissade → </span>└─ Vol du Faucon<br>└─ Mur de Vent → Cercle du Zéphyr → Dôme de Vent<br><span style=\"visibility:hidden\">└─ Mur de Vent → Cercle du Zéphyr → </span>├─ Sanctuaire des Vents<br><span style=\"visibility:hidden\">└─ Mur de Vent → Cercle du Zéphyr → </span>└─ Vengeance des Vents<br><strong>Vent du Voyageur</strong><br>├─ Bise Sèche → Manteau Tiède → Voile de Poussière<br><span style=\"visibility:hidden\">├─ Bise Sèche → Manteau Tiède → </span>├─ Sillage Silencieux<br><span style=\"visibility:hidden\">├─ Bise Sèche → Manteau Tiède → </span>└─ Tourbillon de Poussière<br>└─ Oreille du Vent → Sentinelle Invisible → Voix du Lointain<br><span style=\"visibility:hidden\">└─ Oreille du Vent → Sentinelle Invisible → </span>├─ Chœur des Vents<br><span style=\"visibility:hidden\">└─ Oreille du Vent → Sentinelle Invisible → </span>└─ Hurlement\n                                        <br><strong>Hydromancie</strong><br>├─ Brume Aveuglante → Eau Pure → Flot Porteur<br><span style=\"visibility:hidden\">├─ Brume Aveuglante → Eau Pure → </span>├─ Source Vive<br><span style=\"visibility:hidden\">├─ Brume Aveuglante → Eau Pure → </span>└─ Déluge<br>└─ Étreinte Abyssale → Mâchoire du Gouffre → Raz-de-Marée<br><span style=\"visibility:hidden\">└─ Étreinte Abyssale → Mâchoire du Gouffre → </span>├─ Fosse Abyssale<br><span style=\"visibility:hidden\">└─ Étreinte Abyssale → Mâchoire du Gouffre → </span>└─ Prison d'Écume<br><strong>Peau d'Écume</strong><br>├─ Souffle Marin → Corps Fluide → Torrent<br><span style=\"visibility:hidden\">├─ Souffle Marin → Corps Fluide → </span>├─ Forme du Courant<br><span style=\"visibility:hidden\">├─ Souffle Marin → Corps Fluide → </span>└─ Vague Brutale<br>└─ Mur d'Écume → Anneau de Marée → Cloche Abyssale<br><span style=\"visibility:hidden\">└─ Mur d'Écume → Anneau de Marée → </span>├─ Sanctuaire des Profondeurs<br><span style=\"visibility:hidden\">└─ Mur d'Écume → Anneau de Marée → </span>└─ Vengeance des Profondeurs<br><strong>Appel de la Pluie</strong><br>├─ Puits de Poche → Bain Réparateur → Brume Légère<br><span style=\"visibility:hidden\">├─ Puits de Poche → Bain Réparateur → </span>├─ Miroir Liquide<br><span style=\"visibility:hidden\">├─ Puits de Poche → Bain Réparateur → </span>└─ Linceul de Brume<br>└─ Lecture des Flots → Oreille des Profondeurs → Gardien des Rives<br><span style=\"visibility:hidden\">└─ Lecture des Flots → Oreille des Profondeurs → </span>├─ Voix des Flots<br><span style=\"visibility:hidden\">└─ Lecture des Flots → Oreille des Profondeurs → </span>└─ Mascaret\n                                        <br><strong>Géomancie</strong><br>├─ Peau de Pierre → Mains du Maçon → Pas de la Montagne<br><span style=\"visibility:hidden\">├─ Peau de Pierre → Mains du Maçon → </span>├─ Statue Vivante<br><span style=\"visibility:hidden\">├─ Peau de Pierre → Mains du Maçon → </span>└─ Étreinte de la Terre<br>└─ Poing Tellurique → Choc Tellurique → Séisme Localisé<br><span style=\"visibility:hidden\">└─ Poing Tellurique → Choc Tellurique → </span>├─ Cataclysme<br><span style=\"visibility:hidden\">└─ Poing Tellurique → Choc Tellurique → </span>└─ Ancrage<br><strong>Levée de Terre</strong><br>├─ Écoute Tellurique → Pistage → Fosse<br><span style=\"visibility:hidden\">├─ Écoute Tellurique → Pistage → </span>├─ Galerie<br><span style=\"visibility:hidden\">├─ Écoute Tellurique → Pistage → </span>└─ Sables Mouvants<br>└─ Mur de Roc → Bastion de Roc → Donjon<br><span style=\"visibility:hidden\">└─ Mur de Roc → Bastion de Roc → </span>├─ Citadelle<br><span style=\"visibility:hidden\">└─ Mur de Roc → Bastion de Roc → </span>└─ Contre-Secousse<br><strong>Sens de la Pierre</strong><br>├─ Abri de Pierre → Four de Pierre → Dalle Protectrice<br><span style=\"visibility:hidden\">├─ Abri de Pierre → Four de Pierre → </span>├─ Rideau de Gravats<br><span style=\"visibility:hidden\">├─ Abri de Pierre → Four de Pierre → </span>└─ Pierre à Aiguiser<br>└─ Sonar de Roche → Mémoire des Pierres → Faille<br><span style=\"visibility:hidden\">└─ Sonar de Roche → Mémoire des Pierres → </span>├─ Trésor Enfoui<br><span style=\"visibility:hidden\">└─ Sonar de Roche → Mémoire des Pierres → </span>└─ Colère Tellurique"
+     "<div style=\"border:1px solid var(--border-subtle);border-radius:10px;padding:20px 14px 12px;margin:18px 0;position:relative\"><span style=\"position:absolute;top:-0.72em;left:12px;background:var(--bg-surface);padding:0 10px;font-weight:700\">Magie Élémentale (Magie, Intelligence)</span><div style=\"border:1px solid var(--border-subtle);border-radius:10px;background:var(--bg-surface);padding:20px 14px 12px;margin:26px 0;position:relative\"><span style=\"position:absolute;top:-0.72em;left:12px;background:var(--bg-surface);padding:0 10px;font-weight:700\">Feu (Offensif, Défensif, Utilitaire)</span><div style=\"background:rgba(239,68,68,0.10);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Incinération Pyrocinétique</strong> (Offensif)<br>└─ Flamme Bleue<br>&emsp;&emsp;├─ Fournaise Déferlante → Nova Thermique<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Fournaise Déferlante → </span>├─ Soleil Captif<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Fournaise Déferlante → </span>└─ Incandescence<br>&emsp;&emsp;└─ Langue de Braise → Trait Solaire<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Langue de Braise → </span>├─ Rayon Zénithal<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Langue de Braise → </span>└─ Lance de l'Horizon</div><div style=\"background:rgba(34,197,94,0.10);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Voile de Braise</strong> (Défensif)<br>├─ Mur de Flammes → Couronne de Cendres → Dôme de Braise<br><span style=\"visibility:hidden\">├─ Mur de Flammes → Couronne de Cendres → </span>├─ Sanctuaire du Phénix<br><span style=\"visibility:hidden\">├─ Mur de Flammes → Couronne de Cendres → </span>└─ Vengeance du Phénix<br>└─ Cape de Fumée → Éclipse de Cendres → Cendres Mordantes<br><span style=\"visibility:hidden\">└─ Cape de Fumée → Éclipse de Cendres → </span>├─ Hiver de Cendres<br><span style=\"visibility:hidden\">└─ Cape de Fumée → Éclipse de Cendres → </span>└─ Pluie de Cendres</div><div style=\"background:rgba(59,130,246,0.12);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Main de Forge</strong> (Utilitaire)<br>├─ Sang Braise → Peau de Lave → Fourneau Vivant<br><span style=\"visibility:hidden\">├─ Sang Braise → Peau de Lave → </span>├─ Cœur de Fournaise<br><span style=\"visibility:hidden\">├─ Sang Braise → Peau de Lave → </span>└─ Brasier Partagé<br>└─ Lanterne Vivante → Œil du Brasier → Marque du Forgeron<br><span style=\"visibility:hidden\">└─ Lanterne Vivante → Œil du Brasier → </span>├─ Chef-d'Œuvre<br><span style=\"visibility:hidden\">└─ Lanterne Vivante → Œil du Brasier → </span>└─ Égide Forgée</div></div><div style=\"border:1px solid var(--border-subtle);border-radius:10px;background:var(--bg-surface);padding:20px 14px 12px;margin:26px 0;position:relative\"><span style=\"position:absolute;top:-0.72em;left:12px;background:var(--bg-surface);padding:0 10px;font-weight:700\">Air (Offensif, Défensif, Utilitaire)</span><div style=\"background:rgba(239,68,68,0.10);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Aéromancie</strong> (Offensif, Utilitaire)<br>├─ Courant Porteur → Souffle Lointain → Marche des Nuées<br><span style=\"visibility:hidden\">├─ Courant Porteur → Souffle Lointain → </span>├─ Caravane Céleste<br><span style=\"visibility:hidden\">├─ Courant Porteur → Souffle Lointain → </span>└─ Chute Douce<br>└─ Lame de Vent → Vent Tranchant → Tempête de Lames<br><span style=\"visibility:hidden\">└─ Lame de Vent → Vent Tranchant → </span>├─ Ouragan<br><span style=\"visibility:hidden\">└─ Lame de Vent → Vent Tranchant → </span>└─ Œil du Cyclone</div><div style=\"background:rgba(34,197,94,0.10);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Voile de Vent</strong> (Défensif)<br>├─ Foulée Légère → Glissade → Sprint du Zéphyr<br><span style=\"visibility:hidden\">├─ Foulée Légère → Glissade → </span>├─ Chevauchée du Vent<br><span style=\"visibility:hidden\">├─ Foulée Légère → Glissade → </span>└─ Vol du Faucon<br>└─ Mur de Vent → Cercle du Zéphyr → Dôme de Vent<br><span style=\"visibility:hidden\">└─ Mur de Vent → Cercle du Zéphyr → </span>├─ Sanctuaire des Vents<br><span style=\"visibility:hidden\">└─ Mur de Vent → Cercle du Zéphyr → </span>└─ Vengeance des Vents</div><div style=\"background:rgba(59,130,246,0.12);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Vent du Voyageur</strong> (Utilitaire)<br>├─ Bise Sèche → Manteau Tiède → Voile de Poussière<br><span style=\"visibility:hidden\">├─ Bise Sèche → Manteau Tiède → </span>├─ Sillage Silencieux<br><span style=\"visibility:hidden\">├─ Bise Sèche → Manteau Tiède → </span>└─ Tourbillon de Poussière<br>└─ Oreille du Vent → Sentinelle Invisible → Voix du Lointain<br><span style=\"visibility:hidden\">└─ Oreille du Vent → Sentinelle Invisible → </span>├─ Chœur des Vents<br><span style=\"visibility:hidden\">└─ Oreille du Vent → Sentinelle Invisible → </span>└─ Hurlement\n                                        </div></div><div style=\"border:1px solid var(--border-subtle);border-radius:10px;background:var(--bg-surface);padding:20px 14px 12px;margin:26px 0;position:relative\"><span style=\"position:absolute;top:-0.72em;left:12px;background:var(--bg-surface);padding:0 10px;font-weight:700\">Eau (Offensif, Défensif, Utilitaire)</span><div style=\"background:rgba(239,68,68,0.10);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Hydromancie</strong> (Offensif, Utilitaire)<br>├─ Brume Aveuglante → Eau Pure → Flot Porteur<br><span style=\"visibility:hidden\">├─ Brume Aveuglante → Eau Pure → </span>├─ Source Vive<br><span style=\"visibility:hidden\">├─ Brume Aveuglante → Eau Pure → </span>└─ Déluge<br>└─ Étreinte Abyssale → Mâchoire du Gouffre → Raz-de-Marée<br><span style=\"visibility:hidden\">└─ Étreinte Abyssale → Mâchoire du Gouffre → </span>├─ Fosse Abyssale<br><span style=\"visibility:hidden\">└─ Étreinte Abyssale → Mâchoire du Gouffre → </span>└─ Prison d'Écume</div><div style=\"background:rgba(34,197,94,0.10);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Peau d'Écume</strong> (Défensif)<br>├─ Souffle Marin → Corps Fluide → Torrent<br><span style=\"visibility:hidden\">├─ Souffle Marin → Corps Fluide → </span>├─ Forme du Courant<br><span style=\"visibility:hidden\">├─ Souffle Marin → Corps Fluide → </span>└─ Vague Brutale<br>└─ Mur d'Écume → Anneau de Marée → Cloche Abyssale<br><span style=\"visibility:hidden\">└─ Mur d'Écume → Anneau de Marée → </span>├─ Sanctuaire des Profondeurs<br><span style=\"visibility:hidden\">└─ Mur d'Écume → Anneau de Marée → </span>└─ Vengeance des Profondeurs</div><div style=\"background:rgba(59,130,246,0.12);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Appel de la Pluie</strong> (Utilitaire)<br>├─ Puits de Poche → Bain Réparateur → Brume Légère<br><span style=\"visibility:hidden\">├─ Puits de Poche → Bain Réparateur → </span>├─ Miroir Liquide<br><span style=\"visibility:hidden\">├─ Puits de Poche → Bain Réparateur → </span>└─ Linceul de Brume<br>└─ Lecture des Flots → Oreille des Profondeurs → Gardien des Rives<br><span style=\"visibility:hidden\">└─ Lecture des Flots → Oreille des Profondeurs → </span>├─ Voix des Flots<br><span style=\"visibility:hidden\">└─ Lecture des Flots → Oreille des Profondeurs → </span>└─ Mascaret\n                                        </div></div><div style=\"border:1px solid var(--border-subtle);border-radius:10px;background:var(--bg-surface);padding:20px 14px 12px;margin:26px 0;position:relative\"><span style=\"position:absolute;top:-0.72em;left:12px;background:var(--bg-surface);padding:0 10px;font-weight:700\">Terre (Offensif, Défensif, Utilitaire)</span><div style=\"background:rgba(239,68,68,0.10);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Géomancie</strong> (Offensif, Utilitaire)<br>├─ Peau de Pierre → Mains du Maçon → Pas de la Montagne<br><span style=\"visibility:hidden\">├─ Peau de Pierre → Mains du Maçon → </span>├─ Statue Vivante<br><span style=\"visibility:hidden\">├─ Peau de Pierre → Mains du Maçon → </span>└─ Étreinte de la Terre<br>└─ Poing Tellurique → Choc Tellurique → Séisme Localisé<br><span style=\"visibility:hidden\">└─ Poing Tellurique → Choc Tellurique → </span>├─ Cataclysme<br><span style=\"visibility:hidden\">└─ Poing Tellurique → Choc Tellurique → </span>└─ Ancrage</div><div style=\"background:rgba(34,197,94,0.10);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Levée de Terre</strong> (Défensif)<br>├─ Écoute Tellurique → Pistage → Fosse<br><span style=\"visibility:hidden\">├─ Écoute Tellurique → Pistage → </span>├─ Galerie<br><span style=\"visibility:hidden\">├─ Écoute Tellurique → Pistage → </span>└─ Sables Mouvants<br>└─ Mur de Roc → Bastion de Roc → Donjon<br><span style=\"visibility:hidden\">└─ Mur de Roc → Bastion de Roc → </span>├─ Citadelle<br><span style=\"visibility:hidden\">└─ Mur de Roc → Bastion de Roc → </span>└─ Contre-Secousse</div><div style=\"background:rgba(59,130,246,0.12);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Sens de la Pierre</strong> (Utilitaire)<br>├─ Abri de Pierre → Four de Pierre → Dalle Protectrice<br><span style=\"visibility:hidden\">├─ Abri de Pierre → Four de Pierre → </span>├─ Rideau de Gravats<br><span style=\"visibility:hidden\">├─ Abri de Pierre → Four de Pierre → </span>└─ Pierre à Aiguiser<br>└─ Sonar de Roche → Mémoire des Pierres → Faille<br><span style=\"visibility:hidden\">└─ Sonar de Roche → Mémoire des Pierres → </span>├─ Trésor Enfoui<br><span style=\"visibility:hidden\">└─ Sonar de Roche → Mémoire des Pierres → </span>└─ Colère Tellurique</div></div></div>"
     ],
     [
-     "<strong>Magie Primale</strong>",
-     "Magie, Intelligence",
-     "Offensif, Défensif, Utilitaire",
-     "<strong>Vie</strong> (ton corps et ceux des tiens : soin, boost, symbiose) → Catalyse\n                                        Tissulaire → Surcroît Vital → Bouclier Végétal → Transfusion\n                                        Symbiotique\n                                        <br>↳ Greffe Cinétique → Osmose d'Escouade → Frappe\n                                        Symbiotique\n                                        <br><strong>Création</strong> (ombre, lumière, matière : tu fais apparaître) →\n                                        Barricade de Racines → Épines de Granit → Bastion Vivant →\n                                        Mur d'Orichalque Végétal\n                                        <br><strong>Destruction</strong> (tu défais : entrave, pourrissement, poisons) →\n                                        Vignes Constrictrices → Étau Végétal → Moisson Sanguine\n                                        → Étranglement Toxique\n                                        <br>↳ Champ de Ronces → Ronces Neurotoxiques →\n                                        Enchevêtrement Explosif"
+     "<div style=\"border:1px solid var(--border-subtle);border-radius:10px;padding:20px 14px 12px;margin:18px 0;position:relative\"><span style=\"position:absolute;top:-0.72em;left:12px;background:var(--bg-surface);padding:0 10px;font-weight:700\">Magie Primale (Magie, Intelligence)</span><div style=\"border:1px solid var(--border-subtle);border-radius:10px;background:var(--bg-surface);padding:20px 14px 12px;margin:26px 0;position:relative\"><span style=\"position:absolute;top:-0.72em;left:12px;background:var(--bg-surface);padding:0 10px;font-weight:700\">Vie (Offensif, Défensif, Utilitaire)</span><div style=\"background:rgba(239,68,68,0.10);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Greffe Cinétique</strong> (Offensif, Utilitaire)<br>&emsp;&emsp;├─ Sang Chaud → Sang Bouillant → Fureur de la Canopée<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Sang Chaud → Sang Bouillant → </span>├─ Colère du Vieux Chêne<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Sang Chaud → Sang Bouillant → </span>└─ Rafale d'Épines<br>&emsp;&emsp;└─ Osmose d'Escouade → Frappe Symbiotique → Lien Profond<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Osmose d'Escouade → Frappe Symbiotique → </span>├─ Élan Symbiotique<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Osmose d'Escouade → Frappe Symbiotique → </span>└─ Cocon Symbiotique</div><div style=\"background:rgba(34,197,94,0.10);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Écorce Gardienne</strong> (Défensif)<br>&emsp;&emsp;├─ Ronces Vengeresses → Carapace Ancienne → Bastion d'Écorce<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Ronces Vengeresses → Carapace Ancienne → </span>├─ Sanctuaire d'Écorce<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Ronces Vengeresses → Carapace Ancienne → </span>└─ Vengeance de la Forêt<br>&emsp;&emsp;└─ Garde d'Écorce → Écorce d'Escouade → Cocon de Guerre<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Garde d'Écorce → Écorce d'Escouade → </span>├─ Égide de la Forêt<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Garde d'Écorce → Écorce d'Escouade → </span>└─ Cocon Impénétrable</div><div style=\"background:rgba(59,130,246,0.12);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Catalyse Tissulaire</strong> (Utilitaire)<br>&emsp;&emsp;├─ Surcroît Vital → Bouclier Végétal → Sève Partagée<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Surcroît Vital → Bouclier Végétal → </span>├─ Transfusion Symbiotique<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Surcroît Vital → Bouclier Végétal → </span>└─ Renaissance Symbiotique<br>&emsp;&emsp;└─ Sève Claire → Sang Clair → Fontaine Claire<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Sève Claire → Sang Clair → </span>├─ Purification Totale<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Sève Claire → Sang Clair → </span>└─ Sève Immunisante</div></div><div style=\"border:1px solid var(--border-subtle);border-radius:10px;background:var(--bg-surface);padding:20px 14px 12px;margin:26px 0;position:relative\"><span style=\"position:absolute;top:-0.72em;left:12px;background:var(--bg-surface);padding:0 10px;font-weight:700\">Création (Offensif, Défensif, Utilitaire)</span><div style=\"background:rgba(34,197,94,0.10);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Barricade de Racines</strong> (Défensif, Utilitaire)<br>&emsp;&emsp;├─ Épines de Granit → Bastion Vivant → Haie Fortifiée<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Épines de Granit → Bastion Vivant → </span>├─ Mur d'Orichalque Végétal<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Épines de Granit → Bastion Vivant → </span>└─ Donjon Végétal<br>&emsp;&emsp;└─ Lanterne d'Ombre → Manteau d'Ombre → Dôme d'Ombre<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Lanterne d'Ombre → Manteau d'Ombre → </span>├─ Sanctuaire d'Ombre<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Lanterne d'Ombre → Manteau d'Ombre → </span>└─ Vengeance de l'Ombre</div><div style=\"background:rgba(239,68,68,0.10);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Dard d'Épine</strong> (Offensif)<br>&emsp;&emsp;├─ Épine Vive → Volée d'Épines → Pluie d'Épines<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Épine Vive → Volée d'Épines → </span>├─ Forêt de Lances<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Épine Vive → Volée d'Épines → </span>└─ Cercle de Ronces<br>&emsp;&emsp;└─ Fouet d'Ombre → Lames d'Ombre → Mâchoire d'Ombre<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Fouet d'Ombre → Lames d'Ombre → </span>├─ Nuit Dévorante<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Fouet d'Ombre → Lames d'Ombre → </span>└─ Soleil Noir</div><div style=\"background:rgba(59,130,246,0.12);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Outil de Sève</strong> (Utilitaire)<br>&emsp;&emsp;├─ Arme de Ronces → Armure d'Écorce → Marque du Jardinier<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Arme de Ronces → Armure d'Écorce → </span>├─ Chef-d'Œuvre Vivant<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Arme de Ronces → Armure d'Écorce → </span>└─ Égide Vivante<br>&emsp;&emsp;└─ Pont de Lianes → Sentier Vivant → Canopée Voyageuse<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Pont de Lianes → Sentier Vivant → </span>├─ Grande Traversée<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Pont de Lianes → Sentier Vivant → </span>└─ Forteresse de Lianes</div></div><div style=\"border:1px solid var(--border-subtle);border-radius:10px;background:var(--bg-surface);padding:20px 14px 12px;margin:26px 0;position:relative\"><span style=\"position:absolute;top:-0.72em;left:12px;background:var(--bg-surface);padding:0 10px;font-weight:700\">Destruction (Offensif, Défensif, Utilitaire)</span><div style=\"background:rgba(239,68,68,0.10);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Vignes Constrictrices</strong> (Offensif, Utilitaire)<br>&emsp;&emsp;├─ Étau Végétal → Moisson Sanguine → Étreinte Putride<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Étau Végétal → Moisson Sanguine → </span>├─ Étranglement Toxique<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Étau Végétal → Moisson Sanguine → </span>└─ Étreinte Finale<br>&emsp;&emsp;└─ Champ de Ronces → Ronces Neurotoxiques → Enchevêtrement Explosif<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Champ de Ronces → Ronces Neurotoxiques → </span>├─ Pluie de Ronces<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Champ de Ronces → Ronces Neurotoxiques → </span>└─ Floraison Funeste</div><div style=\"background:rgba(34,197,94,0.10);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Écorce Putride</strong> (Défensif)<br>&emsp;&emsp;├─ Sève Corrompue → Chair Putride → Cocon de Pourriture<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Sève Corrompue → Chair Putride → </span>├─ Tombeau Putride<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Sève Corrompue → Chair Putride → </span>└─ Sang Pourri<br>&emsp;&emsp;└─ Flaque Fangeuse → Bourbier → Tourbière<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Flaque Fangeuse → Bourbier → </span>├─ Enlisement<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Flaque Fangeuse → Bourbier → </span>└─ Déluge de Boue</div><div style=\"background:rgba(59,130,246,0.12);border-radius:8px;padding:8px 12px;margin:8px 0;\"><strong>Herbier Toxique</strong> (Utilitaire)<br>&emsp;&emsp;├─ Enduit Persistant → Toxine Puissante → Alambic Vivant<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Enduit Persistant → Toxine Puissante → </span>├─ Grand Œuvre Toxique<br><span style=\"visibility:hidden\">&emsp;&emsp;├─ Enduit Persistant → Toxine Puissante → </span>└─ Nuage Toxique<br>&emsp;&emsp;└─ Sève Dissolvante → Brèche → Sape<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Sève Dissolvante → Brèche → </span>├─ Grand Passage<br><span style=\"visibility:hidden\">&emsp;&emsp;└─ Sève Dissolvante → Brèche → </span>└─ Effondrement</div></div></div>"
     ],
     [
-     "<strong>Magie de l'Esprit</strong>",
-     "Magie, Intelligence",
-     "Offensif, Défensif, Social, Utilitaire",
-     "<strong>Télékinésie</strong> → Projection d'Objets → Barrière Cinétique →\n                                        Fissure Gravifique\n                                        <br><strong>Télépathie</strong> → Lien Empathique → Sondage de Surface →\n                                        Injonction Impérieuse\n                                        <br><strong>Clairvoyance</strong> → Œil Distant → Prescience du Danger →\n                                        Champ de Prescience"
+     "<div style=\"border:1px solid var(--border-subtle);border-radius:10px;padding:20px 14px 12px;margin:18px 0;position:relative\"><span style=\"position:absolute;top:-0.72em;left:12px;background:var(--bg-surface);padding:0 10px;font-weight:700\">Magie de l'Esprit (Magie, Intelligence)</span><div style=\"border:1px solid var(--border-subtle);border-radius:10px;background:var(--bg-surface);padding:20px 14px 12px;margin:26px 0;position:relative\"><span style=\"position:absolute;top:-0.72em;left:12px;background:var(--bg-surface);padding:0 10px;font-weight:700\">Télékinésie (Utilitaire)</span><strong>Télékinésie</strong> → Projection d'Objets → Barrière Cinétique →\n                                        Fissure Gravifique\n                                        </div><div style=\"border:1px solid var(--border-subtle);border-radius:10px;background:var(--bg-surface);padding:20px 14px 12px;margin:26px 0;position:relative\"><span style=\"position:absolute;top:-0.72em;left:12px;background:var(--bg-surface);padding:0 10px;font-weight:700\">Télépathie (Social, Utilitaire)</span><strong>Télépathie</strong> → Lien Empathique → Sondage de Surface →\n                                        Injonction Impérieuse\n                                        </div><div style=\"border:1px solid var(--border-subtle);border-radius:10px;background:var(--bg-surface);padding:20px 14px 12px;margin:26px 0;position:relative\"><span style=\"position:absolute;top:-0.72em;left:12px;background:var(--bg-surface);padding:0 10px;font-weight:700\">Clairvoyance (Utilitaire)</span><strong>Clairvoyance</strong> → Œil Distant → Prescience du Danger →\n                                        Champ de Prescience</div></div>"
     ]
-   ]
+   ],
+   "extra": " style=\"border:none;background:transparent;box-shadow:none;\""
   },
   "stades_neuronaux": {
    "type": "table",
@@ -689,6 +676,51 @@
     [
      {
       "attrs": " style=\"padding-left:2em;\"",
+      "html": "↳ <strong>Lanterne d'Ombre</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Utilitaire",
+     "Tu fais flotter une flamme d'ombre qui te suit pendant 1 heure. Elle éclaire à MAG cases sans rien brûler, et tu gagnes +1 en Observation dans le noir."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Manteau d'Ombre</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Défensif, Utilitaire",
+     "<a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : tu t'enveloppes d'ombre pendant 1 tour. Les tirs contre toi prennent -2, et tu glisses d'1 case sans attaque d'opportunité."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:5em;\"",
+      "html": "↳ <strong>Dôme d'Ombre</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Défensif",
+     "Tu fermes l'ombre en dôme (rayon 1 case autour de toi) pendant 2 tours : <a class=\"rule-ref\" href=\"livre_5.html#chap-22-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§22.3).\">Couvert Total</a> contre les tirs venus de l'extérieur. L'ennemi qui entre est <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Ralenti : toute action coûte le double de PA.\">Ralenti</a>."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Sanctuaire d'Ombre</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Défensif, Utilitaire",
+     "Ton dôme devient un sanctuaire : <a class=\"rule-ref\" href=\"livre_5.html#chap-22-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§22.3).\">Couvert Total</a> contre les tirs extérieurs, et tes alliés dedans récupèrent 4 PV et purgent <a\n                                            class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).\">Déstabilisé</a> et <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Étourdi : −1 ec sur tous les jets.\">Étourdi</a>. Souffle un coup."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Vengeance de l'Ombre</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Défensif, Offensif",
+     "Pendant 2 tours, chaque ennemi qui te blesse prend 4 dégâts et <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-25-2\"\n                                            data-tip=\"Saignement : PV directs en début de tour, puis −1/tour. Tout soin le stoppe (§25.2).\">Saignement</a> en retour. Exemple : son ombre le mord."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:2em;\"",
       "html": "↳ <strong>Épines de Granit</strong>"
      },
      "Magie Primale (MAG, INT)",
@@ -707,6 +739,15 @@
     [
      {
       "attrs": " style=\"padding-left:5em;\"",
+      "html": "↳ <strong>Haie Fortifiée</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Défensif",
+     "Tu poses une haie sur 2 hexagones contigus à 4 cases, pendant 2 tours. Tu bloques la vue à travers (-2 aux attaques qui passent au travers). Celui qui traverse prend 3 dégâts. Exemple : la haie se lève entre vous et les tireurs."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
       "html": "↳ <strong>Mur d'Orichalque Végétal</strong>"
      },
      "Magie Primale (MAG, INT)",
@@ -714,10 +755,256 @@
      "Ta barricade couvre 3 cases contiguës et devient un Couvert Total\n                                        indestructible."
     ],
     [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Donjon Végétal</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Défensif, Offensif",
+     "Tu lèves un donjon de ronces sur 3 hexagones contigus pendant 2 tours : <a class=\"rule-ref\" href=\"livre_5.html#chap-22-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§22.3).\">Couvert Total</a> contre les tirs extérieurs. Celui qui traverse prend 6 dégâts. Exemple : la forteresse pousse en un souffle."
+    ],
+    [
+     "<strong>Dard d'Épine</strong>",
+     "Magie Primale (MAG, INT)",
+     "Offensif",
+     "Tu projettes un dard de sève durcie : 4 dégâts et <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-25-2\"\n                                            data-tip=\"Saignement : PV directs en début de tour, puis −1/tour. Tout soin le stoppe (§25.2).\">Saignement</a>. Exemple : tu cueilles le guetteur."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:2em;\"",
+      "html": "↳ <strong>Fouet d'Ombre</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Offensif",
+     "Ton fouet d'ombre claque à 4 cases : 4 <a class=\"rule-ref\" href=\"livre_6.html#chap-24\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).\">Dégâts Absolus</a>, et tu ignores le couvert partiel. Exemple : tu cingles le tireur planqué."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Lames d'Ombre</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Offensif",
+     "Tes ombres tranchent à 6 cases : 6 <a class=\"rule-ref\" href=\"livre_6.html#chap-24\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).\">Dégâts Absolus</a> (Delta ≥ 2 requis contre PJ/PNJ majeur). Exemple : deux entailles nettes, sans bruit."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:5em;\"",
+      "html": "↳ <strong>Mâchoire d'Ombre</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Offensif",
+     "Tes ombres balaient un cône de 3 hexagones : 6 dégâts et <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-25-2\"\n                                            data-tip=\"Saignement : PV directs en début de tour, puis −1/tour. Tout soin le stoppe (§25.2).\">Saignement</a>. Exemple : la pénombre mord."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Nuit Dévorante</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Offensif",
+     "Les ombres se referment : 12 <a class=\"rule-ref\" href=\"livre_6.html#chap-24\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).\">Dégâts Absolus</a> à tous ceux dans un rayon de 2 cases. Exemple : la nuit tombe d'un coup."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Soleil Noir</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Offensif",
+     "Tu lances un soleil noir : 14 <a class=\"rule-ref\" href=\"livre_6.html#chap-24\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).\">Dégâts Absolus</a> dans un rayon de 3 cases. Contrecoup : tu prends 4 dégâts et <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-25-2\"\n                                            data-tip=\"Saignement : PV directs en début de tour, puis −1/tour. Tout soin le stoppe (§25.2).\">Saignement</a>. À sortir quand il le faut."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:2em;\"",
+      "html": "↳ <strong>Épine Vive</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Offensif",
+     "Tu projettes une volée d'épines : 6 dégâts et <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-25-2\"\n                                            data-tip=\"Saignement : PV directs en début de tour, puis −1/tour. Tout soin le stoppe (§25.2).\">Saignement</a>. Exemple : le poursuivant s'arrête net."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Volée d'Épines</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Offensif",
+     "Tes épines balaient tout autour de toi : 6 dégâts à tous ceux à 1 case. Exemple : personne ne t'approche."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:5em;\"",
+      "html": "↳ <strong>Pluie d'Épines</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Offensif",
+     "Tu fais pleuvoir les épines sur 3 hexagones contigus pendant 2 tours : 3 dégâts et <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-25-2\"\n                                            data-tip=\"Saignement : PV directs en début de tour, puis −1/tour. Tout soin le stoppe (§25.2).\">Saignement</a> à qui commence dedans. Exemple : la clairière devient infranchissable."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Forêt de Lances</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Offensif",
+     "Des lances jaillissent en ligne de 4 cases : 8 <a class=\"rule-ref\" href=\"livre_6.html#chap-24\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).\">Dégâts Absolus</a> à tous ceux dessus (Delta ≥ 2 requis contre PJ/PNJ majeur). Exemple : la haie charge toute seule."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Cercle de Ronces</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Offensif, Défensif",
+     "Tu t'entoures de ronces (rayon 1 case) pendant 2 tours. L'ennemi qui commence son tour dedans prend 3 dégâts et <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-25-2\"\n                                            data-tip=\"Saignement : PV directs en début de tour, puis −1/tour. Tout soin le stoppe (§25.2).\">Saignement</a>. Tes alliés dedans purgent <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Ralenti : toute action coûte le double de PA.\">Ralenti</a>. Exemple : le cercle pique et soigne à la fois."
+    ],
+    [
+     "<strong>Outil de Sève</strong>",
+     "Magie Primale (MAG, INT)",
+     "Utilitaire",
+     "Tu fais pousser l'outil qu'il faut (marteau, corde, échelle) : il dure 1 heure. Tu gagnes +1 à ta prochaine <a class=\"rule-ref\" href=\"livre_2.html#chap-7\" data-tip=\"Épreuve : lance ton dé de compétence + PA − malus contre le seuil du MJ (§7.1).\">épreuve</a> de bricolage ou de réparation dans l'heure. Pratique au bivouac."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:2em;\"",
+      "html": "↳ <strong>Pont de Lianes</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Utilitaire",
+     "Tu jettes un pont de lianes sur 2 hexagones contigus : ils deviennent praticables pendant 2 tours (terrains difficiles ignorés). Exemple : l'escouade traverse le marais au sec."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Sentier Vivant</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Utilitaire",
+     "Pendant 2 tours, toi et tes alliés à 2 cases ignorez les terrains difficiles. Exemple : les ronces s'ouvrent devant vous."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:5em;\"",
+      "html": "↳ <strong>Canopée Voyageuse</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Utilitaire",
+     "<a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : tous tes alliés à 2 cases glissent d'1 case (sans attaque d'opportunité). Exemple : les lianes les tirent d'un coup."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Grande Traversée</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Utilitaire",
+     "<a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : toi et tes alliés à 2 cases glissez de 2 cases (sans attaque d'opportunité). Exemple : toute l'escouade surgit des fourrés."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Forteresse de Lianes</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Défensif, Utilitaire",
+     "Tu dresses une palissade sur 2 hexagones contigus : <a class=\"rule-ref\" href=\"livre_5.html#chap-22-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§22.3).\">Couvert 3/4</a> pendant 2 tours. Exemple : les troncs se resserrent autour de vous."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:2em;\"",
+      "html": "↳ <strong>Arme de Ronces</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Utilitaire, Offensif",
+     "Touche une arme (une seule à la fois) : pendant 3 tours, elle gagne +1 dégât. Exemple : ses coups laissent des échardes."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Armure d'Écorce</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Défensif, Utilitaire",
+     "Touche un allié (ou toi) : une armure d'écorce le couvre pendant 3 tours (+2 armure naturelle). Celui qui le frappe au contact prend <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-25-2\"\n                                            data-tip=\"Saignement : PV directs en début de tour, puis −1/tour. Tout soin le stoppe (§25.2).\">Saignement</a>. Exemple : le heurtoir se pique."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:5em;\"",
+      "html": "↳ <strong>Marque du Jardinier</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Utilitaire",
+     "Touche une arme : tu graves ton sceau (une seule marquée à la fois). Sa première <a class=\"rule-ref\" href=\"livre_2.html#chap-7\" data-tip=\"Épreuve : lance ton dé de compétence + PA − malus contre le seuil du MJ (§7.1).\">épreuve</a> d'attaque de chaque combat gagne +1."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Chef-d'Œuvre Vivant</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Utilitaire",
+     "Avec une nuit de travail et l'accord de ton MJ, tu façonnes un chef-d'œuvre : une arme gagne +1 dégât jusqu'à la fin du scénario (une seule à la fois)."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Égide Vivante</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Défensif, Utilitaire",
+     "Avec une nuit de travail et l'accord de ton MJ, tu façonnes une égide : une armure gagne +1 jusqu'à la fin du scénario (une seule à la fois)."
+    ],
+    [
      "<strong>Vignes Constrictrices</strong>",
      "Magie Primale (MAG, INT)",
      "Offensif, Utilitaire",
      "À 4 cases, ta cible est <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Immobilisé : impossible de faire la moindre action de mouvement (§25.1).\">Immobilisée</a>."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:2em;\"",
+      "html": "↳ <strong>Champ de Ronces</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Offensif, Utilitaire",
+     "Zone d'1 case de rayon : <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Ralenti : toute action coûte le double de PA.\">Ralenti</a> et 3\n                                        dégâts par case franchie."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Ronces Neurotoxiques</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Offensif",
+     "Zone de 2 cases : <a class=\"rule-ref\" href=\"livre_6.html#sec-25-2\"\n                                            data-tip=\"Empoisonné : PV directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonné</a>\n                                        et <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Ralenti : toute action coûte le double de PA.\">Ralenti</a>."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:5em;\"",
+      "html": "↳ <strong>Enchevêtrement Explosif</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Offensif",
+     "Tu fais exploser les ronces : 8 dégâts de zone à tous ceux qui sont dedans."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Pluie de Ronces</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Offensif",
+     "Tu fais pleuvoir les ronces sur 3 hexagones contigus pendant 2 tours : 3 dégâts et <a class=\"rule-ref\" href=\"livre_6.html#sec-25-2\"\n                                            data-tip=\"Empoisonné : PV directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonné</a> à qui commence dedans. Exemple : le ciel griffe."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Floraison Funeste</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Offensif",
+     "Tes ronces fleurissent d'un coup : 8 <a class=\"rule-ref\" href=\"livre_6.html#chap-24\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).\">Dégâts Absolus</a> à tous ceux dedans, et <a class=\"rule-ref\" href=\"livre_6.html#sec-25-2\"\n                                            data-tip=\"Empoisonné : PV directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonné</a>. Exemple : une floraison noire, puis le silence."
     ],
     [
      {
@@ -740,6 +1027,15 @@
     [
      {
       "attrs": " style=\"padding-left:5em;\"",
+      "html": "↳ <strong>Étreinte Putride</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Offensif",
+     "Ta cible entravée subit 4 dégâts au début de chacun de tes tours tant que tu la tiens. Exemple : les lianes se resserrent."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
       "html": "↳ <strong>Étranglement Toxique</strong>"
      },
      "Magie Primale (MAG, INT)",
@@ -747,10 +1043,448 @@
      "Ta cible entravée devient <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Paralysé : aucune action ni réaction, incapacité totale (§25.1).\">Paralysée</a>\n                                        et <a class=\"rule-ref\" href=\"livre_6.html#sec-25-2\"\n                                            data-tip=\"Empoisonné : PV directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonnée</a>\n                                        en continu."
     ],
     [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Étreinte Finale</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Offensif",
+     "Tu écrases ta cible entravée : 12 <a class=\"rule-ref\" href=\"livre_6.html#chap-24\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).\">Dégâts Absolus</a> (Delta ≥ 2 requis contre PJ/PNJ majeur). Exemple : tu l'écrases d'un coup."
+    ],
+    [
+     "<strong>Écorce Putride</strong>",
+     "Magie Primale (MAG, INT)",
+     "Défensif",
+     "Touche un allié (ou toi) : il gagne +2 d'armure naturelle putride pendant 2 tours. Celui qui le frappe au contact est <a class=\"rule-ref\" href=\"livre_6.html#sec-25-2\"\n                                            data-tip=\"Empoisonné : PV directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonné</a>. Exemple : ça pue, mais ça protège."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:2em;\"",
+      "html": "↳ <strong>Flaque Fangeuse</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Défensif, Utilitaire",
+     "Zone d'1 case : les ennemis qui sont dedans sont <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Ralenti : toute action coûte le double de PA.\">Ralenti</a>. Exemple : ils pataugent."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Bourbier</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Offensif, Utilitaire",
+     "Zone de 2 cases : <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Ralenti : toute action coûte le double de PA.\">Ralenti</a> et 2 dégâts par case franchie. Exemple : chaque pas coûte."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:5em;\"",
+      "html": "↳ <strong>Tourbière</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Défensif, Utilitaire",
+     "Zone de 2 cases pendant 2 tours : les ennemis qui sont dedans sont <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Ralenti : toute action coûte le double de PA.\">Ralenti</a>. Exemple : le sol ne les lâche plus."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Enlisement</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Offensif, Utilitaire",
+     "Zone de 2 cases : l'ennemi qui commence son tour dedans est <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Immobilisé : impossible de faire la moindre action de mouvement (§25.1).\">Immobilisée</a> jusqu'à ton prochain tour. Exemple : prison de boue."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Déluge de Boue</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Offensif",
+     "Une vague de boue submerge 2 cases : 8 dégâts à tous ceux dedans et <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Ralenti : toute action coûte le double de PA.\">Ralenti</a>. Exemple : tout disparaît sous la vase."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:2em;\"",
+      "html": "↳ <strong>Sève Corrompue</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Utilitaire, Offensif",
+     "Touche un allié (ou toi) : ses attaques au contact infligent <a class=\"rule-ref\" href=\"livre_6.html#sec-25-2\"\n                                            data-tip=\"Empoisonné : PV directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonné</a> pendant 2 tours. Exemple : ses lames suintent."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Chair Putride</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Défensif",
+     "Touche un allié (ou toi) : il gagne +3 d'armure naturelle pendant 3 tours. Celui qui le frappe au contact est <a class=\"rule-ref\" href=\"livre_6.html#sec-25-2\"\n                                            data-tip=\"Empoisonné : PV directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonné</a>. Exemple : la chair durcit et grouille."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:5em;\"",
+      "html": "↳ <strong>Cocon de Pourriture</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Défensif, Utilitaire",
+     "Touche un allié : il gagne un bouclier qui absorbe 8 dégâts. Exemple : une croûte sombre le recouvre."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Tombeau Putride</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Défensif, Offensif",
+     "Pendant 2 tours, chaque ennemi qui te blesse prend 4 dégâts et <a class=\"rule-ref\" href=\"livre_6.html#sec-25-2\"\n                                            data-tip=\"Empoisonné : PV directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonné</a> en retour. Exemple : la tombe se referme sur lui."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Sang Pourri</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Utilitaire",
+     "Tu récupères 3 PV au début de chacun de tes 2 prochains tours. Exemple : la pourriture referme tes plaies."
+    ],
+    [
+     "<strong>Herbier Toxique</strong>",
+     "Magie Primale (MAG, INT)",
+     "Utilitaire",
+     "Avec 1 heure de travail, tu prépares 1 dose de poison (d'accord avec ton MJ, une seule à la fois) : enduite sur une arme, la prochaine attaque qui blesse inflige <a class=\"rule-ref\" href=\"livre_6.html#sec-25-2\"\n                                            data-tip=\"Empoisonné : PV directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonné</a>. Exemple : tu racles la sève jaune."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:2em;\"",
+      "html": "↳ <strong>Sève Dissolvante</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Utilitaire",
+     "Hors combat, tu dissous une serrure simple, une tôle fine ou une porte de bois (d'accord avec ton MJ). Exemple : la serrure coule en bouillie."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Brèche</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Utilitaire",
+     "Tu ouvres une brèche sur 1 hexagone (mur, clôture, taillis dense) : praticable pendant 2 tours. Exemple : l'escouade passe par le trou."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:5em;\"",
+      "html": "↳ <strong>Sape</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Offensif, Utilitaire",
+     "Tu sapes une construction : 6 dégâts, et une brèche d'1 hexagone praticable. Exemple : le mur s'affaisse."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Grand Passage</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Utilitaire",
+     "Tu ouvres un passage de 2 hexagones praticable pendant 3 tours. Exemple : la voie est libre pour tous."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Effondrement</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Offensif",
+     "Tu fais s'effondrer une structure (d'accord avec ton MJ) : 8 dégâts à tous ceux dedans. Exemple : tout vient d'un coup."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:2em;\"",
+      "html": "↳ <strong>Enduit Persistant</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Utilitaire",
+     "Ta dose tient 3 blessures au lieu d'1. Exemple : le fil reste gras longtemps."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Toxine Puissante</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Utilitaire",
+     "Ta dose inflige aussi <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Ralenti : toute action coûte le double de PA.\">Ralenti</a> en plus d'<a class=\"rule-ref\" href=\"livre_6.html#sec-25-2\"\n                                            data-tip=\"Empoisonné : PV directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonné</a>. Exemple : les membres se mettent à trembler."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:5em;\"",
+      "html": "↳ <strong>Alambic Vivant</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Utilitaire",
+     "Tu prépares 2 doses à la fois au lieu d'1. Exemple : la marmite ne désemplit pas."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Grand Œuvre Toxique</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Utilitaire",
+     "Avec une nuit de travail et l'accord de ton MJ, tu crées un grand œuvre : une arme inflige <a class=\"rule-ref\" href=\"livre_6.html#sec-25-2\"\n                                            data-tip=\"Empoisonné : PV directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonné</a> à chaque blessure jusqu'à la fin du scénario (une seule à la fois)."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Nuage Toxique</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Offensif, Utilitaire",
+     "<a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : zone d'1 case pendant 1 tour : <a class=\"rule-ref\" href=\"livre_6.html#sec-25-2\"\n                                            data-tip=\"Empoisonné : PV directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonné</a> à qui commence dedans. Exemple : tu lances la fiole, ça fume vert."
+    ],
+    [
+     "<strong>Greffe Cinétique</strong>",
+     "Magie Primale (MAG, INT)",
+     "Offensif, Utilitaire",
+     "Au contact, tu donnes ton bonus de déplacement à un allié (+2 PA de\n                                        mouvement)."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:2em;\"",
+      "html": "↳ <strong>Osmose d'Escouade</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Utilitaire",
+     "Même bonus, mais à tous tes alliés à moins de 2 cases."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Frappe Symbiotique</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Offensif, Utilitaire",
+     "Un allié adjacent attaque avec ton dé de Magie Primale."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:5em;\"",
+      "html": "↳ <strong>Lien Profond</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Utilitaire",
+     "Touche un allié adjacent : pendant 3 tours, tant que vous restez à 2 cases l'un de l'autre, vous gagnez chacun +1 en Observation et +1 en Esquive. Exemple : vous bougez comme un seul corps."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Élan Symbiotique</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Offensif, Utilitaire",
+     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : deux alliés adjacents portent aussitôt leur attaque, chacun avec ton dé de Magie Primale. Exemple : tes deux porteurs piquent en même temps."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Cocon Symbiotique</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Défensif, Utilitaire",
+     "Tu touches un allié adjacent : vous gagnez chacun un bouclier qui absorbe 4 dégâts. Exemple : la sève durcit sur vous deux avant la charge."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:2em;\"",
+      "html": "↳ <strong>Sang Chaud</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Offensif, Utilitaire",
+     "<a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : pendant 2 tours, tes attaques au contact gagnent +1 dégât. Exemple : tes poings claquent comme des branches."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Sang Bouillant</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Utilitaire, Offensif",
+     "Touche un allié (ou toi) : ses attaques au contact gagnent +2 dégâts pendant 3 tours. Exemple : ses lames laissent des traînées de sève."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:5em;\"",
+      "html": "↳ <strong>Fureur de la Canopée</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Utilitaire, Offensif",
+     "<a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">3 PA</a> : pendant 2 tours, tes dégâts au contact gagnent +2 et tu purges <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Ralenti : toute action coûte le double de PA.\">Ralenti</a> au début de chacun de tes tours. Exemple : plus rien ne te ralentit."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Colère du Vieux Chêne</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Offensif",
+     "Ton poing s'abat comme un tronc : 12 <a class=\"rule-ref\" href=\"livre_6.html#chap-24\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).\">Dégâts Absolus</a> au contact (Delta ≥ 2 requis contre PJ/PNJ majeur). Contrecoup : tu prends 4 dégâts. Exemple : le garde s'effondre d'un coup."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Rafale d'Épines</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Offensif",
+     "Tu projettes tes épines : 8 <a class=\"rule-ref\" href=\"livre_6.html#chap-24\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).\">Dégâts Absolus</a> à tous ceux à 1 case de toi (Delta ≥ 2 requis contre PJ/PNJ majeur). Exemple : un cercle de pointes autour de toi."
+    ],
+    [
+     "<strong>Écorce Gardienne</strong>",
+     "Magie Primale (MAG, INT)",
+     "Défensif",
+     "Touche un allié (ou toi) : il gagne +2 d'armure naturelle d'écorce pendant 2 tours. Exemple : l'écorce couvre Menna avant la charge."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:2em;\"",
+      "html": "↳ <strong>Garde d'Écorce</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Défensif",
+     "<a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : deux alliés adjacents gagnent +2 d'armure naturelle pendant 2 tours. Exemple : tu couvres les deux porteurs d'un geste."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Écorce d'Escouade</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Défensif",
+     "<a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">3 PA</a> : tous tes alliés à 2 cases gagnent +2 d'armure naturelle pendant 2 tours. Exemple : l'escouade entière durcit."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:5em;\"",
+      "html": "↳ <strong>Cocon de Guerre</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Défensif, Utilitaire",
+     "Touche un allié : il gagne un bouclier qui absorbe 8 dégâts. Exemple : la sève durcit en carapace sur lui."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Égide de la Forêt</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Défensif, Utilitaire",
+     "Avec une nuit de travail et l'accord de ton MJ, tu renforces une armure : elle gagne +1 jusqu'à la fin du scénario (une seule à la fois). Exemple : ton harnois porte des nervures d'écorce."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Cocon Impénétrable</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Défensif",
+     "<a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : pendant 2 tours, tu es <a class=\"rule-ref\" href=\"livre_5.html#chap-22-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§22.3).\">Couvert Total</a> contre les tirs venus de l'extérieur. Exemple : les flèches se plantent dans l'écorce."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:2em;\"",
+      "html": "↳ <strong>Ronces Vengeresses</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Défensif, Offensif",
+     "Pendant 3 tours, celui qui te frappe au contact prend 3 dégâts. Exemple : le garde se pique sur tes épines."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Carapace Ancienne</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Défensif",
+     "Touche un allié (ou toi) : il gagne +3 d'armure naturelle pendant 3 tours. Exemple : son dos devient un tronc."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:5em;\"",
+      "html": "↳ <strong>Bastion d'Écorce</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Défensif",
+     "Tu poses un mur d'écorce sur 2 hexagones contigus à 4 cases, pendant 2 tours. Tu bloques la vue à travers (-2 aux attaques qui passent au travers). Celui qui traverse prend 3 dégâts. Exemple : la haie se lève entre vous et les tireurs."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Sanctuaire d'Écorce</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Défensif, Utilitaire",
+     "Ton bastion devient un sanctuaire : <a class=\"rule-ref\" href=\"livre_5.html#chap-22-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§22.3).\">Couvert Total</a> contre les tirs extérieurs, et tes alliés dedans récupèrent 4 PV et purgent <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-25-2\"\n                                            data-tip=\"Saignement : PV directs en début de tour, puis −1/tour. Tout soin le stoppe (§25.2).\">Saignement</a> et <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Ralenti : toute action coûte le double de PA.\">Ralenti</a>. Exemple : vous soufflez sous la voûte."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Vengeance de la Forêt</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Défensif, Offensif",
+     "Pendant 2 tours, chaque ennemi qui te blesse prend 4 dégâts et <a class=\"rule-ref\" href=\"livre_6.html#sec-25-2\"\n                                            data-tip=\"Empoisonné : PV directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonné</a> en retour. Exemple : son sang se couvre de cloques."
+    ],
+    [
      "<strong>Catalyse Tissulaire</strong>",
      "Magie Primale (MAG, INT)",
      "Utilitaire",
      "Tu touches un allié adjacent : il récupère 5 PV et tu dissipes <a\n                                            class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).\">Déstabilisé</a>\n                                        et <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Étourdi : −1 ec sur tous les jets.\">Étourdi</a>."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:2em;\"",
+      "html": "↳ <strong>Sève Claire</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Utilitaire",
+     "Touche un allié : tu purges son <a class=\"rule-ref\" href=\"livre_6.html#sec-25-2\"\n                                            data-tip=\"Empoisonné : PV directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonné</a>. Exemple : tu aspires le venin de la plaie."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Sang Clair</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Utilitaire",
+     "Touche un allié : tu purges son <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-25-2\"\n                                            data-tip=\"Saignement : PV directs en début de tour, puis −1/tour. Tout soin le stoppe (§25.2).\">Saignement</a> et son <a class=\"rule-ref\" href=\"livre_6.html#sec-25-2\"\n                                            data-tip=\"Empoisonné : PV directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonné</a>. Exemple : son sang redevient clair."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:5em;\"",
+      "html": "↳ <strong>Fontaine Claire</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Utilitaire",
+     "Touche un allié : tu purges son <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-25-2\"\n                                            data-tip=\"Saignement : PV directs en début de tour, puis −1/tour. Tout soin le stoppe (§25.2).\">Saignement</a>, son <a class=\"rule-ref\" href=\"livre_6.html#sec-25-2\"\n                                            data-tip=\"Empoisonné : PV directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonné</a>, son <a\n                                            class=\"rule-ref\" href=\"livre_6.html#sec-25-2\"\n                                            data-tip=\"En Feu : 2 PV/tour (bouclier d'abord), puis −1/tour. Il faut l'éteindre (§25.2).\">En\n                                            Feu</a>, son <a\n                                            class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).\">Déstabilisé</a> et son <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Étourdi : −1 ec sur tous les jets.\">Étourdi</a>. Exemple : tu le laves de tout, il respire."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Purification Totale</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Utilitaire",
+     "Touche un allié : tu purges son <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-25-2\"\n                                            data-tip=\"Saignement : PV directs en début de tour, puis −1/tour. Tout soin le stoppe (§25.2).\">Saignement</a>, son <a class=\"rule-ref\" href=\"livre_6.html#sec-25-2\"\n                                            data-tip=\"Empoisonné : PV directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonné</a>, son <a\n                                            class=\"rule-ref\" href=\"livre_6.html#sec-25-2\"\n                                            data-tip=\"En Feu : 2 PV/tour (bouclier d'abord), puis −1/tour. Il faut l'éteindre (§25.2).\">En\n                                            Feu</a>, son <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Ralenti : toute action coûte le double de PA.\">Ralenti</a>, son <a\n                                            class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).\">Déstabilisé</a> et son <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Étourdi : −1 ec sur tous les jets.\">Étourdi</a>. Exemple : même les vieilles morsures se referment."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Sève Immunisante</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Défensif, Utilitaire",
+     "Touche un allié : tu purges son <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-25-2\"\n                                            data-tip=\"Saignement : PV directs en début de tour, puis −1/tour. Tout soin le stoppe (§25.2).\">Saignement</a> et son <a class=\"rule-ref\" href=\"livre_6.html#sec-25-2\"\n                                            data-tip=\"Empoisonné : PV directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonné</a>, et il gagne +2 contre le prochain <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-25-2\"\n                                            data-tip=\"Saignement : PV directs en début de tour, puis −1/tour. Tout soin le stoppe (§25.2).\">Saignement</a>, <a class=\"rule-ref\" href=\"livre_6.html#sec-25-2\"\n                                            data-tip=\"Empoisonné : PV directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonné</a> ou <a\n                                            class=\"rule-ref\" href=\"livre_6.html#sec-25-2\"\n                                            data-tip=\"En Feu : 2 PV/tour (bouclier d'abord), puis −1/tour. Il faut l'éteindre (§25.2).\">En\n                                            Feu</a> pendant 2 tours. Exemple : sa peau prend un reflet d'écorce."
     ],
     [
      {
@@ -773,6 +1507,15 @@
     [
      {
       "attrs": " style=\"padding-left:5em;\"",
+      "html": "↳ <strong>Sève Partagée</strong>"
+     },
+     "Magie Primale (MAG, INT)",
+     "Utilitaire",
+     "Tu poses tes mains sur deux alliés adjacents : chacun récupère 4 PV. Exemple : tu recolles le porteur et la guetteuse d'un coup."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:6.5em;\"",
       "html": "↳ <strong>Transfusion Symbiotique</strong>"
      },
      "Magie Primale (MAG, INT)",
@@ -780,52 +1523,13 @@
      "Tu relèves un allié tombé au contact : il revient avec la moitié de ses PV\n                                        max (<a class=\"rule-ref\" href=\"livre_6.html#chap-26\"\n                                            data-tip=\"Résurrection : ramener un allié tombé suit la règle du §26, avec un prix (Livre VI).\">règle\n                                            de résurrection</a>)."
     ],
     [
-     "<strong>Champ de Ronces</strong>",
-     "Magie Primale (MAG, INT)",
-     "Offensif, Utilitaire",
-     "Zone d'1 case de rayon : <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Ralenti : toute action coûte le double de PA.\">Ralenti</a> et 3\n                                        dégâts par case franchie."
-    ],
-    [
      {
-      "attrs": " style=\"padding-left:2em;\"",
-      "html": "↳ <strong>Ronces Neurotoxiques</strong>"
-     },
-     "Magie Primale (MAG, INT)",
-     "Offensif",
-     "Zone de 2 cases : <a class=\"rule-ref\" href=\"livre_6.html#sec-25-2\"\n                                            data-tip=\"Empoisonné : PV directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonné</a>\n                                        et <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Ralenti : toute action coûte le double de PA.\">Ralenti</a>."
-    ],
-    [
-     {
-      "attrs": " style=\"padding-left:3.5em;\"",
-      "html": "↳ <strong>Enchevêtrement Explosif</strong>"
-     },
-     "Magie Primale (MAG, INT)",
-     "Offensif",
-     "Tu fais exploser les ronces : 8 dégâts de zone à tous ceux qui sont dedans."
-    ],
-    [
-     "<strong>Greffe Cinétique</strong>",
-     "Magie Primale (MAG, INT)",
-     "Utilitaire",
-     "Au contact, tu donnes ton bonus de déplacement à un allié (+2 PA de\n                                        mouvement)."
-    ],
-    [
-     {
-      "attrs": " style=\"padding-left:2em;\"",
-      "html": "↳ <strong>Osmose d'Escouade</strong>"
+      "attrs": " style=\"padding-left:6.5em;\"",
+      "html": "↳ <strong>Renaissance Symbiotique</strong>"
      },
      "Magie Primale (MAG, INT)",
      "Utilitaire",
-     "Même bonus, mais à tous tes alliés à moins de 2 cases."
-    ],
-    [
-     {
-      "attrs": " style=\"padding-left:3.5em;\"",
-      "html": "↳ <strong>Frappe Symbiotique</strong>"
-     },
-     "Magie Primale (MAG, INT)",
-     "Offensif, Utilitaire",
-     "Un allié adjacent attaque avec ton dé de Magie Primale."
+     "Tu touches un allié tombé au contact : il se relève avec 4 PV, purgé du <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-25-2\"\n                                            data-tip=\"Saignement : PV directs en début de tour, puis −1/tour. Tout soin le stoppe (§25.2).\">Saignement</a> et de l'<a class=\"rule-ref\" href=\"livre_6.html#sec-25-2\"\n                                            data-tip=\"Empoisonné : PV directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonné</a>, et il gagne +2 d'armure naturelle d'écorce pendant 2 tours (<a class=\"rule-ref\" href=\"livre_6.html#chap-26\"\n                                            data-tip=\"Résurrection : ramener un allié tombé suit la règle du §26, avec un prix (Livre VI).\">règle\n                                            de résurrection</a>). Exemple : tu le ramasses dans les ronces, il repart couvert d'écorce."
     ],
     [
      "<strong>Incinération Pyrocinétique</strong>",
@@ -2180,7 +2884,7 @@
     "magie": "Magie Primale",
     "attributs": "Magie, Intelligence",
     "type": "Offensif, Défensif, Utilitaire",
-    "specialisations": "Vie (ton corps et ceux des tiens : soin, boost, symbiose) → Catalyse Tissulaire → Surcroît Vital → Bouclier Végétal → Transfusion Symbiotique ↳ Greffe Cinétique → Osmose d'Escouade → Frappe Symbiotique Création (ombre, lumière, matière : tu fais apparaître) → Barricade de Racines → Épines de Granit → Bastion Vivant → Mur d'Orichalque Végétal Destruction (tu défais : entrave, pourrissement, poisons) → Vignes Constrictrices → Étau Végétal → Moisson Sanguine → Étranglement Toxique ↳ Champ de Ronces → Ronces Neurotoxiques → Enchevêtrement Explosif"
+    "specialisations": "Greffe Cinétique ├─ Sang Chaud → Sang Bouillant → Fureur de la Canopée ├─ Colère du Vieux Chêne └─ Rafale d'Épines └─ Osmose d'Escouade → Frappe Symbiotique → Lien Profond ├─ Élan Symbiotique └─ Cocon Symbiotique Écorce Gardienne ├─ Ronces Vengeresses → Carapace Ancienne → Bastion d'Écorce ├─ Sanctuaire d'Écorce └─ Vengeance de la Forêt └─ Garde d'Écorce → Écorce d'Escouade → Cocon de Guerre ├─ Égide de la Forêt └─ Cocon Impénétrable Catalyse Tissulaire ├─ Surcroît Vital → Bouclier Végétal → Sève Partagée ├─ Transfusion Symbiotique └─ Renaissance Symbiotique └─ Sève Claire → Sang Clair → Fontaine Claire ├─ Purification Totale └─ Sève Immunisante Barricade de Racines ├─ Épines de Granit → Bastion Vivant → Haie Fortifiée ├─ Mur d'Orichalque Végétal └─ Donjon Végétal └─ Lanterne d'Ombre → Manteau d'Ombre → Dôme d'Ombre ├─ Sanctuaire d'Ombre └─ Vengeance de l'Ombre Dard d'Épine ├─ Épine Vive → Volée d'Épines → Pluie d'Épines ├─ Forêt de Lances └─ Cercle de Ronces └─ Fouet d'Ombre → Lames d'Ombre → Mâchoire d'Ombre ├─ Nuit Dévorante └─ Soleil Noir Outil de Sève ├─ Arme de Ronces → Armure d'Écorce → Marque du Jardinier ├─ Chef-d'Œuvre Vivant └─ Égide Vivante └─ Pont de Lianes → Sentier Vivant → Canopée Voyageuse ├─ Grande Traversée └─ Forteresse de Lianes Vignes Constrictrices ├─ Étau Végétal → Moisson Sanguine → Étreinte Putride ├─ Étranglement Toxique └─ Étreinte Finale └─ Champ de Ronces → Ronces Neurotoxiques → Enchevêtrement Explosif ├─ Pluie de Ronces └─ Floraison Funeste Écorce Putride ├─ Sève Corrompue → Chair Putride → Cocon de Pourriture ├─ Tombeau Putride └─ Sang Pourri └─ Flaque Fangeuse → Bourbier → Tourbière ├─ Enlisement └─ Déluge de Boue Herbier Toxique ├─ Enduit Persistant → Toxine Puissante → Alambic Vivant ├─ Grand Œuvre Toxique └─ Nuage Toxique └─ Sève Dissolvante → Brèche → Sape ├─ Grand Passage └─ Effondrement"
    },
    {
     "magie": "Magie de l'Esprit",
@@ -2512,6 +3216,36 @@
     "effets": "Tu fais jaillir un Couvert 3/4 sur un hexagone à 4 cases. Instantané."
    },
    {
+    "nom": "↳ Lanterne d'Ombre",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Flamme d'ombre 1h : éclaire MAG cases, +1 Observation (noir)."
+   },
+   {
+    "nom": "↳ Manteau d'Ombre",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Défensif, Utilitaire",
+    "effets": "2 PA : -2 tirs contre toi + glisse 1 case (1 tour)."
+   },
+   {
+    "nom": "↳ Dôme d'Ombre",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Défensif",
+    "effets": "Couvert Total r1 (2 tours). Entrant : Ralenti."
+   },
+   {
+    "nom": "↳ Sanctuaire d'Ombre",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Défensif, Utilitaire",
+    "effets": "Couvert Total + 4 PV, purge Déstabilisé/Étourdi (alliés)."
+   },
+   {
+    "nom": "↳ Vengeance de l'Ombre",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Défensif, Offensif",
+    "effets": "2 tours : qui te blesse prend 4 dégâts + Saignement."
+   },
+   {
     "nom": "↳ Épines de Granit",
     "source": "Magie Primale (MAG, INT)",
     "type": "Défensif",
@@ -2524,58 +3258,160 @@
     "effets": "Ta barricade encaisse : elle absorbe 25 PV avant de céder."
    },
    {
+    "nom": "↳ Haie Fortifiée",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Défensif",
+    "effets": "Mur 2 hex (4 cases) 2 tours, -2 à travers. Traverse : 3 dégâts."
+   },
+   {
     "nom": "↳ Mur d'Orichalque Végétal",
     "source": "Magie Primale (MAG, INT)",
     "type": "Défensif",
     "effets": "Ta barricade couvre 3 cases contiguës et devient un Couvert Total indestructible."
    },
    {
+    "nom": "↳ Donjon Végétal",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Défensif, Offensif",
+    "effets": "Mur 3 hex 2 tours : Couvert Total. Traverse : 6 dégâts."
+   },
+   {
+    "nom": "Dard d'Épine",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "Dard projeté : 4 dégâts + Saignement."
+   },
+   {
+    "nom": "↳ Fouet d'Ombre",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "4 Dégâts Absolus à 4 cases, ignore couvert partiel."
+   },
+   {
+    "nom": "↳ Lames d'Ombre",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "6 Dégâts Absolus à 6 cases (Delta ≥ 2 vs majeur)."
+   },
+   {
+    "nom": "↳ Mâchoire d'Ombre",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "Cône 3 hex : 6 dégâts + Saignement."
+   },
+   {
+    "nom": "↳ Nuit Dévorante",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "12 Dégâts Absolus, rayon 2 cases."
+   },
+   {
+    "nom": "↳ Soleil Noir",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "14 Dégâts Absolus r3. Tu prends 4 dégâts + Saignement."
+   },
+   {
+    "nom": "↳ Épine Vive",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "Volée d'épines : 6 dégâts + Saignement."
+   },
+   {
+    "nom": "↳ Volée d'Épines",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "6 dégâts à tous ceux à 1 case."
+   },
+   {
+    "nom": "↳ Pluie d'Épines",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "3 hex 2 tours : 3 dégâts + Saignement à qui commence dedans."
+   },
+   {
+    "nom": "↳ Forêt de Lances",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "Ligne 4 cases : 8 Dégâts Absolus (Delta ≥ 2 vs majeur)."
+   },
+   {
+    "nom": "↳ Cercle de Ronces",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Offensif, Défensif",
+    "effets": "Rayon 1, 2 tours : 3 + Saignement (ennemis), purge Ralenti (alliés)."
+   },
+   {
+    "nom": "Outil de Sève",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Outil apparu 1h. +1 prochaine épreuve bricolage/réparation."
+   },
+   {
+    "nom": "↳ Pont de Lianes",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Pont 2 hex 2 tours : terrains difficiles ignorés."
+   },
+   {
+    "nom": "↳ Sentier Vivant",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Toi + alliés à 2 cases : ignorez terrains difficiles (2 tours)."
+   },
+   {
+    "nom": "↳ Canopée Voyageuse",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "2 PA : alliés à 2 cases glissent d'1 case (sans opportunité)."
+   },
+   {
+    "nom": "↳ Grande Traversée",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "2 PA : toi + alliés à 2 cases glissez de 2 cases."
+   },
+   {
+    "nom": "↳ Forteresse de Lianes",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Défensif, Utilitaire",
+    "effets": "Palissade 2 hex : Couvert 3/4 (2 tours)."
+   },
+   {
+    "nom": "↳ Arme de Ronces",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Utilitaire, Offensif",
+    "effets": "Une arme : +1 dégât 3 tours (une seule)."
+   },
+   {
+    "nom": "↳ Armure d'Écorce",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Défensif, Utilitaire",
+    "effets": "+2 armure 3 tours. Attaquant au contact : Saignement."
+   },
+   {
+    "nom": "↳ Marque du Jardinier",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Une arme marquée : +1 première attaque de chaque combat."
+   },
+   {
+    "nom": "↳ Chef-d'Œuvre Vivant",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Nuit + MJ : +1 dégât arme jusqu'à fin scénario (une seule)."
+   },
+   {
+    "nom": "↳ Égide Vivante",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Défensif, Utilitaire",
+    "effets": "Nuit + MJ : +1 armure jusqu'à fin scénario (une seule)."
+   },
+   {
     "nom": "Vignes Constrictrices",
     "source": "Magie Primale (MAG, INT)",
     "type": "Offensif, Utilitaire",
     "effets": "À 4 cases, ta cible est Immobilisée."
-   },
-   {
-    "nom": "↳ Étau Végétal",
-    "source": "Magie Primale (MAG, INT)",
-    "type": "Offensif",
-    "effets": "En plus d'Immobilisé, ta cible subit Asphyxie : elle perd aussi 1 PA par tour."
-   },
-   {
-    "nom": "↳ Moisson Sanguine",
-    "source": "Magie Primale (MAG, INT)",
-    "type": "Offensif, Utilitaire",
-    "effets": "Tu draines 3 PV par tour à ta cible entravée et tu te soignes d'autant."
-   },
-   {
-    "nom": "↳ Étranglement Toxique",
-    "source": "Magie Primale (MAG, INT)",
-    "type": "Offensif",
-    "effets": "Ta cible entravée devient Paralysée et Empoisonnée en continu."
-   },
-   {
-    "nom": "Catalyse Tissulaire",
-    "source": "Magie Primale (MAG, INT)",
-    "type": "Utilitaire",
-    "effets": "Tu touches un allié adjacent : il récupère 5 PV et tu dissipes Déstabilisé et Étourdi."
-   },
-   {
-    "nom": "↳ Surcroît Vital",
-    "source": "Magie Primale (MAG, INT)",
-    "type": "Utilitaire",
-    "effets": "Tu soignes 10 PV au lieu de 5 et tu purges aussi le Saignement."
-   },
-   {
-    "nom": "↳ Bouclier Végétal",
-    "source": "Magie Primale (MAG, INT)",
-    "type": "Défensif",
-    "effets": "Ton allié soigné gagne +3 d'armure naturelle d'écorce pendant 2 tours."
-   },
-   {
-    "nom": "↳ Transfusion Symbiotique",
-    "source": "Magie Primale (MAG, INT)",
-    "type": "Utilitaire",
-    "effets": "Tu relèves un allié tombé au contact : il revient avec la moitié de ses PV max (règle de résurrection)."
    },
    {
     "nom": "Champ de Ronces",
@@ -2596,9 +3432,183 @@
     "effets": "Tu fais exploser les ronces : 8 dégâts de zone à tous ceux qui sont dedans."
    },
    {
-    "nom": "Greffe Cinétique",
+    "nom": "↳ Pluie de Ronces",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "3 hex 2 tours : 3 dégâts + Empoisonné à qui commence dedans."
+   },
+   {
+    "nom": "↳ Floraison Funeste",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "8 Dégâts Absolus dedans + Empoisonné."
+   },
+   {
+    "nom": "↳ Étau Végétal",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "En plus d'Immobilisé, ta cible subit Asphyxie : elle perd aussi 1 PA par tour."
+   },
+   {
+    "nom": "↳ Moisson Sanguine",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Offensif, Utilitaire",
+    "effets": "Tu draines 3 PV par tour à ta cible entravée et tu te soignes d'autant."
+   },
+   {
+    "nom": "↳ Étreinte Putride",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "Cible entravée : 4 dégâts à chacun de tes tours (tenue)."
+   },
+   {
+    "nom": "↳ Étranglement Toxique",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "Ta cible entravée devient Paralysée et Empoisonnée en continu."
+   },
+   {
+    "nom": "↳ Étreinte Finale",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "Cible entravée : 12 Dégâts Absolus (Delta ≥ 2 vs majeur)."
+   },
+   {
+    "nom": "Écorce Putride",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Défensif",
+    "effets": "+2 armure putride (2 tours). Attaquant contact : Empoisonné."
+   },
+   {
+    "nom": "↳ Flaque Fangeuse",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Défensif, Utilitaire",
+    "effets": "Zone 1 case : ennemis dedans Ralentis."
+   },
+   {
+    "nom": "↳ Bourbier",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Offensif, Utilitaire",
+    "effets": "Zone 2 cases : Ralenti + 2 dégâts/case franchie."
+   },
+   {
+    "nom": "↳ Tourbière",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Défensif, Utilitaire",
+    "effets": "Zone 2 cases 2 tours : ennemis dedans Ralentis."
+   },
+   {
+    "nom": "↳ Enlisement",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Offensif, Utilitaire",
+    "effets": "Zone 2 cases : Immobilisé (début de tour, 1 tour)."
+   },
+   {
+    "nom": "↳ Déluge de Boue",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "2 cases : 8 dégâts + Ralenti."
+   },
+   {
+    "nom": "↳ Sève Corrompue",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Utilitaire, Offensif",
+    "effets": "Contact inflige Empoisonné (2 tours), toi ou allié touché."
+   },
+   {
+    "nom": "↳ Chair Putride",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Défensif",
+    "effets": "+3 armure (3 tours). Attaquant contact : Empoisonné."
+   },
+   {
+    "nom": "↳ Cocon de Pourriture",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Défensif, Utilitaire",
+    "effets": "Un allié touché : bouclier absorbe 8 dégâts."
+   },
+   {
+    "nom": "↳ Tombeau Putride",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Défensif, Offensif",
+    "effets": "2 tours : qui te blesse prend 4 dégâts + Empoisonné."
+   },
+   {
+    "nom": "↳ Sang Pourri",
     "source": "Magie Primale (MAG, INT)",
     "type": "Utilitaire",
+    "effets": "Récupère 3 PV à chacun de tes 2 prochains tours."
+   },
+   {
+    "nom": "Herbier Toxique",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "1h : 1 dose (une seule). Prochaine blessure : Empoisonné."
+   },
+   {
+    "nom": "↳ Sève Dissolvante",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Hors combat : dissous serrure/tôle/porte bois (MJ)."
+   },
+   {
+    "nom": "↳ Brèche",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Brèche 1 hex praticable 2 tours."
+   },
+   {
+    "nom": "↳ Sape",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Offensif, Utilitaire",
+    "effets": "Construction : 6 dégâts + brèche 1 hex."
+   },
+   {
+    "nom": "↳ Grand Passage",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Passage 2 hex praticable 3 tours."
+   },
+   {
+    "nom": "↳ Effondrement",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "Structure (MJ) : 8 dégâts à tous dedans."
+   },
+   {
+    "nom": "↳ Enduit Persistant",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Dose : 3 blessures au lieu d'1."
+   },
+   {
+    "nom": "↳ Toxine Puissante",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Dose : Ralenti en plus d'Empoisonné."
+   },
+   {
+    "nom": "↳ Alambic Vivant",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "2 doses à la fois."
+   },
+   {
+    "nom": "↳ Grand Œuvre Toxique",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Nuit + MJ : arme Empoisonné/blessure, fin scénario (une seule)."
+   },
+   {
+    "nom": "↳ Nuage Toxique",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Offensif, Utilitaire",
+    "effets": "2 PA : zone 1 case 1 tour : Empoisonné."
+   },
+   {
+    "nom": "Greffe Cinétique",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Offensif, Utilitaire",
     "effets": "Au contact, tu donnes ton bonus de déplacement à un allié (+2 PA de mouvement)."
    },
    {
@@ -2612,6 +3622,186 @@
     "source": "Magie Primale (MAG, INT)",
     "type": "Offensif, Utilitaire",
     "effets": "Un allié adjacent attaque avec ton dé de Magie Primale."
+   },
+   {
+    "nom": "↳ Lien Profond",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "+1 Observation et +1 Esquive chacun tant qu'à 2 cases l'un de l'autre (3 tours)."
+   },
+   {
+    "nom": "↳ Élan Symbiotique",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Offensif, Utilitaire",
+    "effets": "Dépense 2 PA : deux alliés adjacents attaquent aussitôt, chacun avec ton dé de Magie Primale."
+   },
+   {
+    "nom": "↳ Cocon Symbiotique",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Défensif, Utilitaire",
+    "effets": "Toi et un allié adjacent : bouclier qui absorbe 4 dégâts chacun."
+   },
+   {
+    "nom": "↳ Sang Chaud",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Offensif, Utilitaire",
+    "effets": "2 PA : +1 dégât au contact (2 tours)."
+   },
+   {
+    "nom": "↳ Sang Bouillant",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Utilitaire, Offensif",
+    "effets": "+2 dégâts au contact (3 tours), toi ou un allié touché."
+   },
+   {
+    "nom": "↳ Fureur de la Canopée",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Utilitaire, Offensif",
+    "effets": "3 PA : +2 dégâts au contact et purge Ralenti (2 tours)."
+   },
+   {
+    "nom": "↳ Colère du Vieux Chêne",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "12 Dégâts Absolus au contact (Delta ≥ 2 vs majeur). Tu prends 4 dégâts."
+   },
+   {
+    "nom": "↳ Rafale d'Épines",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Offensif",
+    "effets": "8 Dégâts Absolus à 1 case (Delta ≥ 2 vs majeur)."
+   },
+   {
+    "nom": "Écorce Gardienne",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Défensif",
+    "effets": "+2 armure naturelle d'écorce (2 tours), toi ou un allié touché."
+   },
+   {
+    "nom": "↳ Garde d'Écorce",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Défensif",
+    "effets": "2 PA : deux alliés adjacents +2 armure (2 tours)."
+   },
+   {
+    "nom": "↳ Écorce d'Escouade",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Défensif",
+    "effets": "3 PA : alliés à 2 cases +2 armure (2 tours)."
+   },
+   {
+    "nom": "↳ Cocon de Guerre",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Défensif, Utilitaire",
+    "effets": "Un allié touché : bouclier absorbe 8 dégâts."
+   },
+   {
+    "nom": "↳ Égide de la Forêt",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Défensif, Utilitaire",
+    "effets": "Nuit de travail (MJ) : +1 armure jusqu'à fin de scénario (une seule)."
+   },
+   {
+    "nom": "↳ Cocon Impénétrable",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Défensif",
+    "effets": "2 PA : Couvert Total contre les tirs (2 tours)."
+   },
+   {
+    "nom": "↳ Ronces Vengeresses",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Défensif, Offensif",
+    "effets": "3 dégâts à qui te frappe au contact (3 tours)."
+   },
+   {
+    "nom": "↳ Carapace Ancienne",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Défensif",
+    "effets": "+3 armure naturelle (3 tours), toi ou un allié touché."
+   },
+   {
+    "nom": "↳ Bastion d'Écorce",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Défensif",
+    "effets": "Mur 2 hex contigus à 4 cases, 2 tours, -2 à travers. Traverse : 3 dégâts."
+   },
+   {
+    "nom": "↳ Sanctuaire d'Écorce",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Défensif, Utilitaire",
+    "effets": "Couvert Total + alliés dedans : 4 PV, purge Saignement et Ralenti."
+   },
+   {
+    "nom": "↳ Vengeance de la Forêt",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Défensif, Offensif",
+    "effets": "2 tours : qui te blesse prend 4 dégâts + Empoisonné."
+   },
+   {
+    "nom": "Catalyse Tissulaire",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Tu touches un allié adjacent : il récupère 5 PV et tu dissipes Déstabilisé et Étourdi."
+   },
+   {
+    "nom": "↳ Sève Claire",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Purge l'Empoisonné d'un allié touché."
+   },
+   {
+    "nom": "↳ Sang Clair",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Purge Saignement et Empoisonné sur un allié touché."
+   },
+   {
+    "nom": "↳ Fontaine Claire",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Purge Saignement, Empoisonné, En Feu, Déstabilisé et Étourdi sur un allié touché."
+   },
+   {
+    "nom": "↳ Purification Totale",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Purge Saignement, Empoisonné, En Feu, Ralenti, Déstabilisé et Étourdi sur un allié touché."
+   },
+   {
+    "nom": "↳ Sève Immunisante",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Défensif, Utilitaire",
+    "effets": "Purge Saignement et Empoisonné, +2 contre le prochain Saignement, Empoisonné ou En Feu (2 tours)."
+   },
+   {
+    "nom": "↳ Surcroît Vital",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Tu soignes 10 PV au lieu de 5 et tu purges aussi le Saignement."
+   },
+   {
+    "nom": "↳ Bouclier Végétal",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Défensif",
+    "effets": "Ton allié soigné gagne +3 d'armure naturelle d'écorce pendant 2 tours."
+   },
+   {
+    "nom": "↳ Sève Partagée",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Deux alliés adjacents récupèrent 4 PV chacun."
+   },
+   {
+    "nom": "↳ Transfusion Symbiotique",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Tu relèves un allié tombé au contact : il revient avec la moitié de ses PV max (règle de résurrection)."
+   },
+   {
+    "nom": "↳ Renaissance Symbiotique",
+    "source": "Magie Primale (MAG, INT)",
+    "type": "Utilitaire",
+    "effets": "Relève un tombé au contact : 4 PV, purgé de Saignement et Empoisonné, +2 armure naturelle 2 tours (règle de résurrection)."
    },
    {
     "nom": "Incinération Pyrocinétique",
