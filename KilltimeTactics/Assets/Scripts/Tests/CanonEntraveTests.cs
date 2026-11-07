@@ -9,7 +9,7 @@ using Killtime.Tactics.AI;
 namespace Killtime.Tests
 {
     /// <summary>
-    /// RD-201 — Canon Entravé (Livre V §22.2) : les 4 options de tir au
+    /// RD-201 — Canon Entravé (Livre V §21.2) : les 4 options de tir au
     /// contact d'un conscient (distance 1). Une fixture dédiée.
     /// </summary>
     [TestFixture]

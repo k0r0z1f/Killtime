@@ -5,12 +5,5 @@ livre: 10
 ---
 
 
-                    <h3>41.2 L'Effet Papillon Inversé (The Reverse Butterfly Effect)</h3>
-                    <p>
-                        Dans les modèles temporels classiques, un battement d'ailes de papillon dans le passé déclenche
-                        un ouragan à l'autre bout du monde des siècles plus tard (chaos divergent). Dans notre univers
-                        de jeu, les grands architectes exploitent le phénomène inverse : <strong>L'Effet Papillon
-                            Inversé</strong>.
-                    </p>
-
+                    <!-- ================= CHAPITRE 21 ================= -->
                     

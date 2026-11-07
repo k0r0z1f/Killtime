@@ -30,8 +30,8 @@ livre: 4
                         La première demande 1 entraînement dans la compétence de base.
                         Exemple : pour prendre Nova Thermique,
                         il te faut Fournaise Déferlante avant. Le détail est au
-                        <a class="rule-ref" href="#sec-20-4"
-                            data-tip="Compendium : 12 branches arcaniques génériques, même tarif qu'au Livre III (§20.4).">§20.4</a>.
+                        <a class="rule-ref" href="#sec-19-4"
+                            data-tip="Compendium : 12 branches arcaniques génériques, même tarif qu'au Livre III (§19.4).">§19.4</a>.
                     </p>
 
                     

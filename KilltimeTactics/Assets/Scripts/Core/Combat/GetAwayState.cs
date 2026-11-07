@@ -4,7 +4,7 @@ using Killtime.Core.Character;
 namespace Killtime.Core.Combat
 {
     /// <summary>
-    /// Dégagement / GetAway (RD-202, Livre V §20.3) :
+    /// Dégagement / GetAway (RD-202, Livre V §19.3) :
     /// une action principale (attaque OU parade) immédiatement suivie d'un
     /// déplacement de fuite coûtant +1 PA de surcharge (déplacement normal
     /// payé à part, via MoveAlongPath).

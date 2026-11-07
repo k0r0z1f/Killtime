@@ -3,7 +3,7 @@ using Killtime.Core.Dice;
 
 namespace Killtime.Core.Character
 {
-    // RD-205 (Livre VI §25) : Stabilisation & Convalescence.
+    // RD-205 (Livre VI §24) : Stabilisation & Convalescence.
     // Split move-only de CharacterStats — pur (aucune dépendance Unity), testable en EditMode.
     // 1) Stabilisation : Premiers Soins 3 PA au chevet, jet vs Difficulté 12.
     //    Succès = Agonisant → Inconscient stable (Saignement stoppé, plus de jet
@@ -14,7 +14,7 @@ namespace Killtime.Core.Character
     //    permanent). Ne touche PAS à la séquelle résurrection -1 ec (RD-083).
 
     /// <summary>
-    /// RD-205 : résultat d'une tentative de stabilisation (Livre VI §25).
+    /// RD-205 : résultat d'une tentative de stabilisation (Livre VI §24).
     /// Pur (aucune dépendance Unity) pour tests et logs d'arène.
     /// </summary>
     [Serializable]
@@ -32,7 +32,7 @@ namespace Killtime.Core.Character
     }
 
     /// <summary>
-    /// RD-205 : résultat d'une nuit de convalescence (Livre VI §25).
+    /// RD-205 : résultat d'une nuit de convalescence (Livre VI §24).
     /// Pur (aucune dépendance Unity) pour tests et logs de campagne.
     /// </summary>
     [Serializable]
@@ -61,7 +61,7 @@ namespace Killtime.Core.Character
         public bool IsAgonisant => ActiveStatus.HasFlag(StatusEffect.Agonisant);
 
         /// <summary>
-        /// RD-205 : coût PA de la Stabilisation au chevet (3 par défaut, Livre VI §25).
+        /// RD-205 : coût PA de la Stabilisation au chevet (3 par défaut, Livre VI §24).
         /// Fixe : la spécialisation Suture Réflexe (2 PA) ne s'applique qu'au soin
         /// d'urgence, pas au geste de stabilisation. Paramétrable via CoreRulesConfig.
         /// </summary>
@@ -92,7 +92,7 @@ namespace Killtime.Core.Character
         }
 
         /// <summary>
-        /// RD-205 : Stabilisation d'un Agonisant (Livre VI §25).
+        /// RD-205 : Stabilisation d'un Agonisant (Livre VI §24).
         /// Jet de Premiers Soins du soignant au chevet vs Difficulté (12 par défaut).
         /// Succès : Agonisant levé, Saignement stoppé, Inconscient appliqué + flag
         /// IsStabilized, moral verrouillé (plus de test en boucle : Inconscient coupe
@@ -157,7 +157,7 @@ namespace Killtime.Core.Character
         }
 
         // =====================================================================
-        // RD-205 : CONVALESCENCE & RATIONS (Livre VI §25 — repos campagne, hors-arène)
+        // RD-205 : CONVALESCENCE & RATIONS (Livre VI §24 — repos campagne, hors-arène)
         // =====================================================================
 
         /// <summary>
@@ -198,7 +198,7 @@ namespace Killtime.Core.Character
         }
 
         /// <summary>
-        /// RD-205 : nuit sûre de convalescence (Livre VI §25, hors combat).
+        /// RD-205 : nuit sûre de convalescence (Livre VI §24, hors combat).
         /// Soigne CON + rang Endurance, +bonus si repas ET eau, malus si NI repas
         /// NI eau (partiel = base simple — réversible, aucun flag permanent).
         /// Magie/arcanotech : multiplie le total (×2 par défaut). Réveille un

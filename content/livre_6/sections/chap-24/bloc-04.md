@@ -1,106 +1,77 @@
 ---
-livre: 6
 cible: sections.chap-24.blocs.4.html
 format: raw
+livre: 6
 ---
 
-
-                    <h3 id="sec-24-2">24.2 L'Arbre de Résolution de la Chute à 0 PV</h3>
                     <p>
-                        Lorsqu'une attaque réduit la vitalité d'un combattant à 0 PV ou moins, on compare les dégâts
-                        réels subis lors de ce coup au Seuil d'Encaissement (<code>CON &times; 2</code>) :
+                        <strong>Aggravation :</strong> un résiduel aggravé (ex : <a class="rule-ref" href="#sec-24-2" data-tip="Résiduel aggravé : dégâts doublés, +1/tour au lieu de décroître. Seul un soin l’arrête.">Hémorragie Profonde</a>) inflige
+                        le double et <strong>croît de +1/tour</strong> au lieu de décroître — seul un soin l'arrête.
+                        <strong>Chute à 0 PV par DoT :</strong> résolution via l'arbre standard (Dernier Souffle possible).
                     </p>
+
+                    <h3 id="sec-24-3">24.3 Faim & Soif : Affamé & Privation</h3>
+                    <p>
+                        Tu peux tenir sans magie. Pas sans eau.
+                        Compte en jours, pas en tours. Le MJ coche à chaque aube
+                        qui a bu et mangé ces dernières 24 h.
+                    </p>
+                    <div class="table-container"><table class="codex-table">
+                    <thead><tr><th>Besoin / 24 h</th><th>Toi</th><th>Cléien (<em>Frugalité</em>)</th></tr></thead>
+                    <tbody>
+                    <tr><td>Eau</td><td><strong>2 L</strong></td><td><strong>1 L</strong></td></tr>
+                    <tr><td>Nourriture</td><td><strong>1 ration</strong></td><td><strong>1 ration / 2 jours</strong></td></tr>
+                    </tbody></table></div>
                     <ul>
-                        <li><strong>Branche 1 : Dégâts &ge; Seuil d'Encaissement (Traumatisme Incompressible) :</strong>
-                            Aucun choix possible.
-                            <ul>
-                                <li><strong>Impact à la Tête / Crâne :</strong> <strong>Mort Instantanée</strong> par
-                                    destruction cérébrale. Seule la dépense automatique d'un <a class="rule-ref" href="#sec-24-3" data-tip="Point de Miracle : dévie un coup mortel, survie à 1 PV sous le seuil létal. Rachat : 20 XP ou jalon MJ.">Point de Miracle</a>
-                                    permet de survivre in extremis à 1 PV (coma profond).</li>
-                                <li><strong>Impact au Cœur / Cou :</strong> Coma immédiat et agonie rapide (hémorragie
-                                    mortelle en <code>CON / 2</code> tours).</li>
-                                <li><strong>Torse &amp; Membres :</strong> Syncope forcée (état <a class="rule-ref" href="#sec-25-5" data-tip="Inconscient : aucune action ni réaction. Réveil par secousse vigoureuse (1 PA) ou premiers soins.">Inconscient</a> et
-                                    <a class="rule-ref" href="#sec-25-1" data-tip="À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.">À Terre</a> immédiat).
-                                </li>
-                            </ul>
-                        </li>
-                        <li><strong>Branche 2 : Dégâts &lt; Seuil d'Encaissement (Choc Contrôlé / Épuisement) :</strong>
-                            Le corps s'éteint par pure décharge vitale. Le combattant choisit :
-                            <ul>
-                                <li><strong>Sombrer (La Syncope Protectrice) :</strong> Tu t'évanouis
-                                    et tu restes stable au sol (<a class="rule-ref" href="#sec-25-5" data-tip="Inconscient : aucune action ni réaction. Réveil par secousse vigoureuse (1 PA) ou premiers soins.">Inconscient</a>, <a class="rule-ref" href="#sec-25-1" data-tip="À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.">À Terre</a>).
-                                    En général, tes adversaires te laissent là où tu es tombé et passent à une
-                                    autre cible : tu ne bouges plus, tu ne les menaces plus. Exemple : tu t'effondres
-                                    au milieu d'une fusillade, le tireur en face réoriente son arme vers ton
-                                    allié debout. Mais ce n'est pas automatique : une bête affamée, un tueur
-                                    méthodique ou un ennemi qui veut s'assurer du résultat peut quand même
-                                    t'achever. Et là, tu es sans défense : il doit encore réussir son attaque,
-                                    mais tu ne peux ni parer ni esquiver. Si son coup te touche, tu meurs.
-                                    Exemple : le tueur s'accroupit près de toi et vise ta tête — un seul coup
-                                    suffit. Ton MJ tranche selon la situation.</li>
-                                <li><strong>Dernier Souffle (Le Baroud d'Honneur) :</strong> Tu refuses de
-                                    t'évanouir. Tu restes conscient, au sol (<a class="rule-ref" href="#sec-25-1" data-tip="À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.">À Terre</a> et
-                                    <a class="rule-ref" href="#sec-25-1" data-tip="Agonisant : aucune action raisonnée, fuite de 6 cases (1d8). Persiste jusqu’à stabilisation médicale.">Agonisant</a>). Tu gardes tes PA et tu peux encore agir. Mais chaque
-                                    épreuve que tu tentes te coûte <strong>+1 Essoufflement direct</strong> : dès
-                                    que tu lances les dés — épreuve de compétence ou face à face — ton souffle
-                                    monte d'un cran. Les gestes simples sans jet (ramper d'une case, parler,
-                                    lâcher un objet) ne te coûtent rien. Si ton Essoufflement atteint ta
-                                    Constitution, ton cœur lâche pour de bon.
-                                    Exemple : tu lances ta corde à ton allié pour le tirer à couvert — c'est une
-                                    épreuve, +1 Essoufflement. Ramper d'une case juste après, sans jet, ne coûte
-                                    rien. Mais au troisième lancer de dés, ton souffle rejoint ta Constitution :
-                                    arrêt cardiaque définitif.
-                                </li>
-                            </ul>
-                        </li>
+                        <li><strong>Privation (soif) :</strong> 24 h sans 2 L (1 L Cléien)
+                            = <strong>Privation 1</strong> automatique (<strong>−1 ec</strong> à tout).
+                            Chaque aube suivante sans eau : épreuve de
+                            <a class="rule-ref" href="livre_3.html#chap-12" data-tip="Système Immunitaire : résister aux toxines, poisons et gaz (CON, §12).">Constitution</a>
+                            Diff <strong>4 + 2 par niveau subi</strong>
+                            (<a class="rule-ref" href="livre_2.html#chap-7" data-tip="Seuils 0–34 : 4–5 Difficile, 6–7 Extrêmement Difficile (§7.1).">Livre II §7.1</a>).
+                            Succès = tu tiens. Échec = +1 niveau (max 3).
+                            <strong>Privation 2 : −2 ec. Privation 3 : −2 ec + Ralenti + 2 PV directs / jour</strong>
+                            (ignore armure et bouclier, chute à 0 via
+                            <a class="rule-ref" href="#sec-23-2" data-tip="Chute à 0 PV : Encaissement CON×2, Sombrer ou Dernier Souffle (§23.2).">§23.2</a>).
+                            <em>Tick à l'aube. Cumul avec le reste (<a class="rule-ref" href="#sec-24-1" data-tip="États cumulatifs : Déstabilisé + Étourdi = −3 (§24).">§24</a>).</em></li>
+                        <li><strong>Affamé (faim) :</strong> 48 h sans ration
+                            = <strong>Affamé 1</strong> automatique (<strong>−1 ec</strong> à tout).
+                            Chaque 2e aube suivante sans ration : épreuve de Constitution
+                            Diff <strong>3 + 1 par niveau subi</strong>. Échec = +1 niveau (max 3).
+                            <strong>Affamé 2 : −2 ec. Affamé 3 : −2 ec + nuit divisée par 2 + 1 PV direct / jour.</strong></li>
+                        <li><strong>Cumul :</strong> Affamé + Privation s'additionnent, comme tous les états.
+                            <em>Exemple : Privation 2 (−2) + Affamé 1 (−1) = −3 à ton prochain jet.</em></li>
+                        <li><strong>Soin :</strong> boire 2 L (1 L Cléien) = −1 Privation aussitôt.
+                            24 h hydraté + nuit sûre = Privation levée.
+                            Manger 1 ration (une demi-ration suffit au Cléien) = −1 Affamé aussitôt.
+                            48 h nourri = Affamé levé.
+                            Ni <a class="rule-ref" href="livre_6.html#chap-25" data-tip="Premiers Soins : stabilise, lève Souffrant (CON×2 en un coup), jamais la faim (§25.1).">Premiers Soins</a>
+                            ni magie ne remplacent l'eau et la nourriture.</li>
+                        <li><strong>Nuit sûre (<a class="rule-ref" href="livre_6.html#chap-25" data-tip="Nuit sûre 6–8 h : CON PV, ×2 si soignant veillé, Essoufflement à zéro (§25.2).">§25.2</a>) :</strong>
+                            avec eau + ration = récup normale (CON PV, ×2 si soignant).
+                            Avec eau mais sans ration = moitié (CON÷2, arrondi inférieur, min 1).
+                            Sans eau = aucun PV, ton
+                            <a class="rule-ref" href="livre_1.html#chap-4" data-tip="Essoufflement : 1 point = des PA d'urgence ; ne part pas tout seul, action dédiée pour souffler (§4.2).">Essoufflement</a>
+                            ne retombe pas.</li>
+                        <li><strong>Cléien :</strong> besoins divisés par deux
+                            (<a class="rule-ref" href="livre_1.html#chap-2" data-tip="Frugalité Cleyane : besoins en eau et nourriture réduits de moitié ; +2 Constitution contre la privation (Livre I §2.2).">Livre I §2.2</a>)
+                            et <strong>+2</strong> aux épreuves CON contre faim et soif.
+                            En aride, <em>Fille du désert</em> donne +2
+                            <a class="rule-ref" href="livre_3.html#chap-13" data-tip="Nature & Survie : pistage, orientation, abris, trouver eau et vivres (INS, §13.3).">Nature &amp; Survie</a>
+                            pour trouver de quoi tenir : une réussite = 1 jour pour toi (2 L + 1 ration).</li>
                     </ul>
-
-                    <h3 id="sec-24-3">24.3 Le Point de Miracle : L'Ultime Rempart contre la Mort</h3>
                     <p>
-                        Chaque Personnage Joueur (PJ) commence sa carrière avec <strong>1 Point de Miracle</strong>
-                        inscrit sur sa fiche de personnage.
+                        <em>Exemple 1 — soif :</em> Roger (CON 4, dé d4) traverse le reg sans eau.
+                        Aube J1 : Privation 1 (−1 ec). Le soir il boit 2 L : Privation levée.
+                        S'il ne boit pas, aube J2 : épreuve CON Diff 6 (4 + 2×1), avec −1.
+                        Il tire 3 + 2 PA d'effort − 1 = 4 &lt; 6 : Privation 2 (−2 ec).
                     </p>
-                    <div class="callout warning">
-                        <div class="callout-header">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2">
-                                <circle cx="12" cy="12" r="10" />
-                                <line x1="12" y1="8" x2="12" y2="12" />
-                                <line x1="12" y1="16" x2="12.01" y2="16" />
-                            </svg>
-                            Usage Vital du Point de Miracle
-                        </div>
-                        <div class="callout-body">
-                            Lorsqu'un PJ subit un coup mortel ou atteint ou dépasse son seuil létal (<span
-                                class="hl-ruby">Constitution &times; 5</span>), le joueur peut dépenser son Point de
-                            Miracle. Le coup est providentiellement dévié (la balle ricoche sur un briquet en métal, la
-                            lame glisse sur une boucle de ceinture, un éclat de nytharite absorbe le rayon). Le PJ
-                            échappe à la mort immédiate et reste vivant à <strong>1 point en dessous de son seuil
-                                létal</strong>, mais sombre dans l'inconscience.<br><br>
-                            <em>Régénération :</em> Un Point de Miracle ne se régénère jamais par simple repos. Il ne
-                            peut être racheté qu'avec <strong>20 points d'XP</strong> ou accordé par le Maître de Jeu
-                            lors de l'accomplissement d'un jalon narratif transcendant.
-                        </div>
-                    </div>
-
-                    <h3>24.4 Résistances & Vulnérabilités Raciales</h3>
                     <p>
-                        Certains dons raciaux (Livre I §2.2) confèrent une <strong>résistance</strong> ou une
-                        <strong>vulnérabilité</strong> à un élément (feu, froid, toxines, gaz, etc.). Sans cette
-                        mention explicite, aucune espèce n'est résistante ni vulnérable : les dégâts directs sont
-                        réduits par l'armure puis la Constitution (§24.1), sans distinction d'élément.
+                        <em>Exemple 2 — faim :</em> Kader, Cléien (CON 3, dé d4, Frugalité),
+                        2 jours sans ration : Affamé 1 (−1 ec, épreuve à +2 quand elle viendra).
+                        Il mange 1 ration — deux jours pour lui — et boit 1 L : Affamé levé demain
+                        s'il reste hydraté. Nuit avec eau mais sans ration : 3÷2 = 1 PV récupéré.
                     </p>
-                    <div class="callout-body">
-                        &bull; <strong>Résistance (élément) :</strong> les dégâts directs de cet élément sont réduits
-                        du montant indiqué, <strong>après l'armure et avant la Constitution</strong>. Les dégâts
-                        résiduels du même élément démarrent à -1 (minimum 1).<br>
-                        &bull; <strong>Vulnérabilité (élément) :</strong> +1 dégât subi de cet élément (appliqué
-                        après réductions) ; -2 aux épreuves de Constitution contre cet élément, sauf mention
-                        contraire.<br>
-                        &bull; <strong>Non-cumul :</strong> un personnage ne choisit qu'un seul don racial à la
-                        création ; si deux sources accordent une résistance au même élément, seule la plus forte
-                        s'applique.
-                    </div>
 
-                    <!-- ================= CHAPITRE 28 ================= -->
+                    <h3 id="sec-24-4">24.4 États Bénéfiques (Buffs) & Amplificateurs</h3>
                     

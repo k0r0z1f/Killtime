@@ -13,13 +13,13 @@
    "blocs": [
     {
      "type": "html",
-     "html": "\n\n                    <div class=\"doc-badge-row\">\n                        <span class=\"doc-badge-pill\">\n                            <svg width=\"12\" height=\"12\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\"\n                                stroke-width=\"2\">\n                                <polygon points=\"12 2 2 7 12 12 22 7 12 2\" />\n                                <polyline points=\"2 17 12 22 22 17\" />\n                                <polyline points=\"2 12 12 17 22 12\" />\n                            </svg>\n                            Livre VIII — Armement & Équipement\n                        </span>\n                        <span class=\"doc-badge-pill accent\">Nomenclature DLPH & Arcanotech</span>\n                        <span class=\"doc-badge-pill live\">Système Validé</span>\n                    </div>\n\n                    <h1 class=\"doc-title\">Livre VIII : Arsenal&nbsp;& Arcanotech</h1>\n                    <p class=\"doc-lead\">\n                        Notre système transcende les frontières temporelles. Du duel à l'épée bâtarde en acier forgé\n                        jusqu'au combat en combinaison pressurisée sous le feu des lasers de confinement, chaque arme et\n                        armure obéit à la même <strong>métrologie universelle</strong>. Ce livre détaille la\n                        nomenclature standard (Dégâts, Poids, Portée, Mains), les épées laser 3D à 6D, les fusils laser\n                        à longue portée dont le dévastateur <em>Deglazer</em>, les champs de force personnels et la\n                        pharmacopée de combat impériale.\n                    </p>\n\n                    <hr class=\"doc-divider\">\n\n                    <!-- ================= CHAPITRE 30 ================= -->\n                    "
+     "html": "\n\n                    <div class=\"doc-badge-row\">\n                        <span class=\"doc-badge-pill\">\n                            <svg width=\"12\" height=\"12\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\"\n                                stroke-width=\"2\">\n                                <polygon points=\"12 2 2 7 12 12 22 7 12 2\" />\n                                <polyline points=\"2 17 12 22 22 17\" />\n                                <polyline points=\"2 12 12 17 22 12\" />\n                            </svg>\n                            Livre VIII — Armement & Équipement\n                        </span>\n                        <span class=\"doc-badge-pill accent\">Nomenclature DLPH & Arcanotech</span>\n                        <span class=\"doc-badge-pill live\">Système Validé</span>\n                    </div>\n\n                    <h1 class=\"doc-title\">Livre VIII : Arsenal&nbsp;& Arcanotech</h1>\n                    <p class=\"doc-lead\">\n                        Notre système transcende les frontières temporelles. Du duel à l'épée bâtarde en acier forgé\n                        jusqu'au combat en combinaison pressurisée sous le feu des lasers de confinement, chaque arme et\n                        armure obéit à la même <strong>métrologie universelle</strong>. Ce livre détaille la\n                        nomenclature standard (Dégâts, Poids, Portée, Mains), les épées laser 3D à 6D, les fusils laser\n                        à longue portée dont le dévastateur <em>Deglazer</em>, les champs de force personnels et la\n                        pharmacopée de combat impériale.\n                    </p>\n\n                    <hr class=\"doc-divider\">\n\n                    <!-- ================= CHAPITRE 29 ================= -->\n                    "
     }
    ]
   },
   {
-   "id": "chap-32",
-   "symbole": "Chapitre 32.",
+   "id": "chap-31",
+   "symbole": "Chapitre 31.",
    "titre": "Nomenclature Universelle & Armement Traditionnel",
    "blocs": [
     {
@@ -32,7 +32,7 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <h3>32.1 Épées & Armes de Poing en Métal</h3>\n                    "
+     "html": "\n\n                    <h3>31.1 Épées & Armes de Poing en Métal</h3>\n                    "
     },
     {
      "type": "ref",
@@ -40,7 +40,7 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <h3>32.2 Armes Concasseuses, Haches & Armes d'Hast</h3>\n                    "
+     "html": "\n\n                    <h3>31.2 Armes Concasseuses, Haches & Armes d'Hast</h3>\n                    "
     },
     {
      "type": "ref",
@@ -48,19 +48,19 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <!-- ================= CHAPITRE 31 ================= -->\n                    "
+     "html": "\n\n                    <!-- ================= CHAPITRE 30 ================= -->\n                    "
     }
    ],
    "nav": "Nomenclature & Armes Métal"
   },
   {
-   "id": "chap-33",
-   "symbole": "Chapitre 33.",
+   "id": "chap-32",
+   "symbole": "Chapitre 32.",
    "titre": "Épées Laser & Fusils Arcanotech",
    "blocs": [
     {
      "type": "html",
-     "html": "\n\n                    <p>\n                        L'armement arcanotech et énergétique combine les principes de la Cinquième Force et la\n                        miniaturisation des circuits à résonance de nytharite.\n                    </p>\n\n                    <h3>33.1 Les Épées Laser de Confinement Plasma</h3>\n                    <p>\n                        Une épée laser projette un arc de plasma stabilisé par un champ magnétique compact. La lame\n                        tranche la matière solide en ignorant la résistance physique ordinaire et ne subit jamais\n                        d'usure ni d'émoussement.\n                    </p>\n\n                    "
+     "html": "\n\n                    <p>\n                        L'armement arcanotech et énergétique combine les principes de la Cinquième Force et la\n                        miniaturisation des circuits à résonance de nytharite.\n                    </p>\n\n                    <h3>32.1 Les Épées Laser de Confinement Plasma</h3>\n                    <p>\n                        Une épée laser projette un arc de plasma stabilisé par un champ magnétique compact. La lame\n                        tranche la matière solide en ignorant la résistance physique ordinaire et ne subit jamais\n                        d'usure ni d'émoussement.\n                    </p>\n\n                    "
     },
     {
      "type": "ref",
@@ -68,7 +68,7 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <h3>33.2 Fusils Laser & L'Arsenal à Distance</h3>\n                    "
+     "html": "\n\n                    <h3>32.2 Fusils Laser & L'Arsenal à Distance</h3>\n                    "
     },
     {
      "type": "ref",
@@ -76,7 +76,7 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <h3>33.3 Grenades & Munitions Explosives</h3>\n                    "
+     "html": "\n\n                    <h3>32.3 Grenades & Munitions Explosives</h3>\n                    "
     },
     {
      "type": "ref",
@@ -84,19 +84,19 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <!-- ================= CHAPITRE 32 ================= -->\n                    "
+     "html": "\n\n                    <!-- ================= CHAPITRE 31 ================= -->\n                    "
     }
    ],
    "nav": "Épées Laser & Fusils Arcanotech"
   },
   {
-   "id": "chap-34",
-   "symbole": "Chapitre 34.",
+   "id": "chap-33",
+   "symbole": "Chapitre 33.",
    "titre": "Blindages, Champs de Force & Pharmacopée Tactique",
    "blocs": [
     {
      "type": "html",
-     "html": "\n\n                    <p>\n                        Pour survivre aux tirs laser et aux frappes énergétiques, la technologie offre trois lignes de\n                        protection complémentaires : armures légères flexibles, cuirasses lourdes motorisées et\n                        boucliers de diffraction arcanique.\n                    </p>\n\n                    <h3>34.1 Armures Corporelles : Légères vs Lourdes</h3>\n\n                    <h4>Encombrement : ce que ton armure te coûte</h4>\n                    <p>\n                        Chaque protection affiche son <strong>encombrement</strong> : 0, 1 ou 2. Tu ajoutes ce\n                        nombre au coût en PA de <strong>chacune de tes actions</strong> — frapper, tirer, te\n                        déplacer, lancer un sort. Une armure légère ne te ralentit pas. Une cuirasse lourde te\n                        protège, mais chacun de tes gestes coûte plus cher.\n                    </p>\n                    <ul>\n                        <li><strong>Encombrement 0 :</strong> armures légères, champs de force et boucliers.\n                            Aucun surcoût.</li>\n                        <li><strong>Encombrement 1 :</strong> armures lourdes Prot 3 à 5 (et Lourde 7 Optimisée).\n                            +1 PA par action.</li>\n                        <li><strong>Encombrement 2 :</strong> armures lourdes Prot 6 et 7. +2 PA par action.</li>\n                    </ul>\n                    <p>\n                        Exemple : tu portes une Armure Lourde 6 (encombrement 2). Un tir qui coûte 2 PA t'en\n                        coûte 4. Avancer d'une case (1 PA) t'en coûte 3.\n                    </p>\n                    <p>\n                        Deux précisions. Les mises aveugles (1 PA = +1 au jet) ignorent ce surcoût, et la\n                        réduction du Milkor (-1 PA par tir) ne s'y cumule pas : elle allège le tir lui-même,\n                        pas ton armure. Si tu es <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\" data-tip=\"Ralenti : toute action coûte le double de PA.\">Ralenti</a>,\n                        tu doubles le total — action + encombrement compris. Seuls les Mikyais formés aux\n                        blindages savent bouger dedans : leur don\n                        <a class=\"rule-ref\" href=\"livre_1.html#chap-2\" data-tip=\"Technicien-Guerrier : +2 Armes Lourdes et réparation impériale ; ignore 1 point d'encombrement d'armure.\">Technicien-Guerrier</a>\n                        ignore 1 point d'encombrement — ta Lourde 6 ne te coûte que +1 PA par action.\n                    </p>\n                    "
+     "html": "\n\n                    <p>\n                        Pour survivre aux tirs laser et aux frappes énergétiques, la technologie offre trois lignes de\n                        protection complémentaires : armures légères flexibles, cuirasses lourdes motorisées et\n                        boucliers de diffraction arcanique.\n                    </p>\n\n                    <h3>33.1 Armures Corporelles : Légères vs Lourdes</h3>\n\n                    <h4>Encombrement : ce que ton armure te coûte</h4>\n                    <p>\n                        Chaque protection affiche son <strong>encombrement</strong> : 0, 1 ou 2. Tu ajoutes ce\n                        nombre au coût en PA de <strong>chacune de tes actions</strong> — frapper, tirer, te\n                        déplacer, lancer un sort. Une armure légère ne te ralentit pas. Une cuirasse lourde te\n                        protège, mais chacun de tes gestes coûte plus cher.\n                    </p>\n                    <ul>\n                        <li><strong>Encombrement 0 :</strong> armures légères, champs de force et boucliers.\n                            Aucun surcoût.</li>\n                        <li><strong>Encombrement 1 :</strong> armures lourdes Prot 3 à 5 (et Lourde 7 Optimisée).\n                            +1 PA par action.</li>\n                        <li><strong>Encombrement 2 :</strong> armures lourdes Prot 6 et 7. +2 PA par action.</li>\n                    </ul>\n                    <p>\n                        Exemple : tu portes une Armure Lourde 6 (encombrement 2). Un tir qui coûte 2 PA t'en\n                        coûte 4. Avancer d'une case (1 PA) t'en coûte 3.\n                    </p>\n                    <p>\n                        Deux précisions. Les mises aveugles (1 PA = +1 au jet) ignorent ce surcoût, et la\n                        réduction du Milkor (-1 PA par tir) ne s'y cumule pas : elle allège le tir lui-même,\n                        pas ton armure. Si tu es <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"Ralenti : toute action coûte le double de PA.\">Ralenti</a>,\n                        tu doubles le total — action + encombrement compris. Seuls les Mikyais formés aux\n                        blindages savent bouger dedans : leur don\n                        <a class=\"rule-ref\" href=\"livre_1.html#chap-2\" data-tip=\"Technicien-Guerrier : +2 Armes Lourdes et réparation impériale ; ignore 1 point d'encombrement d'armure.\">Technicien-Guerrier</a>\n                        ignore 1 point d'encombrement — ta Lourde 6 ne te coûte que +1 PA par action.\n                    </p>\n                    "
     },
     {
      "type": "ref",
@@ -104,7 +104,7 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <h3>34.2 Champs de Force Personnels & Combinaisons Spatiales</h3>\n                    "
+     "html": "\n\n                    <h3>33.2 Champs de Force Personnels & Combinaisons Spatiales</h3>\n                    "
     },
     {
      "type": "ref",
@@ -112,7 +112,7 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <h3>34.3 Pharmacopée Tactique & Consommables Médicaux</h3>\n                    <p>\n                        Dans les situations d'urgence extrême, les stimulants chimiques et seringues arcaniques font la\n                        différence entre la survie et le trépas.\n                    </p>\n\n                    "
+     "html": "\n\n                    <h3>33.3 Pharmacopée Tactique & Consommables Médicaux</h3>\n                    <p>\n                        Dans les situations d'urgence extrême, les stimulants chimiques et seringues arcaniques font la\n                        différence entre la survie et le trépas.\n                    </p>\n\n                    "
     },
     {
      "type": "ref",
@@ -305,7 +305,7 @@
     {
      "titre": "<span>Gamme des Fusils Laser Standard</span>\n                                <span class=\"pill-badge cyan\">Tir Précis</span>",
      "top": false,
-     "corps_brut": "\n                            <ul style=\"padding-left: 15px; margin: 10px 0; font-size: 0.9em;\">\n                                <li><strong>Fusil Laser Léger :</strong> <code>3D - 2L - 500P - 1H</code> (10 000 CE).\n                                    Pistolet lourd compact.</li>\n                                <li><strong>Fusil Laser de Précision :</strong> <code>4D - 2L - 750P - 1H</code> (25 000\n                                    CE). Visée optique intégrée.</li>\n                                <li><strong>Fusil d'Assaut Laser :</strong> <code>4D - 3L - 500P - 2H</code> (20 000\n                                    CE). Cadence soutenue.</li>\n                                <li><strong>Fusil de Sniper Lourd :</strong> <code>5D - 4L - 1000P - 2H</code> (50 000\n                                    CE). Portée 1 kilomètre.</li>\n                            </ul>\n                            <div class=\"callout arcane\" style=\"margin-top: 10px; font-size: 0.85em;\">\n                                <strong>Balistique des Faisceaux Laser :</strong> Le tir produit un trait lumineux instantané et continu. En cas de touche, l'énergie thermique est absorbée par la cible ; en cas d'échec, le faisceau s'écrase sur le sol ou les parois en gerbe d'étincelles thermiques. Au contact direct (Distance = 1 case), les fusils laser sont assujettis à la condition <em>Canon Entravé</em> (Livre V, §23.2).\n                            </div>\n                        ",
+     "corps_brut": "\n                            <ul style=\"padding-left: 15px; margin: 10px 0; font-size: 0.9em;\">\n                                <li><strong>Fusil Laser Léger :</strong> <code>3D - 2L - 500P - 1H</code> (10 000 CE).\n                                    Pistolet lourd compact.</li>\n                                <li><strong>Fusil Laser de Précision :</strong> <code>4D - 2L - 750P - 1H</code> (25 000\n                                    CE). Visée optique intégrée.</li>\n                                <li><strong>Fusil d'Assaut Laser :</strong> <code>4D - 3L - 500P - 2H</code> (20 000\n                                    CE). Cadence soutenue.</li>\n                                <li><strong>Fusil de Sniper Lourd :</strong> <code>5D - 4L - 1000P - 2H</code> (50 000\n                                    CE). Portée 1 kilomètre.</li>\n                            </ul>\n                            <div class=\"callout arcane\" style=\"margin-top: 10px; font-size: 0.85em;\">\n                                <strong>Balistique des Faisceaux Laser :</strong> Le tir produit un trait lumineux instantané et continu. En cas de touche, l'énergie thermique est absorbée par la cible ; en cas d'échec, le faisceau s'écrase sur le sol ou les parois en gerbe d'étincelles thermiques. Au contact direct (Distance = 1 case), les fusils laser sont assujettis à la condition <em>Canon Entravé</em> (Livre V, §22.2).\n                            </div>\n                        ",
      "pieds": []
     },
     {

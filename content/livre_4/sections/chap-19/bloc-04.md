@@ -5,5 +5,6 @@ livre: 4
 ---
 
 
-                    <!-- ================= CHAPITRE 19 ================= -->
+                    <!-- EFFETS DÉFENSIFS & UTILITAIRES -->
+                    <h4>Effets Défensifs & Utilitaires</h4>
                     

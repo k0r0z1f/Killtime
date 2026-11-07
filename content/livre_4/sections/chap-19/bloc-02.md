@@ -5,33 +5,33 @@ livre: 4
 ---
 
 
-                    <!-- TÉLÉKINÉSIE & SPATIAL CALCULUS -->
-                    <h3 id="sec-19-2">19.2 Télékinésie : Le Calcul Spatial (*Spatial Calculus*)</h3>
+                    <h3 id="sec-19-1">19.1 Fiche Technique d'un Pouvoir</h3>
                     <p>
-                        Tu ne pousses pas l'objet. Tu dis à la gravité autour de lui de changer d'avis.
-                        Concretement, ça donne ça quand tu progresses :
+                        Pour chaque pouvoir que tu crées, remplis ces rubriques avec ton MJ :
                     </p>
                     <ul>
-                        <li><strong>Entrée (Objets Légers) :</strong> Tu bouges un stylo, une dague, des clés.
-                            Il faut voir l'objet et rester concentré.</li>
-                        <li><strong>Basique (Multi-Objets) :</strong> Tu fais flotter plusieurs petits objets
-                            en même temps, devant toi.</li>
-                        <li><strong>Intermédiaire (Masses Lourdes) :</strong> Tu soulèves un meuble, une caisse
-                            d'armes, même un adversaire. Ça tire si tu tiens longtemps.</li>
-                        <li><strong>Avancé (Précision Chirurgicale) :</strong> Tu démontes un mécanisme à distance.
-                            Exemple : tu bloques le percuteur d'un pistolet sans le toucher.</li>
-                        <li><strong>Maîtrise (Barrières de Force) :</strong> Tu lèves un mur invisible qui arrête
-                            les tirs physiques.</li>
-                        <li><strong>Élite (Manipulation Gravitationnelle) :</strong> Tu inverses la gravité sous
-                            une escouade, ou tu compresses la matière (<a class="rule-ref" href="livre_6.html#chap-24"
-                                data-tip="Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).">ça
-                                ignore l'armure</a>).</li>
+                        <li><strong>Nom :</strong> Le titre de ta technique (Gratuit).</li>
+                        <li><strong>Description :</strong> À quoi ça ressemble, ce que ça fait comme bruit
+                            (Gratuit).</li>
+                        <li><strong>Attribut Associé :</strong> D'où vient l'XP. Souvent Magie, mais ça peut être
+                            Force pour une technique de corps à corps ou Agilité pour un tir (Gratuit).</li>
+                        <li><strong>Type de Pouvoir :</strong> Offensif, Défensif, Social ou Utilitaire (Gratuit).</li>
+                        <li><strong>Coût en PA & Type d'Action :</strong> Ça découle de ton total d'effets
+                            (Action Principale, Réaction, etc.) (Gratuit). Un pouvoir lancé en
+                            <strong>Réaction</strong> coûte <strong>+2</strong> (XP et PA — la
+                            <a class="rule-ref" href="#sec-19-regle" data-tip="Règle d'or : 1 XP dépensé à la création = 1 PA pour lancer en combat (§19).">règle d'or</a>
+                            porte sur le total : un blast à 4 XP lancé en réaction coûte 6 PA).</li>
+                        <li><strong>Mécanique & Effets :</strong> Tes briques choisies dans le catalogue
+                            juste en dessous (Payant en XP).</li>
                     </ul>
 
-                    <!-- PYROCINÉSIE & VITALITÉ CINÉTIQUE -->
-                    <h3 id="sec-19-3">19.3 Pyrocinésie & Magie de Création</h3>
+                    <h3 id="sec-19-2">19.2 Catalogue Officiel des Effets Achetables</h3>
                     <p>
-                        Deux autres façons de jouer avec l'énergie. Choisis selon ton style : frapper fort,
-                        ou créer vite.
+                        Pioche ce qu'il te faut. Chaque brique a son prix. Tu additionnes, et tu as ton <a
+                            class="rule-ref" href="#sec-19-regle"
+                            data-tip="Règle d'or : 1 XP dépensé à la création = 1 PA pour lancer en combat (§19).">coût</a>.
                     </p>
+
+                    <!-- EFFETS OFFENSIFS -->
+                    <h4>Effets Offensifs (Attaques & Neutralisation)</h4>
                     

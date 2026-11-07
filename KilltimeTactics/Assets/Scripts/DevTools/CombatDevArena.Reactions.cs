@@ -66,7 +66,7 @@ namespace Killtime.Tactics
         }
 
         /// <summary>
-        /// RD-031 Décrochage (Livre V §22.2) : paie 1 PA pour que le prochain
+        /// RD-031 Décrochage (Livre V §21.2) : paie 1 PA pour que le prochain
         /// déplacement de l'unité ne provoque aucune réaction d'opportunité.
         /// </summary>
         public bool TryRequestSafeDisengage(TacticalUnit unit, out string message)
@@ -104,7 +104,7 @@ namespace Killtime.Tactics
         }
 
         /// <summary>
-        /// RD-202 Préparation d'Action (Livre V §20.3) : 1 PA -> +2 au jet de
+        /// RD-202 Préparation d'Action (Livre V §19.3) : 1 PA -> +2 au jet de
         /// l'action ou de la défense suivante (attaque OU parade). One-shot.
         /// </summary>
         public bool TryBeginPreparation(TacticalUnit unit, out string message)
@@ -113,7 +113,7 @@ namespace Killtime.Tactics
         }
 
         /// <summary>
-        /// RD-202 Dégagement (Livre V §20.3) : fuite immédiate après attaque ou
+        /// RD-202 Dégagement (Livre V §19.3) : fuite immédiate après attaque ou
         /// parade résolue (+1 PA de surcharge, trajet payé à part).
         /// </summary>
         public bool TryGetAwayMove(TacticalUnit unit, out string message)

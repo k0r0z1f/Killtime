@@ -1,22 +1,16 @@
 ---
-livre: 4
 cible: sections.chap-19.blocs.0.html
 format: raw
+livre: 4
 ---
 
 
                     <p class="lead">
-                        Tes pouvoirs de l'esprit grandissent avec toi. Au début, tu captes juste ce qui traîne
-                        en surface. Plus tu t'entraînes, plus tu vas loin. Jusqu'à déplacer la matière ou
-                        prendre les commandes. Voici le chemin, palier par palier.
+                        Pas envie de piocher dans une liste ? Fabrique ton sort toi-même. Tu choisis les briques,
+                        tu paies en <a class="rule-ref" href="livre_1.html#sec-5-3"
+                            data-tip="Dépenser son XP : dans sa compétence au tarif normal, ×2 en croisé, libre partout (§5.3).">XP</a>,
+                        et tu sais tout de suite combien ça te coûtera en jeu.
                     </p>
 
-                    <!-- LES 6 STADES DE LA TÉLÉPATHIE -->
-                    <h3 id="sec-19-1">19.1 Télépathie : Les 6 Stades Neuronaux</h3>
-                    <p>
-                        Lis le tableau comme une <a class="rule-ref" href="livre_1.html#chap-5"
-                            data-tip="Progression : 1 réussite = 1 case. Piste pleine = +1 XP lié, piste à zéro (§5.1-5.2).">progression</a>.
-                        Tu commences en haut, tu débloques vers le bas.
-                        Chaque stade garde ce que le précédent savait faire.
-                    </p>
+                    <!-- RÈGLE D'OR XP = PA -->
                     

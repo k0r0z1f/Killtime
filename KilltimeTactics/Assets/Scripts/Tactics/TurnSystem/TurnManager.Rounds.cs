@@ -164,7 +164,7 @@ namespace Killtime.Tactics.TurnSystem
         }
 
         /// <summary>
-        /// Refresh individuel (Livres I §4 + VI §20) : PA remis au max AU DÉBUT
+        /// Refresh individuel (Livres I §4 + VI §19) : PA remis au max AU DÉBUT
         /// DU TOUR PERSONNEL de l'unité active. Aucun refresh global au début
         /// du round : StartNewRound ne recharge personne, seul StartUnitTurn
         /// recharge l'unité dont l'initiative arrive. L'Essoufflement (Souffle)
@@ -227,7 +227,7 @@ namespace Killtime.Tactics.TurnSystem
                 return;
             }
 
-            // RD-087 (Livre XII §50) : Régénération lithosphérique du Disciple
+            // RD-087 (Livre XII §49) : Régénération lithosphérique du Disciple
             // de Terre (montant bossAI regenAmount, défaut 3 PV) au début de
             // son tour personnel s'il est au contact de la pierre ou d'un
             // couvert. Pur + testé via TitanBossMechanics (contact = voisin

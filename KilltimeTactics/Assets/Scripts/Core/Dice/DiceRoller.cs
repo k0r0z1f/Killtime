@@ -44,7 +44,7 @@ namespace Killtime.Core.Dice
         public static int? DevForcedDifferential = null;
         // Relance de conséquence critique (d2–d24, §9.2) forcée à ce brut.
         public static int? DevForcedCritConsequenceRaw = null;
-        // Tirage d6 de déviation anatomique (Livre V §22.1) forcé (1–6).
+        // Tirage d6 de déviation anatomique (Livre V §21.1) forcé (1–6).
         public static int? DevForcedDeflectionRoll = null;
 
         public static void ClearDevRig()

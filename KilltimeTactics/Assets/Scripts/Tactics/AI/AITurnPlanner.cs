@@ -33,7 +33,7 @@ namespace Killtime.Tactics.AI
         DuoTechAuto,            // 10. Duo-Tech auto (RD-105).
         TeepBreak,              // 11a. Rupture d'engagement au contact (ranged).
         DisengageStep,          // 11b. Dégagement au contact (ranged).
-        Grenade,                // 12. Grenades de zone (Livre VIII §31.3).
+        Grenade,                // 12. Grenades de zone (Livre VIII §30.3).
         BestSpell,              // 13. Sort arcanotech rentable (Livre IV).
         Intimidation,           // 14. Intimidation & provocation (Livre III).
         SelfUpkeep,             // 15. Entretien & buffs personnels.

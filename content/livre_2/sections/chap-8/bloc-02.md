@@ -6,7 +6,7 @@ livre: 2
 
                     <h4 id="sec-8-4">8.4 Terrains difficiles : 1 case coûte 2 PA</h4>
                     <p>
-                        Boue, gravats, pente raide, eau peu profonde, neige épaisse, sable meuble : chaque case coûte <strong>2 PA de déplacement</strong> au lieu d'1 (<a href="livre_5.html#sec-21-3">Livre V §21.3</a>). Ni sprint, ni charge à travers. Trois façons de passer outre : la spé <em>Franchissement</em> (Athlétisme), <em>Pas Feuillu</em> (Taurien, terrains naturels), <em>Fille du désert</em> (Cléien, terrains sableux).
+                        Boue, gravats, pente raide, eau peu profonde, neige épaisse, sable meuble : chaque case coûte <strong>2 PA de déplacement</strong> au lieu d'1 (<a href="livre_5.html#sec-20-3">Livre V §20.3</a>). Ni sprint, ni charge à travers. Trois façons de passer outre : la spé <em>Franchissement</em> (Athlétisme), <em>Pas Feuillu</em> (Taurien, terrains naturels), <em>Fille du désert</em> (Cléien, terrains sableux).
                     </p>
                     <h4 id="sec-8-5">8.5 Milieux : six mots pour dire où tu es</h4>
                     <p>
@@ -36,21 +36,21 @@ livre: 2
                         <li><strong>Cumul météo :</strong> le malus le plus fort l'emporte (nuit noire −1 + blizzard −2 = −2),
                             mais la vue se réduit deux fois : bridage nuit puis division du palier fort.
                             <em>Exemple : nuit noire (4 cases) sous blizzard (fort, vue ÷ 2) = 2 cases de vue. Au-delà, le monde n'existe plus.</em>
-                            Pour la ligne de mire, voir <a href="livre_5.html#chap-22-3">Livre V §22.3</a>.</li>
+                            Pour la ligne de mire, voir <a href="livre_5.html#chap-21-3">Livre V §21.3</a>.</li>
                         <li><strong>Lampe allumée :</strong> tu ignores le bridage et le malus de nuit pour tes jets et tes cibles éclairées.
                             Revers : ta lampe te trahit. Toute ligne de mire directe te repère, furtivité brisée
-                            (<a href="livre_5.html#chap-22-3">Livre V §22.3</a>). Éteindre et se taire redevient parfois la meilleure armure.</li>
+                            (<a href="livre_5.html#chap-21-3">Livre V §21.3</a>). Éteindre et se taire redevient parfois la meilleure armure.</li>
                         <li><strong>Vision thermique :</strong> spé ou lunettes thermiques. Tu ignores la nuit sans trahir ta position,
                             et tu perces fumée et murs légers à <strong>demi-portée</strong>. Le froid, lui, ne s'achète pas : un Derek reste un Derek.</li>
                         <li><strong>Vision nocturne (Derek, <em>Sang des Profondeurs</em>) :</strong> tu vois de nuit comme en plein jour.
                             Palier nuit ignoré, ni bridage ni malus. En échange, la lumière vive te punit : en entrant en
                             <strong>lumière vive</strong> (plein soleil découvert, projecteur braqué, éclat de flash), tu es
-                            <a class="rule-ref" href="livre_6.html#sec-25-1" data-tip="Aveugle : vision nulle, −4 à distance, −2 en mêlée et défense (§25.1).">Aveugle 1 tour</a>.
+                            <a class="rule-ref" href="livre_6.html#sec-24-1" data-tip="Aveugle : vision nulle, −4 à distance, −2 en mêlée et défense (§24.1).">Aveugle 1 tour</a>.
                             Pas si tu t'y trouves déjà : seul le passage brutal t'aveugle.</li>
                         <li><strong>Éblouissement = Aveugle temporaire :</strong> pas de nouvel état. Un flash, une grenade aveuglante,
-                            un éclat arcanique en pleine face : <a class="rule-ref" href="livre_6.html#sec-25-1" data-tip="Aveugle : vision nulle, −4 à distance, −2 en mêlée et défense (§25.1).">Aveugle 1 tour</a>
+                            un éclat arcanique en pleine face : <a class="rule-ref" href="livre_6.html#sec-24-1" data-tip="Aveugle : vision nulle, −4 à distance, −2 en mêlée et défense (§24.1).">Aveugle 1 tour</a>
                             (2 tours si l'éclat part à 3 cases ou moins, MJ tranche). Effets chiffrés et sorties au
-                            <a class="rule-ref" href="livre_6.html#sec-25-1" data-tip="Aveugle : vision nulle, −4 à distance, −2 en mêlée et défense (§25.1).">compendium (§25, RP-071)</a>.
+                            <a class="rule-ref" href="livre_6.html#sec-24-1" data-tip="Aveugle : vision nulle, −4 à distance, −2 en mêlée et défense (§24.1).">compendium (§24, RP-071)</a>.
                             Le <strong>Masque Filtrant</strong> neutralise l'éblouissement par gaz ou flash.</li>
                     </ul>
                     

@@ -8,7 +8,7 @@ using Killtime.Core.Rules;
 namespace Killtime.Tests
 {
     /// <summary>
-    /// RD-205 : Stabilisation Agonisant + convalescence + rations (Livre VI §25).
+    /// RD-205 : Stabilisation Agonisant + convalescence + rations (Livre VI §24).
     /// - Stabilisation : Premiers Soins au chevet (3 PA, Difficulté 12) : Agonisant
     ///   → Inconscient stable (Saignement stoppé, moral verrouillé, réessayable).
     /// - Convalescence : 1 nuit sûre = CON + rang Endurance ; magie/arcanotech ×2 ;

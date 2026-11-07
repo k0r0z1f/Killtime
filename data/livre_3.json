@@ -41,7 +41,7 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <h4>Actions Physiques de Force & Difficultés Associées</h4>\n                    <ul>\n                        <li><strong>Courir / Nager</strong> : vous courez, vous nagez — facile (1–3) la plupart du\n                            temps.\n                            Si ça devient dur (<a class=\"rule-ref\" href=\"livre_2.html#chap-7\"\n                                data-tip=\"Difficulté : 1-3 facile, 5+ exige un jet, 12+ héroïque, 18+ cosmique (§7.1).\">difficulté\n                                5+</a>, courant, bourbier), lancez votre Force.</li>\n                        <li><strong>Pousser / Soulever</strong> : vous poussez une herse, vous soulevez une poutre. Si\n                            quelqu'un\n                            s'oppose, faites un <a class=\"rule-ref\" href=\"livre_2.html#chap-7\"\n                                data-tip=\"Face-à-Face : chacun lance son dé + PA, le meilleur gagne. Seul le vainqueur coche (§7.3).\">Face-à-Face</a> Force contre Force.</li>\n                        <li><strong>Agripper</strong> : vous attrapez quelqu'un — <a class=\"rule-ref\"\n                                href=\"livre_2.html#chap-7\"\n                                data-tip=\"Face-à-Face : chacun lance son dé + PA, le meilleur gagne. Seul le vainqueur coche (§7.3).\">Face-à-Face</a> Force contre sa Défense. Réussi ?\n                            Il est <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                data-tip=\"Immobilisé : impossible de faire la moindre action de mouvement (§25.1).\">immobilisé</a>.\n                        </li>\n                        <li><strong>Porter une Armure Lourde</strong> : il faut la Force demandée pour la porter. En\n                            dessous ?\n                            Faites une <a class=\"rule-ref\" href=\"livre_2.html#chap-7\"\n                                data-tip=\"Épreuve : lance ton dé de compétence + PA − malus contre le seuil du MJ (§7.1).\">épreuve\n                                de Force</a> toutes les 10 minutes, sinon vous vous <a class=\"rule-ref\"\n                                href=\"livre_1.html#sec-4-2\"\n                                data-tip=\"Essoufflement : 1 point = des PA d'urgence ; ne part pas tout seul, action dédiée pour souffler (§4.2).\">épuisez</a>.\n                        </li>\n                    </ul>\n\n                    <!-- ARBRE DE L'AGILITÉ -->\n                    <h3>12.2 Arbre de l'Agilité (AGI)</h3>\n                    <p>\n                        Ici, c'est votre souplesse et votre précision. Vous esquivez, vous visez,\n                        vous crochetez, vous pilotez.\n                    </p>\n\n                    "
+     "html": "\n\n                    <h4>Actions Physiques de Force & Difficultés Associées</h4>\n                    <ul>\n                        <li><strong>Courir / Nager</strong> : vous courez, vous nagez — facile (1–3) la plupart du\n                            temps.\n                            Si ça devient dur (<a class=\"rule-ref\" href=\"livre_2.html#chap-7\"\n                                data-tip=\"Difficulté : 1-3 facile, 5+ exige un jet, 12+ héroïque, 18+ cosmique (§7.1).\">difficulté\n                                5+</a>, courant, bourbier), lancez votre Force.</li>\n                        <li><strong>Pousser / Soulever</strong> : vous poussez une herse, vous soulevez une poutre. Si\n                            quelqu'un\n                            s'oppose, faites un <a class=\"rule-ref\" href=\"livre_2.html#chap-7\"\n                                data-tip=\"Face-à-Face : chacun lance son dé + PA, le meilleur gagne. Seul le vainqueur coche (§7.3).\">Face-à-Face</a> Force contre Force.</li>\n                        <li><strong>Agripper</strong> : vous attrapez quelqu'un — <a class=\"rule-ref\"\n                                href=\"livre_2.html#chap-7\"\n                                data-tip=\"Face-à-Face : chacun lance son dé + PA, le meilleur gagne. Seul le vainqueur coche (§7.3).\">Face-à-Face</a> Force contre sa Défense. Réussi ?\n                            Il est <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                data-tip=\"Immobilisé : impossible de faire la moindre action de mouvement (§24.1).\">immobilisé</a>.\n                        </li>\n                        <li><strong>Porter une Armure Lourde</strong> : il faut la Force demandée pour la porter. En\n                            dessous ?\n                            Faites une <a class=\"rule-ref\" href=\"livre_2.html#chap-7\"\n                                data-tip=\"Épreuve : lance ton dé de compétence + PA − malus contre le seuil du MJ (§7.1).\">épreuve\n                                de Force</a> toutes les 10 minutes, sinon vous vous <a class=\"rule-ref\"\n                                href=\"livre_1.html#sec-4-2\"\n                                data-tip=\"Essoufflement : 1 point = des PA d'urgence ; ne part pas tout seul, action dédiée pour souffler (§4.2).\">épuisez</a>.\n                        </li>\n                    </ul>\n\n                    <!-- ARBRE DE L'AGILITÉ -->\n                    <h3>12.2 Arbre de l'Agilité (AGI)</h3>\n                    <p>\n                        Ici, c'est votre souplesse et votre précision. Vous esquivez, vous visez,\n                        vous crochetez, vous pilotez.\n                    </p>\n\n                    "
     },
     {
      "type": "ref",
@@ -121,7 +121,7 @@
    "blocs": [
     {
      "type": "html",
-     "html": "\n                    <p class=\"lead\">\n                        Pas envie de piocher dans le compendium ? Fabrique ta technique toi-même.\n                        Tu poses un ensemble ◆ lié à une compétence entraînée, tu branches 1 à 3 pièces, tu paies en <a class=\"rule-ref\" href=\"livre_1.html#sec-5-3\" data-tip=\"Spécialisation : 5 XP de la bonne banque ou du libre, au tarif normal (§5.3).\">XP</a> —\n                        et à table tu paies les <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a> des pièces actives.\n                        <br>Le compendium ne bouge pas : il reste là pour les soirs où tu veux jouer sans bricoler.\n                        La Fabrique, c'est une option de plus. Vise <strong>4 à 6 <a class=\"rule-ref\" href=\"livre_1.html#sec-5-3\" data-tip=\"Spécialisation : 5 XP de la bonne banque ou du libre, au tarif normal (§5.3).\">XP</a></strong> : c'est le standard.\n                        <strong>7 <a class=\"rule-ref\" href=\"livre_1.html#sec-5-3\" data-tip=\"Spécialisation : 5 XP de la bonne banque ou du libre, au tarif normal (§5.3).\">XP</a> et plus</strong> ? C'est une\n                        <em>signature</em>, une seule par personnage, avec l'accord du MJ.\n                        <br>Mêmes cartes, mêmes prix : le puzzle du <a href=\"livre_9.html#chap-40\">chapitre 41</a> monte exactement ce chapitre.\n                    </p>\n                    <p>\n                        <strong>Rappel :</strong> une technique basée sur une compétence fait toujours deux choses :\n                        la base de la compétence, puis ce que le pouvoir dicte.\n                        Tu jettes ton attaque normalement — ta compétence offensive contre la défense adverse, en\n                        <a class=\"rule-ref\" href=\"livre_2.html#chap-7\" data-tip=\"Face-à-Face : chacun lance son dé + PA, le meilleur gagne. Seul le vainqueur coche (§7.3).\">Face-à-Face</a>\n                        — puis tu ajoutes l'effet acheté.\n                        <em>Exemple — ta technique repousse la cible d'1 case :</em>\n                        Égalité ? Pas de dégâts, mais la repousse part quand même.\n                        Tu passes de 1 ou plus ? Dégâts de l'attaque (+1 par point d'écart) + repousse.\n                        Raté ? Rien ne part — ni dégâts, ni effet.\n                    </p>\n"
+     "html": "\n                    <p class=\"lead\">\n                        Pas envie de piocher dans le compendium ? Fabrique ta technique toi-même.\n                        Tu poses un ensemble ◆ lié à une compétence entraînée, tu branches 1 à 3 pièces, tu paies en <a class=\"rule-ref\" href=\"livre_1.html#sec-5-3\" data-tip=\"Spécialisation : 5 XP de la bonne banque ou du libre, au tarif normal (§5.3).\">XP</a> —\n                        et à table tu paies les <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a> des pièces actives.\n                        <br>Le compendium ne bouge pas : il reste là pour les soirs où tu veux jouer sans bricoler.\n                        La Fabrique, c'est une option de plus. Vise <strong>4 à 6 <a class=\"rule-ref\" href=\"livre_1.html#sec-5-3\" data-tip=\"Spécialisation : 5 XP de la bonne banque ou du libre, au tarif normal (§5.3).\">XP</a></strong> : c'est le standard.\n                        <strong>7 <a class=\"rule-ref\" href=\"livre_1.html#sec-5-3\" data-tip=\"Spécialisation : 5 XP de la bonne banque ou du libre, au tarif normal (§5.3).\">XP</a> et plus</strong> ? C'est une\n                        <em>signature</em>, une seule par personnage, avec l'accord du MJ.\n                        <br>Mêmes cartes, mêmes prix : le puzzle du <a href=\"livre_9.html#chap-39\">chapitre 41</a> monte exactement ce chapitre.\n                    </p>\n                    <p>\n                        <strong>Rappel :</strong> une technique basée sur une compétence fait toujours deux choses :\n                        la base de la compétence, puis ce que le pouvoir dicte.\n                        Tu jettes ton attaque normalement — ta compétence offensive contre la défense adverse, en\n                        <a class=\"rule-ref\" href=\"livre_2.html#chap-7\" data-tip=\"Face-à-Face : chacun lance son dé + PA, le meilleur gagne. Seul le vainqueur coche (§7.3).\">Face-à-Face</a>\n                        — puis tu ajoutes l'effet acheté.\n                        <em>Exemple — ta technique repousse la cible d'1 case :</em>\n                        Égalité ? Pas de dégâts, mais la repousse part quand même.\n                        Tu passes de 1 ou plus ? Dégâts de l'attaque (+1 par point d'écart) + repousse.\n                        Raté ? Rien ne part — ni dégâts, ni effet.\n                    </p>\n"
     },
     {
      "type": "ref",
@@ -571,7 +571,7 @@
      },
      "Maniement d'Arme (FOR, AGI)",
      "Offensif",
-     "Sur succès net, la cible <a class=\"rule-ref\"\n                                                href=\"livre_6.html#sec-25-1\"\n                                                data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">tombe\n                                                à terre</a>, +2 dégâts, dégâts convertis en <a class=\"rule-ref\"\n                                                href=\"livre_6.html#chap-24\"\n                                                data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).\">Absolus</a>."
+     "Sur succès net, la cible <a class=\"rule-ref\"\n                                                href=\"livre_6.html#sec-24-1\"\n                                                data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">tombe\n                                                à terre</a>, +2 dégâts, dégâts convertis en <a class=\"rule-ref\"\n                                                href=\"livre_6.html#chap-23\"\n                                                data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">Absolus</a>."
     ],
     [
      {
@@ -589,7 +589,7 @@
      },
      "Maniement d'Arme (FOR, AGI)",
      "Offensif",
-     "Visée Tête sans malus, applique <a class=\"rule-ref\"\n                                                href=\"livre_6.html#sec-25-1\"\n                                                data-tip=\"Sonné : aucune action. La créature tombe immédiatement à terre.\">Sonné</a>\n                                        et <a class=\"rule-ref\"\n                                                href=\"livre_6.html#sec-25-1\"\n                                                data-tip=\"Étourdi : −1 ec sur tous les jets.\">Étourdi</a>."
+     "Visée Tête sans malus, applique <a class=\"rule-ref\"\n                                                href=\"livre_6.html#sec-24-1\"\n                                                data-tip=\"Sonné : aucune action. La créature tombe immédiatement à terre.\">Sonné</a>\n                                        et <a class=\"rule-ref\"\n                                                href=\"livre_6.html#sec-24-1\"\n                                                data-tip=\"Étourdi : −1 ec sur tous les jets.\">Étourdi</a>."
     ],
     [
      {
@@ -616,7 +616,7 @@
      },
      "Maniement d'Arme (FOR, AGI)",
      "Offensif",
-     "<a class=\"rule-ref\"\n                                                href=\"livre_6.html#sec-25-1\"\n                                                data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).\">Déstabilisé</a>\n                                        dans un rayon de 2 cases."
+     "<a class=\"rule-ref\"\n                                                href=\"livre_6.html#sec-24-1\"\n                                                data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).\">Déstabilisé</a>\n                                        dans un rayon de 2 cases."
     ],
     [
      "<strong>Hache de Guerre</strong>",
@@ -640,7 +640,7 @@
      },
      "Maniement d'Arme (FOR, AGI)",
      "Offensif, Défensif",
-     "+4 dégâts, <a class=\"rule-ref\"\n                                                href=\"livre_6.html#sec-25-1\"\n                                                data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À\n                                                Terre</a> sur Delta ≥ 2."
+     "+4 dégâts, <a class=\"rule-ref\"\n                                                href=\"livre_6.html#sec-24-1\"\n                                                data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À\n                                                Terre</a> sur Delta ≥ 2."
     ],
     [
      {
@@ -649,7 +649,7 @@
      },
      "Maniement d'Arme (FOR, AGI)",
      "Offensif, Défensif",
-     "+5 dégâts, dégâts convertis en\n                                        <a class=\"rule-ref\"\n                                                href=\"livre_6.html#chap-24\"\n                                                data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).\">Absolus</a>\n                                        sur critique."
+     "+5 dégâts, dégâts convertis en\n                                        <a class=\"rule-ref\"\n                                                href=\"livre_6.html#chap-23\"\n                                                data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">Absolus</a>\n                                        sur critique."
     ],
     [
      {
@@ -733,7 +733,7 @@
      },
      "Maniement d'Arme / Défense Corporelle (FOR, AGI / FOR)",
      "Défensif",
-     "Immunité aux critiques, au\n                                        <a class=\"rule-ref\"\n                                                href=\"livre_6.html#sec-25-1\"\n                                                data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).\">Déstabilisé</a>\n                                        et à <a class=\"rule-ref\"\n                                                href=\"livre_6.html#sec-25-1\"\n                                                data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À\n                                                Terre</a> pendant la garde."
+     "Immunité aux critiques, au\n                                        <a class=\"rule-ref\"\n                                                href=\"livre_6.html#sec-24-1\"\n                                                data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).\">Déstabilisé</a>\n                                        et à <a class=\"rule-ref\"\n                                                href=\"livre_6.html#sec-24-1\"\n                                                data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À\n                                                Terre</a> pendant la garde."
     ],
     [
      "<strong>Bouclier Vivant</strong>",
@@ -808,7 +808,7 @@
      },
      "Armes Perçantes (AGI)",
      "Offensif",
-     "<a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À\n                                            Terre</a> sur Delta ≥ 2."
+     "<a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À\n                                            Terre</a> sur Delta ≥ 2."
     ],
     [
      {
@@ -910,7 +910,7 @@
      },
      "Ballistique (AGI)",
      "Offensif",
-     "<a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).\">Déstabilisé</a>\n                                        et draine 1 PA défensif."
+     "<a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).\">Déstabilisé</a>\n                                        et draine 1 PA défensif."
     ],
     [
      {
@@ -994,7 +994,7 @@
      "<strong>Trempe de Fer</strong>",
      "Endurance Physique (CON, FOR)",
      "Défensif",
-     "<a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).\">Déstabilisé</a>\n                                        réduit à <strong>-1</strong> sur tous vos jets."
+     "<a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).\">Déstabilisé</a>\n                                        réduit à <strong>-1</strong> sur tous vos jets."
     ],
     [
      {
@@ -1003,7 +1003,7 @@
      },
      "Endurance Physique (CON, FOR)",
      "Défensif",
-     "Le malus d'<a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À\n                                            Terre</a> en attaque est ignoré."
+     "Le malus d'<a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À\n                                            Terre</a> en attaque est ignoré."
     ],
     [
      {
@@ -1012,7 +1012,7 @@
      },
      "Endurance Physique (CON, FOR)",
      "Défensif",
-     "Le malus d'<strong><a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                                data-tip=\"Étourdi : −1 ec sur tous les jets.\">Étourdi</a></strong> est ignoré."
+     "Le malus d'<strong><a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                                data-tip=\"Étourdi : −1 ec sur tous les jets.\">Étourdi</a></strong> est ignoré."
     ],
     [
      "<strong>Seconde Respiration</strong>",
@@ -1045,7 +1045,7 @@
      },
      "Cardio (CON)",
      "Utilitaire",
-     "Utilisable 2 fois par combat,\n                                        immunité au <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Ralenti : toute action coûte le double de PA.\">Ralenti</a>."
+     "Utilisable 2 fois par combat,\n                                        immunité au <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Ralenti : toute action coûte le double de PA.\">Ralenti</a>."
     ],
     [
      "<strong>Poussée Cardiovasculaire</strong>",
@@ -1075,7 +1075,7 @@
      "<strong>Immunité Toxique</strong>",
      "Système Immunitaire (CON)",
      "Défensif",
-     "Immunité complète au statut <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-25-2\"\n                                            data-tip=\"Empoisonné : PV directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonné</a>."
+     "Immunité complète au statut <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Empoisonné : PV directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonné</a>."
     ],
     [
      {
@@ -1126,7 +1126,7 @@
      },
      "Intuition (INT, INS)",
      "Utilitaire",
-     "Immunité totale aux <strong><a class=\"rule-ref\" href=\"livre_5.html#chap-22-4\"\n                                                data-tip=\"Embuscade : sans Vigilance, pas de réaction défensive. Détection au brouillard (§22.4).\">embuscades</a></strong>\n                                        et aux attaques de dos."
+     "Immunité totale aux <strong><a class=\"rule-ref\" href=\"livre_5.html#chap-21-4\"\n                                                data-tip=\"Embuscade : sans Vigilance, pas de réaction défensive. Détection au brouillard (§21.4).\">embuscades</a></strong>\n                                        et aux attaques de dos."
     ],
     [
      "<strong>Instinct du Chasseur</strong>",
@@ -1150,7 +1150,7 @@
      },
      "Intuition (INT, INS)",
      "Utilitaire",
-     "Pose et détecte les pièges de campagne ; les\n                                        proies prises sont <strong><a class=\"rule-ref\"\n                                                href=\"livre_6.html#sec-25-1\"\n                                                data-tip=\"Immobilisé : impossible de faire la moindre action de mouvement (§25.1).\">Immobilisées</a></strong>."
+     "Pose et détecte les pièges de campagne ; les\n                                        proies prises sont <strong><a class=\"rule-ref\"\n                                                href=\"livre_6.html#sec-24-1\"\n                                                data-tip=\"Immobilisé : impossible de faire la moindre action de mouvement (§24.1).\">Immobilisées</a></strong>."
     ],
     [
      "<strong>Sphère de Résonance</strong>",
@@ -1222,7 +1222,7 @@
      "<strong>Vigilance Réflexe</strong>",
      "Observation (VUE, INS)",
      "Utilitaire, Défensif",
-     "Immunise contre l'effet de surprise, réaction défensive conservée en\n                                        <a class=\"rule-ref\" href=\"livre_5.html#chap-22-4\"\n                                            data-tip=\"Embuscade : sans Vigilance, pas de réaction défensive. Détection au brouillard (§22.4).\">embuscade</a>."
+     "Immunise contre l'effet de surprise, réaction défensive conservée en\n                                        <a class=\"rule-ref\" href=\"livre_5.html#chap-21-4\"\n                                            data-tip=\"Embuscade : sans Vigilance, pas de réaction défensive. Détection au brouillard (§21.4).\">embuscade</a>."
     ],
     [
      {
@@ -1231,7 +1231,7 @@
      },
      "Observation (VUE, INS)",
      "Utilitaire, Défensif",
-     "<strong>+2</strong> aux duels de\n                                        détection du\n                                        brouillard (<a class=\"rule-ref\" href=\"livre_5.html#chap-22-4\"\n                                            data-tip=\"Brouillard de Guerre : détection asymétrique, duels d'Observation contre Discrétion (§22.4).\">Livre\n                                            V §22.4</a>)."
+     "<strong>+2</strong> aux duels de\n                                        détection du\n                                        brouillard (<a class=\"rule-ref\" href=\"livre_5.html#chap-21-4\"\n                                            data-tip=\"Brouillard de Guerre : détection asymétrique, duels d'Observation contre Discrétion (§21.4).\">Livre\n                                            V §21.4</a>)."
     ],
     [
      {
@@ -1255,7 +1255,7 @@
      "<strong>Pistolet & Tir Rapide</strong>",
      "Ballistique (AGI)",
      "Offensif",
-     "Sur réussite nette : la cible est <strong><a class=\"rule-ref\"\n                                                href=\"livre_6.html#sec-25-1\"\n                                                data-tip=\"Ralenti : toute action coûte le double de PA.\">Ralentie</a></strong>\n                                        pour 1 tour. Sur 5 ou 6 au dé : la cible <strong><a class=\"rule-ref\"\n                                                href=\"livre_6.html#sec-25-1\"\n                                                data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">tombe\n                                                au sol</a></strong>."
+     "Sur réussite nette : la cible est <strong><a class=\"rule-ref\"\n                                                href=\"livre_6.html#sec-24-1\"\n                                                data-tip=\"Ralenti : toute action coûte le double de PA.\">Ralentie</a></strong>\n                                        pour 1 tour. Sur 5 ou 6 au dé : la cible <strong><a class=\"rule-ref\"\n                                                href=\"livre_6.html#sec-24-1\"\n                                                data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">tombe\n                                                au sol</a></strong>."
     ],
     [
      {
@@ -1438,7 +1438,7 @@
      "<strong>Frappe Jugulaire</strong>",
      "Armes Perçantes (AGI)",
      "Offensif",
-     "Gorge et carotides : sur Delta ≥ 3, <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-25-2\"\n                                            data-tip=\"Saignement : PV directs en début de tour, puis −1/tour. Tout soin le stoppe (§25.2).\">Saignement</a>\n                                        (résiduels = vos entraînements)."
+     "Gorge et carotides : sur Delta ≥ 3, <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Saignement : PV directs en début de tour, puis −1/tour. Tout soin le stoppe (§24.2).\">Saignement</a>\n                                        (résiduels = vos entraînements)."
     ],
     [
      {
@@ -1456,7 +1456,7 @@
      },
      "Armes Perçantes (AGI)",
      "Offensif",
-     "Ajoute <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-25-2\"\n                                            data-tip=\"Asphyxie : PV + drain de 1 PA par tour. Soin : désobstruction (premiers soins + kit).\">Asphyxie</a>\n                                        (drain 1 PA/tour)."
+     "Ajoute <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Asphyxie : PV + drain de 1 PA par tour. Soin : désobstruction (premiers soins + kit).\">Asphyxie</a>\n                                        (drain 1 PA/tour)."
     ],
     [
      {
@@ -1471,7 +1471,7 @@
      "<strong>Arts Martiaux</strong>",
      "Mains Nues (FOR, AGI)",
      "Offensif, Défensif",
-     "Vous parez sans malus, <a class=\"rule-ref\" href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Canon Entravé : arme longue + ennemi adjacent = −2 au tir (annulable pour +1 PA de visée).\">immunité\n                                            Canon Entravé</a>. Sur choc traumatique ou Delta ≥ 4 : refoulement d'1\n                                        case."
+     "Vous parez sans malus, <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Canon Entravé : arme longue + ennemi adjacent = −2 au tir (annulable pour +1 PA de visée).\">immunité\n                                            Canon Entravé</a>. Sur choc traumatique ou Delta ≥ 4 : refoulement d'1\n                                        case."
     ],
     [
      {
@@ -1507,7 +1507,7 @@
      },
      "Mains Nues (FOR, AGI)",
      "Offensif, Défensif",
-     "Sur critique, <a class=\"rule-ref\"\n                                                href=\"livre_6.html#sec-25-1\"\n                                                data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).\">Déstabilisé</a>\n                                        aux ennemis adjacents."
+     "Sur critique, <a class=\"rule-ref\"\n                                                href=\"livre_6.html#sec-24-1\"\n                                                data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).\">Déstabilisé</a>\n                                        aux ennemis adjacents."
     ],
     [
      {
@@ -1534,7 +1534,7 @@
      },
      "Mains Nues (FOR, AGI)",
      "Offensif, Défensif",
-     "<a class=\"rule-ref\"\n                                                href=\"livre_6.html#sec-25-1\"\n                                                data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À\n                                                Terre</a> sur Delta ≥ 2."
+     "<a class=\"rule-ref\"\n                                                href=\"livre_6.html#sec-24-1\"\n                                                data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À\n                                                Terre</a> sur Delta ≥ 2."
     ],
     [
      {
@@ -1543,7 +1543,7 @@
      },
      "Mains Nues (FOR, AGI)",
      "Offensif, Défensif",
-     "Au contact, <a class=\"rule-ref\"\n                                                href=\"livre_6.html#sec-25-1\"\n                                                data-tip=\"Immobilisé : impossible de faire la moindre action de mouvement (§25.1).\">Immobilisé</a>\n                                        + 3 dégâts sans armure."
+     "Au contact, <a class=\"rule-ref\"\n                                                href=\"livre_6.html#sec-24-1\"\n                                                data-tip=\"Immobilisé : impossible de faire la moindre action de mouvement (§24.1).\">Immobilisé</a>\n                                        + 3 dégâts sans armure."
     ],
     [
      {
@@ -1558,7 +1558,7 @@
      "<strong>Perforation de Silicate</strong>",
      "Mains Nues (FOR, AGI)",
      "Offensif",
-     "Anti-blindage : ignore 2 d'armure, dégâts <a class=\"rule-ref\"\n                                            href=\"livre_6.html#chap-24\"\n                                            data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).\">Absolus</a>\n                                        contre carapaces de pierre."
+     "Anti-blindage : ignore 2 d'armure, dégâts <a class=\"rule-ref\"\n                                            href=\"livre_6.html#chap-23\"\n                                            data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">Absolus</a>\n                                        contre carapaces de pierre."
     ],
     [
      {
@@ -1576,13 +1576,13 @@
      },
      "Mains Nues (FOR, AGI)",
      "Offensif",
-     "Ignore 4, <a class=\"rule-ref\"\n                                                href=\"livre_6.html#sec-25-1\"\n                                                data-tip=\"Sonné : aucune action. La créature tombe immédiatement à terre.\">Sonné</a>\n                                        sur Delta ≥ 2."
+     "Ignore 4, <a class=\"rule-ref\"\n                                                href=\"livre_6.html#sec-24-1\"\n                                                data-tip=\"Sonné : aucune action. La créature tombe immédiatement à terre.\">Sonné</a>\n                                        sur Delta ≥ 2."
     ],
     [
      "<strong>Chirurgie</strong>",
      "Médecine Avancée (ÉRU, INT)",
      "Utilitaire",
-     "Referme les blessures critiques et lève l'état <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-25-5\"\n                                            data-tip=\"Souffrant : seul un soin unique ≥ CON×2 le lève. Les soins ordinaires ne le lèvent jamais.\">Souffrant</a>.\n                                        Soigne aussi les dégâts résiduels de <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-25-2\"\n                                            data-tip=\"Saignement : PV directs en début de tour, puis −1/tour. Tout soin le stoppe (§25.2).\">saignement</a>."
+     "Referme les blessures critiques et lève l'état <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-5\"\n                                            data-tip=\"Souffrant : seul un soin unique ≥ CON×2 le lève. Les soins ordinaires ne le lèvent jamais.\">Souffrant</a>.\n                                        Soigne aussi les dégâts résiduels de <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Saignement : PV directs en début de tour, puis −1/tour. Tout soin le stoppe (§24.2).\">saignement</a>."
     ],
     [
      {
@@ -1789,7 +1789,7 @@
      },
      "Intimidation (CHA, FOR)",
      "Social, Offensif",
-     "<a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-25-1\"\n                                            data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).\">Déstabilisé</a>\n                                        à tous les ennemis à moins de 3 cases."
+     "<a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).\">Déstabilisé</a>\n                                        à tous les ennemis à moins de 3 cases."
     ],
     [
      {
@@ -1885,7 +1885,7 @@
      "◆ C3 · Réaction",
      "1",
      "+2",
-     "Hors de ton tour, 1/round. Le +2 s'ajoute aux PA des pièces (comme les sorts, Livre IV §21)."
+     "Hors de ton tour, 1/round. Le +2 s'ajoute aux PA des pièces (comme les sorts, Livre IV §20)."
     ],
     [
      "◆ C4 · Opportunité",
@@ -2228,7 +2228,7 @@
     [
      "+1 XP",
      "<strong>Hybride (deux familles)</strong> (+0 PA)",
-     "Frappe + intimidation, soin + commandement... Le +1 ne compte pas dans les PA (comme l’Injonction Douce, Livre IV §21)."
+     "Frappe + intimidation, soin + commandement... Le +1 ne compte pas dans les PA (comme l’Injonction Douce, Livre IV §20)."
     ],
     [
      "×2 XP",
@@ -3402,7 +3402,7 @@
     "parente": "Vigilance Réflexe",
     "source": "Observation (VUE, INS)",
     "type": "Utilitaire, Défensif",
-    "effets": "+2 aux duels de détection du brouillard (Livre V §22.4)."
+    "effets": "+2 aux duels de détection du brouillard (Livre V §21.4)."
    },
    {
     "nom": "Détection Thermique",
@@ -4545,7 +4545,7 @@
     "parente": "Vigilance Réflexe",
     "source": "Observation (VUE, INS)",
     "type": "Utilitaire, Défensif",
-    "effets": "+2 aux duels de détection du brouillard (Livre V §22.4)."
+    "effets": "+2 aux duels de détection du brouillard (Livre V §21.4)."
    },
    "Détection Thermique": {
     "nom": "Détection Thermique",
@@ -5101,7 +5101,7 @@
      "nom": "Réaction",
      "cout_xp": "1",
      "cout_pa": "+2",
-     "cadre": "Hors de ton tour, 1/round. Le +2 s'ajoute aux PA des pièces (comme les sorts, Livre IV §21)."
+     "cadre": "Hors de ton tour, 1/round. Le +2 s'ajoute aux PA des pièces (comme les sorts, Livre IV §20)."
     },
     {
      "id": "C4",
@@ -5145,7 +5145,7 @@
      "nom": "Hybride (deux familles)",
      "cout": "+1 XP",
      "cout_pa": "+0 PA",
-     "detail": "Frappe + intimidation, soin + commandement... Le +1 ne compte pas dans les PA (comme l’Injonction Douce, Livre IV §21)."
+     "detail": "Frappe + intimidation, soin + commandement... Le +1 ne compte pas dans les PA (comme l’Injonction Douce, Livre IV §20)."
     },
     {
      "id": "M7",

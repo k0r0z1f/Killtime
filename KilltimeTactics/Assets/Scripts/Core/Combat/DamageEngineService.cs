@@ -133,7 +133,7 @@ namespace Killtime.Core.Combat
                 : "";
             string attackRollStr = $"{SkillDefinitions.GetDisplayName(attackSkill)} : {duel.AttackDie} [Tirage {attackRoll.RawRoll} + États {duel.AttackStatusMod} ({statusAttDetail}) + ({aimText}){paAttText}{entraveText}{coverText}{ecText}{elevationText}{stealthText}{channelText}{prepText}{nightText} = Total {attackRoll.Total}]{augText}{critAttText}";
 
-            // Traçabilité Livre V §20.1 (duel aveugle) : déclarations masquées puis révélation.
+            // Traçabilité Livre V §19.1 (duel aveugle) : déclarations masquées puis révélation.
             // RD-048 : la canalisation consommée à l'attaque est tracée, la punition
             // de progression du défenseur aussi.
             string channelDefTag = ChannelingState.IsChanneling(defender) ? " [Canalisation -1]" : "";
@@ -360,13 +360,13 @@ namespace Killtime.Core.Combat
 
             int absorbed = Math.Min(totalArmor, rawDamage);
             int finalDamage = isThomasSymbioticImmune ? 0 : Math.Max(0, rawDamage - absorbed);
-            // Champs de force portés (Livre VIII §32.2) : la barrière absorbe avant la
+            // Champs de force portés (Livre VIII §31.2) : la barrière absorbe avant la
             // chair — aucun choc traumatique tant qu'elle encaisse tout.
             int shieldRemainder = defender.AbsorbShield(finalDamage);
             int shieldAbsorbed = Math.Max(0, finalDamage - shieldRemainder);
             finalDamage = Math.Max(0, shieldRemainder);
 
-            // RD-087 (Livre XII §49-50) : réactions des Boss Titans aux dégâts
+            // RD-087 (Livre XII §48-49) : réactions des Boss Titans aux dégâts
             // élémentaires (Mémoire des Flammes, Absorption Thermique, Choc
             // Thermique) — avant application létale, tracé log. Inerte sans
             // spé boss ni dégât typé (simple expiration de fissure).
@@ -437,7 +437,7 @@ namespace Killtime.Core.Combat
                 defender.ApplyStatus(StatusEffect.Sonne, 1);
             }
 
-            // RD-201 (Livre V §22.2) : Crosse — bruts (base + différentiel,
+            // RD-201 (Livre V §21.2) : Crosse — bruts (base + différentiel,
             // avant armure) > CON x2 (seuil d'encaissement) => Déstabilisé.
             if (!isThomasSymbioticImmune && duel.IsButtstroke)
             {
@@ -480,7 +480,7 @@ namespace Killtime.Core.Combat
             }
 
             // =====================================================================
-            // RD-082 (Livre VI §24.4) : DÉCLENCHEMENT DES EFFETS SUR MARGE ÉLEVÉE
+            // RD-082 (Livre VI §23.4) : DÉCLENCHEMENT DES EFFETS SUR MARGE ÉLEVÉE
             // =====================================================================
             bool bleedApplied = false;
             int bleedDoT = 0;
@@ -538,7 +538,7 @@ namespace Killtime.Core.Combat
                 }
             }
 
-            // RD-204 (Livre V §20.2) : choc traumatique lourd — dégâts nets sur
+            // RD-204 (Livre V §19.2) : choc traumatique lourd — dégâts nets sur
             // une zone > 2xCON en un coup = +1 Essoufflement auto + épreuve CON.
             bool traumaticShockApplied = false;
             bool traumaticShockConFailed = false;
@@ -631,12 +631,12 @@ namespace Killtime.Core.Combat
 
             if (bleedApplied)
             {
-                log += $" | 🩸 <b>HÉMORRAGIE (Livre VI §24.4)</b> : Saignement (DoT résiduel {bleedDoT})";
+                log += $" | 🩸 <b>HÉMORRAGIE (Livre VI §23.4)</b> : Saignement (DoT résiduel {bleedDoT})";
             }
 
             if (fireApplied)
             {
-                log += $" | 🔥 <b>COMBUSTION (Livre VI §24.4)</b> : En Feu pendant {fireTurns} tour(s)";
+                log += $" | 🔥 <b>COMBUSTION (Livre VI §23.4)</b> : En Feu pendant {fireTurns} tour(s)";
             }
 
             if (!string.IsNullOrEmpty(titanBossTag))
@@ -646,12 +646,12 @@ namespace Killtime.Core.Combat
 
             if (stunApplied)
             {
-                log += " | 😵 <b>ASSOMMEMENT NET (Livre VI §24.4)</b> : Inconscient 1 tour direct";
+                log += " | 😵 <b>ASSOMMEMENT NET (Livre VI §23.4)</b> : Inconscient 1 tour direct";
             }
 
             if (wasDisintegrated)
             {
-                log += " | ⚛️ <b>DÉSINTÉGRATION TOTALE (Livre VI §24.4 : Diff >= 20 & Destruction 6)</b> : Cible pulvérisée en poussière !";
+                log += " | ⚛️ <b>DÉSINTÉGRATION TOTALE (Livre VI §23.4 : Diff >= 20 & Destruction 6)</b> : Cible pulvérisée en poussière !";
             }
             else if (fatalRes == FatalBlowResolution.InstantDeath)
             {
@@ -675,7 +675,7 @@ namespace Killtime.Core.Combat
                 log += "\n   " + moraleRes.Log;
             }
 
-            // RD-201 (Livre V §22.2) : toute frappe à Mains Nues au contact
+            // RD-201 (Livre V §21.2) : toute frappe à Mains Nues au contact
             // refoule sur choc traumatique ou Delta >= 4 (généralisé depuis
             // la spé Arts Martiaux : l'option Mains Nues l'exige).
             bool causedKnockback = !isThomasSymbioticImmune && (critCausedKnockback
@@ -727,7 +727,7 @@ namespace Killtime.Core.Combat
             };
         }
 
-        // RD-051 hook (Livre V §22.3) : +100 armes lourdes vs véhicules /
+        // RD-051 hook (Livre V §21.3) : +100 armes lourdes vs véhicules /
         // structures. Le duel aveugle standard ne connaît pas de cible véhicule
         // (que des CharacterStats) : l'appelant véhicule (arène, grenades,
         // SpecialManeuverService.StrikeVehicleSubsystem) applique ce bonus via

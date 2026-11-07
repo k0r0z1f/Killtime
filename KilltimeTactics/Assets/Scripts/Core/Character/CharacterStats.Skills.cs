@@ -76,7 +76,7 @@ namespace Killtime.Core.Character
             // Livre VI : Agonisant (-2 détresse vitale / panique)
             if (ActiveStatus.HasFlag(StatusEffect.Agonisant)) mod -= 2;
 
-            // RD-083 (Livre VI §25.3) : Poids du Trépas — ressuscité affaibli :
+            // RD-083 (Livre VI §24.3) : Poids du Trépas — ressuscité affaibli :
             // malus sur TOUS les jets pendant (10 - CON) jours réels.
             mod += GetResurrectionSequelaeModifier();
 

@@ -25,7 +25,7 @@ namespace Killtime.Core.Character
         Empoisonne = 1 << 12,  // Dégâts toxiques par tour
         EnFeu = 1 << 13,       // Dégâts thermiques continus
         Saignement = 1 << 14,  // Hémorragie (perte de PV par tour sans compression)
-        // RD-083 (Livre VI §24.3 & §25.1) : blessure critique ouverte. Statut
+        // RD-083 (Livre VI §23.3 & §24.1) : blessure critique ouverte. Statut
         // persistant — seuls des Soins Majeurs (CON×2 en un seul soin
         // Premiers Soins / Chirurgie) le lèvent. Soins ordinaires inefficaces.
         Souffrant = 1 << 22,   // Blessure grave ouverte (Soins Majeurs requis)

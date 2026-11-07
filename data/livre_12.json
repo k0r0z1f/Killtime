@@ -13,13 +13,13 @@
    "blocs": [
     {
      "type": "html",
-     "html": "\n\n                    <div class=\"doc-badge-row\">\n                        <span class=\"doc-badge-pill\">\n                            <svg width=\"12\" height=\"12\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\"\n                                stroke-width=\"2\">\n                                <path d=\"M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z\" />\n                                <circle cx=\"12\" cy=\"12\" r=\"3\" />\n                            </svg>\n                            Livre XII — Bestiaire &amp; Entités Hostiles\n                        </span>\n                        <span class=\"doc-badge-pill accent\">3 Rangs de Menace</span>\n                        <span class=\"doc-badge-pill live\">Homologué Tables de Jeu</span>\n                    </div>\n\n                    <h1 class=\"doc-title\">Livre XII : Le Bestiaire&nbsp;&amp; Menaces Cosmiques</h1>\n                    <p class=\"doc-lead\">\n                        Dans le Système RP, l'adversité ne se mesure pas à de simples sacs de points de vie passifs.\n                        Tout ennemi — du coupe-jarret embusqué dans les taillis jusqu'au titan de magma largué à travers\n                        les lignes temporelles par Capricius — opère sous la <strong>même rigueur mathématique que les\n                            héros</strong> : calcul dynamique des Points d'Action (PA), seuils d'encaissement\n                        anatomique, malus d'essoufflement et ripostes en réaction. Ce compendium rassemble l'ensemble\n                        des profils martiaux, faunes indigènes et avatars d'annihilation du multivers.\n                    </p>\n\n                    <hr class=\"doc-divider\">\n\n                    <!-- ================= CHAPITRE 43 ================= -->\n                    "
+     "html": "\n\n                    <div class=\"doc-badge-row\">\n                        <span class=\"doc-badge-pill\">\n                            <svg width=\"12\" height=\"12\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\"\n                                stroke-width=\"2\">\n                                <path d=\"M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z\" />\n                                <circle cx=\"12\" cy=\"12\" r=\"3\" />\n                            </svg>\n                            Livre XII — Bestiaire &amp; Entités Hostiles\n                        </span>\n                        <span class=\"doc-badge-pill accent\">3 Rangs de Menace</span>\n                        <span class=\"doc-badge-pill live\">Homologué Tables de Jeu</span>\n                    </div>\n\n                    <h1 class=\"doc-title\">Livre XII : Le Bestiaire&nbsp;&amp; Menaces Cosmiques</h1>\n                    <p class=\"doc-lead\">\n                        Dans le Système RP, l'adversité ne se mesure pas à de simples sacs de points de vie passifs.\n                        Tout ennemi — du coupe-jarret embusqué dans les taillis jusqu'au titan de magma largué à travers\n                        les lignes temporelles par Capricius — opère sous la <strong>même rigueur mathématique que les\n                            héros</strong> : calcul dynamique des Points d'Action (PA), seuils d'encaissement\n                        anatomique, malus d'essoufflement et ripostes en réaction. Ce compendium rassemble l'ensemble\n                        des profils martiaux, faunes indigènes et avatars d'annihilation du multivers.\n                    </p>\n\n                    <hr class=\"doc-divider\">\n\n                    <!-- ================= CHAPITRE 42 ================= -->\n                    "
     }
    ]
   },
   {
-   "id": "chap-50",
-   "symbole": "Chapitre 50.",
+   "id": "chap-49",
+   "symbole": "Chapitre 49.",
    "titre": "Typologie des Adversaires &amp; Calibrage Tactique",
    "blocs": [
     {
@@ -32,7 +32,7 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <h3>50.2 Table de Calibrage des Rencontres</h3>\n                    "
+     "html": "\n\n                    <h3>49.2 Table de Calibrage des Rencontres</h3>\n                    "
     },
     {
      "type": "ref",
@@ -40,14 +40,14 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <hr class=\"doc-divider\">\n\n                    <!-- ================= CHAPITRE 44 ================= -->\n                    "
+     "html": "\n\n                    <hr class=\"doc-divider\">\n\n                    <!-- ================= CHAPITRE 43 ================= -->\n                    "
     }
    ],
    "nav": "Typologie & Calibrage"
   },
   {
-   "id": "chap-51",
-   "symbole": "Chapitre 51.",
+   "id": "chap-50",
+   "symbole": "Chapitre 50.",
    "titre": "Humanoïdes, Hors-la-Loi &amp; Factions Mortelles",
    "blocs": [
     {
@@ -92,14 +92,14 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <hr class=\"doc-divider\">\n\n                    <!-- ================= CHAPITRE 45 ================= -->\n                    "
+     "html": "\n\n                    <hr class=\"doc-divider\">\n\n                    <!-- ================= CHAPITRE 44 ================= -->\n                    "
     }
    ],
    "nav": "Humanoïdes & Factions"
   },
   {
-   "id": "chap-52",
-   "symbole": "Chapitre 52.",
+   "id": "chap-51",
+   "symbole": "Chapitre 51.",
    "titre": "Faune Sauvage &amp; Monstres Telluriques d'Hybris",
    "blocs": [
     {
@@ -120,19 +120,19 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <hr class=\"doc-divider\">\n\n                    <!-- ================= CHAPITRE 46 ================= -->\n                    "
+     "html": "\n\n                    <hr class=\"doc-divider\">\n\n                    <!-- ================= CHAPITRE 45 ================= -->\n                    "
     }
    ],
    "nav": "Faune & Monstres d'Hybris"
   },
   {
-   "id": "chap-53",
-   "symbole": "Chapitre 53.",
+   "id": "chap-52",
+   "symbole": "Chapitre 52.",
    "titre": "Entités Cosmiques, Arcaniques &amp; Disciples de l'Entropie",
    "blocs": [
     {
      "type": "html",
-     "html": "\n\n                    <p>\n                        Au sommet de l'échelle des périls trônent les manifestations de la crise cosmique causée par\n                        Capricius et l'inondation d'Eau Sombre.\n                    </p>\n\n                    <p>\n                        Les Disciples relèvent de <strong>deux générations</strong> : le <strong>prototype de\n                            Terre</strong>, œuvre solitaire de Capricius (~−1 Ga, tir balistique plasma à ~c,\n                        ré-impression lithosphérique à l'arrivée en 1772 HSC), puis la <strong>série industrielle\n                            impériale (Air, Feu, Eau)</strong>, projetée par trous de ver + 5e Force (Livre X §41.3) —\n                        plus rapide, mais dépendante d'un ancrage. Feu et Eau, largués en dormance, restent à ce jour\n                        <strong>non révélés</strong>.\n                    </p>\n\n                    <!-- FICHE MINULICAN -->\n                    "
+     "html": "\n\n                    <p>\n                        Au sommet de l'échelle des périls trônent les manifestations de la crise cosmique causée par\n                        Capricius et l'inondation d'Eau Sombre.\n                    </p>\n\n                    <p>\n                        Les Disciples relèvent de <strong>deux générations</strong> : le <strong>prototype de\n                            Terre</strong>, œuvre solitaire de Capricius (~−1 Ga, tir balistique plasma à ~c,\n                        ré-impression lithosphérique à l'arrivée en 1772 HSC), puis la <strong>série industrielle\n                            impériale (Air, Feu, Eau)</strong>, projetée par trous de ver + 5e Force (Livre X §40.3) —\n                        plus rapide, mais dépendante d'un ancrage. Feu et Eau, largués en dormance, restent à ce jour\n                        <strong>non révélés</strong>.\n                    </p>\n\n                    <!-- FICHE MINULICAN -->\n                    "
     },
     {
      "type": "ref",
@@ -172,14 +172,14 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <hr class=\"doc-divider\">\n\n                    <!-- ================= CHAPITRE 47 ================= -->\n                    "
+     "html": "\n\n                    <hr class=\"doc-divider\">\n\n                    <!-- ================= CHAPITRE 46 ================= -->\n                    "
     }
    ],
    "nav": "Entités & Disciples"
   },
   {
-   "id": "chap-54",
-   "symbole": "Chapitre 54.",
+   "id": "chap-53",
+   "symbole": "Chapitre 53.",
    "titre": "Automates de Guerre &amp; Cybernétique Impériale",
    "blocs": [
     {

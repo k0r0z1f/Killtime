@@ -45,7 +45,7 @@ namespace Killtime.Core.Rules
         public int EmergencyBreathBonusAP = 2;
         public int EmergencyBreathEssoufflementCost = 1;
         public float LastBreathAPRatio = 0.5f;
-        // Duel aveugle (Livres II §7 + VI §20) : bonus au total par point
+        // Duel aveugle (Livres II §7 + VI §19) : bonus au total par point
         // d'Essoufflement (PE) engagé dans une déclaration (plafond = Constitution).
         public int DuelPEBonusPerPoint = 1;
 
@@ -59,15 +59,15 @@ namespace Killtime.Core.Rules
         public int SingleAttackActionLimit = 1;
         public int MultiDiceAttackActionLimit = 2;
 
-        // --- Livre V §21.3 : Couvert & Visibilité ---
-        [Header("Couvert & Visibilité (Livre V §21.3)")]
+        // --- Livre V §20.3 : Couvert & Visibilité ---
+        [Header("Couvert & Visibilité (Livre V §20.3)")]
         public int HalfCoverAttackPenalty = -1;
         public int ThreeQuartersCoverAttackPenalty = -2;
         public bool FullCoverBlocksAttack = true;
         public bool CoverIgnoredAtContactDistance = true;
 
-        // --- Livre V §21.3 : Cône de visée (lecture rigoureuse) ---
-        [Header("Cône de Visée (Livre V §21.3)")]
+        // --- Livre V §20.3 : Cône de visée (lecture rigoureuse) ---
+        [Header("Cône de Visée (Livre V §20.3)")]
         public float CoverEyeHeight = 1.5f;
         public float CoverBodyHeight = 1.8f;
         public float CoverHalfHeight = 0.7f;
@@ -109,13 +109,13 @@ namespace Killtime.Core.Rules
         [Tooltip("Si vrai, le sprint (3+ cases) bloque tout tir à distance pour le reste du tour (RD-038).")]
         public bool SprintBlocksRanged = true;
 
-        // --- RD-084 : Attaques combinées & Poursuite (Livre V §21.1 & §21.2) ---
-        [Header("Assaut groupé & Poursuite (RD-084, Livre V §21.1-25.2)")]
-        [Tooltip("Attaquants minimum pour frapper à l'unisson (2 par défaut, Livre V §21.2).")]
+        // --- RD-084 : Attaques combinées & Poursuite (Livre V §20.1 & §20.2) ---
+        [Header("Assaut groupé & Poursuite (RD-084, Livre V §20.1-24.2)")]
+        [Tooltip("Attaquants minimum pour frapper à l'unisson (2 par défaut, Livre V §20.2).")]
         public int CombinedAttackMinMembers = 2;
         [Tooltip("Coût en PA par participant pour l'attaque combinée (2 par défaut).")]
         public int CombinedAttackAPCost = 2;
-        [Tooltip("Faillites cumulées avant capture immédiate de la proie (4 par défaut, Livre V §21.1).")]
+        [Tooltip("Faillites cumulées avant capture immédiate de la proie (4 par défaut, Livre V §20.1).")]
         public int PursuitFailuresToCapture = 4;
         [Tooltip("Distance minimale maintenue sur réussite de la proie (1 case par défaut).")]
         public int PursuitMinDistance = 1;
@@ -123,7 +123,7 @@ namespace Killtime.Core.Rules
         public int PursuitAPCost = 1;
 
         // --- RD-204 : Marges manquantes (Possession, Attirer/Repousser, Choc lourd, Désarmement) ---
-        [Header("Marges RD-204 (Livre V §20.2 & VI §24.4)")]
+        [Header("Marges RD-204 (Livre V §19.2 & VI §23.4)")]
         [Tooltip("Différentiel requis en épreuve Esprit pour posséder une cible (10 par défaut).")]
         public int PossessDifferentialThreshold = 10;
         [Tooltip("Différentiel requis pour posséder un boss / Titan (15 par défaut).")]
@@ -143,11 +143,11 @@ namespace Killtime.Core.Rules
         public int ChannelStartAPCost = 1;
         [Tooltip("Bonus au jet conféré par la canalisation consommée à l'attaque (+2 par défaut, comme la Préparation).")]
         public int ChannelAttackBonus = 2;
-        [Tooltip("Malus en défense tant que le combattant canalise (-1 par défaut, Livre V §20.3).")]
+        [Tooltip("Malus en défense tant que le combattant canalise (-1 par défaut, Livre V §19.3).")]
         public int ChannelDefensePenalty = -1;
 
-        // --- RD-202 : Préparation & Dégagement (Livre V §20.3) ---
-        [Header("Préparation & Dégagement (RD-202, Livre V §20.3)")]
+        // --- RD-202 : Préparation & Dégagement (Livre V §19.3) ---
+        [Header("Préparation & Dégagement (RD-202, Livre V §19.3)")]
         [Tooltip("Coût en PA pour préparer son action suivante (+2 au jet, 1 PA par défaut).")]
         public int PreparationAPCost = 1;
         [Tooltip("Bonus au jet conféré par la préparation consommée à l'action ou à la parade suivante (+2 par défaut, one-shot).")]
@@ -155,8 +155,8 @@ namespace Killtime.Core.Rules
         [Tooltip("Surcoût en PA du déplacement de fuite suivant immédiatement une attaque/parade résolue (+1 par défaut).")]
         public int GetAwayExtraAPCost = 1;
 
-        // --- RD-051 : Véhicules & Sous-systèmes (Livre V §22.3) ---
-        [Header("Véhicules & Sous-systèmes (Livre V §22.3 — RD-051)")]
+        // --- RD-051 : Véhicules & Sous-systèmes (Livre V §21.3) ---
+        [Header("Véhicules & Sous-systèmes (Livre V §21.3 — RD-051)")]
         [Tooltip("Coût en PA pour embarquer à bord d'un véhicule (2 par défaut).")]
         public int VehicleEmbarkAPCost = 2;
         [Tooltip("Bonus de dégâts des armes lourdes contre véhicules et structures (+100 par défaut).")]
@@ -170,8 +170,8 @@ namespace Killtime.Core.Rules
         [Tooltip("PV max d'un sous-système de gabarit Croiseur (palier 1001-10000).")]
         public int VehicleHpCroiseurMax = 10000;
 
-        // --- Livre V, Chap. 21 : VATS Anatomique ---
-        [Header("Anatomie Chirurgicale (Livre V, Chap. 21)")]
+        // --- Livre V, Chap. 20 : VATS Anatomique ---
+        [Header("Anatomie Chirurgicale (Livre V, Chap. 20)")]
         public List<BodyPartRuleEntry> BodyPartRules = new();
 
         // --- Livre I, III & IV : Progression & Arcanotech ---
@@ -192,18 +192,18 @@ namespace Killtime.Core.Rules
         public int BaseMovementAPCost = 1;
         public int RalentiAPMultiplier = 2;
 
-        // --- RD-083 : Souffrant & Soins Majeurs (Livre VI §24.3, §25.1, §25.3) ---
-        [Header("Souffrant & Soins Majeurs (Livre VI §24.3/29.1/29.3)")]
+        // --- RD-083 : Souffrant & Soins Majeurs (Livre VI §23.3, §24.1, §24.3) ---
+        [Header("Souffrant & Soins Majeurs (Livre VI §23.3/29.1/29.3)")]
         [Tooltip("Multiplicateur du seuil de Soins Majeurs : soin unique Premiers Soins/Chirurgie >= CON x Multiplicateur pour lever Souffrant.")]
         public int SouffrantMajorCareMultiplier = 2;
-        [Tooltip("Base de jours réels de convalescence post-résurrection : Durée = Base - CON (Livre VI §25.3).")]
+        [Tooltip("Base de jours réels de convalescence post-résurrection : Durée = Base - CON (Livre VI §24.3).")]
         public int ResurrectionSequelaeBaseDays = 10;
         [Tooltip("Malus en ec sur tous les jets pendant la convalescence post-résurrection (-1 par défaut).")]
         public int ResurrectionSequelaePenalty = -1;
 
-        // --- RD-205 : Stabilisation & Convalescence (Livre VI §25) ---
-        [Header("Stabilisation & Convalescence (Livre VI §25 — RD-205)")]
-        [Tooltip("Coût en PA de la Stabilisation d'un Agonisant au chevet (3 par défaut, Livre VI §25).")]
+        // --- RD-205 : Stabilisation & Convalescence (Livre VI §24) ---
+        [Header("Stabilisation & Convalescence (Livre VI §24 — RD-205)")]
+        [Tooltip("Coût en PA de la Stabilisation d'un Agonisant au chevet (3 par défaut, Livre VI §24).")]
         public int StabilizationAPCost = 3;
         [Tooltip("Difficulté du jet de Premiers Soins pour stabiliser (12 par défaut) : succès = Agonisant → Inconscient stable.")]
         public int StabilizationDifficulty = 12;

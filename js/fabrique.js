@@ -1,5 +1,5 @@
 /* ==========================================================================
-   FABRIQUE DE TECHNIQUES — ATELIER GRAPHE (Livre III chap-15, Livre IX chap-40).
+   FABRIQUE DE TECHNIQUES — ATELIER GRAPHE (Livre III chap-15, Livre IX chap-39).
    Moteur pur FabriqueEngine.compute (châssis + 1-3 pièces,
    M1-M4/M7 par carte effet, M6 hybride auto, croisé ×2
    par carte, signature 7+, plafond PA 6, incompatibilités, prérequis) + initFabrique()
@@ -10,7 +10,7 @@
    (O7 O20 O22 O23 O24 O25 O26 O27 O28 — O7 + zone
    refusé règle 8), Durée M4 (O9/O20/D1/D2/D3/D5/D8 « durée cumulable », 2 crans max), M7 ×2 (toute carte).
    Familles acceptées par compétence liée (types en mecaniques.competences_par_nom,
-   canon Livre II §7.3 / Livre V §21 : Esquive = défensif pur, ni utilitaire ni social) ;
+   canon Livre II §7.3 / Livre V §20 : Esquive = défensif pur, ni utilitaire ni social) ;
    D9 = repousse défensive (miroir de O13).
    Un seul type par technique : le 1er effet posé fixe (off/def/soc/uti, affiché sous ◆),
    les suivants suivent (familles incompatibles masquées du menu).
@@ -94,7 +94,7 @@ function applyDurText(s, du) {
 }
 
 /* Familles d'effets acceptées par la compétence liée (canon : types dans
-   mecaniques.competences_par_nom, Livre II §7.3 / Livre V §21).
+   mecaniques.competences_par_nom, Livre II §7.3 / Livre V §20).
    Ex. 'Défensif Pur' → défensif seul ; 'Offensif, Défensif' → les deux ;
    'Utilitaire' → utilitaire seul. NULL (inconnue) = aucun verrou.
    L'hybride M6 reste pour les compétences mixtes (Mains Nues, Leadership…).
@@ -301,7 +301,7 @@ var FabriqueEngine = {
                 errors.push('Incompatible : ' + pair[0] + ' ⊕ ' + pair[1] + ' (règle 8).');
         });
         /* Familles acceptées : la compétence liée n'ouvre que ses familles
-           (canon §7.3/§21 : Esquive = défensif pur, pas d'utilitaire ni de social).
+           (canon §7.3/§20 : Esquive = défensif pur, pas d'utilitaire ni de social).
            Utilitaire/social ne passent plus partout : ils suivent le type. */
         if (ensAllow) {
             var skillNm = sel.ensSkill || 'Ta compétence';
@@ -575,30 +575,30 @@ function suggestDesc(CAT, sel) {
    Paires (href, tip) reprises verbatim des Livres I-III — rien d'inventé.
    Pur : fabLinkText(s) -> html (échappé + lié, une seule passe). */
 var FAB_REFS = [
-    { k: 'encaissement', href: 'livre_6.html#sec-24-2', tip: 'Encaissement = CON × 2 : seuil comparé aux dégâts du coup (§24.2).' },
+    { k: 'encaissement', href: 'livre_6.html#sec-23-2', tip: 'Encaissement = CON × 2 : seuil comparé aux dégâts du coup (§23.2).' },
     { k: 'essoufflement', href: 'livre_1.html#sec-4-2', tip: 'Essoufflement : 1 point = des PA d’urgence ; ne part pas tout seul, action dédiée pour souffler (§4.2).' },
-    { k: 'ralentie', href: 'livre_6.html#sec-25-1', tip: 'Ralenti : toute action coûte le DOUBLE de PA (§25.1).' },
-    { k: 'ralenti', href: 'livre_6.html#sec-25-1', tip: 'Ralenti : toute action coûte le DOUBLE de PA (§25.1).' },
-    { k: 'à terre', href: 'livre_6.html#sec-25-1', tip: 'À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.' },
-    { k: 'déstabilisée', href: 'livre_6.html#sec-25-1', tip: 'Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).' },
-    { k: 'déstabilisé', href: 'livre_6.html#sec-25-1', tip: 'Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).' },
-    { k: 'étourdie', href: 'livre_6.html#sec-25-1', tip: 'Étourdi : −1 ec sur tous les jets.' },
-    { k: 'étourdi', href: 'livre_6.html#sec-25-1', tip: 'Étourdi : −1 ec sur tous les jets.' },
-    { k: 'absolus', href: 'livre_6.html#chap-24', tip: 'Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).' },
-    { k: 'absolue', href: 'livre_6.html#chap-24', tip: 'Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).' },
-    { k: 'absolu', href: 'livre_6.html#chap-24', tip: 'Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).' },
-    { k: 'sonnée', href: 'livre_6.html#sec-25-1', tip: 'Sonné : aucune action. La créature tombe immédiatement à terre.' },
-    { k: 'sonné', href: 'livre_6.html#sec-25-1', tip: 'Sonné : aucune action. La créature tombe immédiatement à terre.' },
-    { k: 'immobilisée', href: 'livre_6.html#sec-25-1', tip: 'Immobilisé : impossible de faire la moindre action de mouvement (§25.1).' },
-    { k: 'immobilisé', href: 'livre_6.html#sec-25-1', tip: 'Immobilisé : impossible de faire la moindre action de mouvement (§25.1).' },
-    { k: 'paralysée', href: 'livre_6.html#sec-25-1', tip: 'Paralysé : aucune action ni réaction, incapacité totale (§25.1).' },
-    { k: 'paralysé', href: 'livre_6.html#sec-25-1', tip: 'Paralysé : aucune action ni réaction, incapacité totale (§25.1).' },
-    { k: 'agonisante', href: 'livre_6.html#sec-25-1', tip: 'Agonisant : aucune action raisonnée, fuite de 6 cases (1d8). Persiste jusqu’à stabilisation médicale.' },
-    { k: 'agonisant', href: 'livre_6.html#sec-25-1', tip: 'Agonisant : aucune action raisonnée, fuite de 6 cases (1d8). Persiste jusqu’à stabilisation médicale.' },
-    { k: 'saignement', href: 'livre_6.html#sec-25-2', tip: 'Saignement : PV directs en début de tour, puis −1/tour. Tout soin le stoppe (§25.2).' },
-    { k: 'saigne', href: 'livre_6.html#sec-25-2', tip: 'Saignement : PV directs en début de tour, puis −1/tour. Tout soin le stoppe (§25.2).' },
-    { k: 'résiduels', href: 'livre_6.html#sec-25-2', tip: 'Saignement : PV directs en début de tour, puis −1/tour. Tout soin le stoppe (§25.2).' },
-    { k: 'résiduel', href: 'livre_6.html#sec-25-2', tip: 'Saignement : PV directs en début de tour, puis −1/tour. Tout soin le stoppe (§25.2).' },
+    { k: 'ralentie', href: 'livre_6.html#sec-24-1', tip: 'Ralenti : toute action coûte le DOUBLE de PA (§24.1).' },
+    { k: 'ralenti', href: 'livre_6.html#sec-24-1', tip: 'Ralenti : toute action coûte le DOUBLE de PA (§24.1).' },
+    { k: 'à terre', href: 'livre_6.html#sec-24-1', tip: 'À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.' },
+    { k: 'déstabilisée', href: 'livre_6.html#sec-24-1', tip: 'Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).' },
+    { k: 'déstabilisé', href: 'livre_6.html#sec-24-1', tip: 'Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).' },
+    { k: 'étourdie', href: 'livre_6.html#sec-24-1', tip: 'Étourdi : −1 ec sur tous les jets.' },
+    { k: 'étourdi', href: 'livre_6.html#sec-24-1', tip: 'Étourdi : −1 ec sur tous les jets.' },
+    { k: 'absolus', href: 'livre_6.html#chap-23', tip: 'Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).' },
+    { k: 'absolue', href: 'livre_6.html#chap-23', tip: 'Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).' },
+    { k: 'absolu', href: 'livre_6.html#chap-23', tip: 'Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).' },
+    { k: 'sonnée', href: 'livre_6.html#sec-24-1', tip: 'Sonné : aucune action. La créature tombe immédiatement à terre.' },
+    { k: 'sonné', href: 'livre_6.html#sec-24-1', tip: 'Sonné : aucune action. La créature tombe immédiatement à terre.' },
+    { k: 'immobilisée', href: 'livre_6.html#sec-24-1', tip: 'Immobilisé : impossible de faire la moindre action de mouvement (§24.1).' },
+    { k: 'immobilisé', href: 'livre_6.html#sec-24-1', tip: 'Immobilisé : impossible de faire la moindre action de mouvement (§24.1).' },
+    { k: 'paralysée', href: 'livre_6.html#sec-24-1', tip: 'Paralysé : aucune action ni réaction, incapacité totale (§24.1).' },
+    { k: 'paralysé', href: 'livre_6.html#sec-24-1', tip: 'Paralysé : aucune action ni réaction, incapacité totale (§24.1).' },
+    { k: 'agonisante', href: 'livre_6.html#sec-24-1', tip: 'Agonisant : aucune action raisonnée, fuite de 6 cases (1d8). Persiste jusqu’à stabilisation médicale.' },
+    { k: 'agonisant', href: 'livre_6.html#sec-24-1', tip: 'Agonisant : aucune action raisonnée, fuite de 6 cases (1d8). Persiste jusqu’à stabilisation médicale.' },
+    { k: 'saignement', href: 'livre_6.html#sec-24-2', tip: 'Saignement : PV directs en début de tour, puis −1/tour. Tout soin le stoppe (§24.2).' },
+    { k: 'saigne', href: 'livre_6.html#sec-24-2', tip: 'Saignement : PV directs en début de tour, puis −1/tour. Tout soin le stoppe (§24.2).' },
+    { k: 'résiduels', href: 'livre_6.html#sec-24-2', tip: 'Saignement : PV directs en début de tour, puis −1/tour. Tout soin le stoppe (§24.2).' },
+    { k: 'résiduel', href: 'livre_6.html#sec-24-2', tip: 'Saignement : PV directs en début de tour, puis −1/tour. Tout soin le stoppe (§24.2).' },
     { k: 'esquive', href: 'livre_3.html#chap-12', tip: 'Esquive : éviter un coup au dernier moment (AGI/RAP/INS, §12.2).' },
     { k: 'critique', href: 'livre_2.html#chap-9', tip: 'Critique : ton dé affiche son max (6 sur d6, 8 sur d8). Second jet sur la table (§9.1).' },
     { k: 'pa', href: 'livre_1.html#chap-4', tip: 'PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).' },

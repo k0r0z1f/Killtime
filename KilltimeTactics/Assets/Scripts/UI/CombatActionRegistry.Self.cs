@@ -18,7 +18,7 @@ namespace Killtime.Tactics.CombatUI
     {
         private static void AddSelfActions(List<CombatAction> actions, TacticalUnit actor, TacticalUnit target, CombatDevArena arena, bool isSelf, bool isEnemy, bool targetIsAlive)
         {
-            // Souffle : actions personnelles (Livres I §4.2 + VI §20.2).
+            // Souffle : actions personnelles (Livres I §4.2 + VI §19.2).
             // Refresh PA = début de son propre tour uniquement (TurnManager).
             // Ici : les deux conversions Souffle <-> PA, jouables sur soi-même.
             if (isSelf)
@@ -184,7 +184,7 @@ namespace Killtime.Tactics.CombatUI
                     }
                 ));
 
-                // RD-031 Opportunités (Livre V §20.4) : posture de réaction au contact
+                // RD-031 Opportunités (Livre V §19.4) : posture de réaction au contact
                 // rompu (persistante, 0 PA, changeable à volonté pendant son tour) +
                 // Décrochage (1 PA : prochain déplacement sans réaction adverse).
                 // 1 réaction/round : Frappe gratuite (défaut), Poursuite 1 PA (suit
@@ -221,7 +221,7 @@ namespace Killtime.Tactics.CombatUI
                 int disengageCost = Killtime.Core.Rules.CoreRulesConfig.Instance.DisengageAPCost;
                 actions.Add(new CombatAction(
                     $"💨 Décrochage ({disengageCost} PA : prochain déplacement sans opportunité)",
-                    "Prépare un retrait propre (Livre V §22.2) : le prochain déplacement ne provoque aucune frappe/poursuite/blocage/balayage. Expire au prochain tour personnel si inutilisé.",
+                    "Prépare un retrait propre (Livre V §21.2) : le prochain déplacement ne provoque aucune frappe/poursuite/blocage/balayage. Expire au prochain tour personnel si inutilisé.",
                     ActionCategory.TactiqueEtOrdres,
                     disengageCost,
                     (act, tgt) => act != null && act.Stats != null && act.Stats.IsAlive
@@ -237,14 +237,14 @@ namespace Killtime.Tactics.CombatUI
                     }
                 ));
 
-                // RD-202 Dégagement (Livre V §20.3) : action principale (attaque OU
+                // RD-202 Dégagement (Livre V §19.3) : action principale (attaque OU
                 // parade résolue) immédiatement suivie d'une fuite à +1 PA. La
                 // surcharge se paie ici, le trajet ensuite au coût normal — et la
                 // fuite peut provoquer (DISTINCT du Décrochage préventif ci-dessus).
                 int getAwayCost = Killtime.Core.Rules.CoreRulesConfig.Instance.GetAwayExtraAPCost;
                 actions.Add(new CombatAction(
                     $"🏃 Dégagement ({getAwayCost} PA : fuite après frappe/parade)",
-                    "Après une attaque ou une parade résolue (Livre V §20.3) : paie la surcharge de fuite, puis déplacez-vous normalement. Les réactions d'opportunité adverses restent possibles.",
+                    "Après une attaque ou une parade résolue (Livre V §19.3) : paie la surcharge de fuite, puis déplacez-vous normalement. Les réactions d'opportunité adverses restent possibles.",
                     ActionCategory.TactiqueEtOrdres,
                     getAwayCost,
                     (act, tgt) => act != null && act.Stats != null && act.Stats.IsAlive
@@ -304,7 +304,7 @@ namespace Killtime.Tactics.CombatUI
                 int channelMalus = Killtime.Core.Rules.CoreRulesConfig.Instance.ChannelDefensePenalty;
                 actions.Add(new CombatAction(
                     $"⏳ Canaliser le coup ({channelCost} PA : +{channelBonus} au jet)",
-                    $"Étale l'effort (Livre V §20.3) : +{channelBonus} au jet de la prochaine attaque, {channelMalus} en défense tant qu'on canalise. Interrompue si dégât net > encaissement.",
+                    $"Étale l'effort (Livre V §19.3) : +{channelBonus} au jet de la prochaine attaque, {channelMalus} en défense tant qu'on canalise. Interrompue si dégât net > encaissement.",
                     ActionCategory.TactiqueEtOrdres,
                     channelCost,
                     (act, tgt) => act != null && act.Stats != null && act.Stats.IsAlive
@@ -319,7 +319,7 @@ namespace Killtime.Tactics.CombatUI
                     }
                 ));
 
-                // RD-202 Préparation d'Action (Livre V §20.3) : 1 PA -> +2 au jet
+                // RD-202 Préparation d'Action (Livre V §19.3) : 1 PA -> +2 au jet
                 // de l'action ou de la défense suivante (attaque OU parade).
                 // One-shot, sans malus, sans persistance, sans interruption —
                 // et sans cumul avec la canalisation (exclusion mutuelle).
@@ -327,7 +327,7 @@ namespace Killtime.Tactics.CombatUI
                 int prepBonus = Killtime.Core.Rules.CoreRulesConfig.Instance.PreparationBonus;
                 actions.Add(new CombatAction(
                     $"🎯 Préparer l'action ({prepCost} PA : +{prepBonus} au jet suivant)",
-                    $"Se concentre (Livre V §20.3) : +{prepBonus} au jet de l'action ou de la parade suivante. One-shot consommée au jet suivant, ne cumule pas avec la canalisation.",
+                    $"Se concentre (Livre V §19.3) : +{prepBonus} au jet de l'action ou de la parade suivante. One-shot consommée au jet suivant, ne cumule pas avec la canalisation.",
                     ActionCategory.TactiqueEtOrdres,
                     prepCost,
                     (act, tgt) => act != null && act.Stats != null && act.Stats.IsAlive
@@ -448,7 +448,7 @@ namespace Killtime.Tactics.CombatUI
                     ));
                 }
 
-                // Dopants marketplace Livre VIII §32.3 : Antidouleurs + Speed, 1 PA, soi-même.
+                // Dopants marketplace Livre VIII §31.3 : Antidouleurs + Speed, 1 PA, soi-même.
                 InventoryItem antalgique = FindConsumableByName(actor, "Antidouleur");
                 if (antalgique != null)
                 {

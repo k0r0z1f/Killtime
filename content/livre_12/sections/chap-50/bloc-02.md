@@ -5,5 +5,5 @@ livre: 12
 ---
 
 
-                    <h3>50.2 Table de Calibrage des Rencontres</h3>
+                    <!-- FICHE BANDIT 2 -->
                     

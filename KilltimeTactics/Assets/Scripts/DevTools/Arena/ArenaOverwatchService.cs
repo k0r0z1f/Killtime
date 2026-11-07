@@ -405,7 +405,7 @@ namespace Killtime.Tactics.Arena
         }
 
         /// <summary>
-        /// RD-031 Décrochage (Livre V §22.2) : paie 1 PA pour que le prochain
+        /// RD-031 Décrochage (Livre V §21.2) : paie 1 PA pour que le prochain
         /// déplacement de l'unité ne provoque aucune réaction d'opportunité.
         /// </summary>
         public bool TryRequestSafeDisengage(TacticalUnit unit, out string message)
@@ -513,7 +513,7 @@ namespace Killtime.Tactics.Arena
         }
 
         /// <summary>
-        /// RD-202 Préparation d'Action (Livre V §20.3) : 1 PA -> +2 au jet de
+        /// RD-202 Préparation d'Action (Livre V §19.3) : 1 PA -> +2 au jet de
         /// l'action ou de la défense suivante (attaque OU parade). One-shot,
         /// consommée au jet suivant. Ne cumule pas avec la canalisation.
         /// </summary>
@@ -536,7 +536,7 @@ namespace Killtime.Tactics.Arena
         }
 
         /// <summary>
-        /// RD-202 Dégagement (Livre V §20.3) : fuite immédiate après une attaque
+        /// RD-202 Dégagement (Livre V §19.3) : fuite immédiate après une attaque
         /// ou une parade résolue (+1 PA de surcharge, trajet payé à part via le
         /// déplacement normal). DISTINCT du Décrochage RD-031 : la fuite peut
         /// provoquer réactions d'opportunité.
