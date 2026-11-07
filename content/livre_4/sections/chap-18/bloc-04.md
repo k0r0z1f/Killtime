@@ -22,16 +22,26 @@ livre: 4
                             data-tip="Entraînement : +1 palier chacun, plafond 3 (+3 déblocables à 2d6, max 6), 5 XP (10 si croisé) (§6.1).">entraînement</a>
                         te fait monter d'un palier de dé.
                         <br>Le grand cadre, c'est ta compétence de base
-                        (Magie Élémentale, Magie Primale, Magie de l'Esprit).
+                        (<a class="rule-ref" href="livre_3.html#chap-11"
+                            data-tip="Compétence de base (MAG, INT) : Feu, Air, Eau, Terre. Base = moyenne, +1 palier par entraînement (§11, §18.1).">Magie
+                            Élémentale</a>, <a class="rule-ref" href="livre_3.html#chap-11"
+                            data-tip="Compétence de base (MAG, INT) : Vie, Création, Destruction. Base = moyenne, +1 palier par entraînement (§11, §18.1).">Magie
+                            Primale</a>, <a class="rule-ref" href="livre_3.html#chap-11"
+                            data-tip="Compétence de base (MAG, INT) : Télékinésie, Télépathie, Clairvoyance. Base = moyenne, +1 palier par entraînement (§11, §18.1).">Magie
+                            de l'Esprit</a>).
                         Dedans, chaque petit cadre est une catégorie
                         (Feu, Vie, Création...) : ça ne s'achète pas, ça range.
                         Dedans, chaque nom est une spécialisation à acheter :
                         il te faut celle juste avant dans sa chaîne.
                         La première demande 1 entraînement dans la compétence de base.
-                        Exemple : pour prendre Nova Thermique,
-                        il te faut Fournaise Déferlante avant. Le détail est au
+                        Exemple : pour prendre <a class="rule-ref" href="#sec-19-4"
+                            data-tip="Offensif — Tu exploses : 12 dégâts absolus dans un rayon de 2 cases (§19.4)">Nova
+                            Thermique</a>,
+                        il te faut <a class="rule-ref" href="#sec-19-4"
+                            data-tip="Offensif — Ton souffle embrase un cône de 3 hexagones adjacents (§19.4)">Fournaise
+                            Déferlante</a> avant. Le détail est au
                         <a class="rule-ref" href="#sec-19-4"
-                            data-tip="Compendium : 12 branches arcaniques génériques, même tarif qu'au Livre III (§19.4).">§19.4</a>.
+                            data-tip="Compendium : chaque ligne est une spécialisation à acheter, même tarif qu'au Livre III (§19.4).">§19.4</a>.
                     </p>
 
                     
