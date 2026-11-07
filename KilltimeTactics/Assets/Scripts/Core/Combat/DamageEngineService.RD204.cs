@@ -4,7 +4,7 @@ using Killtime.Core.Dice;
 namespace Killtime.Core.Combat
 {
     /// <summary>
-    /// RD-204 (Livre V §21.2) : choc traumatique lourd — des dégâts nets sur
+    /// RD-204 (Livre V §20.2) : choc traumatique lourd — des dégâts nets sur
     /// une zone qui dépassent 2×CON en un seul coup infligent +1 Essoufflement
     /// automatique, puis une épreuve d'Endurance Physique (SD standard) :
     /// échec = +1 Essoufflement supplémentaire (souffle coupé, sans statut —
@@ -40,10 +40,10 @@ namespace Killtime.Core.Combat
             {
                 conFailed = true;
                 defender.Essoufflement++;
-                return $" | 🫁 <b>CHOC TRAUMATIQUE LOURD (Livre V §21.2)</b> : {finalDamage} nets > 2×CON ({2 * con}) ➔ +1 Essoufflement auto + épreuve CON ratée [{roll.Total}/{dc}] ➔ <b>+1 Essoufflement supp ({defender.Essoufflement})</b>";
+                return $" | 🫁 <b>CHOC TRAUMATIQUE LOURD (Livre V §20.2)</b> : {finalDamage} nets > 2×CON ({2 * con}) ➔ +1 Essoufflement auto + épreuve CON ratée [{roll.Total}/{dc}] ➔ <b>+1 Essoufflement supp ({defender.Essoufflement})</b>";
             }
 
-            return $" | 🫁 <b>CHOC TRAUMATIQUE LOURD (Livre V §21.2)</b> : {finalDamage} nets > 2×CON ({2 * con}) ➔ +1 Essoufflement ({defender.Essoufflement}), épreuve CON tenue [{roll.Total}/{dc}]";
+            return $" | 🫁 <b>CHOC TRAUMATIQUE LOURD (Livre V §20.2)</b> : {finalDamage} nets > 2×CON ({2 * con}) ➔ +1 Essoufflement ({defender.Essoufflement}), épreuve CON tenue [{roll.Total}/{dc}]";
         }
     }
 }

@@ -23,8 +23,8 @@ livre: 4
                         <li><strong>Maîtrise (Barrières de Force) :</strong> Tu lèves un mur invisible qui arrête
                             les tirs physiques.</li>
                         <li><strong>Élite (Manipulation Gravitationnelle) :</strong> Tu inverses la gravité sous
-                            une escouade, ou tu compresses la matière (<a class="rule-ref" href="livre_6.html#chap-25"
-                                data-tip="Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§25.1).">ça
+                            une escouade, ou tu compresses la matière (<a class="rule-ref" href="livre_6.html#chap-24"
+                                data-tip="Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§24.1).">ça
                                 ignore l'armure</a>).</li>
                     </ul>
 

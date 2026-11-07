@@ -366,7 +366,7 @@
     },
     {
      "id": "RD-051",
-     "title": "Combat de Véhicules & Sous-systèmes (Livre V §23.3)",
+     "title": "Combat de Véhicules & Sous-systèmes (Livre V §22.3)",
      "epic": "Véhicules/Titans",
      "status": "done",
      "priority": "medium",
@@ -532,7 +532,7 @@
     },
     {
      "id": "RD-082",
-     "title": "Déviation Anatomique Conforme & Effets sur Marge Élevée (Livres V §23.1 & VII §25.4)",
+     "title": "Déviation Anatomique Conforme & Effets sur Marge Élevée (Livres V §22.1 & VII §24.4)",
      "epic": "Critiques/VATS",
      "status": "done",
      "priority": "high",
@@ -547,7 +547,7 @@
     },
     {
      "id": "RD-083",
-     "title": "Statut « Souffrant » & Règle des Soins Majeurs (Livre VI §25.3, 29.1)",
+     "title": "Statut « Souffrant » & Règle des Soins Majeurs (Livre VI §24.3, 29.1)",
      "epic": "États/DoT",
      "status": "done",
      "priority": "medium",
@@ -562,7 +562,7 @@
     },
     {
      "id": "RD-084",
-     "title": "Attaques Combinées de Groupe & Poursuite (Livre V §22.1 & §22.2)",
+     "title": "Attaques Combinées de Groupe & Poursuite (Livre V §21.1 & §21.2)",
      "epic": "Tours/Surprise",
      "status": "done",
      "priority": "medium",
@@ -577,7 +577,7 @@
     },
     {
      "id": "RD-085",
-     "title": "Extension des 6 Duo-Techs Manquantes du Codex (Livre V §22.5)",
+     "title": "Extension des 6 Duo-Techs Manquantes du Codex (Livre V §21.5)",
      "epic": "Duo-Tech",
      "status": "done",
      "priority": "high",
@@ -608,7 +608,7 @@
     },
     {
      "id": "RD-087",
-     "title": "Capacités Réactives & Vulnérabilités des Boss Titans (Livre XII §51-52)",
+     "title": "Capacités Réactives & Vulnérabilités des Boss Titans (Livre XII §50-51)",
      "epic": "Véhicules/Titans",
      "status": "done",
      "priority": "medium",
@@ -624,7 +624,7 @@
     },
     {
      "id": "RD-088",
-     "title": "Manœuvres Avancées des PNJ & Automates (Livre XII §50 & §53)",
+     "title": "Manœuvres Avancées des PNJ & Automates (Livre XII §49 & §52)",
      "epic": "PNJ",
      "status": "done",
      "priority": "medium",
@@ -1305,53 +1305,53 @@
      "details": "ECART LIVRE (verifie 2026-10-20) : Livre VI 24.4 definit 5 etats objets - Parfait / Endommage / Jamme / Detruit / Aneanti, Jamme repare en 2 PA, Detruit en atelier. Actuellement seul Jamme existe (jam + desenrayer RD-033). Ajouter : Endommage (malus/risque jam accru), Detruit (inutilisable, reparation atelier hors-combat), Aneanti (irrecuperable, cf. Desintegrer RD-082). Persistance inventaire + affichage marche/armurerie + IA (abandonne arme detruite).",
      "updated": "2026-10-20"
     },
-   {
-    "id": "RD-225",
-    "title": "Mikyai -1 encombrement en Unity + doctrine espèces",
-    "epic": "Munitions",
-    "status": "todo",
-    "priority": "medium",
-    "order": 82,
-    "scene": "",
-    "placeholderId": "",
-    "primitive": "",
-    "pos": null,
-    "scale": null,
-    "suggestedAsset": "CharacterStats.Fate + ArmoryCatalog",
-    "updated": "2026-11-03",
-    "details": "Raccord RP-126 : le don Technicien-Guerrier Mikyai (Livre I §2.2 don C) ignore 1 point d'encombrement (Livre VIII §35.1), mais GetWornApMalus (CharacterStats.Fate.cs:27-39) somme l'ApCostModifier sans check d'espèce — Species est cosmétique partout en Unity (aucun switch). Implémenter le -1 via Sheet.Species (floor 0) + test ArmoryJsonTests, et figer la doctrine : espèces = table-only sauf exceptions listées ici. Sinon statuer table-only et le commenter dans Fate.cs."
+    {
+     "id": "RD-225",
+     "title": "Mikyai -1 encombrement en Unity + doctrine espèces",
+     "epic": "Munitions",
+     "status": "todo",
+     "priority": "medium",
+     "order": 82,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "CharacterStats.Fate + ArmoryCatalog",
+     "updated": "2026-11-03",
+     "details": "Raccord RP-126 : le don Technicien-Guerrier Mikyai (Livre I §2.2 don C) ignore 1 point d'encombrement (Livre VIII §34.1), mais GetWornApMalus (CharacterStats.Fate.cs:27-39) somme l'ApCostModifier sans check d'espèce — Species est cosmétique partout en Unity (aucun switch). Implémenter le -1 via Sheet.Species (floor 0) + test ArmoryJsonTests, et figer la doctrine : espèces = table-only sauf exceptions listées ici. Sinon statuer table-only et le commenter dans Fate.cs."
     },
-   {
-    "id": "RD-226",
-    "title": "Remapper refs Livre VIII obsolètes en commentaires Unity",
-    "epic": "Munitions",
-    "status": "todo",
-    "priority": "low",
-    "order": 83,
-    "scene": "",
-    "placeholderId": "",
-    "primitive": "",
-    "pos": null,
-    "scale": null,
-    "suggestedAsset": "CharacterStats + GrenadeSystem + ArmoryCatalog",
-    "updated": "2026-11-03",
-    "details": "La numérotation a dérivé (Livre VIII = 33 Nomenclature, 34 Laser/Fusils/Grenades §34.3, 35 Blindages §35.1/Champs §35.2/Pharma §35.3). Remapper : §33.1 (Fate.cs:11,26, Actions.cs:33) → §35.1 ; §33.2 (CharacterStats.cs:45, GrenadeSystem.cs:364, Dots.cs:110) → §35.2 ; §33.3 (Care.cs:12) → §35.3 ; Chap. 30-32 (ArmoryCatalog.cs:8) → 33-35 ; §32.3 (InventoryItem.cs:65, GrenadeSystem.cs:18,62, CombatDevArena.cs:545) → §34.3 ; §31-33 (InventoryItem.cs:93, InventoryDevWindow.Catalog.cs:457) → section ères actuelle. Comment-only, 0 logique, recompile + tests."
+    {
+     "id": "RD-226",
+     "title": "Remapper refs Livre VIII obsolètes en commentaires Unity",
+     "epic": "Munitions",
+     "status": "todo",
+     "priority": "low",
+     "order": 83,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "CharacterStats + GrenadeSystem + ArmoryCatalog",
+     "updated": "2026-11-03",
+     "details": "La numérotation a dérivé (Livre VIII = 33 Nomenclature, 34 Laser/Fusils/Grenades §33.3, 35 Blindages §34.1/Champs §34.2/Pharma §34.3). Remapper : §32.1 (Fate.cs:11,26, Actions.cs:33) → §34.1 ; §32.2 (CharacterStats.cs:45, GrenadeSystem.cs:364, Dots.cs:110) → §34.2 ; §32.3 (Care.cs:12) → §34.3 ; Chap. 29-32 (ArmoryCatalog.cs:8) → 33-35 ; §31.3 (InventoryItem.cs:65, GrenadeSystem.cs:18,62, CombatDevArena.cs:545) → §33.3 ; §30-32 (InventoryItem.cs:93, InventoryDevWindow.Catalog.cs:457) → section ères actuelle. Comment-only, 0 logique, recompile + tests."
     },
-   {
-    "id": "RD-227",
-    "title": "Appliquer RP-125 côté Unity (privation/eau/nourriture)",
-    "epic": "États/DoT",
-    "status": "todo",
-    "priority": "medium",
-    "order": 84,
-    "scene": "",
-    "placeholderId": "",
-    "primitive": "",
-    "pos": null,
-    "scale": null,
-    "suggestedAsset": "CharacterStats.Dots + TacticalAIController",
-    "updated": "2026-11-03",
-    "details": "BLOQUÉ PAR RP-125 (codex pas écrit). Une fois RP-125 clos : états Privation/Affamé en Unity — tick au tour (CharacterStats.Dots, calque Saignement/Asphyxie), interaction Frugalité Cleyane (besoins ÷2 : diviser le tick ou espacer ?), IA (ravitaillement/repli Ne Lâche Rien ?), sync VTT si états persistants syncés. Raccord Livre VI §26.1/§27.2 + exemple chiffré codex rejoué en test."
+    {
+     "id": "RD-227",
+     "title": "Appliquer RP-125 côté Unity (privation/eau/nourriture)",
+     "epic": "États/DoT",
+     "status": "todo",
+     "priority": "medium",
+     "order": 84,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "CharacterStats.Dots + TacticalAIController",
+     "updated": "2026-11-03",
+     "details": "BLOQUÉ PAR RP-125 (codex pas écrit). Une fois RP-125 clos : états Privation/Affamé en Unity — tick au tour (CharacterStats.Dots, calque Saignement/Asphyxie), interaction Frugalité Cleyane (besoins ÷2 : diviser le tick ou espacer ?), IA (ravitaillement/repli Ne Lâche Rien ?), sync VTT si états persistants syncés. Raccord Livre VI §25.1/§26.2 + exemple chiffré codex rejoué en test."
     }
    ]
   },
@@ -1560,7 +1560,7 @@
    "name": "08 Tests Terrain Combat",
    "tasks": [
     {
-     "details": "Terrain Réactions (Livre V §21) : guet RD-030 (2 PA, tir auto aveugle, expire, annulé étourdi/paralysé, couvert total bloque), opportunité RD-031 (4 postures + décrochage 1 PA, spés exemptees), garde du corps RD-032 (1 PA réaction, bouton Interception, IA auto). Protocole : 2v2 Killzone_Alpha3, placer guetteur, traverser son rayon, quitter contact, focus allié faible. Attendu : 1 tir/round, purge au tour, logs tracés. Sortie : écarts Livre V §21 -> fix.",
+     "details": "Terrain Réactions (Livre V §20) : guet RD-030 (2 PA, tir auto aveugle, expire, annulé étourdi/paralysé, couvert total bloque), opportunité RD-031 (4 postures + décrochage 1 PA, spés exemptees), garde du corps RD-032 (1 PA réaction, bouton Interception, IA auto). Protocole : 2v2 Killzone_Alpha3, placer guetteur, traverser son rayon, quitter contact, focus allié faible. Attendu : 1 tir/round, purge au tour, logs tracés. Sortie : écarts Livre V §20 -> fix.",
      "epic": "Réactions",
      "id": "RD-171",
      "order": 0,
@@ -1624,7 +1624,7 @@
      "updated": "2026-10-18"
     },
     {
-     "details": "Terrain CaC (Livre V §21.6) : prise RD-039 (2 PA, Athlétisme aveugle, Immobilisé, traînée 2 PA, étranglement Asphyxie), bousculade RD-040 (2 PA, recul 1 case, À Terre si bloqué, rupture grapple, coup de bouclier). Protocole : saisir, traîner 1 case, étrangler, bousculer contre mur. Attendu : états + positions + logs, 0 PV sécurisés. Sortie : écarts -> fix.",
+     "details": "Terrain CaC (Livre V §20.6) : prise RD-039 (2 PA, Athlétisme aveugle, Immobilisé, traînée 2 PA, étranglement Asphyxie), bousculade RD-040 (2 PA, recul 1 case, À Terre si bloqué, rupture grapple, coup de bouclier). Protocole : saisir, traîner 1 case, étrangler, bousculer contre mur. Attendu : états + positions + logs, 0 PV sécurisés. Sortie : écarts -> fix.",
      "epic": "Corps-à-corps",
      "id": "RD-175",
      "order": 4,
@@ -1656,7 +1656,7 @@
      "updated": "2026-10-18"
     },
     {
-     "details": "Terrain États/DoT (Livre VI) : ticks RD-045 (dégressifs, aggravation +1, absorbés bouclier, purge par soins), consommables RD-075 (seringues/bandage/attelle/antidouleurs/speed), Souffrant RD-083 (persistant, levé uniquement par soins majeurs CONx2, séquelle résurrection -1ec). Protocole : saigner + soigner léger (DoT persiste ?) puis soins majeurs, tester résurrection. Attendu : Souffrant jamais levé par heal simple. Sortie : écarts Livre VI §25.3/29 -> fix.",
+     "details": "Terrain États/DoT (Livre VI) : ticks RD-045 (dégressifs, aggravation +1, absorbés bouclier, purge par soins), consommables RD-075 (seringues/bandage/attelle/antidouleurs/speed), Souffrant RD-083 (persistant, levé uniquement par soins majeurs CONx2, séquelle résurrection -1ec). Protocole : saigner + soigner léger (DoT persiste ?) puis soins majeurs, tester résurrection. Attendu : Souffrant jamais levé par heal simple. Sortie : écarts Livre VI §24.3/29 -> fix.",
      "epic": "États/DoT",
      "id": "RD-177",
      "order": 6,
@@ -1688,7 +1688,7 @@
      "updated": "2026-10-18"
     },
     {
-     "details": "Terrain Critiques (Livre II §9.2, VI §23.1, VII §25.4) : table d2-d24 RD-081 (relance brute, conséquences offensives/défensives, tag [CRITIQUE]), déviation anatomique RD-082 (Diff 0 -> table d6, marges : Saignement Diff>=5, K.O. crânien Diff>=10, désintégration Destruction 6 / Diff>=20). Protocole : forcer critiques (jets arrangés si possible), viser crâne à gros différentiel. Attendu : conséquences + traçabilité log, pas d'écrasement Miracle/InstantDeath. Sortie : écarts -> fix.",
+     "details": "Terrain Critiques (Livre II §9.2, VI §22.1, VII §24.4) : table d2-d24 RD-081 (relance brute, conséquences offensives/défensives, tag [CRITIQUE]), déviation anatomique RD-082 (Diff 0 -> table d6, marges : Saignement Diff>=5, K.O. crânien Diff>=10, désintégration Destruction 6 / Diff>=20). Protocole : forcer critiques (jets arrangés si possible), viser crâne à gros différentiel. Attendu : conséquences + traçabilité log, pas d'écrasement Miracle/InstantDeath. Sortie : écarts -> fix.",
      "epic": "Critiques/VATS",
      "id": "RD-179",
      "order": 8,
@@ -1704,7 +1704,7 @@
      "updated": "2026-10-18"
     },
     {
-     "details": "Terrain Duo-Tech (Livre V §22.5) : 6 codex RD-085 (Trempe, Railgun, Cisaille, Parallaxe, Mirage, Uppercut) + synergies Thomas RD-086 (Rempart, Zéro Tectonique, Tri-Fusion) + IA auto RD-105 (sillage sans tracé). Protocole : tisser chaque Duo en manuel (souris) puis déclencher l'auto IA. Attendu : paiements atomiques, tampon 1/round, grades Risky/Perfect/Late, refund. Sortie : écarts -> fix.",
+     "details": "Terrain Duo-Tech (Livre V §21.5) : 6 codex RD-085 (Trempe, Railgun, Cisaille, Parallaxe, Mirage, Uppercut) + synergies Thomas RD-086 (Rempart, Zéro Tectonique, Tri-Fusion) + IA auto RD-105 (sillage sans tracé). Protocole : tisser chaque Duo en manuel (souris) puis déclencher l'auto IA. Attendu : paiements atomiques, tampon 1/round, grades Risky/Perfect/Late, refund. Sortie : écarts -> fix.",
      "epic": "Duo-Tech",
      "id": "RD-180",
      "order": 9,
@@ -1720,7 +1720,7 @@
      "updated": "2026-10-18"
     },
     {
-     "details": "Terrain Véhicules & Titans (Livre V §23.3, XII §51-52) : véhicules RD-051 (embarquement 2 PA, écrasement, sous-systèmes, +100 lourde), Titans RD-052 (Rosette7/Colossus19, saisie/broyage, piétinement 3 PA, souffle 3 PA), boss RD-087 (bossAI JSON, réactions, IA TitanBoss). Protocole : embarquer/écraser, piétiner zone 7 hex, affronter chaque boss (touche B). Attendu : épave = débarquement forcé, 0 limbo 0 PV, réactions boss visibles. Sortie : écarts -> fix.",
+     "details": "Terrain Véhicules & Titans (Livre V §22.3, XII §50-51) : véhicules RD-051 (embarquement 2 PA, écrasement, sous-systèmes, +100 lourde), Titans RD-052 (Rosette7/Colossus19, saisie/broyage, piétinement 3 PA, souffle 3 PA), boss RD-087 (bossAI JSON, réactions, IA TitanBoss). Protocole : embarquer/écraser, piétiner zone 7 hex, affronter chaque boss (touche B). Attendu : épave = débarquement forcé, 0 limbo 0 PV, réactions boss visibles. Sortie : écarts -> fix.",
      "epic": "Véhicules/Titans",
      "id": "RD-181",
      "order": 10,
@@ -1736,7 +1736,7 @@
      "updated": "2026-10-18"
     },
     {
-     "details": "Terrain Nuit & PNJ (Livre XII §50/52) : nuit RD-053 (vue 4 cases, malus -1 sans lampe/thermique, lampe brise stealth, bruit attire patrouille) + PNJ RD-088 (otage bandit, combustion/foulée Illumo, morsure/flash/balise drones). Protocole : éteindre (nuit), allumer lampe, tirer (bruit), jouer otage + combustion. Attendu : portées bridées, convergence patrouille, statuts posés. Sortie : écarts -> fix.",
+     "details": "Terrain Nuit & PNJ (Livre XII §49/52) : nuit RD-053 (vue 4 cases, malus -1 sans lampe/thermique, lampe brise stealth, bruit attire patrouille) + PNJ RD-088 (otage bandit, combustion/foulée Illumo, morsure/flash/balise drones). Protocole : éteindre (nuit), allumer lampe, tirer (bruit), jouer otage + combustion. Attendu : portées bridées, convergence patrouille, statuts posés. Sortie : écarts -> fix.",
      "epic": "Lumière/Env",
      "id": "RD-182",
      "order": 11,
@@ -3318,7 +3318,7 @@
     },
     {
      "id": "RD-215",
-     "title": "Renumérotation X-XII : 39-52 → 40-53 (chap-40 à la Fabrique)",
+     "title": "Renumérotation X-XII : 39-52 → 40-53 (chap-39 à la Fabrique)",
      "epic": "Codex sysRP",
      "status": "done",
      "priority": "medium",
@@ -3334,7 +3334,7 @@
     },
     {
      "id": "RD-216",
-     "title": "Livre IX chap-40 : Atelier Fabrique de Techniques (outil interactif)",
+     "title": "Livre IX chap-39 : Atelier Fabrique de Techniques (outil interactif)",
      "epic": "Codex sysRP",
      "status": "done",
      "priority": "high",
@@ -3382,7 +3382,7 @@
     },
     {
      "id": "RD-219",
-     "title": "Fabrique chap-41 : atelier remplacé par un vrai puzzle (ensembles + pièces emboîtées)",
+     "title": "Fabrique chap-40 : atelier remplacé par un vrai puzzle (ensembles + pièces emboîtées)",
      "epic": "Codex sysRP",
      "status": "done",
      "priority": "high",
@@ -3398,7 +3398,7 @@
     },
     {
      "id": "RD-220",
-     "title": "Fabrique chap-41 : graphe nodal + menus contextuels (fin du casier listé)",
+     "title": "Fabrique chap-40 : graphe nodal + menus contextuels (fin du casier listé)",
      "epic": "Codex sysRP",
      "status": "done",
      "priority": "high",
@@ -3442,7 +3442,7 @@
      "scale": null,
      "suggestedAsset": "js/fabrique.js",
      "updated": "2026-11-02",
-     "details": "EN COURS 2026-11-02 — M1-M4/M7 configurés sur les cartes effet si compatibles (finitions hors graphe supprimées, incompatibles masqués, badges + coûts réels tête de carte). O10/O11 supprimés -> 6 cartes statut O20-O25 rebalancées ; O14 supprimée -> O13 x3 + Sur critique -1 XP/cumul (M5, aussi sur O1/O15, plancher 1 XP). O1 et O15 à 2 XP/+1 (cumul x5) ; O15 = +1 auto 2e cible adjacente. Portée totale 1-3 (base 1 gratuite, +2 XP/case, 3 max), M1/M2 fusionnés (6 modificateurs). Ensemble lié à une compétence entraînée obligatoire (menu, carte, presets, migration compet, fiche). Plafond 8 XP retiré (signature 7+). Checklist MJ + rappel finitions retirés de la page. Compteurs 48 pièces. Vérifié : node --check, cas moteur (cumuls, remises, chaînes, incompatibilités), headless réel (badge, fiche, cartes, 0 erreur console). RESTE : fin de la revue carte par carte avec le designer. FAIT 2026-11-02 (revue carte par carte) : 1) nom automatique live (suggestName : fragments par carte + variantes O19/U7, quantités Double/Triple, préfixes Riposte/Éclair, suffixes portée/zone/durée/critique/M7 ; auto-remplissage sauf personnalisation, bouton Nom auto). 2) description narrative automatique live (suggestDesc : phrase d'ensemble + texte des cartes + modifs + ligne Condition ; même suivi auto). 3) C0 Passif conditionnel 1→3 XP (toujours actif, 0 PA : trop fort à 1 ; règle 3, table, exemple Second Cœur 5→7 XP signature, libellés Hache 7 / Suture 6 XP ; Fente 5→4 XP, dérive d'étiquette réparée). Moteur compute inchangé (lit CAT). Vérifié : node --check, JSON valide, cas moteur (Hache 7 XP signature, Suture 6, Miroir 3, Fente 4). FAIT 2026-11-02 (revue) : seuils O23/O24/O25 Δ≥2 → sur touche (pas de delta : l'effet part dès que l'attaque touche ; table, textes, seuils data, règle 6 reformulée « critiques à Δ≥3 ou sur critique, le reste part sur touche »). Vérifié : JSON valide, C2+O23 = 3 XP/2 PA, nom « Fauchage », fiche et footer atelier suivent (Seuil : touche). FAIT 2026-11-02 (revue) : O23 « À Terre 1 tour » → « À Terre » (table + texte ; l'état dure jusqu'au relevé, Livre VI, pas 1 tour). Vérifié : JSON valide, description auto suit. FAIT 2026-11-02 (revue) : O2 « +2 dégâts permanents » supprimée (redondante avec O1 +x cumulable) : table, données (47 pièces), preset Hache + bouton retirés, placeholder 47, suggestName durci (ids inconnues ignorées, vieilles sauvegardes auto-nettoyées). Vérifié : JSON valide, 47 pièces, vieux build O2+O8 → nom/desc sains, O1×3 = 7 XP « Triple Frappe Lourde ». FAIT 2026-11-02 (revue) : durées « 1 tour » sur cible → « jusqu'à la fin de son prochain tour » (O20/O22/O24/O25 textes + table, O19 suppression table + atelier + desc auto, exemple Fente). M4 +1 tour et S3 (cessez-le-feu, pas de cible unique) inchangés. Vérifié : JSON valide, node --check, descs auto OK, plus aucun « 1 tour » sur cible sauf S3. FAIT 2026-11-02 (revue) : liens mécaniques façon Livres I-III dans l'atelier (PA/XP/critique/Ralenti/À Terre/Déstabilisé/Encaissement/Esquive/Essoufflement, paires href+tip reprises verbatim ; lieur une passe + tooltips bindés, intro chap-41 liée aussi). Vérifié : node --check, headless Chrome réel C2+O20 = 24 liens/24 bindés, 0 erreur JS, fabrique.js?v=14. FAIT 2026-11-02 (revue) : O21 « −1 à la prochaine épreuve adverse » → pièce Étourdi (1 XP/1 PA, sur touche, jusqu'à la fin du prochain tour de la cible ; nom auto « Étourdissement », tooltip Étourdi branché). Vérifié : JSON valide, node --check, C2+O21 = 2 XP/2 PA, liens OK. FAIT 2026-11-02 (revue) : « Déstabilisé léger » → « Déstabilisé » (« léger » inexistant dans les règles ; Déstabilisé vient d'un impact lourd, §26.1) + seuil O22 aligné sur « touche » (table + texte). Vérifié : JSON valide, node --check, desc + lien OK. FAIT 2026-11-02 (revue) : tooltip Immobilisé branché dans la Fabrique (tip repris verbatim des livres ; « Immobile » la condition ne matche pas). FAIT 2026-11-02 (revue) : tooltip Sonné branché idem (tip repris verbatim des livres). FAIT 2026-11-02 (revue) : O3 « +5 dégâts, condition marquée » supprimée (redondante avec O1 +x cumulable ; O1 couvre le bonus conditionnel via Sur critique −1 XP/cumul). 46 pièces. FAIT 2026-11-02 (revue) : tooltip Absolus branché (paire href livre_6.html#chap-25 + tip reprise verbatim du Livre IV). FAIT 2026-11-02 (revue) : mécanique « majeure » retirée de la Fabrique (comptage + erreurs moteur, verrous atelier, badges ★, flags data, mentions tables). Seule la signature XP (7+) reste. FAIT 2026-11-02 (revue) : filière Perce (O4/O5/O6) supprimée (redondante avec Absolus ; table, données, 43 pièces, règle 7 et intro §15.3 réécrites, moteur/atelier nettoyés, vieilles sauvegardes auto-nettoyées). FAIT 2026-11-02 (revue) : O8 « +2 à un jet » → « +1 au jet, conditionnel » cumulable ×5 (2 XP/cran, 0 PA ; modèle O1). Atelier/moteur/nom/desc suivent (stepper, coûts, « Triple Visée Sûre »). FAIT 2026-11-02 (revue) : O8 étendu M5 Sur critique (−1 XP/cran, menu + badge + table, comme O1) puis déconditionné (« +1 au jet », texte sec, table sans condition écrite). FAIT 2026-11-02 (revue) : O8 cadré « +1 au jet, cette attaque » (table + nom). FAIT 2026-11-02 (revue) : O9 « +2 à ton prochain jet » → « +1 » cumulable ×5 (1 XP + 1 PA/cran ; déjà marqué cumul:true en données, jamais câblé). FAIT 2026-11-02 (revue) : O16 Zone, O19 Couvert nié, O12 Statut critique supprimés (table + données, 40 pièces, câblage atelier nettoyé, sauvegardes auto-nettoyées). Vérifié : JSON valide, node --check OK, zéro réf restante. REPRISE 2026-11-02 : vérif globale post-coupes — moteur (morts confirmés, presets suture/miroir/fente OK, O7+O15 et O17/C3 toujours bloqués) + headless Chrome réel (O12/O16/O19 absents des menus, stepper O13, M5, 24 liens/24 bindés, 0 erreur). FAIT 2026-11-02 (revue) : O17 Contre-attaque/interception supprimée (table + données, 39 pièces, verrou C3 + boutons « brancher Réaction » + handler retirés, vieilles sauvegardes auto-nettoyées). FAIT 2026-11-02 (revue) : O18 reformulé générique tous paliers (« max ou face juste en dessous, ex 5-6 sur d6, 11-12 sur d12 », multi-dés puis auto-crit 1/combat retirés). FAIT 2026-11-02 (revue) : O26 Paralysé (3 XP/1 PA), O27 Agonisant (2 XP/1 PA, fuite 6 cases, pas de −2 = Déroute), O28 Saignement (2 XP/1 PA, palier 2-4 résiduels +1 XP/résiduel, sélecteur atelier, fiche/desc/save suivent) ajoutés (table + données + moteur + atelier + noms auto, 42 pièces). FAIT 2026-11-02 (revue) : tips Paralysé/Agonisant/Saignement/résiduels branchés (verbatim Livres, sec-26-1/1bis) + bug tip derrière menu réglé (.codex-tip z-index 200→9600). Vérifié : JSON valide, node --check, moteur (paliers 2/3/4, zone, portée refusée), 1 lien/carte sans faux positif (raisonnée→affolée)."
+     "details": "EN COURS 2026-11-02 — M1-M4/M7 configurés sur les cartes effet si compatibles (finitions hors graphe supprimées, incompatibles masqués, badges + coûts réels tête de carte). O10/O11 supprimés -> 6 cartes statut O20-O25 rebalancées ; O14 supprimée -> O13 x3 + Sur critique -1 XP/cumul (M5, aussi sur O1/O15, plancher 1 XP). O1 et O15 à 2 XP/+1 (cumul x5) ; O15 = +1 auto 2e cible adjacente. Portée totale 1-3 (base 1 gratuite, +2 XP/case, 3 max), M1/M2 fusionnés (6 modificateurs). Ensemble lié à une compétence entraînée obligatoire (menu, carte, presets, migration compet, fiche). Plafond 8 XP retiré (signature 7+). Checklist MJ + rappel finitions retirés de la page. Compteurs 48 pièces. Vérifié : node --check, cas moteur (cumuls, remises, chaînes, incompatibilités), headless réel (badge, fiche, cartes, 0 erreur console). RESTE : fin de la revue carte par carte avec le designer. FAIT 2026-11-02 (revue carte par carte) : 1) nom automatique live (suggestName : fragments par carte + variantes O19/U7, quantités Double/Triple, préfixes Riposte/Éclair, suffixes portée/zone/durée/critique/M7 ; auto-remplissage sauf personnalisation, bouton Nom auto). 2) description narrative automatique live (suggestDesc : phrase d'ensemble + texte des cartes + modifs + ligne Condition ; même suivi auto). 3) C0 Passif conditionnel 1→3 XP (toujours actif, 0 PA : trop fort à 1 ; règle 3, table, exemple Second Cœur 5→7 XP signature, libellés Hache 7 / Suture 6 XP ; Fente 5→4 XP, dérive d'étiquette réparée). Moteur compute inchangé (lit CAT). Vérifié : node --check, JSON valide, cas moteur (Hache 7 XP signature, Suture 6, Miroir 3, Fente 4). FAIT 2026-11-02 (revue) : seuils O23/O24/O25 Δ≥2 → sur touche (pas de delta : l'effet part dès que l'attaque touche ; table, textes, seuils data, règle 6 reformulée « critiques à Δ≥3 ou sur critique, le reste part sur touche »). Vérifié : JSON valide, C2+O23 = 3 XP/2 PA, nom « Fauchage », fiche et footer atelier suivent (Seuil : touche). FAIT 2026-11-02 (revue) : O23 « À Terre 1 tour » → « À Terre » (table + texte ; l'état dure jusqu'au relevé, Livre VI, pas 1 tour). Vérifié : JSON valide, description auto suit. FAIT 2026-11-02 (revue) : O2 « +2 dégâts permanents » supprimée (redondante avec O1 +x cumulable) : table, données (47 pièces), preset Hache + bouton retirés, placeholder 47, suggestName durci (ids inconnues ignorées, vieilles sauvegardes auto-nettoyées). Vérifié : JSON valide, 47 pièces, vieux build O2+O8 → nom/desc sains, O1×3 = 7 XP « Triple Frappe Lourde ». FAIT 2026-11-02 (revue) : durées « 1 tour » sur cible → « jusqu'à la fin de son prochain tour » (O20/O22/O24/O25 textes + table, O19 suppression table + atelier + desc auto, exemple Fente). M4 +1 tour et S3 (cessez-le-feu, pas de cible unique) inchangés. Vérifié : JSON valide, node --check, descs auto OK, plus aucun « 1 tour » sur cible sauf S3. FAIT 2026-11-02 (revue) : liens mécaniques façon Livres I-III dans l'atelier (PA/XP/critique/Ralenti/À Terre/Déstabilisé/Encaissement/Esquive/Essoufflement, paires href+tip reprises verbatim ; lieur une passe + tooltips bindés, intro chap-40 liée aussi). Vérifié : node --check, headless Chrome réel C2+O20 = 24 liens/24 bindés, 0 erreur JS, fabrique.js?v=14. FAIT 2026-11-02 (revue) : O21 « −1 à la prochaine épreuve adverse » → pièce Étourdi (1 XP/1 PA, sur touche, jusqu'à la fin du prochain tour de la cible ; nom auto « Étourdissement », tooltip Étourdi branché). Vérifié : JSON valide, node --check, C2+O21 = 2 XP/2 PA, liens OK. FAIT 2026-11-02 (revue) : « Déstabilisé léger » → « Déstabilisé » (« léger » inexistant dans les règles ; Déstabilisé vient d'un impact lourd, §25.1) + seuil O22 aligné sur « touche » (table + texte). Vérifié : JSON valide, node --check, desc + lien OK. FAIT 2026-11-02 (revue) : tooltip Immobilisé branché dans la Fabrique (tip repris verbatim des livres ; « Immobile » la condition ne matche pas). FAIT 2026-11-02 (revue) : tooltip Sonné branché idem (tip repris verbatim des livres). FAIT 2026-11-02 (revue) : O3 « +5 dégâts, condition marquée » supprimée (redondante avec O1 +x cumulable ; O1 couvre le bonus conditionnel via Sur critique −1 XP/cumul). 46 pièces. FAIT 2026-11-02 (revue) : tooltip Absolus branché (paire href livre_6.html#chap-24 + tip reprise verbatim du Livre IV). FAIT 2026-11-02 (revue) : mécanique « majeure » retirée de la Fabrique (comptage + erreurs moteur, verrous atelier, badges ★, flags data, mentions tables). Seule la signature XP (7+) reste. FAIT 2026-11-02 (revue) : filière Perce (O4/O5/O6) supprimée (redondante avec Absolus ; table, données, 43 pièces, règle 7 et intro §15.3 réécrites, moteur/atelier nettoyés, vieilles sauvegardes auto-nettoyées). FAIT 2026-11-02 (revue) : O8 « +2 à un jet » → « +1 au jet, conditionnel » cumulable ×5 (2 XP/cran, 0 PA ; modèle O1). Atelier/moteur/nom/desc suivent (stepper, coûts, « Triple Visée Sûre »). FAIT 2026-11-02 (revue) : O8 étendu M5 Sur critique (−1 XP/cran, menu + badge + table, comme O1) puis déconditionné (« +1 au jet », texte sec, table sans condition écrite). FAIT 2026-11-02 (revue) : O8 cadré « +1 au jet, cette attaque » (table + nom). FAIT 2026-11-02 (revue) : O9 « +2 à ton prochain jet » → « +1 » cumulable ×5 (1 XP + 1 PA/cran ; déjà marqué cumul:true en données, jamais câblé). FAIT 2026-11-02 (revue) : O16 Zone, O19 Couvert nié, O12 Statut critique supprimés (table + données, 40 pièces, câblage atelier nettoyé, sauvegardes auto-nettoyées). Vérifié : JSON valide, node --check OK, zéro réf restante. REPRISE 2026-11-02 : vérif globale post-coupes — moteur (morts confirmés, presets suture/miroir/fente OK, O7+O15 et O17/C3 toujours bloqués) + headless Chrome réel (O12/O16/O19 absents des menus, stepper O13, M5, 24 liens/24 bindés, 0 erreur). FAIT 2026-11-02 (revue) : O17 Contre-attaque/interception supprimée (table + données, 39 pièces, verrou C3 + boutons « brancher Réaction » + handler retirés, vieilles sauvegardes auto-nettoyées). FAIT 2026-11-02 (revue) : O18 reformulé générique tous paliers (« max ou face juste en dessous, ex 5-6 sur d6, 11-12 sur d12 », multi-dés puis auto-crit 1/combat retirés). FAIT 2026-11-02 (revue) : O26 Paralysé (3 XP/1 PA), O27 Agonisant (2 XP/1 PA, fuite 6 cases, pas de −2 = Déroute), O28 Saignement (2 XP/1 PA, palier 2-4 résiduels +1 XP/résiduel, sélecteur atelier, fiche/desc/save suivent) ajoutés (table + données + moteur + atelier + noms auto, 42 pièces). FAIT 2026-11-02 (revue) : tips Paralysé/Agonisant/Saignement/résiduels branchés (verbatim Livres, sec-25-1/1bis) + bug tip derrière menu réglé (.codex-tip z-index 200→9600). Vérifié : JSON valide, node --check, moteur (paliers 2/3/4, zone, portée refusée), 1 lien/carte sans faux positif (raisonnée→affolée)."
     },
     {
      "id": "RD-223",
@@ -3462,7 +3462,7 @@
     },
     {
      "id": "RD-224",
-     "title": "Mains nues : 0 dégât de base, +1 Essoufflement cible sur touche franche (§24.1)",
+     "title": "Mains nues : 0 dégât de base, +1 Essoufflement cible sur touche franche (§23.1)",
      "epic": "Codex sysRP",
      "status": "done",
      "priority": "medium",
@@ -3472,7 +3472,7 @@
      "primitive": "",
      "pos": null,
      "scale": null,
-     "suggestedAsset": "livre_5.html#sec-24-1",
+     "suggestedAsset": "livre_5.html#sec-23-1",
      "updated": "2026-11-03",
      "details": "FAIT 2026-11-03 — §24.1 (content/livre_5 chap-24/bloc-00) : 4e puce — poings/pieds (Mains Nues) sans dégâts de base (touche franche = 0 + différentiel) mais 1 point d'Essoufflement cible en plus des dégâts diff (Δ>0 seul ; Δ=0 = 0 dégât sans essoufflement, Δ<0 bloqué, plafond §4.2 inchangé). Moteur/JSON : build_livres 5 (19 textes sync). Vérifié : check 5, check_liens (262), rendu headless réel (puce présente, rule-ref intacts)."
     }

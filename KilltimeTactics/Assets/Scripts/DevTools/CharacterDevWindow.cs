@@ -113,7 +113,7 @@ namespace Killtime.UI
         private string _spawnRStr = "1";
         private bool _spawnAsPlayer = false;
 
-        // Sorts modulaires (Livre IV §20) : source unique = SpellForgeSession.
+        // Sorts modulaires (Livre IV §19) : source unique = SpellForgeSession.
         private string _customSpellName
         {
             get => _forge.CustomSpellName;

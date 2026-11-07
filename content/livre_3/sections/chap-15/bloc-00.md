@@ -12,7 +12,7 @@ format: raw
                         La Fabrique, c'est une option de plus. Vise <strong>4 à 6 <a class="rule-ref" href="livre_1.html#sec-5-3" data-tip="Spécialisation : 5 XP de la bonne banque ou du libre, au tarif normal (§5.3).">XP</a></strong> : c'est le standard.
                         <strong>7 <a class="rule-ref" href="livre_1.html#sec-5-3" data-tip="Spécialisation : 5 XP de la bonne banque ou du libre, au tarif normal (§5.3).">XP</a> et plus</strong> ? C'est une
                         <em>signature</em>, une seule par personnage, avec l'accord du MJ.
-                        <br>Mêmes cartes, mêmes prix : le puzzle du <a href="livre_9.html#chap-41">chapitre 41</a> monte exactement ce chapitre.
+                        <br>Mêmes cartes, mêmes prix : le puzzle du <a href="livre_9.html#chap-40">chapitre 41</a> monte exactement ce chapitre.
                     </p>
                     <p>
                         <strong>Rappel :</strong> une technique basée sur une compétence fait toujours deux choses :

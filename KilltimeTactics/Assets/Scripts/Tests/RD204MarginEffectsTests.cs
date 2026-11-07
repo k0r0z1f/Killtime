@@ -8,7 +8,7 @@ using Killtime.Tactics.Grid;
 namespace Killtime.Tests
 {
     /// <summary>
-    /// RD-204 (Livre V §21.2 & Livre VI §25.4) : marges manquantes —
+    /// RD-204 (Livre V §20.2 & Livre VI §24.4) : marges manquantes —
     /// Possession (Diff 10+, 15 si boss, contrôle 1 tour),
     /// Attirer / Repousser en épreuve (Diff 1+),
     /// Choc traumatique lourd (&gt; 2xCON = +1 Essoufflement + épreuve CON),

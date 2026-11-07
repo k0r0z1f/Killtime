@@ -6,8 +6,9 @@ livre: 12
 
 
                     <p>
-                        Pour permettre au Maître de Jeu d'orchestrer des affrontements équilibrés et nerveux sans
-                        s'enliser dans la comptabilité, les adversaires sont scindés en trois calibres standardisés :
+                        Les adversaires humanoïdes constituent la majorité des affrontements dans les cités, les routes
+                        de campagne et les avant-postes coloniaux.
                     </p>
 
+                    <!-- FICHE BANDIT 1 -->
                     

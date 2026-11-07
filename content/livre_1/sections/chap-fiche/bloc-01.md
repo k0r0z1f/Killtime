@@ -6,7 +6,7 @@ livre: 1
                     <div class="char-sheet-preview">
                         <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 12px;">
                             Copie statique du créateur avec les valeurs de Roger : le
-                            <a href="livre_9.html#chap-36" style="color: var(--arcane-cyan); font-weight: 700;">créateur du Livre IX</a>
+                            <a href="livre_9.html#chap-35" style="color: var(--arcane-cyan); font-weight: 700;">créateur du Livre IX</a>
                             et la fenêtre détachée affichent exactement cette fiche par défaut.
                             <span class="pill-badge cyan">Fiche validée — Total 24/24</span>
                         </p>
@@ -201,7 +201,7 @@ livre: 1
                             </div>
                             <div class="callout-body">
                                 Cet exemple est directement reproductible et modifiable dans le
-                                <a href="livre_9.html#chap-36"
+                                <a href="livre_9.html#chap-35"
                                     style="color: var(--arcane-cyan); font-weight: 700;">créateur du Livre IX</a> :
                                 choix des piliers FOR/CON, don racial colonial, tirages sensoriels au 1d6, passé de milicien des rues,
                                 dés de caractéristiques (FOR 5 → 1d6, CON 4 → 1d4, INS 3 → 1d4...), calcul automatique des 7 PA,

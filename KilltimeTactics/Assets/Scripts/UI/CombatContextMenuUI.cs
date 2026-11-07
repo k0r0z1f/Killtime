@@ -95,7 +95,7 @@ namespace Killtime.Tactics.CombatUI
 
         // Allocation de PA bonus par action (Livre V)
         private readonly Dictionary<CombatAction, int> _bonusAPMap = new();
-        // Allocation de PE (Essoufflement) par action — déclaration aveugle (Livres II §7 + VI §21)
+        // Allocation de PE (Essoufflement) par action — déclaration aveugle (Livres II §7 + VI §20)
         private readonly Dictionary<CombatAction, int> _bonusPEMap = new();
 
         // État du mode Défense : le radial devient le menu de paramétrage de la
@@ -386,7 +386,7 @@ namespace Killtime.Tactics.CombatUI
 
         /// <summary>
         /// Ouvre le radial en mode Défense, centré sur le défenseur comme après un
-        /// clic droit sur lui (Livres II §7 + VI §21.1, déclaration aveugle).
+        /// clic droit sur lui (Livres II §7 + VI §20.1, déclaration aveugle).
         /// Remplace l'ancien modal séparé : tout le paramétrage vit dans le menu
         /// contextuel, avec focus verrouillé sur la cible.
         /// </summary>

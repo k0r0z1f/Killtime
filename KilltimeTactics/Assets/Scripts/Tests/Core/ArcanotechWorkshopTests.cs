@@ -87,7 +87,7 @@ namespace Killtime.Tests
         {
             var spell = ArcanotechWorkshop.CreateRalentissementGravitationnel();
 
-            // Modificateurs de §20.3 : +1 jet (1 pt) + perte 4 PA (2 pts) = 3 pts
+            // Modificateurs de §19.3 : +1 jet (1 pt) + perte 4 PA (2 pts) = 3 pts
             Assert.AreEqual(3, spell.CreationXpCost);
             Assert.AreEqual(3, spell.ActionPointCost);
             Assert.AreEqual(0, spell.HybridXpPenalty);
@@ -98,7 +98,7 @@ namespace Killtime.Tests
         {
             var spell = ArcanotechWorkshop.CreateEcrasementDeMatiere();
 
-            // Modificateurs de §20.3 : +1 résultat (1 pt) + 2 Dégâts Absolus (2 pts) = 3 pts
+            // Modificateurs de §19.3 : +1 résultat (1 pt) + 2 Dégâts Absolus (2 pts) = 3 pts
             Assert.AreEqual(3, spell.CreationXpCost);
             Assert.AreEqual(3, spell.ActionPointCost);
             Assert.AreEqual(0, spell.HybridXpPenalty);

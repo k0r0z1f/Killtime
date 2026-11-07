@@ -5,7 +5,5 @@ livre: 12
 ---
 
 
-                    <hr class="doc-divider">
-
-                    <!-- ================= CHAPITRE 47 ================= -->
+                    <!-- FICHE DISCIPLE DE L'AIR -->
                     

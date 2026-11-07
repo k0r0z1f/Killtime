@@ -61,7 +61,7 @@ namespace Killtime.Tactics.CombatUI
         }
 
         /// <summary>
-        /// RD-201 (Livre V §23.2) : situation de Canon Entravé contre CETTE
+        /// RD-201 (Livre V §22.2) : situation de Canon Entravé contre CETTE
         /// cible — consciente (défense active), au contact (distance ≤ 1),
         /// attaquant porteur d'une arme longue.
         /// </summary>

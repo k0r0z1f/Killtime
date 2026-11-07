@@ -203,7 +203,7 @@ namespace Killtime.Multi
         public string outcome = ""; // "Victory" | "Defeat" | "InProgress"
         public List<VTTInitiativeEntry> turnOrder = new();
         public List<VTTUnitStateSyncEntry> unitStates = new();
-        // Brouillard §22.4 : portée d'ambiance imposée par le MJ (0 = inchangée).
+        // Brouillard §21.4 : portée d'ambiance imposée par le MJ (0 = inchangée).
         public int sightRange;
         // RD-089 : parité plateau complète — zones persistantes (fumée, gaz, feu
         // au sol, durée restante en rounds) + objets au sol, pour réconciliation

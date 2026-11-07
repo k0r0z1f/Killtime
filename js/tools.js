@@ -143,7 +143,7 @@ function initCharacterSheet() {
     const ATTR_LABELS = { for: 'Force (FOR)', agi: 'Agilité (AGI)', con: 'Constitution (CON)', rap: 'Rapidité (RAP)', int: 'Intelligence (INT)', eru: 'Érudition (ÉRU)', cha: 'Charisme (CHA)', ins: 'Instinct (INS)', mag: 'Magie' };
     const CORE8 = ['for', 'agi', 'con', 'rap', 'int', 'eru', 'cha', 'ins'];
 
-    // Tables d'historique (Livre VII, chap. 29-32) — libellés courts pour le créateur.
+    // Tables d'historique (Livre VII, chap. 28-32) — libellés courts pour le créateur.
     const ENFANCES = [{n:'Soutes & Docks',d:'Enfant de station : +2 Subterfuge Manuel en milieu confiné.'},{n:'Rues & Bas-fonds',d:'Gamin des toits : +2 Observation en urbain.'},{n:'Ferme & Frontière',d:'Enfant des confins : +2 Nature & Survie en rural/sauvage.'},{n:'Clan & Tribu',d:'Sang des anciens : +2 Intuition en groupe.'},{n:'Cité & École',d:'Enfant instruit : +2 Académie (1 domaine).'},{n:'Caserne & Ordre',d:'Enfant de troupe : +2 Athlétisme.'}];
     const METIERS = [{n:'Milicien',d:'+2 Tir (1 arme) & Observation ; armure légère ; rappelable.'},{n:'Médic',d:'+2 Premiers Soins & triage ; kit de soin ; serment du blessé.'},{n:'Mécano',d:'+2 Ingénierie & dépannage ; caisse à outils ; dette atelier.'},{n:'Pilote',d:'+2 Pilotage & navigation ; licence + contact ; crédit nef.'},{n:'Prospecteur',d:'+2 Survie extrême & endurance ; équipement ; exclusivité.'},{n:'Négociant',d:'+2 Négocier & évaluer ; contact + licence ; dette.'},{n:'Archiviste',d:'+2 Académie & détails ; archives ; censure.'},{n:'Artisan',d:'+2 Artisanat & entretien ; établi ; commande en cours.'},{n:'Chasseur',d:'+2 Traque & discrétion (nature) ; pièges ; quota.'},{n:'Infiltré',d:'+2 Discrétion & tromper ; faux papiers + planque ; service dû.'},{n:'Herboriste',d:'+2 Botanique & pharmacopée ; remèdes ; clientèle dangereuse.'},{n:'Officier',d:'+2 Leadership & intimidation ; insigne ; responsabilité.'}];
     const EVENEMENTS = [{n:'Frôlé la mort',d:'1×/session : annule 1 Essoufflement (coup > Encaissement) ; cauchemars.'},{n:'Dette de vie',d:'+2 pour protéger un allié ; créancier rappelable.'},{n:'Trahison subie',d:'Relance un jet intuition ; traître actif.'},{n:'Long exil',d:'+2 Survie en terrain inconnu ; −2 premier contact.'},{n:'Contact 5e Force',d:'1 question fermée au MJ ; repérable par sens magiques.'},{n:'Miracle inexpliqué',d:'Ignore 1 échec moral/peur ; un culte s’intéresse à toi.'},{n:'Guerre intérieure',d:'+2 sang-froid (violence) ; fracas = test INS ou +1 Essoufflement.'},{n:'Crime impuni',d:'+2 couvrir ses traces ; un témoin existe.'},{n:'Mentor perdu',d:'+2 domaine du mentor ; promesse à honorer.'},{n:'Écho temporel',d:'1 question fermée (danger) ; +1 Essoufflement/usage.'},{n:'Ruine & misère',d:'+2 improviser avec rien ; −2 contact huppé.'},{n:'Gloire locale',d:'+2 Communication (zone exploit) ; rival jaloux.'}];
@@ -1220,7 +1220,7 @@ function initCharacterSheet() {
         if (pillarMinorSelect) pillarMinorSelect.dataset.prev = pillarMinorSelect.value;
     }
 
-    // ---- TECHNIQUES ASSOCIÉES (Fabrique puzzle, Livre III §15 / chap-41) ----
+    // ---- TECHNIQUES ASSOCIÉES (Fabrique puzzle, Livre III §15 / chap-40) ----
     // Bibliothèque rangée par personnage (clé par onglet, pont
     // FabriqueCharStore js/fabrique.js, même origine : Livre IX + popout).
     // Une technique est « associée » au personnage affiché quand sa

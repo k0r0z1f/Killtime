@@ -20,8 +20,8 @@ livre: 4
                             data-tip="Entraînement : +1 palier chacun, plafond 3 (+3 déblocables à 2d6, max 6), 5 XP (10 si croisé) (§6.1).">entraînement</a>
                         te fait monter d'un palier de dé.
                         <br>La dernière colonne liste les branches que tu peux acheter : le détail est au
-                        <a class="rule-ref" href="#sec-21-4"
-                            data-tip="Compendium : 12 branches arcaniques génériques, même tarif qu'au Livre III (§21.4).">§21.4</a>.
+                        <a class="rule-ref" href="#sec-20-4"
+                            data-tip="Compendium : 12 branches arcaniques génériques, même tarif qu'au Livre III (§20.4).">§20.4</a>.
                     </p>
 
                     

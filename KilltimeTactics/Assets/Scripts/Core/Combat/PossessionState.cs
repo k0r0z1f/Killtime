@@ -4,7 +4,7 @@ using Killtime.Core.Character;
 namespace Killtime.Core.Combat
 {
     /// <summary>
-    /// RD-204 (Livre VI §25.4) : Possession par la voie Esprit.
+    /// RD-204 (Livre VI §24.4) : Possession par la voie Esprit.
     /// Sur un différentiel ≥ 10 en épreuve Esprit, le contrôleur prend le
     /// contrôle de la cible pendant 1 tour (boss : seuil relevé, cf.
     /// CoreRulesConfig.PossessBossThreshold).

@@ -115,7 +115,7 @@ namespace Killtime.Core.Combat
         /// Étape 0 : prépare le duel aveugle. Paie le coût de base d'attaque uniquement.
         /// Aucun jet n'est lancé, aucune mise n'est engagée, rien n'est révélé.
         /// Retourne null + message d'erreur si l'attaque est impossible (PA insuffisants,
-        /// ou cible totalement à couvert / non visible, Livre V §22.3).
+        /// ou cible totalement à couvert / non visible, Livre V §21.3).
         /// </summary>
         public AttackDuel BeginDuel(
             CharacterStats attacker,
@@ -255,7 +255,7 @@ namespace Killtime.Core.Combat
 
         /// <summary>
         /// Balayage d'opportunité (variante) : frappe gratuite visant les Jambes
-        /// (À Terre + Ralenti en cas de choc, Livre V §23). Même coût qu'une frappe.
+        /// (À Terre + Ralenti en cas de choc, Livre V §22). Même coût qu'une frappe.
         /// </summary>
         public DamageResult? ResolveOpportunityTrip(
             CharacterStats reactor,
@@ -299,7 +299,7 @@ namespace Killtime.Core.Combat
             _maneuvers.TryBeginChanneling(unit, label, out error);
 
         /// <summary>
-        /// RD-202 Préparation d'Action (Livre V §21.3) : 1 PA -> +2 au jet de
+        /// RD-202 Préparation d'Action (Livre V §20.3) : 1 PA -> +2 au jet de
         /// l'action ou de la défense suivante (attaque OU parade). One-shot,
         /// consommée au jet suivant. Ne cumule pas avec la canalisation.
         /// </summary>
@@ -307,7 +307,7 @@ namespace Killtime.Core.Combat
             _maneuvers.TryBeginPreparation(unit, out error);
 
         /// <summary>
-        /// RD-202 Dégagement (Livre V §21.3) : fuite immédiate après une attaque
+        /// RD-202 Dégagement (Livre V §20.3) : fuite immédiate après une attaque
         /// ou une parade résolue (+1 PA de surcharge, trajet payé à part).
         /// DISTINCT du Décrochage RD-031 (préventif, sans réaction).
         /// </summary>
@@ -323,7 +323,7 @@ namespace Killtime.Core.Combat
 
         /// <summary>
         /// Réoriente un duel d'attaque vers un protecteur qui s'interpose pour
-        /// prendre le coup à la place de l'allié (RD-032, Livre V §21.5).
+        /// prendre le coup à la place de l'allié (RD-032, Livre V §20.5).
         /// Le protecteur devient le défenseur du duel avec son armure et ses défenses.
         /// </summary>
         public AttackDuel RedirectDuelToProtector(
@@ -443,7 +443,7 @@ namespace Killtime.Core.Combat
                 defenderBonusAP, defenderPE, defenderAutoStakes);
 
         /// <summary>
-        /// RD-204 Possession (Livre VI §25.4) : duel opposé aveugle MagieEsprit
+        /// RD-204 Possession (Livre VI §24.4) : duel opposé aveugle MagieEsprit
         /// vs MagieEsprit. Diff ≥ 10 (15 si boss) = contrôle 1 tour (PossessionState).
         /// </summary>
         public OpposedCheckResult ResolvePossessionDuel(
@@ -488,7 +488,7 @@ namespace Killtime.Core.Combat
                 defenderBonusAP, defenderPE, defenderAutoStakes);
 
         /// <summary>
-        /// RD-084 : Attaque combinée de groupe (Livre V §22.2). Les participants
+        /// RD-084 : Attaque combinée de groupe (Livre V §21.2). Les participants
         /// se synchronisent sur l'initiative du membre le plus lent, chacun
         /// effectue son épreuve (dé de sa compétence + états + mises aveugles),
         /// les résultats totaux s'additionnent face à l'UNIQUE défense de la cible.
@@ -537,7 +537,7 @@ namespace Killtime.Core.Combat
                 defenderWantsToDefend, defenderAutoStakes);
 
         /// <summary>
-        /// RD-084 : Round de course-poursuite (Livre V §22.1). La proie effectue
+        /// RD-084 : Round de course-poursuite (Livre V §21.1). La proie effectue
         /// UNE unique épreuve d'Athlétisme (mises une seule fois), chaque
         /// poursuivant effectue la sienne et se compare à ce total :
         /// réussite de la proie = distance maintenue (≥ 1 case), faillite =
@@ -585,25 +585,25 @@ namespace Killtime.Core.Combat
         public static bool IsUpperBodyPart(BodyPart part) => CombatProgressionService.IsUpperBodyPart(part);
 
         /// <summary>
-        /// Table de déviation d4/d6 chirurgicale officielle (Livre V §23.1).
+        /// Table de déviation d4/d6 chirurgicale officielle (Livre V §22.1).
         /// </summary>
         public BodyPart ResolveAnatomicalDeflection(BodyPart targeted, out int rollDie, out string medicalConsequence) =>
             _progression.ResolveAnatomicalDeflection(targeted, out rollDie, out medicalConsequence);
 
         /// <summary>
-        /// RD-082 (Livre VI §25.4) : Vérifie si l'attaque utilise une arme tranchante ou perçante.
+        /// RD-082 (Livre VI §24.4) : Vérifie si l'attaque utilise une arme tranchante ou perçante.
         /// </summary>
         public static bool IsSlashingOrPiercingAttack(SkillType skill, Killtime.Core.Inventory.InventoryItem weapon, CharacterStats attacker) =>
             CombatProgressionService.IsSlashingOrPiercingAttack(skill, weapon, attacker);
 
         /// <summary>
-        /// RD-082 (Livre VI §25.4) : Vérifie si l'attaque utilise une énergie thermique, feu ou plasma.
+        /// RD-082 (Livre VI §24.4) : Vérifie si l'attaque utilise une énergie thermique, feu ou plasma.
         /// </summary>
         public static bool IsFireOrPlasmaAttack(SkillType skill, Killtime.Core.Inventory.InventoryItem weapon, CharacterStats attacker) =>
             CombatProgressionService.IsFireOrPlasmaAttack(skill, weapon, attacker);
 
         /// <summary>
-        /// RD-082 (Livre VI §25.4) : Vérifie si l'assaillant possède la spécialisation Destruction de Rang 6.
+        /// RD-082 (Livre VI §24.4) : Vérifie si l'assaillant possède la spécialisation Destruction de Rang 6.
         /// </summary>
         public static bool HasDestructionTier6(CharacterStats attacker) =>
             CombatProgressionService.HasDestructionTier6(attacker);

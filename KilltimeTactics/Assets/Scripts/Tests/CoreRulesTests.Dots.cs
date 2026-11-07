@@ -147,7 +147,7 @@ namespace Killtime.Tests
         public void TestDot_RD091_SansPool_DefautsCanon_1_1_2_1()
         {
             // RP-091 : statut DoT posé sans pool (ApplyStatus sans residualDamage)
-            // -> tick aux défauts canon Livre VI §24 (Saignement 1, Empoisonné 1,
+            // -> tick aux défauts canon Livre VI §23 (Saignement 1, Empoisonné 1,
             // En Feu 2, Asphyxie 1 + drain 1 PA), puis décroissance normale.
             var attr = new Attributes(4, 4, 4, 3, 3, 2, 2, 2);
             var sheet = new CharacterSheet { Name = "Roger", BaseAttributes = attr };

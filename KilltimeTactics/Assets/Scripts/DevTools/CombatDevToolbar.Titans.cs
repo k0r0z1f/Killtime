@@ -18,7 +18,7 @@ namespace Killtime.UI
             if (_arena == null) return;
 
             GUILayout.Space(8);
-            GUILayout.Label("<b>🦣 Titans multi-cases + Boss (RD-196, Livres V §23.3 / XII §50-51) :</b>");
+            GUILayout.Label("<b>🦣 Titans multi-cases + Boss (RD-196, Livres V §22.3 / XII §49-50) :</b>");
             GUILayout.BeginVertical(GUI.skin.box);
 
             HexCoordinates spawnAt = _arena.CurrentTarget != null

@@ -1,9 +1,9 @@
 ---
+livre: 8
 cible: sections.chap-33.blocs.4.html
 format: raw
-livre: 8
 ---
 
 
-                    <h3>33.2 Armes Concasseuses, Haches & Armes d'Hast</h3>
+                    <h3>33.3 Grenades & Munitions Explosives</h3>
                     

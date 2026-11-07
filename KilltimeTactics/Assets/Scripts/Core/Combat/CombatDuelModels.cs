@@ -7,7 +7,7 @@ using Killtime.Tactics.Visibility;
 namespace Killtime.Core.Combat
 {
     /// <summary>
-    /// Duel aveugle officiel (Livres II §7 + VI §21.1) :
+    /// Duel aveugle officiel (Livres II §7 + VI §20.1) :
     /// 1. L'attaquant DÉCLARE sa cible, son action (compétence + zone visée) et sa mise
     ///    (coût de base + PA bonus + PE), débités aussitôt. Résultat CACHÉ.
     /// 2. La cible DÉCLARE à l'aveugle son action opposée (compétence défensive ou
@@ -57,7 +57,7 @@ namespace Killtime.Core.Combat
         public bool IsRangedAttack;
         public bool IsMartialArtsStrike;
         public bool AppliedCanonEntrave;
-        // RD-201 (Livre V §23.2) : coup de crosse au contact (Maniement
+        // RD-201 (Livre V §22.2) : coup de crosse au contact (Maniement
         // contondant 3-4 bruts, Déstabilisé si bruts > CON x2).
         public bool IsButtstroke;
         // RD-049 : Furtivité / Embuscade (+2 attaque, pas de réaction adverse)
@@ -72,14 +72,14 @@ namespace Killtime.Core.Combat
         public int PreparationAttackBonus;
         public bool IsPreparationDefense;
         public int PreparationDefenseBonus;
-        // Bonus d'arme arcanotech au jet (ex: Deglazer +1ec, Livre VIII §32.2).
+        // Bonus d'arme arcanotech au jet (ex: Deglazer +1ec, Livre VIII §31.2).
         // Additionné à AttackBaseMod au BeginDuel, tracé dans le log.
         public int WeaponBonusEc;
         // RD-036 Hauteur / contrebas (palier 1.5 m) : bonus/malus vertical
         // calculé par ElevationAdvantage, additionné à AttackBaseMod.
         public int ElevationAttackMod;
         public string ElevationLabel;
-        // Couvert & visibilité (Livre V §22.3) : Half -1, ThreeQuarters -2,
+        // Couvert & visibilité (Livre V §21.3) : Half -1, ThreeQuarters -2,
         // Full = cible non visible => attaque impossible (BeginDuel refuse).
         public CoverType Cover;
         public int CoverAttackPenalty;
@@ -117,7 +117,7 @@ namespace Killtime.Core.Combat
     }
 
     /// <summary>
-    /// Résultat d'une attaque combinée de groupe (RD-084, Livre V §22.2) :
+    /// Résultat d'une attaque combinée de groupe (RD-084, Livre V §21.2) :
     /// sommation des résultats offensifs face à l'unique défense de la cible.
     /// </summary>
     public sealed class CombinedAttackResult
@@ -167,7 +167,7 @@ namespace Killtime.Core.Combat
     }
 
     /// <summary>
-    /// Résultat d'un round de course-poursuite (RD-084, Livre V §22.1) :
+    /// Résultat d'un round de course-poursuite (RD-084, Livre V §21.1) :
     /// un unique jet de la proie opposé à chaque poursuivant.
     /// </summary>
     public sealed class PursuitRoundResult

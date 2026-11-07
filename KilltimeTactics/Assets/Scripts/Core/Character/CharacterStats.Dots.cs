@@ -56,7 +56,7 @@ namespace Killtime.Core.Character
         }
 
         /// <summary>
-        /// RD-045 : tick DoT en DÉBUT de tour personnel (Livre VI §24.1).
+        /// RD-045 : tick DoT en DÉBUT de tour personnel (Livre VI §23.1).
         /// Pour chaque Saignement/Empoisonne/EnFeu/Asphyxie actif : inflige le pool
         /// résiduel (ou le tick minimal si aucun pool), puis décrémente de 1
         /// (0 = disparition) sauf aggravation (pool doublé, spé Hémorragie Profonde).
@@ -84,7 +84,7 @@ namespace Killtime.Core.Character
                 int pool = GetResidualDamage(dot);
                 if (pool <= 0)
                 {
-                    // Livre VI §24 : défaut canon sans valeur posée (Saignement 1,
+                    // Livre VI §23 : défaut canon sans valeur posée (Saignement 1,
                     // Empoisonné 1, En Feu 2, Asphyxie 1) via DefaultDotDamage.
                     pool = DefaultDotDamage(dot);
                     _residualDamages[dot] = pool;
@@ -107,7 +107,7 @@ namespace Killtime.Core.Character
                 int shieldAbs = 0;
                 int finalDmg = dmg;
 
-                // EnFeu : brûlure externe → bouclier d'abord (Livre VIII §33.2).
+                // EnFeu : brûlure externe → bouclier d'abord (Livre VIII §32.2).
                 // AbsorbShield retourne le RESTE (test ArmoryJsonTests) : absorbé = dmg - reste.
                 if (dot == StatusEffect.EnFeu)
                 {

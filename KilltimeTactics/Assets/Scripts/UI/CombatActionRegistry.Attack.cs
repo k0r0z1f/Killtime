@@ -67,7 +67,7 @@ namespace Killtime.Tactics.CombatUI
                         attackSkill: ResolveContactSkill(act, tgt), attackerBonusAP: CombatContextMenuUI.CurrentInjectedAP, attackerPE: CombatContextMenuUI.CurrentInjectedPE, explicitTarget: tgt, explicitAttacker: act)
                 ));
 
-                // RD-201 : CANON ENTRAVÉ (Livre V §23.2) — au contact d'un
+                // RD-201 : CANON ENTRAVÉ (Livre V §22.2) — au contact d'un
                 // conscient avec une arme longue, les passes génériques
                 // ci-dessus sont remplacées par les 4 options du Livre :
                 // rétention, visé, crosse, mains nues.
@@ -81,7 +81,7 @@ namespace Killtime.Tactics.CombatUI
                         // 1. Tir de rétention (2 PA, -2 conservé).
                         actions.Add(new CombatAction(
                             $"🔫 Tir de Rétention (2 PA, -2){AmmoTag(actor, target)}",
-                            "Canon entravé (Livre V §23.2) : tir précipité au contact, malus de -2 conservé.",
+                            "Canon entravé (Livre V §22.2) : tir précipité au contact, malus de -2 conservé.",
                             ActionCategory.AttaqueEtPassesDarmes,
                             2,
                             (act, tgt) => CanAttackTarget(act, tgt, 2) && CanFireShot(act, tgt),
@@ -102,7 +102,7 @@ namespace Killtime.Tactics.CombatUI
                     int crosseDmg = CanonEntraveRules.ButtstrokeBaseDamage(actor.Sheet?.GetEquippedWeapon());
                     actions.Add(new CombatAction(
                         $"🔨 Crosse ({crosseDmg} bruts, 2 PA)",
-                        "Canon entravé (Livre V §23.2) : coup de crosse au Maniement (3-4 bruts, sans munition). Déstabilisé si les bruts dépassent CON x2.",
+                        "Canon entravé (Livre V §22.2) : coup de crosse au Maniement (3-4 bruts, sans munition). Déstabilisé si les bruts dépassent CON x2.",
                         ActionCategory.AttaqueEtPassesDarmes,
                         2,
                         (act, tgt) => act.Stats.CurrentActionPoints >= 2 && targetIsAlive && GetDistance(act, tgt) <= 1,
@@ -116,7 +116,7 @@ namespace Killtime.Tactics.CombatUI
                     // 4. Mains Nues (2 PA, exemption totale, Refoulement sur choc / Delta ≥ 4).
                     actions.Add(new CombatAction(
                         "🥋 Mains Nues (2 PA, sans entrave)",
-                        "Canon entravé (Livre V §23.2) : frappe à mains nues exempte du malus. Refoulement (1 case) sur choc traumatique ou Delta ≥ 4.",
+                        "Canon entravé (Livre V §22.2) : frappe à mains nues exempte du malus. Refoulement (1 case) sur choc traumatique ou Delta ≥ 4.",
                         ActionCategory.AttaqueEtPassesDarmes,
                         2,
                         (act, tgt) => act.Stats.CurrentActionPoints >= 2 && targetIsAlive && GetDistance(act, tgt) <= 1,
@@ -171,14 +171,14 @@ namespace Killtime.Tactics.CombatUI
                     ));
                 }
 
-                // RD-084 : Assaut groupé (Livre V §22.2) — synchronisé sur le plus
+                // RD-084 : Assaut groupé (Livre V §21.2) — synchronisé sur le plus
                 // lent, résultats offensifs sommés face à l'unique défense (armure 1×).
                 {
                     int combinedCost = Killtime.Core.Rules.CoreRulesConfig.Instance != null ? Killtime.Core.Rules.CoreRulesConfig.Instance.CombinedAttackAPCost : 2;
                     int combinedMin = Killtime.Core.Rules.CoreRulesConfig.Instance != null ? Killtime.Core.Rules.CoreRulesConfig.Instance.CombinedAttackMinMembers : 2;
                     actions.Add(new CombatAction(
                         $"⚔️ Assaut Groupé ({combinedCost} PA chacun)",
-                        "Attaque combinée (Livre V §22.2) : les alliés à portée frappent à l'unisson sur l'initiative du membre le plus lent, résultats offensifs sommés face à l'unique défense de la cible — armure et encaissement pulvérisés par le dépassement massif.",
+                        "Attaque combinée (Livre V §21.2) : les alliés à portée frappent à l'unisson sur l'initiative du membre le plus lent, résultats offensifs sommés face à l'unique défense de la cible — armure et encaissement pulvérisés par le dépassement massif.",
                         ActionCategory.AttaqueEtPassesDarmes,
                         combinedCost,
                         (act, tgt) =>
@@ -194,13 +194,13 @@ namespace Killtime.Tactics.CombatUI
                     ));
                 }
 
-                // RD-084 : Course-poursuite (Livre V §22.1) — concours d'Athlétisme
+                // RD-084 : Course-poursuite (Livre V §21.1) — concours d'Athlétisme
                 // proie vs poursuivant ; 4 faillites cumulées = capture immédiate.
                 {
                     int pursuitCost = Killtime.Core.Rules.CoreRulesConfig.Instance != null ? Killtime.Core.Rules.CoreRulesConfig.Instance.PursuitAPCost : 1;
                     actions.Add(new CombatAction(
                         $"🏃 Poursuite : gain de terrain ({pursuitCost} PA)",
-                        "Course-poursuite (Livre V §22.1) : concours d'Athlétisme contre la cible. Réussite de la proie = distance maintenue (≥ 1 case) ; faillite = le poursuivant gagne du terrain. 4 faillites cumulées = proie rattrapée et acculée (arrêt immédiat).",
+                        "Course-poursuite (Livre V §21.1) : concours d'Athlétisme contre la cible. Réussite de la proie = distance maintenue (≥ 1 case) ; faillite = le poursuivant gagne du terrain. 4 faillites cumulées = proie rattrapée et acculée (arrêt immédiat).",
                         ActionCategory.TactiqueEtOrdres,
                         pursuitCost,
                         (act, tgt) => act.Stats.CurrentActionPoints >= pursuitCost && targetIsAlive

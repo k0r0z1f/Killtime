@@ -69,7 +69,7 @@ namespace Killtime.Core.Combat
         // La frappe et le balayage sont GRATUITS (skipAttackerCost, réaction seule
         // consommée par l'appelant via OpportunityState). Mise attaquant 0/0
         // (coup réflexe), défense auto. Le blocage est un défi opposé Athlétisme
-        // vs Athlétisme (Livre V §22.1, course-poursuite) : à l'attaquant (bloqueur).
+        // vs Athlétisme (Livre V §21.1, course-poursuite) : à l'attaquant (bloqueur).
         // =====================================================================
 
         /// <summary>
@@ -125,7 +125,7 @@ namespace Killtime.Core.Combat
 
         /// <summary>
         /// Balayage d'opportunité (variante) : frappe gratuite visant les Jambes
-        /// (À Terre + Ralenti en cas de choc, Livre V §23). Même coût qu'une frappe.
+        /// (À Terre + Ralenti en cas de choc, Livre V §22). Même coût qu'une frappe.
         /// </summary>
         public DamageResult? ResolveOpportunityTrip(
             CharacterStats reactor,
@@ -206,7 +206,7 @@ namespace Killtime.Core.Combat
         }
 
         /// <summary>
-        /// RD-202 Préparation d'Action (Livre V §21.3) : 1 PA -> +2 au jet de
+        /// RD-202 Préparation d'Action (Livre V §20.3) : 1 PA -> +2 au jet de
         /// l'action ou de la défense suivante (attaque OU parade). One-shot :
         /// consommée au jet suivant, sans malus, sans persistance, sans
         /// interruption. Ne cumule pas avec la canalisation.
@@ -218,7 +218,7 @@ namespace Killtime.Core.Combat
         }
 
         /// <summary>
-        /// RD-202 Dégagement (Livre V §21.3) : déplacement de fuite suivant
+        /// RD-202 Dégagement (Livre V §20.3) : déplacement de fuite suivant
         /// immédiatement une attaque ou une parade résolue (+1 PA de surcharge,
         /// trajet payé à part). Refuse sans fenêtre (aucune action résolue),
         /// sans PA ou neutralisé. DISTINCT du Décrochage RD-031 (préventif,

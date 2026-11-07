@@ -6,7 +6,7 @@ using Killtime.Core.Character;
 namespace Killtime.DevTools.Character
 {
     /// <summary>
-    /// État + construction du sort candidat de la forge (Livre IV §20).
+    /// État + construction du sort candidat de la forge (Livre IV §19).
     /// Extrait à l'identique de CharacterDevWindow : presets, fiche technique,
     /// catalogue modulaire, bilan XP=PA. La window ne garde que le binding IMGUI.
     /// </summary>

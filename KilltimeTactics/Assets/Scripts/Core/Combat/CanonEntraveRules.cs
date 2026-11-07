@@ -4,7 +4,7 @@ using Killtime.Core.Inventory;
 namespace Killtime.Core.Combat
 {
     /// <summary>
-    /// RD-201 — Canon Entravé (Livre V §23.2) : au contact d'un combattant
+    /// RD-201 — Canon Entravé (Livre V §22.2) : au contact d'un combattant
     /// conscient (distance 1), une arme longue (portée &gt; 1, compétence de tir,
     /// ou deux mains) ne peut pas tirer normalement. Le tireur choisit :
     /// 1. Tir de rétention (2 PA, malus -2 conservé),
@@ -25,7 +25,7 @@ namespace Killtime.Core.Combat
 
     public static class CanonEntraveRules
     {
-        // Coûts PA Livre V §23.2 (avant malus armure lourde / Ralenti).
+        // Coûts PA Livre V §22.2 (avant malus armure lourde / Ralenti).
         public const int RetentionShotAPCost = 2;
         public const int AimedShotAPCost = 3;
         public const int ButtstrokeAPCost = 2;
@@ -59,7 +59,7 @@ namespace Killtime.Core.Combat
         }
 
         /// <summary>
-        /// Vrai si la situation remplit la condition Livre V §23.2 : cible
+        /// Vrai si la situation remplit la condition Livre V §22.2 : cible
         /// consciente (capable de défense active) au contact (distance ≤ 1)
         /// et attaquant porteur d'une arme longue.
         /// </summary>

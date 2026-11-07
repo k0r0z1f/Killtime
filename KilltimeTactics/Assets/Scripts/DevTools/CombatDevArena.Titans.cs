@@ -8,7 +8,7 @@ using Killtime.Core.Combat;
 
 namespace Killtime.Tactics
 {
-    // RD-196 : Titans multi-cases + boss 1-clic (Livres V §23.3, XII §50-51).
+    // RD-196 : Titans multi-cases + boss 1-clic (Livres V §22.3, XII §49-50).
     // Spawn générique Rosette7/Colossus19 + 3 boss du catalogue, 3 coups
     // Titanesques 1-clic (saisie 2 PA, piétinement 3 PA, souffle 3 PA),
     // vérification empreinte/périmètre et rechargement bossAI JSON.

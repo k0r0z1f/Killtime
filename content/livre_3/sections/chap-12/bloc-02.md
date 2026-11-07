@@ -19,8 +19,8 @@ format: raw
                         <li><strong>Agripper</strong> : vous attrapez quelqu'un — <a class="rule-ref"
                                 href="livre_2.html#chap-7"
                                 data-tip="Face-à-Face : chacun lance son dé + PA, le meilleur gagne. Seul le vainqueur coche (§7.3).">Face-à-Face</a> Force contre sa Défense. Réussi ?
-                            Il est <a class="rule-ref" href="livre_6.html#sec-26-1"
-                                data-tip="Immobilisé : impossible de faire la moindre action de mouvement (§26.1).">immobilisé</a>.
+                            Il est <a class="rule-ref" href="livre_6.html#sec-25-1"
+                                data-tip="Immobilisé : impossible de faire la moindre action de mouvement (§25.1).">immobilisé</a>.
                         </li>
                         <li><strong>Porter une Armure Lourde</strong> : il faut la Force demandée pour la porter. En
                             dessous ?

@@ -43,7 +43,7 @@ namespace Killtime.Core.Character
     }
 
     /// <summary>
-    /// Réglages IA d'un Boss Titan (Livre XII §50-51 — RD-087 suite).
+    /// Réglages IA d'un Boss Titan (Livre XII §49-50 — RD-087 suite).
     /// Lus depuis Bestiary.json ("bossAI") ; null sur l'entrée = défauts moteur
     /// (consts <see cref="Killtime.Core.Combat.TitanBossMechanics"/>).
     /// Que des types simples (JsonUtility : pas de Dictionary).
@@ -126,7 +126,7 @@ namespace Killtime.Core.Character
     }
 
     /// <summary>
-    /// Spécialisations des PNJ & Automates militaires (Livre XII §49 & §52 - RD-088).
+    /// Spécialisations des PNJ & Automates militaires (Livre XII §48 & §51 - RD-088).
     /// </summary>
     public static class LivreXISpecializations
     {

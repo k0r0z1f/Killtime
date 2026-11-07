@@ -23,7 +23,7 @@ namespace Killtime.Tactics.CombatUI
             // =========================================================================
             if (targetIsAlive)
             {
-                // RD-205 (Livre VI §26) : Stabilisation d'un Agonisant au chevet —
+                // RD-205 (Livre VI §25) : Stabilisation d'un Agonisant au chevet —
                 // Premiers Soins au contact (3 PA, jet vs Difficulté 12) : succès =
                 // Agonisant → Inconscient stable (Saignement stoppé, plus de jet
                 // de moral en boucle). Échec = Agonisant persiste (réessayable).
@@ -85,7 +85,7 @@ namespace Killtime.Tactics.CombatUI
                             bool kit = HasTool(act, "Chirurgie");
                             int healAmount = tgt.Stats.Attributes.Constitution * (kit ? 3 : 2);
                             // RD-083 : Premiers Soins / Chirurgie = Soins Majeurs (CON×2/×3
-                            // en un seul coup → lève Souffrant, cf. Livre VI §26.1).
+                            // en un seul coup → lève Souffrant, cf. Livre VI §25.1).
                             var major = tgt.Stats.ApplyMajorCare(healAmount);
                             if (kit)
                             {
@@ -102,7 +102,7 @@ namespace Killtime.Tactics.CombatUI
                     }
                 ));
 
-                // Consommables marketplace Livre VIII §33.3 : seringues + bandage (HealingAmount).
+                // Consommables marketplace Livre VIII §32.3 : seringues + bandage (HealingAmount).
                 // 1 PA, soi-même ou allié adjacent, consomme 1 dose du stock.
                 InventoryItem bestHeal = FindBestHealingConsumable(actor);
                 if (bestHeal != null)
@@ -133,13 +133,13 @@ namespace Killtime.Tactics.CombatUI
                             act.Sheet?.ConsumeOne(dose.ItemId);
                             act.NotifyInventoryChanged(true);
                             // RD-083 : soin ordinaire (seringue/bandage) — restaure des PV
-                            // mais ne lève JAMAIS Souffrant (Livre VI §25.3).
+                            // mais ne lève JAMAIS Souffrant (Livre VI §24.3).
                             bool hadSouffrant = tgt.Stats.ActiveStatus.HasFlag(StatusEffect.Souffrant);
                             int healed = tgt.Stats.Heal(usedHeal);
                             if (usedBandage) tgt.Stats.RemoveStatus(StatusEffect.Saignement);
                             var vis = tgt.GetComponent<TacticalUnitVisual>();
                             vis?.SpawnFloatingText($"+{healed} PV ({usedName}){(hadSouffrant ? " — Souffrant persiste" : "")}", Color.green);
-                            arena?.Log($"💉 <b>{act.Stats.Name}</b> utilise <b>{usedName}</b> sur <b>{tgt.Stats.Name}</b> (+{healed} PV{(usedBandage ? ", Saignement stoppé" : "")}{(hadSouffrant ? " — <b>Souffrant PERSISTE</b> (Soins Majeurs CON×2 requis, Livre VI §26.1)" : "")}).");
+                            arena?.Log($"💉 <b>{act.Stats.Name}</b> utilise <b>{usedName}</b> sur <b>{tgt.Stats.Name}</b> (+{healed} PV{(usedBandage ? ", Saignement stoppé" : "")}{(hadSouffrant ? " — <b>Souffrant PERSISTE</b> (Soins Majeurs CON×2 requis, Livre VI §25.1)" : "")}).");
                             arena?.RecordChronoSnapshot($"Soin {usedName} : {act.Stats.Name} -> {tgt.Stats.Name}");
                         }
                     ));
@@ -176,7 +176,7 @@ namespace Killtime.Tactics.CombatUI
             }
             else
             {
-                // Réanimation d'urgence (Livre VI §26.3 : Poids du Trépas)
+                // Réanimation d'urgence (Livre VI §25.3 : Poids du Trépas)
                 actions.Add(new CombatAction(
                     "⚡ Défibrillation Arcanique (4 PA)",
                     "Tente de ramener un combattant au contact à 1 PV avant le coma définitif. Résurrection : -1 ec pendant (10 - CON) jours réels.",
@@ -189,7 +189,7 @@ namespace Killtime.Tactics.CombatUI
                         {
                             // RD-083 : centralise la résurrection + horodate la séquelle.
                             int convalescence = tgt.Stats.ApplyResurrection(1);
-                            arena?.Log($"⚡ <b>{act.Stats.Name}</b> réanime <b>{tgt.Stats.Name}</b> (1 PV) — <b>Poids du Trépas</b> : -1 ec pendant {convalescence} jour(s) réels (10 - CON, Livre VI §26.3).");
+                            arena?.Log($"⚡ <b>{act.Stats.Name}</b> réanime <b>{tgt.Stats.Name}</b> (1 PV) — <b>Poids du Trépas</b> : -1 ec pendant {convalescence} jour(s) réels (10 - CON, Livre VI §25.3).");
 
                             var vis = tgt.GetComponent<TacticalUnitVisual>();
                             vis?.SpawnFloatingText("RÉANIMATION!", Color.cyan);
