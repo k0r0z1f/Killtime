@@ -336,7 +336,7 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_5.html#chap-20",
-     "details": "FAIT 2026-10-30 — Passe agent : ton MJ (intro chap 21 + 20.1-20.7, 2e personne, exemples concrets), 12 ancres sec-21-1..20-7, rule-refs croisés (PA, Essoufflement, Initiative, duel aveugle, états LVI), barème réactions lié §§21.4-21.7, encadré duel aveugle en wide (fix 45 %). Fichiers : livre_5.html, css/style.css (.formula-box.wide)."
+     "details": "FAIT 2026-10-30 — Passe agent : ton MJ (intro chap 21 + 20.1-20.7, 2e personne, exemples concrets), 12 ancres sec-21-1..20-7, rule-refs croisés (PA, Essoufflement, Initiative, duel aveugle, états LVI), barème réactions lié §§21.4-21.7, encadré duel aveugle en wide (fix 45 %). Fichiers : livre_5.html, css/style.css (.formula-box.wide). Passe 2026-11-08 — début chap 20 + §20.1 Face-à-Face retravaillés : mises masquées en jetons (1 jeton=1 PA, autre couleur=1 PE, fallback papier/gobelet), réserve cachée (zéro info adverse), dés lancés seulement après les deux déclarations, 0 PA = dé normal à -2, variante sans jetons (déclaration ouverte, attaquant d'abord) ajoutée §20.1 + §7.3, purge 'spé' tronqués (8 occ.), 'frappe' retirée de la liste réaction libre, paragraphe Déclaration Masquée sorti de la carte Défenses, rule-refs souffle/opportunité/interception. Fichiers : content/livre_5/sections/chap-20/bloc-00,06,08,10,14, content/livre_2/sections/chap-7/bloc-04, chap-8/bloc-02, data/livre_2.json, data/livre_5.json. Checks verts."
     },
     {
      "id": "RP-023",

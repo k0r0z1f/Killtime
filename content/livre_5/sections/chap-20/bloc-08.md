@@ -39,7 +39,7 @@ livre: 5
                     <h3 id="sec-20-5">20.5 Garde du Corps & Interception d'Allié (RD-032)</h3>
                     <p>
                         Ton pote se fait attaquer juste à côté de toi — à <strong>1 case ou moins</strong>.
-                        Tu as la technique <strong>Mener : Tenir la Ligne !</strong> ou la spé
+                        Tu as la technique <strong>Mener : Tenir la Ligne !</strong> ou la spécialisation
                         <strong>Garde du corps</strong> ? Tu peux te jeter devant et
                         <strong>prendre le coup à sa place</strong>.
                     </p>

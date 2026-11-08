@@ -14,18 +14,24 @@ livre: 2
                     </p>
                     <p>
                         <strong>La procédure du Face-à-Face (simple et pleine de tension) :</strong>
-                        Pour préserver le suspense et la tactique, les deux protagonistes déclarent leurs intentions et leurs mises de PA en secret avant de révéler leurs résultats simultanément.
+                        Pour préserver le suspense et la tactique, tu engages ta mise en jetons dans ton poing fermé avant de révéler en même temps que ton adversaire. 1 jeton = 1 PA d'effort, 1 jeton d'une autre couleur = 1 PE. Pas de jetons ? Un papier avec le chiffre, ou des dés cachés sous un gobelet. Tu caches aussi ta réserve : tes jetons restants dorment dans ton autre main fermée, ou derrière ton écran. Ton adversaire ne voit rien, ni ta mise ni ce qu'il te reste. Vous ouvrez les deux poings ensemble : ce que tu montres, tu le paies aussitôt.
                     </p>
                     <ol>
-                        <li><strong>L'attaquant annonce son assaut :</strong> il désigne sa cible, déclare la compétence utilisée et choisit secrètement les PA d'effort qu'il investit (+1 par PA, dans la limite de sa Constitution). <em>Exemple : Mains Nues avec 2 entraînements et FOR 5 = dé 1d10, mise cachée de 2 PA.</em> Le dé est lancé face cachée jusqu'à la résolution.</li>
-                        <li><strong>Le défenseur réagit en secret :</strong> sans connaître la mise de l'attaquant, il annonce comment il réagit (Esquive ou Parade) et engage secrètement ses propres PA d'effort (+1 par PA). <em>Exemple : Esquive avec 1 entraînement et AGI 5 = dé 1d8, mise cachée de 1 PA.</em></li>
-                        <li><strong>Révélation simultanée & Différentiel Net :</strong> les deux dés sont découverts en même temps, et chacun ajoute ses PA d'effort et ses malus éventuels (pas de bonus de caractéristique !). On soustrait le total du défenseur de celui de l'attaquant pour obtenir le <strong>Différentiel Net</strong> :</li>
+                        <li><strong>L'attaquant annonce son assaut :</strong> il désigne sa cible, déclare la compétence utilisée et pose secrètement ses PA d'effort en jetons (+1 par PA, dans la limite de sa Constitution). <em>Exemple : Mains Nues avec 2 entraînements et FOR 5 = dé 1d10, 2 jetons cachés dans le poing.</em> Ne lance pas ton dé pour l'instant.</li>
+                        <li><strong>Le défenseur réagit en secret :</strong> sans connaître la mise de l'attaquant, il annonce comment il réagit (Esquive ou Parade) et pose secrètement ses propres jetons (+1 par PA). <em>Exemple : Esquive avec 1 entraînement et AGI 5 = dé 1d8, 1 jeton caché dans le poing.</em> Ne lance pas ton dé non plus.</li>
+                        <li><strong>Lancez puis révélez ensemble :</strong> seulement maintenant, les deux dés sont lancés en même temps, et chacun ajoute ses PA d'effort et ses malus éventuels (pas de bonus de caractéristique !). On soustrait le total du défenseur de celui de l'attaquant pour obtenir le <strong>Différentiel Net</strong> :</li>
                     </ol>
                     <ul>
                         <li><strong>Différentiel inférieur à 0 :</strong> Échec de l'attaque. Le coup est totalement esquivé ou dévié par le bouclier/l'arme.</li>
                         <li><strong>Différentiel égal à 0 :</strong> Touche superficielle ! Le coup effleure la cible sans pénétration franche : les dégâts sont ignorés, mais les effets spéciaux du coup peuvent encore s'appliquer.</li>
                         <li><strong>Différentiel supérieur à 0 :</strong> Touche franche ! L'attaque porte de plein fouet : elle inflige ses dégâts de base augmentés du différentiel net, avant comparaison avec l'armure et l'Encaissement de la cible.</li>
                     </ul>
+                    <p>
+                        <strong>Variante sans jetons (déclaration ouverte) :</strong>
+                        Pas de jetons, pas de papier, pas envie ? L'attaquant annonce sa mise à voix haute et la paie aussitôt,
+                        puis le défenseur annonce la sienne en connaissance de cause. Vous lancez ensuite les deux dés ensemble.
+                        Zéro matériel, zéro triche possible. Revers : le défenseur ajuste en voyant ta mise.
+                    </p>
 
                     <!-- ================= CHAPITRE 9 ================= -->
                     

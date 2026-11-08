@@ -65,7 +65,7 @@ livre: 5
                         <li><strong>Rattrapage :</strong> le don Humain <strong>E Sang-Froid</strong>
                             (1×/session : ignore un échec de moral) et l'événement
                             <strong>Miracle inexpliqué</strong> (Livre VII : ignore un échec de moral)
-                            annulent une Déroute après le jet. La spé <strong>Mener : Tenir la Ligne !</strong>
+                            annulent une Déroute après le jet. La spécialisation <strong>Mener : Tenir la Ligne !</strong>
                             (<a class="rule-ref" href="#sec-20-5" data-tip="Garde du corps : au contact d'un allié attaqué, prend le coup à sa place pour 1 PA (§20.5).">§20.5</a>)
                             reste ton meilleur rempart collectif : un chef qui tient aide tout le groupe à tenir.</li>
                     </ul>

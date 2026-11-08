@@ -7,7 +7,7 @@ livre: 5
 
                     <ul>
                         <li><strong>🛡️ Prise de coup réflexe (1 <a class="rule-ref" href="livre_1.html#chap-4" data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a> réaction) :</strong> dès qu'un ennemi déclare une
-                            attaque contre un allié adjacent, le protecteur qualifié (spé <em>Tenir la Ligne</em>,
+                            attaque contre un allié adjacent, le protecteur qualifié (spécialisation <em>Tenir la Ligne</em>,
                             donneur du bonus de blindage d'escouade ou garde du corps désigné) peut dépenser 1 <a class="rule-ref" href="livre_1.html#chap-4" data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a>
                             et sa réaction libre du cycle pour absorber l'offensive.</li>
                         <li><strong>Posture préventive (0 PA) :</strong> pendant son propre tour, le protecteur peut

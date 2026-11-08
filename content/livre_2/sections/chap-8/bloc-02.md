@@ -6,7 +6,7 @@ livre: 2
 
                     <h4 id="sec-8-4">8.4 Terrains difficiles : 1 case coûte 2 PA</h4>
                     <p>
-                        Boue, gravats, pente raide, eau peu profonde, neige épaisse, sable meuble : chaque case coûte <strong>2 PA de déplacement</strong> au lieu d'1 (<a href="livre_5.html#sec-20-3">Livre V §20.3</a>). Ni sprint, ni charge à travers. Trois façons de passer outre : la spé <em>Franchissement</em> (Athlétisme), <em>Pas Feuillu</em> (Taurien, terrains naturels), <em>Fille du désert</em> (Cléien, terrains sableux).
+                        Boue, gravats, pente raide, eau peu profonde, neige épaisse, sable meuble : chaque case coûte <strong>2 PA de déplacement</strong> au lieu d'1 (<a href="livre_5.html#sec-20-3">Livre V §20.3</a>). Ni sprint, ni charge à travers. Trois façons de passer outre : la spécialisation <em>Franchissement</em> (Athlétisme), <em>Pas Feuillu</em> (Taurien, terrains naturels), <em>Fille du désert</em> (Cléien, terrains sableux).
                     </p>
                     <h4 id="sec-8-5">8.5 Milieux : six mots pour dire où tu es</h4>
                     <p>
@@ -31,7 +31,7 @@ livre: 2
                             aucun malus au tir, −1 en <a class="rule-ref" href="livre_3.html#chap-13" data-tip="Observation : repérer un indice, un danger, un ennemi camouflé (Vision/Ouïe, §13.3).">Observation</a>
                             et Discrétion au-delà de 4 cases. Tu distingues les silhouettes, pas les visages.</li>
                         <li><strong>Nuit noire (sans lune, galerie éteinte) :</strong> vue bridée à <strong>4 cases</strong>,
-                            −1 à tes tirs sans <strong>lampe allumée</strong> ni <strong>vision thermique</strong> (spé ou lunettes).
+                            −1 à tes tirs sans <strong>lampe allumée</strong> ni <strong>vision thermique</strong> (spécialisation ou lunettes).
                             <em>Exemple : tu tires au fusil (d8) contre un seuil de 4, en nuit noire sans lampe. Tu obtiens 5. 5 − 1 = 4 : ça passe, de justesse. Au même tirage en plein jour, tu respirais.</em></li>
                         <li><strong>Cumul météo :</strong> le malus le plus fort l'emporte (nuit noire −1 + blizzard −2 = −2),
                             mais la vue se réduit deux fois : bridage nuit puis division du palier fort.
@@ -40,7 +40,7 @@ livre: 2
                         <li><strong>Lampe allumée :</strong> tu ignores le bridage et le malus de nuit pour tes jets et tes cibles éclairées.
                             Revers : ta lampe te trahit. Toute ligne de mire directe te repère, furtivité brisée
                             (<a href="livre_5.html#chap-21-3">Livre V §21.3</a>). Éteindre et se taire redevient parfois la meilleure armure.</li>
-                        <li><strong>Vision thermique :</strong> spé ou lunettes thermiques. Tu ignores la nuit sans trahir ta position,
+                        <li><strong>Vision thermique :</strong> spécialisation ou lunettes thermiques. Tu ignores la nuit sans trahir ta position,
                             et tu perces fumée et murs légers à <strong>demi-portée</strong>. Le froid, lui, ne s'achète pas : un Derek reste un Derek.</li>
                         <li><strong>Vision nocturne (Derek, <em>Sang des Profondeurs</em>) :</strong> tu vois de nuit comme en plein jour.
                             Palier nuit ignoré, ni bridage ni malus. En échange, la lumière vive te punit : en entrant en
