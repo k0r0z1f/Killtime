@@ -112,13 +112,13 @@ livre: 5
                             (observateur) vs <strong>Discrétion</strong> (cible) : <strong>-1 par case</strong>
                             au-delà du contact, <strong>-1 / -2 / -4</strong> selon le couvert
                             (moitié, trois-quarts, total — un couvert total rend l'observation
-                            <strong>impossible</strong>). Réussite ➔ cible <strong>révélée jusqu'à la fin du round
+                            <strong>impossible</strong>). Réussite ➔ cible <strong>révélée jusqu'à la fin du cycle
                             suivant</strong>.                             Spécialités : <strong>Œil de Lynx +2</strong> au duel,
                             <strong>Détection Thermique +2</strong> et devine une présence juste derrière un mur
                             plein tout proche.</li>
                         <li><strong>Tir bruyant = révélé :</strong> tout tir à distance (Ballistique, grenade,
                             sort offensif — <strong>la mêlée reste silencieuse</strong>) révèle le tireur aux
-                            ennemis situés dans son <strong>rayon d'Ouïe</strong>, jusqu'à la <strong>fin du round
+                            ennemis situés dans son <strong>rayon d'Ouïe</strong>, jusqu'à la <strong>fin du cycle
                             suivant</strong>, sauf mur plein entre les deux.</li>
                     </ul>
 
@@ -142,30 +142,30 @@ livre: 5
                         </div>
                     </div>
 
-                    <h3 id="chap-21-5">21.5 Duo-Tech : Résonance Dyadique (Règles de Table)</h3>
+                    <h3 id="chap-21-5">21.5 Technique-Duo : Résonance Dyadique (Règles de Table)</h3>
                     <p>
                         Tu connais Lucas et Mina ? Lui calcule froid, elle frappe vite et chaud.
-                        Ensemble, ils font un <strong>Duo-Tech : une seule action à deux</strong>.
+                        Ensemble, ils font une <strong>Technique-Duo : une seule action à deux</strong>.
                         Pas besoin de dessiner quoi que ce soit : vous lancez chacun une
                         <a class="rule-ref" href="livre_2.html#chap-7" data-tip="Épreuve : lance ton dé de compétence + PA − malus contre le seuil du MJ (§7.1)."><strong>épreuve de carac de base</strong></a> pour voir si vous êtes synchros (§21.5.2).
                     </p>
 
                     <div class="formula-box wide">
-                        <div class="formula-label">Séquence du Duo-Tech en 3 Temps</div>
+                        <div class="formula-label">Séquence de la Technique-Duo en 3 Temps</div>
                         <div class="formula-math">
                             <span class="hl-cyan">1. Condition + Déclaration + Paiement immédiat</span> &nbsp;➔&nbsp;
                             <span class="hl-gold">2. Double épreuve de synchro (carac de base vs ND)</span> &nbsp;➔&nbsp;
                             <span class="hl-ruby">3. Parfaite / Semi / Ratée</span>
                         </div>
                         <div class="formula-desc">
-                            <strong>1. Condition & déclaration :</strong> le MJ valide la condition de placement du
-                            Duo-Tech visé (alignement, isolement, couloir vide…). Déclarable <strong>à tout moment
+                            <strong>1. Condition & déclaration :</strong> le MJ valide la condition de placement de la
+                            Technique-Duo visée (alignement, isolement, couloir vide…). Déclarable <strong>à tout moment
                             pendant le tour personnel de l'un des deux partenaires</strong>, même après avoir déjà
                             agi. L'initiateur paie <strong>1 <a class="rule-ref" href="livre_1.html#chap-4" data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a> de départ + son coût de rôle</strong>, le partenaire
                             paie <strong>son coût de rôle immédiatement</strong> — même s'il n'a pas encore joué ce
-                            round. Pas assez de <a class="rule-ref" href="livre_1.html#chap-4" data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a> d'un côté = déclaration refusée, aucun débit.<br>
-                            <strong>Action unique :</strong> le Duo-Tech ne consomme l'action principale de personne.
-                            <strong>Limite : 1 Duo-Tech par personnage par round</strong>, initiateur ou partenaire.
+                            cycle. Pas assez de <a class="rule-ref" href="livre_1.html#chap-4" data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a> d'un côté = déclaration refusée, aucun débit.<br>
+                            <strong>Action unique :</strong> la Technique-Duo ne consomme l'action principale de personne.
+                            <strong>Limite : 1 Technique-Duo par personnage et par cycle</strong>, initiateur ou partenaire.
                             Une fois payé, le duo reste <strong>armé sans expiration</strong> jusqu'à exécution ou
                             annulation — <strong><a class="rule-ref" href="livre_1.html#chap-4" data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a> perdus dans les deux cas</strong>, aucun remboursement.<br>
                             <strong>2. Synchronisation</strong> (§21.5.2) : les deux partenaires lancent leur épreuve

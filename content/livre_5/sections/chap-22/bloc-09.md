@@ -8,7 +8,7 @@ livre: 5
                     <div class="codex-signature">
                         <div class="sig-meta">
                             <strong>LIVRE V DU CODEX UNIVERSEL</strong><br>
-                            Combat Tactique, Séquence de Round, Localisation & Engins Motorisés<br>
+                            Combat Tactique, Séquence de Cycle, Localisation & Engins Motorisés<br>
                             <em>À toi de jouer : annonce ta mise, dépense tes PA, révèle avec ton adversaire — et bon combat.</em>
                         </div>
                         <div class="sig-stamp">

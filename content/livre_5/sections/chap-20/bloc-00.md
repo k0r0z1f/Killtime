@@ -6,11 +6,12 @@ livre: 5
 
 
                     <p>
-                        Un round dure <strong>10 secondes</strong>. À l'intérieur, chacun joue à son tour,
+                        Un cycle dure <strong>10 secondes</strong>. À l'intérieur, chacun joue à son tour,
                         dans l'ordre d'<a class="rule-ref" href="livre_1.html#sec-4-3" data-tip="Initiative : meilleur score entre Rapidité, Agilité et Intelligence, converti en dé (§4.3).">initiative</a>. Quand c'est ton tour, tu dépenses tes <a class="rule-ref" href="livre_1.html#chap-4" data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a> : tu avances,
-                        tu frappes, tu pares, tu ajustes ton tir, tu lances un sort.
+                        tu frappes, tu ajustes ton tir, tu lances un sort. Et tu en gardes en réserve :
+                        parer, ça se fait surtout hors de ton tour, en réaction quand on te tombe dessus.
                         <strong>Tu récupères tous tes PA au début de ton propre tour</strong>
-                        (remise au maximum, sans cumul). Pas de recharge globale au début du round.
+                        (remise au maximum, sans cumul). Pas de recharge globale au début du cycle.
                     </p>
 
                     <div class="callout temporal">
@@ -24,17 +25,20 @@ livre: 5
                         </div>
                         <div class="callout-body">
                             <ol style="margin-bottom: 0;">
-                                <li><strong>Initiative (une seule fois) :</strong> Jet d'<a class="rule-ref" href="livre_1.html#sec-4-3" data-tip="Initiative : meilleur score entre Rapidité, Agilité et Intelligence, converti en dé (§4.3).">initiative</a> basé sur la
-                                    compétence <em>Rapidité d'exécution</em>. L'ordre reste fixe pour tout le combat.</li>
-                                <li><strong>Début du tour personnel :</strong> Quand son initiative arrive, le combattant
-                                    <strong>récupère l'intégralité de sa réserve de <a class="rule-ref" href="livre_1.html#chap-4" data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a> (remise au maximum, sans cumul)</strong>.
-                                    Il peut alors en premier lieu <strong>reprendre son souffle</strong> (1 <a class="rule-ref" href="livre_1.html#chap-4" data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a> dépensé = 1 point d'<a class="rule-ref" href="livre_1.html#sec-4-2" data-tip="Essoufflement : 1 point = des PA d'urgence ; ne part pas tout seul, action dédiée pour souffler (§4.2).">essoufflement</a> effacé).</li>
-                                <li><strong>Actions & Réactions :</strong> Le combattant agit (action principale, déplacements),
-                                    puis les autres peuvent dépenser leurs propres PA / PE en réactions (parades,
-                                    esquives, interruptions) même hors de leur tour.</li>
+                                <li><strong>Initiative (une seule fois) :</strong> Jet d'<a class="rule-ref" href="livre_1.html#sec-4-3" data-tip="Initiative : meilleur score entre Rapidité, Agilité et Intelligence, converti en dé (§4.3).">initiative</a> basé sur ton meilleur score entre
+                                    <em>Rapidité</em>, <em>Agilité</em> et <em>Intelligence</em> (converti en dé). L'ordre reste fixe pour tout le combat.</li>
+                                <li><strong>Début de ton tour :</strong> quand ton initiative arrive, dans l'ordre :
+                                    tes <strong>résiduels te frappent puis décroissent</strong>, tu <strong>récupères
+                                    l'intégralité de ta réserve de <a class="rule-ref" href="livre_1.html#chap-4" data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a> (remise au maximum, sans cumul)</strong>,
+                                    et tu <strong>recharges ta réaction libre</strong>.</li>
+                                <li><strong>Milieu (tes actions, ordre libre) :</strong> tu agis (action principale, déplacements,
+                                    sorts, postures) ; hors de ton tour, les autres peuvent parer et esquiver <strong>sans maximum</strong>
+                                    (tant qu'ils paient) ou dépenser leur réaction libre.</li>
+                                <li><strong>Fin de ton tour :</strong> expirent les effets ancrés « fin du tour »
+                                    (guet, Décrochage inutilisé, −1 de Charge, états « jusqu'à la fin du prochain tour »).</li>
                                 <li><strong>Itération :</strong> Passer au combattant suivant dans l'ordre d'initiative.
-                                    Chaque combattant ne récupère ses PA qu'au <strong>début de son propre tour</strong>,
-                                    jamais au début du round global.</li>
+                                    Chaque combattant ne recharge PA et réaction libre qu'au <strong>début de son propre tour</strong>,
+                                    jamais au début du cycle global.</li>
                             </ol>
                         </div>
                     </div>

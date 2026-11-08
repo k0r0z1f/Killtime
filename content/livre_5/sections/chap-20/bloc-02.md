@@ -9,7 +9,7 @@ livre: 5
                     <p>
                         Tu n'as plus de <a class="rule-ref" href="livre_1.html#chap-4" data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a> mais tu dois parer, sinon tu prends le coup ?
                         Tu forces. Tu prends des <a class="rule-ref" href="livre_1.html#sec-4-2" data-tip="Essoufflement : 1 point = des PA d'urgence ; ne part pas tout seul, action dédiée pour souffler (§4.2)."><strong>Points d'Essoufflement</strong></a>.
-                        Ça te sauve maintenant, et tu récupères en reprenant ton souffle à ton prochain tour.
+                        Ça te sauve maintenant, et tu récupères en reprenant ton souffle, à ton tour ou en réaction (hors de ton tour : ça consomme ta réaction libre du cycle).
                     </p>
 
                     
