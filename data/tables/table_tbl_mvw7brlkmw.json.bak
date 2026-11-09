@@ -5,7 +5,7 @@
   "mjId": "usr_mtvzf3lr",
   "mjName": "k0r0",
   "createdAt": 1793439060000,
-  "updatedAt": 1794060912596,
+  "updatedAt": 1794078713077,
   "maxMembers": 12,
   "inviteCode": "inv_BgCO6QCJUnID",
   "members": [
@@ -609,6 +609,19 @@
       "toName": null,
       "toExcept": [],
       "createdAt": 1794060912596
+    },
+    {
+      "id": "m_mw6s56npaw",
+      "fromId": "usr_mtvzf3lr",
+      "fromName": "k0r0",
+      "fromRole": "mj",
+      "text": "📖 Système de Jeu RP — Livre IV : La Cinquième Force & La Magie — livre_4.html#sec-19-4« Tu joues souvent avec les mêmes partenaires ? Vous vous entraînez ensemble ? Alo »",
+      "image": null,
+      "file": null,
+      "toUserId": null,
+      "toName": null,
+      "toExcept": [],
+      "createdAt": 1794078713077
     }
   ],
   "listed": true,

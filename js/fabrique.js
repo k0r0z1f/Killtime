@@ -579,7 +579,7 @@ var FAB_REFS = [
     { k: 'essoufflement', href: 'livre_1.html#sec-4-2', tip: 'Essoufflement : 1 point = des PA d’urgence ; ne part pas tout seul, action dédiée pour souffler (§4.2).' },
     { k: 'ralentie', href: 'livre_6.html#sec-24-1', tip: 'Ralenti : toute action coûte le DOUBLE de PA (§24.1).' },
     { k: 'ralenti', href: 'livre_6.html#sec-24-1', tip: 'Ralenti : toute action coûte le DOUBLE de PA (§24.1).' },
-    { k: 'à terre', href: 'livre_6.html#sec-24-1', tip: 'À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.' },
+    { k: 'à terre', href: 'livre_6.html#sec-24-1', tip: 'À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.' },
     { k: 'déstabilisée', href: 'livre_6.html#sec-24-1', tip: 'Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).' },
     { k: 'déstabilisé', href: 'livre_6.html#sec-24-1', tip: 'Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).' },
     { k: 'étourdie', href: 'livre_6.html#sec-24-1', tip: 'Étourdi : −1 ec sur tous les jets.' },

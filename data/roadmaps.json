@@ -1,6 +1,6 @@
 {
  "version": 3,
- "updated": "2026-11-05",
+ "updated": "2026-11-09",
  "activeId": "board-demo-hors-lore",
  "boards": [
   {
@@ -1352,6 +1352,22 @@
      "suggestedAsset": "CharacterStats.Dots + TacticalAIController",
      "updated": "2026-11-03",
      "details": "BLOQUÉ PAR RP-125 (codex pas écrit). Une fois RP-125 clos : états Privation/Affamé en Unity — tick au tour (CharacterStats.Dots, calque Saignement/Asphyxie), interaction Frugalité Cleyane (besoins ÷2 : diviser le tick ou espacer ?), IA (ravitaillement/repli Ne Lâche Rien ?), sync VTT si états persistants syncés. Raccord Livre VI §24.1/§25.2 + exemple chiffré codex rejoué en test."
+    },
+    {
+     "id": "RD-231",
+     "title": "Réaligner Unity sur rebalance §20.3 (Préparation virée, verrou sprint viré, Décrochage, canalisation à mise)",
+     "epic": "Positionnement",
+     "status": "todo",
+     "priority": "medium",
+     "order": 85,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "PreparationState + ChannelingState + ChargeState + CombatActionRegistry + TurnManager",
+     "updated": "2026-11-09",
+     "details": "TODO (codex fait foi, rebalance sysRP 2026-11-09) : 1) Préparation d'Action virée du codex — retirer PreparationState/usages UI+IA/tests ou réserver. 2) Verrou sprint-bloque-tir viré — retirer blocage tir sprint (ChargeState, tag sprint bloqué, IA, ChargeSprintTests). 3) Dégagement/Désengagement renommé Décrochage partout (textes + GetAwayState si gardé). 4) Canalisation RD-048 refondue : mise 1+ PA (chaque PA = +2, plafond = prix de base en PA), attaque jamais le même tour, 1 seul tour étalé (perdue si injouable au 2e tour), -1 déf entre-temps, mise perdue si dégâts > encaissement. 5) Se relever figé à 1 PA. Rejouer tests + build après modifs."
     }
    ]
   },

@@ -6,7 +6,7 @@ livre: 5
 
 
                     <p>
-                        Compte <strong>1 case = 1 mètre</strong>. Chaque pas coûte des <a class="rule-ref" href="livre_1.html#chap-4" data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a>.
+                        Compte <strong>1 case = 1,5 mètre</strong>. Chaque pas coûte des <a class="rule-ref" href="livre_1.html#chap-4" data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a>.
                         Tu avances trop loin sans garder de quoi parer ? Tu offres une contre-attaque.
                         Bouge, mais garde toujours de quoi te défendre.
                     </p>

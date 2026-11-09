@@ -30,7 +30,7 @@ livre: 5
                             meurt, tombe <a class="rule-ref" href="livre_6.html#sec-24-5" data-tip="Inconscient : aucune action ni réaction. Réveil par secousse vigoureuse (1 PA) ou premiers soins.">inconsciente</a>, est <a class="rule-ref" href="livre_6.html#sec-24-1" data-tip="Sonné : aucune action. La créature tombe immédiatement à terre.">sonnée</a>, <a class="rule-ref" href="livre_6.html#sec-24-1" data-tip="Paralysé : aucune action ni réaction, incapacité totale (§24.1).">paralysée</a> ou <a class="rule-ref" href="livre_6.html#sec-24-1" data-tip="Étourdi : −1 ec sur tous les jets.">étourdie</a>.</li>
                     </ul>
 
-                    <h3 id="sec-20-7">20.7 Charge d'Assaut, Sprint & Verrouillage du Tir (RD-038)</h3>
+                    <h3 id="sec-20-7">20.7 Charge d'Assaut & Sprint</h3>
                     <p>
                         Tu prends de l'élan — <strong>3 cases ou plus d'affilée</strong> — et tu arrives lancé.
                         Ton coup tape plus fort, mais tu arrives déséquilibré. C'est ça, la

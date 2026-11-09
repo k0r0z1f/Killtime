@@ -133,7 +133,7 @@
    "etiquette_classe": "formula-label",
    "etiquette_html": "Code Universel d'Arme (DLPH)",
    "math_html": "<span class=\"hl-ruby\">[D] Dégâts</span> &nbsp;—&nbsp; <span class=\"hl-gold\">[L] Livres\n                                (Poids)</span> &nbsp;—&nbsp; <span class=\"hl-cyan\">[P] Portée (m/cases)</span>\n                            &nbsp;—&nbsp; <span class=\"hl-emerald\">[H] Maniement (1H / 2H)</span>",
-   "desc_html": "<strong>D :</strong> Dégâts de base ajoutés au jet d'attaque. &bull;\n                            <strong>L :</strong> Poids en livres impériales (1 livre &asymp; 0.45 kg). &bull;\n                            <strong>P :</strong> Portée opérationnelle en mètres (1 case = 1 mètre). &bull;\n                            <strong>H :</strong> 1H (une main) ou 2H (deux mains obligatoires).",
+   "desc_html": "<strong>D :</strong> Dégâts de base ajoutés au jet d'attaque. &bull;\n                            <strong>L :</strong> Poids en livres impériales (1 livre &asymp; 0.45 kg). &bull;\n                            <strong>P :</strong> Portée opérationnelle en mètres (1 case = 1,5 mètre). &bull;\n                            <strong>H :</strong> 1H (une main) ou 2H (deux mains obligatoires).",
    "contenu": false
   },
   "armes_lames": {
@@ -518,7 +518,7 @@
      "signification": "Maniement (1H / 2H)"
     }
    ],
-   "texte": "D : Dégâts de base ajoutés au jet d'attaque. • L : Poids en livres impériales (1 livre ≈ 0.45 kg). • P : Portée opérationnelle en mètres (1 case = 1 mètre). • H : 1H (une main) ou 2H (deux mains obligatoires)."
+   "texte": "D : Dégâts de base ajoutés au jet d'attaque. • L : Poids en livres impériales (1 livre ≈ 0.45 kg). • P : Portée opérationnelle en mètres (1 case = 1,5 mètre). • H : 1H (une main) ou 2H (deux mains obligatoires)."
   },
   "armes_lames": [
    {

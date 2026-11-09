@@ -215,8 +215,8 @@
  "critiques": [
   {
    "resultat": "1",
-   "offensif_html": "La cible tombe <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">à terre</a>",
-   "defensif_html": "L’attaquant tombe <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">à terre</a>",
+   "offensif_html": "La cible tombe <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.\">à terre</a>",
+   "defensif_html": "L’attaquant tombe <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.\">à terre</a>",
    "social_html": "Interlocuteur déstabilisé",
    "utilitaire_html": "Tâche accomplie sans bruit"
   },

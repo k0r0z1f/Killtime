@@ -5,7 +5,7 @@
   "mjId": "usr_mtvzf3lr",
   "mjName": "k0r0",
   "createdAt": 1793439060000,
-  "updatedAt": 1794078713077,
+  "updatedAt": 1794264331180,
   "maxMembers": 12,
   "inviteCode": "inv_BgCO6QCJUnID",
   "members": [
@@ -622,6 +622,19 @@
       "toName": null,
       "toExcept": [],
       "createdAt": 1794078713077
+    },
+    {
+      "id": "m_mw9unmi46i",
+      "fromId": "usr_mtvzf3lr",
+      "fromName": "k0r0",
+      "fromRole": "mj",
+      "text": "📖 Système de Jeu RP — Livre V : Combat Tactique & Déplacements — livre_5.html#sec-20-3« errain difficile : +1 PA par case (2 PA/case, §8.4). Cumule avec À Terre (ramper : 3 PA/case) et l'encombrement (§33.1). »",
+      "image": null,
+      "file": null,
+      "toUserId": null,
+      "toName": null,
+      "toExcept": [],
+      "createdAt": 1794264331180
     }
   ],
   "listed": true,

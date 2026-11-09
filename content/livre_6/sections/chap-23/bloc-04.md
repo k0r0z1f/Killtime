@@ -20,7 +20,7 @@ format: raw
                                 <li><strong>Impact au Cœur / Cou :</strong> Coma immédiat et agonie rapide (hémorragie
                                     mortelle en <code>CON / 2</code> tours).</li>
                                 <li><strong>Torse &amp; Membres :</strong> Syncope forcée (état <a class="rule-ref" href="#sec-24-5" data-tip="Inconscient : aucune action ni réaction. Réveil par secousse vigoureuse (1 PA) ou premiers soins.">Inconscient</a> et
-                                    <a class="rule-ref" href="#sec-24-1" data-tip="À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.">À Terre</a> immédiat).
+                                    <a class="rule-ref" href="#sec-24-1" data-tip="À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.">À Terre</a> immédiat).
                                 </li>
                             </ul>
                         </li>
@@ -28,7 +28,7 @@ format: raw
                             Le corps s'éteint par pure décharge vitale. Le combattant choisit :
                             <ul>
                                 <li><strong>Sombrer (La Syncope Protectrice) :</strong> Tu t'évanouis
-                                    et tu restes stable au sol (<a class="rule-ref" href="#sec-24-5" data-tip="Inconscient : aucune action ni réaction. Réveil par secousse vigoureuse (1 PA) ou premiers soins.">Inconscient</a>, <a class="rule-ref" href="#sec-24-1" data-tip="À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.">À Terre</a>).
+                                    et tu restes stable au sol (<a class="rule-ref" href="#sec-24-5" data-tip="Inconscient : aucune action ni réaction. Réveil par secousse vigoureuse (1 PA) ou premiers soins.">Inconscient</a>, <a class="rule-ref" href="#sec-24-1" data-tip="À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.">À Terre</a>).
                                     En général, tes adversaires te laissent là où tu es tombé et passent à une
                                     autre cible : tu ne bouges plus, tu ne les menaces plus. Exemple : tu t'effondres
                                     au milieu d'une fusillade, le tireur en face réoriente son arme vers ton
@@ -39,7 +39,7 @@ format: raw
                                     Exemple : le tueur s'accroupit près de toi et vise ta tête — un seul coup
                                     suffit. Ton MJ tranche selon la situation.</li>
                                 <li><strong>Dernier Souffle (Le Baroud d'Honneur) :</strong> Tu refuses de
-                                    t'évanouir. Tu restes conscient, au sol (<a class="rule-ref" href="#sec-24-1" data-tip="À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.">À Terre</a> et
+                                    t'évanouir. Tu restes conscient, au sol (<a class="rule-ref" href="#sec-24-1" data-tip="À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.">À Terre</a> et
                                     <a class="rule-ref" href="#sec-24-1" data-tip="Agonisant : aucune action raisonnée, fuite de 6 cases (1d8). Persiste jusqu’à stabilisation médicale.">Agonisant</a>). Tu gardes tes PA et tu peux encore agir. Mais chaque
                                     épreuve que tu tentes te coûte <strong>+1 Essoufflement direct</strong> : dès
                                     que tu lances les dés — épreuve de compétence ou face à face — ton souffle

@@ -17,10 +17,10 @@ livre: 5
                             (ou absorber en encaissement passif). L'allié ciblé initialement n'encourt aucun dégât.</li>
                         <li><strong>Restrictions :</strong> impossible si le protecteur est neutralisé (<a class="rule-ref" href="livre_6.html#sec-24-1" data-tip="Étourdi : −1 ec sur tous les jets.">Étourdi</a>, <a class="rule-ref" href="livre_6.html#sec-24-1" data-tip="Paralysé : aucune action ni réaction, incapacité totale (§24.1).">Paralysé</a>,
                             <a class="rule-ref" href="livre_6.html#sec-24-1" data-tip="Sonné : aucune action. La créature tombe immédiatement à terre.">Sonné</a>, <a class="rule-ref" href="livre_6.html#sec-24-5" data-tip="Inconscient : aucune action ni réaction. Réveil par secousse vigoureuse (1 PA) ou premiers soins.">Inconscient</a>), s'il a déjà dépensé sa réaction libre ce cycle, s'il manque de <a class="rule-ref" href="livre_1.html#chap-4" data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a> (1 <a class="rule-ref" href="livre_1.html#chap-4" data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a> de base,
-                            2 <a class="rule-ref" href="livre_1.html#chap-4" data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a> sous <a class="rule-ref" href="livre_6.html#sec-24-1" data-tip="Ralenti : toute action coûte le double de PA.">Ralenti</a>), ou si la distance dépasse 1 mètre (1 case).</li>
+                            2 <a class="rule-ref" href="livre_1.html#chap-4" data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a> sous <a class="rule-ref" href="livre_6.html#sec-24-1" data-tip="Ralenti : toute action coûte le double de PA.">Ralenti</a>), ou si la distance dépasse 1,5 mètre (1 case).</li>
                     </ul>
 
-                    <h3 id="sec-20-6">20.6 Lutte & Traînée de Corps (RD-039)</h3>
+                    <h3 id="sec-20-6">20.6 Lutte & Traînée de Corps</h3>
                     <p>
                         Pas besoin d'être spécialiste pour attraper quelqu'un. Au contact —
                         <strong>1 case ou moins</strong> — tu peux ceinturer, clouer sur place,

@@ -290,7 +290,7 @@
     ],
     [
      "<span class=\"pill-badge amber\">2 points</span>",
-     "La cible <strong>tombe au sol</strong> (<a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À\n                                            terre</a>)",
+     "La cible <strong>tombe au sol</strong> (<a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.\">À\n                                            terre</a>)",
      "Effet immédiat"
     ],
     [
@@ -1756,7 +1756,7 @@
      },
      "Magie Élémentale (MAG, INT)",
      "Utilitaire, Défensif",
-     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : filet de vent pendant 3 tours. Toi et tes alliés à 2 cases ignorez les dégâts de chute et ne tombez jamais <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À Terre</a>."
+     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : filet de vent pendant 3 tours. Toi et tes alliés à 2 cases ignorez les dégâts de chute et ne tombez jamais <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.\">À Terre</a>."
     ],
     [
      {
@@ -1783,7 +1783,7 @@
      },
      "Magie Élémentale (MAG, INT)",
      "Offensif",
-     "Zone de 2 cases de rayon : 8 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\"\n                                            data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">dégâts\n                                            Absolus</a> et cibles <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À\n                                            Terre</a>."
+     "Zone de 2 cases de rayon : 8 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\"\n                                            data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">dégâts\n                                            Absolus</a> et cibles <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.\">À\n                                            Terre</a>."
     ],
     [
      {
@@ -1792,7 +1792,7 @@
      },
      "Magie Élémentale (MAG, INT)",
      "Offensif",
-     "Tu déchaînes l'ouragan : zone de 3 cases de rayon pendant 2 tours. L'ennemi qui commence dedans prend 6 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">dégâts Absolus</a> et tombe <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À Terre</a>."
+     "Tu déchaînes l'ouragan : zone de 3 cases de rayon pendant 2 tours. L'ennemi qui commence dedans prend 6 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">dégâts Absolus</a> et tombe <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.\">À Terre</a>."
     ],
     [
      {
@@ -1897,7 +1897,7 @@
      },
      "Magie Élémentale (MAG, INT)",
      "Défensif, Offensif",
-     "Pendant 2 tours, chaque ennemi qui te frappe est refoulé de 2 cases et tombe <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À Terre</a>."
+     "Pendant 2 tours, chaque ennemi qui te frappe est refoulé de 2 cases et tombe <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.\">À Terre</a>."
     ],
     [
      "<strong>Vent du Voyageur</strong>",
@@ -2071,7 +2071,7 @@
      },
      "Magie Élémentale (MAG, INT)",
      "Offensif",
-     "Ligne de 3 cases : 8 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\"\n                                            data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">dégâts\n                                            Absolus</a> et cibles <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À\n                                            Terre</a>."
+     "Ligne de 3 cases : 8 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\"\n                                            data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">dégâts\n                                            Absolus</a> et cibles <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.\">À\n                                            Terre</a>."
     ],
     [
      {
@@ -2341,7 +2341,7 @@
      },
      "Magie Élémentale (MAG, INT)",
      "Offensif",
-     "Cible à 2 cases : 4 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\"\n                                            data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">dégâts\n                                            Absolus</a> et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À\n                                            Terre</a> sur Delta ≥ 2."
+     "Cible à 2 cases : 4 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\"\n                                            data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">dégâts\n                                            Absolus</a> et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.\">À\n                                            Terre</a> sur Delta ≥ 2."
     ],
     [
      {
@@ -2350,7 +2350,7 @@
      },
      "Magie Élémentale (MAG, INT)",
      "Offensif",
-     "Onde à 4 cases : 6 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">dégâts Absolus</a> et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À Terre</a> sur Delta ≥ 2."
+     "Onde à 4 cases : 6 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">dégâts Absolus</a> et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.\">À Terre</a> sur Delta ≥ 2."
     ],
     [
      {
@@ -2359,7 +2359,7 @@
      },
      "Magie Élémentale (MAG, INT)",
      "Offensif, Utilitaire",
-     "Zone de 2 cases de rayon : 8 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\"\n                                            data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">dégâts\n                                            Absolus</a>, cibles <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À\n                                            Terre</a>, terrain difficile pendant 2 tours."
+     "Zone de 2 cases de rayon : 8 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\"\n                                            data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">dégâts\n                                            Absolus</a>, cibles <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.\">À\n                                            Terre</a>, terrain difficile pendant 2 tours."
     ],
     [
      {
@@ -2368,7 +2368,7 @@
      },
      "Magie Élémentale (MAG, INT)",
      "Offensif",
-     "Tu fends le sol : zone de 3 cases de rayon pendant 2 tours. L'ennemi qui commence dedans prend 6 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">dégâts Absolus</a> et tombe <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À Terre</a>."
+     "Tu fends le sol : zone de 3 cases de rayon pendant 2 tours. L'ennemi qui commence dedans prend 6 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">dégâts Absolus</a> et tombe <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.\">À Terre</a>."
     ],
     [
      {
@@ -2377,7 +2377,7 @@
      },
      "Magie Élémentale (MAG, INT)",
      "Défensif",
-     "Pendant 2 tours, on ne peut ni te refouler ni te mettre <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À Terre</a>, et tu gagnes +2 d'armure naturelle."
+     "Pendant 2 tours, on ne peut ni te refouler ni te mettre <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.\">À Terre</a>, et tu gagnes +2 d'armure naturelle."
     ],
     [
      "<strong>Levée de Terre</strong>",
@@ -2410,7 +2410,7 @@
      },
      "Magie Élémentale (MAG, INT)",
      "Utilitaire",
-     "Avec 10 minutes de travail : fosse camouflée sur 1 hexagone. Le premier qui marche dessus tombe <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À Terre</a> et prend 2 dégâts."
+     "Avec 10 minutes de travail : fosse camouflée sur 1 hexagone. Le premier qui marche dessus tombe <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.\">À Terre</a> et prend 2 dégâts."
     ],
     [
      {
@@ -2473,7 +2473,7 @@
      },
      "Magie Élémentale (MAG, INT)",
      "Défensif, Offensif",
-     "Pendant 2 tours, chaque ennemi qui te frappe tombe <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À Terre</a> (la terre répond)."
+     "Pendant 2 tours, chaque ennemi qui te frappe tombe <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.\">À Terre</a> (la terre répond)."
     ],
     [
      "<strong>Sens de la Pierre</strong>",
@@ -2551,7 +2551,7 @@
      },
      "Magie Élémentale (MAG, INT)",
      "Offensif",
-     "Fissure sous un ennemi à 4 cases : il tombe <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À Terre</a> sur Delta ≥ 2, et son hexagone devient terrain difficile."
+     "Fissure sous un ennemi à 4 cases : il tombe <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.\">À Terre</a> sur Delta ≥ 2, et son hexagone devient terrain difficile."
     ],
     [
      {
@@ -2569,7 +2569,7 @@
      },
      "Magie Élémentale (MAG, INT)",
      "Offensif",
-     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">3 PA</a> : pilier de roc sous un ennemi à 6 cases : 8 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">Dégâts Absolus</a> et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À Terre</a> (Delta ≥ 2 requis contre PJ/PNJ majeur)."
+     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">3 PA</a> : pilier de roc sous un ennemi à 6 cases : 8 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">Dégâts Absolus</a> et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.\">À Terre</a> (Delta ≥ 2 requis contre PJ/PNJ majeur)."
     ],
     [
      "<strong>Projection d'Objets</strong>",
@@ -2602,7 +2602,7 @@
      },
      "Magie de l'Esprit (MAG, INT)",
      "Offensif",
-     "La gravité balaie un cône de 3 hexagones : 6 dégâts et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À Terre</a>. Exemple : tout s'aplatit."
+     "La gravité balaie un cône de 3 hexagones : 6 dégâts et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.\">À Terre</a>. Exemple : tout s'aplatit."
     ],
     [
      {
@@ -2629,7 +2629,7 @@
      },
      "Magie de l'Esprit (MAG, INT)",
      "Offensif",
-     "À 4 cases, tu projettes un meuble sur ta cible : 6 dégâts et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À Terre</a>. Exemple : l'armoire s'envole."
+     "À 4 cases, tu projettes un meuble sur ta cible : 6 dégâts et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.\">À Terre</a>. Exemple : l'armoire s'envole."
     ],
     [
      {
@@ -2656,7 +2656,7 @@
      },
      "Magie de l'Esprit (MAG, INT)",
      "Offensif, Utilitaire",
-     "Tu ouvres un puits de gravité : il attire tous les ennemis dans un rayon de\n                                        3 cases et les projette <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À\n                                            Terre</a>."
+     "Tu ouvres un puits de gravité : il attire tous les ennemis dans un rayon de\n                                        3 cases et les projette <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.\">À\n                                            Terre</a>."
     ],
     [
      {
@@ -2857,7 +2857,7 @@
      },
      "Magie de l'Esprit (MAG, INT)",
      "Utilitaire, Défensif",
-     "<a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : filet invisible pendant 3 tours. Toi et tes alliés à 2 cases ignorez les dégâts de chute et ne tombez jamais <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.\">À Terre</a>. Exemple : le vide vous retient."
+     "<a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : filet invisible pendant 3 tours. Toi et tes alliés à 2 cases ignorez les dégâts de chute et ne tombez jamais <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.\">À Terre</a>. Exemple : le vide vous retient."
     ],
     [
      "<strong>Assaut Psychique</strong>",

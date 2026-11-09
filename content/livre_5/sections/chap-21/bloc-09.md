@@ -35,7 +35,7 @@ livre: 5
                             <strong>3 cases gratuites</strong> + gagne <strong>une réaction défensive
                             gratuite</strong> (0 PA) valable jusqu'au début de son prochain tour. <em>Semi</em> — replacement
                             seul. <em>Ratée</em> — la pré-vision se brouille.</li>
-                        <li><strong>⬆️ Uppercut Thermobarique :</strong> <em>Parfaite</em> — <strong>7 dégâts + <a class="rule-ref" href="livre_6.html#sec-24-1" data-tip="À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte des PA.">À
+                        <li><strong>⬆️ Uppercut Thermobarique :</strong> <em>Parfaite</em> — <strong>7 dégâts + <a class="rule-ref" href="livre_6.html#sec-24-1" data-tip="À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.">À
                             Terre</a></strong>. <em>Semi</em> — 4 dégâts. <em>Ratée</em> — <a class="rule-ref" href="livre_1.html#chap-4" data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a> perdus
                             <strong>+ 1 <a class="rule-ref" href="livre_1.html#sec-4-2" data-tip="Essoufflement : 1 point = des PA d'urgence ; ne part pas tout seul, action dédiée pour souffler (§4.2).">Essoufflement</a> chacun</strong> (le coup manqué punit).</li>
                     </ul>
