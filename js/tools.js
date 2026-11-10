@@ -116,7 +116,7 @@ function initCharacterSheet() {
     const RACE_DATA = {
         humain: { label: 'Humain', sensMin: 3, magie: 'Impossible à Limitée', note: 'Polyvalent, sens min 3',
             gifts: ['Endurance Coloniale', 'Touche-à-tout', 'Instinct de Survie', 'Réseau Colonial', 'Sang-Froid'],
-            giftNotes: ['+1 Essoufflement max ; ignore le climat léger (Livre II §8.1).', '+1 entraînement gratuit à la création (compétence non-magique).', '+2 Nature & Survie ; +1 Observation.', '+2 Communication (négocier, interroger) en zone civilisée ; 1 contact par station.', '1×/session : annule 1 Essoufflement ou ignore un échec de moral/peur.'] },
+            giftNotes: ['+1 point de réserve d\u2019Essoufflement (au-delà de ta Constitution) ; ignore le climat léger (Livre II §8.1).', '+1 entraînement gratuit à la création (compétence non-magique).', '+2 Nature & Survie ; +1 Observation.', '+2 Communication (négocier, interroger) en zone civilisée ; 1 contact par station.', '1×/session : annule 1 Essoufflement ou ignore un échec de moral/peur.'] },
         derek: { label: 'Derek', sensMin: 3, magie: 'Limitée', note: 'Robuste des profondeurs, sens min 3',
             gifts: ['Ossature Dense', 'Sang des Profondeurs', 'Maître-Fondeur', 'Sens de la Pierre', 'Gueule de Granit'],
             giftNotes: ['+2 Encaissement ; -1 dégâts contondants et chutes.', 'Vision nocturne ; +2 Constitution vs froid, -2 dégâts de froid ; ébloui 1 tour en entrant dans une lumière vive.', '+2 Forger (Artisanat) ; armure forgée par soi +1 protection.', 'Sent le danger de la roche à ~30 m (gaz, éboulement, poches) ; +2 Nature & Survie en souterrain.', '+2 Constitution vs gaz et poisons des mines ; apnée 4× CON tours.'] },
@@ -131,7 +131,7 @@ function initCharacterSheet() {
             giftNotes: ['+1 Armure naturelle contre tranchant/perforant ; +2 Encaissement ; +1 dégât froid subi.', '1×/combat : -1 valeur d\u2019un résiduel posé ; stoppe un Saignement de valeur 1 sans soin.', '+2 Armes Lourdes et r\u00e9paration imp\u00e9riale ; ignore 1 point d\u2019encombrement.', 'Griffes et crocs (2 dégâts, jamais désarmé) ; +1 Athlétisme pour grimper.', '3e main (5 kg max, pas d\u2019attaque) ; +1 Athl\u00e9tisme pour grimper/nager.'] },
         vardien: { label: 'Vardien / Frontalier', sensMin: 3, magie: 'Variable', note: 'Volonté d\u2019acier des bordures, sens min 3',
             gifts: ['Trempe des Bordures', 'Gueule des Mines', 'Système Récup', 'Ne Lâche Rien', 'Contrebandier'],
-            giftNotes: ['+2 Intimidation, pour intimider comme pour résister ; +1 Essoufflement max.', '+2 Système Immunitaire (toxines, gaz, radiations faibles) ; réduit de 1 la valeur des résiduels Empoisonné et Asphyxie.', '+2 pour bricoler, récupérer et saboter ; réparations à moitié prix.', '1×/session : à 0 PV sur coup sous Encaissement, conscient 1 tour en Dernier Souffle gratuit.', '+2 Discrétion pour faux papiers et douanes ; 1 contact marché noir par zone.'] },
+            giftNotes: ['+2 Intimidation, pour intimider comme pour résister ; +1 aux épreuves de moral et de peur.', '+2 Système Immunitaire (toxines, gaz, radiations faibles) ; réduit de 1 la valeur des résiduels Empoisonné et Asphyxie.', '+2 pour bricoler, récupérer et saboter ; réparations à moitié prix.', '1×/session : à 0 PV sur coup sous Encaissement, conscient 1 tour en Dernier Souffle gratuit.', '+2 Discrétion pour faux papiers et douanes ; 1 contact marché noir par zone.'] },
         nain: { label: 'Nain', sensMin: 3, magie: 'Limitée à Normale', note: 'Forgeron des crêtes, sens min 3',
             gifts: ['Mémoire des Cages', 'Sang des Forges', 'Oreille de la Surfréquence', 'Pas des Crêtes', 'Longue Mémoire'],
             giftNotes: ['-2 dégâts explosions et éboulements ; +2 Constitution contre projections et ondes de choc.', '+2 Constitution contre chaleur et fumées ; -1 dégât de feu ; ignore le climat chaud léger.', 'Sent la nytharite en résonance à ~50 m (Observation) ; +2 Observation arcanotech dissimulée/en panne/piégée.', '+2 Athlétisme en montagne ; ignore terrains escarpés, neige et glace.', '+2 Académie (histoire, métallurgie, généalogies) ; 1 contact érudit ou artisan par cité naine.'] }
@@ -2230,33 +2230,10 @@ function initDiceRoller() {
         '2d12+10': { count: 2, sides: 12, mod: 10, label: '2d12 + 10' }
     };
 
-    // Critical consequences lookup from Livre II Chapitre 9
-    const critTable = {
-        1: { off: 'La cible tombe à terre', def: 'La cible tombe à terre', soc: 'Interlocuteur déstabilisé', util: 'Tâche accomplie sans bruit' },
-        2: { off: 'Cible repoussée d\'1 case', def: '+1 EC bonus pour la cible', soc: 'Ascendant psychologique', util: 'Gain d\'élan cinétique' },
-        3: { off: 'Avantage contre la cible', def: 'Défense impénétrable', soc: 'Confiance immédiate', util: 'Précision chirurgicale' },
-        4: { off: '+1 EC pour l\'attaquant', def: '+1 EC pour l\'attaquant', soc: '+1 EC en persuasion', util: '+1 EC pour la tâche' },
-        5: { off: '+2 Dégâts directs', def: '+2 Défense bonus', soc: 'L\'interlocuteur cède', util: 'Économie de matériel' },
-        6: { off: 'Cible étourdie (-1 EC)', def: 'Cible étourdie en retour', soc: 'Interlocuteur sidéré', util: 'Découverte inattendue' },
-        7: { off: 'Cible étourdie (-1 EC)', def: 'Défense magistrale', soc: 'Sympathie spontanée', util: 'Temps divisé par deux' },
-        8: { off: 'Récupère 1 effet', def: 'Récupère 1 effet', soc: 'Récupère 1 effet', util: 'Récupère 1 effet' },
-        9: { off: 'Récupère 1 Essoufflement', def: 'Récupère 1 Essoufflement', soc: 'Regain de sang-froid', util: 'Regain de vigueur' },
-        10: { off: 'Cible ralentie (PA doublés)', def: 'Attaquant ralenti', soc: 'Opposition neutralisée', util: 'Ralentissement temporel' },
-        11: { off: 'Désarmement immédiat', def: 'Arme ennemie déviée', soc: 'Éblouissement oratoire', util: 'Solution ingénieuse' },
-        12: { off: 'Cible déstabilisée (-2 EC)', def: 'Attaquant déstabilisé', soc: 'Effondrement de l\'argument', util: 'Composant réparé/sauvé' },
-        13: { off: '+3 Dégâts directs', def: '+3 Défense bonus', soc: 'Ascendant total', util: 'Déclenchement instantané' },
-        14: { off: 'Perte de 2 PA cible', def: 'Gain de 2 PA esquive', soc: 'Silence imposé', util: 'Optimisation parfaite' },
-        15: { off: 'Cible immobilisée', def: 'Contre-prise totale', soc: 'Pacte scellé', util: 'Percée structurelle' },
-        16: { off: 'Récupère 2 PA', def: 'Récupère 2 PA', soc: 'Récupère 2 PA', util: 'Récupère 2 PA' },
-        17: { off: '+4 Dégâts critiques', def: '+4 Riposte immédiate', soc: 'Ferveur communicative', util: 'Analyse télépathique' },
-        18: { off: 'Cible aveuglée 1 tour', def: 'Esquive mirifique', soc: 'Adhésion fanatique', util: 'Synchronicité parfaite' },
-        19: { off: 'Armure ennemie fissurée', def: 'Absorption complète', soc: 'Vérité absolue révélée', util: 'Surfréquence quantique' },
-        20: { off: '3 Dégâts Résiduels continus', def: 'Contre-attaque automatique', soc: 'Ralliement inconditionnel', util: 'Survoltage arcanique total' },
-        21: { off: 'Cible paralysée 1 tour', def: 'Inversion cinétique', soc: 'Hypnose involontaire', util: 'Téléportation réflexe' },
-        22: { off: '+6 Dégâts perforants', def: 'Bouclier impénétrable', soc: 'Autorité cosmique', util: 'Remontée chronale' },
-        23: { off: 'Destruction d\'équipement', def: 'Arme ennemie brisée', soc: 'Capitulation spontanée', util: 'Surcharge du réacteur' },
-        24: { off: 'Cible Inconsciente', def: 'Désarçonnement fatal ennemi', soc: 'Soumission absolue', util: 'Succès mirifique critique' }
-    };
+    // Conséquences critiques : source unique = data/livre_2.json
+    // (mecaniques.critique.par_resultat, 13 paliers ; intermédiaires
+    // rabattus sur le palier inférieur par la surcouche ci-dessous).
+    const critTable = {};
 
     // Surcouche Livre II (RP-082) : paliers + critiques canoniques.
     // Critiques : 13 paliers canoniques, valeurs intermédiaires rabattues
@@ -2348,7 +2325,7 @@ function initDiceRoller() {
                 bannerTotal.classList.add('crit-success');
 
                 // Reveal consequence card
-                const effect = critTable[consequenceRoll] || critTable[1];
+                const effect = critTable[consequenceRoll] || critTable[1] || { off: '—', def: '—', soc: '—', util: '—' };
                 document.getElementById('critRollVal').textContent = `Jet de Conséquence : ${consequenceRoll}`;
                 document.getElementById('critOffText').textContent = effect.off;
                 document.getElementById('critDefText').textContent = effect.def;

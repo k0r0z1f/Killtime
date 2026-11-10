@@ -23,5 +23,10 @@ format: raw
                     </p>
 
                     <h3>9.2 Table Universelle des Effets Critiques (de 1 à 24)</h3>
+                    <p>
+                        <strong>Ton résultat n'est pas dans la table ?</strong>
+                        Prends le palier inférieur le plus proche : 7 se lit 6, 11 se lit 10, 15 se lit 12,
+                        23 se lit 20. Au-delà de 24, c'est 24.
+                    </p>
 
                     

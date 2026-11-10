@@ -3,6 +3,7 @@ cible: sections.chap-3.blocs.2.html
 format: raw
 livre: 1
 ---
+                    <h3>Étape 2 : Un nom, un visage, une histoire</h3>
                     <p>
                         Donnez un <strong>Nom</strong>, un <strong>Âge</strong>, un <strong>Sexe</strong> et une
                         <strong>Allure physique</strong> à votre alter-ego (son gabarit, ses tics, les cicatrices qui

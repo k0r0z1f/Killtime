@@ -123,7 +123,7 @@ def ajouter(nom, cle, texte):
 
 
 for p in sorted(glob.glob('data/livre_*.json', root_dir=RACINE)):
-    ajouter(p, p.split('/')[-1].replace('.json', ''), lire(p))
+    ajouter(p, p.split('/')[-1].replace('.json', ''), lire(p).replace('\\"', '"'))
 for p in sorted(glob.glob('content/**/*.md', root_dir=RACINE, recursive=True)):
     if os.path.basename(p) == 'README.md':
         continue
@@ -133,7 +133,7 @@ for p in sorted(glob.glob('*.html', root_dir=RACINE)):
     ajouter(p, m.group(1) if m else None, lire(p))
 for p in sorted(glob.glob('js/*.js', root_dir=RACINE)):
     ajouter(p, None, lire(p))
-ajouter('data/atlas_mondes.json', None, lire('data/atlas_mondes.json'))
+ajouter('data/atlas_mondes.json', None, lire('data/atlas_mondes.json').replace('\\"', '"'))
 ajouter('atlas_mondes.html', None, lire('atlas_mondes.html'))
 
 for nom, cle, txt in CONTEXTE:

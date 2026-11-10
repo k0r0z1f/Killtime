@@ -424,45 +424,45 @@
    "par_resultat": {
     "1": {
      "offensif": "La cible tombe à terre",
-     "defensif": "La cible tombe à terre",
+     "defensif": "L'attaquant tombe à terre",
      "social": "Interlocuteur déstabilisé",
      "utilitaire": "Tâche accomplie sans bruit"
     },
     "2": {
-     "offensif": "Cible repoussée d'1 case",
-     "defensif": "+1 EC bonus pour la cible",
+     "offensif": "Cible repoussée d’1 case",
+     "defensif": "Pas de côté : repli gratuit d’1 case, sans provoquer de réaction.",
      "social": "Ascendant psychologique",
-     "utilitaire": "Gain d'élan cinétique"
+     "utilitaire": "Gain d’élan cinétique"
     },
     "3": {
-     "offensif": "+1 EC contre la cible pour l’action en cours",
-     "defensif": "Défense impénétrable",
+     "offensif": "Petite brèche : ignore 1 point d’armure sur ce coup.",
+     "defensif": "+1 Défense bonus pour l’épreuve en cours.",
      "social": "Confiance immédiate",
      "utilitaire": "Précision chirurgicale"
     },
     "4": {
-     "offensif": "+1 EC pour l'attaquant",
-     "defensif": "+1 EC pour l'attaquant",
-     "social": "+1 EC en persuasion",
-     "utilitaire": "+1 EC pour la tâche"
+     "offensif": "+1 EC pour l’attaquant, pour l’épreuve en cours.",
+     "defensif": "+1 EC pour la cible, pour l’épreuve en cours.",
+     "social": "+1 EC en persuasion, pour l’épreuve en cours.",
+     "utilitaire": "+1 EC pour la tâche, pour l’épreuve en cours."
     },
     "5": {
      "offensif": "+2 Dégâts directs",
-     "defensif": "+2 Défense bonus",
+     "defensif": "+2 Défense bonus, pour l’épreuve en cours",
      "social": "L'interlocuteur cède",
      "utilitaire": "Économie de matériel"
     },
     "6": {
-     "offensif": "Cible étourdie (-1 EC)",
-     "defensif": "Cible étourdie en retour",
+     "offensif": "Cible étourdie (-1 EC) jusqu’à la fin de son prochain tour.",
+     "defensif": "Attaquant étourdi (-1 EC) jusqu’à la fin de son prochain tour.",
      "social": "Interlocuteur sidéré",
      "utilitaire": "Découverte inattendue"
     },
     "8": {
-     "offensif": "Récupère 1 effet",
-     "defensif": "Récupère 1 effet",
-     "social": "Récupère 1 effet",
-     "utilitaire": "Récupère 1 effet"
+     "offensif": "Récupère 1 PA",
+     "defensif": "Récupère 1 PA",
+     "social": "Récupère 1 PA",
+     "utilitaire": "Récupère 1 PA"
     },
     "9": {
      "offensif": "Récupère 1 Essoufflement",
@@ -471,15 +471,15 @@
      "utilitaire": "Regain de vigueur"
     },
     "10": {
-     "offensif": "Cible ralentie (PA doublés)",
-     "defensif": "Attaquant ralenti",
+     "offensif": "Cible déstabilisée (-2 EC) jusqu’à la fin de son prochain tour.",
+     "defensif": "Attaquant déstabilisé jusqu’à la fin de son prochain tour.",
      "social": "Opposition neutralisée",
-     "utilitaire": "Ralentissement temporel"
+     "utilitaire": "Ralentissement temporel (durée : 1 à 5 tours)."
     },
     "12": {
-     "offensif": "Cible déstabilisée (-2 EC)",
-     "defensif": "Attaquant déstabilisé",
-     "social": "Effondrement de l'argument",
+     "offensif": "Cible ralentie (PA doublés) jusqu’à la fin de son prochain tour.",
+     "defensif": "Attaquant ralenti jusqu’à la fin de son prochain tour.",
+     "social": "Effondrement de l’argument",
      "utilitaire": "Composant réparé/sauvé"
     },
     "16": {
@@ -490,12 +490,12 @@
     },
     "20": {
      "offensif": "3 Dégâts Résiduels",
-     "defensif": "Contre-attaque automatique",
+     "defensif": "Contre-attaque automatique : riposte après résolution de l’attaque en cours, équivalente à une frappe d’opportunité (0 PA), sans consommer ta réaction du round.",
      "social": "Ralliement inconditionnel",
      "utilitaire": "Survoltage arcanique total"
     },
     "24": {
-     "offensif": "Cible Inconsciente",
+     "offensif": "Cible Inconsciente jusqu’à la fin de son prochain tour.",
      "defensif": "Attaquant inconscient jusqu’à la fin de son prochain tour",
      "social": "Soumission absolue",
      "utilitaire": "Succès mirifique critique"
@@ -659,49 +659,6 @@
     "cases": 6
    }
   },
-  "face_a_face": {
-   "etapes": [
-    {
-     "ordre": 1,
-     "texte": "L'attaquant annonce son assaut : il désigne sa cible, déclare la compétence utilisée et choisit secrètement les PA d'effort qu'il investit (+1 par PA, dans la limite de sa Constitution). Exemple : Mains Nues avec 2 entraînements et FOR 5 = dé 1d10, mise cachée de 2 PA. Le dé est lancé face cachée jusqu'à la résolution."
-    },
-    {
-     "ordre": 2,
-     "texte": "Le défenseur réagit en secret : sans connaître la mise de l'attaquant, il annonce comment il réagit (Esquive ou Parade) et engage secrètement ses propres PA d'effort (+1 par PA). Exemple : Esquive avec 1 entraînement et AGI 5 = dé 1d8, mise cachée de 1 PA."
-    },
-    {
-     "ordre": 3,
-     "texte": "Révélation simultanée & Différentiel Net : les deux dés sont découverts en même temps, et chacun ajoute ses PA d'effort et ses malus éventuels (pas de bonus de caractéristique !). On soustrait le total du défenseur de celui de l'attaquant pour obtenir le Différentiel Net :"
-    }
-   ],
-   "competences_attaque": [
-    "Maniement d'Arme",
-    "Balistique",
-    "Mains Nues"
-   ],
-   "competences_defense": [
-    "Esquive",
-    "Défense Corporelle / Parade"
-   ],
-   "sans_defense": {
-    "defense": 0,
-    "texte": "Sur le champ de bataille ou dans un bras de fer tendu, on n'agit pas contre une cible immobile : l'adversaire réagit ! Un jet d'attaque oppose donc la compétence offensive de l'attaquant (Maniement d'Arme, Balistique, Mains Nues) à la compétence défensive choisie par la cible (Esquive ou Défense Corporelle / Parade). La cible peut aussi choisir de ne pas se défendre : dans ce cas, elle ne jette aucun dé, ne dépense aucun PA, et sa défense est considérée comme nulle (score de 0)."
-   },
-   "issues": [
-    {
-     "condition": "differentiel < 0",
-     "effet": "Différentiel inférieur à 0 : Échec de l'attaque. Le coup est totalement esquivé ou dévié par le bouclier/l'arme."
-    },
-    {
-     "condition": "differentiel = 0",
-     "effet": "Différentiel égal à 0 : Touche superficielle ! Le coup effleure la cible sans pénétration franche (on détermine la zone touchée au hasard avec 1d4 ou 1d6)."
-    },
-    {
-     "condition": "differentiel > 0",
-     "effet": "Différentiel supérieur à 0 : Touche franche ! L'attaque porte de plein fouet : elle inflige ses dégâts de base augmentés du différentiel net, avant comparaison avec l'armure et l'Encaissement de la cible."
-    }
-   ]
-  },
   "environnement": {
    "note": "RP-068 : modificateurs d'environnement (canon sysrp). Malus situationnels : un seul par jet, le plus fort l'emporte.",
    "climat": {
@@ -836,7 +793,7 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <h3>7.3 Résoudre un Face-à-Face : L'Épreuve Opposée</h3>\n                    <p>\n                        Sur le champ de bataille ou dans un bras de fer tendu, on n'agit pas contre une cible immobile : l'adversaire réagit !\n                        Un jet d'attaque oppose donc la compétence offensive de l'attaquant (<em>Maniement d'Arme</em>, <em>Balistique</em>, <em>Mains Nues</em>)\n                        à la compétence défensive choisie par la cible (<em>Esquive</em> ou <em>Défense Corporelle / Parade</em>).\n                        <strong>La cible peut aussi choisir de ne pas se défendre</strong> : dans ce cas, elle ne jette aucun dé, ne dépense aucun PA, et sa défense est considérée comme nulle (score de 0). Ne pas se défendre ne veut pas dire encaisser à nu : son armure absorbe toujours sa part des dégâts avant toute comparaison avec son <a class=\"rule-ref\" href=\"livre_6.html#sec-23-2\" data-tip=\"Encaissement = CON × 2 : seuil comparé aux dégâts du coup (§23.2).\">Encaissement</a>.\n                    </p>\n                    <p>\n                        <strong>La procédure du Face-à-Face (simple et pleine de tension) :</strong>\n                        Pour préserver le suspense et la tactique, tu engages ta mise en jetons dans ton poing fermé avant de révéler en même temps que ton adversaire. 1 jeton = 1 PA d'effort, 1 jeton d'une autre couleur = 1 PE. Pas de jetons ? Un papier avec le chiffre, ou des dés cachés sous un gobelet. Tu caches aussi ta réserve : tes jetons restants dorment dans ton autre main fermée, ou derrière ton écran. Ton adversaire ne voit rien, ni ta mise ni ce qu'il te reste. Vous ouvrez les deux poings ensemble : ce que tu montres, tu le paies aussitôt.\n                    </p>\n                    <ol>\n                        <li><strong>L'attaquant annonce son assaut :</strong> il désigne sa cible, déclare la compétence utilisée et pose secrètement ses PA d'effort en jetons (+1 par PA, dans la limite de sa Constitution). <em>Exemple : Mains Nues avec 2 entraînements et FOR 5 = dé 1d10, 2 jetons cachés dans le poing.</em> Ne lance pas ton dé pour l'instant.</li>\n                        <li><strong>Le défenseur réagit en secret :</strong> sans connaître la mise de l'attaquant, il annonce comment il réagit (Esquive ou Parade) et pose secrètement ses propres jetons (+1 par PA). <em>Exemple : Esquive avec 1 entraînement et AGI 5 = dé 1d8, 1 jeton caché dans le poing.</em> Ne lance pas ton dé non plus.</li>\n                        <li><strong>Lancez puis révélez ensemble :</strong> seulement maintenant, les deux dés sont lancés en même temps, et chacun ajoute ses PA d'effort et ses malus éventuels (pas de bonus de caractéristique !). On soustrait le total du défenseur de celui de l'attaquant pour obtenir le <strong>Différentiel Net</strong> :</li>\n                    </ol>\n                    <ul>\n                        <li><strong>Différentiel inférieur à 0 :</strong> Échec de l'attaque. Le coup est totalement esquivé ou dévié par le bouclier/l'arme.</li>\n                        <li><strong>Différentiel égal à 0 :</strong> Touche superficielle ! Le coup effleure la cible sans pénétration franche : les dégâts sont ignorés, mais les effets spéciaux du coup peuvent encore s'appliquer.</li>\n                        <li><strong>Différentiel supérieur à 0 :</strong> Touche franche ! L'attaque porte de plein fouet : elle inflige ses dégâts de base augmentés du différentiel net, avant comparaison avec l'armure et l'Encaissement de la cible.</li>\n                    </ul>\n                    <p>\n                        <strong>Variante sans jetons (déclaration ouverte) :</strong>\n                        Pas de jetons, pas de papier, pas envie ? L'attaquant annonce sa mise à voix haute et la paie aussitôt,\n                        puis le défenseur annonce la sienne en connaissance de cause. Vous lancez ensuite les deux dés ensemble.\n                        Zéro matériel, zéro triche possible. Revers : le défenseur ajuste en voyant ta mise.\n                    </p>\n\n                    <!-- ================= CHAPITRE 9 ================= -->\n                    "
+     "html": "\n\n                    <h3>7.3 Résoudre un Face-à-Face : L'Épreuve Opposée</h3>\n                    <p>\n                        Sur le champ de bataille ou dans un bras de fer tendu, on n'agit pas contre une cible immobile : l'adversaire réagit !\n                        Un jet d'attaque oppose donc la compétence offensive de l'attaquant (<em>Maniement d'Arme</em>, <em>Balistique</em>, <em>Mains Nues</em>)\n                        à la compétence défensive choisie par la cible (<em>Esquive</em> ou <em>Défense Corporelle / Parade</em>).\n                        <strong>La cible peut aussi choisir de ne pas se défendre</strong> : dans ce cas, elle ne jette aucun dé, ne dépense aucun PA, et sa défense est considérée comme nulle (score de 0). Ne pas se défendre ne veut pas dire encaisser à nu : son armure absorbe toujours sa part des dégâts avant toute comparaison avec son <a class=\"rule-ref\" href=\"livre_6.html#sec-23-2\" data-tip=\"Encaissement = CON × 2 : seuil comparé aux dégâts du coup (§23.2).\">Encaissement</a>.\n                    </p>\n                    <p>\n                        <strong>La procédure du Face-à-Face (simple et pleine de tension) :</strong>\n                        Pour préserver le suspense et la tactique, tu engages ta mise en jetons dans ton poing fermé avant de révéler en même temps que ton adversaire. 1 jeton = 1 PA d'effort, 1 jeton d'une autre couleur = 1 PE. Pas de jetons ? Un papier avec le chiffre, ou des dés cachés sous un gobelet. Tu caches aussi ta réserve : tes jetons restants dorment dans ton autre main fermée, ou derrière ton écran. Ton adversaire ne voit rien, ni ta mise ni ce qu'il te reste. Vous ouvrez les deux poings ensemble : ce que tu montres, tu le paies aussitôt.\n                    </p>\n                    <ol>\n                        <li><strong>L'attaquant annonce son assaut :</strong> il désigne sa cible, déclare la compétence utilisée et pose secrètement ses PA d'effort en jetons (+1 par PA). <em>Exemple : Mains Nues avec 2 entraînements et FOR 5 = dé 1d10, 2 jetons cachés dans le poing.</em> Ne lance pas ton dé pour l'instant.</li>\n                        <li><strong>Le défenseur réagit en secret :</strong> sans connaître la mise de l'attaquant, il annonce comment il réagit (Esquive ou Parade) et pose secrètement ses propres jetons (+1 par PA). <em>Exemple : Esquive avec 1 entraînement et AGI 5 = dé 1d8, 1 jeton caché dans le poing.</em> Ne lance pas ton dé non plus. Plus aucun PA en réserve ? Tu lances quand même ton dé de défense, avec une pénalité réflexe de −2.</li>\n                        <li><strong>Lancez puis révélez ensemble :</strong> seulement maintenant, les deux dés sont lancés en même temps, et chacun ajoute ses PA d'effort et ses malus éventuels (pas de bonus de caractéristique !). On soustrait le total du défenseur de celui de l'attaquant pour obtenir le <strong>Différentiel Net</strong> :</li>\n                    </ol>\n                    <ul>\n                        <li><strong>Différentiel inférieur à 0 :</strong> Échec de l'attaque. Le coup est totalement esquivé ou dévié par le bouclier/l'arme.</li>\n                        <li><strong>Différentiel égal à 0 :</strong> Touche superficielle ! Le coup effleure la cible sans pénétration franche : les dégâts sont ignorés, mais les effets spéciaux du coup peuvent encore s'appliquer.</li>\n                        <li><strong>Différentiel supérieur à 0 :</strong> Touche franche ! L'attaque porte de plein fouet : elle inflige ses dégâts de base augmentés du différentiel net, avant comparaison avec l'armure et l'Encaissement de la cible.</li>\n                    </ul>\n                    <p>\n                        <strong>Et hors attaque ? Égalité = statu quo.</strong>\n                        Quand ton Face-à-Face n'inflige aucun dégât — Lutte, Discrétion contre Observation, joute sociale — un différentiel de 0 ne change rien : celui qui tient sa position garde l'avantage. Pour faire basculer la situation, il te faut un différentiel strictement positif.\n                    </p>\n                    <p>\n                        <strong>Variante sans jetons (déclaration ouverte) :</strong>\n                        Pas de jetons, pas de papier, pas envie ? L'attaquant annonce sa mise à voix haute et la paie aussitôt,\n                        puis le défenseur annonce la sienne en connaissance de cause. Vous lancez ensuite les deux dés ensemble.\n                        Zéro matériel, zéro triche possible. Revers : le défenseur ajuste en voyant ta mise.\n                    </p>\n\n                    <!-- ================= CHAPITRE 9 ================= -->\n                    "
     }
    ],
    "nav": "Difficultés & Seuils (0-34)"
@@ -868,7 +825,7 @@
    "blocs": [
     {
      "type": "html",
-     "html": "\n\n                    <p class=\"lead\">\n                        Autour de la table, les moments les plus mémorables naissent d'un coup de génie inespéré ou d'une maladresse spectaculaire !\n                        Quand le destin bascule, voici comment les critiques pimentent la scène sans alourdir la partie.\n                    </p>\n\n                    <h3>9.1 Déclencher un Critique : Réussite ou Échec</h3>\n                    <p>\n                        La règle est limpide et grisante : les faces extrêmes de votre dé déclenchent un critique lors d'une épreuve — son <strong>score maximal</strong> (un 6 sur un d6, un 8 sur un d8...) donne une <strong>Réussite Critique</strong>, son <strong>1 naturel</strong> donne un <strong>Échec Critique</strong> (sauf si vous avez au moins <strong>1 entraînement</strong> dans la compétence : on ne se ridiculise plus sur les bases quand on est entraîné).\n                    </p>\n                    <ul>\n                        <li>Si vous lancez plusieurs dés en même temps (par exemple 2d6, donc avec au moins 1 entraînement), il suffit qu'<strong>un seul des dés affiche son max</strong> pour la réussite critique — et l'échec critique devient impossible.</li>\n                        <li><strong>Le Jet de Conséquence :</strong> Dès que le critique retentit, le joueur relance immédiatement son palier de dé au complet (2d6 si le jet de base était en 2d6) et consulte la table ci-dessous. Que vous soyez en plein combat, en négociation serrée ou en pleine acrobatie, ce jet déclenche un effet spectaculaire adapté !</li>\n                    </ul>\n                    <p>\n                        Échec critique : tu lis la <strong>table 8.2</strong> à l'envers : les bonus deviennent des malus, les gains deviennent des pertes, et les rôles s'échangent (c'est toi qui prends). Exemples : « Cible étourdie » → c'est toi qui es étourdi ; « La cible tombe à terre » → c'est toi qui tombes ; « Récupère 1 Essoufflement » → c'est toi qui en subis 1.\n                    </p>\n\n                    <h3>9.2 Table Universelle des Effets Critiques (de 1 à 24)</h3>\n\n                    "
+     "html": "\n\n                    <p class=\"lead\">\n                        Autour de la table, les moments les plus mémorables naissent d'un coup de génie inespéré ou d'une maladresse spectaculaire !\n                        Quand le destin bascule, voici comment les critiques pimentent la scène sans alourdir la partie.\n                    </p>\n\n                    <h3>9.1 Déclencher un Critique : Réussite ou Échec</h3>\n                    <p>\n                        La règle est limpide et grisante : les faces extrêmes de votre dé déclenchent un critique lors d'une épreuve — son <strong>score maximal</strong> (un 6 sur un d6, un 8 sur un d8...) donne une <strong>Réussite Critique</strong>, son <strong>1 naturel</strong> donne un <strong>Échec Critique</strong> (sauf si vous avez au moins <strong>1 entraînement</strong> dans la compétence : on ne se ridiculise plus sur les bases quand on est entraîné).\n                    </p>\n                    <ul>\n                        <li>Si vous lancez plusieurs dés en même temps (par exemple 2d6, donc avec au moins 1 entraînement), il suffit qu'<strong>un seul des dés affiche son max</strong> pour la réussite critique — et l'échec critique devient impossible.</li>\n                        <li><strong>Le Jet de Conséquence :</strong> Dès que le critique retentit, le joueur relance immédiatement son palier de dé au complet (2d6 si le jet de base était en 2d6) et consulte la table ci-dessous. Que vous soyez en plein combat, en négociation serrée ou en pleine acrobatie, ce jet déclenche un effet spectaculaire adapté !</li>\n                    </ul>\n                    <p>\n                        Échec critique : tu lis la <strong>table 8.2</strong> à l'envers : les bonus deviennent des malus, les gains deviennent des pertes, et les rôles s'échangent (c'est toi qui prends). Exemples : « Cible étourdie » → c'est toi qui es étourdi ; « La cible tombe à terre » → c'est toi qui tombes ; « Récupère 1 Essoufflement » → c'est toi qui en subis 1.\n                    </p>\n\n                    <h3>9.2 Table Universelle des Effets Critiques (de 1 à 24)</h3>\n                    <p>\n                        <strong>Ton résultat n'est pas dans la table ?</strong>\n                        Prends le palier inférieur le plus proche : 7 se lit 6, 11 se lit 10, 15 se lit 12,\n                        23 se lit 20. Au-delà de 24, c'est 24.\n                    </p>\n\n                    "
     },
     {
      "type": "ref",
