@@ -19,6 +19,15 @@ format: raw
                         <li><strong>Le Jet de Conséquence :</strong> Dès que le critique retentit, le joueur relance immédiatement son palier de dé au complet (2d6 si le jet de base était en 2d6) et consulte la table ci-dessous. Que vous soyez en plein combat, en négociation serrée ou en pleine acrobatie, ce jet déclenche un effet spectaculaire adapté !</li>
                     </ul>
                     <p>
+                        <strong>En Face-à-Face, ton max naturel critique toujours.</strong>
+                        Même si ton total final perd, tu relances ton Jet de Conséquence dans ton domaine (offensif si tu attaques, défensif si tu pares).
+                        Mais sans touche, pas de dégâts : ni dégâts de base, ni effet de ta spé — seule la conséquence du destin s'applique.
+                        Si les deux camps font leur max en même temps, les deux critiquent : l'initiateur résout son destin en premier.
+                    </p>
+                    <p>
+                        <em>Exemple : Mina fait 6 sur son d6 mais perd le duel — pas de dégâts de lame, mais elle jette quand même sa conséquence. Si le garde fait lui aussi son max, il jette la sienne juste après.</em>
+                    </p>
+                    <p>
                         Échec critique : tu lis la <strong>table 8.2</strong> à l'envers : les bonus deviennent des malus, les gains deviennent des pertes, et les rôles s'échangent (c'est toi qui prends). Exemples : « Cible étourdie » → c'est toi qui es étourdi ; « La cible tombe à terre » → c'est toi qui tombes ; « Récupère 1 Essoufflement » → c'est toi qui en subis 1.
                     </p>
 

@@ -27,8 +27,18 @@ livre: 2
                         <li><strong>Différentiel supérieur à 0 :</strong> Touche franche ! L'attaque porte de plein fouet : elle inflige ses dégâts de base augmentés du différentiel net, avant comparaison avec l'armure et l'Encaissement de la cible.</li>
                     </ul>
                     <p>
-                        <strong>Et hors attaque ? Égalité = statu quo.</strong>
-                        Quand ton Face-à-Face n'inflige aucun dégât — Lutte, Discrétion contre Observation, joute sociale — un différentiel de 0 ne change rien : celui qui tient sa position garde l'avantage. Pour faire basculer la situation, il te faut un différentiel strictement positif.
+                        <strong>Égalité ? C'est toi qui passes.</strong>
+                        Quand tu déclenches un Face-à-Face, un différentiel de 0 suffit : ton action réussit au minimum.
+                        En attaque, le coup touche sans pénétrer — pas de dégâts de base, mais les effets spéciaux partent quand même.
+                        Hors attaque, même logique : ta prise se pose, ta libération casse l'étreinte, ton repérage révèle la cible, ta tromperie fait mouche.
+                        Pour te stopper, l'adversaire doit te battre strictement.
+                    </p>
+                    <p>
+                        <em>Exemple : Mina ceinture un garde et égalise — le garde est Immobilisé. À son tour, le garde tente de se libérer et égalise — il est libre, l'étreinte est rompue.</em>
+                    </p>
+                    <p>
+                        <strong>Max naturel ? Il critique même perdant.</strong>
+                        Chacun jette sa conséquence dans son domaine, sans dégâts ni effet de spé si le total ne touche pas. Double max : les deux critiquent, l'initiateur d'abord (voir <a class="rule-ref" href="#chap-9" data-tip="Critiques : max naturel = Réussite Critique, même perdant ; double max = les deux (§9.1).">§9.1</a>).
                     </p>
                     <p>
                         <strong>Variante sans jetons (déclaration ouverte) :</strong>

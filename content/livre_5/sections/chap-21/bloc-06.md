@@ -108,11 +108,11 @@ livre: 5
                         <li><strong>Ennemi non détecté = invisible :</strong> silhouette masquée, aucun ciblage
                             possible (tir, grenade ciblée, sort mono-cible). Seuls les effets de zone aveugles
                             restent envisageables, sans bonus.</li>
-                        <li><strong>Observation active (1 <a class="rule-ref" href="livre_1.html#chap-4" data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a>) :</strong> <a class="rule-ref" href="livre_2.html#chap-7" data-tip="Face-à-Face : les deux lancent en secret, dé + PA − malus. Égalité = statu quo (§7.3).">Face-à-Face</a> <strong>Observation</strong>
+                        <li><strong>Observation active (1 <a class="rule-ref" href="livre_1.html#chap-4" data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a>) :</strong> <a class="rule-ref" href="livre_2.html#chap-7" data-tip="Face-à-Face : les deux lancent en secret, dé + PA − malus. Égalité = l'initiateur passe (§7.3).">Face-à-Face</a> <strong>Observation</strong>
                             (observateur) vs <strong>Discrétion</strong> (cible) : <strong>-1 par case</strong>
                             au-delà du contact, <strong>-1 / -2 / -4</strong> selon le couvert
                             (moitié, trois-quarts, total — un couvert total rend l'observation
-                            <strong>impossible</strong>). Réussite ➔ cible <strong>révélée jusqu'à la fin du cycle
+                            <strong>impossible</strong>). Égalité ou réussite ➔ cible <strong>révélée jusqu'à la fin du cycle
                             suivant</strong>.                             Spécialités : <strong>Œil de Lynx +2</strong> au duel,
                             <strong>Détection Thermique +2</strong> et devine une présence juste derrière un mur
                             plein tout proche.</li>

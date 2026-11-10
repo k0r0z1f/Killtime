@@ -2927,7 +2927,7 @@
      "id": "RP-194",
      "title": "CAS-1 Égalité d'Initiative (L.I §4.3 & L.V §20.0)",
      "epic": "Cas spéciaux à trancher",
-     "status": "todo",
+     "status": "done",
      "priority": "high",
      "order": 191,
      "scene": "",
@@ -2937,13 +2937,13 @@
      "scale": null,
      "suggestedAsset": "",
      "updated": "2026-11-10",
-     "details": "Départager égalité au dé d'Initiative (Max(RAP,AGI,INT)). Trancher: relance / RAP puis AGI puis INT / avantage défenseur / simultané. Écrire aux deux endroits. (Audit sysRP 2026-11-10.)"
+     "details": "FAIT 2026-11-10 — Règle tranchée (décision table) : ordre fixé avant le round 1, fixe tout le combat. Égalité : héros avant PNJ, puis plus gros dé d’initiative, puis choix des joueurs (héros) ou du MJ (PNJ). Écrit en §4.3 (canon + exemple Mina/garde) et rappel §20.0 étape 1 + mecaniques.initiative.departage. Checks verts : build/check 1+5, nav, liens."
     },
     {
      "id": "RP-195",
      "title": "CAS-2 Égalité Δ=0 hors attaque (L.II §7.3 & L.V §20.7)",
      "epic": "Cas spéciaux à trancher",
-     "status": "todo",
+     "status": "done",
      "priority": "high",
      "order": 192,
      "scene": "",
@@ -2953,7 +2953,7 @@
      "scale": null,
      "suggestedAsset": "",
      "updated": "2026-11-10",
-     "details": "Écrire explicitement §7.3 que Δ=0 sans dégâts = statu quo (avantage défenseur/résistant). Cas: Lutte, Discrétion vs Observation, Social. (Audit sysRP 2026-11-10.)"
+     "details": "FAIT 2026-11-10 — Règle unifiée (décision table) : Δ=0 = l’initiateur passe au minimum. Attaque : pas de dégâts de base, effets spéciaux OK. Hors attaque : prise posée, libération réussie, repérage révélé, tromperie qui passe. Blocage : bloqueur égalise ou gagne = pas annulé. Écrit en §7.3 (canon + exemple Mina/garde), rappels §20.5/§20.7/§21.4, tooltips « initiateur passe », miroirs desc_html/texte. Checks verts : build/check 2+3+5, nav, liens."
     },
     {
      "id": "RP-196",
@@ -2975,7 +2975,7 @@
      "id": "RP-197",
      "title": "CAS-4 Critiques en Face-à-Face (L.II §7.3 & §9.1)",
      "epic": "Cas spéciaux à trancher",
-     "status": "todo",
+     "status": "done",
      "priority": "high",
      "order": 194,
      "scene": "",
@@ -2985,7 +2985,7 @@
      "scale": null,
      "suggestedAsset": "",
      "updated": "2026-11-10",
-     "details": "Maximum naturel déclenche-t-il critique même si total final perd? Et si les deux font leur max naturel? Trancher + écrire. (Audit sysRP 2026-11-10.)"
+     "details": "FAIT 2026-11-10 — Tranché (décision table) : max naturel = conséquence toujours, dans son domaine, même si le total perd ; sans touche, pas de dégâts de base ni effet de spé. Double max = les deux critiquent, initiateur d’abord. Écrit en §9.1 (canon + exemple Mina) + rappel §7.3 + mecaniques.critique.declenchement.face_a_face. Checks verts : build/check 2, nav, liens."
     },
     {
      "id": "RP-198",

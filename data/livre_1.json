@@ -646,7 +646,8 @@
   "initiative": {
    "base": "Max(RAP, AGI, INT)",
    "conversion": "palier de dé (Livre II §6) : 3→1d4, 5→1d6, 7→1d8…",
-   "moment": "début de l'affrontement"
+   "moment": "début de l'affrontement, ordre tranché avant le round 1 et fixe pour tout le combat",
+   "departage": "héros avant PNJ, puis plus gros dé d'initiative, puis choix des joueurs (héros) ou du MJ (PNJ)"
   },
   "progression": {
    "anti_farm": "réserve d'XP lié ≤ niveau de la compétence ; surplus converti 2:1 en XP libre, réserve ramenée au niveau",
@@ -1029,7 +1030,7 @@
     },
     {
      "type": "html",
-     "html": "                    <p>\n                        Quand la poudre parle, l'initiative repose sur votre meilleur score entre <strong>Rapidité</strong>,\n                        <strong>Agilité</strong> et <strong>Intelligence</strong>. On convertit cette valeur en palier de dé\n                        (par exemple un score de 3 donne 1d4, 5 donne 1d6, 7 donne 1d8, etc.). Vous lancez ce dé au début de\n                        l'affrontement pour fixer l'ordre de passage autour de la table.\n                    </p>"
+     "html": "                    <p>\n                        Quand la poudre parle, l'initiative repose sur votre meilleur score entre <strong>Rapidité</strong>,\n                        <strong>Agilité</strong> et <strong>Intelligence</strong>. On convertit cette valeur en palier de dé\n                        (par exemple un score de 3 donne 1d4, 5 donne 1d6, 7 donne 1d8, etc.). Vous lancez ce dé au début de\n                        l'affrontement pour fixer l'ordre de passage autour de la table.\n                    </p>\n                    <p>\n                        Égalité ? Tu tranches avant le premier round, et l'ordre ne bouge plus du combat. Un héros passe\n                        toujours avant un PNJ. Entre héros, le plus gros dé parle d'abord : un d8 passe devant un d6, même\n                        sur le même tirage. Même dé ? Vous choisissez entre vous, dans l'ordre qui vous arrange. Côté PNJ,\n                        c'est le MJ qui tranche : plus gros dé d'abord, sinon l'ordre qui sert la scène.\n                    </p>\n                    <p>\n                        <em>Exemple : Mina (d8) et un garde (d8) font tous les deux 5. Mina ouvre, parce que c'est une\n                        héroïne. Deux héros à 5, l'un en d6 et l'autre en d8 ? Le d8 passe devant. Deux héros à 5 tous\n                        les deux en d6 ? Vous décidez qui commence.</em>\n                    </p>"
     }
    ],
    "nav": "Points d'Action & Dégâts"

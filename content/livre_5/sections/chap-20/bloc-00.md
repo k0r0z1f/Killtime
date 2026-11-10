@@ -25,8 +25,8 @@ livre: 5
                         </div>
                         <div class="callout-body">
                             <ol style="margin-bottom: 0;">
-                                <li><strong>Initiative (une seule fois) :</strong> Jet d'<a class="rule-ref" href="livre_1.html#sec-4-3" data-tip="Initiative : meilleur score entre Rapidité, Agilité et Intelligence, converti en dé (§4.3).">initiative</a> basé sur ton meilleur score entre
-                                    <em>Rapidité</em>, <em>Agilité</em> et <em>Intelligence</em> (converti en dé). L'ordre reste fixe pour tout le combat.</li>
+                                <li><strong>Initiative (une seule fois, avant le round 1) :</strong> Jet d'<a class="rule-ref" href="livre_1.html#sec-4-3" data-tip="Initiative : meilleur score entre Rapidité, Agilité et Intelligence, converti en dé (§4.3).">initiative</a> basé sur ton meilleur score entre
+                                    <em>Rapidité</em>, <em>Agilité</em> et <em>Intelligence</em> (converti en dé). Égalité : héros avant PNJ, puis plus gros dé, puis choix des joueurs (héros) ou du MJ (PNJ) — voir <a class="rule-ref" href="livre_1.html#sec-4-3" data-tip="Initiative : meilleur score entre Rapidité, Agilité et Intelligence, converti en dé (§4.3).">§4.3</a>. L'ordre reste fixe pour tout le combat.</li>
                                 <li><strong>Début de ton tour :</strong> quand ton initiative arrive, dans l'ordre :
                                     tes <strong>résiduels te frappent puis décroissent</strong>, tu <strong>récupères
                                     l'intégralité de ta réserve de <a class="rule-ref" href="livre_1.html#chap-4" data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a> (remise au maximum, sans cumul)</strong>,
