@@ -28,7 +28,7 @@ livre: 5
                             <a class="rule-ref" href="livre_6.html#sec-24-2" data-tip="Saignement : PV directs en début de tour, puis −1/tour. Tout soin le stoppe (§24.2).">Saignement</a></strong> sur chaque cible à l'intersection. <em>Semi</em> — 3 dégâts.
                             <em>Ratée</em> — les branches se désynchronisent.</li>
                         <li><strong>⧉ Parallaxe :</strong> <em>Parfaite</em> — la cible <strong>ne peut pas se
-                            défendre</strong> (score 0, comme une défense passive §20.1) contre la frappe conjointe
+                            défendre</strong> (score 0, comme une défense passive §20.2) contre la frappe conjointe
                             à <strong>4 dégâts</strong>. <em>Semi</em> — défense à <strong>−2</strong>. <em>Ratée</em> —
                             la cible esquive entre les deux temps.</li>
                         <li><strong>🌫️ Mirage à Deux Temps :</strong> <em>Parfaite</em> — Mina se replace de

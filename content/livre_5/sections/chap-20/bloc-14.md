@@ -19,7 +19,7 @@ livre: 5
                             la course d'approche et la frappe chirurgicale au Torse.</li>
                     </ul>
 
-                    <h3 id="sec-20-8">20.8 Cran, Déroute & Reddition</h3>
+                    <h3 id="sec-20-9">20.9 Cran, Déroute & Reddition</h3>
                     <p>
                         Tu prends un mauvais coup. Ton sang couvre le sol. Tes jambes tremblent.
                         C'est là que tu découvres si tu tiens ou si tu craques.
@@ -61,9 +61,7 @@ livre: 5
                         <li><strong>Rattrapage :</strong> le don Humain <strong>E Sang-Froid</strong>
                             (1×/session : ignore un échec de moral) et l'événement
                             <strong>Miracle inexpliqué</strong> (Livre VII : ignore un échec de moral)
-                            annulent une Déroute après le jet. La spécialisation <strong>Mener : Tenir la Ligne !</strong>
-                            (<a class="rule-ref" href="#sec-20-5" data-tip="Garde du corps : au contact d'un allié attaqué, prend le coup à sa place pour 1 PA (§20.5).">§20.5</a>)
-                            reste ton meilleur rempart collectif : un chef qui tient aide tout le groupe à tenir.</li>
+                            annulent une Déroute après le jet. La spécialisation <strong>Mener : Tenir la Ligne !</strong> reste ton meilleur rempart collectif : un chef qui tient aide tout le groupe à tenir.</li>
                     </ul>
 
                     <!-- ================= CHAPITRE 24 ================= -->

@@ -5,5 +5,5 @@ livre: 5
 ---
 
 
-                    <h3 id="sec-20-3">20.3 Barème des Coûts en Points d'Action Types</h3>
+                    <h3 id="sec-20-4">20.4 Barème des Coûts en Points d'Action Types</h3>
                     

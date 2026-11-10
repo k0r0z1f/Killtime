@@ -35,7 +35,7 @@ livre: 5
                                     sorts, postures) ; hors de ton tour, les autres peuvent parer et esquiver <strong>sans maximum</strong>
                                     (tant qu'ils paient) ou dépenser leur réaction libre.</li>
                                 <li><strong>Fin de ton tour :</strong> expirent les effets ancrés « fin du tour »
-                                    (guet, Décrochage inutilisé, −1 de Charge, états « jusqu'à la fin du prochain tour »).</li>
+                                    (guet, Décrochage, −1 de Charge, états « jusqu'à la fin du prochain tour »).</li>
                                 <li><strong>Itération :</strong> Passer au combattant suivant dans l'ordre d'initiative.
                                     Chaque combattant ne recharge PA et réaction libre qu'au <strong>début de son propre tour</strong>,
                                     jamais au début du cycle global.</li>
@@ -43,7 +43,23 @@ livre: 5
                         </div>
                     </div>
 
-                    <h3 id="sec-20-1">20.1 L'Économie des Points d'Action : 1 PA = +1 au Résultat</h3>
+                    <h3 id="sec-20-1">20.1 Postures</h3>
+                    <p>
+                        Ta posture, c'est comment tu te tiens : garde haute et mobile, penché sur l'ennemi, collé à ton allié pour le couvrir.
+                        Elle ne coûte rien à prendre, mais elle te suit partout : chaque posture aide d'un côté et expose de l'autre.
+                        Tu veux frapper ? Tu t'ouvres. Tu veux encaisser ? Tu te fermes. Dis ce que tu fais ce tour-ci, ta posture le montre.
+                    </p>
+                    <p>
+                        Choisis ta posture pendant ton tour : une seule à la fois, gratuitement. Elle te suit jusqu'à ce que tu en changes.
+                    </p>
+                    <ul>
+                        <li><strong>Défaut :</strong> aucun bonus ni malus.</li>
+                        <li><strong>Préventive :</strong> requise pour l'<a class="rule-ref" href="#sec-20-6" data-tip="Garde du corps : au contact d'un allié attaqué, prend le coup à sa place pour 1 PA (§20.6).">interception</a> ; −1 en attaque.</li>
+                        <li><strong>Défensive :</strong> +1 en défense, −1 en attaque.</li>
+                        <li><strong>Offensive :</strong> +1 en attaque, −1 en défense.</li>
+                    </ul>
+
+                    <h3 id="sec-20-2">20.2 L'Économie des Points d'Action : 1 PA = +1 au Résultat</h3>
                     <p>
                         Tes <a class="rule-ref" href="livre_1.html#chap-4" data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a> ne paient pas que tes actions. Tu peux aussi les mettre directement dans ton jet :
                         <strong>1 <a class="rule-ref" href="livre_1.html#chap-4" data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a> dépensé = +1 au résultat</strong>. Tu veux assurer ton coup ? Tu rajoutes des <a class="rule-ref" href="livre_1.html#chap-4" data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a>.
@@ -73,4 +89,6 @@ livre: 5
                         </div>
                     </div>
 
-                    
+                    <p>
+                        <strong>Règle d'or :</strong> quand un pouvoir, un sort ou une spécialisation contredit une règle de base, c'est lui qui gagne.
+                    </p>

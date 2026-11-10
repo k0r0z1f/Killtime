@@ -5,7 +5,7 @@ livre: 5
 ---
 
 
-                    <h3 id="sec-20-2">20.2 L'Essoufflement : Dépasser ses Limites</h3>
+                    <h3 id="sec-20-3">20.3 L'Essoufflement : Dépasser ses Limites</h3>
                     <p>
                         Tu n'as plus de <a class="rule-ref" href="livre_1.html#chap-4" data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a> mais tu dois parer, sinon tu prends le coup ?
                         Tu forces. Tu prends des <a class="rule-ref" href="livre_1.html#sec-4-2" data-tip="Essoufflement : 1 point = des PA d'urgence ; ne part pas tout seul, action dédiée pour souffler (§4.2)."><strong>Points d'Essoufflement</strong></a>.

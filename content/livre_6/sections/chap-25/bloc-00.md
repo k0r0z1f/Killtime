@@ -38,7 +38,7 @@ livre: 6
                             retombe à zéro. Un stabilisé se réveille (<a class="rule-ref" href="#sec-24-5" data-tip="Inconscient : aucune action ni réaction. Réveil par secousse vigoureuse (1 PA) ou premiers soins.">Inconscient stable</a>
                             → conscient). Le <a class="rule-ref" href="livre_6.html#sec-24-1" data-tip="Saignement : perte de PV par tour sans compression (§24.1).">Saignement</a>
                             s'arrête. Ton cran se réarme (nouveau test de moral possible,
-                            <a class="rule-ref" href="livre_5.html#sec-20-8" data-tip="Cran : testé à 28 % des PV max, 1×/combat, réarmé si soin au-dessus (§20.8).">§20.8</a>).
+                            <a class="rule-ref" href="livre_5.html#sec-20-9" data-tip="Cran : testé à 28 % des PV max, 1×/combat, réarmé si soin au-dessus (§20.9).">§20.9</a>).
                             Tes dons <strong>1×/jour</strong> (ex. <em>Sève Vive</em> du Taurien) sont rechargés —
                             les dons s'activent gratuitement quand tu veux (<a class="rule-ref" href="livre_1.html#chap-2" data-tip="Dons raciaux : 1 au choix à la création, activation gratuite (§2.2).">Livre I §2.2</a>),
                             la nuit ne fait que les recharger.</li>

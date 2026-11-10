@@ -6,7 +6,7 @@ livre: 2
 
                     <h4 id="sec-8-4">8.4 Terrains difficiles : 1 case coûte 2 PA</h4>
                     <p>
-                        Boue, gravats, pente raide, eau peu profonde, neige épaisse, sable meuble : chaque case coûte <strong>2 PA de déplacement</strong> au lieu d'1 (<a href="livre_5.html#sec-20-3">Livre V §20.3</a>). Ni sprint, ni charge à travers. Trois façons de passer outre : la spécialisation <em>Franchissement</em> (Athlétisme), <em>Pas Feuillu</em> (Taurien, terrains naturels), <em>Fille du désert</em> (Cléien, terrains sableux).
+                        Boue, gravats, pente raide, eau peu profonde, neige épaisse, sable meuble : chaque case coûte <strong>2 PA de déplacement</strong> au lieu d'1 (<a href="livre_5.html#sec-20-4">Livre V §20.4</a>). Ni sprint, ni charge à travers. Trois façons de passer outre : la spécialisation <em>Franchissement</em> (Athlétisme), <em>Pas Feuillu</em> (Taurien, terrains naturels), <em>Fille du désert</em> (Cléien, terrains sableux).
                     </p>
                     <h4 id="sec-8-5">8.5 Milieux : six mots pour dire où tu es</h4>
                     <p>

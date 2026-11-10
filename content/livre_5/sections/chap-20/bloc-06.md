@@ -6,7 +6,7 @@ livre: 5
 
 
 
-                    <h3 id="sec-20-4">20.4 Attaques d'Opportunité & Décrochage</h3>
+                    <h3 id="sec-20-5">20.5 Attaques d'Opportunité & Décrochage</h3>
                     <p>
                         Tu es au <strong>contact (1 case ou moins)</strong> et tu veux partir ?
                         Chaque ennemi que tu lâches gagne <strong>1 réaction d'opportunité</strong>.
