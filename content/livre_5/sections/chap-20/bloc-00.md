@@ -35,7 +35,7 @@ livre: 5
                                     sorts, postures) ; hors de ton tour, les autres peuvent parer et esquiver <strong>sans maximum</strong>
                                     (tant qu'ils paient) ou dépenser leur réaction libre.</li>
                                 <li><strong>Fin de ton tour :</strong> expirent les effets ancrés « fin du tour »
-                                    (guet, Décrochage, −1 de Charge, états « jusqu'à la fin du prochain tour »).</li>
+                                    (guet, Décrochage, états « jusqu'à la fin du prochain tour »).</li>
                                 <li><strong>Itération :</strong> Passer au combattant suivant dans l'ordre d'initiative.
                                     Chaque combattant ne recharge PA et réaction libre qu'au <strong>début de son propre tour</strong>,
                                     jamais au début du cycle global.</li>

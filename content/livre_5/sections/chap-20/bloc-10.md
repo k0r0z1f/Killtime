@@ -32,8 +32,7 @@ livre: 5
                     <p>
                         Pas besoin d'être spécialiste pour attraper quelqu'un. Au contact —
                         <strong>1 case ou moins</strong> — tu peux ceinturer, clouer sur place,
-                        traîner ou étrangler. La <em>Clé d'Articulation</em> (Livre III, Mains Nues),
-                        c'est autre chose : une technique de spécialiste. Ici, c'est la lutte simple, ouverte à tous.
+                        traîner ou étrangler.
                     </p>
 
                     
