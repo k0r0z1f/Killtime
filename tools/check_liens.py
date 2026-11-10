@@ -112,7 +112,7 @@ for n in [3, 4, 5, 6, 7, 8, 10, 11, 12]:
 # ---------- 2. balayage des textes ----------
 HREF = re.compile(r'href="(livre_\d+\.html|#[^"]*?)"')
 HREF_LIVRE = re.compile(r'href="(livre_(\d+)\.html)#([\w-]+)"')
-HREF_PAGE = re.compile(r'href="(index|tables|fiche_pj|roadmap|financement|admin|kanban_[a-z]+|atlas_[a-z0-9]+|tactics_[a-z_]+)\.html(#[^"]*)?"')
+HREF_PAGE = re.compile(r'href="(index|tables|fiche_pj|roadmap|financement|admin|kanban_[a-z]+|atlas_[a-z0-9]+|tactics_[a-z_]+|project_evolution)\.html(#[^"]*)?"')
 SECT = re.compile(r'§(\d+)')
 
 CONTEXTE = []  # (nom, cle_livre_ou_None, texte)

@@ -997,6 +997,10 @@ def build_html():
                 <span>ℹ️</span>
                 <span>Guide</span>
             </button>
+            <a href="project_evolution.html" class="btn-ghost" title="Voir l'évolution globale de tout le projet (6 Sphères)">
+                <span>🪐</span>
+                <span>Projet Global</span>
+            </a>
             <a href="tactics_evolution.html" class="btn-ghost" title="Voir la fleur des commits Git">
                 <span>🌺</span>
                 <span>Évolution Git</span>
