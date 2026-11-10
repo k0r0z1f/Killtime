@@ -54,7 +54,7 @@ livre: 5
                     </p>
                     <ul>
                         <li><strong>Défaut :</strong> aucun bonus ni malus.</li>
-                        <li><strong>Préventive :</strong> requise pour l'<a class="rule-ref" href="#sec-20-6" data-tip="Garde du corps : au contact d'un allié attaqué, prend le coup à sa place pour 1 PA (§20.6).">interception</a> ; −1 en attaque.</li>
+                        <li><strong>Préventive :</strong> requise pour la <a class="rule-ref" href="#sec-20-6" data-tip="Prise de coup : au contact d'un allié attaqué, prend le coup à sa place pour 1 PA (§20.6).">prise de coup</a> ; −1 en attaque.</li>
                         <li><strong>Défensive :</strong> +1 en défense, −1 en attaque.</li>
                         <li><strong>Offensive :</strong> +1 en attaque, −1 en défense.</li>
                     </ul>

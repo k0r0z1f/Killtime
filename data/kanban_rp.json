@@ -1055,7 +1055,7 @@
      "primitive": "",
      "pos": null,
      "scale": null,
-     "suggestedAsset": "livre_5.html#sec-20-4",
+     "suggestedAsset": "livre_5.html#chap-21-4",
      "details": "FAIT 2026-11-03 — §8.6 Nuit & lumière créé (Livre II chap-8, content/livre_2/sections/chap-8/bloc-02.md, build+check OK). Choix validés : 8.6 en chap-8 + rappels Livre V §23.3, nuit graduée (claire : vue 8, -0 tir, -1 Obs loin ; noire : vue 4, -1 tir sans lampe/thermique ; cumul météo : malus max + vue re-bridée, ex. 2 cases), lampe (ignore nuit mais trahit, furtivité brisée), thermique (ignore + perce fumée/murs à demi-portée), vision nocturne Derek (ignore nuit, Aveugle 1 tour en entrant en lumière vive), éblouissement = Aveugle temporaire (flash 1 tour, 2 si ≤3 cases, Masque Filtrant neutralise). Don B Derek Sang des Profondeurs désormais cohérent. Reste RP-071 (définition Aveugle §26)."
     },
     {

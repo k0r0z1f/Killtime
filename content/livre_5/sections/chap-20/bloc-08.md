@@ -31,7 +31,7 @@ livre: 5
                             au lieu de dégâts maximaux. Idéal pour clouer un fuyard.</li>
                     </ul>
 
-                    <h3 id="sec-20-6">20.6 Garde du Corps & Interception d'Allié</h3>
+                    <h3 id="sec-20-6">20.6 Garde du Corps & Prise de Coup</h3>
                     <p>
                         Un allié est attaqué à ton contact — à <strong>1 case ou moins</strong>.
                         Tu peux t'interposer et
