@@ -14,16 +14,14 @@ livre: 4
                             Exemple de Portée & Malus de Distance
                         </div>
                         <div class="callout-body">
-                            Prends Menna. Elle a <strong>5 en Magie</strong>, 1 entraînement en <a class="rule-ref" href="livre_3.html#chap-11"
+                            Prends Menna. Elle a <strong>5 en Magie</strong> et 2 entraînements en <a class="rule-ref" href="livre_3.html#chap-11"
                                 data-tip="Compétence de base (MAG, INT) : Feu, Air, Eau, Terre. Base = moyenne, +1 palier par entraînement (§11, §18.1).">Magie
-                                Élémentale</a> et 1 entraînement
-                            en
-                            Magie de Feu.<br>
+                                Élémentale</a> (la compétence de base, pas une spécialisation comme Feu).<br>
                             <strong>Sa portée :</strong> 5 + (5 × 2) = <strong>15 cases</strong> (le premier
                             rang est offert).<br>
                             Sa cible est à <strong>20 cases</strong> ? Compte par tranches de 5 (sa MAG) :
-                            [1-15 : 0 malus], [16-20 : -1], [21-25 : -2].
-                            Elle lance avec un <strong>malus de 1</strong> (1 palier de dé en moins).
+                            [1-15 : 0], [16-20 : -1 niveau de dé], [21-25 : -2].
+                            Elle lance avec un <strong>malus de -1 niveau de dé</strong>.
                         </div>
                     </div>
 

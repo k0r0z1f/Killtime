@@ -1,6 +1,6 @@
 {
  "version": 3,
- "updated": "2026-11-09",
+ "updated": "2026-11-10",
  "activeId": "board-demo-hors-lore",
  "boards": [
   {
@@ -1368,6 +1368,22 @@
      "suggestedAsset": "PreparationState + ChannelingState + ChargeState + CombatActionRegistry + TurnManager",
      "updated": "2026-11-09",
      "details": "TODO (codex fait foi, rebalance sysRP 2026-11-09, §§20.x nouvelle numérotation : §20.1 Postures, §20.2 PA, §20.3 Souffle, §20.4 Coûts, §20.5 Opportunités, §20.6 Garde, §20.7 Lutte, §20.8 Charge, §20.9 Cran) : 1) Préparation d'Action virée du codex — retirer PreparationState/usages UI+IA/tests ou réserver. 2) Verrou sprint-bloque-tir viré — retirer blocage tir sprint (ChargeState, tag sprint bloqué, IA, ChargeSprintTests). 3) Dégagement/Désengagement renommé Décrochage partout (textes + GetAwayState si gardé). 4) Canalisation RD-048 refondue : mise 1+ PA (chaque PA = +2, plafond = prix de base en PA), attaque jamais le même tour, 1 seul tour étalé (perdue si injouable au 2e tour), -1 déf entre-temps, mise perdue si dégâts > encaissement. 5) Se relever figé à 1 PA. 6) §20.5 : Poursuite = 1 case maximum (réaction consommée), Décrochage = déplacements du tour sans provoquer. 6b) §20.6 : interception généralisée (plus de prérequis Tenir la Ligne/Garde, qualifications fantômes virées), Prise de coup (titre court), §20.6 en prose (posture, restrictions, résolution). 7) Recaler tous les repères §20.x Unity (commentaires RD-030/031/032/038/039/048/202, tips, logs) sur la nouvelle numérotation. 8) Nouveau §20.1 Postures (défaut/préventive/défensive/offensive, 0 PA, une seule à la fois, préventive requise pour la prise de coup avec -1 en attaque) — implémenter côté Unity. 9) §20.7 : prose (rupture, relâcher n'importe quand) + 4 actions en puces, vocabulaire unique (assaillant/victime/prise), Étranglement = 2 Essoufflement + Asphyxie 2 (fini les dégâts directs), liens skills/états. 10) §20.8 : Sprint sorti du nom (plus de règle à lui), pénalité recalée au début du prochain tour, Guidage Unity converti en action Charge, liens skills. Rejouer tests + build après modifs."
+    },
+    {
+     "id": "RD-232",
+     "title": "Miroir RP-137 : portée sorts Unity MAG+Entr → MAG+MAG×E (canon sysrp tranché)",
+     "epic": "Positionnement",
+     "status": "todo",
+     "priority": "medium",
+     "order": 86,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "NythariteSpell.CalculateBaseRange + ArcanotechWorkshop + CharacterDevWindow.SpellForge + tests",
+     "updated": "2026-11-10",
+     "details": "TODO miroir sysrp (canon tranché RP-137/RP-184 2026-11-10, codex fait foi, NE PAS modifier le codex depuis ici) : portée = MAG + MAG×E (entraînements en compétence de base, premier rang offert), Menna 5+(5×2)=15 cases, malus −1 niveau de dé par tranche de MAG. Code actuel : NythariteSpell.CalculateBaseRange (KilltimeTactics/Assets/Scripts/Core/Arcanotech/NythariteSpell.cs:148) = MAG+Entr (Menna 7) + CalculateDistancePenalty par tranches (déjà OK). 1) Réaligner CalculateBaseRange sur MAG+MAG×E. 2) Vérifier appelants (ArcanotechWorkshop:329, SpellForge). 3) Tests : Menna 15 cases, malus −1/tranche, 0 entraînement = MAG cases. Réf : data/livre_4.json mecaniques.portee_sorts, §18 + exemple Menna."
     }
    ]
   },

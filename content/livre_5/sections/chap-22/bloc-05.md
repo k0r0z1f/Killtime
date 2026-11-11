@@ -21,5 +21,11 @@ livre: 5
                         Charrette, char, aéroglisseur ou croiseur : même règle pour tous.
                         Tu vises une zone du véhicule, tu l'abîmes, et tu vois ce qui lâche.
                     </p>
+                    <p>
+                        Au combat, conduire, c'est ton action principale : chaque manœuvre (demi-tour serré, slalom, éperonnage) te prend ton action. Manœuvre délicate ? Épreuve de <a class="rule-ref" href="livre_3.html#chap-12" data-tip="Conduite & Pilotage : véhicules terrestres, pods arcaniques, vaisseaux, montures (AGI/RAP, §12).">Conduite & Pilotage</a> en plus. Monter ou descendre de bord : <strong>2 PA</strong> chacun (<a href="#sec-20-4">§20.4</a>).
+                    </p>
+                    <p>
+                        Zone essentielle détruite ? L'équipage évacue <a class="rule-ref" href="livre_6.html#sec-24-1" data-tip="Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).">Déstabilisé</a> et <a class="rule-ref" href="livre_6.html#sec-24-1" data-tip="À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.">À Terre</a>. Le véhicule explose ? Dégâts directs en plus pour les passagers, montant fixé par le MJ selon l'engin.
+                    </p>
 
                     

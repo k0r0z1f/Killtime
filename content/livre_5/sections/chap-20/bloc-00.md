@@ -89,6 +89,16 @@ livre: 5
                         </div>
                     </div>
 
+                    <p id="sec-20-2-cibles">
+                        <strong>Cible hors d'état de se défendre :</strong> ton adversaire ne peut pas
+                        lancer de défense ? Pas de Face-à-Face. Applique son état :
+                    </p>
+                    <ul>
+                        <li><strong>Inconscient :</strong> pas de jet. Tu infliges les dégâts maximum de ton attaque (dés au maximum + bonus). Ensuite, armure, <a class="rule-ref" href="livre_6.html#sec-23-2" data-tip="Encaissement = CON × 2 : seuil comparé aux dégâts du coup (§23.2).">encaissement</a> et arbre à 0 PV comme d'habitude (<a class="rule-ref" href="livre_6.html#sec-23-2" data-tip="Chute à 0 PV : Encaissement CON×2, Sombrer ou Dernier Souffle (§23.2).">§23.2</a>).</li>
+                        <li><strong>Paralysé :</strong> fais ton jet d'attaque contre une <a class="rule-ref" href="#sec-20-2" data-tip="Défense Passive : le défenseur ne lance rien, score 0, touche auto avec ta marge (§20.2).">Défense Passive</a> imposée (score 0) : touche automatique avec ta marge totale.</li>
+                        <li><strong>Sonné :</strong> il peut encore parer. Une fois à terre : −2 en défense (<a class="rule-ref" href="livre_6.html#sec-24-1" data-tip="À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.">À Terre</a>). Debout, il pare normalement.</li>
+                    </ul>
+
                     <p>
                         <strong>Règle d'or :</strong> quand un pouvoir, un sort ou une spécialisation contredit une règle de base, c'est lui qui gagne.
                     </p>

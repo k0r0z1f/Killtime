@@ -7,11 +7,11 @@ format: raw
 
                     <h4>Actions Physiques de Force & Difficultés Associées</h4>
                     <ul>
-                        <li><strong>Courir / Nager</strong> : vous courez, vous nagez — facile (1–3) la plupart du
+                        <li><strong>Courir / Nager / Escalader</strong> : vous courez, vous nagez, vous grimpez — facile (1–3) la plupart du
                             temps.
                             Si ça devient dur (<a class="rule-ref" href="livre_2.html#chap-7"
                                 data-tip="Difficulté : 1-3 facile, 5+ exige un jet, 12+ héroïque, 18+ cosmique (§7.1).">difficulté
-                                5+</a>, courant, bourbier), lancez votre Force.</li>
+                                5+</a>, courant, bourbier, paroi raide), lancez votre Force. En combat, sans <em>Franchissement</em> : <strong>2 PA par case</strong> nagée ou grimpée (<a class="rule-ref" href="livre_5.html#sec-20-4" data-tip="Nager / escalader sans Franchissement : 2 PA par case, épreuve de Force si eau agitée ou paroi raide (Livre V §20.4).">Livre V §20.4</a>).</li>
                         <li><strong>Pousser / Soulever</strong> : vous poussez une herse, vous soulevez une poutre. Si
                             quelqu'un
                             s'oppose, faites un <a class="rule-ref" href="livre_2.html#chap-7"

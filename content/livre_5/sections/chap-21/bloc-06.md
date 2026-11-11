@@ -92,7 +92,7 @@ livre: 5
                             <strong>2. Pas de limite chiffrée :</strong> tu vois <strong>aussi loin que le décor le
                             permet</strong>. Pas de courte ou longue portée. Seuls l'<strong>environnement et la
                             météo</strong> t'arrêtent : mur, pilier, relief, nuit, fumée, tempête, pluie. Le MJ annonce
-                            en début d'affrontement ce qui bouche la vue, et le change quand la situation change.<br>
+                            en début d'affrontement ce qui bouche la vue, et le change quand la situation change. Par gros temps, les plafonds du <a class="rule-ref" href="livre_2.html#sec-8-1" data-tip="Climat et météo : P1 négligeable (0), P2 −1 (vue 8 max), P3 −2 (vue 4 max), P4 Aveugle (Livre II §8.1).">Livre II §8.1</a> s'appliquent.<br>
                             <strong>3. Tes yeux ne sont pas des jumelles :</strong> Vision et Ouïe ne prolongent jamais
                             la vue. Ils servent à <strong>repérer</strong> : jet d'<a class="rule-ref" href="livre_3.html#chap-13" data-tip="Observation : repérer un indice, un danger, un ennemi camouflé. Duel vs Discrétion (§13)."><strong>Observation</strong></a>
                             (Vision + Instinct), jet d'<strong>Écoute</strong> (Ouïe + Instinct), <a class="rule-ref" href="livre_3.html#chap-12" data-tip="Discrétion : se cacher, se déplacer sans bruit. S'oppose à l'Observation (§12).">Discrétion</a> adverse

@@ -265,13 +265,13 @@
     [
      "<span class=\"table-badge ruby\">Paralysé</span>",
      "Système nerveux totalement tétanisé par un choc électrique ou mental.",
-     "<strong>Incapacité Totale :</strong> Ne peut faire aucune action ni réaction.",
+     "<strong>Incapacité Totale :</strong> Ne peut faire aucune action ni réaction. Attaqué ? Défense Passive imposée (score 0, <a class=\"rule-ref\" href=\"livre_5.html#sec-20-2-cibles\" data-tip=\"Cible hors d'état de se défendre : Inconscient = dégâts max sans jet, Paralysé = Passive 0 imposée, Sonné = −2 à terre (Livre V §20.2).\">Livre V §20.2</a>).",
      "Court (1 à 2 tours en combat)."
     ],
     [
      "<span class=\"table-badge ruby\">Sonné</span>",
      "Commotion violente combinant paralysie et perte de conscience brève.",
-     "Ne peut faire aucune action. <strong>La créature tombe immédiatement à\n                                            terre</strong> à son tour.",
+     "Ne peut faire aucune action. <strong>La créature tombe immédiatement à\n                                            terre</strong> à son tour. Attaqué ? Il pare à −2 une fois à terre (<a class=\"rule-ref\" href=\"livre_5.html#sec-20-2-cibles\" data-tip=\"Cible hors d'état de se défendre : Inconscient = dégâts max sans jet, Paralysé = Passive 0 imposée, Sonné = −2 à terre (Livre V §20.2).\">Livre V §20.2</a>).",
      "Court (1 à 2 tours en combat)."
     ],
     [
@@ -395,7 +395,7 @@
      "top": false,
      "monde": "Statut Pur // Syncope / Sommeil",
      "corps_attrs": " style=\"font-size: 0.9em; margin-top: 10px;\"",
-     "corps_html": "La créature est endormie ou assommée. Elle ne peut effectuer aucune action ni réaction.\n                                Elle peut être réveillée par une secousse vigoureuse (1 PA d'un allié) ou par\n                                l'application de premiers soins.",
+     "corps_html": "La créature est endormie ou assommée. Elle ne peut effectuer aucune action ni réaction.\n                                Elle peut être réveillée par une secousse vigoureuse (1 PA d'un allié) ou par\n                                l'application de premiers soins. Frappé pendant ce temps ? Ton attaquant inflige les dégâts maximum, sans jet (<a class=\"rule-ref\" href=\"livre_5.html#sec-20-2-cibles\" data-tip=\"Cible hors d'état de se défendre : Inconscient = dégâts max sans jet, Paralysé = Passive 0 imposée, Sonné = −2 à terre (Livre V §20.2).\">Livre V §20.2</a>).",
      "pieds": []
     },
     {
@@ -836,13 +836,13 @@
    "Paralysé": {
     "etat": "Paralysé",
     "description": "Système nerveux totalement tétanisé par un choc électrique ou mental.",
-    "malus": "Incapacité Totale : Ne peut faire aucune action ni réaction.",
+    "malus": "Incapacité Totale : Ne peut faire aucune action ni réaction. Attaqué : Défense Passive imposée (score 0, Livre V §20.2).",
     "duree": "Court (1 à 2 tours en combat)."
    },
    "Sonné": {
     "etat": "Sonné",
     "description": "Commotion violente combinant paralysie et perte de conscience brève.",
-    "malus": "Ne peut faire aucune action. La créature tombe immédiatement à terre à son tour.",
+    "malus": "Ne peut faire aucune action. La créature tombe immédiatement à terre à son tour. Attaqué : il pare à −2 une fois à terre (Livre V §20.2).",
     "duree": "Court (1 à 2 tours en combat)."
    },
    "À terre": {
@@ -975,7 +975,7 @@
   "statuts_vitaux": [
    {
     "statut": "Inconscient Inerte",
-    "texte": "La créature est endormie ou assommée. Elle ne peut effectuer aucune action ni réaction. Elle peut être réveillée par une secousse vigoureuse (1 PA d'un allié) ou par l'application de premiers soins."
+    "texte": "La créature est endormie ou assommée. Elle ne peut effectuer aucune action ni réaction. Elle peut être réveillée par une secousse vigoureuse (1 PA d'un allié) ou par l'application de premiers soins. Frappé pendant ce temps : dégâts maximum automatiques, sans jet (Livre V §20.2)."
    },
    {
     "statut": "Souffrant Blessure Grave",

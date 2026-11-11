@@ -276,7 +276,7 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_4.html#chap-18",
-     "details": "Passe 2026-10-30 (1er check) — FAIT : portée = MAG + MAG×E (tranches de MAG cases), Menna 5+(5×2)=15, malus 1 à 20 cases ; §17.1 trois compétences (MAG,INT) + branches vers §19.4 ; rule-ref portée/entraînement/niveau. DIVERGENCE Unity : code en MAG+Entr (Menna 7) — à réaligner (sysrp seulement pour l'instant). RESTE : QA final + ton lecteur. Passe 2026-11-07 — FAIT : Élémentale réduite aux 4 classiques (Feu, Air, Eau, Terre ; Foudre/Glace retirés, desc réécrite) ; Primale en 3 piliers (Vie, Création, Destruction — poison inclus, vieillissement forcé noté) + Défensif ajouté (Offensif, Défensif, Utilitaire) ; tableau 18.1 regroupé sous Vie/Création/Destruction sans spé inventée ; formule de portée en wide + rule-ref insécables (css) ; exemple Menna corrigé (1 entraînement en Magie Élémentale). RESTE : réécriture compendium §19.4 avec nouvelles branches Primale. Passe 2026-11-07 — FAIT : Élémentale expansée §18.1 + §19.4 (même format) : Feu 4→32, Air 4→33, Eau 4→33, Terre 4→33 (3 bases/élément : assaut + protection + voyage/forge ; lignes en 5 + latérales en 4 + 2 options au 5e cran, du faible au fort) ; résumé §18.1 en mini-arbres (fourches alignées sous la 4e) ; compendium 46→161 spés ; ton MJ ; checks verts (build 4, nav, liens). Passe 2026-11-07 — FAIT : liens/tooltips §18.1 pour compétences et spécialisations : 329 spés (565 occurrences arbres + copies cachées d'alignement) → §19.4 (tip = type + effet compendium), 3 voies → Livre III §11 ; intro (3 compétences + Nova/Fournaise, tip §19.4 corrigé) + exemple Menna ; invariant d'alignement vérifié, checks verts (build 4, nav, liens). Passe 2026-11-07 — FAIT (§18.2) : reformulation épreuve de tissage (2e personne, « dépasser de 2 ou plus », lien §7.1 gardé) ; nouveau membre : seuls télépathe + nouveau doivent être là ; Ancrage Thermodynamique : le membre prend à ta place l'Essoufflement de la surchauffe (pas le stock déjà accumulé, lien §4.2) ; checks verts."
+     "details": "Passe 2026-10-30 (1er check) — FAIT : portée = MAG + MAG×E (tranches de MAG cases), Menna 5+(5×2)=15, malus 1 à 20 cases ; §17.1 trois compétences (MAG,INT) + branches vers §19.4 ; rule-ref portée/entraînement/niveau. DIVERGENCE Unity : code en MAG+Entr (Menna 7) — à réaligner (sysrp seulement pour l'instant). RESTE : QA final + ton lecteur. Passe 2026-11-07 — FAIT : Élémentale réduite aux 4 classiques (Feu, Air, Eau, Terre ; Foudre/Glace retirés, desc réécrite) ; Primale en 3 piliers (Vie, Création, Destruction — poison inclus, vieillissement forcé noté) + Défensif ajouté (Offensif, Défensif, Utilitaire) ; tableau 18.1 regroupé sous Vie/Création/Destruction sans spé inventée ; formule de portée en wide + rule-ref insécables (css) ; exemple Menna corrigé (1 entraînement en Magie Élémentale). RESTE : réécriture compendium §19.4 avec nouvelles branches Primale. Passe 2026-11-07 — FAIT : Élémentale expansée §18.1 + §19.4 (même format) : Feu 4→32, Air 4→33, Eau 4→33, Terre 4→33 (3 bases/élément : assaut + protection + voyage/forge ; lignes en 5 + latérales en 4 + 2 options au 5e cran, du faible au fort) ; résumé §18.1 en mini-arbres (fourches alignées sous la 4e) ; compendium 46→161 spés ; ton MJ ; checks verts (build 4, nav, liens). Passe 2026-11-07 — FAIT : liens/tooltips §18.1 pour compétences et spécialisations : 329 spés (565 occurrences arbres + copies cachées d'alignement) → §19.4 (tip = type + effet compendium), 3 voies → Livre III §11 ; intro (3 compétences + Nova/Fournaise, tip §19.4 corrigé) + exemple Menna ; invariant d'alignement vérifié, checks verts (build 4, nav, liens). Passe 2026-11-07 — FAIT (§18.2) : reformulation épreuve de tissage (2e personne, « dépasser de 2 ou plus », lien §7.1 gardé) ; nouveau membre : seuls télépathe + nouveau doivent être là ; Ancrage Thermodynamique : le membre prend à ta place l'Essoufflement de la surchauffe (pas le stock déjà accumulé, lien §4.2) ; checks verts. Suite RP-137 tranchée 2026-11-10 : canon sysrp = MAG + MAG×E (Menna 15), Unity (MAG+Entr, Menna 7) à réaligner côté Unity — pas de modif Unity depuis ce kanban."
     },
     {
      "id": "RP-019",
@@ -2052,7 +2052,7 @@
      "id": "RP-137",
      "title": "Trancher formule de portée canon MAG+MAG×E vs MAG+Entr (suite RP-018)",
      "epic": "Livre IV — 5e Force & Magie",
-     "status": "todo",
+     "status": "done",
      "priority": "high",
      "order": 136,
      "scene": "",
@@ -2061,7 +2061,7 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_4.html#chap-18",
-     "details": "Suite DIVERGENCE RP-018 : sysrp = MAG + MAG×E par tranches (Menna 15), code Unity = MAG+Entr (Menna 7). Trancher la formule canon (décision MJ), écrire au §18 + exemple Menna recalculé, ouvrir la tâche miroir côté Unity si besoin. Ne pas modifier Unity depuis ce kanban. DONE = formule unique documentée + RP-018 annoté."
+     "details": "Suite DIVERGENCE RP-018 : sysrp = MAG + MAG×E par tranches (Menna 15), code Unity = MAG+Entr (Menna 7). Trancher la formule canon (décision MJ), écrire au §18 + exemple Menna recalculé, ouvrir la tâche miroir côté Unity si besoin. Ne pas modifier Unity depuis ce kanban. DONE = formule unique documentée + RP-018 annoté. TRANCHÉ 2026-11-10 (MJ : on garde sysrp, pas de modif Unity) — FAIT : canon MAG + MAG×E documenté (formule + tooltip + mecaniques.portee_sorts), exemple Menna corrigé (2 entr. base, 15 cases, malus -1 niveau de dé/tranche MAG), checks verts (build 4, nav, liens). Miroir Unity à ouvrir côté Unity (CalculateBaseRange MAG+Entr → MAG+MAG×E), hors scope sysrp."
     },
     {
      "id": "RP-138",
@@ -2767,7 +2767,7 @@
      "id": "RP-184",
      "title": "P2-1 Portée & Menna §18.2 (exemple 2 entr., malus -1/tranche, RP-137)",
      "epic": "P2 — Livre IV",
-     "status": "todo",
+     "status": "done",
      "priority": "high",
      "order": 181,
      "scene": "",
@@ -2777,7 +2777,7 @@
      "scale": null,
      "suggestedAsset": "",
      "updated": "2026-11-10",
-     "details": "Corriger exemple Menna (2 entraînements en Magie Élémentale, jamais sous-canal Feu); clarifier malus -1 niveau de dé par tranche; trancher RP-137 (MAG+MAG×E vs MAG+Entr; divergence Unity MAG+Entr). Fichiers: content/livre_4/sections/chap-18/bloc-04/06.md, data/livre_4.json. (Audit sysRP 2026-11-10.)"
+     "details": "Corriger exemple Menna (2 entraînements en Magie Élémentale, jamais sous-canal Feu); clarifier malus -1 niveau de dé par tranche; trancher RP-137 (MAG+MAG×E vs MAG+Entr; divergence Unity MAG+Entr). Fichiers: content/livre_4/sections/chap-18/bloc-04/06.md, data/livre_4.json. (Audit sysRP 2026-11-10.) CLÔTURÉ 2026-11-10 — vérifié : Menna en 2 entr. base (bloc-06, plus de sous-canal Feu), malus -1 niveau de dé/tranche MAG (bloc-06 + donnees + mecaniques), RP-137 tranché MAG+MAG×E. Bloc-04 (§18.1) sans contenu portée/Menna : déjà cohérent (1 entr. base requise), rien à changer. Checks verts (build 4, nav, liens)."
     },
     {
      "id": "RP-185",
@@ -3007,7 +3007,7 @@
      "id": "RP-199",
      "title": "CAS-6 Portée vue jour sous tempête/blizzard (L.II §8.1 vs L.V §21.4)",
      "epic": "Cas spéciaux à trancher",
-     "status": "todo",
+     "status": "done",
      "priority": "medium",
      "order": 196,
      "scene": "",
@@ -3017,13 +3017,13 @@
      "scale": null,
      "suggestedAsset": "",
      "updated": "2026-11-10",
-     "details": "Fixer portée en cases quand météo réduit vue de jour (vue jour normale sans plafond chiffré). (Audit sysRP 2026-11-10.)"
+     "details": "Fixer portée en cases quand météo réduit vue de jour (vue jour normale sans plafond chiffré). (Audit sysRP 2026-11-10.) TRANCHÉ 2026-11-10 (MJ, plan v3 validé) : jour ouvert sans plafond ; échelle P1 (0, négligeable : pluie ≤ modérée, neige ≤ forte, brume) / P2 (−1, vue 8 max : pluie forte, blizzard, brouillard) / P3 (−2, vue 4 max : trombe, tempête, voile blanc, dense, sable) / P4 (Aveugle : voile total, opaque, sable extrême). Vent/froid/chaleur restent léger −1, canicule/vent violent −2 sans bridage. Nuit 8/4 + cumul = plus restrictif (§8.6 réécrit). Écrit §8.1 + §8.6 + renvoi §21.4, display + mecaniques. Checks verts (build 2/5, nav, liens)."
     },
     {
      "id": "RP-200",
      "title": "CAS-7 Coup sur cible Inconsciente/Paralysée/Sonnée (L.V & VI)",
      "epic": "Cas spéciaux à trancher",
-     "status": "todo",
+     "status": "done",
      "priority": "high",
      "order": 197,
      "scene": "",
@@ -3033,13 +3033,13 @@
      "scale": null,
      "suggestedAsset": "",
      "updated": "2026-11-10",
-     "details": "Simple jet vs Défense Passive (0) ou règle coup de grâce au contact? Trancher + écrire. (Audit sysRP 2026-11-10.)"
+     "details": "Simple jet vs Défense Passive (0) ou règle coup de grâce au contact? Trancher + écrire. (Audit sysRP 2026-11-10.) TRANCHÉ 2026-11-10 (MJ) : Inconscient = dégâts max auto sans jet (+ armure/encaissement/arbre §23.2 normalement) ; Paralysé = jet vs Défense Passive 0 imposée ; Sonné = pare normalement, −2 une fois à terre. Écrit en Livre V §20.2 (ancre sec-20-2-cibles) + renvois Livre VI §24/§24.5 (display + mecaniques). Checks verts (build 5, nav, liens)."
     },
     {
      "id": "RP-201",
      "title": "CAS-8 Coût PA nage/escalade en combat (L.II §8.5, L.III §12.1, L.V §20.4)",
      "epic": "Cas spéciaux à trancher",
-     "status": "todo",
+     "status": "done",
      "priority": "medium",
      "order": 198,
      "scene": "",
@@ -3049,13 +3049,13 @@
      "scale": null,
      "suggestedAsset": "",
      "updated": "2026-11-10",
-     "details": "Fixer coût PA/case sans Franchissement. (Audit sysRP 2026-11-10.)"
+     "details": "Fixer coût PA/case sans Franchissement. (Audit sysRP 2026-11-10.) TRANCHÉ 2026-11-10 (MJ, option A) : nage/escalade sans Franchissement = 2 PA/case (même tarif que terrain difficile) ; épreuve de Force en plus si eau agitée/paroi raide (déjà §12.1), échec = sur place, PA perdus. Écrit en §8.4 (L.II), §12.1 (L.III : Courir/Nager/Escalader + coût combat) et barème §20.4 (display + mecaniques). Spés inchangées. Checks verts (build 2/3/5, nav, liens)."
     },
     {
      "id": "RP-202",
      "title": "CAS-9 Véhicules en combat §22.3 (débarquer, pilote, passagers)",
      "epic": "Cas spéciaux à trancher",
-     "status": "todo",
+     "status": "done",
      "priority": "medium",
      "order": 199,
      "scene": "",
@@ -3065,7 +3065,7 @@
      "scale": null,
      "suggestedAsset": "",
      "updated": "2026-11-10",
-     "details": "Coût PA débarquer, coût PA pilote pour manœuvrer, conséquences passagers quand Zone Essentielle explose. (Audit sysRP 2026-11-10.)"
+     "details": "Coût PA débarquer, coût PA pilote pour manœuvrer, conséquences passagers quand Zone Essentielle explose. (Audit sysRP 2026-11-10.) TRANCHÉ 2026-11-10 (MJ) : débarquer = 2 PA (symétrique embarquer, barème §20.4) ; manœuvrer = action principale (+ épreuve Conduite & Pilotage si délicat) ; zone essentielle détruite = équipage Déstabilisé + À Terre, dégâts directs si explosion (montant MJ). Écrit en §22.3 + barème §20.4 + cartes vehicules_zones (display + mecaniques). Checks verts (build 5, nav, liens)."
     }
    ]
   }
