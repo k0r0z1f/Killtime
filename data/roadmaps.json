@@ -1,6 +1,6 @@
 {
  "version": 3,
- "updated": "2026-11-10",
+ "updated": "2026-11-11",
  "activeId": "board-demo-hors-lore",
  "boards": [
   {
@@ -1384,6 +1384,22 @@
      "suggestedAsset": "NythariteSpell.CalculateBaseRange + ArcanotechWorkshop + CharacterDevWindow.SpellForge + tests",
      "updated": "2026-11-10",
      "details": "TODO miroir sysrp (canon tranché RP-137/RP-184 2026-11-10, codex fait foi, NE PAS modifier le codex depuis ici) : portée = MAG + MAG×E (entraînements en compétence de base, premier rang offert), Menna 5+(5×2)=15 cases, malus −1 niveau de dé par tranche de MAG. Code actuel : NythariteSpell.CalculateBaseRange (KilltimeTactics/Assets/Scripts/Core/Arcanotech/NythariteSpell.cs:148) = MAG+Entr (Menna 7) + CalculateDistancePenalty par tranches (déjà OK). 1) Réaligner CalculateBaseRange sur MAG+MAG×E. 2) Vérifier appelants (ArcanotechWorkshop:329, SpellForge). 3) Tests : Menna 15 cases, malus −1/tranche, 0 entraînement = MAG cases. Réf : data/livre_4.json mecaniques.portee_sorts, §18 + exemple Menna."
+    },
+    {
+     "id": "RD-233",
+     "title": "Miroir RP-198 : coût déplacement Ralenti (+1 PA/case) & cumul 4 couches de malus",
+     "epic": "Actions & PA",
+     "status": "todo",
+     "priority": "medium",
+     "order": 87,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "CharacterStats.Actions.GetEffectiveApCost + Grid/MovementCost + Modifiers + tests",
+     "updated": "2026-11-11",
+     "details": "TODO miroir sysrp (canon tranché RP-198 Option A 2026-11-11, codex fait foi, NE PAS modifier le codex depuis ici) : 1) Déplacement PA par case = 1 (base) + 1 (Terrain difficile ou nage/escalade sans Franchissement) + 1 (À Terre ou Déstabilisé, non cumulatif pour ramper) + 1 (Ralenti) + Encombrement (§33.1). Ralenti garde ×2 PA ((base + encombrement) × 2) uniquement sur les actions HORS déplacement ; Accéléré (÷2 arrondi au supérieur) et Ralenti s'annulent mutuellement sur le déplacement. Code actuel : CharacterStats.Actions.cs GetEffectiveApCost multiplie indifféremment (baseCost + GetWornApMalus()) * CoreRulesConfig.Instance.RalentiAPMultiplier (2) — séparer le calcul du coût de mouvement par case du multiplicateur ×2 hors déplacement. 2) Cumul des malus : vérifier côté résolution/tactique que seul le plus fort malus météo/nuit (§8.1/§8.6) s'applique, cumulé séparément aux traits de milieu raciaux (§8.5), aux malus tactiques (§21.3) et aux états actifs (§24), sans double comptage (P4 opaque = Aveugle seul ; Canon Entravé compté une seule fois). Réf : data/livre_2.json (§8.4, §8.6), data/livre_5.json (mecaniques.cumul_deplacement_pa, §20.4, §21.3), data/livre_6.json (§24)."
     }
    ]
   },

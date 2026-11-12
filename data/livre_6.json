@@ -52,7 +52,7 @@
    "blocs": [
     {
      "type": "html",
-     "html": "\n\n                    <p>\n                        Les états modifient profondément ta capacité d'action. Et ils sont tous\n                        cumulatifs : un état n'en chasse pas un autre, leurs effets s'additionnent.\n                        Exemple : si tu es Déstabilisé (−2) et Étourdi (−1), ton prochain jet prend\n                        −3. Ils sont rangés en quatre familles : <strong>états préjudiciables</strong>,\n                        <strong>états bénéfiques (buffs)</strong>, <strong>statuts vitaux</strong> et\n                        <strong>états matériels</strong>.\n                    </p>\n\n                    <h3 id=\"sec-24-1\">24.1 États Préjudiciables & Afflictions en Combat</h3>\n                    <p>\n                        Tu connais la douleur. Voici sa petite sœur : la cécité.\n                        Un flash en pleine face, un éclat de nytharite, le plein soleil au sortir d'une galerie —\n                        et le monde s'éteint. Tu deviens <strong>Aveugle</strong> : vision nulle,\n                        −4 à distance, −2 en mêlée et en défense. Compte tes tours, protège tes yeux,\n                        et pense au <strong>Masque Filtrant</strong>. Pour la nuit et la lumière, voir\n                        <a class=\"rule-ref\" href=\"livre_2.html#chap-8\" data-tip=\"Nuit & lumière : claire, noire, éblouissante (§8.6).\">Livre II §8.6</a>.\n                    </p>\n                    "
+     "html": "\n\n                    <p>\n                        Les états modifient profondément ta capacité d'action. Et ils sont tous\n                        cumulatifs : un état n'en chasse pas un autre, leurs effets s'additionnent.\n                        Exemple : si tu es Déstabilisé (−2) et Étourdi (−1), ton prochain jet prend\n                        −3. Ils se cumulent aussi avec les autres couches de malus du jet — le plus\n                        fort malus météo/nuit (<a class=\"rule-ref\" href=\"livre_2.html#sec-8-6\" data-tip=\"Cumul malus : 1 malus météo/nuit max (§8.1) + traits de milieu raciaux (§8.5) + malus tactiques (§21.3) + états actifs (§24), sans double comptage.\">Livre II §8.6</a>), tes traits de milieu (<a class=\"rule-ref\" href=\"livre_2.html#sec-8-5\" data-tip=\"Milieux & races : affinités et inaptitudes environnementales (cumulables avec la météo).\">§8.5</a>) et les malus tactiques (<a class=\"rule-ref\" href=\"livre_5.html#chap-21-3\" data-tip=\"Cumul tactique : couvert, visée et Canon Entravé se cumulent avec 1 malus météo/nuit max, les traits de milieu et les états actifs.\">Livre V §21.3</a>) — sans jamais compter deux fois un effet déjà inclus (un voile P4 applique <em>Aveugle</em> seul, sans −2 météo ; <em>Canon Entravé</em> ne compte qu'une fois). Ils sont rangés en quatre familles : <strong>états préjudiciables</strong>,\n                        <strong>états bénéfiques (buffs)</strong>, <strong>statuts vitaux</strong> et\n                        <strong>états matériels</strong>.\n                    </p>\n\n                    <h3 id=\"sec-24-1\">24.1 États Préjudiciables & Afflictions en Combat</h3>\n                    <p>\n                        Tu connais la douleur. Voici sa petite sœur : la cécité.\n                        Un flash en pleine face, un éclat de nytharite, le plein soleil au sortir d'une galerie —\n                        et le monde s'éteint. Tu deviens <strong>Aveugle</strong> : vision nulle,\n                        −4 à distance, −2 en mêlée et en défense. Compte tes tours, protège tes yeux,\n                        et pense au <strong>Masque Filtrant</strong>. Pour la nuit et la lumière, voir\n                        <a class=\"rule-ref\" href=\"livre_2.html#chap-8\" data-tip=\"Nuit & lumière : claire, noire, éblouissante (§8.6).\">Livre II §8.6</a>.\n                    </p>\n                    "
     },
     {
      "type": "ref",
@@ -247,7 +247,7 @@
     [
      "<span class=\"table-badge ruby\">Déstabilisé</span>",
      "Une créature est physiquement débalancée suite à un impact lourd.",
-     "<strong>-2 ec</strong> (épreuves de compétence), vitesse de déplacement réduite\n                                        à rampante (1 case = 2 PA).",
+     "<strong>-2 ec</strong> (épreuves de compétence), déplacement rampant\n                                        (<strong>+1 PA/case</strong>, non cumulatif avec À Terre pour ramper).",
      "Variable (1 à 6 tours en combat)."
     ],
     [
@@ -277,13 +277,13 @@
     [
      "<span class=\"table-badge ruby\">À terre</span>",
      "Une créature est étendue sur le sol ou agenouillée.",
-     "<strong>-1 ec</strong> aux épreuves d'attaque, <strong>-2</strong>\n                                        en défense. Déplacement : <strong>+1 PA par case</strong> (1 case = 2 PA).",
+     "<strong>-1 ec</strong> aux épreuves d'attaque, <strong>-2</strong>\n                                        en défense. Déplacement : <strong>+1 PA par case</strong> (non cumulatif avec Déstabilisé pour ramper ; se relever coûte 1 PA).",
      "Jusqu'à ce que la créature dépense ses PA pour se relever."
     ],
     [
      "<span class=\"table-badge ruby\">Ralenti</span>",
      "Ralentissement musculaire ou distorsion gravitationnelle locale.",
-     "<strong>Toute action coûte le DOUBLE de PA</strong> (ex: bouger d'une case coûte\n                                        2 PA au lieu d'1).",
+     "<strong>Actions hors déplacement &times;2 PA</strong> ((base + encombrement) &times; 2). <strong>Déplacement : +1 PA/case</strong> (cumulatif avec Terrain difficile, À Terre/Déstabilisé et encombrement).",
      "Variable (1 à 5 tours en combat)."
     ],
     [
@@ -368,7 +368,7 @@
     [
      "<span class=\"table-badge cyan\">Accéléré</span>",
      "Distorsion spatiale ou propulsion cinétique des membres.",
-     "<strong>Toute action de déplacement coûte la MOITIÉ des PA</strong> (arrondi au\n                                        supérieur).",
+     "<strong>Toute action de déplacement coûte la MOITIÉ des PA</strong> (arrondi au\n                                        supérieur). Annule et est annulé par <strong>Ralenti</strong> sur le coût de déplacement.",
      "1 à 2 tours en combat."
     ],
     [
@@ -432,7 +432,7 @@
     [
      "<strong>Refoulement (Push-Kick)</strong>",
      "Arts Martiaux au contact + Choc (&gt; CON &times; 2), Critique ou Diff &ge; 4",
-     "La cible est repoussée d'1 case en arrière (Distance = 2), brisant l'état <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"Canon Entravé : arme longue + ennemi adjacent = −2 au tir (annulable pour +1 PA de visée).\">Canon Entravé</a>. Si la trajectoire est bloquée par un obstacle, la cible subit l'état <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).\">Déstabilisé</a>."
+     "La cible est repoussée d'1 case en arrière (Distance = 2), brisant l'état <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"Canon Entravé : arme longue + ennemi adjacent = −2 au tir (annulable pour +1 PA de visée).\">Canon Entravé</a>. Si la trajectoire est bloquée par un obstacle, la cible subit l'état <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (+1 PA/case, non cumulatif avec À Terre pour ramper).\">Déstabilisé</a>."
     ],
     [
      "<strong>Attirer</strong>",
@@ -608,7 +608,7 @@
     [
      "<strong>2 — Déclaré</strong>",
      "2–3 jours",
-     "<a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).\">Déstabilisé</a> ou <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"Ralenti : toute action coûte le double de PA.\">Ralenti</a> ; 1–2 résiduels <a class=\"rule-ref\" href=\"#sec-24-2\" data-tip=\"Empoisonné : PV directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonné</a>/tick repos ; drain 1 PA (si respiratoire : <a class=\"rule-ref\" href=\"#sec-24-2\" data-tip=\"Asphyxie : PV + drain de 1 PA par tour. Soin : désobstruction (premiers soins + kit).\">Asphyxie</a>)"
+     "<a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (+1 PA/case, non cumulatif avec À Terre pour ramper).\">Déstabilisé</a> ou <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"Ralenti : actions hors déplacement ×2 PA ; déplacement +1 PA/case (§24.1).\">Ralenti</a> ; 1–2 résiduels <a class=\"rule-ref\" href=\"#sec-24-2\" data-tip=\"Empoisonné : PV directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonné</a>/tick repos ; drain 1 PA (si respiratoire : <a class=\"rule-ref\" href=\"#sec-24-2\" data-tip=\"Asphyxie : PV + drain de 1 PA par tour. Soin : désobstruction (premiers soins + kit).\">Asphyxie</a>)"
     ],
     [
      "<strong>3 — Grave</strong>",
@@ -632,7 +632,7 @@
      "top": false,
      "monde": "Aérien // Incubation 1d6 jours, contagieuse",
      "corps_attrs": " style=\"font-size: 0.9em; margin-top: 10px;\"",
-     "corps_html": "S1 (2 j) : &minus;1 ec FOR, <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"Étourdi : −1 ec sur tous les jets.\">Étourdi</a>. S2 (3 j) : <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"Ralenti : toute action coûte le double de PA.\">Ralenti</a>, 1 résiduel\n                                <a class=\"rule-ref\" href=\"#sec-24-2\" data-tip=\"Empoisonné : PV directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonné</a>/jour. S3 : <a class=\"rule-ref\" href=\"#sec-24-5\" data-tip=\"Souffrant : seul un soin unique ≥ CON×2 le lève. Les soins ordinaires ne le lèvent jamais.\">Souffrant</a> si échec CON. Traitement : repos +\n                                Premiers Soins dif. 10 ; seringue 5 PV : symptômes seuls. Guérison : immunité 6 mois.",
+     "corps_html": "S1 (2 j) : &minus;1 ec FOR, <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"Étourdi : −1 ec sur tous les jets.\">Étourdi</a>. S2 (3 j) : <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"Ralenti : actions hors déplacement ×2 PA ; déplacement +1 PA/case (§24.1).\">Ralenti</a>, 1 résiduel\n                                <a class=\"rule-ref\" href=\"#sec-24-2\" data-tip=\"Empoisonné : PV directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonné</a>/jour. S3 : <a class=\"rule-ref\" href=\"#sec-24-5\" data-tip=\"Souffrant : seul un soin unique ≥ CON×2 le lève. Les soins ordinaires ne le lèvent jamais.\">Souffrant</a> si échec CON. Traitement : repos +\n                                Premiers Soins dif. 10 ; seringue 5 PV : symptômes seuls. Guérison : immunité 6 mois.",
      "pieds": []
     },
     {
@@ -744,7 +744,7 @@
    {
     "etat": "Déstabilisé",
     "description": "Une créature est physiquement débalancée suite à un impact lourd.",
-    "malus": "-2 ec (épreuves de compétence), vitesse de déplacement réduite à rampante (1 case = 2 PA).",
+    "malus": "-2 ec (épreuves de compétence), déplacement rampant (+1 PA/case, non cumulatif avec À Terre pour ramper).",
     "duree": "Variable (1 à 6 tours en combat)."
    },
    {
@@ -774,13 +774,13 @@
    {
     "etat": "À terre",
     "description": "Une créature est étendue sur le sol ou agenouillée.",
-    "malus": "-1 ec aux épreuves d'attaque, -2 en défense. Déplacement : +1 PA par case (1 case = 2 PA).",
+    "malus": "-1 ec aux épreuves d'attaque, -2 en défense. Déplacement : +1 PA par case (non cumulatif avec Déstabilisé pour ramper ; se relever coûte 1 PA).",
     "duree": "Jusqu'à ce que la créature dépense ses PA pour se relever."
    },
    {
     "etat": "Ralenti",
     "description": "Ralentissement musculaire ou distorsion gravitationnelle locale.",
-    "malus": "Toute action coûte le DOUBLE de PA (ex: bouger d'une case coûte 2 PA au lieu d'1).",
+    "malus": "Actions hors déplacement ×2 PA ((base + encombrement) × 2) ; déplacement +1 PA/case (cumulatif avec Terrain difficile, À Terre/Déstabilisé et encombrement ; annulé mutuellement par Accéléré sur le déplacement).",
     "duree": "Variable (1 à 5 tours en combat)."
    },
    {
@@ -818,7 +818,7 @@
    "Déstabilisé": {
     "etat": "Déstabilisé",
     "description": "Une créature est physiquement débalancée suite à un impact lourd.",
-    "malus": "-2 ec (épreuves de compétence), vitesse de déplacement réduite à rampante (1 case = 2 PA).",
+    "malus": "-2 ec (épreuves de compétence), déplacement rampant (+1 PA/case, non cumulatif avec À Terre pour ramper).",
     "duree": "Variable (1 à 6 tours en combat)."
    },
    "Étourdi": {
@@ -848,13 +848,13 @@
    "À terre": {
     "etat": "À terre",
     "description": "Une créature est étendue sur le sol ou agenouillée.",
-    "malus": "-1 ec aux épreuves d'attaque, -2 en défense. Déplacement : +1 PA par case (1 case = 2 PA).",
+    "malus": "-1 ec aux épreuves d'attaque, -2 en défense. Déplacement : +1 PA par case (non cumulatif avec Déstabilisé pour ramper ; se relever coûte 1 PA).",
     "duree": "Jusqu'à ce que la créature dépense ses PA pour se relever."
    },
    "Ralenti": {
     "etat": "Ralenti",
     "description": "Ralentissement musculaire ou distorsion gravitationnelle locale.",
-    "malus": "Toute action coûte le DOUBLE de PA (ex: bouger d'une case coûte 2 PA au lieu d'1).",
+    "malus": "Actions hors déplacement ×2 PA ((base + encombrement) × 2) ; déplacement +1 PA/case (cumulatif avec Terrain difficile, À Terre/Déstabilisé et encombrement ; annulé mutuellement par Accéléré sur le déplacement).",
     "duree": "Variable (1 à 5 tours en combat)."
    },
    "Agonisant": {
@@ -884,7 +884,7 @@
    "Accéléré": {
     "etat": "Accéléré",
     "description": "Distorsion spatiale ou propulsion cinétique des membres.",
-    "bonus": "Toute action de déplacement coûte la MOITIÉ des PA (arrondi au supérieur).",
+    "bonus": "Toute action de déplacement coûte la MOITIÉ des PA (arrondi au supérieur). Annule et est annulé par Ralenti sur le coût de déplacement.",
     "duree": "1 à 2 tours en combat."
    },
    "Rapide": {
@@ -956,7 +956,7 @@
    {
     "etat": "Accéléré",
     "description": "Distorsion spatiale ou propulsion cinétique des membres.",
-    "bonus": "Toute action de déplacement coûte la MOITIÉ des PA (arrondi au supérieur).",
+    "bonus": "Toute action de déplacement coûte la MOITIÉ des PA (arrondi au supérieur). Annule et est annulé par Ralenti sur le coût de déplacement.",
     "duree": "1 à 2 tours en combat."
    },
    {

@@ -13,13 +13,13 @@ livre: 5
                             perdus, Mina reste sur place.</li>
                         <li><strong>🪢 Lacet de Nytharite :</strong> <em>Parfaite</em> — cible
                             <a class="rule-ref" href="livre_6.html#sec-24-1" data-tip="Immobilisé : impossible de faire la moindre action de mouvement (§24.1)."><strong>Immobilisée jusqu'à la fin de son prochain tour</strong></a>, 0 dégât. <em>Semi</em> —
-                            <a class="rule-ref" href="livre_6.html#sec-24-1" data-tip="Ralenti : toute action coûte le double de PA."><strong>Ralenti jusqu'à la fin de son prochain tour</strong></a> (coûts doublés). <em>Ratée</em> — la cible glisse hors du lacet.</li>
+                            <a class="rule-ref" href="livre_6.html#sec-24-1" data-tip="Ralenti : actions hors déplacement ×2 PA ; déplacement +1 PA/case (§24.1)."><strong>Ralenti jusqu'à la fin de son prochain tour</strong></a> (actions ×2, +1 PA/case). <em>Ratée</em> — la cible glisse hors du lacet.</li>
                         <li><strong>♨️ Fournaise à Retardement :</strong> <em>Parfaite</em> — <strong>5 dégâts +
                             <a class="rule-ref" href="livre_6.html#sec-24-1" data-tip="Étourdi : −1 ec sur tous les jets.">Étourdi</a> jusqu'à la fin de son prochain tour + −2 <a class="rule-ref" href="livre_1.html#chap-4" data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a></strong>. <em>Semi</em> — 3 dégâts, sans <a class="rule-ref" href="livre_6.html#sec-24-1" data-tip="Étourdi : −1 ec sur tous les jets.">Étourdi</a>. <em>Ratée</em> —
                             implosion éventée.</li>
                         <li><strong>❄️ Trempe Inversée :</strong> <em>Parfaite</em> — cibles
-                            <a class="rule-ref" href="livre_6.html#sec-24-1" data-tip="Ralenti : toute action coûte le double de PA."><strong>Ralenties jusqu'à la fin de leur prochain tour</strong></a> et armures fissurées (<strong>−2 absorption</strong>
-                            jusqu'à la fin du cycle suivant). <em>Semi</em> — <a class="rule-ref" href="livre_6.html#sec-24-1" data-tip="Ralenti : toute action coûte le double de PA.">Ralenti</a> seul. <em>Ratée</em> — le gel
+                            <a class="rule-ref" href="livre_6.html#sec-24-1" data-tip="Ralenti : actions hors déplacement ×2 PA ; déplacement +1 PA/case (§24.1)."><strong>Ralenties jusqu'à la fin de leur prochain tour</strong></a> et armures fissurées (<strong>−2 absorption</strong>
+                            jusqu'à la fin du cycle suivant). <em>Semi</em> — <a class="rule-ref" href="livre_6.html#sec-24-1" data-tip="Ralenti : actions hors déplacement ×2 PA ; déplacement +1 PA/case (§24.1).">Ralenti</a> seul. <em>Ratée</em> — le gel
                             ne prend pas.</li>
                         <li><strong>🛤️ Canon à rails artisanal :</strong> <em>Parfaite</em> — <strong>8 perforants</strong>
                             (ignore la moitié de l'armure) sur la cible dure. <em>Semi</em> — 5 dégâts, armure

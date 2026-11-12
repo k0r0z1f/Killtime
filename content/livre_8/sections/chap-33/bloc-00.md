@@ -34,8 +34,9 @@ livre: 8
                     <p>
                         Deux précisions. Les mises aveugles (1 PA = +1 au jet) ignorent ce surcoût, et la
                         réduction du Milkor (-1 PA par tir) ne s'y cumule pas : elle allège le tir lui-même,
-                        pas ton armure. Si tu es <a class="rule-ref" href="livre_6.html#sec-24-1" data-tip="Ralenti : toute action coûte le double de PA.">Ralenti</a>,
-                        tu doubles le total — action + encombrement compris. Seuls les Mikyais formés aux
+                        pas ton armure. Si tu es <a class="rule-ref" href="livre_6.html#sec-24-1" data-tip="Ralenti : actions hors déplacement ×2 PA ; déplacement +1 PA/case (§24.1).">Ralenti</a>,
+                        tu doubles le total sur tes actions hors déplacement — (action + encombrement) &times; 2 — tandis
+                        que sur un déplacement tu ajoutes simplement +1 PA par case (soit Lourde 6 + Ralenti = 4 PA/case). Seuls les Mikyais formés aux
                         blindages savent bouger dedans : leur don
                         <a class="rule-ref" href="livre_1.html#chap-2" data-tip="Technicien-Guerrier : +2 Armes Lourdes et réparation impériale ; ignore 1 point d'encombrement d'armure.">Technicien-Guerrier</a>
                         ignore 1 point d'encombrement — ta Lourde 6 ne te coûte que +1 PA par action.

@@ -616,7 +616,7 @@
      },
      "Maniement d'Arme (FOR, AGI)",
      "Offensif",
-     "<a class=\"rule-ref\"\n                                                href=\"livre_6.html#sec-24-1\"\n                                                data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).\">Déstabilisé</a>\n                                        dans un rayon de 2 cases."
+     "<a class=\"rule-ref\"\n                                                href=\"livre_6.html#sec-24-1\"\n                                                data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (+1 PA/case, non cumulatif avec À Terre pour ramper).\">Déstabilisé</a>\n                                        dans un rayon de 2 cases."
     ],
     [
      "<strong>Hache de Guerre</strong>",
@@ -733,7 +733,7 @@
      },
      "Maniement d'Arme / Défense Corporelle (FOR, AGI / FOR)",
      "Défensif",
-     "Immunité aux critiques, au\n                                        <a class=\"rule-ref\"\n                                                href=\"livre_6.html#sec-24-1\"\n                                                data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).\">Déstabilisé</a>\n                                        et à <a class=\"rule-ref\"\n                                                href=\"livre_6.html#sec-24-1\"\n                                                data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.\">À\n                                                Terre</a> pendant la garde."
+     "Immunité aux critiques, au\n                                        <a class=\"rule-ref\"\n                                                href=\"livre_6.html#sec-24-1\"\n                                                data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (+1 PA/case, non cumulatif avec À Terre pour ramper).\">Déstabilisé</a>\n                                        et à <a class=\"rule-ref\"\n                                                href=\"livre_6.html#sec-24-1\"\n                                                data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.\">À\n                                                Terre</a> pendant la garde."
     ],
     [
      "<strong>Bouclier Vivant</strong>",
@@ -910,7 +910,7 @@
      },
      "Ballistique (AGI)",
      "Offensif",
-     "<a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).\">Déstabilisé</a>\n                                        et draine 1 PA défensif."
+     "<a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (+1 PA/case, non cumulatif avec À Terre pour ramper).\">Déstabilisé</a>\n                                        et draine 1 PA défensif."
     ],
     [
      {
@@ -994,7 +994,7 @@
      "<strong>Trempe de Fer</strong>",
      "Endurance Physique (CON, FOR)",
      "Défensif",
-     "<a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).\">Déstabilisé</a>\n                                        réduit à <strong>-1</strong> sur tous vos jets."
+     "<a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (+1 PA/case, non cumulatif avec À Terre pour ramper).\">Déstabilisé</a>\n                                        réduit à <strong>-1</strong> sur tous vos jets."
     ],
     [
      {
@@ -1045,7 +1045,7 @@
      },
      "Cardio (CON)",
      "Utilitaire",
-     "Utilisable 2 fois par combat,\n                                        immunité au <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Ralenti : toute action coûte le double de PA.\">Ralenti</a>."
+     "Utilisable 2 fois par combat,\n                                        immunité au <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Ralenti : actions hors déplacement ×2 PA ; déplacement +1 PA/case (§24.1).\">Ralenti</a>."
     ],
     [
      "<strong>Poussée Cardiovasculaire</strong>",
@@ -1255,7 +1255,7 @@
      "<strong>Pistolet & Tir Rapide</strong>",
      "Ballistique (AGI)",
      "Offensif",
-     "Sur réussite nette : la cible est <strong><a class=\"rule-ref\"\n                                                href=\"livre_6.html#sec-24-1\"\n                                                data-tip=\"Ralenti : toute action coûte le double de PA.\">Ralentie</a></strong>\n                                        pour 1 tour. Sur 5 ou 6 au dé : la cible <strong><a class=\"rule-ref\"\n                                                href=\"livre_6.html#sec-24-1\"\n                                                data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.\">tombe\n                                                au sol</a></strong>."
+     "Sur réussite nette : la cible est <strong><a class=\"rule-ref\"\n                                                href=\"livre_6.html#sec-24-1\"\n                                                data-tip=\"Ralenti : actions hors déplacement ×2 PA ; déplacement +1 PA/case (§24.1).\">Ralentie</a></strong>\n                                        pour 1 tour. Sur 5 ou 6 au dé : la cible <strong><a class=\"rule-ref\"\n                                                href=\"livre_6.html#sec-24-1\"\n                                                data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.\">tombe\n                                                au sol</a></strong>."
     ],
     [
      {
@@ -1507,7 +1507,7 @@
      },
      "Mains Nues (FOR, AGI)",
      "Offensif, Défensif",
-     "Sur critique, <a class=\"rule-ref\"\n                                                href=\"livre_6.html#sec-24-1\"\n                                                data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).\">Déstabilisé</a>\n                                        aux ennemis adjacents."
+     "Sur critique, <a class=\"rule-ref\"\n                                                href=\"livre_6.html#sec-24-1\"\n                                                data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (+1 PA/case, non cumulatif avec À Terre pour ramper).\">Déstabilisé</a>\n                                        aux ennemis adjacents."
     ],
     [
      {
@@ -1789,7 +1789,7 @@
      },
      "Intimidation (CHA, FOR)",
      "Social, Offensif",
-     "<a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (1 case = 2 PA).\">Déstabilisé</a>\n                                        à tous les ennemis à moins de 3 cases."
+     "<a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (+1 PA/case, non cumulatif avec À Terre pour ramper).\">Déstabilisé</a>\n                                        à tous les ennemis à moins de 3 cases."
     ],
     [
      {

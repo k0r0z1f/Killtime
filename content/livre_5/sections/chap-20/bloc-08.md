@@ -27,7 +27,7 @@ livre: 5
                             sont remboursés</strong> (intégral s'il n'a pas bougé, au prorata sinon). Si le bloqueur perd, réaction
                             et <a class="rule-ref" href="livre_1.html#chap-4" data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a> dépensés, et le fuyard passe.</li>
                         <li><strong>🦵 Balayage (0 <a class="rule-ref" href="livre_1.html#chap-4" data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a> + réaction libre, variante) :</strong> frappe gratuite visant les
-                            <strong>Jambes</strong> : <a class="rule-ref" href="livre_6.html#sec-24-1" data-tip="À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA."><strong>À Terre</strong></a> + <a class="rule-ref" href="livre_6.html#sec-24-1" data-tip="Ralenti : toute action coûte le double de PA."><strong>Ralenti</strong></a> en cas de choc traumatique,
+                            <strong>Jambes</strong> : <a class="rule-ref" href="livre_6.html#sec-24-1" data-tip="À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA."><strong>À Terre</strong></a> + <a class="rule-ref" href="livre_6.html#sec-24-1" data-tip="Ralenti : actions hors déplacement ×2 PA ; déplacement +1 PA/case (§24.1)."><strong>Ralenti</strong></a> en cas de choc traumatique,
                             au lieu de dégâts maximaux. Idéal pour clouer un fuyard.</li>
                     </ul>
 

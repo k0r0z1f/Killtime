@@ -16,7 +16,7 @@ livre: 5
                         Annonce-le avant de lancer :
                     </p>
                     <p>
-                        <strong>Rappel officiel :</strong> le total d'attaque comme de défense vaut <strong>Tirage du dé de compétence + <a class="rule-ref" href="livre_1.html#chap-4" data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a> injectés + malus situationnels</strong>. <strong>Aucun modificateur de caractéristique n'est ajouté</strong> — les caractéristiques ont déjà fixé le dé via le rang de compétence.
+                        <strong>Rappel officiel :</strong> le total d'attaque comme de défense vaut <strong>Tirage du dé de compétence + <a class="rule-ref" href="livre_1.html#chap-4" data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a> injectés − malus cumulés</strong> (1 malus météo/nuit max + milieux raciaux + malus tactiques + états actifs). <strong>Aucun modificateur de caractéristique n'est ajouté</strong> — les caractéristiques ont déjà fixé le dé via le rang de compétence.
                     </p>
                     <ul>
                         <li><strong>Punition de Visée :</strong> Viser un point précis impose <strong>-1 de

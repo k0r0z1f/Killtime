@@ -6,8 +6,8 @@ livre: 2
 
                     <h4 id="sec-8-4">8.4 Terrains difficiles : 1 case coûte 2 PA</h4>
                     <p>
-                        Boue, gravats, pente raide, eau peu profonde, neige épaisse, sable meuble : chaque case coûte <strong>2 PA de déplacement</strong> au lieu d'1 (<a href="livre_5.html#sec-20-4">Livre V §20.4</a>). Ni sprint, ni charge à travers. Trois façons de passer outre : la spécialisation <em>Franchissement</em> (Athlétisme), <em>Pas Feuillu</em> (Taurien, terrains naturels), <em>Fille du désert</em> (Cléien, terrains sableux).
-                        Nager en eau profonde et escalader, sans <em>Franchissement</em> : même tarif, <strong>2 PA par case</strong>. Eau agitée ou paroi raide ? Épreuve de Force en plus (<a href="livre_3.html#chap-12">Livre III §12.1</a>) : ratée, tu restes sur place, PA perdus.
+                        Boue, gravats, pente raide, eau peu profonde, neige épaisse, sable meuble : chaque case coûte <strong>+1 PA</strong> (donc <strong>2 PA par case</strong> au lieu d'1, <a href="livre_5.html#sec-20-4">Livre V §20.4</a>). Ce surcoût s'additionne avec <a class="rule-ref" href="livre_6.html#sec-24-1" data-tip="À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (non cumulatif avec Déstabilisé pour ramper). Se relever coûte 1 PA.">À Terre</a> (ou <a class="rule-ref" href="livre_6.html#sec-24-1" data-tip="Déstabilisé : −2 ec aux épreuves, déplacement rampant (+1 PA/case, non cumulatif avec À Terre pour ramper).">Déstabilisé</a>), <a class="rule-ref" href="livre_6.html#sec-24-1" data-tip="Ralenti : actions hors déplacement ×2 PA ; déplacement +1 PA/case (§24.1).">Ralenti</a> (+1 PA/case au pas) et l'encombrement (<a href="livre_8.html#chap-33">Livre VIII §33.1</a>). Ni sprint, ni charge à travers. Trois façons de passer outre : la spécialisation <em>Franchissement</em> (Athlétisme), <em>Pas Feuillu</em> (Taurien, terrains naturels), <em>Fille du désert</em> (Cléien, terrains sableux).
+                        Nager en eau profonde et escalader, sans <em>Franchissement</em> : même tarif, <strong>2 PA par case</strong> (+1 PA/case sous Ralenti). Eau agitée ou paroi raide ? Épreuve de Force en plus (<a href="livre_3.html#chap-12">Livre III §12.1</a>) : ratée, tu restes sur place, PA perdus.
                     </p>
                     <h4 id="sec-8-5">8.5 Milieux : six mots pour dire où tu es</h4>
                     <p>
@@ -24,8 +24,9 @@ livre: 2
                     <h4 id="sec-8-6">8.6 Nuit & lumière : claire, noire, éblouissante</h4>
                     <p>
                         La nuit n'est pas un décor, c'est un adversaire. Elle raccourcit ta vue et salit tes tirs.
-                        Comme le climat (§8.1), un seul malus par jet : le plus fort l'emporte. Mais le bridage
-                        de vue, lui, se cumule avec la météo.
+                        Entre climat, météo et nuit, un seul malus s'applique par jet : le plus fort l'emporte. Mais
+                        ce malus unique se cumule avec tes malus de milieu racial (<a href="#sec-8-5">§8.5</a>), tes malus tactiques (<a href="livre_5.html#chap-21-3">Livre V §21.3</a>)
+                        et tes états (<a href="livre_6.html#chap-24">Livre VI §24</a>), sans compter deux fois la même cause. Pour la vue, le plafond le plus restrictif l'emporte.
                     </p>
                     <ul>
                         <li><strong>Nuit claire (lune haute, rues éclairées) :</strong> vue limitée à <strong>8 cases</strong>,
@@ -34,8 +35,9 @@ livre: 2
                         <li><strong>Nuit noire (sans lune, galerie éteinte) :</strong> vue bridée à <strong>4 cases</strong>,
                             −1 à tes tirs sans <strong>lampe allumée</strong> ni <strong>vision thermique</strong> (spécialisation ou lunettes).
                             <em>Exemple : tu tires au fusil (d8) contre un seuil de 4, en nuit noire sans lampe. Tu obtiens 5. 5 − 1 = 4 : ça passe, de justesse. Au même tirage en plein jour, tu respirais.</em></li>
-                        <li><strong>Cumul météo :</strong> un seul malus par jet, le plus fort l'emporte (nuit noire −1 + trombe −2 = −2). Pour la vue, même logique : le plus restrictif l'emporte.
-                            <em>Exemple : nuit noire (4 cases) sous blizzard (plafond 8) = 4 cases de vue : c'est la nuit qui borne. En plein jour sous trombe (plafond 4) = 4 cases. Au-delà, le monde n'existe plus.</em>
+                        <li><strong>Cumul météo &amp; autres malus :</strong> entre climat, météo et nuit, un seul malus par jet, le plus fort l'emporte (nuit noire −1 + trombe −2 = −2 ; si la météo P4 opaque applique <a class="rule-ref" href="livre_6.html#sec-24-1" data-tip="Aveugle : vision nulle, −4 à distance, −2 en mêlée et défense (§24.1).">Aveugle</a>, seul l'état Aveugle compte, sans −2 météo en plus). Pour la vue, même logique : le plus restrictif l'emporte.
+                            Ce malus météo/nuit unique s'additionne ensuite avec tes malus de milieu racial (<a href="#sec-8-5">§8.5</a>, séparément), tes malus tactiques (couvert, visée, <a class="rule-ref" href="livre_5.html#sec-22-2" data-tip="Canon Entravé : arme longue + ennemi adjacent = −2 au tir, visée précise pour +1 PA (§22.2).">Canon Entravé</a> — compté une fois) et tous tes états actifs (<a href="livre_6.html#chap-24">Livre VI §24</a>).
+                            <em>Exemple : nuit noire (4 cases) sous blizzard (plafond 8) = 4 cases de vue : c'est la nuit qui borne. Sous pluie forte (−1) en milieu clos (Cléien −2), tu tires sur une cible à moitié couverte (−1) en étant Déstabilisé (−2) : −1 − 2 − 1 − 2 = <strong>−6 au jet</strong>.</em>
                             Pour la ligne de mire, voir <a href="livre_5.html#chap-21-3">Livre V §21.3</a>.</li>
                         <li><strong>Lampe allumée :</strong> tu ignores le bridage et le malus de nuit pour tes jets et tes cibles éclairées.
                             Revers : ta lampe te trahit. Toute ligne de mire directe te repère, furtivité brisée

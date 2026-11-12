@@ -1,6 +1,6 @@
 {
  "version": 3,
- "updated": "2026-11-10",
+ "updated": "2026-11-11",
  "activeId": "board-revue-rp",
  "boards": [
   {
@@ -2959,7 +2959,7 @@
      "id": "RP-196",
      "title": "CAS-3 Paliers intermédiaires Table Critiques (L.II §9.2)",
      "epic": "Cas spéciaux à trancher",
-     "status": "todo",
+     "status": "done",
      "priority": "medium",
      "order": 193,
      "scene": "",
@@ -2968,8 +2968,8 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "",
-     "updated": "2026-11-10",
-     "details": "Préciser lecture Jet de Conséquence sur 7,11,13,14,15,17,18,19,21,22,23,25+ (palier inférieur le plus proche). (Audit sysRP 2026-11-10.)"
+     "updated": "2026-11-11",
+     "details": "FAIT 2026-11-11 — Paliers intermédiaires explicités (décision MJ) : en §9.2 tableau Critiques, les plages exactes sont désormais indiquées sur les seuils inférieurs (6 ou 7 ; 10 ou 11 ; 12 à 15 ; 16 à 19 ; 20 à 23 ; 24+ / 25+ = palier 24) avec rappel sous la table (7→6, 11→10, 13–15→12, 17–19→16, 21–23→20, 25+→24). Coquille « table 8.2 » corrigée en « table 9.2 » en §9.2 et mecaniques.echec_critique.jet_gravite ; mecaniques.critique.paliers_intermediaires et libellé du palier 12 synchronisés dans data/livre_2.json."
     },
     {
      "id": "RP-197",
@@ -2991,7 +2991,7 @@
      "id": "RP-198",
      "title": "CAS-5 Cumul des malus (env + tactique + états) + Ralenti×Terrain+À Terre",
      "epic": "Cas spéciaux à trancher",
-     "status": "todo",
+     "status": "done",
      "priority": "medium",
      "order": 195,
      "scene": "",
@@ -3000,8 +3000,8 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "",
-     "updated": "2026-11-10",
-     "details": "Clarifier cumul 1 malus env max + tactiques + états; Ralenti (coût×2) + Terrain difficile (+1 PA/case) + À Terre (+1 PA/case). (Audit sysRP 2026-11-10.)"
+     "updated": "2026-11-11",
+     "details": "FAIT 2026-11-11 — Cumul des malus et déplacement PA tranchés (décision MJ). 1) Cumul malus par jet : 1 seul malus météo/nuit le plus fort (§8.1/§8.6) + traits de milieu raciaux séparément (§8.5) + tous les malus tactiques applicables (couvert, visée, Canon Entravé §21.3) + tous les états actifs (§24), sans double comptage (P4 opaque = Aveugle seul ; Canon Entravé compté 1 fois). Écrit en L.II §6/§8/§8.6, L.V §21.3/§22, L.VI §24 et JSON. 2) Déplacement PA (Option A) : Ralenti garde ×2 PA sur les actions hors déplacement ((base+encombrement)×2) et coûte +1 PA/case sur grille ; Accéléré (÷2 sup.) et Ralenti s'annulent sur le déplacement ; À Terre et Déstabilisé ne se cumulent pas pour ramper (+1 PA/case max). Formule unifiée : 1 + 1 (Terrain diff./nage-escalade) + 1 (À Terre/Déstabilisé) + 1 (Ralenti) + Encombrement (§33.1). Écrit en L.II §8.4, L.V §20.4, L.VI §24.1, L.VIII §33.1, tooltips L.III–VIII, js/fabrique.js, livre_9.html ; miroir Unity RD-233."
     },
     {
      "id": "RP-199",

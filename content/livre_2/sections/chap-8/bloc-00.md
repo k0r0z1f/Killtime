@@ -5,7 +5,7 @@ livre: 2
 ---
 
                     <p class="lead">
-                        Tu peux être le meilleur tireur de la station : sous une tempête de sable, dans une galerie qui gronde ou enfoncé jusqu'aux genoux dans la boue, tes dés obéissent au décor. Ce chapitre pose les règles d'environnement du système : climat, chutes, souterrain, terrains, milieux. Elles s'appliquent comme des <strong>malus situationnels</strong> (Livre I §1) : un seul par jet, le plus fort l'emporte.
+                        Tu peux être le meilleur tireur de la station : sous une tempête de sable, dans une galerie qui gronde ou enfoncé jusqu'aux genoux dans la boue, tes dés obéissent au décor. Ce chapitre pose les règles d'environnement du système : climat, chutes, souterrain, terrains, milieux. Entre pénalités de <strong>climat, météo et nuit</strong>, une seule s'applique par jet — la plus forte l'emporte —, puis elle s'additionne avec tes malus de milieu racial (<a href="#sec-8-5">§8.5</a>), tes malus tactiques (<a href="livre_5.html#chap-21-3">Livre V §21.3</a>) et tes états (<a href="livre_6.html#chap-24">Livre VI §24</a>).
                     </p>
                     <h4 id="sec-8-1">8.1 Climat et météo : 4 paliers d'intensité</h4>
                     <p>

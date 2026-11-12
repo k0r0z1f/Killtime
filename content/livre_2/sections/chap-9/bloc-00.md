@@ -28,14 +28,15 @@ format: raw
                         <em>Exemple : Mina fait 6 sur son d6 mais perd le duel — pas de dégâts de lame, mais elle jette quand même sa conséquence. Si le garde fait lui aussi son max, il jette la sienne juste après.</em>
                     </p>
                     <p>
-                        Échec critique : tu lis la <strong>table 8.2</strong> à l'envers : les bonus deviennent des malus, les gains deviennent des pertes, et les rôles s'échangent (c'est toi qui prends). Exemples : « Cible étourdie » → c'est toi qui es étourdi ; « La cible tombe à terre » → c'est toi qui tombes ; « Récupère 1 Essoufflement » → c'est toi qui en subis 1.
+                        Échec critique : tu lis la <strong>table 9.2</strong> à l'envers : les bonus deviennent des malus, les gains deviennent des pertes, et les rôles s'échangent (c'est toi qui prends). Exemples : « Cible étourdie » → c'est toi qui es étourdi ; « La cible tombe à terre » → c'est toi qui tombes ; « Récupère 1 Essoufflement » → c'est toi qui en subis 1.
                     </p>
 
                     <h3>9.2 Table Universelle des Effets Critiques (de 1 à 24)</h3>
                     <p>
                         <strong>Ton résultat n'est pas dans la table ?</strong>
-                        Prends le palier inférieur le plus proche : 7 se lit 6, 11 se lit 10, 15 se lit 12,
-                        23 se lit 20. Au-delà de 24, c'est 24.
+                        Prends le palier inférieur le plus proche : 7 se lit 6, 11 se lit 10,
+                        13 à 15 se lisent 12, 17 à 19 se lisent 16, 21 à 23 se lisent 20.
+                        À partir de 24 (25+), c'est 24.
                     </p>
 
                     
