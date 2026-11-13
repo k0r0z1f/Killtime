@@ -921,6 +921,10 @@ body::before {
     max-width: 100%;
 }
 
+.formula-box > .formula-math + .formula-desc {
+    margin-top: 10px;
+}
+
 /* Termes cliquables (rule-ref) : jamais coupés en deux lignes,
    sinon le pointillé se casse entre deux mots (ex. « niveau / de dé »). */
 .formula-box .rule-ref {

@@ -351,7 +351,8 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_5.html#chap-21",
-     "details": "FAIT 2026-10-30 — Passe agent : ton MJ (intro chap 22 + 21.1-21.5), ancres sec-22-1/21-2, rule-refs (épreuves Athlétisme, initiative, couvert §22.3, Observation/Discrétion §22.4, synchro §22.5), 3 encadrés en wide (ligne de mire, vision 360, séquence Duo-Tech). États Duo-Tech liés (Immobilisé, Ralenti, Étourdi, À Terre, Saignement, En Feu, Asphyxie). Fichiers : livre_5.html, css/style.css."
+     "updated": "2026-11-12",
+     "details": "FAIT 2026-10-30 — Passe agent : ton MJ (intro chap 22 + 21.1-21.5), ancres sec-22-1/21-2, rule-refs (épreuves Athlétisme, initiative, couvert §22.3, Observation/Discrétion §22.4, synchro §22.5), 3 encadrés en wide (ligne de mire, vision 360, séquence Duo-Tech). États Duo-Tech liés (Immobilisé, Ralenti, Étourdi, À Terre, Saignement, En Feu, Asphyxie). Fichiers : livre_5.html, css/style.css. | Passe 2026-11-12 — intro chap. 21 + §21.1 Course & Poursuite retravaillés : intro sans '=', intégrée à l'initiative (4 PA, action principale, ajoutée aux Actions principales), départ toujours à 4 cases d'écart (≥4 cases, §20.5 d'abord si au contact), fuyant +30 cases (45 m) par tour, poursuivants ajustent uniquement l'écart (−1 / 0 / +1 case selon Athlétisme), fuite réussie à 8+ cases, rattrapé à 1 case avec plaquage en réaction (Face-à-Face Athlétisme vs Athlétisme → À Terre si gagné, poursuite continue si raté), épreuve gratuite Endurance Physique seuil 4 (+1/tour) au-delà de 8 tours (échec = rattrapé à 1 case) ; encadré poursuite passé en wide + espacement CSS empilé. Fichiers : content/livre_5/sections/chap-21/bloc-00.md, bloc-02.md, data/livre_5.json, css/style.css."
     },
     {
      "id": "RP-024",
@@ -1041,7 +1042,7 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_6.html#chap-25",
-     "details": "FAIT 2026-11-03 — §22.8 Cran, Déroute & Reddition créé (Livre V, content/livre_5/sections/chap-22/bloc-14.md, build+check OK). Choix validés : jet de compétence Mener ou Intuition au choix (Règle d'Or), règle unique (échec = Déroute Agonisant pour tous, reddition = acte volontaire), déclencheur 28% max 1×/combat réarmé si soin >28%, SD 10. Don Humain E Sang-Froid + événement Miracle inexpliqué désormais cohérents (annulent une Déroute). Divergence Unity assumée : RD-047 auto-reddition Survivor à rouvrir (IsSurrendered auto → option MJ)."
+     "details": "FAIT 2026-11-03 — §22.8 Cran, Déroute & Reddition créé (Livre V, content/livre_5/sections/chap-22/bloc-14.md, build+check OK). Choix validés : jet de compétence Mener ou Intuition au choix (Règle d'Or), règle unique (échec = Déroute Agonisant pour tous, reddition = acte volontaire), déclencheur 28% max 1×/combat réarmé si soin >28%, SD 10. Don Humain E Sang-Froid + événement Miracle inexpliqué désormais cohérents (annulent une Déroute). Divergence Unity assumée : RD-047 auto-reddition Survivor à rouvrir (IsSurrendered auto → option MJ). | RETIRÉ DE SYSRP 2026-11-12 : §20.9 (ancien §22.8) + renvoi §25.2 retirés du Codex — mécanique réservée à Unity (RD-047)."
     },
     {
      "id": "RP-070",
@@ -2861,7 +2862,7 @@
     },
     {
      "id": "RP-190",
-     "title": "P4-1 Livre VII (INS→Intuition, Cran, noms, 17 pts Éveillé)",
+     "title": "P4-1 Livre VII (INS→Intuition, noms, 17 pts Éveillé)",
      "epic": "P4 — Livres VII/VIII/X/XI/XII",
      "status": "todo",
      "priority": "medium",
@@ -2872,8 +2873,8 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "",
-     "updated": "2026-11-10",
-     "details": "Événement 7 test INS→Intuition (brut); Événements 1 & 7 jet sang-froid→jet de Cran; noms complets (Ingénierie, Artisanat, SubterfugeManuel…); note 17 pts Éveillé. Fichiers: data/livre_7.json + content/livre_7/. (Audit sysRP 2026-11-10.)"
+     "updated": "2026-11-12",
+     "details": "Événement 7 test INS→Intuition (brut); noms complets (Ingénierie, Artisanat, SubterfugeManuel…); note 17 pts Éveillé. Fichiers: data/livre_7.json + content/livre_7/. (Audit sysRP 2026-11-10 ; mention Cran retirée 2026-11-12 suite retrait §20.9.)"
     },
     {
      "id": "RP-191",
