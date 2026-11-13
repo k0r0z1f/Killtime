@@ -1,6 +1,6 @@
 {
  "version": 3,
- "updated": "2026-11-11",
+ "updated": "2026-11-12",
  "activeId": "board-demo-hors-lore",
  "boards": [
   {
@@ -1291,7 +1291,7 @@
     },
     {
      "id": "RD-206",
-     "title": "Etats des objets : Endommage/Detruit/Aneanti + reparation (Livre VI 24.4)",
+     "title": "Etats des objets : Endommage/Detruit/Aneanti + reparation (Livre VI §24.7)",
      "epic": "Munitions",
      "status": "todo",
      "priority": "low",
@@ -1302,8 +1302,8 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "InventoryItem + ArmoryCatalog",
-     "details": "ECART LIVRE (verifie 2026-10-20) : Livre VI 24.4 definit 5 etats objets - Parfait / Endommage / Jamme / Detruit / Aneanti, Jamme repare en 2 PA, Detruit en atelier. Actuellement seul Jamme existe (jam + desenrayer RD-033). Ajouter : Endommage (malus/risque jam accru), Detruit (inutilisable, reparation atelier hors-combat), Aneanti (irrecuperable, cf. Desintegrer RD-082). Persistance inventaire + affichage marche/armurerie + IA (abandonne arme detruite).",
-     "updated": "2026-10-20"
+     "details": "ECART LIVRE (recalé 2026-11-12 sur renumérotation §24.7) : Livre VI §24.7 définit 5 états d'objets - Parfait / Endommagé / Jammé / Détruit / Anéanti (Jammé réparé en 2 PA, Détruit en atelier). Actuellement seul Jammé existe (jam + désenrayer RD-033). Ajouter : Endommagé (malus/risque jam accru), Détruit (inutilisable, réparation atelier hors-combat), Anéanti (irrécupérable, cf. Désintégrer RD-082). Persistance inventaire + affichage marché/armurerie + IA (abandonne arme détruite).",
+     "updated": "2026-11-12"
     },
     {
      "id": "RD-225",
@@ -1323,7 +1323,7 @@
     },
     {
      "id": "RD-226",
-     "title": "Remapper refs Livre VIII obsolètes en commentaires Unity",
+     "title": "Remapper refs Livre V/VI/VIII obsolètes en commentaires Unity",
      "epic": "Munitions",
      "status": "todo",
      "priority": "low",
@@ -1334,12 +1334,12 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "CharacterStats + GrenadeSystem + ArmoryCatalog",
-     "updated": "2026-11-03",
-     "details": "La numérotation a dérivé (Livre VIII = 33 Nomenclature, 34 Laser/Fusils/Grenades §32.3, 35 Blindages §33.1/Champs §33.2/Pharma §33.3). Remapper : §31.1 (Fate.cs:11,26, Actions.cs:33) → §33.1 ; §31.2 (CharacterStats.cs:45, GrenadeSystem.cs:364, Dots.cs:110) → §33.2 ; §31.3 (Care.cs:12) → §33.3 ; Chap. 28-32 (ArmoryCatalog.cs:8) → 33-35 ; §30.3 (InventoryItem.cs:65, GrenadeSystem.cs:18,62, CombatDevArena.cs:545) → §32.3 ; §29-31 (InventoryItem.cs:93, InventoryDevWindow.Catalog.cs:457) → section ères actuelle. Comment-only, 0 logique, recompile + tests."
+     "updated": "2026-11-12",
+     "details": "Les commentaires C# citent encore d'anciennes sections avant renumérotation 1–53 (recalé 2026-11-12 sur content/livre_5, livre_6, livre_8 actuels). Livre VIII = Chap. 31 Nomenclature (§31.1–31.2), Chap. 32 Laser/Fusils/Grenades (§32.1–32.3), Chap. 33 Blindages (§33.1) / Champs (§33.2) / Pharma (§33.3). Remapper : §31.1 (CharacterStats.Fate.cs:11,26, Actions.cs:33) → §33.1 ; §31.2 (Fate.cs:60, Dots.cs:110, GrenadeSystem.cs:364) → §33.2 ; §31.3 (Care.cs:12) → §33.3 ; Chap. 28-32 (ArmoryCatalog.cs:8) → Chap. 31-33 ; §30.3 (InventoryItem.cs:65, GrenadeSystem.cs:18,62) → §32.3 ; §29-31 (InventoryItem.cs:93) → §31-33 ; et en sus Livre VI Care.cs (§23.3/24.1/24.3 → §25.1/25.3), Dots.cs (§22 → §24.2), Stabilization.cs (§24 → §25), ArmoryCatalog.cs:569/675 (L.V §21.2 → §22.2, L.VI §24 → §25), GrenadeSystem.cs (§19/20.3/21.3 → §20/21.3/22.3). Comment-only, 0 logique, recompile + tests."
     },
     {
      "id": "RD-227",
-     "title": "Appliquer RP-125 côté Unity (privation/eau/nourriture)",
+     "title": "Appliquer RP-125 & RP-072 côté Unity (Affamé/Privation 18 États + Nuit sûre §25.2)",
      "epic": "États/DoT",
      "status": "todo",
      "priority": "medium",
@@ -1350,8 +1350,8 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "CharacterStats.Dots + TacticalAIController",
-     "updated": "2026-11-03",
-     "details": "BLOQUÉ PAR RP-125 (codex pas écrit). Une fois RP-125 clos : états Privation/Affamé en Unity — tick au tour (CharacterStats.Dots, calque Saignement/Asphyxie), interaction Frugalité Cleyane (besoins ÷2 : diviser le tick ou espacer ?), IA (ravitaillement/repli Ne Lâche Rien ?), sync VTT si états persistants syncés. Raccord Livre VI §24.1/§25.2 + exemple chiffré codex rejoué en test."
+     "updated": "2026-11-12",
+     "details": "DÉBLOQUÉ (RP-125 clos 2026-11-04, RP-072 clos 2026-11-03). Codex fait foi : 1) Passer StatusEffect.cs de 16 à 18 États en ajoutant Affamé (48h sans ration) et Privation (24h sans eau), besoins 2 L + 1 ration / 24h (Cléien Frugalité : 1 L + 1 ration / 2j, +2 CON vs privation, Livre I §2.2). Privation : auto 24h puis épreuve CON Diff 4+2/niv à l'aube (niveaux 1–3 : -1 ec / -2 ec / -2 ec + Ralenti + 2 PV directs/j ignor. armure/bouclier ; soin 2 L = -1 niv, 24h hydraté = levé). Affamé : auto 48h puis épreuve CON Diff 3+1/niv (niveaux 1–3 : -1 / -2 / -2 ec + nuit ÷2 + 1 PV direct/j ; soin 1 ration = -1 niv, 48h nourri = levé). Cumul Affamé+Privation (§24.3). 2) Aligner CharacterStats.Stabilization.cs ApplySafeNightRest (RD-205) sur §25.2 (RP-072) : actuellement CON + EndurancePhysique + bonus +2/-3 ; remplacer par forfait fixe CON PV (×2 si magie/arcanotech), Essoufflement retombé à 0, réveil stabilisé, arrêt Saignement, réarmement moral §20.9, recharge dons 1×/j, sans lever Souffrant/poisons/Miracle ; branchement eau/ration §24.3 : sans eau = 0 PV + Essoufflement conservé, sans ration = moitié PV. Rejouer exemples Roger/Kader en test + vérifier sync VTT/IA."
     },
     {
      "id": "RD-231",
@@ -1387,7 +1387,7 @@
     },
     {
      "id": "RD-233",
-     "title": "Miroir RP-198 : coût déplacement Ralenti (+1 PA/case) & cumul 4 couches de malus",
+     "title": "Miroir RP-198 & RP-201 : coût déplacement Ralenti (+1 PA/case), nage/escalade (2 PA) & cumul 4 couches de malus",
      "epic": "Actions & PA",
      "status": "todo",
      "priority": "medium",
@@ -1398,8 +1398,168 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "CharacterStats.Actions.GetEffectiveApCost + Grid/MovementCost + Modifiers + tests",
-     "updated": "2026-11-11",
-     "details": "TODO miroir sysrp (canon tranché RP-198 Option A 2026-11-11, codex fait foi, NE PAS modifier le codex depuis ici) : 1) Déplacement PA par case = 1 (base) + 1 (Terrain difficile ou nage/escalade sans Franchissement) + 1 (À Terre ou Déstabilisé, non cumulatif pour ramper) + 1 (Ralenti) + Encombrement (§33.1). Ralenti garde ×2 PA ((base + encombrement) × 2) uniquement sur les actions HORS déplacement ; Accéléré (÷2 arrondi au supérieur) et Ralenti s'annulent mutuellement sur le déplacement. Code actuel : CharacterStats.Actions.cs GetEffectiveApCost multiplie indifféremment (baseCost + GetWornApMalus()) * CoreRulesConfig.Instance.RalentiAPMultiplier (2) — séparer le calcul du coût de mouvement par case du multiplicateur ×2 hors déplacement. 2) Cumul des malus : vérifier côté résolution/tactique que seul le plus fort malus météo/nuit (§8.1/§8.6) s'applique, cumulé séparément aux traits de milieu raciaux (§8.5), aux malus tactiques (§21.3) et aux états actifs (§24), sans double comptage (P4 opaque = Aveugle seul ; Canon Entravé compté une seule fois). Réf : data/livre_2.json (§8.4, §8.6), data/livre_5.json (mecaniques.cumul_deplacement_pa, §20.4, §21.3), data/livre_6.json (§24)."
+     "updated": "2026-11-12",
+     "details": "TODO miroir sysrp (RP-198 Option A + RP-201 2026-11-10/11, codex fait foi, NE PAS modifier le codex depuis ici) : 1) Déplacement PA par case = 1 (base) + 1 (Terrain difficile ou nage/escalade sans Franchissement, RP-201 + épreuve Force si eau agitée/paroi raide : échec = sur place, PA perdus) + 1 (À Terre ou Déstabilisé, non cumulatif pour ramper) + 1 (Ralenti) + Encombrement (§33.1). Ralenti garde ×2 PA ((base + encombrement) × 2) uniquement sur les actions HORS déplacement ; Accéléré (÷2 arrondi au supérieur) et Ralenti s'annulent mutuellement sur le déplacement. Code actuel : CharacterStats.Actions.cs GetEffectiveApCost multiplie indifféremment (baseCost + GetWornApMalus()) * RalentiAPMultiplier (2), et HexNode.cs fige ActionPointCost = 1 sans intégrer À Terre/Déstabilisé/Ralenti/nage/escalade côté HexPathfinder/TacticalUnit.Movement. 2) Cumul des malus : seul le plus fort malus météo/nuit (§8.1/§8.6) s'applique, cumulé séparément aux traits de milieu raciaux (§8.5), aux malus tactiques (§21.3) et aux états actifs (§24), sans double comptage (P4 opaque = Aveugle seul ; Canon Entravé compté 1 fois). Réf : data/livre_2.json (§8.4, §8.6), data/livre_5.json (mecaniques.cumul_deplacement_pa, §20.4, §21.3), data/livre_6.json (§24)."
+    },
+    {
+     "id": "RD-234",
+     "title": "Miroir RP-194 : départage égalité d'Initiative (Héros > PNJ, plus gros dé, choix)",
+     "epic": "Des/Seuils",
+     "status": "todo",
+     "priority": "medium",
+     "order": 88,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "TurnManager.Initiative + CombatHUD + tests",
+     "updated": "2026-11-12",
+     "details": "TODO miroir sysrp (RP-194 clos 2026-11-10, codex fait foi, NE PAS modifier le codex depuis ici) : ordre d'initiative fixé avant le round 1 pour tout le combat ; en cas d'égalité de score, 1) Héros/PJ avant PNJ, 2) plus gros dé d'initiative, 3) choix des joueurs (héros) ou du MJ (PNJ). Code actuel : TurnManager.Initiative.cs (l. 109-128) départage par Rapidite -> Agilite -> Intelligence -> Name (et force Titans en premier). Aligner le comparateur (avec fallback déterministe si hors choix interactif) + tests unitaires. Réf : Livre I §4.3, Livre V §20.0, data/kanban_rp.json (RP-194)."
+    },
+    {
+     "id": "RD-235",
+     "title": "Miroir RP-174 / RP-195 : différentiel Δ=0 en attaque (0 dégât de base, effets spéciaux passent)",
+     "epic": "Des/Seuils",
+     "status": "todo",
+     "priority": "high",
+     "order": 89,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "DamageEngineService + DuelResolutionService + tests",
+     "updated": "2026-11-12",
+     "details": "TODO miroir sysrp (RP-174 / RP-195 clos 2026-11-10, codex fait foi, NE PAS modifier le codex depuis ici) : à différentiel Δ = 0, l'initiateur passe au minimum : en attaque, les dégâts de base de l'arme sont ignorés (0 dégât de base + différentiel 0 = 0), mais les effets spéciaux / statuts passent (+ déviation anatomique) ; à Δ < 0, l'attaque échoue (bloquée/esquivée). Hors attaque (Lutte, Discrétion vs Observation, Blocage d'opportunité), Δ = 0 profite déjà à l'initiateur dans DuelResolutionService.ResolveOpposedCheck:412 (differential >= 0 — vérifier tous les appelants). Code actuel : DamageEngineService.cs:203-210 inflige encore WeaponBaseDamage quand differential == 0. Réf : Livre II §7.3, Livre V §20.5/§20.7/§22.1."
+    },
+    {
+     "id": "RD-236",
+     "title": "Miroir RP-197 : critiques en Face-à-Face même si total perdant/égal & oppositions",
+     "epic": "Critiques/VATS",
+     "status": "todo",
+     "priority": "high",
+     "order": 90,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "DamageEngineService + DuelResolutionService + DamageResult + tests",
+     "updated": "2026-11-12",
+     "details": "TODO miroir sysrp (RP-197 clos 2026-11-10, codex fait foi, NE PAS modifier le codex depuis ici) : lors d'un Face-à-Face, tout max naturel déclenche toujours sa conséquence critique dans son domaine (Offensif pour l'attaquant, Défensif pour le défenseur), même si son total perd (sans infliger dégâts de base ni effets de spé sans touche). En cas de double max naturel, les deux camps déclenchent leur conséquence critique, initiateur d'abord. Code actuel : DamageEngineService.cs:153-191 ignore attackerRoll.IsCriticalSuccess si differential < 0, et ignore defenderRoll.IsCriticalSuccess si differential >= 0 (absent aussi de DuelResolutionService.ResolveOpposedCheck). Adapter DamageResult + résolution + logs + tests. Réf : Livre II §7.3 & §9.1, data/livre_2.json (mecaniques.critique.declenchement.face_a_face)."
+    },
+    {
+     "id": "RD-237",
+     "title": "Miroir RP-179 / RP-196 : resync table des critiques d2–d24 (DiceRoller + DamageEngine)",
+     "epic": "Critiques/VATS",
+     "status": "todo",
+     "priority": "medium",
+     "order": 91,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "DiceRoller + DamageEngineService.Criticals + tests",
+     "updated": "2026-11-12",
+     "details": "TODO miroir sysrp (RP-179 / RP-196 clos 2026-11-10/11, codex fait foi, NE PAS modifier le codex depuis ici) : DiceRoller.GetCriticalThreshold (l. 180-195) rabat déjà les paliers intermédiaires (7->6, 11->10, 13-15->12, 17-19->16, 21-23->20, 25+->24), MAIS LookupCriticalConsequence (DiceRoller.cs:200-288) et DamageEngineService.Criticals.cs ont plusieurs écarts par rapport à data/livre_2.json (mecaniques.critique.par_resultat) : 1) Paliers 10 et 12 INVERSÉS (Off & Déf) : Codex = 10 Déstabilisé (-2 EC), 12 Ralenti (Unity fait l'inverse). 2) Palier 8 (Off & Déf) : Codex = Récupère 1 PA (Unity = Récupère 1 effet). 3) Palier 2 Défensif : Codex = Pas de côté (repli gratuit 1 case sans réaction) (Unity = +1 EC Cible). 4) Palier 3 Offensif : Codex = Petite brèche (ignore 1 pt d'armure) (Unity = Avantage). 5) Palier 20 Défensif : Codex = Contre-attaque auto (riposte après attaque en cours = frappe d'opportunité 0 PA sans consommer réaction) (Unity DamageEngine = 3 dégâts bruts). 6) Palier 4 (+1 EC épreuve en cours) et 6/24 (durée jusqu'à la fin de son prochain tour ; 24 Déf = attaquant inconscient 1 tour). Mettre à jour titres/effets/application + CriticalTests."
+    },
+    {
+     "id": "RD-238",
+     "title": "Miroir RP-070 / RP-199 : météo P1–P4, nuit claire vs noire & éblouissement Derek",
+     "epic": "Lumière/Env",
+     "status": "todo",
+     "priority": "medium",
+     "order": 92,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "FogOfWarSystem + DuelSetupService + CombatDevArena + tests",
+     "updated": "2026-11-12",
+     "details": "TODO miroir sysrp (RP-070 / RP-199 clos 2026-11-03/10, codex fait foi, NE PAS modifier le codex depuis ici) : actuellement FogOfWarSystem.cs (l. 73-118) n'a qu'un booléen isNight (nightRange = 4) et DuelSetupService.cs:126 applique -1 tir pour toute nuit, sans météo P1–P4. Implémenter : Nuit claire (vue 8, 0 tir, -1 Observation loin) vs Nuit noire (vue 4, -1 tir sans lampe/thermique) ; échelle météo P1 (0, sans plafond), P2 (-1, vue 8 max), P3 (-2, vue 4 max), P4 (Aveugle) + climat léger -1 / fort -2 (ignoré climat léger par Endurance Coloniale Humain) ; cumul env = malus max unique + plafond de vue le plus restrictif (ex. 2 cases) ; lampe/thermique (ignorer nuit, lampe brise furtivité, thermique perce fumée/murs à demi-portée) ; éblouissement Aveugle 1 tour pour Derek (vision nocturne) entrant en lumière vive. Complémentaire de RD-233. Réf : data/livre_2.json (mecaniques.environnement, §8.1/§8.6), L.V §21.4."
+    },
+    {
+     "id": "RD-239",
+     "title": "Miroir RP-200 : cibles Inconsciente (dégâts max auto), Paralysée (DP 0) & Sonnée (pare debout)",
+     "epic": "Actions & PA",
+     "status": "todo",
+     "priority": "high",
+     "order": 93,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "CharacterStats.Skills + DuelResolutionService + DamageEngineService + tests",
+     "updated": "2026-11-12",
+     "details": "TODO miroir sysrp (RP-200 clos 2026-11-10, codex fait foi, NE PAS modifier le codex depuis ici) : 1) Cible Inconsciente : dégâts max automatiques sans jet d'attaque (armure, encaissement et arbre 0 PV §23.2 normaux) — actuellement DuelResolutionService/DamageEngineService lancent encore les dés contre Inconscient. 2) Cible Paralysée : jet d'attaque résolu contre Défense Passive 0 imposée (pas de parade active). 3) Cible Sonnée : pare normalement debout (-2 défense seulement une fois À Terre) — actuellement CharacterStats.Skills.cs:219-226 CanDefendActively() bloque à tort la défense sur StatusEffect.Sonne. Corriger CanDefendActively(), la résolution de duel/dégâts et ajouter tests dédiés. Réf : Livre V §20.2 (sec-20-2-cibles), Livre VI §24.1/§24.5."
+    },
+    {
+     "id": "RD-240",
+     "title": "Miroir RP-202 : véhicules §22.3 (débarquer 2 PA, équipage Déstabilisé + À Terre, manœuvrer)",
+     "epic": "Véhicules/Titans",
+     "status": "todo",
+     "priority": "medium",
+     "order": 94,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "VehicleState + SpecialManeuverService.Vehicle + CoreRulesConfig + tests",
+     "updated": "2026-11-12",
+     "details": "TODO miroir sysrp (RP-202 clos 2026-11-10, codex fait foi, NE PAS modifier le codex depuis ici) : Code actuel : VehicleState.cs:140-151 & SpecialManeuverService.Vehicle.cs:22 laissent le débarquement à 0 PA ('gratuit'), et la destruction d'une Zone Essentielle (VehicleState.cs:97-106) désinscrit seulement l'équipage sans appliquer de statuts ni dégâts. Aligner sur Livre V §20.4 & §22.3 : 1) Débarquer = 2 PA (symétrique embarquer, CoreRulesConfig.VehicleDisembarkAPCost = 2). 2) Manœuvrer un véhicule = action principale (+ épreuve Conduite & Pilotage si délicat). 3) Destruction Zone Essentielle = équipage évacué avec StatusEffect.Destabilise | StatusEffect.ATerre (+ dégâts directs optionnels si explosion). Mettre à jour VehicleCombatTests + refs §21.3 -> §22.3. Réf : data/livre_5.json (mecaniques.vehicules_zones, §20.4, §22.3)."
+    },
+    {
+     "id": "RD-241",
+     "title": "Miroir RD-224 côté Unity : Mains nues = 0 dégât de base + 1 Essoufflement sur touche franche (Δ>0)",
+     "epic": "Corps-à-corps",
+     "status": "todo",
+     "priority": "medium",
+     "order": 95,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "CanonEntraveRules + DamageEngineService + tests",
+     "updated": "2026-11-12",
+     "details": "TODO miroir sysrp (RD-224 clos côté Codex 2026-11-03 sur Livre V §22.1, jamais porté en Unity) : CanonEntraveRules.cs:39 conserve encore UnarmedBaseDamage = 5, et DamageEngineService n'applique pas +1 Essoufflement sur la cible. Passer les dégâts de base à Mains Nues à 0 (touche franche = 0 + différentiel Δ) et infliger +1 Essoufflement à la cible uniquement sur touche franche (Δ > 0 ; à Δ = 0 = 0 dégât sans Essoufflement, à Δ < 0 = bloqué, plafond ESS §20.3 inchangé). Vérifier scoring IA mêlée + tests CanonEntraveTests/DamageEngineTests. Réf : Livre V §22.1."
+    },
+    {
+     "id": "RD-242",
+     "title": "Miroir RP-069 / RD-047 : moral §20.9 Mener ou Intuition vs SD 10, sans auto-reddition Survivor",
+     "epic": "Moral",
+     "status": "todo",
+     "priority": "medium",
+     "order": 96,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "CharacterStats.Fate + DamageEngineService + MoraleCheatsTests",
+     "updated": "2026-11-12",
+     "details": "TODO miroir sysrp (divergence assumée dans RP-069 le 2026-11-03 : RD-047 auto-reddition Survivor à réouvrir ; codex fait foi, NE PAS modifier le codex depuis ici) : CheckMoraleAtThreshold (CharacterStats.Fate.cs:164-201) teste actuellement Max(CHA, INS) vs DC 6 et force IsSurrendered = true si IsSurvivor && !IsPlayerControlled. Aligner sur Livre V §20.9 (ancien §22.8) : test de compétence Mener (Leadership) ou Intuition au choix (meilleur des deux) vs SD 10 (CoreRulesConfig), échec = Déroute (statut Agonisant) pour TOUS les profils ; la reddition (IsSurrendered) reste volontaire / décision MJ uniquement. Prendre en compte le don Humain E (Sang-Froid). Réf : Livre V §20.9, Livre I §2.2, MoraleCheatsTests."
+    },
+    {
+     "id": "RD-243",
+     "title": "Miroir RP-089 : aligner ArcanotechWorkshop sur 32 modules JSON (22 → 32) & DirectAbsoluteDamage",
+     "epic": "Actions & PA",
+     "status": "todo",
+     "priority": "low",
+     "order": 97,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "ArcanotechWorkshop + ArcanotechEnums + ArcanotechWorkshopTests",
+     "updated": "2026-11-12",
+     "details": "TODO miroir sysrp (recensé explicitement dans RP-089 le 2026-11-01 comme tâche Unity dédiée ; codex fait foi) : ArcanotechWorkshop.cs contient 22/23 entrées face aux 32 modules de data/livre_4.json (18 offensifs + 13 défensifs/utilitaires + 1 social) et Offensive_DirectAbsoluteDamage y est à coût 1 direct au lieu de coût 3 zone dans le JSON. Étendre ArcanotechEnums.cs (PowerCategory.Social existe déjà), ajouter les modules manquants (teinte élémentaire 1, recul 1 case 2, malus -1 épreuve 2, résiduels 2/3/4, rayon 4, soins 2, portée+ 2, purge 2, armure +2 3, bouclier 4 pts 3, social +1 1) et aligner coûts/effets dans ArcanotechWorkshop.cs + ArcanotechWorkshopTests. Réf : Livre IV §19, data/livre_4.json (donnees.modules_*)."
     }
    ]
   },
@@ -1608,7 +1768,7 @@
    "name": "08 Tests Terrain Combat",
    "tasks": [
     {
-     "details": "Terrain Réactions (Livre V §19) : guet RD-030 (2 PA, tir auto aveugle, expire, annulé étourdi/paralysé, couvert total bloque), opportunité RD-031 (4 postures + décrochage 1 PA, spés exemptees), garde du corps RD-032 (1 PA réaction, bouton Interception, IA auto). Protocole : 2v2 Killzone_Alpha3, placer guetteur, traverser son rayon, quitter contact, focus allié faible. Attendu : 1 tir/round, purge au tour, logs tracés. Sortie : écarts Livre V §19 -> fix.",
+     "details": "Terrain Réactions (Livre V §20.5/§20.6) : guet RD-030 (2 PA, tir auto aveugle, expire, annulé étourdi/paralysé, couvert total bloque), opportunité RD-031 / RD-231 (4 postures + poursuite 1 case max + décrochage déplacements du tour sans réaction, spés esquive exemptées), garde du corps / Prise de coup RD-032 / RD-231 (1 PA réaction, posture préventive requise, -1 attaque, bouton Interception, IA auto). Protocole : 2v2 Killzone_Alpha3, placer guetteur, traverser son rayon, quitter contact, focus allié faible. Attendu : 1 réac/round, purge au tour, logs tracés. Sortie : écarts Livre V §20.5/§20.6 -> fix.",
      "epic": "Réactions",
      "id": "RD-171",
      "order": 0,
@@ -1621,7 +1781,7 @@
      "status": "todo",
      "suggestedAsset": "CombatCalculator + TurnManager + CombatContextMenuUI",
      "title": "Terrain : guet, opportunité, garde du corps",
-     "updated": "2026-10-18"
+     "updated": "2026-11-12"
     },
     {
      "details": "Terrain Munitions (Livre VIII) : chargeurs RD-033 (jam sur critique adverse, désenrayer 1 PA), Deglazer +1ec RD-074, swap/ramassage/lancer RD-076 (1/1/2 PA, désarmement fait tomber), blindages/champs RD-078 (ablatif 10-50, malus +1/+2 PA central), outils RD-079 (cellules, kit entretien, masque, radio, balise). Protocole : vider un chargeur, forcer jam, swap, lancer, encaisser sous bouclier. Attendu : compteurs HUD/inventaire justes, refus sans PA. Sortie : écarts -> fix.",
@@ -1656,7 +1816,7 @@
      "updated": "2026-10-18"
     },
     {
-     "details": "Terrain Positionnement : hauteur RD-036 (+1 surplomb, -1 contrebas, gates, laser exempté), charge/sprint RD-038 (+2 impact si 3+ cases, -1 défense, sprint bloque tir), couverts + LOS. Protocole : duel même niveau puis surplomb 1 palier, charge 3+ cases, sprint puis tentative de tir. Attendu : modifieurs + logs, gate verticale respectée. Sortie : écarts Codex/Livre V -> fix.",
+     "details": "Terrain Positionnement (Livre V §20.8/§21.3) : hauteur RD-036 (+1 surplomb, -1 contrebas, gates, laser exempté), charge d'assaut RD-038 / RD-231 (+2 impact 3+ cases, -1 défense jusqu'au début du prochain tour, verrou sprint-bloque-tir retiré), couverts + LOS (§21.3). Protocole : duel même niveau puis surplomb 1 palier, charge 3+ cases puis tir le même tour. Attendu : modifieurs + logs, gate verticale respectée. Sortie : écarts Codex/Livre V -> fix.",
      "epic": "Positionnement",
      "id": "RD-174",
      "order": 3,
@@ -1668,11 +1828,11 @@
      "scene": "Killzone_Alpha3",
      "status": "todo",
      "suggestedAsset": "TacticalHexGrid + HexPathfinder + CombatCalculator",
-     "title": "Terrain : hauteur, charge/sprint, couverts, LOS",
-     "updated": "2026-10-18"
+     "title": "Terrain : hauteur, charge, couverts, LOS",
+     "updated": "2026-11-12"
     },
     {
-     "details": "Terrain CaC (Livre V §19.6) : prise RD-039 (2 PA, Athlétisme aveugle, Immobilisé, traînée 2 PA, étranglement Asphyxie), bousculade RD-040 (2 PA, recul 1 case, À Terre si bloqué, rupture grapple, coup de bouclier). Protocole : saisir, traîner 1 case, étrangler, bousculer contre mur. Attendu : états + positions + logs, 0 PV sécurisés. Sortie : écarts -> fix.",
+     "details": "Terrain CaC (Livre V §20.7, RP-195) : prise de lutte RD-039 (2 PA, Athlétisme aveugle, Δ=0 initiateur passe, Immobilisé, traînée 2 PA, étranglement RD-231 = 2 Essoufflement + Asphyxie 2 sans dégâts directs), bousculade RD-040 (2 PA, recul 1 case, À Terre si bloqué, rupture grapple, coup de bouclier). Protocole : saisir, traîner 1 case, étrangler, bousculer contre mur. Attendu : états + positions + logs, 0 PV sécurisés. Sortie : écarts -> fix.",
      "epic": "Corps-à-corps",
      "id": "RD-175",
      "order": 4,
@@ -1685,7 +1845,7 @@
      "status": "todo",
      "suggestedAsset": "CombatCalculator + GrappleState",
      "title": "Terrain : lutte, étranglement, traînée, bousculade",
-     "updated": "2026-10-18"
+     "updated": "2026-11-12"
     },
     {
      "details": "Terrain Zones persistantes : fumigène RD-041 (CoverType.Full, thermique perce à demi-portée), feu RD-042 (4 PV/tour ignore armure, EnFeu, overlay), gaz/flash/EMP RD-043 (CM-6, C-9, T-0, Karkjiue + masque), destructible RD-044 (8 matériaux, multiplicateurs, effondrement, dégâts collatéraux). Protocole : enfumer une ligne de mire, traverser feu, gazer un couloir, raser un couvert. Attendu : LOS bloquée, DoT au tick/arrivée, mises à jour MeshBounds. Sortie : écarts -> fix.",
@@ -1720,7 +1880,7 @@
      "updated": "2026-10-18"
     },
     {
-     "details": "Terrain Tours (Livre V) : moral RD-047 (seuil 28%, CHA/INS vs SD, reddition Survivor / déroute Agonisant), retarder/tenir/canalisation RD-048 (init -2, +2 attaque canalisée, interruption si dégât), surprise RD-049 (stealth +2, réactions neutralisées), objectifs RD-050 (extraction/tenue/escorte/hack), assaut groupé + poursuite RD-084. Protocole : descendre un PNJ sous 28%, tenir puis interrompre, embuscade furtive, preset extraction. Attendu : comportements + purges + logs. Sortie : écarts -> fix.",
+     "details": "Terrain Tours (Livre V §20) : moral RD-047 / RD-242 (§20.9 seuil 28%, Mener/Intuition vs SD 10, Déroute Agonisant sans auto-reddition Survivor), retarder/tenir/canalisation à mise RD-048 / RD-231 (init -2, mise 1+ PA pour tour suivant, -1 déf, interruption si dégât > encaissement), surprise RD-049 (stealth +2, réactions neutralisées), objectifs RD-050 (extraction/tenue/escorte/hack), assaut groupé + poursuite RD-084. Protocole : descendre un PNJ sous 28%, canaliser puis interrompre, embuscade furtive, preset extraction. Attendu : comportements + purges + logs. Sortie : écarts -> fix.",
      "epic": "Tours/Surprise",
      "id": "RD-178",
      "order": 7,
@@ -1733,10 +1893,10 @@
      "status": "todo",
      "suggestedAsset": "TurnManager + StealthState + DelayedTurnState",
      "title": "Terrain : moral, retarder/tenir, surprise, objectifs, assaut",
-     "updated": "2026-10-18"
+     "updated": "2026-11-12"
     },
     {
-     "details": "Terrain Critiques (Livre II §9.2, VI §21.1, VII §23.4) : table d2-d24 RD-081 (relance brute, conséquences offensives/défensives, tag [CRITIQUE]), déviation anatomique RD-082 (Diff 0 -> table d6, marges : Saignement Diff>=5, K.O. crânien Diff>=10, désintégration Destruction 6 / Diff>=20). Protocole : forcer critiques (jets arrangés si possible), viser crâne à gros différentiel. Attendu : conséquences + traçabilité log, pas d'écrasement Miracle/InstantDeath. Sortie : écarts -> fix.",
+     "details": "Terrain Critiques (Livre II §7.3 & §9.1-9.2, Livre VI §23.2, RP-174/179/195/196/197) : table d2-d24 RD-081 / RD-237 (relance brute, conséquences offensives/défensives même sur total perdant, double max initiateur d'abord, Δ=0 = 0 dégât de base + effets passent), déviation anatomique RD-082 (Δ=0 -> table d6, marges : Saignement Δ>=5, K.O. crânien Δ>=10, désintégration Destruction 6 / Δ>=20). Protocole : forcer critiques (jets arrangés), tester Δ=0 et max sur jet perdant, viser crâne à gros différentiel. Attendu : conséquences + traçabilité log, pas d'écrasement Miracle/InstantDeath. Sortie : écarts -> fix.",
      "epic": "Critiques/VATS",
      "id": "RD-179",
      "order": 8,
@@ -1749,7 +1909,7 @@
      "status": "todo",
      "suggestedAsset": "CombatCalculator + DiceRoller + CombatHUD",
      "title": "Terrain : critiques d2-d24, déviation, marges élevées",
-     "updated": "2026-10-18"
+     "updated": "2026-11-12"
     },
     {
      "details": "Terrain Duo-Tech (Livre V §20.5) : 6 codex RD-085 (Trempe, Railgun, Cisaille, Parallaxe, Mirage, Uppercut) + synergies Thomas RD-086 (Rempart, Zéro Tectonique, Tri-Fusion) + IA auto RD-105 (sillage sans tracé). Protocole : tisser chaque Duo en manuel (souris) puis déclencher l'auto IA. Attendu : paiements atomiques, tampon 1/round, grades Risky/Perfect/Late, refund. Sortie : écarts -> fix.",
@@ -1768,7 +1928,7 @@
      "updated": "2026-10-18"
     },
     {
-     "details": "Terrain Véhicules & Titans (Livre V §21.3, XII §49-50) : véhicules RD-051 (embarquement 2 PA, écrasement, sous-systèmes, +100 lourde), Titans RD-052 (Rosette7/Colossus19, saisie/broyage, piétinement 3 PA, souffle 3 PA), boss RD-087 (bossAI JSON, réactions, IA TitanBoss). Protocole : embarquer/écraser, piétiner zone 7 hex, affronter chaque boss (touche B). Attendu : épave = débarquement forcé, 0 limbo 0 PV, réactions boss visibles. Sortie : écarts -> fix.",
+     "details": "Terrain Véhicules & Titans (Livre V §22.3, XII §49-50) : véhicules RD-051 / RD-240 (embarquer & débarquer 2 PA, manœuvrer action principale, écrasement, sous-systèmes, destruction zone essentielle = équipage Déstabilisé + À Terre, +100 lourde), Titans RD-052 (Rosette7/Colossus19, saisie/broyage, piétinement 3 PA, souffle 3 PA), boss RD-087 (bossAI JSON, réactions, IA TitanBoss). Protocole : embarquer/débarquer 2 PA, écraser, piétiner zone 7 hex, affronter chaque boss (touche B). Attendu : épave = évacuation Déstabilisé + À Terre, 0 limbo 0 PV, réactions boss visibles. Sortie : écarts -> fix.",
      "epic": "Véhicules/Titans",
      "id": "RD-181",
      "order": 10,
@@ -1781,10 +1941,10 @@
      "status": "todo",
      "suggestedAsset": "VehicleState + TitanFootprint + TitanBossCatalog",
      "title": "Terrain : véhicules, Titans, boss (réactions + IA JSON)",
-     "updated": "2026-10-18"
+     "updated": "2026-11-12"
     },
     {
-     "details": "Terrain Nuit & PNJ (Livre XII §48/52) : nuit RD-053 (vue 4 cases, malus -1 sans lampe/thermique, lampe brise stealth, bruit attire patrouille) + PNJ RD-088 (otage bandit, combustion/foulée Illumo, morsure/flash/balise drones). Protocole : éteindre (nuit), allumer lampe, tirer (bruit), jouer otage + combustion. Attendu : portées bridées, convergence patrouille, statuts posés. Sortie : écarts -> fix.",
+     "details": "Terrain Nuit, Météo & PNJ (Livre II §8.1/§8.6, V §21.4, XII §48/52) : nuit/météo RD-053 / RD-238 (nuit claire vue 8 / noire vue 4 -1 tir, P1–P4 dont P4 Aveugle, cumul max unique + vue min, Derek ébloui en lumière vive, lampe brise stealth, bruit attire patrouille) + PNJ RD-088 (otage bandit, combustion/foulée Illumo, morsure/flash/balise drones). Protocole : tester nuit claire/noire, P2/P3/P4, allumer lampe, tirer (bruit), jouer otage + combustion. Attendu : portées bridées, convergence patrouille, statuts posés. Sortie : écarts -> fix.",
      "epic": "Lumière/Env",
      "id": "RD-182",
      "order": 11,
@@ -1797,7 +1957,7 @@
      "status": "todo",
      "suggestedAsset": "FogOfWarManager + BestiaryCatalog",
      "title": "Terrain : nuit, lampe, bruit, manœuvres PNJ",
-     "updated": "2026-10-18"
+     "updated": "2026-11-12"
     },
     {
      "details": "Terrain IA (RD-097 à RD-106) : audit registre, charge auto, bousculade/lancer secours, techniques héros, frappe titan, soutien allié, entretien perso, balise laser, duo auto, grenades utilitaires (fumée cover, flash avant assaut, gaz avec masques alliés). Protocole : observer 3 tours IA complets par doctrine (Agressif/Support/Survivor/Tacticien) + FullAuto. Attendu : pas de tour vide, réserve défensive respectée, pas de tir allié sauf AllIn. Sortie : bugs IA -> fix (1 tâche par bogue comme RD-097).",
@@ -1832,7 +1992,7 @@
      "updated": "2026-10-18"
     },
     {
-     "details": "Alignement Livres (transverse Époque VII) : audit systématique code vs Livres V (duels aveugles, PA/PE, réactions, zones, véhicules), VII (critiques, marges, soins, moral), XI (titans, PNJ, boss), Codex II (jets, SD, tables). Méthode : pour chaque mécanique testée RD-171..184, noter l'écart règle/code avec référence exacte (§ + page logique). Sortie : liste d'écarts priorisée -> tâches fix (patch règles ou errata Livres). Ne corrige rien directement : que l'inventaire.",
+     "details": "Alignement Livres (transverse Époque VII, recalé sur Livres I–XII actuels) : audit systématique code vs Livre II (jets, SD, Δ=0, critiques §7.3/9.1-9.2, env P1-P4/nuit §8), Livre III–IV (plafond 3+3 §11.1, portée MAG+MAG×E §18, atelier 32 modules §19), Livre V (duels, postures/PA/canalisation/garde/lutte/moral §20, zones §21, déviation/véhicules §22), Livre VI (18 états/nuit sûre §24-25), Livre XII (titans, PNJ, boss). Méthode : pour chaque mécanique testée RD-171..184 et tâches miroirs RD-231..246, noter tout écart résiduel règle/code avec référence § exacte.",
      "epic": "Alignement",
      "id": "RD-185",
      "order": 14,
@@ -1845,7 +2005,7 @@
      "status": "todo",
      "suggestedAsset": "Livres V/VI/XI + Codex II + Core/Combat",
      "title": "Alignement : inventaire écarts code vs Livres",
-     "updated": "2026-10-18"
+     "updated": "2026-11-12"
     },
     {
      "details": "Re-validation démo 60s post-refactor (lien RD-026..029) : rejouer la démo complète sur Killzone_Alpha3 après les splits Époque VI (moteur, arène, UI, IA). Vérifier 6 beats (cadrage, move, tir couvert, duel aveugle, ramassage, Sillage Igné), watermark, télémétrie PA/PV, LOS restaurée. Puis capturer vidéo + 3 screenshots (RD-029, protocole OBS 1080p inchangé). Sortie : régression -> fix bloquant avant toute capture.",
@@ -2857,6 +3017,54 @@
      "suggestedAsset": "Rig offsets bras + ArmoryCatalog",
      "updated": "2026-10-20",
      "details": "Offsets bras procéduraux sur même base anim : épée haute / bouclier affaissé / staff avant, presets par classe (8 classes RD-064 + trio RD-063) via Tactics/Visual/MiniaturePose.cs. Préserve clips Idle/Walk/Run/Stance. Preuve : batchmode 0 erreur CS + 3 presets visuellement distincts en jeu."
+    },
+    {
+     "id": "RD-244",
+     "title": "Miroir RP-134 & bug Athlétisme : plafond entraînements 3 + 3 à 2d6 (max 6) + arrondi (F+C+A+2)/3",
+     "epic": "Outillage",
+     "status": "todo",
+     "priority": "medium",
+     "order": 17,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "CharacterProgressionManager.Funding + SkillDefinitions + CombatHUD.Dice + CharacterClassDefinition",
+     "updated": "2026-11-12",
+     "details": "TODO miroir sysrp + fix formule (RP-134 clos 2026-11-05) : 1) Lever le plafond fixe CharacterProgressionManager.MAX_SKILL_TRAINING = 3 (Funding.cs:15, OrganicTicks.cs, CharacterClassDefinition.cs:104, CombatHUD.Dice.cs:326) pour appliquer la règle canon 3 entraînements de base + 3 déblocables lorsque le dé atteint 2d6 (plafond total 6, progression 2d6->2d8->2d10->2d12, 2d12+10 si base 9-10). 2) Corriger SkillDefinitions.cs:233 : Athletisme utilise `(Force + Constitution + Agilite + 1) / 3` au lieu de `+ 2` pour l'arrondi supérieur sur division par 3. 3) Mettre à jour le commentaire obsolète CharacterRulesData.cs:20 ('12 pts' Sbire -> 12/14 si éveillé, déjà implémenté dans BestiaryCatalog.cs:634). Réf : Livre I chap-3, Livre II §6.1, Livre III §11.1, Livre IV §18.1."
+    },
+    {
+     "id": "RD-245",
+     "title": "Miroir RP-135 & RP-154..160 : don Humain Endurance Coloniale (+1 ESS) + arbres Magies (329 spés) & sync §14",
+     "epic": "Outillage",
+     "status": "todo",
+     "priority": "medium",
+     "order": 18,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "CharacterStats.Actions + CharacterProgressionManager.Specializations.CatalogMagic + data/livre_4.json",
+     "updated": "2026-11-12",
+     "details": "TODO miroir sysrp (RP-135 clos 2026-11-10 + RP-154..160 clos 2026-11-07) : 1) Don Humain Endurance Coloniale (RP-135) : CharacterStats.Actions.cs (GetSpendablePE/TakeEmergencyBreath/TriggerRedlineAP) n'accorde actuellement de bonus d'ESS max qu'à 'Restructuration Neurale : Volonté d'Inflexible' (+2) ; ajouter +1 ESS max explicite pour Endurance Coloniale (+ immunité climat léger couplée à RD-238). Vérifier également le reste des dons espèces Livre I §2.2 (doctrine esp. liée à RD-225). 2) Spécialisations Magie (RP-154..160) : CharacterProgressionManager.Specializations.CatalogMagic.cs ne contient encore que les anciens mini-arbres génériques ; synchroniser/charger le compendium magique complet de 329 spés (Élémentale + Primale Vie/Création/Destruction 33 chacune + Esprit TK/TP/Clairvoyance 33 chacune). À coordonner aussi avec les compétences/spés §12–14 quand RP-181/RP-182 seront clos."
+    },
+    {
+     "id": "RD-246",
+     "title": "Miroir RP-097 / RP-193 : synchroniser Bestiary.json (Disciples Air/Feu/Eau + stats Livre XII après RP-193)",
+     "epic": "PNJ",
+     "status": "todo",
+     "priority": "low",
+     "order": 19,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "Resources/Data/Bestiary.json + BestiaryCatalog",
+     "updated": "2026-11-12",
+     "details": "TODO miroir sysrp (suite audit RP-097 2026-11-01, EN ATTENTE DE RP-193 côté Codex RP) : KilltimeTactics/Assets/Resources/Data/Bestiary.json (22 entrées) ne contient que boss_disciple_terre (manquent disciple_air, disciple_feu, disciple_eau de data/livre_12.json) et présente des écarts recensés en RP-097 (V/O Bandits #1/#2, PA Bandit #2 / Bête / Minulican, statuts Enflammé/Aveuglé/Hémorragie). Une fois RP-193 tranché et clos dans Livre XII, régénérer/aligner Bestiary.json 1:1 avec data/livre_12.json + revalider BestiaryCatalogTests."
     }
    ]
   },
