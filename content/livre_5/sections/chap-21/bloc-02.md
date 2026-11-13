@@ -55,7 +55,13 @@ livre: 5
                     <h3 id="sec-21-2">21.2 Les Attaques Combinées de Groupe</h3>
                     <p>
                         Face à une défense trop dure ou une grosse bête, frappez ensemble.
-                        À deux ou plus, vous synchronisez vos coups pour passer là où un seul n'y arriverait pas.
+                        <strong>À 2 ou 3 participants maximum</strong>, vous synchronisez vos coups pour passer là où un
+                        seul n'y arriverait pas : chaque participant doit être <strong>à portée valide</strong> de la
+                        cible (contact pour la mêlée, ligne de mire pour le tir), dépense son
+                        <strong>action principale + 2 <a class="rule-ref" href="livre_1.html#chap-4" data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a></strong>
+                        (et ses mises masquées éventuelles) au rang d'initiative du plus lent, et vise la même zone
+                        (torse par défaut ; sinon <a class="rule-ref" href="#sec-22-1" data-tip="Visée précise : viser un point précis impose -1, annulable pour 1 PA (§22.1).">punition de visée</a>
+                        pour chacun).
                     </p>
 
                     
