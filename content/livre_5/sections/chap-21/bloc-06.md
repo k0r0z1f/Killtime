@@ -75,8 +75,8 @@ livre: 5
                     <h3 id="sec-21-4">21.4 Brouillard de Guerre Asymétrique</h3>
                     <p>
                         Tu ne vois que ce que ton perso voit. Une case hors de vue reste dans le noir.
-                        Un ennemi non repéré est <strong>invisible et impossible à viser</strong> —
-                        jusqu'à ton jet d'<a class="rule-ref" href="livre_3.html#chap-13" data-tip="Observation : repérer un indice, un danger, un ennemi camouflé. Duel vs Discrétion (§13).">Observation</a> ou son tir bruyant qui le trahit.
+                        Un ennemi non repéré est <strong>non visible pour toi et impossible à viser</strong> —
+                        jusqu'à ton jet d'<a class="rule-ref" href="livre_3.html#chap-13" data-tip="Observation : repérer un indice, un danger, un ennemi camouflé. Duel vs Discrétion (§13).">Observation</a> ou une attaque ou action qui trahit sa position.
                         Le MJ, lui, voit tout : c'est lui l'arbitre.
                     </p>
 
@@ -105,21 +105,17 @@ livre: 5
                     </div>
 
                     <ul>
-                        <li><strong>Ennemi non détecté = invisible :</strong> silhouette masquée, aucun ciblage
-                            possible (tir, grenade ciblée, sort mono-cible). Seuls les effets de zone aveugles
-                            restent envisageables, sans bonus.</li>
-                        <li><strong>Observation active (1 <a class="rule-ref" href="livre_1.html#chap-4" data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a>) :</strong> <a class="rule-ref" href="livre_2.html#chap-7" data-tip="Face-à-Face : les deux lancent en secret, dé + PA − malus. Égalité = l'initiateur passe (§7.3).">Face-à-Face</a> <strong>Observation</strong>
-                            (observateur) vs <strong>Discrétion</strong> (cible) : <strong>-1 par case</strong>
-                            au-delà du contact, <strong>-1 / -2 / -4</strong> selon le couvert
-                            (moitié, trois-quarts, total — un couvert total rend l'observation
-                            <strong>impossible</strong>). Égalité ou réussite ➔ cible <strong>révélée jusqu'à la fin du cycle
-                            suivant</strong>.                             Spécialités : <strong>Œil de Lynx +2</strong> au duel,
-                            <strong>Détection Thermique +2</strong> et devine une présence juste derrière un mur
-                            plein tout proche.</li>
-                        <li><strong>Tir bruyant = révélé :</strong> tout tir à distance (Ballistique, grenade,
-                            sort offensif — <strong>la mêlée reste silencieuse</strong>) révèle le tireur aux
-                            ennemis situés dans son <strong>rayon d'Ouïe</strong>, jusqu'à la <strong>fin du cycle
-                            suivant</strong>, sauf mur plein entre les deux.</li>
+                        <li><strong>Ennemi non détecté :</strong> pour le personnage qui ne le voit pas, il est non
+                            visible — silhouette masquée, aucun ciblage possible (tir, grenade ciblée, sort
+                            mono-cible). Seuls les effets de zone aveugles restent envisageables, sans bonus.</li>
+                        <li><strong>Observation active (1 <a class="rule-ref" href="livre_1.html#chap-4" data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a>) :</strong> <a class="rule-ref" href="livre_2.html#chap-7" data-tip="Épreuve : lance ton dé de compétence + PA − malus contre le seuil du MJ (§7.1).">épreuve</a>
+                            d'<strong>Observation</strong> contre un <strong>seuil de 4</strong> pour révéler la position
+                            des non visibles sous couvert (réussite automatique dès <strong>1d12</strong> en Observation,
+                            <a class="rule-ref" href="livre_2.html#chap-7" data-tip="Réussite Auto : au seuil 4, un dé de 1d12 et plus réussit d'office sans lancer (§7.2).">Livre II §7.2</a>). À travers un couvert total, l'observateur sait <strong>où</strong> se trouve la
+                            créature, mais pas son apparence. Si un personnage est activement caché, le MJ détermine
+                            de son côté si le résultat du joueur suffit à battre son jet de Discrétion déjà lancé.</li>
+                        <li><strong>Attaque ou action :</strong> toute attaque (mêlée ou distance) et toute action
+                            révèlent la position du non visible à tous ceux présents sur la carte.</li>
                     </ul>
 
                     <div class="callout temporal">
@@ -134,10 +130,9 @@ livre: 5
                         <div class="callout-body">
                             Par météo claire, Lucas ne voit pas le tireur embusqué à 9 cases :
                             un pilier (<a class="rule-ref" href="#sec-21-3" data-tip="Couvert total : cible non visible pour l'attaquant — attaque directe impossible (§21.3).">couvert total</a>) barre sa ligne de mire ➔ obscurité. Il dépense
-                            <strong>1 <a class="rule-ref" href="livre_1.html#chap-4" data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a></strong> en Observation active, mais à travers un couvert total
-                            l'observation est <strong>impossible</strong> : <a class="rule-ref" href="livre_1.html#chap-4" data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a> perdu. Le tireur riposte au fusil :
-                            <strong>tir bruyant</strong>, mais le pilier fait toujours mur plein entre eux ➔
-                            toujours invisible. Lucas contourne alors le pilier : le tireur passe à découvert
+                            <strong>1 <a class="rule-ref" href="livre_1.html#chap-4" data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a></strong> en Observation active et réussit son épreuve (seuil 4) : à travers le couvert total, il
+                            sait <strong>où</strong> se trouve la créature derrière le pilier, mais pas son apparence
+                            (tir direct impossible). Lucas contourne alors le pilier : le tireur passe à découvert
                             devant lui ➔ <strong>automatiquement visible</strong>, sans aucun jet.
                         </div>
                     </div>

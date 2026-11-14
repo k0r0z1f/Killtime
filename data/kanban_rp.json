@@ -352,7 +352,7 @@
      "scale": null,
      "suggestedAsset": "livre_5.html#chap-21",
      "updated": "2026-11-13",
-     "details": "FAIT 2026-10-30 — Passe agent : ton MJ (intro chap 22 + 21.1-21.5), ancres sec-22-1/21-2, rule-refs (épreuves Athlétisme, initiative, couvert §22.3, Observation/Discrétion §22.4, synchro §22.5), 3 encadrés en wide (ligne de mire, vision 360, séquence Duo-Tech). États Duo-Tech liés (Immobilisé, Ralenti, Étourdi, À Terre, Saignement, En Feu, Asphyxie). Fichiers : livre_5.html, css/style.css. | Passe 2026-11-12 — intro chap. 21 + §21.1 Course & Poursuite retravaillés : intro sans '=', intégrée à l'initiative (4 PA, action principale, ajoutée aux Actions principales), départ toujours à 4 cases d'écart (≥4 cases, §20.5 d'abord si au contact), fuyant +30 cases (45 m) par tour, poursuivants ajustent uniquement l'écart (−1 / 0 / +1 case selon Athlétisme), fuite réussie à 8+ cases, rattrapé à 1 case avec plaquage en réaction (Face-à-Face Athlétisme vs Athlétisme → À Terre si gagné, poursuite continue si raté), épreuve gratuite Endurance Physique seuil 4 (+1/tour) au-delà de 8 tours (échec = rattrapé à 1 case) ; encadré poursuite passé en wide + espacement CSS empilé. Fichiers : content/livre_5/sections/chap-21/bloc-00.md, bloc-02.md, data/livre_5.json, css/style.css. | §21.2 Attaques Combinées de Groupe (2026-11-12) : 2 à 3 participants max à portée valide, action principale + 2 PA chacun au rang du plus lent, même zone visée (torse par défaut), exemples entiers (plus de .5), dégâts bruts = total des armes + Δ (CON et Armure 1×) ; + nettoyage Bonus Entraînement dans visee (§22.1) et wide sur synchro_duo (§21.5). | §21.2 & §21.3 (2026-11-13) : §21.2 assaut_groupe (display + mecaniques) aligné sans CON ni symboles superflus (« total des armes des participants, augmenté du différentiel », ex. Armure 4, 14 dégâts réels) ; §21.3 (bloc-06.md + livre_5.json) : retrait des parenthèses sur la liste d'obstacles, retrait de la mention « journal de combat » (table RP, pas Unity), effets de zone formulés par niveaux de couvert (moitié couvert -2, trois-quarts couvert -3, couvert total -4 et bloque les éclats). Checks verts."
+     "details": "FAIT 2026-10-30 — Passe agent : ton MJ (intro chap 22 + 21.1-21.5), ancres sec-22-1/21-2, rule-refs (épreuves Athlétisme, initiative, couvert §22.3, Observation/Discrétion §22.4, synchro §22.5), 3 encadrés en wide (ligne de mire, vision 360, séquence Duo-Tech). États Duo-Tech liés (Immobilisé, Ralenti, Étourdi, À Terre, Saignement, En Feu, Asphyxie). Fichiers : livre_5.html, css/style.css. | Passe 2026-11-12 — intro chap. 21 + §21.1 Course & Poursuite retravaillés : intro sans '=', intégrée à l'initiative (4 PA, action principale, ajoutée aux Actions principales), départ toujours à 4 cases d'écart (≥4 cases, §20.5 d'abord si au contact), fuyant +30 cases (45 m) par tour, poursuivants ajustent uniquement l'écart (−1 / 0 / +1 case selon Athlétisme), fuite réussie à 8+ cases, rattrapé à 1 case avec plaquage en réaction (Face-à-Face Athlétisme vs Athlétisme → À Terre si gagné, poursuite continue si raté), épreuve gratuite Endurance Physique seuil 4 (+1/tour) au-delà de 8 tours (échec = rattrapé à 1 case) ; encadré poursuite passé en wide + espacement CSS empilé. Fichiers : content/livre_5/sections/chap-21/bloc-00.md, bloc-02.md, data/livre_5.json, css/style.css. | §21.2 Attaques Combinées de Groupe (2026-11-12) : 2 à 3 participants max à portée valide, action principale + 2 PA chacun au rang du plus lent, même zone visée (torse par défaut), exemples entiers (plus de .5), dégâts bruts = total des armes + Δ (CON et Armure 1×) ; + nettoyage Bonus Entraînement dans visee (§22.1) et wide sur synchro_duo (§21.5). | §21.2 & §21.3 (2026-11-13) : §21.2 assaut_groupe (display + mecaniques) aligné sans CON ni symboles superflus (« total des armes des participants, augmenté du différentiel », ex. Armure 4, 14 dégâts réels) ; §21.3 (bloc-06.md + livre_5.json) : retrait des parenthèses sur la liste d'obstacles, retrait de la mention « journal de combat » (table RP, pas Unity), effets de zone formulés par niveaux de couvert (moitié couvert -2, trois-quarts couvert -3, couvert total -4 et bloque les éclats). | §21.4 FAIT (2026-11-13) : « invisible » remplacé par « non visible pour... » (bloc-04/06, éviter confusion avec état global) ; Observation active basculée en épreuve d'Observation seuil 4 (réussite auto dès 1d12, §7.2) pour révéler la position des non visibles sous couvert (sans malus par case/couvert, sans spécialités ni fin de cycle suivant ; en couvert total, position localisée sans voir l'apparence ; côté MJ, comparaison du résultat contre tout jet de Discrétion déjà lancé par un personnage activement caché ; exemple + couts_pa alignés) ; « Attaque ou action » sans « = » ni « rayon d'Ouïe » ni « sauf mur plein » (toute attaque ou action révèle la position du non visible à tous sur la carte). Création RP-204 (Se cacher & Discrétion). §21.5 reporté en fin de passe (chevauchement §21.2) → RP-205. Checks verts."
     },
     {
      "id": "RP-024",
@@ -3083,6 +3083,38 @@
      "suggestedAsset": "",
      "updated": "2026-11-13",
      "details": "Issu de RP-176 (audit sysRP 2026-11-10) : recenser, trancher et intégrer les éventuels cas spéciaux retenus restants pour le Livre V (content/livre_5/sections/chap-20/21/22, data/livre_5.json). Contexte : CAS-1 à CAS-9 (RP-194 à RP-202) sont déjà tranchés et intégrés (done). Pour chaque nouveau cas retenu : fixer la règle (coût en PA, déclencheur, résolution), l'écrire en prose (content/livre_5/sections/) et dans les données/mécaniques (data/livre_5.json), puis exécuter python3 tools/build_livres.py --build 5 et python3 tools/check_liens.py."
+    },
+    {
+     "id": "RP-204",
+     "title": "Rédiger les règles Se cacher & Discrétion en combat (Livre V §21.4 + Livre III §12.2 / §14)",
+     "epic": "Livre V — Combat Tactique",
+     "status": "todo",
+     "priority": "medium",
+     "order": 201,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "livre_5.html#sec-21-4",
+     "updated": "2026-11-13",
+     "details": "Audit 2026-11-13 : aucune règle n'explique encore comment « Se cacher » ni comment fonctionne la Discrétion en combat (Livre III §12.2 liste seulement Discrétion et ses 3 spécialisations sans fiche en §14 : Déplacement silencieux, Camouflage, Ombres ; depuis la passe §21.4, Observation active est une épreuve seuil 4 / auto dès 1d12 contre des non visibles sous couvert, et le MJ détermine de son côté si le résultat du joueur bat toute Discrétion déjà lancée par un personnage activement caché ; couts_pa n'a pas encore d'action Se cacher). À trancher et rédiger : (1) distinction nette « Non visible » (ligne de mire / couvert total, §21.3–21.4) vs « Caché » (état actif par Discrétion, jet préalable comparé en secret par le MJ) ; (2) coût en PA et prérequis de Se cacher ; (3) déplacement furtif (coût en PA, lien Déplacement silencieux) ; (4) rupture d'état caché / révélation et interactions Observation active (y compris cas 1d12 auto-seuil 4 face à un jet de Discrétion > 4) ; (5) intégrer dans Livre V (§21.4, barème/couts_pa §20.4) et Livre III (§12.2 + fiches §14 si souhaité), puis exécuter build_livres.py --build 5 et check_liens.py."
+    },
+    {
+     "id": "RP-205",
+     "title": "Revoir §21.5 Technique-Duo (pour la fin — doublon avec §21.2 Attaques Combinées)",
+     "epic": "Livre V — Combat Tactique",
+     "status": "todo",
+     "priority": "low",
+     "order": 202,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "livre_5.html#sec-21-5",
+     "updated": "2026-11-13",
+     "details": "Reporté en fin de passe (2026-11-13) : §21.5 Technique-Duo : Résonance Dyadique (bloc-06.md#sec-21-5, bloc-09.md, data/livre_5.json synchro_duo + duo_techs) ressemble trop à §21.2 Attaques Combinées de Groupe. À trancher à la fin : (1) décider si l'on conserve/différencie nettement les Techniques-Duo (effets tactiques/contrôle/placement plutôt que dégâts bruts) ou si l'on allège/fusionne ; (2) nettoyer au passage bloc-09.md (mentions « jusqu'à la fin de son prochain tour », « gelée », ton trop spécifique Lucas/Mina, rôles Cinétique/Calcul) et duo_techs (signes « = »), puis exécuter build_livres.py --build 5 et check_liens.py."
     }
    ]
   }

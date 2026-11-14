@@ -10,7 +10,7 @@ livre: 5
                         Tu n'es pas toujours une cible facile. Un muret, une barricade, un pilier :
                         ça cache une partie de toi <strong>pour celui qui te vise</strong>.
                         Le couvert dépend toujours de l'angle : tu peux être à découvert pour un tireur
-                        et invisible pour un autre.
+                        et non visible pour un autre.
                     </p>
 
                     
