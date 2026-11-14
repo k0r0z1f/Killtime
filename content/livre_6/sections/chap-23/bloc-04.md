@@ -88,11 +88,11 @@ format: raw
                         Certains dons raciaux (Livre I §2.2) confèrent une <strong>résistance</strong> ou une
                         <strong>vulnérabilité</strong> à un élément (feu, froid, toxines, gaz, etc.). Sans cette
                         mention explicite, aucune espèce n'est résistante ni vulnérable : les dégâts directs sont
-                        réduits par l'armure puis la Constitution (§23.1), sans distinction d'élément.
+                        réduits par l'armure (§23.1), sans distinction d'élément.
                     </p>
                     <div class="callout-body">
                         &bull; <strong>Résistance (élément) :</strong> les dégâts directs de cet élément sont réduits
-                        du montant indiqué, <strong>après l'armure et avant la Constitution</strong>. Les dégâts
+                        du montant indiqué, <strong>après l'armure</strong>. Les dégâts
                         résiduels du même élément démarrent à -1 (minimum 1).<br>
                         &bull; <strong>Vulnérabilité (élément) :</strong> +1 dégât subi de cet élément (appliqué
                         après réductions) ; -2 aux épreuves de Constitution contre cet élément, sauf mention

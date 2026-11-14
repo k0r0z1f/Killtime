@@ -35,7 +35,7 @@ namespace Killtime.Core.Arcanotech
             [ArcanotechModuleId.Offensive_DirectAbsoluteDamage] = new PowerModuleDefinition(
                 ArcanotechModuleId.Offensive_DirectAbsoluteDamage,
                 "+1 Dégât Absolu direct",
-                "1 dégât absolu ignorant l'armure et la Constitution.",
+                "1 dégât absolu ignorant l'armure.",
                 PowerCategory.Offensif, 1, isStackable: true, valuePerRank: 1),
 
             [ArcanotechModuleId.Offensive_DrainAP] = new PowerModuleDefinition(

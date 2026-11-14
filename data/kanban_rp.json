@@ -1056,7 +1056,7 @@
      "primitive": "",
      "pos": null,
      "scale": null,
-     "suggestedAsset": "livre_5.html#chap-21-4",
+     "suggestedAsset": "livre_5.html#sec-21-4",
      "details": "FAIT 2026-11-03 — §8.6 Nuit & lumière créé (Livre II chap-8, content/livre_2/sections/chap-8/bloc-02.md, build+check OK). Choix validés : 8.6 en chap-8 + rappels Livre V §23.3, nuit graduée (claire : vue 8, -0 tir, -1 Obs loin ; noire : vue 4, -1 tir sans lampe/thermique ; cumul météo : malus max + vue re-bridée, ex. 2 cases), lampe (ignore nuit mais trahit, furtivité brisée), thermique (ignore + perce fumée/murs à demi-portée), vision nocturne Derek (ignore nuit, Aveugle 1 tour en entrant en lumière vive), éblouissement = Aveugle temporaire (flash 1 tour, 2 si ≤3 cases, Masque Filtrant neutralise). Don B Derek Sang des Profondeurs désormais cohérent. Reste RP-071 (définition Aveugle §26)."
     },
     {
@@ -2640,7 +2640,7 @@
      "id": "RP-176",
      "title": "P0-3 Finaliser Livre V (Décrochage/Charge, Lutte, visée, ancres)",
      "epic": "P0 — Socle Mécanique",
-     "status": "todo",
+     "status": "done",
      "priority": "high",
      "order": 173,
      "scene": "",
@@ -2649,8 +2649,8 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "",
-     "updated": "2026-11-10",
-     "details": "Unifier Décrochage et Charge (§20.4, §20.5, §20.8, §22.2), clarifier durée Lutte (§20.7), purger réduction dégâts par CON et .5 dans mecaniques.visee/assaut_groupe, standardiser #sec-21-3..5, intégrer cas spéciaux retenus. Fichiers: content/livre_5/sections/chap-20/21/22, data/livre_5.json. (Audit sysRP 2026-11-10.)"
+     "updated": "2026-11-13",
+     "details": "Unifier Décrochage et Charge (§20.4, §20.5, §20.8, §22.2), clarifier durée Lutte (§20.7), purger réduction dégâts par CON et .5 dans mecaniques.visee/assaut_groupe, standardiser #sec-21-3..5. Fichiers: content/livre_5/sections/chap-20/21/22, data/livre_5.json. (Audit sysRP 2026-11-10.) FAIT 2026-11-13 : (1) Décrochage unifié (§20.4, §20.5, §22.2) = 1 PA d'activation dans le tour, chaque case payée normalement où l'on s'écarte d'un personnage adjacent compte en décrochage (0 opportunité, rompt Canon Entravé) ; Charge unifiée (§20.4, §20.8) = 3+ cases d'affilée au contact (coût normal par case), +2 dégâts mêlée, −1 défense jusqu'au début du prochain tour. (2) Lutte §20.7 (bloc-12.md) : retrait de « jusqu'à la fin de son prochain tour », durée alignée sur la prise continue (jusqu'à libération, relâchement ou rupture auto). (3) Réduction dégâts par CON purgée (L.V, L.VI, L.III/L.IV/fabrique.js, ArcanotechWorkshop.cs) ; .5 déjà purgé le 2026-11-12. (4) Ancres #sec-21-3..5 standardisées (bloc-04/06, livre_5.html TOC 21.3..5, renvois L.II/III/IV/V/VI, kanban_rp). (5) Cas spéciaux retenus sortis vers RP-203. Builds + check_liens verts."
     },
     {
      "id": "RP-177",
@@ -3067,6 +3067,22 @@
      "suggestedAsset": "",
      "updated": "2026-11-10",
      "details": "Coût PA débarquer, coût PA pilote pour manœuvrer, conséquences passagers quand Zone Essentielle explose. (Audit sysRP 2026-11-10.) TRANCHÉ 2026-11-10 (MJ) : débarquer = 2 PA (symétrique embarquer, barème §20.4) ; manœuvrer = action principale (+ épreuve Conduite & Pilotage si délicat) ; zone essentielle détruite = équipage Déstabilisé + À Terre, dégâts directs si explosion (montant MJ). Écrit en §22.3 + barème §20.4 + cartes vehicules_zones (display + mecaniques). Checks verts (build 5, nav, liens)."
+    },
+    {
+     "id": "RP-203",
+     "title": "CAS-10 Intégrer les éventuels cas spéciaux retenus au Livre V (§20–§22)",
+     "epic": "Cas spéciaux à trancher",
+     "status": "todo",
+     "priority": "medium",
+     "order": 200,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "",
+     "updated": "2026-11-13",
+     "details": "Issu de RP-176 (audit sysRP 2026-11-10) : recenser, trancher et intégrer les éventuels cas spéciaux retenus restants pour le Livre V (content/livre_5/sections/chap-20/21/22, data/livre_5.json). Contexte : CAS-1 à CAS-9 (RP-194 à RP-202) sont déjà tranchés et intégrés (done). Pour chaque nouveau cas retenu : fixer la règle (coût en PA, déclencheur, résolution), l'écrire en prose (content/livre_5/sections/) et dans les données/mécaniques (data/livre_5.json), puis exécuter python3 tools/build_livres.py --build 5 et python3 tools/check_liens.py."
     }
    ]
   }

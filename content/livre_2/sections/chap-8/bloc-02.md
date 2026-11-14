@@ -25,7 +25,7 @@ livre: 2
                     <p>
                         La nuit n'est pas un décor, c'est un adversaire. Elle raccourcit ta vue et salit tes tirs.
                         Entre climat, météo et nuit, un seul malus s'applique par jet : le plus fort l'emporte. Mais
-                        ce malus unique se cumule avec tes malus de milieu racial (<a href="#sec-8-5">§8.5</a>), tes malus tactiques (<a href="livre_5.html#chap-21-3">Livre V §21.3</a>)
+                        ce malus unique se cumule avec tes malus de milieu racial (<a href="#sec-8-5">§8.5</a>), tes malus tactiques (<a href="livre_5.html#sec-21-3">Livre V §21.3</a>)
                         et tes états (<a href="livre_6.html#chap-24">Livre VI §24</a>), sans compter deux fois la même cause. Pour la vue, le plafond le plus restrictif l'emporte.
                     </p>
                     <ul>
@@ -38,10 +38,10 @@ livre: 2
                         <li><strong>Cumul météo &amp; autres malus :</strong> entre climat, météo et nuit, un seul malus par jet, le plus fort l'emporte (nuit noire −1 + trombe −2 = −2 ; si la météo P4 opaque applique <a class="rule-ref" href="livre_6.html#sec-24-1" data-tip="Aveugle : vision nulle, −4 à distance, −2 en mêlée et défense (§24.1).">Aveugle</a>, seul l'état Aveugle compte, sans −2 météo en plus). Pour la vue, même logique : le plus restrictif l'emporte.
                             Ce malus météo/nuit unique s'additionne ensuite avec tes malus de milieu racial (<a href="#sec-8-5">§8.5</a>, séparément), tes malus tactiques (couvert, visée, <a class="rule-ref" href="livre_5.html#sec-22-2" data-tip="Canon Entravé : arme longue + ennemi adjacent = −2 au tir, visée précise pour +1 PA (§22.2).">Canon Entravé</a> — compté une fois) et tous tes états actifs (<a href="livre_6.html#chap-24">Livre VI §24</a>).
                             <em>Exemple : nuit noire (4 cases) sous blizzard (plafond 8) = 4 cases de vue : c'est la nuit qui borne. Sous pluie forte (−1) en milieu clos (Cléien −2), tu tires sur une cible à moitié couverte (−1) en étant Déstabilisé (−2) : −1 − 2 − 1 − 2 = <strong>−6 au jet</strong>.</em>
-                            Pour la ligne de mire, voir <a href="livre_5.html#chap-21-3">Livre V §21.3</a>.</li>
+                            Pour la ligne de mire, voir <a href="livre_5.html#sec-21-3">Livre V §21.3</a>.</li>
                         <li><strong>Lampe allumée :</strong> tu ignores le bridage et le malus de nuit pour tes jets et tes cibles éclairées.
                             Revers : ta lampe te trahit. Toute ligne de mire directe te repère, furtivité brisée
-                            (<a href="livre_5.html#chap-21-3">Livre V §21.3</a>). Éteindre et se taire redevient parfois la meilleure armure.</li>
+                            (<a href="livre_5.html#sec-21-3">Livre V §21.3</a>). Éteindre et se taire redevient parfois la meilleure armure.</li>
                         <li><strong>Vision thermique :</strong> spécialisation ou lunettes thermiques. Tu ignores la nuit sans trahir ta position,
                             et tu perces fumée et murs légers à <strong>demi-portée</strong>. Le froid, lui, ne s'achète pas : un Derek reste un Derek.</li>
                         <li><strong>Vision nocturne (Derek, <em>Sang des Profondeurs</em>) :</strong> tu vois de nuit comme en plein jour.

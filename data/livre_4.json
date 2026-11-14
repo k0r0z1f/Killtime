@@ -320,7 +320,7 @@
     ],
     [
      "<span class=\"pill-badge amber\">3 points</span>",
-     "<strong>+1 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\"\n                                                data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">Dégât\n                                                Absolu</a></strong> à toutes les créatures à 1 case de zone",
+     "<strong>+1 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\"\n                                                data-tip=\"Dégâts Absolus : ignorent l'armure, directs sur la jauge vitale (§23.1).\">Dégât\n                                                Absolu</a></strong> à toutes les créatures à 1 case de zone",
      "Zone & bonus cumulables"
     ],
     [
@@ -469,7 +469,7 @@
      "titre": "<span>Écrasement de Matière</span>\n                                <span class=\"pill-badge ruby\">3 PA // Action Principale</span>",
      "top": false,
      "monde": "Magie Offensive // Attribut : Magie",
-     "corps_html": "<em>« Tu resserres la gravité sur un membre. La matière cède.\n                                    »</em><br><br>\n                                Tu vises une partie du corps et tu lances ton épreuve avec <strong>+1 au\n                                    résultat</strong> (1 pt). Si tu réussis, tu infliges <strong>2 <a class=\"rule-ref\"\n                                        href=\"livre_6.html#chap-23\"\n                                        data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">Dégâts\n                                        Absolus</a></strong> qui ignorent la Constitution et le blindage (2\n                                pts).",
+     "corps_html": "<em>« Tu resserres la gravité sur un membre. La matière cède.\n                                    »</em><br><br>\n                                Tu vises une partie du corps et tu lances ton épreuve avec <strong>+1 au\n                                    résultat</strong> (1 pt). Si tu réussis, tu infliges <strong>2 <a class=\"rule-ref\"\n                                        href=\"livre_6.html#chap-23\"\n                                        data-tip=\"Dégâts Absolus : ignorent l'armure, directs sur la jauge vitale (§23.1).\">Dégâts\n                                        Absolus</a></strong> qui ignorent le blindage (2\n                                pts).",
      "pieds": [
       {
        "ton": "ruby",
@@ -568,7 +568,7 @@
      "<strong>Barricade de Racines</strong>",
      "Magie Primale (MAG, INT)",
      "Défensif, Utilitaire",
-     "Tu fais jaillir un <a class=\"rule-ref\" href=\"livre_5.html#chap-21-3\"\n                                            data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§21.3).\">Couvert\n                                            3/4</a> sur un hexagone à 4 cases. Instantané."
+     "Tu fais jaillir un <a class=\"rule-ref\" href=\"livre_5.html#sec-21-3\"\n                                            data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§21.3).\">Couvert\n                                            3/4</a> sur un hexagone à 4 cases. Instantané."
     ],
     [
      {
@@ -595,7 +595,7 @@
      },
      "Magie Primale (MAG, INT)",
      "Défensif",
-     "Tu fermes l'ombre en dôme (rayon 1 case autour de toi) pendant 2 tours : <a class=\"rule-ref\" href=\"livre_5.html#chap-21-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§21.3).\">Couvert Total</a> contre les tirs venus de l'extérieur. L'ennemi qui entre est <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Ralenti : actions hors déplacement ×2 PA ; déplacement +1 PA/case (§24.1).\">Ralenti</a>."
+     "Tu fermes l'ombre en dôme (rayon 1 case autour de toi) pendant 2 tours : <a class=\"rule-ref\" href=\"livre_5.html#sec-21-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§21.3).\">Couvert Total</a> contre les tirs venus de l'extérieur. L'ennemi qui entre est <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Ralenti : actions hors déplacement ×2 PA ; déplacement +1 PA/case (§24.1).\">Ralenti</a>."
     ],
     [
      {
@@ -604,7 +604,7 @@
      },
      "Magie Primale (MAG, INT)",
      "Défensif, Utilitaire",
-     "Ton dôme devient un sanctuaire : <a class=\"rule-ref\" href=\"livre_5.html#chap-21-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§21.3).\">Couvert Total</a> contre les tirs extérieurs, et tes alliés dedans récupèrent 4 PV et purgent <a\n                                            class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (+1 PA/case, non cumulatif avec À Terre pour ramper).\">Déstabilisé</a> et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Étourdi : −1 ec sur tous les jets.\">Étourdi</a>. Souffle un coup."
+     "Ton dôme devient un sanctuaire : <a class=\"rule-ref\" href=\"livre_5.html#sec-21-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§21.3).\">Couvert Total</a> contre les tirs extérieurs, et tes alliés dedans récupèrent 4 PV et purgent <a\n                                            class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (+1 PA/case, non cumulatif avec À Terre pour ramper).\">Déstabilisé</a> et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Étourdi : −1 ec sur tous les jets.\">Étourdi</a>. Souffle un coup."
     ],
     [
      {
@@ -658,7 +658,7 @@
      },
      "Magie Primale (MAG, INT)",
      "Défensif, Offensif",
-     "Tu lèves un donjon de ronces sur 3 hexagones contigus pendant 2 tours : <a class=\"rule-ref\" href=\"livre_5.html#chap-21-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§21.3).\">Couvert Total</a> contre les tirs extérieurs. Celui qui traverse prend 6 dégâts. Exemple : la forteresse pousse en un souffle."
+     "Tu lèves un donjon de ronces sur 3 hexagones contigus pendant 2 tours : <a class=\"rule-ref\" href=\"livre_5.html#sec-21-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§21.3).\">Couvert Total</a> contre les tirs extérieurs. Celui qui traverse prend 6 dégâts. Exemple : la forteresse pousse en un souffle."
     ],
     [
      "<strong>Dard d'Épine</strong>",
@@ -673,7 +673,7 @@
      },
      "Magie Primale (MAG, INT)",
      "Offensif",
-     "Ton fouet d'ombre claque à 4 cases : 4 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">Dégâts Absolus</a>, et tu ignores le couvert partiel. Exemple : tu cingles le tireur planqué."
+     "Ton fouet d'ombre claque à 4 cases : 4 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent l'armure, directs sur la jauge vitale (§23.1).\">Dégâts Absolus</a>, et tu ignores le couvert partiel. Exemple : tu cingles le tireur planqué."
     ],
     [
      {
@@ -682,7 +682,7 @@
      },
      "Magie Primale (MAG, INT)",
      "Offensif",
-     "Tes ombres tranchent à 6 cases : 6 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">Dégâts Absolus</a> (Delta ≥ 2 requis contre PJ/PNJ majeur). Exemple : deux entailles nettes, sans bruit."
+     "Tes ombres tranchent à 6 cases : 6 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent l'armure, directs sur la jauge vitale (§23.1).\">Dégâts Absolus</a> (Delta ≥ 2 requis contre PJ/PNJ majeur). Exemple : deux entailles nettes, sans bruit."
     ],
     [
      {
@@ -700,7 +700,7 @@
      },
      "Magie Primale (MAG, INT)",
      "Offensif",
-     "Les ombres se referment : 12 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">Dégâts Absolus</a> à tous ceux dans un rayon de 2 cases. Exemple : la nuit tombe d'un coup."
+     "Les ombres se referment : 12 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent l'armure, directs sur la jauge vitale (§23.1).\">Dégâts Absolus</a> à tous ceux dans un rayon de 2 cases. Exemple : la nuit tombe d'un coup."
     ],
     [
      {
@@ -709,7 +709,7 @@
      },
      "Magie Primale (MAG, INT)",
      "Offensif",
-     "Tu lances un soleil noir : 14 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">Dégâts Absolus</a> dans un rayon de 3 cases. Contrecoup : tu prends 4 dégâts et <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Saignement : PV directs en début de tour, puis −1/tour. Tout soin le stoppe (§24.2).\">Saignement</a>. À sortir quand il le faut."
+     "Tu lances un soleil noir : 14 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent l'armure, directs sur la jauge vitale (§23.1).\">Dégâts Absolus</a> dans un rayon de 3 cases. Contrecoup : tu prends 4 dégâts et <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Saignement : PV directs en début de tour, puis −1/tour. Tout soin le stoppe (§24.2).\">Saignement</a>. À sortir quand il le faut."
     ],
     [
      {
@@ -745,7 +745,7 @@
      },
      "Magie Primale (MAG, INT)",
      "Offensif",
-     "Des lances jaillissent en ligne de 4 cases : 8 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">Dégâts Absolus</a> à tous ceux dessus (Delta ≥ 2 requis contre PJ/PNJ majeur). Exemple : la haie charge toute seule."
+     "Des lances jaillissent en ligne de 4 cases : 8 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent l'armure, directs sur la jauge vitale (§23.1).\">Dégâts Absolus</a> à tous ceux dessus (Delta ≥ 2 requis contre PJ/PNJ majeur). Exemple : la haie charge toute seule."
     ],
     [
      {
@@ -805,7 +805,7 @@
      },
      "Magie Primale (MAG, INT)",
      "Défensif, Utilitaire",
-     "Tu dresses une palissade sur 2 hexagones contigus : <a class=\"rule-ref\" href=\"livre_5.html#chap-21-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§21.3).\">Couvert 3/4</a> pendant 2 tours. Exemple : les troncs se resserrent autour de vous."
+     "Tu dresses une palissade sur 2 hexagones contigus : <a class=\"rule-ref\" href=\"livre_5.html#sec-21-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§21.3).\">Couvert 3/4</a> pendant 2 tours. Exemple : les troncs se resserrent autour de vous."
     ],
     [
      {
@@ -901,7 +901,7 @@
      },
      "Magie Primale (MAG, INT)",
      "Offensif",
-     "Tes ronces fleurissent d'un coup : 8 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">Dégâts Absolus</a> à tous ceux dedans, et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Empoisonné : PV directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonné</a>. Exemple : une floraison noire, puis le silence."
+     "Tes ronces fleurissent d'un coup : 8 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent l'armure, directs sur la jauge vitale (§23.1).\">Dégâts Absolus</a> à tous ceux dedans, et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Empoisonné : PV directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonné</a>. Exemple : une floraison noire, puis le silence."
     ],
     [
      {
@@ -946,7 +946,7 @@
      },
      "Magie Primale (MAG, INT)",
      "Offensif",
-     "Tu écrases ta cible entravée : 12 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">Dégâts Absolus</a> (Delta ≥ 2 requis contre PJ/PNJ majeur). Exemple : tu l'écrases d'un coup."
+     "Tu écrases ta cible entravée : 12 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent l'armure, directs sur la jauge vitale (§23.1).\">Dégâts Absolus</a> (Delta ≥ 2 requis contre PJ/PNJ majeur). Exemple : tu l'écrases d'un coup."
     ],
     [
      "<strong>Écorce Putride</strong>",
@@ -1225,7 +1225,7 @@
      },
      "Magie Primale (MAG, INT)",
      "Offensif",
-     "Ton poing s'abat comme un tronc : 12 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">Dégâts Absolus</a> au contact (Delta ≥ 2 requis contre PJ/PNJ majeur). Contrecoup : tu prends 4 dégâts. Exemple : le garde s'effondre d'un coup."
+     "Ton poing s'abat comme un tronc : 12 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent l'armure, directs sur la jauge vitale (§23.1).\">Dégâts Absolus</a> au contact (Delta ≥ 2 requis contre PJ/PNJ majeur). Contrecoup : tu prends 4 dégâts. Exemple : le garde s'effondre d'un coup."
     ],
     [
      {
@@ -1234,7 +1234,7 @@
      },
      "Magie Primale (MAG, INT)",
      "Offensif",
-     "Tu projettes tes épines : 8 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">Dégâts Absolus</a> à tous ceux à 1 case de toi (Delta ≥ 2 requis contre PJ/PNJ majeur). Exemple : un cercle de pointes autour de toi."
+     "Tu projettes tes épines : 8 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent l'armure, directs sur la jauge vitale (§23.1).\">Dégâts Absolus</a> à tous ceux à 1 case de toi (Delta ≥ 2 requis contre PJ/PNJ majeur). Exemple : un cercle de pointes autour de toi."
     ],
     [
      "<strong>Écorce Gardienne</strong>",
@@ -1285,7 +1285,7 @@
      },
      "Magie Primale (MAG, INT)",
      "Défensif",
-     "<a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : pendant 2 tours, tu es <a class=\"rule-ref\" href=\"livre_5.html#chap-21-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§21.3).\">Couvert Total</a> contre les tirs venus de l'extérieur. Exemple : les flèches se plantent dans l'écorce."
+     "<a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : pendant 2 tours, tu es <a class=\"rule-ref\" href=\"livre_5.html#sec-21-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§21.3).\">Couvert Total</a> contre les tirs venus de l'extérieur. Exemple : les flèches se plantent dans l'écorce."
     ],
     [
      {
@@ -1321,7 +1321,7 @@
      },
      "Magie Primale (MAG, INT)",
      "Défensif, Utilitaire",
-     "Ton bastion devient un sanctuaire : <a class=\"rule-ref\" href=\"livre_5.html#chap-21-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§21.3).\">Couvert Total</a> contre les tirs extérieurs, et tes alliés dedans récupèrent 4 PV et purgent <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Saignement : PV directs en début de tour, puis −1/tour. Tout soin le stoppe (§24.2).\">Saignement</a> et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Ralenti : actions hors déplacement ×2 PA ; déplacement +1 PA/case (§24.1).\">Ralenti</a>. Exemple : vous soufflez sous la voûte."
+     "Ton bastion devient un sanctuaire : <a class=\"rule-ref\" href=\"livre_5.html#sec-21-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§21.3).\">Couvert Total</a> contre les tirs extérieurs, et tes alliés dedans récupèrent 4 PV et purgent <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Saignement : PV directs en début de tour, puis −1/tour. Tout soin le stoppe (§24.2).\">Saignement</a> et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Ralenti : actions hors déplacement ×2 PA ; déplacement +1 PA/case (§24.1).\">Ralenti</a>. Exemple : vous soufflez sous la voûte."
     ],
     [
      {
@@ -1459,7 +1459,7 @@
      },
      "Magie Élémentale (MAG, INT)",
      "Offensif",
-     "Tu concentres tout en un dard : 8 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">Dégâts Absolus</a> sur une cible à 6 cases (Delta ≥ 2 requis contre PJ/PNJ majeur). Un seul trou, mais net."
+     "Tu concentres tout en un dard : 8 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent l'armure, directs sur la jauge vitale (§23.1).\">Dégâts Absolus</a> sur une cible à 6 cases (Delta ≥ 2 requis contre PJ/PNJ majeur). Un seul trou, mais net."
     ],
     [
      {
@@ -1468,7 +1468,7 @@
      },
      "Magie Élémentale (MAG, INT)",
      "Offensif",
-     "Tu fais tomber un rayon du ciel sur un hexagone à 8 cases : 10 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">Dégâts Absolus</a>. Ça tombe d'en haut : ignore le couvert (Delta ≥ 2 requis contre PJ/PNJ majeur)."
+     "Tu fais tomber un rayon du ciel sur un hexagone à 8 cases : 10 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent l'armure, directs sur la jauge vitale (§23.1).\">Dégâts Absolus</a>. Ça tombe d'en haut : ignore le couvert (Delta ≥ 2 requis contre PJ/PNJ majeur)."
     ],
     [
      {
@@ -1477,7 +1477,7 @@
      },
      "Magie Élémentale (MAG, INT)",
      "Offensif",
-     "Tu tires un trait horizontal : ligne de 4 cases, 8 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">Dégâts Absolus</a> à tous ceux dessus (Delta ≥ 2 requis contre PJ/PNJ majeur)."
+     "Tu tires un trait horizontal : ligne de 4 cases, 8 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent l'armure, directs sur la jauge vitale (§23.1).\">Dégâts Absolus</a> à tous ceux dessus (Delta ≥ 2 requis contre PJ/PNJ majeur)."
     ],
     [
      {
@@ -1495,7 +1495,7 @@
      },
      "Magie Élémentale (MAG, INT)",
      "Offensif",
-     "Tu exploses : 12 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\"\n                                            data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">dégâts\n                                            absolus</a> dans un rayon de 2 cases."
+     "Tu exploses : 12 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\"\n                                            data-tip=\"Dégâts Absolus : ignorent l'armure, directs sur la jauge vitale (§23.1).\">dégâts\n                                            absolus</a> dans un rayon de 2 cases."
     ],
     [
      {
@@ -1504,7 +1504,7 @@
      },
      "Magie Élémentale (MAG, INT)",
      "Offensif",
-     "Tu lances un petit soleil : 14 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">dégâts absolus</a> dans un rayon de 3 cases. Contrecoup : même abrité, tu prends 4 dégâts et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\" data-tip=\"En Feu : 2 PV/tour (bouclier d'abord), puis −1/tour. Il faut l'éteindre (§24.2).\">En Feu</a>. À sortir quand il le faut."
+     "Tu lances un petit soleil : 14 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent l'armure, directs sur la jauge vitale (§23.1).\">dégâts absolus</a> dans un rayon de 3 cases. Contrecoup : même abrité, tu prends 4 dégâts et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\" data-tip=\"En Feu : 2 PV/tour (bouclier d'abord), puis −1/tour. Il faut l'éteindre (§24.2).\">En Feu</a>. À sortir quand il le faut."
     ],
     [
      {
@@ -1591,7 +1591,7 @@
      },
      "Magie Élémentale (MAG, INT)",
      "Défensif",
-     "Tu fermes les braises en dôme (rayon 1 case autour de toi) pendant 2 tours. Dedans, tu protèges les tiens : <a class=\"rule-ref\" href=\"livre_5.html#chap-21-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§21.3).\">Couvert Total</a> contre les tirs venus de l'extérieur. L'ennemi qui entre prend 3 dégâts et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\" data-tip=\"En Feu : 2 PV/tour (bouclier d'abord), puis −1/tour. Il faut l'éteindre (§24.2).\">En Feu</a>."
+     "Tu fermes les braises en dôme (rayon 1 case autour de toi) pendant 2 tours. Dedans, tu protèges les tiens : <a class=\"rule-ref\" href=\"livre_5.html#sec-21-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§21.3).\">Couvert Total</a> contre les tirs venus de l'extérieur. L'ennemi qui entre prend 3 dégâts et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\" data-tip=\"En Feu : 2 PV/tour (bouclier d'abord), puis −1/tour. Il faut l'éteindre (§24.2).\">En Feu</a>."
     ],
     [
      {
@@ -1600,7 +1600,7 @@
      },
      "Magie Élémentale (MAG, INT)",
      "Défensif, Utilitaire",
-     "Ton dôme devient un sanctuaire : <a class=\"rule-ref\" href=\"livre_5.html#chap-21-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§21.3).\">Couvert Total</a> contre les tirs extérieurs, et tes alliés dedans récupèrent 4 PV et purgent <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\" data-tip=\"En Feu : 2 PV/tour (bouclier d'abord), puis −1/tour. Il faut l'éteindre (§24.2).\">En Feu</a> et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\" data-tip=\"Saignement : PV directs en début de tour, puis −1/tour. Tout soin le stoppe (§24.2).\">Saignement</a>. Souffle un coup."
+     "Ton dôme devient un sanctuaire : <a class=\"rule-ref\" href=\"livre_5.html#sec-21-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§21.3).\">Couvert Total</a> contre les tirs extérieurs, et tes alliés dedans récupèrent 4 PV et purgent <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\" data-tip=\"En Feu : 2 PV/tour (bouclier d'abord), puis −1/tour. Il faut l'éteindre (§24.2).\">En Feu</a> et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\" data-tip=\"Saignement : PV directs en début de tour, puis −1/tour. Tout soin le stoppe (§24.2).\">Saignement</a>. Souffle un coup."
     ],
     [
      {
@@ -1765,7 +1765,7 @@
      },
      "Magie Élémentale (MAG, INT)",
      "Offensif",
-     "Ta rafale inflige 4 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\"\n                                            data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">dégâts\n                                            Absolus</a> et ignore le couvert partiel."
+     "Ta rafale inflige 4 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\"\n                                            data-tip=\"Dégâts Absolus : ignorent l'armure, directs sur la jauge vitale (§23.1).\">dégâts\n                                            Absolus</a> et ignore le couvert partiel."
     ],
     [
      {
@@ -1774,7 +1774,7 @@
      },
      "Magie Élémentale (MAG, INT)",
      "Offensif",
-     "Ta lame s'élargit : ligne de 2 cases, 4 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">dégâts Absolus</a> à tous ceux dessus."
+     "Ta lame s'élargit : ligne de 2 cases, 4 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent l'armure, directs sur la jauge vitale (§23.1).\">dégâts Absolus</a> à tous ceux dessus."
     ],
     [
      {
@@ -1783,7 +1783,7 @@
      },
      "Magie Élémentale (MAG, INT)",
      "Offensif",
-     "Zone de 2 cases de rayon : 8 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\"\n                                            data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">dégâts\n                                            Absolus</a> et cibles <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.\">À\n                                            Terre</a>."
+     "Zone de 2 cases de rayon : 8 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\"\n                                            data-tip=\"Dégâts Absolus : ignorent l'armure, directs sur la jauge vitale (§23.1).\">dégâts\n                                            Absolus</a> et cibles <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.\">À\n                                            Terre</a>."
     ],
     [
      {
@@ -1792,7 +1792,7 @@
      },
      "Magie Élémentale (MAG, INT)",
      "Offensif",
-     "Tu déchaînes l'ouragan : zone de 3 cases de rayon pendant 2 tours. L'ennemi qui commence dedans prend 6 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">dégâts Absolus</a> et tombe <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.\">À Terre</a>."
+     "Tu déchaînes l'ouragan : zone de 3 cases de rayon pendant 2 tours. L'ennemi qui commence dedans prend 6 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent l'armure, directs sur la jauge vitale (§23.1).\">dégâts Absolus</a> et tombe <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.\">À Terre</a>."
     ],
     [
      {
@@ -1879,7 +1879,7 @@
      },
      "Magie Élémentale (MAG, INT)",
      "Défensif",
-     "Dôme d'air (rayon 1 case autour de toi) pendant 2 tours : <a class=\"rule-ref\" href=\"livre_5.html#chap-21-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§21.3).\">Couvert Total</a> contre les tirs extérieurs. L'ennemi qui entre est refoulé d'1 case."
+     "Dôme d'air (rayon 1 case autour de toi) pendant 2 tours : <a class=\"rule-ref\" href=\"livre_5.html#sec-21-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§21.3).\">Couvert Total</a> contre les tirs extérieurs. L'ennemi qui entre est refoulé d'1 case."
     ],
     [
      {
@@ -1888,7 +1888,7 @@
      },
      "Magie Élémentale (MAG, INT)",
      "Défensif, Utilitaire",
-     "Ton dôme devient sanctuaire pendant 2 tours : <a class=\"rule-ref\" href=\"livre_5.html#chap-21-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§21.3).\">Couvert Total</a> contre les tirs extérieurs, et tes alliés dedans récupèrent 2 PA et purgent <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"Ralenti : actions hors déplacement ×2 PA ; déplacement +1 PA/case (§24.1).\">Ralenti</a>."
+     "Ton dôme devient sanctuaire pendant 2 tours : <a class=\"rule-ref\" href=\"livre_5.html#sec-21-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§21.3).\">Couvert Total</a> contre les tirs extérieurs, et tes alliés dedans récupèrent 2 PA et purgent <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"Ralenti : actions hors déplacement ×2 PA ; déplacement +1 PA/case (§24.1).\">Ralenti</a>."
     ],
     [
      {
@@ -1999,7 +1999,7 @@
      "<strong>Hydromancie</strong>",
      "Magie Élémentale (MAG, INT)",
      "Offensif, Utilitaire",
-     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\"\n                                            data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2\n                                            PA</a> : jet à 4 cases — 3 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\"\n                                            data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">dégâts\n                                            Absolus</a> et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Ralenti : actions hors déplacement ×2 PA ; déplacement +1 PA/case (§24.1).\">Ralenti</a> pendant\n                                        1 tour."
+     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\"\n                                            data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2\n                                            PA</a> : jet à 4 cases — 3 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\"\n                                            data-tip=\"Dégâts Absolus : ignorent l'armure, directs sur la jauge vitale (§23.1).\">dégâts\n                                            Absolus</a> et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Ralenti : actions hors déplacement ×2 PA ; déplacement +1 PA/case (§24.1).\">Ralenti</a> pendant\n                                        1 tour."
     ],
     [
      {
@@ -2062,7 +2062,7 @@
      },
      "Magie Élémentale (MAG, INT)",
      "Offensif",
-     "Cible à 4 cases : 4 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">dégâts Absolus</a> et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"Immobilisé : impossible de faire la moindre action de mouvement (§24.1).\">Immobilisée</a> pendant 1 tour (Delta ≥ 2 requis contre PJ/PNJ majeur)."
+     "Cible à 4 cases : 4 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent l'armure, directs sur la jauge vitale (§23.1).\">dégâts Absolus</a> et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"Immobilisé : impossible de faire la moindre action de mouvement (§24.1).\">Immobilisée</a> pendant 1 tour (Delta ≥ 2 requis contre PJ/PNJ majeur)."
     ],
     [
      {
@@ -2071,7 +2071,7 @@
      },
      "Magie Élémentale (MAG, INT)",
      "Offensif",
-     "Ligne de 3 cases : 8 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\"\n                                            data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">dégâts\n                                            Absolus</a> et cibles <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.\">À\n                                            Terre</a>."
+     "Ligne de 3 cases : 8 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\"\n                                            data-tip=\"Dégâts Absolus : ignorent l'armure, directs sur la jauge vitale (§23.1).\">dégâts\n                                            Absolus</a> et cibles <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.\">À\n                                            Terre</a>."
     ],
     [
      {
@@ -2080,7 +2080,7 @@
      },
      "Magie Élémentale (MAG, INT)",
      "Offensif, Utilitaire",
-     "Tu ouvres une fosse : zone de 2 cases de rayon pendant 2 tours. L'ennemi qui commence dedans prend 6 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">dégâts Absolus</a> et est <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"Immobilisé : impossible de faire la moindre action de mouvement (§24.1).\">Immobilisé</a>. Le sol reste détrempé (terrain difficile) pendant 2 tours."
+     "Tu ouvres une fosse : zone de 2 cases de rayon pendant 2 tours. L'ennemi qui commence dedans prend 6 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent l'armure, directs sur la jauge vitale (§23.1).\">dégâts Absolus</a> et est <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"Immobilisé : impossible de faire la moindre action de mouvement (§24.1).\">Immobilisé</a>. Le sol reste détrempé (terrain difficile) pendant 2 tours."
     ],
     [
      {
@@ -2167,7 +2167,7 @@
      },
      "Magie Élémentale (MAG, INT)",
      "Défensif",
-     "Cloche d'eau (rayon 1 case autour de toi) pendant 2 tours : <a class=\"rule-ref\" href=\"livre_5.html#chap-21-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§21.3).\">Couvert Total</a> contre les tirs extérieurs. L'ennemi qui entre est Ralenti pendant 1 tour."
+     "Cloche d'eau (rayon 1 case autour de toi) pendant 2 tours : <a class=\"rule-ref\" href=\"livre_5.html#sec-21-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§21.3).\">Couvert Total</a> contre les tirs extérieurs. L'ennemi qui entre est Ralenti pendant 1 tour."
     ],
     [
      {
@@ -2176,7 +2176,7 @@
      },
      "Magie Élémentale (MAG, INT)",
      "Défensif, Utilitaire",
-     "Ta cloche devient sanctuaire pendant 2 tours : <a class=\"rule-ref\" href=\"livre_5.html#chap-21-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§21.3).\">Couvert Total</a> contre les tirs extérieurs, et tes alliés dedans récupèrent 4 PV et purgent <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"Ralenti : actions hors déplacement ×2 PA ; déplacement +1 PA/case (§24.1).\">Ralenti</a>."
+     "Ta cloche devient sanctuaire pendant 2 tours : <a class=\"rule-ref\" href=\"livre_5.html#sec-21-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§21.3).\">Couvert Total</a> contre les tirs extérieurs, et tes alliés dedans récupèrent 4 PV et purgent <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"Ralenti : actions hors déplacement ×2 PA ; déplacement +1 PA/case (§24.1).\">Ralenti</a>."
     ],
     [
      {
@@ -2341,7 +2341,7 @@
      },
      "Magie Élémentale (MAG, INT)",
      "Offensif",
-     "Cible à 2 cases : 4 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\"\n                                            data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">dégâts\n                                            Absolus</a> et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.\">À\n                                            Terre</a> sur Delta ≥ 2."
+     "Cible à 2 cases : 4 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\"\n                                            data-tip=\"Dégâts Absolus : ignorent l'armure, directs sur la jauge vitale (§23.1).\">dégâts\n                                            Absolus</a> et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.\">À\n                                            Terre</a> sur Delta ≥ 2."
     ],
     [
      {
@@ -2350,7 +2350,7 @@
      },
      "Magie Élémentale (MAG, INT)",
      "Offensif",
-     "Onde à 4 cases : 6 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">dégâts Absolus</a> et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.\">À Terre</a> sur Delta ≥ 2."
+     "Onde à 4 cases : 6 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent l'armure, directs sur la jauge vitale (§23.1).\">dégâts Absolus</a> et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.\">À Terre</a> sur Delta ≥ 2."
     ],
     [
      {
@@ -2359,7 +2359,7 @@
      },
      "Magie Élémentale (MAG, INT)",
      "Offensif, Utilitaire",
-     "Zone de 2 cases de rayon : 8 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\"\n                                            data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">dégâts\n                                            Absolus</a>, cibles <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.\">À\n                                            Terre</a>, terrain difficile pendant 2 tours."
+     "Zone de 2 cases de rayon : 8 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\"\n                                            data-tip=\"Dégâts Absolus : ignorent l'armure, directs sur la jauge vitale (§23.1).\">dégâts\n                                            Absolus</a>, cibles <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.\">À\n                                            Terre</a>, terrain difficile pendant 2 tours."
     ],
     [
      {
@@ -2368,7 +2368,7 @@
      },
      "Magie Élémentale (MAG, INT)",
      "Offensif",
-     "Tu fends le sol : zone de 3 cases de rayon pendant 2 tours. L'ennemi qui commence dedans prend 6 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">dégâts Absolus</a> et tombe <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.\">À Terre</a>."
+     "Tu fends le sol : zone de 3 cases de rayon pendant 2 tours. L'ennemi qui commence dedans prend 6 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent l'armure, directs sur la jauge vitale (§23.1).\">dégâts Absolus</a> et tombe <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.\">À Terre</a>."
     ],
     [
      {
@@ -2383,7 +2383,7 @@
      "<strong>Levée de Terre</strong>",
      "Magie Élémentale (MAG, INT)",
      "Défensif",
-     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : tu lèves un talus sur ton hexagone pendant 2 tours (<a class=\"rule-ref\" href=\"livre_5.html#chap-21-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§21.3).\">Couvert 3/4</a> contre les tirs)."
+     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : tu lèves un talus sur ton hexagone pendant 2 tours (<a class=\"rule-ref\" href=\"livre_5.html#sec-21-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§21.3).\">Couvert 3/4</a> contre les tirs)."
     ],
     [
      {
@@ -2455,7 +2455,7 @@
      },
      "Magie Élémentale (MAG, INT)",
      "Défensif",
-     "Tour de pierre d'1 hexagone pendant 2 tours : <a class=\"rule-ref\" href=\"livre_5.html#chap-21-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§21.3).\">Couvert Total</a>, et tu vois par-dessus les murs (+1 en Observation)."
+     "Tour de pierre d'1 hexagone pendant 2 tours : <a class=\"rule-ref\" href=\"livre_5.html#sec-21-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§21.3).\">Couvert Total</a>, et tu vois par-dessus les murs (+1 en Observation)."
     ],
     [
      {
@@ -2464,7 +2464,7 @@
      },
      "Magie Élémentale (MAG, INT)",
      "Défensif",
-     "Citadelle de 3 hexagones pendant 3 tours : <a class=\"rule-ref\" href=\"livre_5.html#chap-21-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§21.3).\">Couvert Total</a> contre l'extérieur, et tes alliés dedans gagnent +2 d'armure naturelle."
+     "Citadelle de 3 hexagones pendant 3 tours : <a class=\"rule-ref\" href=\"livre_5.html#sec-21-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§21.3).\">Couvert Total</a> contre l'extérieur, et tes alliés dedans gagnent +2 d'armure naturelle."
     ],
     [
      {
@@ -2506,7 +2506,7 @@
      },
      "Magie Élémentale (MAG, INT)",
      "Défensif",
-     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : dalle levée pendant 1 tour : <a class=\"rule-ref\" href=\"livre_5.html#chap-21-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§21.3).\">Couvert 3/4</a> contre les tirs (toi seul)."
+     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : dalle levée pendant 1 tour : <a class=\"rule-ref\" href=\"livre_5.html#sec-21-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§21.3).\">Couvert 3/4</a> contre les tirs (toi seul)."
     ],
     [
      {
@@ -2569,7 +2569,7 @@
      },
      "Magie Élémentale (MAG, INT)",
      "Offensif",
-     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">3 PA</a> : pilier de roc sous un ennemi à 6 cases : 8 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">Dégâts Absolus</a> et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.\">À Terre</a> (Delta ≥ 2 requis contre PJ/PNJ majeur)."
+     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">3 PA</a> : pilier de roc sous un ennemi à 6 cases : 8 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent l'armure, directs sur la jauge vitale (§23.1).\">Dégâts Absolus</a> et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.\">À Terre</a> (Delta ≥ 2 requis contre PJ/PNJ majeur)."
     ],
     [
      "<strong>Projection d'Objets</strong>",
@@ -2584,7 +2584,7 @@
      },
      "Magie de l'Esprit (MAG, INT)",
      "Offensif",
-     "Tu projettes un éclat à 6 cases : 4 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">Dégâts Absolus</a>, et tu ignores le couvert partiel. Exemple : entre les deux piliers."
+     "Tu projettes un éclat à 6 cases : 4 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent l'armure, directs sur la jauge vitale (§23.1).\">Dégâts Absolus</a>, et tu ignores le couvert partiel. Exemple : entre les deux piliers."
     ],
     [
      {
@@ -2593,7 +2593,7 @@
      },
      "Magie de l'Esprit (MAG, INT)",
      "Offensif",
-     "Tes lames tranchent à 6 cases : 6 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">Dégâts Absolus</a> (Delta ≥ 2 requis contre PJ/PNJ majeur). Exemple : deux entailles nettes."
+     "Tes lames tranchent à 6 cases : 6 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent l'armure, directs sur la jauge vitale (§23.1).\">Dégâts Absolus</a> (Delta ≥ 2 requis contre PJ/PNJ majeur). Exemple : deux entailles nettes."
     ],
     [
      {
@@ -2611,7 +2611,7 @@
      },
      "Magie de l'Esprit (MAG, INT)",
      "Offensif",
-     "La tempête frappe tout à 1 case de toi : 8 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">Dégâts Absolus</a> (Delta ≥ 2 requis contre PJ/PNJ majeur). Exemple : un cercle de poussière."
+     "La tempête frappe tout à 1 case de toi : 8 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent l'armure, directs sur la jauge vitale (§23.1).\">Dégâts Absolus</a> (Delta ≥ 2 requis contre PJ/PNJ majeur). Exemple : un cercle de poussière."
     ],
     [
      {
@@ -2620,7 +2620,7 @@
      },
      "Magie de l'Esprit (MAG, INT)",
      "Offensif",
-     "Tu crées un point zéro de 3 cases de rayon : 14 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">Dégâts Absolus</a>. Contrecoup : tu prends 4 dégâts et es <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Ralenti : actions hors déplacement ×2 PA ; déplacement +1 PA/case (§24.1).\">Ralenti</a>. À sortir quand il le faut."
+     "Tu crées un point zéro de 3 cases de rayon : 14 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent l'armure, directs sur la jauge vitale (§23.1).\">Dégâts Absolus</a>. Contrecoup : tu prends 4 dégâts et es <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Ralenti : actions hors déplacement ×2 PA ; déplacement +1 PA/case (§24.1).\">Ralenti</a>. À sortir quand il le faut."
     ],
     [
      {
@@ -2638,7 +2638,7 @@
      },
      "Magie de l'Esprit (MAG, INT)",
      "Offensif",
-     "Tu comprimes ta cible à 4 cases : 8 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">Dégâts Absolus</a> (Delta ≥ 2 requis contre PJ/PNJ majeur). Exemple : l'armure se froisse comme du papier."
+     "Tu comprimes ta cible à 4 cases : 8 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent l'armure, directs sur la jauge vitale (§23.1).\">Dégâts Absolus</a> (Delta ≥ 2 requis contre PJ/PNJ majeur). Exemple : l'armure se froisse comme du papier."
     ],
     [
      {
@@ -2647,7 +2647,7 @@
      },
      "Magie de l'Esprit (MAG, INT)",
      "Offensif",
-     "À 6 cases, tu concentres la gravité : 10 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">Dégâts Absolus</a> (Delta ≥ 2 requis contre PJ/PNJ majeur). Exemple : l'air se plisse."
+     "À 6 cases, tu concentres la gravité : 10 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent l'armure, directs sur la jauge vitale (§23.1).\">Dégâts Absolus</a> (Delta ≥ 2 requis contre PJ/PNJ majeur). Exemple : l'air se plisse."
     ],
     [
      {
@@ -2665,7 +2665,7 @@
      },
      "Magie de l'Esprit (MAG, INT)",
      "Offensif",
-     "Tu crées une singularité sur 1 hexagone à 6 cases : 12 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">Dégâts Absolus</a> (Delta ≥ 2 requis contre PJ/PNJ majeur). Contrecoup : tu prends 4 dégâts. Exemple : tout s'écrase au centre."
+     "Tu crées une singularité sur 1 hexagone à 6 cases : 12 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent l'armure, directs sur la jauge vitale (§23.1).\">Dégâts Absolus</a> (Delta ≥ 2 requis contre PJ/PNJ majeur). Contrecoup : tu prends 4 dégâts. Exemple : tout s'écrase au centre."
     ],
     [
      "<strong>Barrière Cinétique</strong>",
@@ -2698,7 +2698,7 @@
      },
      "Magie de l'Esprit (MAG, INT)",
      "Défensif, Utilitaire",
-     "Tu lèves un abri sur 2 hexagones : <a class=\"rule-ref\" href=\"livre_5.html#chap-21-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§21.3).\">Couvert 3/4</a> pendant 2 tours. Exemple : on souffle derrière."
+     "Tu lèves un abri sur 2 hexagones : <a class=\"rule-ref\" href=\"livre_5.html#sec-21-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§21.3).\">Couvert 3/4</a> pendant 2 tours. Exemple : on souffle derrière."
     ],
     [
      {
@@ -2716,7 +2716,7 @@
      },
      "Magie de l'Esprit (MAG, INT)",
      "Défensif",
-     "<a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : pendant 2 tours, tu es <a class=\"rule-ref\" href=\"livre_5.html#chap-21-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§21.3).\">Couvert Total</a> contre les tirs venus de l'extérieur. Exemple : plus rien ne passe."
+     "<a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : pendant 2 tours, tu es <a class=\"rule-ref\" href=\"livre_5.html#sec-21-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§21.3).\">Couvert Total</a> contre les tirs venus de l'extérieur. Exemple : plus rien ne passe."
     ],
     [
      {
@@ -2734,7 +2734,7 @@
      },
      "Magie de l'Esprit (MAG, INT)",
      "Défensif",
-     "Tu fermes la force en dôme (rayon 1 case autour de toi) pendant 2 tours : <a class=\"rule-ref\" href=\"livre_5.html#chap-21-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§21.3).\">Couvert Total</a> contre les tirs venus de l'extérieur. Exemple : la bulle tient."
+     "Tu fermes la force en dôme (rayon 1 case autour de toi) pendant 2 tours : <a class=\"rule-ref\" href=\"livre_5.html#sec-21-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§21.3).\">Couvert Total</a> contre les tirs venus de l'extérieur. Exemple : la bulle tient."
     ],
     [
      {
@@ -2752,7 +2752,7 @@
      },
      "Magie de l'Esprit (MAG, INT)",
      "Défensif",
-     "Tu poses un mur invisible de 3 hexagones contigus : <a class=\"rule-ref\" href=\"livre_5.html#chap-21-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§21.3).\">Couvert Total</a> indestructible. Exemple : le couloir est condamné."
+     "Tu poses un mur invisible de 3 hexagones contigus : <a class=\"rule-ref\" href=\"livre_5.html#sec-21-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§21.3).\">Couvert Total</a> indestructible. Exemple : le couloir est condamné."
     ],
     [
      {
@@ -2812,7 +2812,7 @@
      },
      "Magie de l'Esprit (MAG, INT)",
      "Défensif, Utilitaire",
-     "Plateforme invisible de 2 hexagones pendant 3 tours : praticable et <a class=\"rule-ref\" href=\"livre_5.html#chap-21-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§21.3).\">Couvert 3/4</a>. Exemple : un poste de tir dans le ciel."
+     "Plateforme invisible de 2 hexagones pendant 3 tours : praticable et <a class=\"rule-ref\" href=\"livre_5.html#sec-21-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§21.3).\">Couvert 3/4</a>. Exemple : un poste de tir dans le ciel."
     ],
     [
      {
@@ -2881,7 +2881,7 @@
      },
      "Magie de l'Esprit (MAG, INT)",
      "Offensif",
-     "Tes échardes tranchent à 6 cases : 8 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">Dégâts Absolus</a> (Delta ≥ 2 requis contre PJ/PNJ majeur). Exemple : deux entailles nettes, sans bruit."
+     "Tes échardes tranchent à 6 cases : 8 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent l'armure, directs sur la jauge vitale (§23.1).\">Dégâts Absolus</a> (Delta ≥ 2 requis contre PJ/PNJ majeur). Exemple : deux entailles nettes, sans bruit."
     ],
     [
      {
@@ -2899,7 +2899,7 @@
      },
      "Magie de l'Esprit (MAG, INT)",
      "Offensif",
-     "Le moi se referme : 12 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">Dégâts Absolus</a> à tous ceux dans un rayon de 2 cases (Delta ≥ 2 requis contre PJ/PNJ majeur). Exemple : chacun affronte son propre gouffre."
+     "Le moi se referme : 12 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent l'armure, directs sur la jauge vitale (§23.1).\">Dégâts Absolus</a> à tous ceux dans un rayon de 2 cases (Delta ≥ 2 requis contre PJ/PNJ majeur). Exemple : chacun affronte son propre gouffre."
     ],
     [
      {
@@ -2908,7 +2908,7 @@
      },
      "Magie de l'Esprit (MAG, INT)",
      "Offensif",
-     "Tu pousses le cri du vide : 14 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">Dégâts Absolus</a> dans un rayon de 3 cases. Contrecoup : tu prends 4 dégâts et es <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Étourdi : −1 ec sur tous les jets.\">Étourdi</a>. À sortir quand il le faut."
+     "Tu pousses le cri du vide : 14 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent l'armure, directs sur la jauge vitale (§23.1).\">Dégâts Absolus</a> dans un rayon de 3 cases. Contrecoup : tu prends 4 dégâts et es <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Étourdi : −1 ec sur tous les jets.\">Étourdi</a>. À sortir quand il le faut."
     ],
     [
      "<strong>Injonction Impérieuse</strong>",
@@ -2950,7 +2950,7 @@
      },
      "Magie de l'Esprit (MAG, INT)",
      "Offensif",
-     "Tu brises ses défenses : 12 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">Dégâts Absolus</a> (Delta ≥ 2 requis contre PJ/PNJ majeur), et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Étourdi : −1 ec sur tous les jets.\">Étourdi</a>. Contrecoup : tu prends 4 dégâts. Exemple : il s'effondre en hurlant."
+     "Tu brises ses défenses : 12 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent l'armure, directs sur la jauge vitale (§23.1).\">Dégâts Absolus</a> (Delta ≥ 2 requis contre PJ/PNJ majeur), et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Étourdi : −1 ec sur tous les jets.\">Étourdi</a>. Contrecoup : tu prends 4 dégâts. Exemple : il s'effondre en hurlant."
     ],
     [
      "<strong>Rempart Mental</strong>",
@@ -3193,7 +3193,7 @@
      },
      "Magie de l'Esprit (MAG, INT)",
      "Offensif",
-     "Le flash originel : 14 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">Dégâts Absolus</a> dans un rayon de 3 cases. Contrecoup : tu prends 4 dégâts et es <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Étourdi : −1 ec sur tous les jets.\">Étourdi</a>. À sortir quand il le faut."
+     "Le flash originel : 14 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent l'armure, directs sur la jauge vitale (§23.1).\">Dégâts Absolus</a> dans un rayon de 3 cases. Contrecoup : tu prends 4 dégâts et es <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Étourdi : −1 ec sur tous les jets.\">Étourdi</a>. À sortir quand il le faut."
     ],
     [
      {
@@ -3229,7 +3229,7 @@
      },
      "Magie de l'Esprit (MAG, INT)",
      "Offensif",
-     "Tu exécutes : 12 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">Dégâts Absolus</a> contre une cible à 6 cases sans Couvert Total (Delta ≥ 2 requis contre PJ/PNJ majeur). Exemple : une seule balle de lumière."
+     "Tu exécutes : 12 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent l'armure, directs sur la jauge vitale (§23.1).\">Dégâts Absolus</a> contre une cible à 6 cases sans Couvert Total (Delta ≥ 2 requis contre PJ/PNJ majeur). Exemple : une seule balle de lumière."
     ],
     [
      {
@@ -3238,13 +3238,13 @@
      },
      "Magie de l'Esprit (MAG, INT)",
      "Offensif",
-     "Ton regard frappe à 6 cases : 8 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">Dégâts Absolus</a> (Delta ≥ 2 requis contre PJ/PNJ majeur). Exemple : un trait blanc, un trou net."
+     "Ton regard frappe à 6 cases : 8 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent l'armure, directs sur la jauge vitale (§23.1).\">Dégâts Absolus</a> (Delta ≥ 2 requis contre PJ/PNJ majeur). Exemple : un trait blanc, un trou net."
     ],
     [
      "<strong>Prescience du Danger</strong>",
      "Magie de l'Esprit (MAG, INT)",
      "Défensif",
-     "En cas d'<a class=\"rule-ref\" href=\"livre_5.html#chap-21-4\"\n                                            data-tip=\"Embuscade : sans Vigilance, pas de réaction défensive. Détection au brouillard (§21.4).\">embuscade</a>,\n                                        tu gardes une réaction défensive à -1 au lieu d'aucune."
+     "En cas d'<a class=\"rule-ref\" href=\"livre_5.html#sec-21-4\"\n                                            data-tip=\"Embuscade : sans Vigilance, pas de réaction défensive. Détection au brouillard (§21.4).\">embuscade</a>,\n                                        tu gardes une réaction défensive à -1 au lieu d'aucune."
     ],
     [
      {
@@ -3767,7 +3767,7 @@
     "cout_pa": 3,
     "action": "Action Principale",
     "magie": "Magie Offensive // Attribut : Magie",
-    "effet": "« Tu resserres la gravité sur un membre. La matière cède. » Tu vises une partie du corps et tu lances ton épreuve avec +1 au résultat (1 pt). Si tu réussis, tu infliges 2 Dégâts Absolus qui ignorent la Constitution et le blindage (2 pts).",
+    "effet": "« Tu resserres la gravité sur un membre. La matière cède. » Tu vises une partie du corps et tu lances ton épreuve avec +1 au résultat (1 pt). Si tu réussis, tu infliges 2 Dégâts Absolus qui ignorent le blindage (2 pts).",
     "couts": [
      "ruby Coût Création : 3 XP",
      "amber Coût Combat : 3 PA"

@@ -571,7 +571,7 @@
      },
      "Maniement d'Arme (FOR, AGI)",
      "Offensif",
-     "Sur succès net, la cible <a class=\"rule-ref\"\n                                                href=\"livre_6.html#sec-24-1\"\n                                                data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.\">tombe\n                                                à terre</a>, +2 dégâts, dégâts convertis en <a class=\"rule-ref\"\n                                                href=\"livre_6.html#chap-23\"\n                                                data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">Absolus</a>."
+     "Sur succès net, la cible <a class=\"rule-ref\"\n                                                href=\"livre_6.html#sec-24-1\"\n                                                data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.\">tombe\n                                                à terre</a>, +2 dégâts, dégâts convertis en <a class=\"rule-ref\"\n                                                href=\"livre_6.html#chap-23\"\n                                                data-tip=\"Dégâts Absolus : ignorent l'armure, directs sur la jauge vitale (§23.1).\">Absolus</a>."
     ],
     [
      {
@@ -649,7 +649,7 @@
      },
      "Maniement d'Arme (FOR, AGI)",
      "Offensif, Défensif",
-     "+5 dégâts, dégâts convertis en\n                                        <a class=\"rule-ref\"\n                                                href=\"livre_6.html#chap-23\"\n                                                data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">Absolus</a>\n                                        sur critique."
+     "+5 dégâts, dégâts convertis en\n                                        <a class=\"rule-ref\"\n                                                href=\"livre_6.html#chap-23\"\n                                                data-tip=\"Dégâts Absolus : ignorent l'armure, directs sur la jauge vitale (§23.1).\">Absolus</a>\n                                        sur critique."
     ],
     [
      {
@@ -1126,7 +1126,7 @@
      },
      "Intuition (INT, INS)",
      "Utilitaire",
-     "Immunité totale aux <strong><a class=\"rule-ref\" href=\"livre_5.html#chap-21-4\"\n                                                data-tip=\"Embuscade : sans Vigilance, pas de réaction défensive. Détection au brouillard (§21.4).\">embuscades</a></strong>\n                                        et aux attaques de dos."
+     "Immunité totale aux <strong><a class=\"rule-ref\" href=\"livre_5.html#sec-21-4\"\n                                                data-tip=\"Embuscade : sans Vigilance, pas de réaction défensive. Détection au brouillard (§21.4).\">embuscades</a></strong>\n                                        et aux attaques de dos."
     ],
     [
      "<strong>Instinct du Chasseur</strong>",
@@ -1222,7 +1222,7 @@
      "<strong>Vigilance Réflexe</strong>",
      "Observation (VUE, INS)",
      "Utilitaire, Défensif",
-     "Immunise contre l'effet de surprise, réaction défensive conservée en\n                                        <a class=\"rule-ref\" href=\"livre_5.html#chap-21-4\"\n                                            data-tip=\"Embuscade : sans Vigilance, pas de réaction défensive. Détection au brouillard (§21.4).\">embuscade</a>."
+     "Immunise contre l'effet de surprise, réaction défensive conservée en\n                                        <a class=\"rule-ref\" href=\"livre_5.html#sec-21-4\"\n                                            data-tip=\"Embuscade : sans Vigilance, pas de réaction défensive. Détection au brouillard (§21.4).\">embuscade</a>."
     ],
     [
      {
@@ -1231,7 +1231,7 @@
      },
      "Observation (VUE, INS)",
      "Utilitaire, Défensif",
-     "<strong>+2</strong> aux duels de\n                                        détection du\n                                        brouillard (<a class=\"rule-ref\" href=\"livre_5.html#chap-21-4\"\n                                            data-tip=\"Brouillard de Guerre : détection asymétrique, duels d'Observation contre Discrétion (§21.4).\">Livre\n                                            V §21.4</a>)."
+     "<strong>+2</strong> aux duels de\n                                        détection du\n                                        brouillard (<a class=\"rule-ref\" href=\"livre_5.html#sec-21-4\"\n                                            data-tip=\"Brouillard de Guerre : détection asymétrique, duels d'Observation contre Discrétion (§21.4).\">Livre\n                                            V §21.4</a>)."
     ],
     [
      {
@@ -1558,7 +1558,7 @@
      "<strong>Perforation de Silicate</strong>",
      "Mains Nues (FOR, AGI)",
      "Offensif",
-     "Anti-blindage : ignore 2 d'armure, dégâts <a class=\"rule-ref\"\n                                            href=\"livre_6.html#chap-23\"\n                                            data-tip=\"Dégâts Absolus : ignorent armure et Constitution, directs sur la jauge vitale (§23.1).\">Absolus</a>\n                                        contre carapaces de pierre."
+     "Anti-blindage : ignore 2 d'armure, dégâts <a class=\"rule-ref\"\n                                            href=\"livre_6.html#chap-23\"\n                                            data-tip=\"Dégâts Absolus : ignorent l'armure, directs sur la jauge vitale (§23.1).\">Absolus</a>\n                                        contre carapaces de pierre."
     ],
     [
      {

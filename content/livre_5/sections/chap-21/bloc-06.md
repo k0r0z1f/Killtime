@@ -72,7 +72,7 @@ livre: 5
                         </div>
                     </div>
 
-                    <h3 id="chap-21-4">21.4 Brouillard de Guerre Asymétrique</h3>
+                    <h3 id="sec-21-4">21.4 Brouillard de Guerre Asymétrique</h3>
                     <p>
                         Tu ne vois que ce que ton perso voit. Une case hors de vue reste dans le noir.
                         Un ennemi non repéré est <strong>invisible et impossible à viser</strong> —
@@ -97,7 +97,7 @@ livre: 5
                             la vue. Ils servent à <strong>repérer</strong> : jet d'<a class="rule-ref" href="livre_3.html#chap-13" data-tip="Observation : repérer un indice, un danger, un ennemi camouflé. Duel vs Discrétion (§13)."><strong>Observation</strong></a>
                             (Vision + Instinct), jet d'<strong>Écoute</strong> (Ouïe + Instinct), <a class="rule-ref" href="livre_3.html#chap-12" data-tip="Discrétion : se cacher, se déplacer sans bruit. S'oppose à l'Observation (§12).">Discrétion</a> adverse
                             et révélation au bruit (ci-dessous).<br>
-                            <strong>4. Murs et contact :</strong> un mur plein (<a class="rule-ref" href="#chap-21-3" data-tip="Couvert total : cible non visible pour l'attaquant — attaque directe impossible (§21.3)."><strong>couvert total</strong></a>, §21.3)
+                            <strong>4. Murs et contact :</strong> un mur plein (<a class="rule-ref" href="#sec-21-3" data-tip="Couvert total : cible non visible pour l'attaquant — attaque directe impossible (§21.3)."><strong>couvert total</strong></a>, §21.3)
                             entre l'observateur et la case la plonge dans l'obscurité ; murets et barricades
                             (moitié, trois-quarts) restent visibles. <strong>Au contact (≤ 1 case), on se voit
                             toujours.</strong>
@@ -133,7 +133,7 @@ livre: 5
                         </div>
                         <div class="callout-body">
                             Par météo claire, Lucas ne voit pas le tireur embusqué à 9 cases :
-                            un pilier (<a class="rule-ref" href="#chap-21-3" data-tip="Couvert total : cible non visible pour l'attaquant — attaque directe impossible (§21.3).">couvert total</a>) barre sa ligne de mire ➔ obscurité. Il dépense
+                            un pilier (<a class="rule-ref" href="#sec-21-3" data-tip="Couvert total : cible non visible pour l'attaquant — attaque directe impossible (§21.3).">couvert total</a>) barre sa ligne de mire ➔ obscurité. Il dépense
                             <strong>1 <a class="rule-ref" href="livre_1.html#chap-4" data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a></strong> en Observation active, mais à travers un couvert total
                             l'observation est <strong>impossible</strong> : <a class="rule-ref" href="livre_1.html#chap-4" data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a> perdu. Le tireur riposte au fusil :
                             <strong>tir bruyant</strong>, mais le pilier fait toujours mur plein entre eux ➔
@@ -142,7 +142,7 @@ livre: 5
                         </div>
                     </div>
 
-                    <h3 id="chap-21-5">21.5 Technique-Duo : Résonance Dyadique (Règles de Table)</h3>
+                    <h3 id="sec-21-5">21.5 Technique-Duo : Résonance Dyadique (Règles de Table)</h3>
                     <p>
                         Tu connais Lucas et Mina ? Lui calcule froid, elle frappe vite et chaud.
                         Ensemble, ils font une <strong>Technique-Duo : une seule action à deux</strong>.

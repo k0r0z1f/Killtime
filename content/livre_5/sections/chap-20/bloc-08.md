@@ -11,8 +11,7 @@ livre: 5
                     </p>
 
                     <p>
-                        <strong>💨 Décrochage (1 <a class="rule-ref" href="livre_1.html#chap-4" data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a>, <a class="rule-ref" href="#sec-22-2" data-tip="Décrochage : recule d'1 case pour 1 PA, rompt le Canon Entravé et ne provoque rien (§22.2).">Livre V §22.2</a>) :</strong> retrait propre payé pendant son tour :
-                            tes <strong>déplacements</strong> ne provoquent aucune réaction jusqu'à la fin du tour.
+                        <strong>💨 Décrochage (1 <a class="rule-ref" href="livre_1.html#chap-4" data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a> d'activation, <a class="rule-ref" href="#sec-22-2" data-tip="Décrochage : 1 PA d'activation dans ton tour — chaque case payée normalement où tu t'écartes d'un personnage adjacent compte en décrochage (zéro réaction, rompt Canon Entravé) (§22.2).">Livre V §22.2</a>) :</strong> tu paies <strong>1 PA d'activation</strong> pendant ton tour ; jusqu'à la fin de ton tour, chaque case de déplacement (payée normalement) où tu te trouves à côté d'un autre personnage et t'en écartes est considérée comme un décrochage et ne provoque aucune réaction d'opportunité.
                     </p>
 
                     <ul>
