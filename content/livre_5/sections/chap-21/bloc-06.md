@@ -18,8 +18,8 @@ livre: 5
                             compte.<br>
                             <strong>2. Regarde à hauteur de table :</strong> baisse-toi à hauteur des figurines et
                             vise la silhouette adverse, des pieds au sommet de la tête (1,8 m). Tout ce qui est
-                            entre compte pour de vrai : <strong>muret (genoux, 0,7 m), barricade (ventre, 1,2 m),
-                            mur (caché, 2,2 m), piliers, caisses, mobilier</strong> — même si la case est marquée
+                            entre compte pour de vrai : <strong>muret, barricade,
+                            mur, piliers, caisses, mobilier</strong> — même si la case est marquée
                             à découvert — et le <strong>relief</strong> lui-même : une crête masque aussi bien
                             qu'un mur.<br>
                             <strong>3. Combien tu en vois :</strong> <strong>tout le corps</strong> ➔ à découvert
@@ -39,7 +39,7 @@ livre: 5
                     <ul>
                         <li><strong>Malus d'attaque, pas bonus de défense :</strong> le -1 / -2 s'applique au
                             <strong>total d'attaque</strong> (comme le malus de visée anatomique), annoncé en Phase 1
-                            du <a class="rule-ref" href="livre_2.html#chap-7" data-tip="Face-à-Face : chacun lance son dé + PA, le meilleur gagne. Seul le vainqueur coche (§7.3).">Face-à-Face</a> (<a class="rule-ref" href="#sec-20-2" data-tip="Face-à-Face : mises cachées attaquant puis défenseur, révélation simultanée (§20.2).">§20.2</a>) et tracé dans le journal de combat. Le jet de défense du défenseur
+                            du <a class="rule-ref" href="livre_2.html#chap-7" data-tip="Face-à-Face : chacun lance son dé + PA, le meilleur gagne. Seul le vainqueur coche (§7.3).">Face-à-Face</a> (<a class="rule-ref" href="#sec-20-2" data-tip="Face-à-Face : mises cachées attaquant puis défenseur, révélation simultanée (§20.2).">§20.2</a>). Le jet de défense du défenseur
                             n'est pas modifié.</li>
                         <li><strong>Cumul tactique &amp; global :</strong> couvert, punition de visée (-1 ou +1 <a class="rule-ref" href="livre_1.html#chap-4" data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a>), <a class="rule-ref" href="#sec-22-2" data-tip="Canon Entravé : arme longue + ennemi adjacent = −2 au tir, visée précise pour +1 PA (§22.2).">Canon Entravé</a>
                             (-2) et mises masquées (<a class="rule-ref" href="livre_1.html#chap-4" data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a> / PE) se cumulent entre eux. Tout cela s'additionne aussi avec le malus météo/nuit le plus fort (<a href="livre_2.html#sec-8-6">Livre II §8.6</a>), les malus de milieu racial (<a href="livre_2.html#sec-8-5">§8.5</a>) et tes états actifs (<a href="livre_6.html#chap-24">Livre VI §24</a>), sans jamais compter deux fois la même cause (<em>Canon Entravé</em> compte une seule fois ; météo P4 applique <em>Aveugle</em> seul). <em>Exemple : un tir à 6 cases sur une cible
@@ -49,8 +49,8 @@ livre: 5
                             coût</strong> (ni <a class="rule-ref" href="livre_1.html#chap-4" data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a> de base, ni mise engagée). Seules issues : <strong>se déplacer</strong>
                             pour retrouver une ligne de mire, contourner l'obstacle, ou passer par un effet de zone.</li>
                         <li><strong>Effets de zone (grenades, souffles) :</strong> le souffle contourne les obstacles :
-                            le couvert <strong>réduit les dégâts</strong> au lieu d'interdire (muret -2, barricade haute
-                            -3, mur -4 et bloque les éclats). Un tir lobé (mortier) ignore les couverts partiels. Voir
+                            le couvert <strong>réduit les dégâts</strong> au lieu d'interdire (moitié couvert -2, trois-quarts couvert
+                            -3, couvert total -4 et bloque les éclats). Un tir lobé (mortier) ignore les couverts partiels. Voir
                             <a class="rule-ref" href="livre_8.html#chap-32" data-tip="Armes à zone et munitions : le souffle contourne le couvert, dégâts réduits (§32.3).">Livre VIII §32.3</a>.</li>
                     </ul>
 
