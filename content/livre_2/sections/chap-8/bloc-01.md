@@ -6,10 +6,10 @@ livre: 2
 
                     <h4 id="sec-8-2">8.2 Chutes : H cases, H − 2 dégâts</h4>
                     <p>
-                        Une chute de <strong>H cases</strong> inflige <strong>H − 2 dégâts</strong> (minimum 0 : de 1 ou 2 cases, tu te réceptionnes). Ton armure ne protège pas ; ton <a class="rule-ref" href="livre_1.html#sec-4-1" data-tip="Encaissement = CON × 2 : ce que ton corps encaisse en un coup sans traumatisme (§4.1).">Encaissement</a> s'applique normalement (Livre I §4.1, Livre VI §23). Les durs à cuire réduisent la note avant comparaison : <em>Ossature Dense</em> (Derek) −1, <em>Grâce Féline</em> (Taurien) −2.
+                        Une chute de <strong>H cases</strong> inflige <strong>H − 2 dégâts</strong> (minimum 0 : de 1 ou 2 cases, tu te réceptionnes). Ton armure ne protège pas ; ton <a class="rule-ref" href="livre_1.html#sec-4-1" data-tip="Encaissement = CON × 2 : seuil par zone ; à > CON×2, épreuve d'Endurance Physique (Diff 3, +1 par dégât au-dessus) ou effet de zone (§4.1).">Encaissement</a> s'applique normalement (Livre I §4.1, Livre VI §23). Les durs à cuire réduisent la note avant comparaison : <em>Ossature Dense</em> (Derek) −1, <em>Grâce Féline</em> (Taurien) −2.
                     </p>
                     <p>
-                        <em>Exemple : ton Taurien (CON 4, Encaissement 8) tombe de 6 cases. 6 − 2 = 4, moins 2 (Grâce Féline) = 2 dégâts : une égratignure. Son voisin humain (CON 3, Encaissement 6) tombe de 10 cases : 10 − 2 = 8 dégâts, qui atteignent son Encaissement — syncope.</em>
+                        <em>Exemple : ton Taurien (CON 4, Encaissement 8) tombe de 6 cases. 6 − 2 = 4, moins 2 (Grâce Féline) = 2 dégâts : une égratignure. Son voisin humain (CON 3, Encaissement 6) tombe de 10 cases : 10 − 2 = 8 dégâts aux jambes, soit +2 au-dessus de son Encaissement — épreuve d'Endurance Physique Diff 5 (3 + 2), ou Ralenti jusqu'au prochain soin.</em>
                     </p>
                     <h4 id="sec-8-3">8.3 Souterrain : la roche prévient qui sait l'écouter</h4>
                     <p>

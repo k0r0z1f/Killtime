@@ -45,7 +45,7 @@ livre: 6
                             24 h hydraté + nuit sûre = Privation levée.
                             Manger 1 ration (une demi-ration suffit au Cléien) = −1 Affamé aussitôt.
                             48 h nourri = Affamé levé.
-                            Ni <a class="rule-ref" href="livre_6.html#chap-25" data-tip="Premiers Soins : stabilise, lève Souffrant (CON×2 en un coup), jamais la faim (§25.1).">Premiers Soins</a>
+                            Ni <a class="rule-ref" href="livre_6.html#chap-25" data-tip="Premiers Soins : stabilise, lève Souffrant, jamais la faim (§25.1).">Premiers Soins</a>
                             ni magie ne remplacent l'eau et la nourriture.</li>
                         <li><strong>Nuit sûre (<a class="rule-ref" href="livre_6.html#chap-25" data-tip="Nuit sûre 6–8 h : CON PV, ×2 si soignant veillé, Essoufflement à zéro (§25.2).">§25.2</a>) :</strong>
                             avec eau + ration = récup normale (CON PV, ×2 si soignant).

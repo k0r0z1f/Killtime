@@ -575,7 +575,7 @@ function suggestDesc(CAT, sel) {
    Paires (href, tip) reprises verbatim des Livres I-III — rien d'inventé.
    Pur : fabLinkText(s) -> html (échappé + lié, une seule passe). */
 var FAB_REFS = [
-    { k: 'encaissement', href: 'livre_6.html#sec-23-2', tip: 'Encaissement = CON × 2 : seuil comparé aux dégâts du coup (§23.2).' },
+    { k: 'encaissement', href: 'livre_6.html#sec-23-encaissement', tip: 'Encaissement = CON × 2 : seuil par zone (Endurance Diff 3 + 1 par dégât au-dessus si > CON×2, sinon effet de zone, Livre VI §23).' },
     { k: 'essoufflement', href: 'livre_1.html#sec-4-2', tip: 'Essoufflement : 1 point = des PA d’urgence ; ne part pas tout seul, action dédiée pour souffler (§4.2).' },
     { k: 'ralentie', href: 'livre_6.html#sec-24-1', tip: 'Ralenti : actions hors déplacement ×2 PA ; déplacement +1 PA/case (§24.1).' },
     { k: 'ralenti', href: 'livre_6.html#sec-24-1', tip: 'Ralenti : actions hors déplacement ×2 PA ; déplacement +1 PA/case (§24.1).' },

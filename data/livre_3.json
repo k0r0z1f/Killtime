@@ -1582,7 +1582,7 @@
      "<strong>Chirurgie</strong>",
      "Médecine Avancée (ÉRU, INT)",
      "Utilitaire",
-     "Referme les blessures critiques et lève l'état <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-5\"\n                                            data-tip=\"Souffrant : seul un soin unique ≥ CON×2 le lève. Les soins ordinaires ne le lèvent jamais.\">Souffrant</a>.\n                                        Soigne aussi les dégâts résiduels de <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Saignement : PV directs en début de tour, puis −1/tour. Tout soin le stoppe (§24.2).\">saignement</a>."
+     "Referme les blessures critiques et lève l'état <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-5\"\n                                            data-tip=\"Souffrant : blessure grave levée par n'importe quel soin (§24.5).\">Souffrant</a>.\n                                        Soigne aussi les dégâts résiduels de <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Saignement : PV directs en début de tour, puis −1/tour. Tout soin le stoppe (§24.2).\">saignement</a>."
     ],
     [
      {

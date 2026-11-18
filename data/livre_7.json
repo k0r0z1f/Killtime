@@ -337,7 +337,7 @@
     [
      "<strong>1</strong>",
      "<strong>Frôlé la mort</strong>",
-     "Annule 1 Essoufflement après un coup qui dépasse l'Encaissement",
+     "Ignore 1 échec de Choc Traumatique (seuil d'Encaissement) ou annule 1 point d'Essoufflement",
      "Cicatrices + cauchemars (le MJ peut imposer −2 à 1 jet de sang-froid / scénario)"
     ],
     [
@@ -752,7 +752,7 @@
    {
     "d12": 1,
     "evenement": "Frôlé la mort",
-    "effet": "Annule 1 Essoufflement après un coup qui dépasse l'Encaissement",
+    "effet": "Ignore 1 échec de Choc Traumatique (seuil d'Encaissement) ou annule 1 point d'Essoufflement",
     "sequelle": "Cicatrices + cauchemars (le MJ peut imposer −2 à 1 jet de sang-froid / scénario)"
    },
    {
@@ -826,7 +826,7 @@
    "1": {
     "d12": 1,
     "evenement": "Frôlé la mort",
-    "effet": "Annule 1 Essoufflement après un coup qui dépasse l'Encaissement",
+    "effet": "Ignore 1 échec de Choc Traumatique (seuil d'Encaissement) ou annule 1 point d'Essoufflement",
     "sequelle": "Cicatrices + cauchemars (le MJ peut imposer −2 à 1 jet de sang-froid / scénario)"
    },
    "2": {
