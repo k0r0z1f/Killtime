@@ -24,7 +24,7 @@
    "blocs": [
     {
      "type": "html",
-     "html": "\n\n                    <p>\n                        La résistance corporelle dépend directement de l'attribut <strong>Constitution (Con)</strong>.\n                        Deux formules fondamentales gouvernent la survie d'un personnage face aux violences du monde :\n                    </p>\n\n                    "
+     "html": "\n\n                    <p>\n                        La résistance corporelle dépend directement de l'attribut <strong>Constitution (Con)</strong>.\n                        Deux formules fondamentales régissent la survie d'un personnage face aux violences du monde :\n                    </p>\n\n                    "
     },
     {
      "type": "ref",
@@ -221,7 +221,7 @@
    "type": "table",
    "colonnes": [
     "Zone Anatomique (Niveau 1)",
-    "Effet Parent si l'Épreuve Échoue",
+    "Effet sur la Zone si l'Épreuve Échoue",
     "Escalade & Précisions"
    ],
    "lignes": [
@@ -247,12 +247,12 @@
     ],
     [
      "<strong>5. Jambe gauche</strong>",
-     "<a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"Ralenti : actions hors déplacement ×2 PA ; déplacement +1 PA/case (§24.1).\"><strong>Ralenti</strong></a> (actions hors déplacement <code>&times;2 PA</code>, déplacement <code>+1 PA/case</code>, course/sprint impossible).",
+     "<a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"Ralenti : actions hors déplacement ×2 PA ; déplacement +1 PA/case (§24.1).\"><strong>Ralenti</strong></a> (actions hors déplacement <code>&times;2 PA</code>, déplacement <code>+1 PA/case</code>, course et charge impossibles).",
      "Si les <strong>2 jambes</strong> sont traumatisées : <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.\"><strong>À Terre</strong></a> + <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"Immobilisé : impossible de faire la moindre action de mouvement (§24.1).\"><strong>Immobilisé</strong></a> (ramper uniquement à <code>+1 PA/case</code>, impossible de se relever)."
     ],
     [
      "<strong>6. Jambe droite</strong>",
-     "<a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"Ralenti : actions hors déplacement ×2 PA ; déplacement +1 PA/case (§24.1).\"><strong>Ralenti</strong></a> (actions hors déplacement <code>&times;2 PA</code>, déplacement <code>+1 PA/case</code>, course/sprint impossible).",
+     "<a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"Ralenti : actions hors déplacement ×2 PA ; déplacement +1 PA/case (§24.1).\"><strong>Ralenti</strong></a> (actions hors déplacement <code>&times;2 PA</code>, déplacement <code>+1 PA/case</code>, course et charge impossibles).",
      "Si les <strong>2 jambes</strong> sont traumatisées : <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.\"><strong>À Terre</strong></a> + <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"Immobilisé : impossible de faire la moindre action de mouvement (§24.1).\"><strong>Immobilisé</strong></a> (ramper uniquement à <code>+1 PA/case</code>, impossible de se relever)."
     ]
    ],
@@ -269,17 +269,17 @@
     [
      "<strong>Dégâts Directs (Physiques)</strong>",
      "Impact direct d'une lame, d'un projectile ou d'une onde de choc.",
-     "Réduits par l'<strong>Armure</strong> de la cible. Si le différentiel après réduction est &le; 0, le personnage\n                                        encaisse sans dommage."
+     "Réduits par l'<strong>Armure</strong> de la cible. Si les dégâts après réduction sont &le; 0, le personnage encaisse sans dommage, mais les autres effets de l'impact s'activent quand même s'il y en a (sort, pouvoir, don ou spécialisation, hors visée de point vital — <a class=\"rule-ref\" href=\"livre_5.html#sec-22-1\" data-tip=\"Visée §22.1 : si ≤ 0 dégât après armure, les effets de point vital (Niveau 2) ne passent pas ; sort, pouvoir, don ou spécialisation s'activent.\">Livre V §22.1</a>)."
     ],
     [
      "<strong>Dégâts Résiduels (Continus)</strong>",
-     "Hémorragie active (Saignement), brûlures persistantes (En Feu), toxines\n                                        (Empoisonné) ou suffocation (Asphyxie). Posés avec une <strong>valeur\n                                            dégressive</strong> (ex : 3 résiduels).",
-     "<strong>Tick en début du tour personnel</strong> de la victime : elle subit la\n                                        valeur résiduelle en PV (ex : 3 PV), puis la valeur <strong>décroît de 1</strong>\n                                        (3 → 2 → 1 → 0 = disparition du statut). <strong>Ignorent l'armure</strong> ;\n                                        En Feu traverse le <strong>bouclier</strong> d'abord ; Asphyxie draine aussi\n                                        <strong>1 PA</strong>. Tout <strong>soin stoppe le Saignement</strong>\n                                        (bandage, seringue, premiers soins) ; Empoisonné / En Feu / Asphyxie exigent un\n                                        traitement dédié (kit de chirurgie, extinction, désobstruction). Sans soin, un\n                                        résiduel <strong>aggravé</strong> (ex : Hémorragie Profonde) croît de +1/tour\n                                        au lieu de décroître."
+     "Saignement, brûlure (<em>En Feu</em>), poison (<em>Empoisonné</em>) ou suffocation (<em>Asphyxie</em>) : des dégâts qui reviennent à chaque tour mais <strong>faiblissent de 1 par tour</strong> jusqu'à s'éteindre (ex. 3 résiduels = 3 PV, puis 2, puis 1, puis fin).",
+     "<strong>Au début de chaque tour de la victime</strong>, elle perd autant de PV que le score actuel, puis ce score <strong>baisse de 1</strong> (3 → 2 → 1 → 0, l'effet s'arrête). Ces dégâts <strong>ignorent l'armure</strong> ; <em>En Feu</em> tape le <strong>bouclier</strong> d'abord et <em>Asphyxie</em> retire aussi <strong>1 PA</strong>. Tout <strong>soin arrête le Saignement</strong> (bandage, seringue, premiers soins) ; <em>Empoisonné</em>, <em>En Feu</em> et <em>Asphyxie</em> exigent chacun le traitement adapté (kit de chirurgie, extinction, désobstruction). Sans soin, un résiduel <strong>aggravé</strong> (ex. Hémorragie Profonde) <strong>augmente de +1 par tour</strong> au lieu de baisser."
     ],
     [
      "<strong>Dégâts Absolus (Arcaniques)</strong>",
-     "Ondes gravitationnelles de Cinquième Force, compression subquantique.",
-     "<strong>Ignorent totalement</strong> l'armure physique !\n                                        Chaque point de dégât absolu est déduit directement de la jauge vitale."
+     "Sorts et pouvoirs de Cinquième Force (ou attaques arcaniques) qui frappent directement le corps sans être freinés par le métal ou le blindage.",
+     "<strong>Ignorent totalement l'armure physique :</strong> tu n'enlèves rien pour l'armure, chaque point touche directement la cible."
     ]
    ],
    "classe": "data-table"
@@ -762,17 +762,17 @@
    {
     "type": "Dégâts Directs (Physiques)",
     "definition": "Impact direct d'une lame, d'un projectile ou d'une onde de choc.",
-    "interaction": "Réduits par l'Armure de la cible. Si le différentiel après réduction est ≤ 0, le personnage encaisse sans dommage."
+    "interaction": "Réduits par l'Armure de la cible. Si les dégâts après réduction sont ≤ 0, le personnage encaisse sans dommage, mais les autres effets de l'impact s'activent quand même s'il y en a (sort, pouvoir, don ou spécialisation, hors visée de point vital — Livre V §22.1)."
    },
    {
     "type": "Dégâts Résiduels (Continus)",
-    "definition": "Hémorragie active (Saignement), brûlures persistantes (En Feu), toxines (Empoisonné) ou suffocation (Asphyxie). Posés avec une valeur dégressive (ex : 3 résiduels).",
-    "interaction": "Tick en début du tour personnel de la victime : elle subit la valeur résiduelle en PV (ex : 3 PV), puis la valeur décroît de 1 (3 → 2 → 1 → 0 = disparition du statut). Ignorent l'armure ; En Feu traverse le bouclier d'abord ; Asphyxie draine aussi 1 PA. Tout soin stoppe le Saignement (bandage, seringue, premiers soins) ; Empoisonné / En Feu / Asphyxie exigent un traitement dédié (kit de chirurgie, extinction, désobstruction). Sans soin, un résiduel aggravé (ex : Hémorragie Profonde) croît de +1/tour au lieu de décroître."
+    "definition": "Saignement, brûlure (En Feu), poison (Empoisonné) ou suffocation (Asphyxie) : des dégâts qui reviennent à chaque tour mais faiblissent de 1 par tour jusqu'à s'éteindre (ex. 3 résiduels = 3 PV, puis 2, puis 1, puis fin).",
+    "interaction": "Au début de chaque tour de la victime, elle perd autant de PV que le score actuel, puis ce score baisse de 1 (3 → 2 → 1 → 0, l'effet s'arrête). Ces dégâts ignorent l'armure ; En Feu tape le bouclier d'abord et Asphyxie retire aussi 1 PA. Tout soin arrête le Saignement (bandage, seringue, premiers soins) ; Empoisonné, En Feu et Asphyxie exigent chacun le traitement adapté (kit de chirurgie, extinction, désobstruction). Sans soin, un résiduel aggravé (ex. Hémorragie Profonde) augmente de +1 par tour au lieu de baisser."
    },
    {
     "type": "Dégâts Absolus (Arcaniques)",
-    "definition": "Ondes gravitationnelles de Cinquième Force, compression subquantique.",
-    "interaction": "Ignorent totalement l'armure physique ! Chaque point de dégât absolu est déduit directement de la jauge vitale."
+    "definition": "Sorts et pouvoirs de Cinquième Force (ou attaques arcaniques) qui frappent directement le corps sans être freinés par le métal ou le blindage.",
+    "interaction": "Ignorent totalement l'armure physique : tu n'enlèves rien pour l'armure, chaque point touche directement la cible."
    }
   ],
   "seuils_survie": [
@@ -812,12 +812,12 @@
    },
    {
     "zone": "Jambe gauche",
-    "effet": "Ralenti (actions hors déplacement ×2 PA, déplacement +1 PA/case, course/sprint impossible)",
+    "effet": "Ralenti (actions hors déplacement ×2 PA, déplacement +1 PA/case, course et charge impossibles)",
     "escalade": "Si les 2 jambes sont traumatisées : À Terre + Immobilisé (ramper uniquement à +1 PA/case)."
    },
    {
     "zone": "Jambe droite",
-    "effet": "Ralenti (actions hors déplacement ×2 PA, déplacement +1 PA/case, course/sprint impossible)",
+    "effet": "Ralenti (actions hors déplacement ×2 PA, déplacement +1 PA/case, course et charge impossibles)",
     "escalade": "Si les 2 jambes sont traumatisées : À Terre + Immobilisé (ramper uniquement à +1 PA/case)."
    }
   ],
