@@ -299,8 +299,8 @@
   },
   {
    "resultat": "24",
-   "offensif_html": "<span class=\"pill-badge ruby\"><a class=\"rule-ref\" href=\"livre_6.html#sec-24-5\" data-tip=\"Inconscient : aucune action ni réaction. Réveil par secousse vigoureuse (1 PA) ou premiers soins.\">Cible Inconsciente</a></span> jusqu’à la fin de son prochain tour.",
-   "defensif_html": "<span class=\"pill-badge ruby\"><a class=\"rule-ref\" href=\"livre_6.html#sec-24-5\" data-tip=\"Inconscient : aucune action ni réaction. Réveil par secousse vigoureuse (1 PA) ou premiers soins.\">Attaquant inconscient</a></span> jusqu’à la fin de son prochain tour.",
+   "offensif_html": "<span class=\"pill-badge ruby\"><a class=\"rule-ref\" href=\"livre_6.html#sec-24-5\" data-tip=\"Inconscient : lâche ce qu'il tient en main ; aucune action ni réaction. Réveil : secousse (1 PA) ou premiers soins.\">Cible Inconsciente</a></span> jusqu’à la fin de son prochain tour.",
+   "defensif_html": "<span class=\"pill-badge ruby\"><a class=\"rule-ref\" href=\"livre_6.html#sec-24-5\" data-tip=\"Inconscient : lâche ce qu'il tient en main ; aucune action ni réaction. Réveil : secousse (1 PA) ou premiers soins.\">Attaquant inconscient</a></span> jusqu’à la fin de son prochain tour.",
    "social_html": "Soumission absolue",
    "utilitaire_html": "Succès mirifique critique"
   }
