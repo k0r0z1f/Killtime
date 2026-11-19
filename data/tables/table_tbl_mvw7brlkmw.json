@@ -5,7 +5,7 @@
   "mjId": "usr_mtvzf3lr",
   "mjName": "k0r0",
   "createdAt": 1793439060000,
-  "updatedAt": 1794264331180,
+  "updatedAt": 1795054143941,
   "maxMembers": 12,
   "inviteCode": "inv_BgCO6QCJUnID",
   "members": [
@@ -635,6 +635,19 @@
       "toName": null,
       "toExcept": [],
       "createdAt": 1794264331180
+    },
+    {
+      "id": "m_mwmww1xhum",
+      "fromId": "usr_mtvzf3lr",
+      "fromName": "k0r0",
+      "fromRole": "mj",
+      "text": "📖 Système de Jeu RP — Livre VI : Santé, États & Blessures — livre_6.html#sec-23-2« ion : arrêt cardiaque définitif. »",
+      "image": null,
+      "file": null,
+      "toUserId": null,
+      "toName": null,
+      "toExcept": [],
+      "createdAt": 1795054143941
     }
   ],
   "listed": true,
