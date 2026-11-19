@@ -5,26 +5,21 @@ format: raw
 ---
 
 
-                    <h3 id="sec-23-2">23.2 L'Arbre de Résolution de la Chute à 0 PV</h3>
+                    <h3 id="sec-23-2">23.2 L'Arbre de Résolution du Seuil Létal (CON &times; 5)</h3>
                     <p>
-                        Lorsqu'une attaque réduit la vitalité d'un combattant à 0 PV ou moins, on compare les dégâts
+                        Lorsqu'une attaque porte les dégâts accumulés d'un combattant à son Seuil Létal (<code>CON &times; 5</code>) ou au-delà, on compare les dégâts
                         réels subis lors de ce coup au Seuil d'Encaissement (<code>CON &times; 2</code>) :
                     </p>
                     <ul>
-                        <li><strong>Branche 1 : Dégâts &ge; Seuil d'Encaissement (Traumatisme Incompressible) :</strong>
+                        <li><strong>Branche 1 : Dégâts du coup &gt; Seuil d'Encaissement (Traumatisme Incompressible) :</strong>
                             Aucun choix possible.
                             <ul>
-                                <li><strong>Impact à la Tête / Crâne :</strong> <strong>Mort Instantanée</strong> par
-                                    destruction cérébrale. Seule la dépense automatique d'un <a class="rule-ref" href="#sec-23-3" data-tip="Point de Miracle : dévie un coup mortel, survie à 1 PV sous le seuil létal. Rachat : 20 XP ou jalon MJ.">Point de Miracle</a>
-                                    permet de survivre in extremis à 1 PV (coma profond).</li>
-                                <li><strong>Impact au Cœur / Cou :</strong> Coma immédiat et agonie rapide (hémorragie
-                                    mortelle en <code>CON / 2</code> tours).</li>
-                                <li><strong>Torse &amp; Membres :</strong> Syncope forcée (état <a class="rule-ref" href="#sec-24-5" data-tip="Inconscient : aucune action ni réaction. Réveil par secousse vigoureuse (1 PA) ou premiers soins.">Inconscient</a> et
-                                    <a class="rule-ref" href="#sec-24-1" data-tip="À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.">À Terre</a> immédiat).
-                                </li>
+                                <li><strong>Tête / Crâne :</strong> <strong>Mort Instantanée</strong>, sauf si tu dépenses 1 <a class="rule-ref" href="#sec-23-3" data-tip="Point de Miracle : dévie un coup mortel, survie à 1 point sous le seuil létal. Rachat : 20 XP ou jalon MJ.">Point de Miracle</a> (§23.3) pour survivre à <strong>1 point en dessous de ton seuil létal</strong> (tu tombes <a class="rule-ref" href="#sec-24-5" data-tip="Inconscient : aucune action ni réaction. Réveil par secousse vigoureuse (1 PA) ou premiers soins.">Inconscient</a> et <a class="rule-ref" href="#sec-24-1" data-tip="À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.">À Terre</a>).</li>
+                                <li><strong>Cœur ou Cou</strong> <em>(point vital Cœur ou zone Tête / Cou hors crâne)</em> : tu tombes aussitôt <a class="rule-ref" href="#sec-24-5" data-tip="Inconscient : aucune action ni réaction. Réveil par secousse vigoureuse (1 PA) ou premiers soins.">Inconscient</a> et <a class="rule-ref" href="#sec-24-1" data-tip="À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.">À Terre</a> (impossible à réveiller par une simple secousse). À chacun de tes tours suivants, tu dois réussir une épreuve gratuite (<code>0 PA</code>) d'<a class="rule-ref" href="livre_3.html#chap-12" data-tip="Endurance Physique : encaisser, tenir l'effort (CON/FOR, §12).">Endurance Physique</a> contre une <strong>Difficulté de 4, plus 1 par tour supplémentaire</strong> (4, puis 5, puis 6…), jusqu'à échec ou stabilisation par soin actif / <a class="rule-ref" href="#chap-25" data-tip="Premiers Soins : 3 PA d'immobilisation au chevet du blessé, Difficulté 12 pour stabiliser (§25.1).">Premiers Soins</a> (<code>3 PA</code>, Difficulté <code>12</code>, <a href="#chap-25">§25.1</a>). Sur le moindre échec, tu meurs — un <a class="rule-ref" href="#sec-23-3" data-tip="Point de Miracle : dévie un coup mortel, survie à 1 point sous le seuil létal. Rachat : 20 XP ou jalon MJ.">Point de Miracle</a> reste utilisable pour y échapper.</li>
+                                <li><strong>Torse &amp; Membres</strong> <em>(hors point vital Cœur)</em> : tu tombes <a class="rule-ref" href="#sec-24-5" data-tip="Inconscient : aucune action ni réaction. Réveil par secousse vigoureuse (1 PA) ou premiers soins.">Inconscient</a> et <a class="rule-ref" href="#sec-24-1" data-tip="À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.">À Terre</a> immédiatement (état stable, réveillable par secousse de <code>1 PA</code> ou premiers soins).</li>
                             </ul>
                         </li>
-                        <li><strong>Branche 2 : Dégâts &lt; Seuil d'Encaissement (Choc Contrôlé / Épuisement) :</strong>
+                        <li><strong>Branche 2 : Dégâts du coup &le; Seuil d'Encaissement (Choc Contrôlé / Épuisement) :</strong>
                             Le corps s'éteint par pure décharge vitale. Le combattant choisit :
                             <ul>
                                 <li><strong>Sombrer (La Syncope Protectrice) :</strong> Tu t'évanouis

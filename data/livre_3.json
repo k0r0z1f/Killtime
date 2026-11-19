@@ -129,7 +129,7 @@
     },
     {
      "type": "html",
-     "html": "\n                    <h3 id=\"sec-15-1\">15.1 Fiche technique d'une technique</h3>\n                    <p>\n                        Pour chaque technique, remplis ces rubriques avec ton MJ. Une ligne chacune, ça tient sur un post-it :\n                    </p>\n                    <ul>\n                        <li><strong>Nom :</strong> le titre de ta technique (gratuit). <em>Ex : Fente Basse, Suture Réflexe.</em></li>\n                        <li><strong>Ensemble ◆ :</strong> un seul, lié à une compétence entraînée (table ci-dessous). Il dit quand ça se déclenche — et tes PA de base. Sans compétence liée, rien ne se branche.</li>\n                        <li><strong>Pièces :</strong> 1 à 3, 3 logements max. Recopie leurs textes : ta technique est écrite. Les 8 cartes Conditions (contact, arme en main, immobile, critique, Δ≥2, 1/combat, essoufflement, entraînement) se branchent gratis, hors logements.</li>\n                        <li><strong>Famille :</strong> un seul type par technique — le 1er effet posé fixe le type (affiché sous ◆). Ta compétence liée n'ouvre que ses familles (Esquive = défensif pur). Deux types = +1 XP d'hybride, jamais de PA en plus.</li>\n                        <li><strong>Finitions :</strong> sur chaque carte, pas à côté — portée, zone, durée, hors-compétence (voir 15.7).</li>\n                        <li><strong>Coûts :</strong> l'addition XP d'un côté, l'addition PA de l'autre. Montre les deux au MJ.</li>\n                        <li><strong>Accord MJ :</strong> il vérifie les 9 règles ci-dessous, il signe, tu paies.</li>\n                    </ul>\n                    <h3 id=\"sec-15-regles\">Les 9 règles d'assemblage</h3>\n                    <ol>\n                        <li><strong>Un ensemble ◆, un seul — et une compétence entraînée liée.</strong> Il dit quand ta technique part, et ses PA de base.</li>\n                        <li><strong>Un ensemble + 1 à 3 pièces, pas plus.</strong> 3 logements : au-delà, ce sont deux techniques sœurs.</li>\n                        <li><strong>Budget : tu additionnes ensemble + pièces + finitions.</strong> Vise 4 à 6 XP. À 7 XP et plus, c'est une signature : une seule par personnage, MJ obligatoire.</li>\n                        <li><strong>Activation à 6 PA max, ensemble compté.</strong> Si ça dépasse, découpe. Passif C0 : 0 PA strict — ni pièce ni finition à PA.</li>\n                        <li><strong>Un seul bonus chiffré par jet.</strong> O8 et O9 ne se cumulent pas — le meilleur gagne.</li>\n                        <li><strong>Chaque effet a son seuil, écrit sur sa carte.</strong> Sur touche, Δ≥0, Δ≥3, succès net, parade réussie, critique ou condition. Raté ? Rien ne part — ni dégâts, ni effet.</li>\n                        <li><strong>Paliers = variantes au menu, pas des achats à empiler.</strong> Soin U7 (5, 10 ou 15 PV), Saignement O28 (2, 3 ou 4 résiduels), Souffle U11 (cases à cocher). D8 exige D1 ou D3. O18 exige 3 pièces de la même arme.</li>\n                        <li><strong>Incompatibilités.</strong> O7 ⊕ O15 : l'Absolu ne frappe jamais en zone ni sur deux cibles. D6 ⊕ D1, D2, D3, D4 : la garde totale joue seule. Le reste se combine.</li>\n                        <li><strong>Réaction C3 = +2 PA, 1/round.</strong> Opportunité C4 = 0 PA, 1/round, déclencheur étroit obligatoire (Δ≥2, critique, esquive…). Passif C0 = au moins 1 prérequis. Comme les sorts.</li>\n                    </ol>\n"
+     "html": "\n                    <h3 id=\"sec-15-1\">15.1 Fiche technique d'une technique</h3>\n                    <p>\n                        Pour chaque technique, remplis ces rubriques avec ton MJ. Une ligne chacune, ça tient sur un post-it :\n                    </p>\n                    <ul>\n                        <li><strong>Nom :</strong> le titre de ta technique (gratuit). <em>Ex : Fente Basse, Suture Réflexe.</em></li>\n                        <li><strong>Ensemble ◆ :</strong> un seul, lié à une compétence entraînée (table ci-dessous). Il dit quand ça se déclenche — et tes PA de base. Sans compétence liée, rien ne se branche.</li>\n                        <li><strong>Pièces :</strong> 1 à 3, 3 logements max. Recopie leurs textes : ta technique est écrite. Les 8 cartes Conditions (contact, arme en main, immobile, critique, Δ≥2, 1/combat, essoufflement, entraînement) se branchent gratis, hors logements.</li>\n                        <li><strong>Famille :</strong> un seul type par technique — le 1er effet posé fixe le type (affiché sous ◆). Ta compétence liée n'ouvre que ses familles (Esquive = défensif pur). Deux types = +1 XP d'hybride, jamais de PA en plus.</li>\n                        <li><strong>Finitions :</strong> sur chaque carte, pas à côté — portée, zone, durée, hors-compétence (voir 15.7).</li>\n                        <li><strong>Coûts :</strong> l'addition XP d'un côté, l'addition PA de l'autre. Montre les deux au MJ.</li>\n                        <li><strong>Accord MJ :</strong> il vérifie les 9 règles ci-dessous, il signe, tu paies.</li>\n                    </ul>\n                    <h3 id=\"sec-15-regles\">Les 9 règles d'assemblage</h3>\n                    <ol>\n                        <li><strong>Un ensemble ◆, un seul — et une compétence entraînée liée.</strong> Il dit quand ta technique part, et ses PA de base.</li>\n                        <li><strong>Un ensemble + 1 à 3 pièces, pas plus.</strong> 3 logements : au-delà, ce sont deux techniques sœurs.</li>\n                        <li><strong>Budget : tu additionnes ensemble + pièces + finitions.</strong> Vise 4 à 6 XP. À 7 XP et plus, c'est une signature : une seule par personnage, MJ obligatoire.</li>\n                        <li><strong>Activation à 6 PA max, ensemble compté.</strong> Si ça dépasse, découpe. Passif C0 : 0 PA strict — ni pièce ni finition à PA.</li>\n                        <li><strong>Un seul bonus chiffré par jet.</strong> O8 et O9 ne se cumulent pas — le meilleur gagne.</li>\n                        <li><strong>Chaque effet a son seuil, écrit sur sa carte.</strong> Sur touche, Δ≥0, Δ≥3, succès net, parade réussie, critique ou condition. Raté ? Rien ne part — ni dégâts, ni effet.</li>\n                        <li><strong>Paliers = variantes au menu, pas des achats à empiler.</strong> Soin U7 (−5, −10 ou −15 dégâts), Saignement O28 (2, 3 ou 4 résiduels), Souffle U11 (cases à cocher). D8 exige D1 ou D3. O18 exige 3 pièces de la même arme.</li>\n                        <li><strong>Incompatibilités.</strong> O7 ⊕ O15 : l'Absolu ne frappe jamais en zone ni sur deux cibles. D6 ⊕ D1, D2, D3, D4 : la garde totale joue seule. Le reste se combine.</li>\n                        <li><strong>Réaction C3 = +2 PA, 1/round.</strong> Opportunité C4 = 0 PA, 1/round, déclencheur étroit obligatoire (Δ≥2, critique, esquive…). Passif C0 = au moins 1 prérequis. Comme les sorts.</li>\n                    </ol>\n"
     },
     {
      "type": "html",
@@ -157,7 +157,7 @@
     },
     {
      "type": "html",
-     "html": "\n                    <h3 id=\"sec-15-ut\">15.5 Pièces utilitaires</h3>\n                    <p>\n                        Pour bouger, souffler, soigner, comprendre.\n                        U1 : −1 PA sur une action précise (une seule réduction par action).\n                        U7 se règle au menu (5, 10 ou 15 PV). U11 se coche (3 ESS, 4 ESS + 1 PA, 2×/combat).\n                        Ni portée ni zone ici : l'utilitaire ne frappe pas.\n                    </p>\n"
+     "html": "\n                    <h3 id=\"sec-15-ut\">15.5 Pièces utilitaires</h3>\n                    <p>\n                        Pour bouger, souffler, soigner, comprendre.\n                        U1 : −1 PA sur une action précise (une seule réduction par action).\n                        U7 se règle au menu (−5, −10 ou −15 dégâts). U11 se coche (3 ESS, 4 ESS + 1 PA, 2×/combat).\n                        Ni portée ni zone ici : l'utilitaire ne frappe pas.\n                    </p>\n"
     },
     {
      "type": "ref",
@@ -571,7 +571,7 @@
      },
      "Maniement d'Arme (FOR, AGI)",
      "Offensif",
-     "Sur succès net, la cible <a class=\"rule-ref\"\n                                                href=\"livre_6.html#sec-24-1\"\n                                                data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.\">tombe\n                                                à terre</a>, +2 dégâts, dégâts convertis en <a class=\"rule-ref\"\n                                                href=\"livre_6.html#chap-23\"\n                                                data-tip=\"Dégâts Absolus : ignorent l'armure, directs sur la jauge vitale (§23.1).\">Absolus</a>."
+     "Sur succès net, la cible <a class=\"rule-ref\"\n                                                href=\"livre_6.html#sec-24-1\"\n                                                data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.\">tombe\n                                                à terre</a>, +2 dégâts, dégâts convertis en <a class=\"rule-ref\"\n                                                href=\"livre_6.html#chap-23\"\n                                                data-tip=\"Dégâts Absolus : ignorent l'armure, frappent directement la cible (§23.1).\">Absolus</a>."
     ],
     [
      {
@@ -649,7 +649,7 @@
      },
      "Maniement d'Arme (FOR, AGI)",
      "Offensif, Défensif",
-     "+5 dégâts, dégâts convertis en\n                                        <a class=\"rule-ref\"\n                                                href=\"livre_6.html#chap-23\"\n                                                data-tip=\"Dégâts Absolus : ignorent l'armure, directs sur la jauge vitale (§23.1).\">Absolus</a>\n                                        sur critique."
+     "+5 dégâts, dégâts convertis en\n                                        <a class=\"rule-ref\"\n                                                href=\"livre_6.html#chap-23\"\n                                                data-tip=\"Dégâts Absolus : ignorent l'armure, frappent directement la cible (§23.1).\">Absolus</a>\n                                        sur critique."
     ],
     [
      {
@@ -970,7 +970,7 @@
      "<strong>Condition de Fer</strong>",
      "Endurance Physique (CON, FOR)",
      "Utilitaire, Défensif",
-     "<strong>+1 PV</strong> au début de votre tour si blessé et conscient."
+     "Retire <strong>1 dégât</strong> au début de votre tour si blessé et conscient."
     ],
     [
      {
@@ -1075,7 +1075,7 @@
      "<strong>Immunité Toxique</strong>",
      "Système Immunitaire (CON)",
      "Défensif",
-     "Immunité complète au statut <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Empoisonné : PV directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonné</a>."
+     "Immunité complète au statut <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Empoisonné : dégâts directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonné</a>."
     ],
     [
      {
@@ -1438,7 +1438,7 @@
      "<strong>Frappe Jugulaire</strong>",
      "Armes Perçantes (AGI)",
      "Offensif",
-     "Gorge et carotides : sur Delta ≥ 3, <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Saignement : PV directs en début de tour, puis −1/tour. Tout soin le stoppe (§24.2).\">Saignement</a>\n                                        (résiduels = vos entraînements)."
+     "Gorge et carotides : sur Delta ≥ 3, <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Saignement : dégâts directs en début de tour, puis −1/tour. Tout soin les arrête (§24.2).\">Saignement</a>\n                                        (résiduels = vos entraînements)."
     ],
     [
      {
@@ -1456,7 +1456,7 @@
      },
      "Armes Perçantes (AGI)",
      "Offensif",
-     "Ajoute <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Asphyxie : PV + drain de 1 PA par tour. Soin : désobstruction (premiers soins + kit).\">Asphyxie</a>\n                                        (drain 1 PA/tour)."
+     "Ajoute <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Asphyxie : dégâts + drain de 1 PA par tour. Soin : désobstruction (premiers soins + kit).\">Asphyxie</a>\n                                        (drain 1 PA/tour)."
     ],
     [
      {
@@ -1558,7 +1558,7 @@
      "<strong>Perforation de Silicate</strong>",
      "Mains Nues (FOR, AGI)",
      "Offensif",
-     "Anti-blindage : ignore 2 d'armure, dégâts <a class=\"rule-ref\"\n                                            href=\"livre_6.html#chap-23\"\n                                            data-tip=\"Dégâts Absolus : ignorent l'armure, directs sur la jauge vitale (§23.1).\">Absolus</a>\n                                        contre carapaces de pierre."
+     "Anti-blindage : ignore 2 d'armure, dégâts <a class=\"rule-ref\"\n                                            href=\"livre_6.html#chap-23\"\n                                            data-tip=\"Dégâts Absolus : ignorent l'armure, frappent directement la cible (§23.1).\">Absolus</a>\n                                        contre carapaces de pierre."
     ],
     [
      {
@@ -1582,7 +1582,7 @@
      "<strong>Chirurgie</strong>",
      "Médecine Avancée (ÉRU, INT)",
      "Utilitaire",
-     "Referme les blessures critiques et lève l'état <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-5\"\n                                            data-tip=\"Souffrant : blessure grave levée par n'importe quel soin (§24.5).\">Souffrant</a>.\n                                        Soigne aussi les dégâts résiduels de <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Saignement : PV directs en début de tour, puis −1/tour. Tout soin le stoppe (§24.2).\">saignement</a>."
+     "Referme les blessures critiques et lève l'état <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-5\"\n                                            data-tip=\"Souffrant : blessure grave levée par n'importe quel soin (§24.5).\">Souffrant</a>.\n                                        Soigne aussi les dégâts résiduels de <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Saignement : dégâts directs en début de tour, puis −1/tour. Tout soin les arrête (§24.2).\">saignement</a>."
     ],
     [
      {
@@ -1591,7 +1591,7 @@
      },
      "Médecine Avancée (ÉRU, INT)",
      "Utilitaire",
-     "Vous lisez PV, seuils et armure exacts d'une\n                                        unité examinée."
+     "Vous lisez dégâts subis, seuils et armure exacts d'une\n                                        unité examinée."
     ],
     [
      {
@@ -1642,7 +1642,7 @@
      },
      "Médecine Avancée (ÉRU, INT)",
      "Utilitaire",
-     "Soigne 15 PV et immunise contre tous\n                                        les états pendant 3 tours."
+     "Soigne 15 dégâts et immunise contre tous\n                                        les états pendant 3 tours."
     ],
     [
      "<strong>Surfréquence Nytharite</strong>",
@@ -2115,13 +2115,13 @@
     [
      "2",
      "2",
-     "<strong>U7 · Soin + purge</strong> — Au contact : 4-5 PV rendus + 1 état purgé.",
-     "Paliers : 10 PV +2 XP · 15 PV + immunité 3 tours +3 XP."
+     "<strong>U7 · Soin + purge</strong> — Au contact : 4-5 dégâts soignés + 1 état purgé.",
+     "Paliers : 10 dégâts +2 XP · 15 dégâts + immunité 3 tours +3 XP."
     ],
     [
      "2",
      "1",
-     "<strong>U8 · Lecture vitale</strong> — Tu lis PV, seuils et armure exacts d’une unité examinée.",
+     "<strong>U8 · Lecture vitale</strong> — Tu lis dégâts subis, seuils et armure exacts d’une unité examinée.",
      "Au contact ou à 2 cases. Le MJ te donne les vrais chiffres."
     ],
     [
@@ -3178,7 +3178,7 @@
     "parente": null,
     "source": "Endurance Physique (CON, FOR)",
     "type": "Utilitaire, Défensif",
-    "effets": "+1 PV au début de votre tour si blessé et conscient."
+    "effets": "Retire 1 dégât au début de votre tour si blessé et conscient."
    },
    {
     "nom": "Dur à Cuire",
@@ -3703,7 +3703,7 @@
     "parente": "Chirurgie",
     "source": "Médecine Avancée (ÉRU, INT)",
     "type": "Utilitaire",
-    "effets": "Vous lisez PV, seuils et armure exacts d'une unité examinée."
+    "effets": "Vous lisez dégâts subis, seuils et armure exacts d'une unité examinée."
    },
    {
     "nom": "Suture Réflexe",
@@ -3745,7 +3745,7 @@
     "parente": "Apothicaire de Guerre",
     "source": "Médecine Avancée (ÉRU, INT)",
     "type": "Utilitaire",
-    "effets": "Soigne 15 PV et immunise contre tous les états pendant 3 tours."
+    "effets": "Soigne 15 dégâts et immunise contre tous les états pendant 3 tours."
    },
    {
     "nom": "Surfréquence Nytharite",
@@ -4321,7 +4321,7 @@
     "parente": null,
     "source": "Endurance Physique (CON, FOR)",
     "type": "Utilitaire, Défensif",
-    "effets": "+1 PV au début de votre tour si blessé et conscient."
+    "effets": "Retire 1 dégât au début de votre tour si blessé et conscient."
    },
    "Dur à Cuire": {
     "nom": "Dur à Cuire",
@@ -4846,7 +4846,7 @@
     "parente": "Chirurgie",
     "source": "Médecine Avancée (ÉRU, INT)",
     "type": "Utilitaire",
-    "effets": "Vous lisez PV, seuils et armure exacts d'une unité examinée."
+    "effets": "Vous lisez dégâts subis, seuils et armure exacts d'une unité examinée."
    },
    "Suture Réflexe": {
     "nom": "Suture Réflexe",
@@ -4888,7 +4888,7 @@
     "parente": "Apothicaire de Guerre",
     "source": "Médecine Avancée (ÉRU, INT)",
     "type": "Utilitaire",
-    "effets": "Soigne 15 PV et immunise contre tous les états pendant 3 tours."
+    "effets": "Soigne 15 dégâts et immunise contre tous les états pendant 3 tours."
    },
    "Surfréquence Nytharite": {
     "nom": "Surfréquence Nytharite",
@@ -5586,7 +5586,7 @@
      "prerequis": [],
      "seuil": null,
      "incompatible": [],
-     "texte": "Au contact, tu rends les PV écrits et tu purges 1 état."
+     "texte": "Au contact, tu effaces les dégâts écrits et tu purges 1 état."
     },
     {
      "id": "U8",

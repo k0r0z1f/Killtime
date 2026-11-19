@@ -292,7 +292,7 @@
   },
   {
    "resultat": "20",
-   "offensif_html": "<strong><a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\" data-tip=\"Dégâts Résiduels : PV directs qui baissent de 1 par tour. Seul un soin les stoppe (§24.2).\">3 Dégâts Résiduels</a></strong>",
+   "offensif_html": "<strong><a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\" data-tip=\"Dégâts Résiduels : dégâts directs qui baissent de 1 par tour. Seul un soin les arrête (§24.2).\">3 Dégâts Résiduels</a></strong>",
    "defensif_html": "Contre-attaque automatique : riposte après résolution de l’attaque en cours, équivalente à une <a class=\"rule-ref\" href=\"livre_5.html#sec-20-5\" data-tip=\"Frappe d’opportunité : frappe réflexe gratuite (0 PA) en Face-à-Face auto, mises à 0 (§20.5).\">frappe d’opportunité</a> (0 PA), sans consommer ta réaction du round.",
    "social_html": "Ralliement inconditionnel",
    "utilitaire_html": "Survoltage arcanique total"

@@ -7,7 +7,7 @@ livre: 6
                     <p>
                         <strong>Aggravation :</strong> un résiduel aggravé (ex : <a class="rule-ref" href="#sec-24-2" data-tip="Résiduel aggravé : dégâts doublés, +1/tour au lieu de décroître. Seul un soin l’arrête.">Hémorragie Profonde</a>) inflige
                         le double et <strong>croît de +1/tour</strong> au lieu de décroître — seul un soin l'arrête.
-                        <strong>Chute à 0 PV par DoT :</strong> résolution via l'arbre standard (Dernier Souffle possible).
+                        <strong>Atteinte du Seuil Létal par dégâts résiduels :</strong> résolution via l'arbre standard (<a href="#sec-23-2">§23.2</a>, Dernier Souffle possible).
                     </p>
 
                     <h3 id="sec-24-3">24.3 Faim & Soif : Affamé & Privation</h3>
@@ -30,15 +30,15 @@ livre: 6
                             Diff <strong>4 + 2 par niveau subi</strong>
                             (<a class="rule-ref" href="livre_2.html#chap-7" data-tip="Seuils 0–34 : 4–5 Difficile, 6–7 Extrêmement Difficile (§7.1).">Livre II §7.1</a>).
                             Succès = tu tiens. Échec = +1 niveau (max 3).
-                            <strong>Privation 2 : −2 ec. Privation 3 : −2 ec + Ralenti + 2 PV directs / jour</strong>
-                            (ignore armure et bouclier, chute à 0 via
-                            <a class="rule-ref" href="#sec-23-2" data-tip="Chute à 0 PV : Encaissement CON×2, Sombrer ou Dernier Souffle (§23.2).">§23.2</a>).
+                            <strong>Privation 2 : −2 ec. Privation 3 : −2 ec + Ralenti + 2 dégâts directs / jour</strong>
+                            (ignore armure et bouclier, résolution au Seuil Létal via
+                            <a class="rule-ref" href="#sec-23-2" data-tip="Seuil Létal (CON×5) : atteint ? Encaissement CON×2 tranche entre Mort, Inconscient, Sombrer ou Dernier Souffle (§23.2).">§23.2</a>).
                             <em>Tick à l'aube. Cumul avec le reste (<a class="rule-ref" href="#sec-24-1" data-tip="États cumulatifs : Déstabilisé + Étourdi = −3 (§24).">§24</a>).</em></li>
                         <li><strong>Affamé (faim) :</strong> 48 h sans ration
                             = <strong>Affamé 1</strong> automatique (<strong>−1 ec</strong> à tout).
                             Chaque 2e aube suivante sans ration : épreuve de Constitution
                             Diff <strong>3 + 1 par niveau subi</strong>. Échec = +1 niveau (max 3).
-                            <strong>Affamé 2 : −2 ec. Affamé 3 : −2 ec + nuit divisée par 2 + 1 PV direct / jour.</strong></li>
+                            <strong>Affamé 2 : −2 ec. Affamé 3 : −2 ec + nuit divisée par 2 + 1 dégât direct / jour.</strong></li>
                         <li><strong>Cumul :</strong> Affamé + Privation s'additionnent, comme tous les états.
                             <em>Exemple : Privation 2 (−2) + Affamé 1 (−1) = −3 à ton prochain jet.</em></li>
                         <li><strong>Soin :</strong> boire 2 L (1 L Cléien) = −1 Privation aussitôt.
@@ -47,10 +47,10 @@ livre: 6
                             48 h nourri = Affamé levé.
                             Ni <a class="rule-ref" href="livre_6.html#chap-25" data-tip="Premiers Soins : stabilise, lève Souffrant, jamais la faim (§25.1).">Premiers Soins</a>
                             ni magie ne remplacent l'eau et la nourriture.</li>
-                        <li><strong>Nuit sûre (<a class="rule-ref" href="livre_6.html#chap-25" data-tip="Nuit sûre 6–8 h : CON PV, ×2 si soignant veillé, Essoufflement à zéro (§25.2).">§25.2</a>) :</strong>
-                            avec eau + ration = récup normale (CON PV, ×2 si soignant).
-                            Avec eau mais sans ration = moitié (CON÷2, arrondi inférieur, min 1).
-                            Sans eau = aucun PV, ton
+                        <li><strong>Nuit sûre (<a class="rule-ref" href="livre_6.html#chap-25" data-tip="Nuit sûre 6–8 h : retire CON dégâts, ×2 si soignant veillé, Essoufflement à zéro (§25.2).">§25.2</a>) :</strong>
+                            avec eau + ration = récup normale (CON dégâts retirés, ×2 si soignant).
+                            Avec eau mais sans ration = moitié (CON÷2 dégâts retirés, arrondi inférieur, min 1).
+                            Sans eau = aucun dégât retiré, ton
                             <a class="rule-ref" href="livre_1.html#chap-4" data-tip="Essoufflement : 1 point = des PA d'urgence ; ne part pas tout seul, action dédiée pour souffler (§4.2).">Essoufflement</a>
                             ne retombe pas.</li>
                         <li><strong>Cléien :</strong> besoins divisés par deux
@@ -70,7 +70,7 @@ livre: 6
                         <em>Exemple 2 — faim :</em> Kader, Cléien (CON 3, dé d4, Frugalité),
                         2 jours sans ration : Affamé 1 (−1 ec, épreuve à +2 quand elle viendra).
                         Il mange 1 ration — deux jours pour lui — et boit 1 L : Affamé levé demain
-                        s'il reste hydraté. Nuit avec eau mais sans ration : 3÷2 = 1 PV récupéré.
+                        s'il reste hydraté. Nuit avec eau mais sans ration : 3÷2 = 1 dégât retiré.
                     </p>
 
                     <h3 id="sec-24-4">24.4 États Bénéfiques (Buffs) & Amplificateurs</h3>

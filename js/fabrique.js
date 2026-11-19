@@ -42,9 +42,9 @@ var KIND = {
     D8:  { t: 'n', max: 3, unit: 'malus' },
     S1:  { t: 'n', max: 3, unit: 'crans', plural: [['épreuve', 'épreuves']] },
     U7: { t: 'palier', opts: [
-        { v: '5', label: '5 PV + purge (inclus)', dx: 0 },
-        { v: '10', label: '10 PV (+2 XP)', dx: 2 },
-        { v: '15', label: '15 PV + immunité 3 tours (+3 XP)', dx: 3 }
+        { v: '5', label: '−5 dégâts + purge (inclus)', dx: 0 },
+        { v: '10', label: '−10 dégâts (+2 XP)', dx: 2 },
+        { v: '15', label: '−15 dégâts + immunité 3 tours (+3 XP)', dx: 3 }
     ]},
     U11: { t: 'paliers', opts: [
         { v: 'p3', label: '3 ESS (+2 XP)', dx: 2, dpa: 0 },
@@ -249,7 +249,7 @@ var FabriqueEngine = {
             if (id === 'U7') {
                 var dx = 0;
                 (KIND.U7.opts).forEach(function (o) { if (o.v === sel.u7) dx = o.dx; });
-                lines.push({ id: id, label: p.nom + ' — palier ' + (sel.u7 || '5') + ' PV', xp: 2 + dx, pa: 2, kind: 'piece', fam: p.famille });
+                lines.push({ id: id, label: p.nom + ' — palier −' + (sel.u7 || '5') + ' dégâts', xp: 2 + dx, pa: 2, kind: 'piece', fam: p.famille });
                 return;
             }
             if (id === 'U11') {
@@ -522,7 +522,7 @@ function suggestName(CAT, sel) {
     C3: 'Hors de ton tour, 1/round.',
     C4: '0 PA, 1/round, quand le déclencheur tombe.'
 };
-var DESC_U7 = { '5': ' (5 PV + purge 1 état).', '10': ' (10 PV + purge 1 état).', '15': ' (15 PV + immunité 3 tours).' };
+var DESC_U7 = { '5': ' (−5 dégâts + purge 1 état).', '10': ' (−10 dégâts + purge 1 état).', '15': ' (−15 dégâts + immunité 3 tours).' };
 var DESC_U11 = { p3: '3 ESS', p4: '4 ESS + 1 PA', p2x: '2×/combat' };
 function suggestDesc(CAT, sel) {
     sel = sel || {};
@@ -584,9 +584,9 @@ var FAB_REFS = [
     { k: 'déstabilisé', href: 'livre_6.html#sec-24-1', tip: 'Déstabilisé : −2 ec aux épreuves, déplacement rampant (+1 PA/case, non cumulatif avec À Terre pour ramper).' },
     { k: 'étourdie', href: 'livre_6.html#sec-24-1', tip: 'Étourdi : −1 ec sur tous les jets.' },
     { k: 'étourdi', href: 'livre_6.html#sec-24-1', tip: 'Étourdi : −1 ec sur tous les jets.' },
-    { k: 'absolus', href: 'livre_6.html#chap-23', tip: 'Dégâts Absolus : ignorent l’armure, directs sur la jauge vitale (§23.1).' },
-    { k: 'absolue', href: 'livre_6.html#chap-23', tip: 'Dégâts Absolus : ignorent l’armure, directs sur la jauge vitale (§23.1).' },
-    { k: 'absolu', href: 'livre_6.html#chap-23', tip: 'Dégâts Absolus : ignorent l’armure, directs sur la jauge vitale (§23.1).' },
+    { k: 'absolus', href: 'livre_6.html#chap-23', tip: 'Dégâts Absolus : ignorent l’armure, frappent directement la cible (§23.1).' },
+    { k: 'absolue', href: 'livre_6.html#chap-23', tip: 'Dégâts Absolus : ignorent l’armure, frappent directement la cible (§23.1).' },
+    { k: 'absolu', href: 'livre_6.html#chap-23', tip: 'Dégâts Absolus : ignorent l’armure, frappent directement la cible (§23.1).' },
     { k: 'sonnée', href: 'livre_6.html#sec-24-1', tip: 'Sonné : aucune action. La créature tombe immédiatement à terre.' },
     { k: 'sonné', href: 'livre_6.html#sec-24-1', tip: 'Sonné : aucune action. La créature tombe immédiatement à terre.' },
     { k: 'immobilisée', href: 'livre_6.html#sec-24-1', tip: 'Immobilisé : impossible de faire la moindre action de mouvement (§24.1).' },
@@ -595,10 +595,10 @@ var FAB_REFS = [
     { k: 'paralysé', href: 'livre_6.html#sec-24-1', tip: 'Paralysé : aucune action ni réaction, incapacité totale (§24.1).' },
     { k: 'agonisante', href: 'livre_6.html#sec-24-1', tip: 'Agonisant : aucune action raisonnée, fuite de 6 cases (1d8). Persiste jusqu’à stabilisation médicale.' },
     { k: 'agonisant', href: 'livre_6.html#sec-24-1', tip: 'Agonisant : aucune action raisonnée, fuite de 6 cases (1d8). Persiste jusqu’à stabilisation médicale.' },
-    { k: 'saignement', href: 'livre_6.html#sec-24-2', tip: 'Saignement : PV directs en début de tour, puis −1/tour. Tout soin le stoppe (§24.2).' },
-    { k: 'saigne', href: 'livre_6.html#sec-24-2', tip: 'Saignement : PV directs en début de tour, puis −1/tour. Tout soin le stoppe (§24.2).' },
-    { k: 'résiduels', href: 'livre_6.html#sec-24-2', tip: 'Saignement : PV directs en début de tour, puis −1/tour. Tout soin le stoppe (§24.2).' },
-    { k: 'résiduel', href: 'livre_6.html#sec-24-2', tip: 'Saignement : PV directs en début de tour, puis −1/tour. Tout soin le stoppe (§24.2).' },
+    { k: 'saignement', href: 'livre_6.html#sec-24-2', tip: 'Saignement : dégâts directs en début de tour, puis −1/tour. Tout soin les arrête (§24.2).' },
+    { k: 'saigne', href: 'livre_6.html#sec-24-2', tip: 'Saignement : dégâts directs en début de tour, puis −1/tour. Tout soin les arrête (§24.2).' },
+    { k: 'résiduels', href: 'livre_6.html#sec-24-2', tip: 'Saignement : dégâts directs en début de tour, puis −1/tour. Tout soin les arrête (§24.2).' },
+    { k: 'résiduel', href: 'livre_6.html#sec-24-2', tip: 'Saignement : dégâts directs en début de tour, puis −1/tour. Tout soin les arrête (§24.2).' },
     { k: 'esquive', href: 'livre_3.html#chap-12', tip: 'Esquive : éviter un coup au dernier moment (AGI/RAP/INS, §12.2).' },
     { k: 'critique', href: 'livre_2.html#chap-9', tip: 'Critique : ton dé affiche son max (6 sur d6, 8 sur d8). Second jet sur la table (§9.1).' },
     { k: 'pa', href: 'livre_1.html#chap-4', tip: 'PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).' },
@@ -1152,7 +1152,7 @@ function initFabrique() {
     };
 
     function variantSummary(id) {
-        if (id === 'U7') return 'palier ' + state.u7 + ' PV';
+        if (id === 'U7') return 'palier −' + state.u7 + ' dégâts';
         if (id === 'U11') {
             var on = Object.keys(state.u11).filter(function (v) { return state.u11[v]; });
             return on.length ? 'paliers ' + on.join(', ') : 'base';

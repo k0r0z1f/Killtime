@@ -8,7 +8,7 @@ livre: 5
                     <ul>
                         <li><strong>🔥 Sillage Igné :</strong> <em>Parfaite</em> — Mina fonce gratuitement le long de
                             la ligne (arrivée = case libre la plus proche si occupée) : <strong>4 dégâts</strong> par
-                            cible traversée + <strong>3 feu + <a class="rule-ref" href="livre_6.html#sec-24-2" data-tip="En Feu : 2 PV/tour (bouclier d'abord), puis −1/tour. Il faut l'éteindre (§24.2).">En Feu</a></strong>. <em>Semi</em> — ruée + 4 + 1, et Mina
+                            cible traversée + <strong>3 feu + <a class="rule-ref" href="livre_6.html#sec-24-2" data-tip="En Feu : 2 dégâts/tour (bouclier d'abord), puis −1/tour. Il faut l'éteindre (§24.2).">En Feu</a></strong>. <em>Semi</em> — ruée + 4 + 1, et Mina
                             encaisse <strong>2 dégâts</strong> (exposée au bout de la ligne). <em>Ratée</em> — PA
                             perdus, Mina reste sur place.</li>
                         <li><strong>🪢 Lacet de Nytharite :</strong> <em>Parfaite</em> — cible
@@ -25,7 +25,7 @@ livre: 5
                             (ignore la moitié de l'armure) sur la cible dure. <em>Semi</em> — 5 dégâts, armure
                             normale. <em>Ratée</em> — le couloir se referme.</li>
                         <li><strong>✖️ Cisaille Entropique :</strong> <em>Parfaite</em> — <strong>5 dégâts +
-                            <a class="rule-ref" href="livre_6.html#sec-24-2" data-tip="Saignement : PV directs en début de tour, puis −1/tour. Tout soin le stoppe (§24.2).">Saignement</a></strong> sur chaque cible à l'intersection. <em>Semi</em> — 3 dégâts.
+                            <a class="rule-ref" href="livre_6.html#sec-24-2" data-tip="Saignement : dégâts directs en début de tour, puis −1/tour. Tout soin les arrête (§24.2).">Saignement</a></strong> sur chaque cible à l'intersection. <em>Semi</em> — 3 dégâts.
                             <em>Ratée</em> — les branches se désynchronisent.</li>
                         <li><strong>⧉ Parallaxe :</strong> <em>Parfaite</em> — la cible <strong>ne peut pas se
                             défendre</strong> (score 0, comme une défense passive §20.2) contre la frappe conjointe
@@ -46,8 +46,8 @@ livre: 5
                         </div>
                         <div class="callout-body">
                             Sauf précision, les dégâts de Technique-Duo sont <strong>directs</strong> (ils ignorent l'armure).
-                            Tu les résous comme une <a class="rule-ref" href="livre_3.html#chap-14" data-tip="Clé : manœuvre signature qui atteint ou dépasse l'Encaissement et déclenche l'arbre à 0 PV (§14).">Clé</a> (Livre III) : si le total atteint ou dépasse l'<a class="rule-ref" href="livre_6.html#sec-23-2" data-tip="Encaissement = CON × 2 : seuil comparé aux dégâts du coup (§23.2).">Encaissement</a>, tu appliques
-                            l'arbre à 0 PV (<a class="rule-ref" href="livre_6.html#chap-23" data-tip="Seuils vitales : Encaissement CON×2, Létal CON×5, Miracle (§23).">Livre VI</a>). Le vrai prix, ce n'est pas le ND : c'est l'<strong>addition des PA</strong>.
+                            Tu les résous comme une <a class="rule-ref" href="livre_3.html#chap-14" data-tip="Clé : manœuvre signature qui dépasse l'Encaissement et déclenche l'arbre du Seuil Létal (§14).">Clé</a> (Livre III) : si le total dépasse l'<a class="rule-ref" href="livre_6.html#sec-23-2" data-tip="Encaissement = CON × 2 : seuil comparé aux dégâts du coup (§23.2).">Encaissement</a>, tu appliques
+                            l'arbre du Seuil Létal (<a class="rule-ref" href="livre_6.html#chap-23" data-tip="Seuils vitaux : Encaissement CON×2, Létal CON×5, Miracle (§23).">Livre VI</a>). Le vrai prix, ce n'est pas le ND : c'est l'<strong>addition des PA</strong>.
                             Compte 5 à 11 PA à deux : ça vide ~70% de vos réserves (héros typique : 11 PA) et vous laisse
                             sans réaction derrière — c'est votre fenêtre de vulnérabilité. Ajoute les
                             <strong>conditions de placement</strong> (alignement, isolement, couloir vide, opposition) :

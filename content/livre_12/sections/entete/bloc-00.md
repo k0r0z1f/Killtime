@@ -20,7 +20,7 @@ livre: 12
 
                     <h1 class="doc-title">Livre XII : Le Bestiaire&nbsp;&amp; Menaces Cosmiques</h1>
                     <p class="doc-lead">
-                        Dans le Système RP, l'adversité ne se mesure pas à de simples sacs de points de vie passifs.
+                        Dans le Système RP, les adversaires ne sont pas de simples sacs à coups passifs.
                         Tout ennemi — du coupe-jarret embusqué dans les taillis jusqu'au titan de magma largué à travers
                         les lignes temporelles par Capricius — opère sous la <strong>même rigueur mathématique que les
                             héros</strong> : calcul dynamique des Points d'Action (PA), seuils d'encaissement

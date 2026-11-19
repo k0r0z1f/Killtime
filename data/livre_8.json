@@ -388,31 +388,31 @@
    "lignes": [
     [
      "<strong>Champ de Force Personnel 1</strong>",
-     "Barrière de 10 PV absorbants",
+     "Barrière absorbant 10 dégâts",
      "75 000 CE",
      "Absorbe les dégâts avant la chair ; zéro encombrement en PA."
     ],
     [
      "<strong>Champ de Force Personnel 2</strong>",
-     "Barrière de 20 PV absorbants",
+     "Barrière absorbant 20 dégâts",
      "125 000 CE",
      "Recharge automatique hors combat après 1 minute."
     ],
     [
      "<strong>Champ de Force Personnel 3</strong>",
-     "Barrière de 30 PV absorbants",
+     "Barrière absorbant 30 dégâts",
      "150 000 CE",
      "Protection contre les radiations et le vide spatial."
     ],
     [
      "<strong>Champ de Force Personnel 4</strong>",
-     "Barrière de 40 PV absorbants",
+     "Barrière absorbant 40 dégâts",
      "200 000 CE",
      "Modèle d'élite de la flotte impériale."
     ],
     [
      "<strong>Champ de Force Personnel 5</strong>",
-     "Barrière de 50 PV absorbants",
+     "Barrière absorbant 50 dégâts",
      "250 000 CE",
      "Forteresse cinétique portable impénétrable."
     ],
@@ -448,7 +448,7 @@
      "top": false,
      "corps_tag": "ul",
      "corps_attrs": " style=\"padding-left: 15px; margin: 10px 0; font-size: 0.9em;\"",
-     "corps_html": "<li><strong>Seringue de soins 5 PV :</strong> 900 CE &bull; Injection 1 PA.</li>\n                                <li><strong>Seringue de soins 10 PV :</strong> 2 000 CE &bull; Injection 1 PA.</li>\n                                <li><strong>Seringue de soins 20 PV :</strong> 5 000 CE &bull; Injection 1 PA.</li>\n                                <li><strong>Seringue de soins généralisée 10 PV :</strong> 2 500 CE &bull; Soigne\n                                    l'ensemble des membres blessés.</li>\n                                <li><strong>Rations & Hydratation :</strong> Meal Pack (10 CE), Meal Pack + Water (15\n                                    CE), Water Blob 1L (5 CE).</li>",
+     "corps_html": "<li><strong>Seringue de soins (−5 dégâts) :</strong> 900 CE &bull; Injection 1 PA.</li>\n                                <li><strong>Seringue de soins (−10 dégâts) :</strong> 2 000 CE &bull; Injection 1 PA.</li>\n                                <li><strong>Seringue de soins (−20 dégâts) :</strong> 5 000 CE &bull; Injection 1 PA.</li>\n                                <li><strong>Seringue de soins généralisée (−10 dégâts) :</strong> 2 500 CE &bull; Soigne\n                                    l'ensemble des membres blessés.</li>\n                                <li><strong>Rations & Hydratation :</strong> Meal Pack (10 CE), Meal Pack + Water (15\n                                    CE), Water Blob 1L (5 CE).</li>",
      "pieds": []
     }
    ]
@@ -740,7 +740,7 @@
    {
     "equipement": "Champ de Force Personnel 1",
     "protection_pv": 10,
-    "protection": "Barrière de 10 PV absorbants",
+    "protection": "Barrière absorbant 10 dégâts",
     "prix_ce": 75000,
     "prix_texte": "75 000 CE",
     "particularites": "Absorbe les dégâts avant la chair ; zéro encombrement en PA."
@@ -748,7 +748,7 @@
    {
     "equipement": "Champ de Force Personnel 2",
     "protection_pv": 20,
-    "protection": "Barrière de 20 PV absorbants",
+    "protection": "Barrière absorbant 20 dégâts",
     "prix_ce": 125000,
     "prix_texte": "125 000 CE",
     "particularites": "Recharge automatique hors combat après 1 minute."
@@ -756,7 +756,7 @@
    {
     "equipement": "Champ de Force Personnel 3",
     "protection_pv": 30,
-    "protection": "Barrière de 30 PV absorbants",
+    "protection": "Barrière absorbant 30 dégâts",
     "prix_ce": 150000,
     "prix_texte": "150 000 CE",
     "particularites": "Protection contre les radiations et le vide spatial."
@@ -764,7 +764,7 @@
    {
     "equipement": "Champ de Force Personnel 4",
     "protection_pv": 40,
-    "protection": "Barrière de 40 PV absorbants",
+    "protection": "Barrière absorbant 40 dégâts",
     "prix_ce": 200000,
     "prix_texte": "200 000 CE",
     "particularites": "Modèle d'élite de la flotte impériale."
@@ -772,7 +772,7 @@
    {
     "equipement": "Champ de Force Personnel 5",
     "protection_pv": 50,
-    "protection": "Barrière de 50 PV absorbants",
+    "protection": "Barrière absorbant 50 dégâts",
     "prix_ce": 250000,
     "prix_texte": "250 000 CE",
     "particularites": "Forteresse cinétique portable impénétrable."
@@ -801,7 +801,7 @@
    },
    {
     "categorie": "Seringues d'Urgence & Rations Restauration",
-    "texte": "Seringue de soins 5 PV : 900 CE • Injection 1 PA. Seringue de soins 10 PV : 2 000 CE • Injection 1 PA. Seringue de soins 20 PV : 5 000 CE • Injection 1 PA. Seringue de soins généralisée 10 PV : 2 500 CE • Soigne l'ensemble des membres blessés. Rations & Hydratation : Meal Pack (10 CE), Meal Pack + Water (15 CE), Water Blob 1L (5 CE)."
+    "texte": "Seringue de soins (−5 dégâts) : 900 CE • Injection 1 PA. Seringue de soins (−10 dégâts) : 2 000 CE • Injection 1 PA. Seringue de soins (−20 dégâts) : 5 000 CE • Injection 1 PA. Seringue de soins généralisée (−10 dégâts) : 2 500 CE • Soigne l'ensemble des membres blessés. Rations & Hydratation : Meal Pack (10 CE), Meal Pack + Water (15 CE), Water Blob 1L (5 CE)."
    }
   ]
  }

@@ -27,13 +27,13 @@ livre: 6
                     <ul>
                         <li><strong>Nuit sûre (6 à 8 h, lieu sûr) :</strong> tu dors sans être attaqué.
                             Les tours de garde silencieux sont autorisés ; une alerte ou un assaut annule la nuit.
-                            Au réveil, tu récupères <strong>CON PV</strong> (forfait fixe, pas de calcul),
+                            Au réveil, tu effaces <strong>CON dégâts</strong> (forfait fixe, pas de calcul),
                             <strong>×2</strong> si un soignant a veillé sur toi avec magie ou arcanotech.
-                            <em>Exemple : Roger (CON 4) s'endort à 2 PV. Au matin : 2 + 4 = 6 PV. Avec un rituel
-                            de Mina pendant la nuit : 2 + 8 = 10 PV.</em></li>
+                            <em>Exemple : Roger (CON 4) s'endort avec 10 dégâts. Au matin : 10 − 4 = 6 dégâts restants. Avec un rituel
+                            de Mina pendant la nuit : 10 − 8 = 2 dégâts.</em></li>
                         <li><strong>Ce que la nuit répare :</strong> ton <a class="rule-ref" href="livre_1.html#chap-4" data-tip="Essoufflement : 1 point = des PA d'urgence ; ne part pas tout seul, action dédiée pour souffler (§4.2).">Essoufflement</a>
                             retombe à zéro. Un stabilisé se réveille (<a class="rule-ref" href="#sec-24-5" data-tip="Inconscient : aucune action ni réaction. Réveil par secousse vigoureuse (1 PA) ou premiers soins.">Inconscient stable</a>
-                            → conscient). Le <a class="rule-ref" href="livre_6.html#sec-24-1" data-tip="Saignement : perte de PV par tour sans compression (§24.1).">Saignement</a>
+                            → conscient). Le <a class="rule-ref" href="livre_6.html#sec-24-1" data-tip="Saignement : perte de dégâts par tour sans compression (§24.1).">Saignement</a>
                             s'arrête.
                             Tes dons <strong>1×/jour</strong> (ex. <em>Sève Vive</em> du Taurien) sont rechargés —
                             les dons s'activent gratuitement quand tu veux (<a class="rule-ref" href="livre_1.html#chap-2" data-tip="Dons raciaux : 1 au choix à la création, activation gratuite (§2.2).">Livre I §2.2</a>),
@@ -42,9 +42,9 @@ livre: 6
                             <a class="rule-ref" href="#sec-24-5" data-tip="Souffrant : blessure grave levée par n'importe quel soin (§24.5).">Souffrant</a>
                             (il exige un soin actif, §25.1), les poisons et maladies installés
                             (ils exigent leur traitement dédié), ni le
-                            <a class="rule-ref" href="#sec-23-3" data-tip="Point de Miracle : dévie un coup mortel, survie à 1 PV sous le seuil létal. Rachat : 20 XP ou jalon MJ.">Point de Miracle</a>
+                            <a class="rule-ref" href="#sec-23-3" data-tip="Point de Miracle : dévie un coup mortel, survie à 1 point sous le seuil létal. Rachat : 20 XP ou jalon MJ.">Point de Miracle</a>
                             (20 XP ou jalon MJ, jamais le repos). Faim et soif suivent
                             <a class="rule-ref" href="#sec-24-3" data-tip="Affamé & Privation : 2 L + 1 ration / jour, −1 ec par niveau, soin = eau + nourriture (§24.3).">§24.3</a> :
-                            sans eau, aucun PV et Essoufflement conservé ; sans ration, moitié seulement : dors le ventre vide à tes risques.</li>
+                            sans eau, aucun dégât effacé et Essoufflement conservé ; sans ration, moitié seulement : dors le ventre vide à tes risques.</li>
                     </ul>
                     

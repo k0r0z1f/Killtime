@@ -13,7 +13,7 @@
    "blocs": [
     {
      "type": "html",
-     "html": "\n\n                    <div class=\"doc-badge-row\">\n                        <span class=\"doc-badge-pill\">\n                            <svg width=\"12\" height=\"12\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\"\n                                stroke-width=\"2\">\n                                <path d=\"M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z\" />\n                                <circle cx=\"12\" cy=\"12\" r=\"3\" />\n                            </svg>\n                            Livre XII — Bestiaire &amp; Entités Hostiles\n                        </span>\n                        <span class=\"doc-badge-pill accent\">3 Rangs de Menace</span>\n                        <span class=\"doc-badge-pill live\">Homologué Tables de Jeu</span>\n                    </div>\n\n                    <h1 class=\"doc-title\">Livre XII : Le Bestiaire&nbsp;&amp; Menaces Cosmiques</h1>\n                    <p class=\"doc-lead\">\n                        Dans le Système RP, l'adversité ne se mesure pas à de simples sacs de points de vie passifs.\n                        Tout ennemi — du coupe-jarret embusqué dans les taillis jusqu'au titan de magma largué à travers\n                        les lignes temporelles par Capricius — opère sous la <strong>même rigueur mathématique que les\n                            héros</strong> : calcul dynamique des Points d'Action (PA), seuils d'encaissement\n                        anatomique, malus d'essoufflement et ripostes en réaction. Ce compendium rassemble l'ensemble\n                        des profils martiaux, faunes indigènes et avatars d'annihilation du multivers.\n                    </p>\n\n                    <hr class=\"doc-divider\">\n\n                    <!-- ================= CHAPITRE 42 ================= -->\n                    "
+     "html": "\n\n                    <div class=\"doc-badge-row\">\n                        <span class=\"doc-badge-pill\">\n                            <svg width=\"12\" height=\"12\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\"\n                                stroke-width=\"2\">\n                                <path d=\"M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z\" />\n                                <circle cx=\"12\" cy=\"12\" r=\"3\" />\n                            </svg>\n                            Livre XII — Bestiaire &amp; Entités Hostiles\n                        </span>\n                        <span class=\"doc-badge-pill accent\">3 Rangs de Menace</span>\n                        <span class=\"doc-badge-pill live\">Homologué Tables de Jeu</span>\n                    </div>\n\n                    <h1 class=\"doc-title\">Livre XII : Le Bestiaire&nbsp;&amp; Menaces Cosmiques</h1>\n                    <p class=\"doc-lead\">\n                        Dans le Système RP, les adversaires ne sont pas de simples sacs à coups passifs.\n                        Tout ennemi — du coupe-jarret embusqué dans les taillis jusqu'au titan de magma largué à travers\n                        les lignes temporelles par Capricius — opère sous la <strong>même rigueur mathématique que les\n                            héros</strong> : calcul dynamique des Points d'Action (PA), seuils d'encaissement\n                        anatomique, malus d'essoufflement et ripostes en réaction. Ce compendium rassemble l'ensemble\n                        des profils martiaux, faunes indigènes et avatars d'annihilation du multivers.\n                    </p>\n\n                    <hr class=\"doc-divider\">\n\n                    <!-- ================= CHAPITRE 42 ================= -->\n                    "
     }
    ]
   },
@@ -1096,7 +1096,7 @@
      "stats": [
       {
        "label_html": "Coque",
-       "valeur_html": "8 PV",
+       "valeur_html": "8 dégâts",
        "highlight": false
       },
       {
@@ -1414,7 +1414,7 @@
     "rang": "Rang II • Sentinelle",
     "description": "Rotor antigravité silencieux équipé d'optiques thermiques et d'un canon à faisceau étourdissant.",
     "stats": {
-     "Coque": "8 PV",
+     "Coque": "8 dégâts",
      "Agilité": "4",
      "Vitesse Vol": "12 cases/tour",
      "PA": "8 PA"
@@ -1685,7 +1685,7 @@
     "rang": "Rang II • Sentinelle",
     "description": "Rotor antigravité silencieux équipé d'optiques thermiques et d'un canon à faisceau étourdissant.",
     "stats": {
-     "Coque": "8 PV",
+     "Coque": "8 dégâts",
      "Agilité": "4",
      "Vitesse Vol": "12 cases/tour",
      "PA": "8 PA"
