@@ -613,7 +613,7 @@
      },
      "Magie Primale (MAG, INT)",
      "Défensif, Offensif",
-     "Pendant 2 tours, chaque ennemi qui te blesse prend 4 dégâts et <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Saignement : dégâts directs en début de tour, puis −1/tour. Tout soin les arrête (§24.2).\">Saignement</a> en retour. Exemple : son ombre le mord."
+     "Pendant 2 tours, chaque ennemi qui te blesse prend 4 dégâts et <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Saignement : dégâts résiduels en début de tour, puis −1/tour (ne baisse pas après Course, Charge ou Essoufflement). Tout soin l'arrête (§24.2).\">Saignement</a> en retour. Exemple : son ombre le mord."
     ],
     [
      {
@@ -664,7 +664,7 @@
      "<strong>Dard d'Épine</strong>",
      "Magie Primale (MAG, INT)",
      "Offensif",
-     "Tu projettes un dard de sève durcie : 4 dégâts et <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Saignement : dégâts directs en début de tour, puis −1/tour. Tout soin les arrête (§24.2).\">Saignement</a>. Exemple : tu cueilles le guetteur."
+     "Tu projettes un dard de sève durcie : 4 dégâts et <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Saignement : dégâts résiduels en début de tour, puis −1/tour (ne baisse pas après Course, Charge ou Essoufflement). Tout soin l'arrête (§24.2).\">Saignement</a>. Exemple : tu cueilles le guetteur."
     ],
     [
      {
@@ -691,7 +691,7 @@
      },
      "Magie Primale (MAG, INT)",
      "Offensif",
-     "Tes ombres balaient un cône de 3 cases : 6 dégâts et <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Saignement : dégâts directs en début de tour, puis −1/tour. Tout soin les arrête (§24.2).\">Saignement</a>. Exemple : la pénombre mord."
+     "Tes ombres balaient un cône de 3 cases : 6 dégâts et <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Saignement : dégâts résiduels en début de tour, puis −1/tour (ne baisse pas après Course, Charge ou Essoufflement). Tout soin l'arrête (§24.2).\">Saignement</a>. Exemple : la pénombre mord."
     ],
     [
      {
@@ -709,7 +709,7 @@
      },
      "Magie Primale (MAG, INT)",
      "Offensif",
-     "Tu lances un soleil noir : 14 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent l'armure, frappent directement la cible (§23.1).\">Dégâts Absolus</a> dans un rayon de 3 cases. Contrecoup : tu prends 4 dégâts et <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Saignement : dégâts directs en début de tour, puis −1/tour. Tout soin les arrête (§24.2).\">Saignement</a>. À sortir quand il le faut."
+     "Tu lances un soleil noir : 14 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent l'armure, frappent directement la cible (§23.1).\">Dégâts Absolus</a> dans un rayon de 3 cases. Contrecoup : tu prends 4 dégâts et <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Saignement : dégâts résiduels en début de tour, puis −1/tour (ne baisse pas après Course, Charge ou Essoufflement). Tout soin l'arrête (§24.2).\">Saignement</a>. À sortir quand il le faut."
     ],
     [
      {
@@ -718,7 +718,7 @@
      },
      "Magie Primale (MAG, INT)",
      "Offensif",
-     "Tu projettes une volée d'épines : 6 dégâts et <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Saignement : dégâts directs en début de tour, puis −1/tour. Tout soin les arrête (§24.2).\">Saignement</a>. Exemple : le poursuivant s'arrête net."
+     "Tu projettes une volée d'épines : 6 dégâts et <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Saignement : dégâts résiduels en début de tour, puis −1/tour (ne baisse pas après Course, Charge ou Essoufflement). Tout soin l'arrête (§24.2).\">Saignement</a>. Exemple : le poursuivant s'arrête net."
     ],
     [
      {
@@ -736,7 +736,7 @@
      },
      "Magie Primale (MAG, INT)",
      "Offensif",
-     "Tu fais pleuvoir les épines sur 3 cases contiguës pendant 2 tours : 3 dégâts et <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Saignement : dégâts directs en début de tour, puis −1/tour. Tout soin les arrête (§24.2).\">Saignement</a> à qui commence dedans. Exemple : la clairière devient infranchissable."
+     "Tu fais pleuvoir les épines sur 3 cases contiguës pendant 2 tours : 3 dégâts et <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Saignement : dégâts résiduels en début de tour, puis −1/tour (ne baisse pas après Course, Charge ou Essoufflement). Tout soin l'arrête (§24.2).\">Saignement</a> à qui commence dedans. Exemple : la clairière devient infranchissable."
     ],
     [
      {
@@ -754,7 +754,7 @@
      },
      "Magie Primale (MAG, INT)",
      "Offensif, Défensif",
-     "Tu t'entoures de ronces (rayon 1 case) pendant 2 tours. L'ennemi qui commence son tour dedans prend 3 dégâts et <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Saignement : dégâts directs en début de tour, puis −1/tour. Tout soin les arrête (§24.2).\">Saignement</a>. Tes alliés dedans purgent <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Ralenti : actions hors déplacement ×2 PA ; déplacement +1 PA/case (§24.1).\">Ralenti</a>. Exemple : le cercle pique et soigne à la fois."
+     "Tu t'entoures de ronces (rayon 1 case) pendant 2 tours. L'ennemi qui commence son tour dedans prend 3 dégâts et <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Saignement : dégâts résiduels en début de tour, puis −1/tour (ne baisse pas après Course, Charge ou Essoufflement). Tout soin l'arrête (§24.2).\">Saignement</a>. Tes alliés dedans purgent <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Ralenti : actions hors déplacement ×2 PA ; déplacement +1 PA/case (§24.1).\">Ralenti</a>. Exemple : le cercle pique et soigne à la fois."
     ],
     [
      "<strong>Outil de Sève</strong>",
@@ -823,7 +823,7 @@
      },
      "Magie Primale (MAG, INT)",
      "Défensif, Utilitaire",
-     "Touche un allié (ou toi) : une armure d'écorce le couvre pendant 3 tours (+2 armure naturelle). Celui qui le frappe au contact prend <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Saignement : dégâts directs en début de tour, puis −1/tour. Tout soin les arrête (§24.2).\">Saignement</a>. Exemple : le heurtoir se pique."
+     "Touche un allié (ou toi) : une armure d'écorce le couvre pendant 3 tours (+2 armure naturelle). Celui qui le frappe au contact prend <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Saignement : dégâts résiduels en début de tour, puis −1/tour (ne baisse pas après Course, Charge ou Essoufflement). Tout soin l'arrête (§24.2).\">Saignement</a>. Exemple : le heurtoir se pique."
     ],
     [
      {
@@ -874,7 +874,7 @@
      },
      "Magie Primale (MAG, INT)",
      "Offensif",
-     "Zone de 2 cases : <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Empoisonné : dégâts directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonné</a>\n                                        et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Ralenti : actions hors déplacement ×2 PA ; déplacement +1 PA/case (§24.1).\">Ralenti</a>."
+     "Zone de 2 cases : <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Empoisonné : dégâts résiduels en début de tour, puis −1/tour ; soins de dégâts réduits de moitié tant que le poison agit. Traitement dédié requis (§24.2).\">Empoisonné</a>\n                                        et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Ralenti : actions hors déplacement ×2 PA ; déplacement +1 PA/case (§24.1).\">Ralenti</a>."
     ],
     [
      {
@@ -892,7 +892,7 @@
      },
      "Magie Primale (MAG, INT)",
      "Offensif",
-     "Tu fais pleuvoir les ronces sur 3 cases contiguës pendant 2 tours : 3 dégâts et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Empoisonné : dégâts directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonné</a> à qui commence dedans. Exemple : le ciel griffe."
+     "Tu fais pleuvoir les ronces sur 3 cases contiguës pendant 2 tours : 3 dégâts et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Empoisonné : dégâts résiduels en début de tour, puis −1/tour ; soins de dégâts réduits de moitié tant que le poison agit. Traitement dédié requis (§24.2).\">Empoisonné</a> à qui commence dedans. Exemple : le ciel griffe."
     ],
     [
      {
@@ -901,7 +901,7 @@
      },
      "Magie Primale (MAG, INT)",
      "Offensif",
-     "Tes ronces fleurissent d'un coup : 8 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent l'armure, frappent directement la cible (§23.1).\">Dégâts Absolus</a> à tous ceux dedans, et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Empoisonné : dégâts directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonné</a>. Exemple : une floraison noire, puis le silence."
+     "Tes ronces fleurissent d'un coup : 8 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent l'armure, frappent directement la cible (§23.1).\">Dégâts Absolus</a> à tous ceux dedans, et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Empoisonné : dégâts résiduels en début de tour, puis −1/tour ; soins de dégâts réduits de moitié tant que le poison agit. Traitement dédié requis (§24.2).\">Empoisonné</a>. Exemple : une floraison noire, puis le silence."
     ],
     [
      {
@@ -910,7 +910,7 @@
      },
      "Magie Primale (MAG, INT)",
      "Offensif",
-     "En plus d'Immobilisé, ta cible subit <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Asphyxie : dégâts + drain de 1 PA par tour. Soin : désobstruction (premiers soins + kit).\">Asphyxie</a>\n                                        : elle perd aussi 1 PA par tour."
+     "En plus d'Immobilisé, ta cible subit <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Asphyxie : dégâts résiduels + perte d'1 PA en début de tour. Air pur, rompre la prise ou Premiers Soins 3 PA (§24.2).\">Asphyxie</a>\n                                        : elle perd aussi 1 PA par tour."
     ],
     [
      {
@@ -937,7 +937,7 @@
      },
      "Magie Primale (MAG, INT)",
      "Offensif",
-     "Ta cible entravée devient <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Paralysé : aucune action ni réaction, incapacité totale (§24.1).\">Paralysée</a>\n                                        et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Empoisonné : dégâts directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonnée</a>\n                                        en continu."
+     "Ta cible entravée devient <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Paralysé : aucune action ni réaction, incapacité totale (§24.1).\">Paralysée</a>\n                                        et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Empoisonné : dégâts résiduels en début de tour, puis −1/tour ; soins de dégâts réduits de moitié tant que le poison agit. Traitement dédié requis (§24.2).\">Empoisonnée</a>\n                                        en continu."
     ],
     [
      {
@@ -952,7 +952,7 @@
      "<strong>Écorce Putride</strong>",
      "Magie Primale (MAG, INT)",
      "Défensif",
-     "Touche un allié (ou toi) : il gagne +2 d'armure naturelle putride pendant 2 tours. Celui qui le frappe au contact est <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Empoisonné : dégâts directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonné</a>. Exemple : ça pue, mais ça protège."
+     "Touche un allié (ou toi) : il gagne +2 d'armure naturelle putride pendant 2 tours. Celui qui le frappe au contact est <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Empoisonné : dégâts résiduels en début de tour, puis −1/tour ; soins de dégâts réduits de moitié tant que le poison agit. Traitement dédié requis (§24.2).\">Empoisonné</a>. Exemple : ça pue, mais ça protège."
     ],
     [
      {
@@ -1006,7 +1006,7 @@
      },
      "Magie Primale (MAG, INT)",
      "Utilitaire, Offensif",
-     "Touche un allié (ou toi) : ses attaques au contact infligent <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Empoisonné : dégâts directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonné</a> pendant 2 tours. Exemple : ses lames suintent."
+     "Touche un allié (ou toi) : ses attaques au contact infligent <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Empoisonné : dégâts résiduels en début de tour, puis −1/tour ; soins de dégâts réduits de moitié tant que le poison agit. Traitement dédié requis (§24.2).\">Empoisonné</a> pendant 2 tours. Exemple : ses lames suintent."
     ],
     [
      {
@@ -1015,7 +1015,7 @@
      },
      "Magie Primale (MAG, INT)",
      "Défensif",
-     "Touche un allié (ou toi) : il gagne +3 d'armure naturelle pendant 3 tours. Celui qui le frappe au contact est <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Empoisonné : dégâts directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonné</a>. Exemple : la chair durcit et grouille."
+     "Touche un allié (ou toi) : il gagne +3 d'armure naturelle pendant 3 tours. Celui qui le frappe au contact est <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Empoisonné : dégâts résiduels en début de tour, puis −1/tour ; soins de dégâts réduits de moitié tant que le poison agit. Traitement dédié requis (§24.2).\">Empoisonné</a>. Exemple : la chair durcit et grouille."
     ],
     [
      {
@@ -1033,7 +1033,7 @@
      },
      "Magie Primale (MAG, INT)",
      "Défensif, Offensif",
-     "Pendant 2 tours, chaque ennemi qui te blesse prend 4 dégâts et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Empoisonné : dégâts directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonné</a> en retour. Exemple : la tombe se referme sur lui."
+     "Pendant 2 tours, chaque ennemi qui te blesse prend 4 dégâts et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Empoisonné : dégâts résiduels en début de tour, puis −1/tour ; soins de dégâts réduits de moitié tant que le poison agit. Traitement dédié requis (§24.2).\">Empoisonné</a> en retour. Exemple : la tombe se referme sur lui."
     ],
     [
      {
@@ -1048,7 +1048,7 @@
      "<strong>Herbier Toxique</strong>",
      "Magie Primale (MAG, INT)",
      "Utilitaire",
-     "Avec 1 heure de travail, tu prépares 1 dose de poison (d'accord avec ton MJ, une seule à la fois) : enduite sur une arme, la prochaine attaque qui blesse inflige <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Empoisonné : dégâts directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonné</a>. Exemple : tu racles la sève jaune."
+     "Avec 1 heure de travail, tu prépares 1 dose de poison (d'accord avec ton MJ, une seule à la fois) : enduite sur une arme, la prochaine attaque qui blesse inflige <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Empoisonné : dégâts résiduels en début de tour, puis −1/tour ; soins de dégâts réduits de moitié tant que le poison agit. Traitement dédié requis (§24.2).\">Empoisonné</a>. Exemple : tu racles la sève jaune."
     ],
     [
      {
@@ -1111,7 +1111,7 @@
      },
      "Magie Primale (MAG, INT)",
      "Utilitaire",
-     "Ta dose inflige aussi <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Ralenti : actions hors déplacement ×2 PA ; déplacement +1 PA/case (§24.1).\">Ralenti</a> en plus d'<a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Empoisonné : dégâts directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonné</a>. Exemple : les membres se mettent à trembler."
+     "Ta dose inflige aussi <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Ralenti : actions hors déplacement ×2 PA ; déplacement +1 PA/case (§24.1).\">Ralenti</a> en plus d'<a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Empoisonné : dégâts résiduels en début de tour, puis −1/tour ; soins de dégâts réduits de moitié tant que le poison agit. Traitement dédié requis (§24.2).\">Empoisonné</a>. Exemple : les membres se mettent à trembler."
     ],
     [
      {
@@ -1129,7 +1129,7 @@
      },
      "Magie Primale (MAG, INT)",
      "Utilitaire",
-     "Avec une nuit de travail et l'accord de ton MJ, tu crées un grand œuvre : une arme inflige <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Empoisonné : dégâts directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonné</a> à chaque blessure jusqu'à la fin du scénario (une seule à la fois)."
+     "Avec une nuit de travail et l'accord de ton MJ, tu crées un grand œuvre : une arme inflige <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Empoisonné : dégâts résiduels en début de tour, puis −1/tour ; soins de dégâts réduits de moitié tant que le poison agit. Traitement dédié requis (§24.2).\">Empoisonné</a> à chaque blessure jusqu'à la fin du scénario (une seule à la fois)."
     ],
     [
      {
@@ -1138,7 +1138,7 @@
      },
      "Magie Primale (MAG, INT)",
      "Offensif, Utilitaire",
-     "<a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : zone d'1 case pendant 1 tour : <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Empoisonné : dégâts directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonné</a> à qui commence dedans. Exemple : tu lances la fiole, ça fume vert."
+     "<a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : zone d'1 case pendant 1 tour : <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Empoisonné : dégâts résiduels en début de tour, puis −1/tour ; soins de dégâts réduits de moitié tant que le poison agit. Traitement dédié requis (§24.2).\">Empoisonné</a> à qui commence dedans. Exemple : tu lances la fiole, ça fume vert."
     ],
     [
      "<strong>Greffe Cinétique</strong>",
@@ -1321,7 +1321,7 @@
      },
      "Magie Primale (MAG, INT)",
      "Défensif, Utilitaire",
-     "Ton bastion devient un sanctuaire : <a class=\"rule-ref\" href=\"livre_5.html#sec-21-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§21.3).\">Couvert Total</a> contre les tirs extérieurs, et tes alliés dedans retirent 4 dégâts et purgent <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Saignement : dégâts directs en début de tour, puis −1/tour. Tout soin les arrête (§24.2).\">Saignement</a> et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Ralenti : actions hors déplacement ×2 PA ; déplacement +1 PA/case (§24.1).\">Ralenti</a>. Exemple : vous soufflez sous la voûte."
+     "Ton bastion devient un sanctuaire : <a class=\"rule-ref\" href=\"livre_5.html#sec-21-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§21.3).\">Couvert Total</a> contre les tirs extérieurs, et tes alliés dedans retirent 4 dégâts et purgent <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Saignement : dégâts résiduels en début de tour, puis −1/tour (ne baisse pas après Course, Charge ou Essoufflement). Tout soin l'arrête (§24.2).\">Saignement</a> et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Ralenti : actions hors déplacement ×2 PA ; déplacement +1 PA/case (§24.1).\">Ralenti</a>. Exemple : vous soufflez sous la voûte."
     ],
     [
      {
@@ -1330,7 +1330,7 @@
      },
      "Magie Primale (MAG, INT)",
      "Défensif, Offensif",
-     "Pendant 2 tours, chaque ennemi qui te blesse prend 4 dégâts et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Empoisonné : dégâts directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonné</a> en retour. Exemple : son sang se couvre de cloques."
+     "Pendant 2 tours, chaque ennemi qui te blesse prend 4 dégâts et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Empoisonné : dégâts résiduels en début de tour, puis −1/tour ; soins de dégâts réduits de moitié tant que le poison agit. Traitement dédié requis (§24.2).\">Empoisonné</a> en retour. Exemple : son sang se couvre de cloques."
     ],
     [
      "<strong>Catalyse Tissulaire</strong>",
@@ -1345,7 +1345,7 @@
      },
      "Magie Primale (MAG, INT)",
      "Utilitaire",
-     "Touche un allié : tu purges son <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Empoisonné : dégâts directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonné</a>. Exemple : tu aspires le venin de la plaie."
+     "Touche un allié : tu purges son <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Empoisonné : dégâts résiduels en début de tour, puis −1/tour ; soins de dégâts réduits de moitié tant que le poison agit. Traitement dédié requis (§24.2).\">Empoisonné</a>. Exemple : tu aspires le venin de la plaie."
     ],
     [
      {
@@ -1354,7 +1354,7 @@
      },
      "Magie Primale (MAG, INT)",
      "Utilitaire",
-     "Touche un allié : tu purges son <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Saignement : dégâts directs en début de tour, puis −1/tour. Tout soin les arrête (§24.2).\">Saignement</a> et son <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Empoisonné : dégâts directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonné</a>. Exemple : son sang redevient clair."
+     "Touche un allié : tu purges son <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Saignement : dégâts résiduels en début de tour, puis −1/tour (ne baisse pas après Course, Charge ou Essoufflement). Tout soin l'arrête (§24.2).\">Saignement</a> et son <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Empoisonné : dégâts résiduels en début de tour, puis −1/tour ; soins de dégâts réduits de moitié tant que le poison agit. Traitement dédié requis (§24.2).\">Empoisonné</a>. Exemple : son sang redevient clair."
     ],
     [
      {
@@ -1363,7 +1363,7 @@
      },
      "Magie Primale (MAG, INT)",
      "Utilitaire",
-     "Touche un allié : tu purges son <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Saignement : dégâts directs en début de tour, puis −1/tour. Tout soin les arrête (§24.2).\">Saignement</a>, son <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Empoisonné : dégâts directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonné</a>, son <a\n                                            class=\"rule-ref\" href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"En Feu : 2 dégâts/tour (bouclier d'abord), puis −1/tour. Il faut l'éteindre (§24.2).\">En\n                                            Feu</a>, son <a\n                                            class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (+1 PA/case, non cumulatif avec À Terre pour ramper).\">Déstabilisé</a> et son <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Étourdi : −1 ec sur tous les jets.\">Étourdi</a>. Exemple : tu le laves de tout, il respire."
+     "Touche un allié : tu purges son <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Saignement : dégâts résiduels en début de tour, puis −1/tour (ne baisse pas après Course, Charge ou Essoufflement). Tout soin l'arrête (§24.2).\">Saignement</a>, son <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Empoisonné : dégâts résiduels en début de tour, puis −1/tour ; soins de dégâts réduits de moitié tant que le poison agit. Traitement dédié requis (§24.2).\">Empoisonné</a>, son <a\n                                            class=\"rule-ref\" href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"En Feu : dégâts résiduels en début de tour (bouclier énergétique/magique d'abord), puis −1/tour. Il faut l'éteindre (§24.2).\">En\n                                            Feu</a>, son <a\n                                            class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (+1 PA/case, non cumulatif avec À Terre pour ramper).\">Déstabilisé</a> et son <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Étourdi : −1 ec sur tous les jets.\">Étourdi</a>. Exemple : tu le laves de tout, il respire."
     ],
     [
      {
@@ -1372,7 +1372,7 @@
      },
      "Magie Primale (MAG, INT)",
      "Utilitaire",
-     "Touche un allié : tu purges son <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Saignement : dégâts directs en début de tour, puis −1/tour. Tout soin les arrête (§24.2).\">Saignement</a>, son <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Empoisonné : dégâts directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonné</a>, son <a\n                                            class=\"rule-ref\" href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"En Feu : 2 dégâts/tour (bouclier d'abord), puis −1/tour. Il faut l'éteindre (§24.2).\">En\n                                            Feu</a>, son <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Ralenti : actions hors déplacement ×2 PA ; déplacement +1 PA/case (§24.1).\">Ralenti</a>, son <a\n                                            class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (+1 PA/case, non cumulatif avec À Terre pour ramper).\">Déstabilisé</a> et son <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Étourdi : −1 ec sur tous les jets.\">Étourdi</a>. Exemple : même les vieilles morsures se referment."
+     "Touche un allié : tu purges son <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Saignement : dégâts résiduels en début de tour, puis −1/tour (ne baisse pas après Course, Charge ou Essoufflement). Tout soin l'arrête (§24.2).\">Saignement</a>, son <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Empoisonné : dégâts résiduels en début de tour, puis −1/tour ; soins de dégâts réduits de moitié tant que le poison agit. Traitement dédié requis (§24.2).\">Empoisonné</a>, son <a\n                                            class=\"rule-ref\" href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"En Feu : dégâts résiduels en début de tour (bouclier énergétique/magique d'abord), puis −1/tour. Il faut l'éteindre (§24.2).\">En\n                                            Feu</a>, son <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Ralenti : actions hors déplacement ×2 PA ; déplacement +1 PA/case (§24.1).\">Ralenti</a>, son <a\n                                            class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (+1 PA/case, non cumulatif avec À Terre pour ramper).\">Déstabilisé</a> et son <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Étourdi : −1 ec sur tous les jets.\">Étourdi</a>. Exemple : même les vieilles morsures se referment."
     ],
     [
      {
@@ -1381,7 +1381,7 @@
      },
      "Magie Primale (MAG, INT)",
      "Défensif, Utilitaire",
-     "Touche un allié : tu purges son <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Saignement : dégâts directs en début de tour, puis −1/tour. Tout soin les arrête (§24.2).\">Saignement</a> et son <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Empoisonné : dégâts directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonné</a>, et il gagne +2 contre le prochain <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Saignement : dégâts directs en début de tour, puis −1/tour. Tout soin les arrête (§24.2).\">Saignement</a>, <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Empoisonné : dégâts directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonné</a> ou <a\n                                            class=\"rule-ref\" href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"En Feu : 2 dégâts/tour (bouclier d'abord), puis −1/tour. Il faut l'éteindre (§24.2).\">En\n                                            Feu</a> pendant 2 tours. Exemple : sa peau prend un reflet d'écorce."
+     "Touche un allié : tu purges son <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Saignement : dégâts résiduels en début de tour, puis −1/tour (ne baisse pas après Course, Charge ou Essoufflement). Tout soin l'arrête (§24.2).\">Saignement</a> et son <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Empoisonné : dégâts résiduels en début de tour, puis −1/tour ; soins de dégâts réduits de moitié tant que le poison agit. Traitement dédié requis (§24.2).\">Empoisonné</a>, et il gagne +2 contre le prochain <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Saignement : dégâts résiduels en début de tour, puis −1/tour (ne baisse pas après Course, Charge ou Essoufflement). Tout soin l'arrête (§24.2).\">Saignement</a>, <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Empoisonné : dégâts résiduels en début de tour, puis −1/tour ; soins de dégâts réduits de moitié tant que le poison agit. Traitement dédié requis (§24.2).\">Empoisonné</a> ou <a\n                                            class=\"rule-ref\" href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"En Feu : dégâts résiduels en début de tour (bouclier énergétique/magique d'abord), puis −1/tour. Il faut l'éteindre (§24.2).\">En\n                                            Feu</a> pendant 2 tours. Exemple : sa peau prend un reflet d'écorce."
     ],
     [
      {
@@ -1390,7 +1390,7 @@
      },
      "Magie Primale (MAG, INT)",
      "Utilitaire",
-     "Tu retires 10 dégâts au lieu de 5 et tu purges aussi le <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Saignement : dégâts directs en début de tour, puis −1/tour. Tout soin les arrête (§24.2).\">Saignement</a>."
+     "Tu retires 10 dégâts au lieu de 5 et tu purges aussi le <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Saignement : dégâts résiduels en début de tour, puis −1/tour (ne baisse pas après Course, Charge ou Essoufflement). Tout soin l'arrête (§24.2).\">Saignement</a>."
     ],
     [
      {
@@ -1426,13 +1426,13 @@
      },
      "Magie Primale (MAG, INT)",
      "Utilitaire",
-     "Tu touches un allié tombé au contact : il se relève à 4 points sous le Seuil Létal, purgé du <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Saignement : dégâts directs en début de tour, puis −1/tour. Tout soin les arrête (§24.2).\">Saignement</a> et de l'<a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Empoisonné : dégâts directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonné</a>, et il gagne +2 d'armure naturelle d'écorce pendant 2 tours (<a class=\"rule-ref\" href=\"livre_6.html#chap-25\"\n                                            data-tip=\"Résurrection : ramener un allié tombé suit la règle du §25, avec un prix (Livre VI).\">règle\n                                            de résurrection</a>). Exemple : tu le ramasses dans les ronces, il repart couvert d'écorce."
+     "Tu touches un allié tombé au contact : il se relève à 4 points sous le Seuil Létal, purgé du <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Saignement : dégâts résiduels en début de tour, puis −1/tour (ne baisse pas après Course, Charge ou Essoufflement). Tout soin l'arrête (§24.2).\">Saignement</a> et de l'<a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Empoisonné : dégâts résiduels en début de tour, puis −1/tour ; soins de dégâts réduits de moitié tant que le poison agit. Traitement dédié requis (§24.2).\">Empoisonné</a>, et il gagne +2 d'armure naturelle d'écorce pendant 2 tours (<a class=\"rule-ref\" href=\"livre_6.html#chap-25\"\n                                            data-tip=\"Résurrection : ramener un allié tombé suit la règle du §25, avec un prix (Livre VI).\">règle\n                                            de résurrection</a>). Exemple : tu le ramasses dans les ronces, il repart couvert d'écorce."
     ],
     [
      "<strong>Incinération Pyrocinétique</strong>",
      "Magie Élémentale (MAG, INT)",
      "Offensif",
-     "Tu projettes un jet de flammes : 6 dégâts de brûlure et l'état <a\n                                            class=\"rule-ref\" href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"En Feu : 2 dégâts/tour (bouclier d'abord), puis −1/tour. Il faut l'éteindre (§24.2).\">En\n                                            Feu</a>."
+     "Tu projettes un jet de flammes : 6 dégâts de brûlure et l'état <a\n                                            class=\"rule-ref\" href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"En Feu : dégâts résiduels en début de tour (bouclier énergétique/magique d'abord), puis −1/tour. Il faut l'éteindre (§24.2).\">En\n                                            Feu</a>."
     ],
     [
      {
@@ -1504,7 +1504,7 @@
      },
      "Magie Élémentale (MAG, INT)",
      "Offensif",
-     "Tu lances un petit soleil : 14 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent l'armure, frappent directement la cible (§23.1).\">dégâts absolus</a> dans un rayon de 3 cases. Contrecoup : même abrité, tu prends 4 dégâts et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\" data-tip=\"En Feu : 2 dégâts/tour (bouclier d'abord), puis −1/tour. Il faut l'éteindre (§24.2).\">En Feu</a>. À sortir quand il le faut."
+     "Tu lances un petit soleil : 14 <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts Absolus : ignorent l'armure, frappent directement la cible (§23.1).\">dégâts absolus</a> dans un rayon de 3 cases. Contrecoup : même abrité, tu prends 4 dégâts et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\" data-tip=\"En Feu : dégâts résiduels en début de tour (bouclier énergétique/magique d'abord), puis −1/tour. Il faut l'éteindre (§24.2).\">En Feu</a>. À sortir quand il le faut."
     ],
     [
      {
@@ -1513,13 +1513,13 @@
      },
      "Magie Élémentale (MAG, INT)",
      "Offensif",
-     "Tu deviens un brasier vivant pendant 3 tours : celui qui te frappe au contact prend 4 dégâts et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\" data-tip=\"En Feu : 2 dégâts/tour (bouclier d'abord), puis −1/tour. Il faut l'éteindre (§24.2).\">En Feu</a>, et tous tes dégâts de feu gagnent +1."
+     "Tu deviens un brasier vivant pendant 3 tours : celui qui te frappe au contact prend 4 dégâts et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\" data-tip=\"En Feu : dégâts résiduels en début de tour (bouclier énergétique/magique d'abord), puis −1/tour. Il faut l'éteindre (§24.2).\">En Feu</a>, et tous tes dégâts de feu gagnent +1."
     ],
     [
      "<strong>Voile de Braise</strong>",
      "Magie Élémentale (MAG, INT)",
      "Défensif",
-     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : tu lèves une chaleur tremblante sur toi pendant 1 tour. Les tirs qui te visent prennent -1. Celui qui te frappe au contact prend <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\" data-tip=\"En Feu : 2 dégâts/tour (bouclier d'abord), puis −1/tour. Il faut l'éteindre (§24.2).\">En Feu</a>."
+     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : tu lèves une chaleur tremblante sur toi pendant 1 tour. Les tirs qui te visent prennent -1. Celui qui te frappe au contact prend <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\" data-tip=\"En Feu : dégâts résiduels en début de tour (bouclier énergétique/magique d'abord), puis −1/tour. Il faut l'éteindre (§24.2).\">En Feu</a>."
     ],
     [
      {
@@ -1546,7 +1546,7 @@
      },
      "Magie Élémentale (MAG, INT)",
      "Offensif",
-     "Tes cendres mordent : les ennemis qui commencent leur tour dans ta nappe (Éclipse de Cendres) prennent 3 dégâts et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\" data-tip=\"En Feu : 2 dégâts/tour (bouclier d'abord), puis −1/tour. Il faut l'éteindre (§24.2).\">En Feu</a>."
+     "Tes cendres mordent : les ennemis qui commencent leur tour dans ta nappe (Éclipse de Cendres) prennent 3 dégâts et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\" data-tip=\"En Feu : dégâts résiduels en début de tour (bouclier énergétique/magique d'abord), puis −1/tour. Il faut l'éteindre (§24.2).\">En Feu</a>."
     ],
     [
      {
@@ -1564,7 +1564,7 @@
      },
      "Magie Élémentale (MAG, INT)",
      "Offensif",
-     "Tu fais pleuvoir la cendre sur 3 cases contiguës pendant 2 tours : 3 dégâts et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\" data-tip=\"En Feu : 2 dégâts/tour (bouclier d'abord), puis −1/tour. Il faut l'éteindre (§24.2).\">En Feu</a> à qui commence dedans."
+     "Tu fais pleuvoir la cendre sur 3 cases contiguës pendant 2 tours : 3 dégâts et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\" data-tip=\"En Feu : dégâts résiduels en début de tour (bouclier énergétique/magique d'abord), puis −1/tour. Il faut l'éteindre (§24.2).\">En Feu</a> à qui commence dedans."
     ],
     [
      {
@@ -1573,7 +1573,7 @@
      },
      "Magie Élémentale (MAG, INT)",
      "Défensif, Utilitaire",
-     "Tu poses un mur de flammes sur 2 cases contiguës à 4 cases, pendant 2 tours. Tu bloques la vue à travers (-2 aux attaques qui passent au travers). Celui qui traverse prend 3 dégâts de brûlure et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\" data-tip=\"En Feu : 2 dégâts/tour (bouclier d'abord), puis −1/tour. Il faut l'éteindre (§24.2).\">En Feu</a>."
+     "Tu poses un mur de flammes sur 2 cases contiguës à 4 cases, pendant 2 tours. Tu bloques la vue à travers (-2 aux attaques qui passent au travers). Celui qui traverse prend 3 dégâts de brûlure et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\" data-tip=\"En Feu : dégâts résiduels en début de tour (bouclier énergétique/magique d'abord), puis −1/tour. Il faut l'éteindre (§24.2).\">En Feu</a>."
     ],
     [
      {
@@ -1582,7 +1582,7 @@
      },
      "Magie Élémentale (MAG, INT)",
      "Défensif, Offensif",
-     "Tu t'entoures de braises (rayon 1 case) pendant 2 tours. L'ennemi qui commence son tour dedans prend 3 dégâts et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\" data-tip=\"En Feu : 2 dégâts/tour (bouclier d'abord), puis −1/tour. Il faut l'éteindre (§24.2).\">En Feu</a>. Tes alliés dedans purgent <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"Ralenti : actions hors déplacement ×2 PA ; déplacement +1 PA/case (§24.1).\">Ralenti</a> (tu réchauffes les muscles)."
+     "Tu t'entoures de braises (rayon 1 case) pendant 2 tours. L'ennemi qui commence son tour dedans prend 3 dégâts et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\" data-tip=\"En Feu : dégâts résiduels en début de tour (bouclier énergétique/magique d'abord), puis −1/tour. Il faut l'éteindre (§24.2).\">En Feu</a>. Tes alliés dedans purgent <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"Ralenti : actions hors déplacement ×2 PA ; déplacement +1 PA/case (§24.1).\">Ralenti</a> (tu réchauffes les muscles)."
     ],
     [
      {
@@ -1591,7 +1591,7 @@
      },
      "Magie Élémentale (MAG, INT)",
      "Défensif",
-     "Tu fermes les braises en dôme (rayon 1 case autour de toi) pendant 2 tours. Dedans, tu protèges les tiens : <a class=\"rule-ref\" href=\"livre_5.html#sec-21-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§21.3).\">Couvert Total</a> contre les tirs venus de l'extérieur. L'ennemi qui entre prend 3 dégâts et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\" data-tip=\"En Feu : 2 dégâts/tour (bouclier d'abord), puis −1/tour. Il faut l'éteindre (§24.2).\">En Feu</a>."
+     "Tu fermes les braises en dôme (rayon 1 case autour de toi) pendant 2 tours. Dedans, tu protèges les tiens : <a class=\"rule-ref\" href=\"livre_5.html#sec-21-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§21.3).\">Couvert Total</a> contre les tirs venus de l'extérieur. L'ennemi qui entre prend 3 dégâts et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\" data-tip=\"En Feu : dégâts résiduels en début de tour (bouclier énergétique/magique d'abord), puis −1/tour. Il faut l'éteindre (§24.2).\">En Feu</a>."
     ],
     [
      {
@@ -1600,7 +1600,7 @@
      },
      "Magie Élémentale (MAG, INT)",
      "Défensif, Utilitaire",
-     "Ton dôme devient un sanctuaire : <a class=\"rule-ref\" href=\"livre_5.html#sec-21-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§21.3).\">Couvert Total</a> contre les tirs extérieurs, et tes alliés dedans retirent 4 dégâts et purgent <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\" data-tip=\"En Feu : 2 dégâts/tour (bouclier d'abord), puis −1/tour. Il faut l'éteindre (§24.2).\">En Feu</a> et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\" data-tip=\"Saignement : dégâts directs en début de tour, puis −1/tour. Tout soin les arrête (§24.2).\">Saignement</a>. Souffle un coup."
+     "Ton dôme devient un sanctuaire : <a class=\"rule-ref\" href=\"livre_5.html#sec-21-3\" data-tip=\"Couvert : un obstacle masque ta silhouette au tireur, partiel ou total (§21.3).\">Couvert Total</a> contre les tirs extérieurs, et tes alliés dedans retirent 4 dégâts et purgent <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\" data-tip=\"En Feu : dégâts résiduels en début de tour (bouclier énergétique/magique d'abord), puis −1/tour. Il faut l'éteindre (§24.2).\">En Feu</a> et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\" data-tip=\"Saignement : dégâts résiduels en début de tour, puis −1/tour (ne baisse pas après Course, Charge ou Essoufflement). Tout soin l'arrête (§24.2).\">Saignement</a>. Souffle un coup."
     ],
     [
      {
@@ -1609,7 +1609,7 @@
      },
      "Magie Élémentale (MAG, INT)",
      "Défensif, Offensif",
-     "Pendant 2 tours, chaque ennemi qui te blesse prend 4 dégâts et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\" data-tip=\"En Feu : 2 dégâts/tour (bouclier d'abord), puis −1/tour. Il faut l'éteindre (§24.2).\">En Feu</a> en retour."
+     "Pendant 2 tours, chaque ennemi qui te blesse prend 4 dégâts et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\" data-tip=\"En Feu : dégâts résiduels en début de tour (bouclier énergétique/magique d'abord), puis −1/tour. Il faut l'éteindre (§24.2).\">En Feu</a> en retour."
     ],
     [
      "<strong>Main de Forge</strong>",
@@ -1669,7 +1669,7 @@
      },
      "Magie Élémentale (MAG, INT)",
      "Utilitaire, Défensif",
-     "Ton sang chauffe. Touche un allié (ou toi) : tu cautérises — tu purges <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\" data-tip=\"Saignement : dégâts directs en début de tour, puis −1/tour. Tout soin les arrête (§24.2).\">Saignement</a> — et il gagne +2 contre le prochain <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\" data-tip=\"En Feu : 2 dégâts/tour (bouclier d'abord), puis −1/tour. Il faut l'éteindre (§24.2).\">En Feu</a> pendant 2 tours."
+     "Ton sang chauffe. Touche un allié (ou toi) : tu cautérises — tu purges <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\" data-tip=\"Saignement : dégâts résiduels en début de tour, puis −1/tour (ne baisse pas après Course, Charge ou Essoufflement). Tout soin l'arrête (§24.2).\">Saignement</a> — et il gagne +2 contre le prochain <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\" data-tip=\"En Feu : dégâts résiduels en début de tour (bouclier énergétique/magique d'abord), puis −1/tour. Il faut l'éteindre (§24.2).\">En Feu</a> pendant 2 tours."
     ],
     [
      {
@@ -1678,7 +1678,7 @@
      },
      "Magie Élémentale (MAG, INT)",
      "Défensif",
-     "Touche un allié (ou toi) : une croûte de lave froide le couvre pendant 3 tours (+2 armure naturelle). Celui qui le frappe au contact prend <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\" data-tip=\"En Feu : 2 dégâts/tour (bouclier d'abord), puis −1/tour. Il faut l'éteindre (§24.2).\">En Feu</a>."
+     "Touche un allié (ou toi) : une croûte de lave froide le couvre pendant 3 tours (+2 armure naturelle). Celui qui le frappe au contact prend <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\" data-tip=\"En Feu : dégâts résiduels en début de tour (bouclier énergétique/magique d'abord), puis −1/tour. Il faut l'éteindre (§24.2).\">En Feu</a>."
     ],
     [
      {
@@ -2017,7 +2017,7 @@
      },
      "Magie Élémentale (MAG, INT)",
      "Utilitaire",
-     "Touche un allié : tu le laves — purge <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\" data-tip=\"Empoisonné : dégâts directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonné</a> et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\" data-tip=\"En Feu : 2 dégâts/tour (bouclier d'abord), puis −1/tour. Il faut l'éteindre (§24.2).\">En Feu</a>."
+     "Touche un allié : tu le laves — purge <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\" data-tip=\"Empoisonné : dégâts résiduels en début de tour, puis −1/tour ; soins de dégâts réduits de moitié tant que le poison agit. Traitement dédié requis (§24.2).\">Empoisonné</a> et <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\" data-tip=\"En Feu : dégâts résiduels en début de tour (bouclier énergétique/magique d'abord), puis −1/tour. Il faut l'éteindre (§24.2).\">En Feu</a>."
     ],
     [
      {
@@ -2035,7 +2035,7 @@
      },
      "Magie Élémentale (MAG, INT)",
      "Utilitaire",
-     "Touche un allié : il retire 6 dégâts et purge <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\" data-tip=\"Saignement : dégâts directs en début de tour, puis −1/tour. Tout soin les arrête (§24.2).\">Saignement</a>."
+     "Touche un allié : il retire 6 dégâts et purge <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\" data-tip=\"Saignement : dégâts résiduels en début de tour, puis −1/tour (ne baisse pas après Course, Charge ou Essoufflement). Tout soin l'arrête (§24.2).\">Saignement</a>."
     ],
     [
      {
@@ -2095,7 +2095,7 @@
      "<strong>Peau d'Écume</strong>",
      "Magie Élémentale (MAG, INT)",
      "Défensif",
-     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : pellicule d'eau sur toi pendant 1 tour. Les tirs contre toi prennent -1. Si on t'enflamme, les flammes meurent aussitôt (pas d'<a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\" data-tip=\"En Feu : 2 dégâts/tour (bouclier d'abord), puis −1/tour. Il faut l'éteindre (§24.2).\">En Feu</a>)."
+     "Dépense <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">2 PA</a> : pellicule d'eau sur toi pendant 1 tour. Les tirs contre toi prennent -1. Si on t'enflamme, les flammes meurent aussitôt (pas d'<a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\" data-tip=\"En Feu : dégâts résiduels en début de tour (bouclier énergétique/magique d'abord), puis −1/tour. Il faut l'éteindre (§24.2).\">En Feu</a>)."
     ],
     [
      {

@@ -7,7 +7,7 @@ livre: 5
 
                     <p>
                         <strong>Budget :</strong> ta seule réaction libre du cycle pour les opportunités, rechargée au
-                            début de ton tour. Annulée si <a class="rule-ref" href="livre_6.html#sec-24-1" data-tip="Étourdi : −1 ec sur tous les jets.">Étourdi</a> / <a class="rule-ref" href="livre_6.html#sec-24-1" data-tip="Paralysé : aucune action ni réaction, incapacité totale (§24.1).">Paralysé</a> / <a class="rule-ref" href="livre_6.html#sec-24-1" data-tip="Sonné : aucune action. La créature tombe immédiatement à terre.">Sonné</a> / <a class="rule-ref" href="livre_6.html#sec-24-5" data-tip="Inconscient : lâche ce qu'il tient en main ; aucune action ni réaction. Réveil : secousse (1 PA) ou premiers soins.">Inconscient</a>.
+                            début de ton tour. Annulée si <a class="rule-ref" href="livre_6.html#sec-24-1" data-tip="Étourdi : −1 ec sur tous les jets.">Étourdi</a> / <a class="rule-ref" href="livre_6.html#sec-24-1" data-tip="Paralysé : aucune action ni réaction, incapacité totale (§24.1).">Paralysé</a> / <a class="rule-ref" href="livre_6.html#sec-24-1" data-tip="Sonné : aucune action. La créature tombe immédiatement à terre.">Sonné</a> / <a class="rule-ref" href="livre_6.html#sec-24-4" data-tip="Inconscient : lâche ce qu'il tient en main ; aucune action ni réaction. Réveil : secousse (1 PA) ou premiers soins.">Inconscient</a>.
                     </p>
 
                     <p>

@@ -1075,7 +1075,7 @@
      "<strong>Immunité Toxique</strong>",
      "Système Immunitaire (CON)",
      "Défensif",
-     "Immunité complète au statut <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Empoisonné : dégâts directs en début de ton tour, puis −1/tour. Soin : kit de chirurgie.\">Empoisonné</a>."
+     "Immunité complète au statut <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Empoisonné : dégâts résiduels en début de tour, puis −1/tour ; soins de dégâts réduits de moitié tant que le poison agit. Traitement dédié requis (§24.2).\">Empoisonné</a>."
     ],
     [
      {
@@ -1438,7 +1438,7 @@
      "<strong>Frappe Jugulaire</strong>",
      "Armes Perçantes (AGI)",
      "Offensif",
-     "Gorge et carotides : sur Delta ≥ 3, <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Saignement : dégâts directs en début de tour, puis −1/tour. Tout soin les arrête (§24.2).\">Saignement</a>\n                                        (résiduels = vos entraînements)."
+     "Gorge et carotides : sur Delta ≥ 3, <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Saignement : dégâts résiduels en début de tour, puis −1/tour (ne baisse pas après Course, Charge ou Essoufflement). Tout soin l'arrête (§24.2).\">Saignement</a>\n                                        (résiduels = vos entraînements)."
     ],
     [
      {
@@ -1456,7 +1456,7 @@
      },
      "Armes Perçantes (AGI)",
      "Offensif",
-     "Ajoute <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Asphyxie : dégâts + drain de 1 PA par tour. Soin : désobstruction (premiers soins + kit).\">Asphyxie</a>\n                                        (drain 1 PA/tour)."
+     "Ajoute <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Asphyxie : dégâts résiduels + perte d'1 PA en début de tour. Air pur, rompre la prise ou Premiers Soins 3 PA (§24.2).\">Asphyxie</a>\n                                        (drain 1 PA/tour)."
     ],
     [
      {
@@ -1582,7 +1582,7 @@
      "<strong>Chirurgie</strong>",
      "Médecine Avancée (ÉRU, INT)",
      "Utilitaire",
-     "Referme les blessures critiques et lève l'état <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-5\"\n                                            data-tip=\"Souffrant : blessure grave levée par n'importe quel soin (§24.5).\">Souffrant</a>.\n                                        Soigne aussi les dégâts résiduels de <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Saignement : dégâts directs en début de tour, puis −1/tour. Tout soin les arrête (§24.2).\">saignement</a>."
+     "Referme les blessures critiques et lève l'état <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-4\"\n                                            data-tip=\"Souffrant : blessure grave levée par n'importe quel soin (§24.4).\">Souffrant</a>.\n                                        Soigne aussi les dégâts résiduels de <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Saignement : dégâts résiduels en début de tour, puis −1/tour (ne baisse pas après Course, Charge ou Essoufflement). Tout soin l'arrête (§24.2).\">saignement</a>."
     ],
     [
      {
