@@ -41,7 +41,7 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <h4>Actions Physiques de Force & Difficultés Associées</h4>\n                    <ul>\n                        <li><strong>Courir / Nager / Escalader</strong> : vous courez, vous nagez, vous grimpez — facile (1–3) la plupart du\n                            temps.\n                            Si ça devient dur (<a class=\"rule-ref\" href=\"livre_2.html#chap-7\"\n                                data-tip=\"Difficulté : 1-3 facile, 5+ exige un jet, 12+ héroïque, 18+ cosmique (§7.1).\">difficulté\n                                5+</a>, courant, bourbier, paroi raide), lancez votre Force. En combat, sans <em>Franchissement</em> : <strong>2 PA par case</strong> nagée ou grimpée (<a class=\"rule-ref\" href=\"livre_5.html#sec-20-4\" data-tip=\"Nager / escalader sans Franchissement : 2 PA par case, épreuve de Force si eau agitée ou paroi raide (Livre V §20.4).\">Livre V §20.4</a>).</li>\n                        <li><strong>Pousser / Soulever</strong> : vous poussez une herse, vous soulevez une poutre. Si\n                            quelqu'un\n                            s'oppose, faites un <a class=\"rule-ref\" href=\"livre_2.html#chap-7\"\n                                data-tip=\"Face-à-Face : chacun lance son dé + PA, le meilleur gagne. Seul le vainqueur coche (§7.3).\">Face-à-Face</a> Force contre Force.</li>\n                        <li><strong>Agripper</strong> : vous attrapez quelqu'un — <a class=\"rule-ref\"\n                                href=\"livre_2.html#chap-7\"\n                                data-tip=\"Face-à-Face : chacun lance son dé + PA, le meilleur gagne. Seul le vainqueur coche (§7.3).\">Face-à-Face</a> Force contre sa Défense. Réussi ?\n                            Il est <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                data-tip=\"Immobilisé : impossible de faire la moindre action de mouvement (§24.1).\">immobilisé</a>.\n                        </li>\n                        <li><strong>Porter une Armure Lourde</strong> : il faut la Force demandée pour la porter. En\n                            dessous ?\n                            Faites une <a class=\"rule-ref\" href=\"livre_2.html#chap-7\"\n                                data-tip=\"Épreuve : lance ton dé de compétence + PA − malus contre le seuil du MJ (§7.1).\">épreuve\n                                de Force</a> toutes les 10 minutes, sinon vous vous <a class=\"rule-ref\"\n                                href=\"livre_1.html#sec-4-2\"\n                                data-tip=\"Essoufflement : 1 point = des PA d'urgence ; ne part pas tout seul, action dédiée pour souffler (§4.2).\">épuisez</a>.\n                        </li>\n                    </ul>\n\n                    <!-- ARBRE DE L'AGILITÉ -->\n                    <h3>12.2 Arbre de l'Agilité (AGI)</h3>\n                    <p>\n                        Ici, c'est votre souplesse et votre précision. Vous esquivez, vous visez,\n                        vous crochetez, vous pilotez.\n                    </p>\n\n                    "
+     "html": "\n\n                    <h4>Actions Physiques de Force & Difficultés Associées</h4>\n                    <ul>\n                        <li><strong>Courir / Nager / Escalader</strong> : vous courez, vous nagez, vous grimpez — facile (1–3) la plupart du\n                            temps.\n                            Si ça devient dur (<a class=\"rule-ref\" href=\"livre_2.html#chap-7\"\n                                data-tip=\"Difficulté : 1-3 facile, 5+ exige un jet, 12+ héroïque, 18+ cosmique (§7.1).\">difficulté\n                                5+</a>, courant, bourbier, paroi raide), lancez votre Force. En combat, sans <em>Franchissement</em> : <strong>2 PA par case</strong> nagée ou grimpée (<a class=\"rule-ref\" href=\"livre_5.html#sec-20-4\" data-tip=\"Nager / escalader sans Franchissement : 2 PA par case, épreuve de Force si eau agitée ou paroi raide (Livre V §20.4).\">Livre V §20.4</a>).</li>\n                        <li><strong>Pousser / Soulever</strong> : vous poussez une herse, vous soulevez une poutre. Si\n                            quelqu'un\n                            s'oppose, faites un <a class=\"rule-ref\" href=\"livre_2.html#chap-7\"\n                                data-tip=\"Face-à-Face : chacun lance son dé + PA, le meilleur gagne. Seul le vainqueur coche (§7.3).\">Face-à-Face</a> Force contre Force.</li>\n                        <li><strong>Agripper</strong> : vous attrapez quelqu'un — <a class=\"rule-ref\"\n                                href=\"livre_2.html#chap-7\"\n                                data-tip=\"Face-à-Face : chacun lance son dé + PA, le meilleur gagne. Seul le vainqueur coche (§7.3).\">Face-à-Face</a> Force contre sa Défense. Réussi ?\n                            Il est <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                data-tip=\"Immobilisé : impossible de faire la moindre action de mouvement (§24.1).\">immobilisé</a>.\n                        </li>\n                        <li><strong>Porter une Armure Lourde</strong> : il faut la Force demandée pour la porter. En\n                            dessous ?\n                            Faites une <a class=\"rule-ref\" href=\"livre_2.html#chap-7\"\n                                data-tip=\"Épreuve : lance ton dé de compétence + PA − malus contre le seuil du MJ (§7.1).\">épreuve\n                                de Force</a> toutes les 10 minutes, sinon vous vous <a class=\"rule-ref\"\n                                href=\"livre_1.html#sec-4-2\"\n                                data-tip=\"Essoufflement : 1 point = des PA d'urgence ; ne part pas tout seul, action dédiée pour souffler (§4.2).\">épuisez</a>.\n                        </li>\n                    </ul>\n\n                    <!-- ARBRE DE L'AGILITÉ -->\n                    <h3>12.2 Arbre de l'Agilité (AGI)</h3>\n                    <p>\n                        Ici, c'est votre souplesse et votre précision. Vous esquivez, vous visez,\n                        vous crochetez, vous pilotez.\n                        Pour se cacher en combat (2 PA), se déplacer furtivement ou approcher dans un angle mort hors combat, voir <a class=\"rule-ref\" href=\"livre_5.html#sec-21-4\" data-tip=\"Se cacher (2 PA), déplacement furtif (+1 PA/case), Observation active vs Discrétion et approche hors combat (§21.4).\">Livre V §21.4</a>.\n                    </p>\n\n                    "
     },
     {
      "type": "ref",
@@ -315,7 +315,7 @@
      "<strong>Discrétion</strong>",
      "Agilité ou (Agilité, Intelligence)",
      "Utilitaire",
-     "Déplacement silencieux, Camouflage, Ombres"
+     "<strong>Déplacement silencieux</strong>, <strong>Camouflage</strong>, <strong>Ombres</strong>"
     ],
     [
      "<strong>Esquive</strong>",
@@ -1376,6 +1376,24 @@
      "Esquive (AGI)",
      "Défensif",
      "+2 en esquive contre fusils et\n                                        grenades."
+    ],
+    [
+     "<strong>Déplacement silencieux</strong>",
+     "Discrétion (AGI, INT)",
+     "Utilitaire",
+     "Supprime le surcoût de déplacement furtif (+0 PA/case au lieu de +1 PA/case, <a class=\"rule-ref\" href=\"livre_5.html#sec-21-4\" data-tip=\"Déplacement furtif : +1 PA/case pour garder Dissimulé / Caché hors de vue (§21.4).\">Livre V §21.4</a>) et confère <strong>+2 en Discrétion</strong> contre l'Écoute."
+    ],
+    [
+     "<strong>Camouflage</strong>",
+     "Discrétion (AGI, INT)",
+     "Utilitaire",
+     "<strong>+2 en Discrétion</strong> lorsque tu restes immobile dans un décor adapté (couvert, feuillage, décombres, foule) ; tu peux te cacher même derrière un couvert trois-quarts (<a class=\"rule-ref\" href=\"livre_5.html#sec-21-4\" data-tip=\"Se cacher : normalement réservé au couvert total, nuit noire ou fumée (§21.4).\">Livre V §21.4</a>)."
+    ],
+    [
+     "<strong>Ombres</strong>",
+     "Discrétion (AGI, INT)",
+     "Utilitaire, Défensif",
+     "<strong>+2 en Discrétion</strong> en pénombre, nuit ou fumée ; <strong>Se cacher</strong> te coûte <strong>1 PA</strong> au lieu de 2 PA dans ces conditions (<a class=\"rule-ref\" href=\"livre_5.html#sec-21-4\" data-tip=\"Se cacher : 2 PA par défaut, 1 PA avec Ombres en pénombre/nuit/fumée (§21.4).\">Livre V §21.4</a>)."
     ],
     [
      "<strong>Armes Lourdes (Canons)</strong>",
@@ -3524,6 +3542,27 @@
     "effets": "+2 en esquive contre fusils et grenades."
    },
    {
+    "nom": "Déplacement silencieux",
+    "parente": null,
+    "source": "Discrétion (AGI, INT)",
+    "type": "Utilitaire",
+    "effets": "Supprime le surcoût de déplacement furtif (+0 PA/case au lieu de +1 PA/case, Livre V §21.4) et confère +2 en Discrétion contre l'Écoute."
+   },
+   {
+    "nom": "Camouflage",
+    "parente": null,
+    "source": "Discrétion (AGI, INT)",
+    "type": "Utilitaire",
+    "effets": "+2 en Discrétion lorsque tu restes immobile dans un décor adapté (couvert, feuillage, décombres, foule) ; tu peux te cacher même derrière un couvert trois-quarts (Livre V §21.4)."
+   },
+   {
+    "nom": "Ombres",
+    "parente": null,
+    "source": "Discrétion (AGI, INT)",
+    "type": "Utilitaire, Défensif",
+    "effets": "+2 en Discrétion en pénombre, nuit ou fumée ; Se cacher te coûte 1 PA au lieu de 2 PA dans ces conditions (Livre V §21.4)."
+   },
+   {
     "nom": "Armes Lourdes (Canons)",
     "parente": null,
     "source": "Ballistique / Tir",
@@ -4666,6 +4705,27 @@
     "type": "Défensif",
     "effets": "+2 en esquive contre fusils et grenades."
    },
+   "Déplacement silencieux": {
+    "nom": "Déplacement silencieux",
+    "parente": null,
+    "source": "Discrétion (AGI, INT)",
+    "type": "Utilitaire",
+    "effets": "Supprime le surcoût de déplacement furtif (+0 PA/case au lieu de +1 PA/case, Livre V §21.4) et confère +2 en Discrétion contre l'Écoute."
+   },
+   "Camouflage": {
+    "nom": "Camouflage",
+    "parente": null,
+    "source": "Discrétion (AGI, INT)",
+    "type": "Utilitaire",
+    "effets": "+2 en Discrétion lorsque tu restes immobile dans un décor adapté (couvert, feuillage, décombres, foule) ; tu peux te cacher même derrière un couvert trois-quarts (Livre V §21.4)."
+   },
+   "Ombres": {
+    "nom": "Ombres",
+    "parente": null,
+    "source": "Discrétion (AGI, INT)",
+    "type": "Utilitaire, Défensif",
+    "effets": "+2 en Discrétion en pénombre, nuit ou fumée ; Se cacher te coûte 1 PA au lieu de 2 PA dans ces conditions (Livre V §21.4)."
+   },
    "Armes Lourdes (Canons)": {
     "nom": "Armes Lourdes (Canons)",
     "parente": null,
@@ -5066,7 +5126,7 @@
     "effets": "+2 PA à toute l'escouade et purge des altérations mentales."
    }
   },
-  "nb_specialisations": 163,
+  "nb_specialisations": 166,
   "fabrique": {
    "note": "Fabrique de Techniques (sysRP). Standard 4-6 XP, signature 7+ XP (MJ), activation ≤ 6 PA.",
    "budgets": {

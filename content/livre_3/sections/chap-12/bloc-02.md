@@ -37,6 +37,7 @@ format: raw
                     <p>
                         Ici, c'est votre souplesse et votre précision. Vous esquivez, vous visez,
                         vous crochetez, vous pilotez.
+                        Pour se cacher en combat (2 PA), se déplacer furtivement ou approcher dans un angle mort hors combat, voir <a class="rule-ref" href="livre_5.html#sec-21-4" data-tip="Se cacher (2 PA), déplacement furtif (+1 PA/case), Observation active vs Discrétion et approche hors combat (§21.4).">Livre V §21.4</a>.
                     </p>
 
                     

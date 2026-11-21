@@ -415,7 +415,7 @@
     ],
     [
      "<span class=\"pill-badge ruby\">7 points</span>",
-     "État <strong><a class=\"rule-ref\" href=\"livre_6.html#chap-24\"\n                                                data-tip=\"En Vol : déplacement aérien libre, coût de déplacement réduit de moitié (§24).\">En\n                                                Vol</a></strong> pour 1 tour (déplacement tridimensionnel à\n                                        demi-coût)",
+     "État <strong><a class=\"rule-ref\" href=\"livre_6.html#sec-24-3\"\n                                                data-tip=\"En Vol : déplacement aérien rapide à demi-coût (arrondi inf., min 1 PA et 1 case), élan/virage obligatoires selon la source sinon décrochage (§24.3).\">En\n                                                Vol</a></strong> pour 1 tour (déplacement tridimensionnel à\n                                        demi-coût)",
      "Utilitaire arcanique"
     ],
     [
@@ -425,7 +425,7 @@
     ],
     [
      "<span class=\"pill-badge ruby\">9 points</span>",
-     "État <strong><a class=\"rule-ref\" href=\"livre_6.html#chap-24\"\n                                                data-tip=\"Lévitation : déplacement aérien libre sans effort, coût réduit de moitié (§24).\">Lévitation</a></strong>\n                                        sans effort pour 1 tour",
+     "État <strong><a class=\"rule-ref\" href=\"livre_6.html#sec-24-3\"\n                                                data-tip=\"Lévitation : vol stationnaire libre en 3D au coût normal (surplace, montée/descente verticale, décollage/atterrissage sans élan, §24.3).\">Lévitation</a></strong>\n                                        sans effort pour 1 tour",
      "Magie seulement"
     ]
    ]

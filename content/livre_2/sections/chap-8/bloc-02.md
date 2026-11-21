@@ -31,7 +31,7 @@ livre: 2
                     <ul>
                         <li><strong>Nuit claire (lune haute, rues éclairées) :</strong> vue limitée à <strong>8 cases</strong>,
                             aucun malus au tir, −1 en <a class="rule-ref" href="livre_3.html#chap-13" data-tip="Observation : repérer un indice, un danger, un ennemi camouflé (Vision/Ouïe, §13.3).">Observation</a>
-                            et Discrétion au-delà de 4 cases. Tu distingues les silhouettes, pas les visages.</li>
+                            au-delà de 4 cases. Tu distingues les silhouettes, pas les visages.</li>
                         <li><strong>Nuit noire (sans lune, galerie éteinte) :</strong> vue bridée à <strong>4 cases</strong>,
                             −1 à tes tirs sans <strong>lampe allumée</strong> ni <strong>vision thermique</strong> (spécialisation ou lunettes).
                             <em>Exemple : tu tires au fusil (d8) contre un seuil de 4, en nuit noire sans lampe. Tu obtiens 5. 5 − 1 = 4 : ça passe, de justesse. Au même tirage en plein jour, tu respirais.</em></li>

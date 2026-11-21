@@ -28,11 +28,11 @@ livre: 5
                             <strong>il ne dépasse qu'une tête, une épaule, une main</strong> (torse caché par une
                             barricade, deux obstacles en enfilade) ➔ trois-quarts couvert (<strong>-2</strong>) ;
                             <strong>rien ne dépasse</strong> ➔ couvert total, <strong>attaque directe
-                            impossible</strong>.<br>
+                            impossible</strong>. S'accroupir (<a class="rule-ref" href="livre_6.html#sec-24-1" data-tip="Accroupi : −1 ec mêlée/jet/Athlétisme/Acrobatie, −1 défense. Déplacement +1 PA/case, se relever 1 PA (§24.1).">Accroupi</a>) ou s'allonger (<a class="rule-ref" href="livre_6.html#sec-24-1" data-tip="À Terre : −1 ec mêlée/Athlétisme/Acrobatie, −2 ec jet, −2 défense. Déplacement +1 PA/case, se relever 1 PA (§24.1).">À terre</a>) derrière un muret bas ou une barricade peut te placer en <strong>couvert total</strong> tant que personne ne te contourne ou ne te surplombe.<br>
                             En cas de doute : moitié = ça cache jusqu'à la taille, trois-quarts = ça cache jusqu'au
                             cou.<br>
-                            <strong>Au contact (distance ≤ 1 case)</strong>, les combattants se voient : le couvert est
-                            <strong>ignoré</strong>.
+                            <strong>Au contact (distance ≤ 1 case)</strong> à découvert, les combattants se voient et le couvert est
+                            <strong>ignoré</strong> — sauf si un obstacle plein (mur, angle, muret derrière lequel tu es accroupi) ou une obscurité/fumée opaque te masque et que tu es activement <a class="rule-ref" href="livre_6.html#sec-24-3" data-tip="Dissimulé / Caché : impossible à cibler directement tant que non repéré ; première attaque = Surpris (§24.3).">Dissimulé / Caché</a> (<a href="#sec-21-4">§21.4</a>).
                         </div>
                     </div>
 
@@ -99,23 +99,20 @@ livre: 5
                             et révélation au bruit (ci-dessous).<br>
                             <strong>4. Murs et contact :</strong> un mur plein (<a class="rule-ref" href="#sec-21-3" data-tip="Couvert total : cible non visible pour l'attaquant — attaque directe impossible (§21.3)."><strong>couvert total</strong></a>, §21.3)
                             entre l'observateur et la case la plonge dans l'obscurité ; murets et barricades
-                            (moitié, trois-quarts) restent visibles. <strong>Au contact (≤ 1 case), on se voit
-                            toujours.</strong>
+                            (moitié, trois-quarts) restent visibles. <strong>Au contact (≤ 1 case)</strong> à découvert, on se voit
+                            toujours — sauf si un obstacle plein (mur, angle, muret derrière lequel tu es accroupi) ou une obscurité/fumée opaque te masque et que tu es activement <a class="rule-ref" href="livre_6.html#sec-24-3" data-tip="Dissimulé / Caché : impossible à cibler directement tant que non repéré ; première attaque = Surpris (§24.3).">Dissimulé / Caché</a>.
                         </div>
                     </div>
 
                     <ul>
-                        <li><strong>Ennemi non détecté :</strong> pour le personnage qui ne le voit pas, il est non
-                            visible — silhouette masquée, aucun ciblage possible (tir, grenade ciblée, sort
-                            mono-cible). Seuls les effets de zone aveugles restent envisageables, sans bonus.</li>
-                        <li><strong>Observation active (1 <a class="rule-ref" href="livre_1.html#chap-4" data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a>) :</strong> <a class="rule-ref" href="livre_2.html#chap-7" data-tip="Épreuve : lance ton dé de compétence + PA − malus contre le seuil du MJ (§7.1).">épreuve</a>
-                            d'<strong>Observation</strong> contre un <strong>seuil de 4</strong> pour révéler la position
-                            des non visibles sous couvert (réussite automatique dès <strong>1d12</strong> en Observation,
-                            <a class="rule-ref" href="livre_2.html#chap-7" data-tip="Réussite Auto : au seuil 4, un dé de 1d12 et plus réussit d'office sans lancer (§7.2).">Livre II §7.2</a>). À travers un couvert total, l'observateur sait <strong>où</strong> se trouve la
-                            créature, mais pas son apparence. Si un personnage est activement caché, le MJ détermine
-                            de son côté si le résultat du joueur suffit à battre son jet de Discrétion déjà lancé.</li>
-                        <li><strong>Attaque ou action :</strong> toute attaque (mêlée ou distance) et toute action
-                            révèlent la position du non visible à tous ceux présents sur la carte.</li>
+                        <li><strong>Non visible vs <a class="rule-ref" href="livre_6.html#sec-24-3" data-tip="Dissimulé / Caché : impossible à cibler directement tant que non repéré ; première attaque = Surpris (§24.3).">Dissimulé / Caché</a> :</strong> pour le personnage qui ne le voit pas, un ennemi <strong>non visible</strong> (couvert total géométrique seul) ou <strong>Dissimulé / Caché</strong> (état actif obtenu par <a class="rule-ref" href="livre_3.html#chap-12" data-tip="Discrétion : se cacher, se déplacer sans bruit (AGI ou AGI/INT, §12.2).">Discrétion</a>) a la silhouette masquée : aucun ciblage direct possible (tir, grenade ciblée, sort mono-cible). Seuls les effets de zone aveugles restent envisageables, sans bonus.</li>
+                        <li><strong>Observation active (1 <a class="rule-ref" href="livre_1.html#chap-4" data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a>) :</strong>
+                            <ul>
+                                <li><em>Contre un simple non visible</em> (couvert total sans Discrétion) : <a class="rule-ref" href="livre_2.html#chap-7" data-tip="Épreuve : lance ton dé de compétence + PA − malus contre le seuil du MJ (§7.1).">épreuve</a> d'<strong>Observation</strong> (ou d'<strong>Écoute</strong> si hors de vue) contre un <strong>seuil de 4</strong> (réussite automatique dès <strong>1d12</strong>, <a class="rule-ref" href="livre_2.html#chap-7" data-tip="Réussite Auto : au seuil 4, un dé de 1d12 et plus réussit d'office sans lancer (§7.2).">Livre II §7.2</a>). À travers un couvert total, l'observateur sait <strong>où</strong> se trouve la créature, mais pas son apparence.</li>
+                                <li><em>Contre un personnage <a class="rule-ref" href="livre_6.html#sec-24-3" data-tip="Dissimulé / Caché : impossible à cibler directement tant que non repéré ; première attaque = Surpris (§24.3).">Dissimulé / Caché</a> :</em> l'observateur paie 1 PA et <strong>lance son dé</strong> (la réussite automatique au seuil 4 ne bat pas une Discrétion active supérieure à 4). Le MJ compare secrètement le total à la <strong>Discrétion</strong> notée en jeu : sur <strong>égalité ou plus (Δ ≥ 0</strong>, <a class="rule-ref" href="livre_2.html#chap-7" data-tip="Face-à-Face : hors attaque, Δ = 0 profite à l'initiateur (§7.3).">Livre II §7.3</a>), la cible est repérée pour cet observateur (qui peut aussitôt prévenir ses alliés, <a href="#sec-20-4">§20.4</a>).</li>
+                            </ul>
+                        </li>
+                        <li><strong>Attaque ou sortie à découvert :</strong> sauf cas de rupture ci-dessous, attaquer ou sortir à découvert révèle aussitôt la position du personnage sur la carte.</li>
                     </ul>
 
                     <div class="callout temporal">
@@ -134,6 +131,39 @@ livre: 5
                             sait <strong>où</strong> se trouve la créature derrière le pilier, mais pas son apparence
                             (tir direct impossible). Lucas contourne alors le pilier : le tireur passe à découvert
                             devant lui ➔ <strong>automatiquement visible</strong>, sans aucun jet.
+                        </div>
+                    </div>
+
+                    <div id="sec-21-4-cacher" class="formula-box wide">
+                        <div class="formula-label">Se Cacher &amp; Discrétion : En Combat (Vision 360°) vs Hors Combat (Angles Morts)</div>
+                        <div class="formula-math">
+                            <span class="hl-cyan">Hors de vue</span> &nbsp;➔&nbsp; <span class="hl-gold">Se cacher (2 PA) + Discrétion secrète</span> &nbsp;➔&nbsp; <span class="hl-emerald">Dissimulé / Caché</span> &nbsp;➔&nbsp; <span class="hl-ruby">1re attaque = Surpris</span>
+                        </div>
+                        <div class="formula-desc">
+                            <strong>1. En combat — Action Se cacher (2 PA) :</strong> pendant ton tour, si tu es <strong>hors de vue</strong> de tout adversaire dont tu te caches — couvert total (y compris <a class="rule-ref" href="livre_6.html#sec-24-1" data-tip="Accroupi : −1 ec mêlée/jet/Athlétisme/Acrobatie, −1 défense. Déplacement +1 PA/case, se relever 1 PA (§24.1).">Accroupi</a> ou <a class="rule-ref" href="livre_6.html#sec-24-1" data-tip="À Terre : −1 ec mêlée/Athlétisme/Acrobatie, −2 ec jet, −2 défense. Déplacement +1 PA/case, se relever 1 PA (§24.1).">À terre</a> derrière un muret ou une barricade), nuit noire, pénombre dense ou écran de fumée/brume —, dépense <strong>2 PA</strong> (+ <a class="rule-ref" href="livre_8.html#chap-33" data-tip="Encombrement : +0/+1/+2 PA par action selon l'armure lourde (§33.1).">encombrement d'armure</a>) et lance <strong>Discrétion</strong> (PA d'effort autorisés, <em>plancher minimal de 4</em> tant que l'abri bloque la vue). Le MJ note ton score en secret et tu gagnes l'état <a class="rule-ref" href="livre_6.html#sec-24-3" data-tip="Dissimulé / Caché : impossible à cibler directement tant que non repéré ; première attaque = Surpris (§24.3).">Dissimulé / Caché</a> (Livre VI §24.3).<br>
+                            <strong>Pas de yo-yo au même endroit :</strong> en combat (vision 360°), impossible de te cacher à découvert dans le « dos » d'un ennemi. De plus, si un adversaire t'a vu plonger derrière un pilier ou un muret, il sait où tu es : tu ne peux pas redevenir <em>Dissimulé / Caché</em> vis-à-vis de lui au même endroit sans <strong>changer de position hors de vue</strong> ou profiter d'une <strong>diversion</strong> (allié qui l'engage au contact, fumigène, flash, brume).<br>
+                            <strong>2. Déplacement furtif (+1 PA par case, soit 2 PA/case) :</strong> bouger tout en restant <em>Dissimulé / Caché</em> coûte <strong>+1 PA par case</strong> (cumulatif avec terrain difficile, Ralenti et encombrement, mais <strong>non cumulatif</strong> avec <em>Accroupi</em>, <em>À terre</em> ou <a class="rule-ref" href="livre_6.html#sec-24-1" data-tip="Déstabilisé : −2 ec aux épreuves, déplacement rampant (+1 PA/case, non cumulatif avec À Terre pour ramper).">Déstabilisé</a> ; annulé par la spécialisation <a class="rule-ref" href="livre_3.html#chap-14" data-tip="Déplacement silencieux : +0 PA/case en déplacement furtif et +2 Discrétion contre l'Écoute (Livre III §14).">Déplacement silencieux</a>, Livre III §14). Tu dois rester hors de vue sur tout le trajet ; ton jet initial tient tant que tu ne traverses ni zone bruyante (verre brisé, porte qui grince) ni case à découvert.<br>
+                            <strong>3. Attaquer depuis Dissimulé / Caché :</strong> ta première attaque contre une cible qui ne t'a pas repéré lui inflige l'état <a class="rule-ref" href="livre_6.html#sec-24-1" data-tip="Surpris : aucune réaction face à l'attaque inattendue (Défense Passive à 0). Se dissipe aussitôt après (§24.1).">Surpris</a> (<strong>Défense Passive à 0</strong>, Livre VI §24.1) — sans <a class="rule-ref" href="#chap-20" data-tip="Tour d'Embuscade : 1 seul tour complet avant l'initiative, 1 fois par combat (§20).">Tour d'Embuscade</a> si le combat est déjà lancé (§20). En combat (vision 360°), tu dois frapper <strong>à distance</strong> depuis ton abri/ombre ou <strong>en mêlée directe à portée</strong> (ex. surgir depuis un angle de mur, une porte, une fumée ou l'autre côté d'un muret derrière lequel tu es accroupi) sans traverser de case à découvert.<br>
+                            <strong>4. Hors combat — Approche furtive &amp; Angles morts :</strong> avant que l'alerte ne soit donnée, une créature non alertée n'a <strong>pas</strong> de vision à 360° : elle a un champ d'attention et un <strong>angle mort</strong> (dans son dos, occupée, en patrouille). Tu peux tenter une approche furtive jusqu'au contact ou à portée de tir par une épreuve de <strong>Discrétion</strong> opposée à son <strong>Observation</strong> (périphérie, lumière) ou à son <strong>Écoute</strong> (strictement dans son dos — impossible si <a class="rule-ref" href="livre_6.html#sec-24-1" data-tip="Assourdi : Écoute impossible, −2 Observation hors champ de vue (§24.1).">Assourdi</a>). En cas de succès, ton assaut d'ouverture déclenche le <strong>Tour d'Embuscade</strong> (<a href="#chap-20">§20</a>).
+                        </div>
+                    </div>
+
+                    <ul>
+                        <li><strong>Ce qui brise Dissimulé / Caché :</strong> déclencher une attaque (révélé dès l'attaque résolue, même en cas d'échec), traverser une case à découvert en ligne de mire, allumer une <a class="rule-ref" href="livre_2.html#sec-8-6" data-tip="Lampe allumée : annule les malus de nuit mais brise la furtivité en ligne de mire directe (Livre II §8.6).">lampe</a> (Livre II §8.6), être repéré par <em>Observation active</em>, ou effectuer une action bruyante (sprinter, crier, lancer un sort lumineux ou sonore).</li>
+                        <li><strong>Ce qui reste silencieux :</strong> les micro-actions discrètes hors de vue ne rompent pas l'état — boire une potion ou s'injecter une seringue, dégainer une arme, bander un arc, observer, reprendre son souffle (<a href="#sec-20-3">§20.3</a>), murmurer à un allié adjacent ou communiquer par <a class="rule-ref" href="livre_4.html#sec-18-2" data-tip="Lien Télépathique : communication mentale instantanée et silencieuse sans coût en PA (Livre IV §18.2).">lien télépathique</a> (Livre IV §18.2).</li>
+                    </ul>
+
+                    <div class="callout temporal">
+                        <div class="callout-header">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <circle cx="12" cy="12" r="10" />
+                                <polyline points="12 6 12 12 14 14" />
+                            </svg>
+                            Exemple de Table : Se cacher &amp; Coup depuis l'Abri
+                        </div>
+                        <div class="callout-body">
+                            En plein combat dans un entrepôt, un garde voit Mina plonger derrière des caisses : elle ne peut pas simplement s'y cacher sous ses yeux. Elle s'accroupit pour obtenir un couvert total, glisse furtivement (<strong>2 PA/case</strong>, car Accroupi et déplacement furtif ne se cumulent pas) le long d'une rangée de caisses hors de vue jusqu'à l'angle d'un couloir, puis dépense <strong>2 PA</strong> pour <strong>Se cacher</strong> : son jet de <em>Discrétion</em> donne <strong>7</strong> (noté en secret par le MJ). Elle gagne <a class="rule-ref" href="livre_6.html#sec-24-3" data-tip="Dissimulé / Caché : impossible à cibler directement tant que non repéré ; première attaque = Surpris (§24.3).">Dissimulé / Caché</a>. Au tour suivant, un autre garde approche de l'angle à 1 case sans utiliser <em>Observation active</em> : Mina frappe en mêlée directe sans quitter son angle. Le garde est <a class="rule-ref" href="livre_6.html#sec-24-1" data-tip="Surpris : aucune réaction face à l'attaque inattendue (Défense Passive à 0). Se dissipe aussitôt après (§24.1).">Surpris</a> (<strong>Défense Passive à 0</strong>, sans Tour d'Embuscade puisque l'initiative est déjà en cours), puis Mina est révélée aussitôt après son coup.
                         </div>
                     </div>
 

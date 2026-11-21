@@ -350,7 +350,7 @@
     [
      "<span class=\"table-badge ruby\">Ralenti</span>",
      "Ralentissement musculaire ou distorsion gravitationnelle locale.",
-     "<strong>Actions hors déplacement &times;2 PA.</strong> <strong>Déplacement : +1 PA/case</strong> (cumulatif avec <a class=\"rule-ref\" href=\"livre_2.html#sec-8-4\" data-tip=\"Terrains difficiles : 1 case coûte 2 PA (Livre II §8.4).\">Terrain difficile</a>, <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"À Terre : −1 ec mêlée/Athlétisme/Acrobatie, −2 ec jet (arc impossible), −2 défense (tir/magie sans malus). Déplacement +1 PA/case, se relever 1 PA.\">À Terre</a>/Déstabilisé et encombrement).",
+     "<strong>Actions hors déplacement &times;2 PA.</strong> <strong>Déplacement : +1 PA/case</strong> (cumulatif avec <a class=\"rule-ref\" href=\"livre_2.html#sec-8-4\" data-tip=\"Terrains difficiles : 1 case coûte 2 PA (Livre II §8.4).\">Terrain difficile</a>, <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"À Terre : −1 ec mêlée/Athlétisme/Acrobatie, −2 ec jet (arc impossible), −2 défense (tir/magie sans malus). Déplacement +1 PA/case, se relever 1 PA.\">À Terre</a>/Déstabilisé et encombrement). S'annule complètement et mutuellement avec <a class=\"rule-ref\" href=\"#sec-24-3\" data-tip=\"Accéléré : déplacement à moitié PA (arrondi inf., min 1). S'annule complètement avec Ralenti (§24.3).\">Accéléré</a> (les deux états disparaissent immédiatement, même si leurs durées diffèrent).",
      "Variable selon les circonstances."
     ],
     [
@@ -373,9 +373,9 @@
     ],
     [
      "<span class=\"table-badge ruby\">Surpris</span>",
-     "Pris de court par une embuscade, un tireur caché, un piège ou une attaque totalement inattendue.",
-     "Aucune réaction possible face à l'attaque qui déclenche la surprise : ta défense tombe automatiquement à 0 (<strong>Défense Passive imposée</strong>, <a class=\"rule-ref\" href=\"livre_5.html#sec-20-2\" data-tip=\"Défense Passive : le défenseur ne lance rien, score 0, touche auto avec ta marge (§20.2).\">Livre V §20.2</a>). En ouverture de combat, la surprise ne peut se déclencher <strong>qu'une seule fois par combat</strong>, offrant <strong>un seul tour complet avant l'initiative</strong> (<a href=\"livre_5.html#chap-20\">Livre V §20</a>) ; au jet d'initiative qui suit, tous les combattants démarrent avec leurs PA pleins, sauf une créature ayant bénéficié de cette surprise qui ne récupère pas ses PA avant le début de son tour d'initiative.",
-     "Jusqu'à la résolution de l'instant qui déclenche la surprise (se dissipe aussitôt après ; toute attaque suivante dans le même tour est défendue normalement)."
+     "Pris de court par une attaque que tu n'as pas vue venir (adversaire Dissimulé / Caché, piège, coup en traître ou Tour d'Embuscade).",
+     "Aucune réaction possible face à l'attaque inattendue : ta défense tombe automatiquement à 0 (<strong>Défense Passive imposée</strong>, <a class=\"rule-ref\" href=\"livre_5.html#sec-20-2\" data-tip=\"Défense Passive : le défenseur ne lance rien, score 0, touche auto avec ta marge (§20.2).\">Livre V §20.2</a>).",
+     "Jusqu'à la résolution de l'instant qui déclenche l'attaque inattendue (se dissipe aussitôt après ; toute attaque suivante dans le même tour est défendue normalement)."
     ],
     [
      "<span class=\"table-badge ruby\">Paniqué</span>",
@@ -439,45 +439,51 @@
    "type": "table",
    "colonnes": [
     "État",
-    "Description Arcanique / Physiologique",
+    "Description",
     "Bonus & Avantages Tactiques",
     "Durée Typique"
    ],
    "lignes": [
     [
      "<span class=\"table-badge cyan\">Survolté</span>",
-     "Afflux massif d'adrénaline ou stimulation nerveuse arcanique.",
-     "<strong>+1 ec</strong> sur tous les jets, <strong>+3 PA</strong>\n                                        supplémentaires par tour !",
+     "Afflux massif d'adrénaline, d'élan vital ou de stimulation magique.",
+     "<strong>+1 ec</strong> sur tous les jets, <strong>+3 PA</strong>\n                                        supplémentaires par tour.",
      "Variable selon les circonstances."
     ],
     [
      "<span class=\"table-badge green\">En transe</span>",
-     "Harmonie synaptique parfaite, perception en temps ralenti.",
-     "<strong>+2 ec</strong> sur tous les jets, <strong>+5 PA</strong> par tour !",
-     "Variable selon les circonstances."
-    ],
-    [
-     "<span class=\"table-badge cyan\">Accéléré</span>",
-     "Distorsion spatiale ou propulsion cinétique des membres.",
-     "<strong>Toute action de déplacement coûte la MOITIÉ des PA</strong> (arrondi au\n                                        supérieur). Annule et est annulé par <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"Ralenti : actions hors déplacement ×2 PA ; déplacement +1 PA/case (§24.1).\"><strong>Ralenti</strong></a> sur le coût de déplacement.",
+     "Concentration absolue, esprit lucide et perception comme au ralenti.",
+     "<strong>+2 ec</strong> sur tous les jets, <strong>+5 PA</strong> supplémentaires par tour.",
      "Variable selon les circonstances."
     ],
     [
      "<span class=\"table-badge cyan\">Rapide</span>",
-     "Foulée amplifiée et réflexes moteurs aiguisés.",
+     "Foulée allongée et déplacements nettement plus vifs.",
      "<strong>+3 PA réservés exclusivement aux déplacements</strong> à chaque tour.",
      "Variable selon les circonstances."
     ],
     [
-     "<span class=\"table-badge amber\">Lévitation / En Vol</span>",
-     "Répulsion gravitationnelle de Cinquième Force.",
-     "Déplacement aérien libre, coût de déplacement réduit de moitié (-1 ec si le\n                                        sujet n'a pas la spécialisation Aérien ou Acrobate).",
-     "Variable selon la réserve d'énergie."
+     "<span class=\"table-badge cyan\">Accéléré</span>",
+     "Mouvements accélérés par magie, pouvoir ou élan surnaturel.",
+     "<strong>Toute action de déplacement coûte la MOITIÉ des PA</strong> (arrondi à l'inférieur, minimum 1 PA et 1 case). S'annule complètement et mutuellement avec <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"Ralenti : actions hors déplacement ×2 PA ; déplacement +1 PA/case (§24.1).\"><strong>Ralenti</strong></a> (les deux états disparaissent immédiatement, même si leurs durées diffèrent).",
+     "Variable selon les circonstances."
+    ],
+    [
+     "<span class=\"table-badge amber\">En Vol</span>",
+     "Vol lancé reposant sur la portance et la vitesse (ailes planantes, avion, planeur, vaisseau en atmosphère).",
+     "Déplacement aérien rapide : <strong>coût de déplacement réduit de moitié</strong> (arrondi à l'inférieur, minimum 1 PA et 1 case), ignore les obstacles au sol. <strong>Élan obligatoire :</strong> doit maintenir son mouvement vers l'avant selon les propriétés de décollage, d'élan minimal et de virage de la créature, du pouvoir ou du véhicule (pas de surplace ni de marche arrière). Sans cet élan minimal ou si <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"Immobilisé : impossible de faire la moindre action de mouvement (§24.1).\">Immobilisé</a> / neutralisé : <strong>décrochage</strong> (perte d'altitude ou chute, <a class=\"rule-ref\" href=\"livre_2.html#sec-8-2\" data-tip=\"Chutes : H cases, H − 2 dégâts, armure ignorée (Livre II §8.2).\">Livre II §8.2</a>). <strong>−1 ec</strong> aux actions en vol sans maîtrise adaptée.",
+     "Variable selon les circonstances."
+    ],
+    [
+     "<span class=\"table-badge amber\">Lévitation</span>",
+     "Sustentation en vol stationnaire (magie, pouvoir, propulseur vertical, ailes battantes ou dispositif antigrav).",
+     "Déplacement libre en 3D au coût normal (1 PA/case), ignore les terrains difficiles et obstacles au sol. Peut rester sur place, reculer, pivoter et monter ou descendre verticalement sans élan (décollage et atterrissage sur place). Si neutralisé (Inconscient, Paralysé, Sonné) : chute (<a class=\"rule-ref\" href=\"livre_2.html#sec-8-2\" data-tip=\"Chutes : H cases, H − 2 dégâts, armure ignorée (Livre II §8.2).\">Livre II §8.2</a>).",
+     "Variable selon les circonstances."
     ],
     [
      "<span class=\"table-badge green\">Dissimulé / Caché</span>",
-     "Hors de vue derrière un couvert, dans la pénombre, un écran de fumée ou grâce à une réussite en Discrétion / camouflage.",
-     "Impossible à cibler par une attaque directe tant que l'ennemi ne t'a pas repéré (épreuve d'<a class=\"rule-ref\" href=\"livre_3.html#chap-13\" data-tip=\"Observation : repérer, analyser visuellement ou auditivement (VIS/OUI, §13.3).\">Observation</a> ou <a class=\"rule-ref\" href=\"livre_3.html#chap-13\" data-tip=\"Écoute : percevoir un bruit discret, une approche (OUI, §13.3).\">Écoute</a> opposée à ta <a class=\"rule-ref\" href=\"livre_3.html#chap-12\" data-tip=\"Discrétion : se cacher, se déplacer sans bruit (AGI/INT, §12.2).\">Discrétion</a>). Ta première attaque depuis la cachette inflige <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"Surpris : aucune réaction face à l'attaque qui déclenche la surprise (Défense Passive à 0). Se dissipe aussitôt après.\">Surpris</a> à la cible (<strong>Défense Passive à 0</strong>, <a class=\"rule-ref\" href=\"livre_5.html#sec-20-2\" data-tip=\"Défense Passive : le défenseur ne lance rien, score 0, touche auto avec ta marge (§20.2).\">Livre V §20.2</a>).",
+     "Hors de vue derrière un couvert, dans la pénombre, un écran de fumée ou grâce à une réussite en Discrétion / camouflage (<a href=\"livre_5.html#sec-21-4\">Livre V §21.4</a>).",
+     "Impossible à cibler par une attaque directe tant que l'ennemi ne t'a pas repéré (épreuve d'<a class=\"rule-ref\" href=\"livre_3.html#chap-13\" data-tip=\"Observation : repérer, analyser visuellement ou auditivement (VIS/OUI, §13.3).\">Observation</a> ou <a class=\"rule-ref\" href=\"livre_3.html#chap-13\" data-tip=\"Écoute : percevoir un bruit discret, une approche (OUI, §13.3).\">Écoute</a> opposée à ta <a class=\"rule-ref\" href=\"livre_3.html#chap-12\" data-tip=\"Discrétion : se cacher, se déplacer sans bruit (AGI/INT, §12.2).\">Discrétion</a>). Ta première attaque contre une cible qui ne t'a pas repéré lui inflige l'état <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"Surpris : aucune réaction face à l'attaque inattendue (Défense Passive à 0). Se dissipe aussitôt après (§24.1).\">Surpris</a> (Défense Passive à 0).",
      "Jusqu'à être repéré, attaquer ou sortir à découvert."
     ]
    ],
@@ -769,7 +775,7 @@
   "etats_benefiques": {
    "colonnes": [
     "État",
-    "Description Arcanique / Physiologique",
+    "Description",
     "Bonus & Avantages Tactiques",
     "Durée Typique"
    ]
@@ -927,7 +933,7 @@
    {
     "etat": "Ralenti",
     "description": "Ralentissement musculaire ou distorsion gravitationnelle locale.",
-    "malus": "Actions hors déplacement ×2 PA ; déplacement +1 PA/case (cumulatif avec Terrain difficile, À Terre/Déstabilisé et encombrement ; annulé mutuellement par Accéléré sur le déplacement).",
+    "malus": "Actions hors déplacement ×2 PA ; déplacement +1 PA/case (cumulatif avec Terrain difficile, À Terre/Déstabilisé et encombrement ). S'annule complètement et mutuellement avec Accéléré (les deux états disparaissent immédiatement, même si leurs durées diffèrent).",
     "duree": "Variable selon les circonstances."
    },
    {
@@ -950,9 +956,9 @@
    },
    {
     "etat": "Surpris",
-    "description": "Pris de court par une embuscade, un tireur caché, un piège ou une attaque totalement inattendue.",
-    "malus": "Aucune réaction possible face à l'attaque qui déclenche la surprise : ta défense tombe automatiquement à 0 (Défense Passive imposée, Livre V §20.2). En ouverture de combat, la surprise ne peut se déclencher qu'une seule fois par combat, offrant un seul tour complet avant l'initiative (Livre V §20) ; au jet d'initiative qui suit, tous les combattants démarrent avec leurs PA pleins, sauf une créature ayant bénéficié de cette surprise qui ne récupère pas ses PA avant le début de son tour d'initiative.",
-    "duree": "Jusqu'à la résolution de l'instant qui déclenche la surprise (se dissipe aussitôt après ; toute attaque suivante dans le même tour est défendue normalement)."
+    "description": "Pris de court par une attaque que tu n'as pas vue venir (adversaire Dissimulé / Caché, piège, coup en traître ou Tour d'Embuscade).",
+    "malus": "Aucune réaction possible face à l'attaque inattendue : ta défense tombe automatiquement à 0 (Défense Passive imposée, Livre V §20.2).",
+    "duree": "Jusqu'à la résolution de l'instant qui déclenche l'attaque inattendue (se dissipe aussitôt après ; toute attaque suivante dans le même tour est défendue normalement)."
    },
    {
     "etat": "Paniqué",
@@ -1025,7 +1031,7 @@
    "Ralenti": {
     "etat": "Ralenti",
     "description": "Ralentissement musculaire ou distorsion gravitationnelle locale.",
-    "malus": "Actions hors déplacement ×2 PA ; déplacement +1 PA/case (cumulatif avec Terrain difficile, À Terre/Déstabilisé et encombrement ; annulé mutuellement par Accéléré sur le déplacement).",
+    "malus": "Actions hors déplacement ×2 PA ; déplacement +1 PA/case (cumulatif avec Terrain difficile, À Terre/Déstabilisé et encombrement ). S'annule complètement et mutuellement avec Accéléré (les deux états disparaissent immédiatement, même si leurs durées diffèrent).",
     "duree": "Variable selon les circonstances."
    },
    "Paniqué": {
@@ -1048,33 +1054,39 @@
    },
    "Survolté": {
     "etat": "Survolté",
-    "description": "Afflux massif d'adrénaline ou stimulation nerveuse arcanique.",
-    "bonus": "+1 ec sur tous les jets, +3 PA supplémentaires par tour !",
+    "description": "Afflux massif d'adrénaline, d'élan vital ou de stimulation magique.",
+    "bonus": "+1 ec sur tous les jets, +3 PA supplémentaires par tour.",
     "duree": "Variable selon les circonstances."
    },
    "En transe": {
     "etat": "En transe",
-    "description": "Harmonie synaptique parfaite, perception en temps ralenti.",
-    "bonus": "+2 ec sur tous les jets, +5 PA par tour !",
+    "description": "Concentration absolue, esprit lucide et perception comme au ralenti.",
+    "bonus": "+2 ec sur tous les jets, +5 PA supplémentaires par tour.",
     "duree": "Variable selon les circonstances."
    },
    "Accéléré": {
     "etat": "Accéléré",
-    "description": "Distorsion spatiale ou propulsion cinétique des membres.",
-    "bonus": "Toute action de déplacement coûte la MOITIÉ des PA (arrondi au supérieur). Annule et est annulé par Ralenti sur le coût de déplacement.",
+    "description": "Mouvements accélérés par magie, pouvoir ou élan surnaturel.",
+    "bonus": "Toute action de déplacement coûte la MOITIÉ des PA (arrondi à l'inférieur, minimum 1 PA et 1 case). S'annule complètement et mutuellement avec Ralenti (les deux états disparaissent immédiatement, même si leurs durées diffèrent).",
     "duree": "Variable selon les circonstances."
    },
    "Rapide": {
     "etat": "Rapide",
-    "description": "Foulée amplifiée et réflexes moteurs aiguisés.",
+    "description": "Foulée allongée et déplacements nettement plus vifs.",
     "bonus": "+3 PA réservés exclusivement aux déplacements à chaque tour.",
     "duree": "Variable selon les circonstances."
    },
-   "Lévitation / En Vol": {
-    "etat": "Lévitation / En Vol",
-    "description": "Répulsion gravitationnelle de Cinquième Force.",
-    "bonus": "Déplacement aérien libre, coût de déplacement réduit de moitié (-1 ec si le sujet n'a pas la spécialisation Aérien ou Acrobate).",
-    "duree": "Variable selon la réserve d'énergie."
+   "Lévitation": {
+    "etat": "Lévitation",
+    "description": "Sustentation en vol stationnaire (magie, pouvoir, propulseur vertical, ailes battantes ou dispositif antigrav).",
+    "bonus": "Déplacement libre en 3D au coût normal (1 PA/case), ignore les terrains difficiles et obstacles au sol. Peut rester sur place, reculer, pivoter et monter ou descendre verticalement sans élan (décollage et atterrissage sur place). Si neutralisé (Inconscient, Paralysé, Sonné) : chute (Livre II §8.2).",
+    "duree": "Variable selon les circonstances."
+   },
+   "En Vol": {
+    "etat": "En Vol",
+    "description": "Vol lancé reposant sur la portance et la vitesse (ailes planantes, avion, planeur, vaisseau en atmosphère).",
+    "bonus": "Déplacement aérien rapide : coût de déplacement réduit de moitié (arrondi à l'inférieur, minimum 1 PA et 1 case), ignore les obstacles au sol. Élan obligatoire : doit maintenir son mouvement vers l'avant selon les propriétés de décollage, d'élan minimal et de virage de la créature, du pouvoir ou du véhicule (pas de surplace ni de marche arrière). Sans cet élan minimal ou si Immobilisé / neutralisé : décrochage (perte d'altitude ou chute, Livre II §8.2). −1 ec aux actions en vol sans maîtrise adaptée.",
+    "duree": "Variable selon les circonstances."
    },
    "Aveugle": {
     "etat": "Aveugle",
@@ -1102,8 +1114,8 @@
    },
    "Dissimulé / Caché": {
     "etat": "Dissimulé / Caché",
-    "description": "Hors de vue derrière un couvert, dans la pénombre, un écran de fumée ou grâce à une réussite en Discrétion / camouflage.",
-    "bonus": "Impossible à cibler par une attaque directe tant que l'ennemi ne t'a pas repéré (Observation ou Écoute opposé à ta Discrétion). Ta première attaque depuis la cachette prend la cible par surprise (Défense Passive à 0, Livre V §20.2).",
+    "description": "Hors de vue derrière un couvert, dans la pénombre, un écran de fumée ou grâce à une réussite en Discrétion / camouflage (Livre V §21.4).",
+    "bonus": "Impossible à cibler par une attaque directe tant que l'ennemi ne t'a pas repéré (Observation ou Écoute opposé à ta Discrétion). Ta première attaque contre une cible qui ne t'a pas repéré lui inflige l'état Surpris (Défense Passive à 0, §24.1).",
     "duree": "Jusqu'à être repéré, attaquer ou sortir à découvert."
    },
    "Assourdi": {
@@ -1120,9 +1132,9 @@
    },
    "Surpris": {
     "etat": "Surpris",
-    "description": "Pris de court par une embuscade, un tireur caché, un piège ou une attaque totalement inattendue.",
-    "malus": "Aucune réaction possible face à l'attaque qui déclenche la surprise : ta défense tombe automatiquement à 0 (Défense Passive imposée, Livre V §20.2). En ouverture de combat, la surprise ne peut se déclencher qu'une seule fois par combat, offrant un seul tour complet avant l'initiative (Livre V §20) ; au jet d'initiative qui suit, tous les combattants démarrent avec leurs PA pleins, sauf une créature ayant bénéficié de cette surprise qui ne récupère pas ses PA avant le début de son tour d'initiative.",
-    "duree": "Jusqu'à la résolution de l'instant qui déclenche la surprise (se dissipe aussitôt après ; toute attaque suivante dans le même tour est défendue normalement)."
+    "description": "Pris de court par une attaque que tu n'as pas vue venir (adversaire Dissimulé / Caché, piège, coup en traître ou Tour d'Embuscade).",
+    "malus": "Aucune réaction possible face à l'attaque inattendue : ta défense tombe automatiquement à 0 (Défense Passive imposée, Livre V §20.2).",
+    "duree": "Jusqu'à la résolution de l'instant qui déclenche l'attaque inattendue (se dissipe aussitôt après ; toute attaque suivante dans le même tour est défendue normalement)."
    }
   },
   "etats_dot": [
@@ -1150,38 +1162,44 @@
   "etats_benefiques": [
    {
     "etat": "Survolté",
-    "description": "Afflux massif d'adrénaline ou stimulation nerveuse arcanique.",
-    "bonus": "+1 ec sur tous les jets, +3 PA supplémentaires par tour !",
+    "description": "Afflux massif d'adrénaline, d'élan vital ou de stimulation magique.",
+    "bonus": "+1 ec sur tous les jets, +3 PA supplémentaires par tour.",
     "duree": "Variable selon les circonstances."
    },
    {
     "etat": "En transe",
-    "description": "Harmonie synaptique parfaite, perception en temps ralenti.",
-    "bonus": "+2 ec sur tous les jets, +5 PA par tour !",
-    "duree": "Variable selon les circonstances."
-   },
-   {
-    "etat": "Accéléré",
-    "description": "Distorsion spatiale ou propulsion cinétique des membres.",
-    "bonus": "Toute action de déplacement coûte la MOITIÉ des PA (arrondi au supérieur). Annule et est annulé par Ralenti sur le coût de déplacement.",
+    "description": "Concentration absolue, esprit lucide et perception comme au ralenti.",
+    "bonus": "+2 ec sur tous les jets, +5 PA supplémentaires par tour.",
     "duree": "Variable selon les circonstances."
    },
    {
     "etat": "Rapide",
-    "description": "Foulée amplifiée et réflexes moteurs aiguisés.",
+    "description": "Foulée allongée et déplacements nettement plus vifs.",
     "bonus": "+3 PA réservés exclusivement aux déplacements à chaque tour.",
     "duree": "Variable selon les circonstances."
    },
    {
-    "etat": "Lévitation / En Vol",
-    "description": "Répulsion gravitationnelle de Cinquième Force.",
-    "bonus": "Déplacement aérien libre, coût de déplacement réduit de moitié (-1 ec si le sujet n'a pas la spécialisation Aérien ou Acrobate).",
-    "duree": "Variable selon la réserve d'énergie."
+    "etat": "Accéléré",
+    "description": "Mouvements accélérés par magie, pouvoir ou élan surnaturel.",
+    "bonus": "Toute action de déplacement coûte la MOITIÉ des PA (arrondi à l'inférieur, minimum 1 PA et 1 case). S'annule complètement et mutuellement avec Ralenti (les deux états disparaissent immédiatement, même si leurs durées diffèrent).",
+    "duree": "Variable selon les circonstances."
+   },
+   {
+    "etat": "En Vol",
+    "description": "Vol lancé reposant sur la portance et la vitesse (ailes planantes, avion, planeur, vaisseau en atmosphère).",
+    "bonus": "Déplacement aérien rapide : coût de déplacement réduit de moitié (arrondi à l'inférieur, minimum 1 PA et 1 case), ignore les obstacles au sol. Élan obligatoire : doit maintenir son mouvement vers l'avant selon les propriétés de décollage, d'élan minimal et de virage de la créature, du pouvoir ou du véhicule (pas de surplace ni de marche arrière). Sans cet élan minimal ou si Immobilisé / neutralisé : décrochage (perte d'altitude ou chute, Livre II §8.2). −1 ec aux actions en vol sans maîtrise adaptée.",
+    "duree": "Variable selon les circonstances."
+   },
+   {
+    "etat": "Lévitation",
+    "description": "Sustentation en vol stationnaire (magie, pouvoir, propulseur vertical, ailes battantes ou dispositif antigrav).",
+    "bonus": "Déplacement libre en 3D au coût normal (1 PA/case), ignore les terrains difficiles et obstacles au sol. Peut rester sur place, reculer, pivoter et monter ou descendre verticalement sans élan (décollage et atterrissage sur place). Si neutralisé (Inconscient, Paralysé, Sonné) : chute (Livre II §8.2).",
+    "duree": "Variable selon les circonstances."
    },
    {
     "etat": "Dissimulé / Caché",
-    "description": "Hors de vue derrière un couvert, dans la pénombre, un écran de fumée ou grâce à une réussite en Discrétion / camouflage.",
-    "bonus": "Impossible à cibler par une attaque directe tant que l'ennemi ne t'a pas repéré (Observation ou Écoute opposé à ta Discrétion). Ta première attaque depuis la cachette prend la cible par surprise (Défense Passive à 0, Livre V §20.2).",
+    "description": "Hors de vue derrière un couvert, dans la pénombre, un écran de fumée ou grâce à une réussite en Discrétion / camouflage (Livre V §21.4).",
+    "bonus": "Impossible à cibler par une attaque directe tant que l'ennemi ne t'a pas repéré (Observation ou Écoute opposé à ta Discrétion). Ta première attaque contre une cible qui ne t'a pas repéré lui inflige l'état Surpris (Défense Passive à 0, §24.1).",
     "duree": "Jusqu'à être repéré, attaquer ou sortir à découvert."
    }
   ],

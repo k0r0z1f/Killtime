@@ -1,6 +1,6 @@
 {
  "version": 3,
- "updated": "2026-11-20",
+ "updated": "2026-11-21",
  "activeId": "board-revue-rp",
  "boards": [
   {
@@ -398,8 +398,8 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_6.html#chap-24",
-     "updated": "2026-11-20",
-     "details": "Vérification humaine — livre_6.html#chap-24. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici. MAJ 2026-11-07 — titre corrigé (chap. 26→24 après renumérotation ; 16→18 États, intitulé canon). | Note 2026-11-18 : anticipation sur §24.5 (Inconscient lâche immédiatement tout ce qu'il tient en main) et §24.6 (lien #sec-24-5 sur Assommer) posée lors de RP-025. | §24.1 FAIT (2026-11-20) : 18 états préjudiciables réordonnés du moins contraignant au plus contraignant (Canon Entravé → Agonisant), intro chap-24/bloc-00.md alignée sur « dix-huit états ». Scission d'À terre en Accroupi et À terre (allongé) + sync de 69 infobulles À Terre dans Livres I–VI. Séparation Paniqué (fuite 6 cases 1d8, parade −2, pièce O27 renommée dans Livre III) et Agonisant (Agonie critique au début de chaque tour + Dernier Souffle, stabilisation Premiers Soins Diff 6). Nettoyage rédactionnel de Ralenti, Immobilisé, Sonné (tombe immédiatement À Terre, parade −2, harmonisé avec Livre V §20.2) et Paralysé (Défense Passive imposée), durées uniformisées (« Variable selon les circonstances. »). Ajouts : Assourdi, Somnolent (3 phases 24 h / 48 h / 72 h+, test toutes les 6 h et fin de combat), Ligoté, Surpris (règle d'ouverture Livre V §20). Ivre / Intoxiqué reporté vers RP-208 ; propriétés d'armes (Arme de jet, etc.) reportées vers RP-209. Anticipations déjà posées sur §24.3 (Affamé/Assoiffé, RP-213) et §24.4 (durées + Dissimulé / Caché, RP-213). | §24.2 FAIT & retrait ancien §24.3 (2026-11-20) : (1) Intro §24.2 (chap-24/bloc-02.md) pose la règle commune des dégâts résiduels (toujours posés avec un score de départ ; au début du tour de la victime avant la recharge des PA, elle subit ce score — armure et boucliers ignorés sauf exception — puis le score baisse de 1 jusqu'à 0). (2) Purge des valeurs par défaut (« sans valeur posée »), des spécialisations dans le core (Frappe Jugulaire, Homéostasie→magie curative, Hémorragie Profonde) et des mentions « résine de Mina » / « Seringue seule : non » en §24.2. (3) Colonne centrale renommée Particularité (donnees/tableaux/mecaniques) avec une particularité propre par état : Saignement (ne baisse pas au tour suivant après Course, Charge ou Essoufflement), Empoisonné (Anti-soin : soins de dégâts reçus réduits de moitié ; dissipation par Antidote, Médecine Avancée matériel de chimie/apothicaire ou magie de purge), En Feu (un bouclier énergétique ou magique absorbe d'abord, armure et bouclier physique ignorés ; Action d'extinction au coût en PA égal au score résiduel courant), Asphyxie (−1 PA sur la réserve rechargée ; Rétablir la respiration en sortant du gaz/fumée, masque, rupture d'étranglement ou Premiers Soins 3 PA / magie curative pour dégager les voies obstruées). (4) Paragraphe Aggravation épuré en chap-24/bloc-04.md. (5) Synchronisation de §23.1 types_degats et des infobulles Saignement, Empoisonné, En Feu et Asphyxie dans Livres I, III, IV, V et VI. (6) Retrait de l'ancienne sous-section §24.3 Faim & Soif (couverte par Affamé/Assoiffé en §24.1) et décalage §24.4–§24.7 → §24.3–§24.6 + resynchronisation des ancres #sec-24-3..6 et renvois §24.4 dans Livres I, II, III, V et VI. Reste à relire §24.3–§24.6 pour clore RP-026."
+     "updated": "2026-11-21",
+     "details": "Vérification humaine — livre_6.html#chap-24. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici. MAJ 2026-11-07 — titre corrigé (chap. 26→24 après renumérotation ; 16→18 États, intitulé canon). | Note 2026-11-18 : anticipation sur §24.5 (Inconscient lâche immédiatement tout ce qu'il tient en main) et §24.6 (lien #sec-24-5 sur Assommer) posée lors de RP-025. | §24.1 FAIT (2026-11-20) : 18 états préjudiciables réordonnés du moins contraignant au plus contraignant (Canon Entravé → Agonisant), intro chap-24/bloc-00.md alignée sur « dix-huit états ». Scission d'À terre en Accroupi et À terre (allongé) + sync de 69 infobulles À Terre dans Livres I–VI. Séparation Paniqué (fuite 6 cases 1d8, parade −2, pièce O27 renommée dans Livre III) et Agonisant (Agonie critique au début de chaque tour + Dernier Souffle, stabilisation Premiers Soins Diff 6). Nettoyage rédactionnel de Ralenti, Immobilisé, Sonné (tombe immédiatement À Terre, parade −2, harmonisé avec Livre V §20.2) et Paralysé (Défense Passive imposée), durées uniformisées (« Variable selon les circonstances. »). Ajouts : Assourdi, Somnolent (3 phases 24 h / 48 h / 72 h+, test toutes les 6 h et fin de combat), Ligoté, Surpris (règle d'ouverture Livre V §20). Ivre / Intoxiqué reporté vers RP-208 ; propriétés d'armes (Arme de jet, etc.) reportées vers RP-209. Anticipations déjà posées sur §24.3 (Affamé/Assoiffé, RP-213) et §24.4 (durées + Dissimulé / Caché, RP-213). | §24.2 FAIT & retrait ancien §24.3 (2026-11-21, RP-214) : (1) Intro §24.2 (chap-24/bloc-02.md) pose la règle commune des dégâts résiduels (toujours posés avec un score de départ ; au début du tour de la victime avant la recharge des PA, elle subit ce score — armure et boucliers ignorés sauf exception — puis le score baisse de 1 jusqu'à 0). (2) Purge des valeurs par défaut (« sans valeur posée »), des spécialisations dans le core (Frappe Jugulaire, Homéostasie→magie curative, Hémorragie Profonde) et des mentions « résine de Mina » / « Seringue seule : non » en §24.2. (3) Colonne centrale renommée Particularité (donnees/tableaux/mecaniques) avec une particularité propre par état : Saignement (ne baisse pas au tour suivant après Course, Charge ou Essoufflement), Empoisonné (Anti-soin : soins de dégâts reçus réduits de moitié ; dissipation par Antidote, Médecine Avancée matériel de chimie/apothicaire ou magie de purge), En Feu (un bouclier énergétique ou magique absorbe d'abord, armure et bouclier physique ignorés ; Action d'extinction au coût en PA égal au score résiduel courant), Asphyxie (−1 PA sur la réserve rechargée ; Rétablir la respiration en sortant du gaz/fumée, masque, rupture d'étranglement ou Premiers Soins 3 PA / magie curative pour dégager les voies obstruées). (4) Paragraphe Aggravation épuré en chap-24/bloc-04.md. (5) Synchronisation de §23.1 types_degats et des infobulles Saignement, Empoisonné, En Feu et Asphyxie dans Livres I, III, IV, V et VI. (6) Retrait de l'ancienne sous-section §24.3 Faim & Soif (couverte par Affamé/Assoiffé en §24.1) et décalage §24.4–§24.7 → §24.3–§24.6 + resynchronisation des ancres #sec-24-3..6 et renvois §24.4 dans Livres I, II, III, V et VI. | §24.3 FAIT — 1er check mécanique (2026-11-21, RP-215) : refonte des 7 états bénéfiques (Survolté, En transe, Rapide, Accéléré, scission Lévitation / En Vol en deux états distincts + sync infobulles Livre IV, annulation complète et mutuelle Accéléré ↔ Ralenti + sync Livre V, nettoyage rédactionnel, liaison Dissimulé / Caché ↔ Surpris §24.1 et Se cacher Livre V §21.4) + séparation sémantique Surpris (§24.1 pur) vs Tour d'Embuscade (Livre V §20 / Livre I §4.3, RP-204/RP-211). Reste à relire §24.4–§24.6 pour le 1er check mécanique (puis QA final pour clore RP-026)."
     },
     {
      "id": "RP-027",
@@ -3089,9 +3089,9 @@
     },
     {
      "id": "RP-204",
-     "title": "Rédiger les règles Se cacher & Discrétion en combat (Livre V §21.4 + Livre III §12.2 / §14)",
+     "title": "Développer l'action « Se cacher » & Discrétion en combat (Livre V §20.4 / §21.4, Livre VI §24.3, Livre III §12.2 / §14)",
      "epic": "Livre V — Combat Tactique",
-     "status": "todo",
+     "status": "done",
      "priority": "medium",
      "order": 201,
      "scene": "",
@@ -3100,8 +3100,8 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_5.html#sec-21-4",
-     "updated": "2026-11-13",
-     "details": "Audit 2026-11-13 : aucune règle n'explique encore comment « Se cacher » ni comment fonctionne la Discrétion en combat (Livre III §12.2 liste seulement Discrétion et ses 3 spécialisations sans fiche en §14 : Déplacement silencieux, Camouflage, Ombres ; depuis la passe §21.4, Observation active est une épreuve seuil 4 / auto dès 1d12 contre des non visibles sous couvert, et le MJ détermine de son côté si le résultat du joueur bat toute Discrétion déjà lancée par un personnage activement caché ; couts_pa n'a pas encore d'action Se cacher). À trancher et rédiger : (1) distinction nette « Non visible » (ligne de mire / couvert total, §21.3–21.4) vs « Caché » (état actif par Discrétion, jet préalable comparé en secret par le MJ) ; (2) coût en PA et prérequis de Se cacher ; (3) déplacement furtif (coût en PA, lien Déplacement silencieux) ; (4) rupture d'état caché / révélation et interactions Observation active (y compris cas 1d12 auto-seuil 4 face à un jet de Discrétion > 4) ; (5) intégrer dans Livre V (§21.4, barème/couts_pa §20.4) et Livre III (§12.2 + fiches §14 si souhaité), puis exécuter build_livres.py --build 5 et check_liens.py."
+     "updated": "2026-11-21",
+     "details": "FAIT 2026-11-21 — Règles complètes de « Se cacher » et Discrétion rédigées et synchronisées : (1) séparation nette Non visible (géométrie) vs Dissimulé / Caché (état actif par Discrétion, Livre VI §24.3) ; (2) séparation sémantique Surpris (état pur Livre VI §24.1, Défense Passive à 0 sur la 1re attaque inattendue, utilisable en initiative) vs Tour d'Embuscade (avant-initiative, Livre V §20 & Livre I §4.3) ; (3) en combat (vision 360°) : action Se cacher (2 PA + encombrement, prérequis hors de vue — couvert total dont Accroupi/À terre derrière muret/barricade, nuit noire, fumée — anti-yo-yo au même endroit si vu sans changement de position ni diversion, jet de Discrétion au plancher 4 gardé secret par le MJ) ; (4) déplacement furtif (+1 PA/case, non cumulatif avec Accroupi/À terre/Déstabilisé ; 0 PA avec Déplacement silencieux) ; (5) attaque en combat (à distance ou en mêlée directe à portée sans traverser de case à découvert — nuance contact/muret ajoutée en §21.3–§21.4) et rupture vs micro-actions silencieuses ; (6) Observation active (1 PA, seuil 4 / 1d12 auto contre non visible seul vs jet lancé contre Dissimulé/Caché, Δ≥0) ; (7) hors combat : approche furtive dans les angles morts (Discrétion vs Observation/Écoute) déclenchant le Tour d'Embuscade ; (8) correction Nuit claire Livre II §8.6 (retrait « et Discrétion »), ajout des 3 fiches §14 de Discrétion (Déplacement silencieux, Camouflage, Ombres ; 163→166), renvoi §12.2 et §24.3, couts_pa & mecaniques.se_cacher Livre V."
     },
     {
      "id": "RP-205",
@@ -3212,8 +3212,8 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_5.html#chap-20",
-     "updated": "2026-11-20",
-     "details": "FAIT 2026-11-20 — Formalisation de la surprise d'ouverture (version cinématique) et du remplissage initial des PA au début du combat dans Livre I (§4 chap-4/bloc-02.md exemple Roger, §4.3 chap-4/bloc-09.md), Livre V (§20 Séquence Fondamentale chap-20/bloc-00.md + lien §20.2 Défense Passive) et Livre VI (§24.1 Surpris, donnees/mecaniques). Règles gravées : (1) la surprise ne peut se déclencher qu'une seule fois par combat, offrant un seul tour complet avant l'initiative (formulation discrète sur « l'instant qui déclenche la surprise », laissant subtilement la porte ouverte aux attaques synchronisées sans le spoiler) ; (2) seul cet instant inflige Surpris (Défense Passive à 0), puis l'état se dissipe ; (3) au jet d'initiative qui suit, tous les combattants démarrent avec leurs PA pleins et leur réaction libre (comme en début de tour), sauf une créature ayant bénéficié de la surprise qui ne récupère pas ses PA avant le début de son tour d'initiative."
+     "updated": "2026-11-21",
+     "details": "FAIT 2026-11-20 — Formalisation de la surprise d'ouverture (version cinématique) et du remplissage initial des PA au début du combat dans Livre I (§4 chap-4/bloc-02.md exemple Roger, §4.3 chap-4/bloc-09.md), Livre V (§20 Séquence Fondamentale chap-20/bloc-00.md + lien §20.2 Défense Passive) et Livre VI (§24.1 Surpris, donnees/mecaniques). Règles gravées : (1) la surprise ne peut se déclencher qu'une seule fois par combat, offrant un seul tour complet avant l'initiative (formulation discrète sur « l'instant qui déclenche la surprise », laissant subtilement la porte ouverte aux attaques synchronisées sans le spoiler) ; (2) seul cet instant inflige Surpris (Défense Passive à 0), puis l'état se dissipe ; (3) au jet d'initiative qui suit, tous les combattants démarrent avec leurs PA pleins et leur réaction libre (comme en début de tour), sauf une créature ayant bénéficié de la surprise qui ne récupère pas ses PA avant le début de son tour d'initiative. | MAJ 2026-11-21 : séparation sémantique actée — la mécanique avant-initiative est renommée « Tour d'Embuscade » (Livre I §4.3, Livre V §20) et dissociée de l'état pur « Surpris » (Livre VI §24.1, Défense Passive à 0 utilisable aussi en pleine initiative depuis Dissimulé / Caché §24.3 ou un piège)."
     },
     {
      "id": "RP-212",
@@ -3244,8 +3244,40 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_6.html#sec-24-3",
-     "updated": "2026-11-20",
+     "updated": "2026-11-21",
      "details": "FAIT 2026-11-20 — (1) Renommage Privation → Assoiffé, suppression du déclencheur « à l'aube » et de la mention Cléien dans le tableau §24.1. Recalibrage réaliste en 3 phases + mort au niveau 4 : Affamé (48 h −1 ec / 1 sem. −2 ec + guérison nuit sûre réduite de moitié / 2 sem. −3 ec + 0 guérison + 1 dégât direct/jour / 3 sem. Mort ; soin 1 ration/jour = −1 niveau) et Assoiffé (24 h −1 ec / 48 h −2 ec + aucune guérison ni récup Essoufflement / 72 h −3 ec + Ralenti + 2 dégâts directs/jour / 4 jours Mort ; soin 2 L = −1 niveau immédiat 1 fois max avant repos, puis cycle de sommeil lève le reste). Mise en forme <br> sans abréviations télégraphiques dans data/livre_6.json et chap-25/bloc-00.md ; retrait ensuite de l'ancienne sous-section §24.3 Faim & Soif devenue redondante avec §24.1, décalant les sous-chapitres suivants en §24.3–§24.6. (2) Uniformisation des durées d'états de combat en §24.1 et §24.3 (« Variable selon les circonstances. ») et ajout de Dissimulé / Caché en §24.3 (donnees + mecaniques, 6 états bénéfiques)."
+    },
+    {
+     "id": "RP-214",
+     "title": "Refonte §24.2 États à Dégâts Résiduels (4 particularités) & retrait ancien §24.3 (décalage §24.3–§24.6)",
+     "epic": "Livre VI — Santé & États",
+     "status": "done",
+     "priority": "high",
+     "order": 211,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "livre_6.html#sec-24-2",
+     "updated": "2026-11-21",
+     "details": "FAIT 2026-11-21 — (1) Intro §24.2 (chap-24/bloc-02.md) : règle commune unique (un état à dégâts résiduels est toujours posé avec un score de départ ; au début de chaque tour de la victime avant la recharge de ses PA, elle subit ce score — armure et boucliers ignorés sauf exception — puis le score baisse de 1 jusqu'à disparaître à 0). (2) Purge de toutes les valeurs par défaut (« sans valeur posée »), des mentions de spécialisations dans le core (Frappe Jugulaire, Homéostasie→magie curative, Hémorragie Profonde) et des mentions « résine de Mina » / « Coagulation Flash » / « Seringue seule : non » en §24.2. (3) Colonne centrale renommée Particularité (donnees/tableaux/mecaniques) avec une particularité propre par état : Saignement (l'effort empêche de coaguler : Course, Charge ou dépense d'Essoufflement empêche le score de baisser au début du tour suivant ; arrêté par tout soin), Empoisonné (Anti-soin : tous les soins de dégâts reçus sont réduits de moitié ; dissipé par Antidote, Médecine Avancée matériel de chimie/apothicaire ou magie de purge), En Feu (un bouclier énergétique ou magique absorbe d'abord les dégâts, l'armure et un bouclier physique restent ignorés ; Action d'extinction au coût en PA égal au score résiduel courant), Asphyxie (−1 PA sur la réserve une fois rechargée ; Rétablir la respiration en sortant du gaz/fumée, masque en prévention, rupture d'étranglement ou Premiers Soins 3 PA / magie curative pour dégager les voies obstruées). (4) Paragraphe Aggravation épuré en chap-24/bloc-04.md. (5) Synchronisation de §23.1 types_degats et des infobulles Saignement, Empoisonné, En Feu et Asphyxie dans Livres I, III, IV, V et VI. (6) Suppression de l'ancienne sous-section §24.3 Faim & Soif (couverte par Affamé/Assoiffé en §24.1), décalage §24.4–§24.7 → §24.3–§24.6 et synchronisation des ancres #sec-24-3..6 et renvois §24.4 dans Livres I, II, III, V et VI."
+    },
+    {
+     "id": "RP-215",
+     "title": "§24.3 États Bénéfiques (1er check mécanique : 7 états, En Vol / Lévitation, Accéléré ↔ Ralenti) & Surpris / Tour d'Embuscade",
+     "epic": "Livre VI — Santé & États",
+     "status": "done",
+     "priority": "high",
+     "order": 212,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "livre_6.html#sec-24-3",
+     "updated": "2026-11-21",
+     "details": "FAIT 2026-11-21 (1er check mécanique §24.3) — (1) Refonte §24.3 (data/livre_6.json, donnees/mecaniques) : 7 états bénéfiques harmonisés (Survolté, En transe, Rapide, Accéléré, En Vol, Lévitation, Dissimulé / Caché) ; scission de « Lévitation / En Vol » en En Vol (demi-coût arrondi inf., min 1 PA et 1 case, élan/virage obligatoires sinon décrochage) et Lévitation (vol stationnaire 3D 1 PA/case sans élan, chute si neutralisé) + sync infobulles Livre IV (Atelier de création) ; annulation complète et mutuelle Accéléré ↔ Ralenti (livre_6.json + livre_5.json cumul_deplacement_pa). (2) Séparation sémantique actée entre l'état pur Surpris (§24.1 : Défense Passive à 0 sur l'attaque inattendue uniquement, sans règles d'avant-initiative) et la mécanique générale Tour d'Embuscade (Livre I §4.3, Livre V §20), avec liaison explicite sur Dissimulé / Caché (§24.3 → Livre V §21.4 & Surpris §24.1)."
     }
    ]
   }
