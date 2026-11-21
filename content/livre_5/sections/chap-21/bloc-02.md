@@ -36,7 +36,7 @@ livre: 5
                                     <strong>1 case</strong> du fuyant, il tente aussitôt un plaquage en réaction
                                     (<a class="rule-ref" href="livre_2.html#chap-7" data-tip="Face-à-Face : les deux lancent en secret, dé + PA − malus (§7.3).">Face-à-Face</a>
                                     <strong>Athlétisme contre Athlétisme</strong>) : <strong>si le poursuivant gagne</strong>,
-                                    le fuyant est plaqué (<a class="rule-ref" href="livre_6.html#sec-24-1" data-tip="À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.">À Terre</a>),
+                                    le fuyant est plaqué (<a class="rule-ref" href="livre_6.html#sec-24-1" data-tip="À Terre : −1 ec mêlée/Athlétisme/Acrobatie, −2 ec jet (arc impossible), −2 défense (tir/magie sans malus). Déplacement +1 PA/case, se relever 1 PA.">À Terre</a>),
                                     la poursuite s'arrête net et la mêlée reprend ; <strong>si le plaquage échoue</strong>,
                                     le fuyant s'arrache en pleine course et <strong>la poursuite continue</strong> (écart à 1 case).</li>
                                 <li><strong>Limite d'endurance (au-delà de 8 tours) :</strong> si la poursuite dépasse

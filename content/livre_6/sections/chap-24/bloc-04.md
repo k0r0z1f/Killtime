@@ -10,11 +10,11 @@ livre: 6
                         <strong>Atteinte du Seuil Létal par dégâts résiduels :</strong> résolution via l'arbre standard (<a href="#sec-23-2">§23.2</a>, Dernier Souffle possible).
                     </p>
 
-                    <h3 id="sec-24-3">24.3 Faim & Soif : Affamé & Privation</h3>
+                    <h3 id="sec-24-3">24.3 Faim & Soif : Affamé & Assoiffé</h3>
                     <p>
                         Tu peux tenir sans magie. Pas sans eau.
-                        Compte en jours, pas en tours. Le MJ coche à chaque aube
-                        qui a bu et mangé ces dernières 24 h.
+                        Compte en tranches de 24 h, pas en tours : les joueurs décident quand
+                        ils boivent et mangent, et le délai repart dès qu'ils s'hydratent ou mangent.
                     </p>
                     <div class="table-container"><table class="codex-table">
                     <thead><tr><th>Besoin / 24 h</th><th>Toi</th><th>Cléien (<em>Frugalité</em>)</th></tr></thead>
@@ -23,55 +23,48 @@ livre: 6
                     <tr><td>Nourriture</td><td><strong>1 ration</strong></td><td><strong>1 ration / 2 jours</strong></td></tr>
                     </tbody></table></div>
                     <ul>
-                        <li><strong>Privation (soif) :</strong> 24 h sans 2 L (1 L Cléien)
-                            = <strong>Privation 1</strong> automatique (<strong>−1 ec</strong> à tout).
-                            Chaque aube suivante sans eau : épreuve de
-                            <a class="rule-ref" href="livre_3.html#chap-12" data-tip="Système Immunitaire : résister aux toxines, poisons et gaz (CON, §12).">Constitution</a>
-                            Diff <strong>4 + 2 par niveau subi</strong>
-                            (<a class="rule-ref" href="livre_2.html#chap-7" data-tip="Seuils 0–34 : 4–5 Difficile, 6–7 Extrêmement Difficile (§7.1).">Livre II §7.1</a>).
-                            Succès = tu tiens. Échec = +1 niveau (max 3).
-                            <strong>Privation 2 : −2 ec. Privation 3 : −2 ec + Ralenti + 2 dégâts directs / jour</strong>
-                            (ignore armure et bouclier, résolution au Seuil Létal via
-                            <a class="rule-ref" href="#sec-23-2" data-tip="Seuil Létal (CON×5) : atteint ? Encaissement CON×2 tranche entre Mort, Inconscient, Sombrer ou Dernier Souffle (§23.2).">§23.2</a>).
-                            <em>Tick à l'aube. Cumul avec le reste (<a class="rule-ref" href="#sec-24-1" data-tip="États cumulatifs : Déstabilisé + Étourdi = −3 (§24).">§24</a>).</em></li>
-                        <li><strong>Affamé (faim) :</strong> 48 h sans ration
-                            = <strong>Affamé 1</strong> automatique (<strong>−1 ec</strong> à tout).
-                            Chaque 2e aube suivante sans ration : épreuve de Constitution
-                            Diff <strong>3 + 1 par niveau subi</strong>. Échec = +1 niveau (max 3).
-                            <strong>Affamé 2 : −2 ec. Affamé 3 : −2 ec + nuit divisée par 2 + 1 dégât direct / jour.</strong></li>
-                        <li><strong>Cumul :</strong> Affamé + Privation s'additionnent, comme tous les états.
-                            <em>Exemple : Privation 2 (−2) + Affamé 1 (−1) = −3 à ton prochain jet.</em></li>
-                        <li><strong>Soin :</strong> boire 2 L (1 L Cléien) = −1 Privation aussitôt.
-                            24 h hydraté + nuit sûre = Privation levée.
-                            Manger 1 ration (une demi-ration suffit au Cléien) = −1 Affamé aussitôt.
-                            48 h nourri = Affamé levé.
+                        <li><strong>Assoiffé (soif) :</strong> 3 phases progressives, puis la mort au niveau 4.<br>
+                            <strong>Niveau 1 (24 h sans boire) :</strong> <strong>−1 ec</strong> à tous les jets.<br>
+                            <strong>Niveau 2 (48 h / 2 jours) :</strong> <strong>−2 ec</strong> à tous les jets, aucune guérison de dégâts en nuit sûre et l'<a class="rule-ref" href="livre_1.html#sec-4-2" data-tip="Essoufflement : 1 point = des PA d'urgence ; ne part pas tout seul, action dédiée pour souffler (§4.2).">Essoufflement</a> ne retombe pas au repos.<br>
+                            <strong>Niveau 3 (72 h / 3 jours) :</strong> <strong>−3 ec</strong> à tous les jets, <a class="rule-ref" href="#sec-24-1" data-tip="Ralenti : actions hors déplacement ×2 PA ; déplacement +1 PA/case (§24.1)."><strong>Ralenti</strong></a>, aucune guérison au repos et <strong>2 dégâts directs par jour</strong> (ignore armure et bouclier, résolution au Seuil Létal via <a class="rule-ref" href="#sec-23-2" data-tip="Seuil Létal (CON×5) : atteint ? Encaissement CON×2 tranche entre Mort, Inconscient, Sombrer ou Dernier Souffle (§23.2).">§23.2</a>).<br>
+                            <strong>Niveau 4 (4 jours / 96 h) :</strong> <strong>Mort</strong> par déshydratation.<br>
+                            <em>Cumul avec le reste (<a class="rule-ref" href="#sec-24-1" data-tip="États cumulatifs : Déstabilisé + Étourdi = −3 (§24).">§24</a>).</em></li>
+                        <li><strong>Affamé (faim) :</strong> 3 phases progressives, puis la mort au niveau 4.<br>
+                            <strong>Niveau 1 (48 h sans manger) :</strong> <strong>−1 ec</strong> à tous les jets.<br>
+                            <strong>Niveau 2 (1 semaine / 7 jours) :</strong> <strong>−2 ec</strong> et guérison de nuit sûre réduite de moitié (<code>CON ÷ 2</code> dégâts retirés au lieu de <code>CON</code>, arrondi inférieur, minimum 1).<br>
+                            <strong>Niveau 3 (2 semaines / 14 jours) :</strong> <strong>−3 ec</strong>, aucune guérison de dégâts au repos et <strong>1 dégât direct par jour</strong> (ignore armure et bouclier, résolution au Seuil Létal via <a class="rule-ref" href="#sec-23-2" data-tip="Seuil Létal (CON×5) : atteint ? Encaissement CON×2 tranche entre Mort, Inconscient, Sombrer ou Dernier Souffle (§23.2).">§23.2</a>).<br>
+                            <strong>Niveau 4 (3 semaines / 21 jours) :</strong> <strong>Mort</strong> par inanition.</li>
+                        <li><strong>Cumul :</strong> Affamé + Assoiffé s'additionnent, comme tous les états.
+                            <em>Exemple : Assoiffé 2 (−2) + Affamé 1 (−1) = −3 à ton prochain jet.</em></li>
+                        <li><strong>Soin :</strong> boire 2 L (1 L Cléien) enlève aussitôt 1 niveau d'Assoiffé (1 ec de malus, une seule fois avant de dormir — boire davantage d'un coup n'accélère rien) ; un cycle de sommeil complet après avoir bu lève le reste.
+                            Manger 1 ration (une demi-ration suffit au Cléien) = −1 niveau d'Affamé (1 palier récupéré par jour nourri, jusqu'à disparition complète).
                             Ni <a class="rule-ref" href="livre_6.html#chap-25" data-tip="Premiers Soins : stabilise, lève Souffrant, jamais la faim (§25.1).">Premiers Soins</a>
                             ni magie ne remplacent l'eau et la nourriture.</li>
                         <li><strong>Nuit sûre (<a class="rule-ref" href="livre_6.html#chap-25" data-tip="Nuit sûre 6–8 h : retire CON dégâts, ×2 si soignant veillé, Essoufflement à zéro (§25.2).">§25.2</a>) :</strong>
                             avec eau + ration = récup normale (CON dégâts retirés, ×2 si soignant).
-                            Avec eau mais sans ration = moitié (CON÷2 dégâts retirés, arrondi inférieur, min 1).
+                            Avec eau mais sans ration = moitié (CON÷2 dégâts retirés, arrondi inférieur, min 1 ; 0 dès Affamé 3).
                             Sans eau = aucun dégât retiré, ton
-                            <a class="rule-ref" href="livre_1.html#chap-4" data-tip="Essoufflement : 1 point = des PA d'urgence ; ne part pas tout seul, action dédiée pour souffler (§4.2).">Essoufflement</a>
+                            <a class="rule-ref" href="livre_1.html#sec-4-2" data-tip="Essoufflement : 1 point = des PA d'urgence ; ne part pas tout seul, action dédiée pour souffler (§4.2).">Essoufflement</a>
                             ne retombe pas.</li>
                         <li><strong>Cléien :</strong> besoins divisés par deux
                             (<a class="rule-ref" href="livre_1.html#chap-2" data-tip="Frugalité Cleyane : besoins en eau et nourriture réduits de moitié ; +2 Constitution contre la privation (Livre I §2.2).">Livre I §2.2</a>)
                             et <strong>+2</strong> aux épreuves CON contre faim et soif.
-                            En aride, <em>Fille du désert</em> donne +2
+                            En aride, <a class="rule-ref" href="livre_1.html#chap-2" data-tip="Fille du désert (don Cléien) : +2 Nature & Survie en milieu aride pour trouver eau et vivres (Livre I §2.2)."><em>Fille du désert</em></a> donne +2
                             <a class="rule-ref" href="livre_3.html#chap-13" data-tip="Nature & Survie : pistage, orientation, abris, trouver eau et vivres (INS, §13.3).">Nature &amp; Survie</a>
                             pour trouver de quoi tenir : une réussite = 1 jour pour toi (2 L + 1 ration).</li>
                     </ul>
                     <p>
-                        <em>Exemple 1 — soif :</em> Roger (CON 4, dé d4) traverse le reg sans eau.
-                        Aube J1 : Privation 1 (−1 ec). Le soir il boit 2 L : Privation levée.
-                        S'il ne boit pas, aube J2 : épreuve CON Diff 6 (4 + 2×1), avec −1.
-                        Il tire 3 + 2 PA d'effort − 1 = 4 &lt; 6 : Privation 2 (−2 ec).
+                        <em>Exemple 1 — soif :</em> Roger (CON 4) traverse le reg sans eau.
+                        Après 24 h sans boire : Assoiffé 1 (−1 ec). Le soir il boit 2 L : Assoiffé 1 est aussitôt levé.
+                        S'il ne boit pas, au bout de 48 h il passe Assoiffé 2 (−2 ec, aucune guérison de dégâts ni récupération d'Essoufflement la nuit),
+                        puis Assoiffé 3 après 72 h (−3 ec, Ralenti et 2 dégâts directs par jour), et meurt après 4 jours sans eau.
                     </p>
                     <p>
                         <em>Exemple 2 — faim :</em> Kader, Cléien (CON 3, dé d4, Frugalité),
-                        2 jours sans ration : Affamé 1 (−1 ec, épreuve à +2 quand elle viendra).
-                        Il mange 1 ration — deux jours pour lui — et boit 1 L : Affamé levé demain
-                        s'il reste hydraté. Nuit avec eau mais sans ration : 3÷2 = 1 dégât retiré.
+                        48 h sans manger : Affamé 1 (−1 ec). S'il reste sans manger 1 semaine,
+                        il passe Affamé 2 (−2 ec et guérison de nuit sûre réduite de moitié). Il mange 1 ration — deux jours de vivres pour lui —
+                        et boit 1 L : Affamé 1 est aussitôt levé. Nuit avec eau mais sans ration : 3÷2 = 1 dégât retiré.
                     </p>
 
-                    <h3 id="sec-24-4">24.4 États Bénéfiques (Buffs) & Amplificateurs</h3>
+                    <h3 id="sec-24-4">24.4 États Bénéfiques & Amplificateurs</h3>
                     

@@ -8,7 +8,7 @@ livre: 6
                         <strong>Procédure de table :</strong> 1) exposition &rarr; jet CON vs Virulence ;
                         2) si infecté, note incubation ; 3) à chaque échéance de stade, jet CON (rémission / aggravation) ;
                         4) soins = bonus ou rémission ; 5) quarantaine du groupe = pas de jet secondaire.
-                        Voir pharmacopée : <a href="livre_8.html#chap-33">Livre VIII §33.3</a>.
+                        Voir pharmacopée : <a class="rule-ref" href="livre_8.html#chap-33" data-tip="Pharmacopée : seringues de soins, stimulants et consommables médicaux (Livre VIII §33.3).">Livre VIII §33.3</a>.
                     </p>
 
                     <div class="codex-signature">

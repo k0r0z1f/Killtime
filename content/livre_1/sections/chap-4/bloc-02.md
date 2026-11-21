@@ -14,6 +14,6 @@ livre: 1
                         <div class="callout-body">
                             Roger a 3 en Agilité, 2 en Intelligence, 3 en Rapidité, et son attribut le plus faible est le Charisme à 1.<br>
                             <strong>Son calcul :</strong> Max(3, 2) + 3 + 1 = <strong>7 Points d'Action</strong>.<br>
-                            Roger disposera donc de 7 PA dès que viendra son <a class="rule-ref" href="#sec-4-3" data-tip="Initiative : meilleur score entre Rapidité, Agilité et Intelligence, converti en dé (§4.3).">tour d’initiative</a> dans le combat (ses compteurs reviennent au max, sans cumul possible).
+                            Roger démarre donc le combat avec 7 PA à l'<a class="rule-ref" href="#sec-4-3" data-tip="Initiative : meilleur score entre Rapidité, Agilité et Intelligence, converti en dé (§4.3).">initiative</a>, puis les récupère au début de chacun de ses tours (remise au max, sans cumul possible).
                         </div>
                     </div>

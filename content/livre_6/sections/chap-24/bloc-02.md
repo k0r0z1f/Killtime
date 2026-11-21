@@ -5,5 +5,5 @@ livre: 6
 ---
 
 
-                    <h3 id="sec-24-2">24.2 États à Dégâts Résiduels (DoT) : tick, aggravation, soin</h3>
+                    <h3 id="sec-24-2">24.2 États à Dégâts Résiduels : déclenchement, aggravation, soin</h3>
                     

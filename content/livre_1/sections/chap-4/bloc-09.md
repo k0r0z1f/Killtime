@@ -7,7 +7,7 @@ livre: 1
                         Quand la poudre parle, l'initiative repose sur votre meilleur score entre <strong>Rapidité</strong>,
                         <strong>Agilité</strong> et <strong>Intelligence</strong>. On convertit cette valeur en palier de dé
                         (par exemple un score de 3 donne 1d4, 5 donne 1d6, 7 donne 1d8, etc.). Vous lancez ce dé au début de
-                        l'affrontement pour fixer l'ordre de passage autour de la table.
+                        l'affrontement pour fixer l'ordre de passage autour de la table : chacun démarre alors avec sa réserve complète de PA et sa réaction libre, comme en début de tour. En cas d'embuscade ou d'attaque inattendue, la surprise ne peut se déclencher qu'une seule fois par combat, offrant un seul tour complet avant ce jet d'initiative : une créature ayant bénéficié de cette surprise ne récupère pas ses PA avant le début de son tour d'initiative (<a href="livre_5.html#chap-20">Livre V §20</a>).
                     </p>
                     <p>
                         Égalité ? Tu tranches avant le premier round, et l'ordre ne bouge plus du combat. Un héros passe

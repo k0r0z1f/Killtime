@@ -24,7 +24,7 @@
    "blocs": [
     {
      "type": "html",
-     "html": "\n\n                    <p>\n                        La résistance corporelle dépend directement de l'attribut <strong>Constitution (Con)</strong>.\n                        Deux formules fondamentales régissent la survie d'un personnage face aux violences du monde :\n                    </p>\n\n                    "
+     "html": "\n\n                    <p>\n                        La résistance corporelle dépend directement de l'attribut <a class=\"rule-ref\" href=\"livre_1.html#chap-3\" data-tip=\"Constitution (CON) : résistance physique, seuils d'Encaissement (×2) et Létal (×5), plafond d'Essoufflement (Livre I §3).\"><strong>Constitution (Con)</strong></a>.\n                        Deux formules fondamentales régissent la survie d'un personnage face aux violences du monde :\n                    </p>\n\n                    "
     },
     {
      "type": "ref",
@@ -48,7 +48,7 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <h3 id=\"sec-23-2\">23.2 L'Arbre de Résolution du Seuil Létal (CON &times; 5)</h3>\n                    <p>\n                        Lorsqu'une attaque porte les dégâts accumulés d'un combattant à son Seuil Létal (<code>CON &times; 5</code>) ou au-delà, on compare les dégâts\n                        réels subis lors de ce coup au Seuil d'Encaissement (<code>CON &times; 2</code>) :\n                    </p>\n                    <ul>\n                        <li><strong>Branche 1 : Dégâts du coup &gt; Seuil d'Encaissement (Traumatisme Incompressible) :</strong>\n                            Aucun choix possible.\n                            <ul>\n                                <li><strong>Tête / Crâne :</strong> <strong>Mort Instantanée</strong>, sauf si tu dépenses 1 <a class=\"rule-ref\" href=\"#sec-23-3\" data-tip=\"Point de Miracle : dévie un coup mortel, tu échappes à la mort (Inconscient, À Terre). Rachat : 20 XP ou jalon MJ.\">Point de Miracle</a> (§23.3) : tu échappes à la mort et tombes <a class=\"rule-ref\" href=\"#sec-24-5\" data-tip=\"Inconscient : lâche ce qu'il tient en main ; aucune action ni réaction. Réveil : secousse (1 PA) ou premiers soins.\">Inconscient</a> et <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.\">À Terre</a>.</li>\n                                <li><strong>Cœur ou Cou</strong> <em>(point vital Cœur ou zone Tête / Cou hors crâne)</em> : tu tombes aussitôt <a class=\"rule-ref\" href=\"#sec-24-5\" data-tip=\"Inconscient : lâche ce qu'il tient en main ; aucune action ni réaction. Réveil : secousse (1 PA) ou premiers soins.\">Inconscient</a> et <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.\">À Terre</a> (impossible à réveiller par une simple secousse). À chacun de tes tours suivants, tu dois réussir une épreuve gratuite (<code>0 PA</code>) d'<a class=\"rule-ref\" href=\"livre_3.html#chap-12\" data-tip=\"Endurance Physique : encaisser, tenir l'effort (CON/FOR, §12).\">Endurance Physique</a> contre une <strong>Difficulté de 4, plus 1 par tour supplémentaire</strong> (4, puis 5, puis 6…), jusqu'à échec ou stabilisation par soin actif / <a class=\"rule-ref\" href=\"#chap-25\" data-tip=\"Premiers Soins : 3 PA d'immobilisation au chevet du blessé, Difficulté 12 pour stabiliser (§25.1).\">Premiers Soins</a> (<code>3 PA</code>, Difficulté <code>12</code>, <a href=\"#chap-25\">§25.1</a>). Sur le moindre échec, tu meurs — un <a class=\"rule-ref\" href=\"#sec-23-3\" data-tip=\"Point de Miracle : dévie un coup mortel, tu échappes à la mort (Inconscient, À Terre). Rachat : 20 XP ou jalon MJ.\">Point de Miracle</a> reste utilisable pour y échapper.</li>\n                                <li><strong>Torse &amp; Membres</strong> <em>(hors point vital Cœur)</em> : tu tombes <a class=\"rule-ref\" href=\"#sec-24-5\" data-tip=\"Inconscient : lâche ce qu'il tient en main ; aucune action ni réaction. Réveil : secousse (1 PA) ou premiers soins.\">Inconscient</a> et <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.\">À Terre</a> immédiatement (état stable, réveillable par secousse de <code>1 PA</code> ou premiers soins).</li>\n                            </ul>\n                        </li>\n                        <li><strong>Branche 2 : Dégâts du coup &le; Seuil d'Encaissement (Choc Contrôlé / Épuisement) :</strong>\n                            Le corps s'éteint par pure décharge vitale. Le combattant choisit :\n                            <ul>\n                                <li><strong>Sombrer (La Syncope Protectrice) :</strong> Tu t'évanouis\n                                    et tu restes stable au sol (<a class=\"rule-ref\" href=\"#sec-24-5\" data-tip=\"Inconscient : lâche ce qu'il tient en main ; aucune action ni réaction. Réveil : secousse (1 PA) ou premiers soins.\">Inconscient</a>, <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.\">À Terre</a>).\n                                    En général, tes adversaires te laissent là où tu es tombé et passent à une\n                                    autre cible : tu ne bouges plus, tu ne les menaces plus. Exemple : tu t'effondres\n                                    au milieu d'une fusillade, le tireur en face réoriente son arme vers ton\n                                    allié debout. Mais ce n'est pas automatique : une bête affamée, un tueur\n                                    méthodique ou un ennemi qui veut s'assurer du résultat peut quand même\n                                    t'achever. Et là, tu es sans défense : il doit encore réussir son attaque,\n                                    mais tu ne peux ni parer ni esquiver. Si son coup te touche, tu meurs.\n                                    Exemple : le tueur s'accroupit près de toi et vise ta tête — un seul coup\n                                    suffit. Ton MJ tranche selon la situation.</li>\n                                <li><strong>Dernier Souffle (Le Baroud d'Honneur) :</strong> Tu refuses de\n                                    t'évanouir. Tu restes conscient, au sol (<a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.\">À Terre</a> et\n                                    <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"Agonisant : aucune action raisonnée, fuite de 6 cases (1d8). Persiste jusqu’à stabilisation médicale.\">Agonisant</a>). Tu gardes tes PA et tu peux encore agir. Mais chaque\n                                    épreuve que tu tentes te coûte <strong>+1 Essoufflement direct</strong> : dès\n                                    que tu lances les dés — épreuve de compétence ou face à face — ton souffle\n                                    monte d'un cran. Les gestes simples sans jet (ramper d'une case, parler,\n                                    lâcher un objet) ne te coûtent rien. Si ton Essoufflement atteint ta\n                                    Constitution, ton cœur lâche pour de bon.\n                                    Exemple : tu lances ta corde à ton allié pour le tirer à couvert — c'est une\n                                    épreuve, +1 Essoufflement. Ramper d'une case juste après, sans jet, ne coûte\n                                    rien. Mais au troisième lancer de dés, ton souffle rejoint ta Constitution :\n                                    arrêt cardiaque définitif.\n                                </li>\n                            </ul>\n                        </li>\n                    </ul>\n\n                    <h3 id=\"sec-23-3\">23.3 Le Point de Miracle : L'Ultime Rempart contre la Mort</h3>\n                    <p>\n                        Chaque Personnage Joueur (PJ) commence sa carrière avec <strong>1 Point de Miracle</strong>\n                        inscrit sur sa fiche de personnage.\n                    </p>\n                    <div class=\"callout warning\">\n                        <div class=\"callout-header\">\n                            <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\"\n                                stroke-width=\"2\">\n                                <circle cx=\"12\" cy=\"12\" r=\"10\" />\n                                <line x1=\"12\" y1=\"8\" x2=\"12\" y2=\"12\" />\n                                <line x1=\"12\" y1=\"16\" x2=\"12.01\" y2=\"16\" />\n                            </svg>\n                            Usage Vital du Point de Miracle\n                        </div>\n                        <div class=\"callout-body\">\n                            Lorsqu'un PJ subit un coup mortel ou atteint ou dépasse son seuil létal (<span\n                                class=\"hl-ruby\">Constitution &times; 5</span>), le joueur peut dépenser son Point de\n                            Miracle. Le coup est providentiellement dévié (la balle ricoche sur un briquet en métal, la\n                            lame glisse sur une boucle de ceinture, un éclat de nytharite absorbe le rayon). Le PJ\n                            échappe tout simplement à la mort immédiate et tombe\n                            <a class=\"rule-ref\" href=\"#sec-24-5\" data-tip=\"Inconscient : lâche ce qu'il tient en main ; aucune action ni réaction. Réveil : secousse (1 PA) ou premiers soins.\"><strong>Inconscient</strong></a> et\n                            <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.\"><strong>À Terre</strong></a>.<br><br>\n                            <em>Régénération :</em> Un Point de Miracle ne se régénère jamais par simple repos. Il ne\n                            peut être racheté qu'avec <strong>20 points d'XP</strong> ou accordé par le Maître de Jeu\n                            lors de l'accomplissement d'un jalon narratif transcendant.\n                        </div>\n                    </div>\n\n                    <h3>23.4 Résistances & Vulnérabilités Raciales</h3>\n                    <p>\n                        Certains dons raciaux (Livre I §2.2) confèrent une <strong>résistance</strong> ou une\n                        <strong>vulnérabilité</strong> à un élément (feu, froid, toxines, gaz, etc.). Sans cette\n                        mention explicite, aucune espèce n'est résistante ni vulnérable : les dégâts directs sont\n                        réduits par l'armure (§23.1), sans distinction d'élément.\n                    </p>\n                    <div class=\"callout-body\">\n                        &bull; <strong>Résistance (élément) :</strong> les dégâts directs de cet élément sont réduits\n                        du montant indiqué, <strong>après l'armure</strong>. Les dégâts\n                        résiduels du même élément démarrent à -1 (minimum 1).<br>\n                        &bull; <strong>Vulnérabilité (élément) :</strong> +1 dégât subi de cet élément (appliqué\n                        après réductions) ; -2 aux épreuves de Constitution contre cet élément, sauf mention\n                        contraire.<br>\n                        &bull; <strong>Non-cumul :</strong> un personnage ne choisit qu'un seul don racial à la\n                        création ; si deux sources accordent une résistance au même élément, seule la plus forte\n                        s'applique.\n                    </div>\n\n                    <!-- ================= CHAPITRE 27 ================= -->\n                    "
+     "html": "\n\n                    <h3 id=\"sec-23-2\">23.2 L'Arbre de Résolution du Seuil Létal (CON &times; 5)</h3>\n                    <p>\n                        Lorsqu'une attaque porte les dégâts accumulés d'un combattant à son Seuil Létal (<code>CON &times; 5</code>) ou au-delà, on compare les dégâts\n                        réels subis lors de ce coup au Seuil d'Encaissement (<code>CON &times; 2</code>) :\n                    </p>\n                    <ul>\n                        <li><strong>Branche 1 : Dégâts du coup &gt; Seuil d'Encaissement (Traumatisme Incompressible) :</strong>\n                            Aucun choix possible.\n                            <ul>\n                                <li><strong>Tête / Crâne :</strong> <strong>Mort Instantanée</strong>, sauf si tu dépenses 1 <a class=\"rule-ref\" href=\"#sec-23-3\" data-tip=\"Point de Miracle : dévie un coup mortel, tu échappes à la mort (Inconscient, À Terre). Rachat : 20 XP ou jalon MJ.\">Point de Miracle</a> (§23.3) : tu échappes à la mort et tombes <a class=\"rule-ref\" href=\"#sec-24-5\" data-tip=\"Inconscient : lâche ce qu'il tient en main ; aucune action ni réaction. Réveil : secousse (1 PA) ou premiers soins.\">Inconscient</a> et <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"À Terre : −1 ec mêlée/Athlétisme/Acrobatie, −2 ec jet (arc impossible), −2 défense (tir/magie sans malus). Déplacement +1 PA/case, se relever 1 PA.\">À Terre</a>.</li>\n                                <li><strong>Cœur ou Cou</strong> <em>(point vital Cœur ou zone Tête / Cou hors crâne)</em> : tu tombes aussitôt <a class=\"rule-ref\" href=\"#sec-24-5\" data-tip=\"Inconscient : lâche ce qu'il tient en main ; aucune action ni réaction. Réveil : secousse (1 PA) ou premiers soins.\">Inconscient</a> et <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"À Terre : −1 ec mêlée/Athlétisme/Acrobatie, −2 ec jet (arc impossible), −2 défense (tir/magie sans malus). Déplacement +1 PA/case, se relever 1 PA.\">À Terre</a> (impossible à réveiller par une simple secousse). Au début de chacun de tes tours suivants, tu dois réussir une épreuve gratuite (<code>0 PA</code>) d'<a class=\"rule-ref\" href=\"livre_3.html#chap-12\" data-tip=\"Endurance Physique : encaisser, tenir l'effort (CON/FOR, §12).\">Endurance Physique</a> contre une <strong>Difficulté de 4, plus 1 par tour supplémentaire</strong> (4, puis 5, puis 6…), jusqu'à échec ou stabilisation par soin actif / <a class=\"rule-ref\" href=\"#chap-25\" data-tip=\"Premiers Soins : 3 PA d'immobilisation au chevet du blessé, Difficulté 6 pour stabiliser (§25.1).\">Premiers Soins</a> (<code>3 PA</code>, Difficulté <code>6</code>, <a href=\"#chap-25\">§25.1</a>). Sur le moindre échec, tu meurs — un <a class=\"rule-ref\" href=\"#sec-23-3\" data-tip=\"Point de Miracle : dévie un coup mortel, tu échappes à la mort (Inconscient, À Terre). Rachat : 20 XP ou jalon MJ.\">Point de Miracle</a> reste utilisable pour y échapper.</li>\n                                <li><strong>Torse &amp; Membres</strong> <em>(hors point vital Cœur)</em> : tu tombes <a class=\"rule-ref\" href=\"#sec-24-5\" data-tip=\"Inconscient : lâche ce qu'il tient en main ; aucune action ni réaction. Réveil : secousse (1 PA) ou premiers soins.\">Inconscient</a> et <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"À Terre : −1 ec mêlée/Athlétisme/Acrobatie, −2 ec jet (arc impossible), −2 défense (tir/magie sans malus). Déplacement +1 PA/case, se relever 1 PA.\">À Terre</a> immédiatement (état stable, réveillable par secousse de <code>1 PA</code> ou premiers soins).</li>\n                            </ul>\n                        </li>\n                        <li><strong>Branche 2 : Dégâts du coup &le; Seuil d'Encaissement (Choc Contrôlé / Épuisement) :</strong>\n                            Le corps s'éteint par pure décharge vitale. Le combattant choisit :\n                            <ul>\n                                <li><strong>Sombrer (La Syncope Protectrice) :</strong> Tu t'évanouis\n                                    et tu restes stable au sol (<a class=\"rule-ref\" href=\"#sec-24-5\" data-tip=\"Inconscient : lâche ce qu'il tient en main ; aucune action ni réaction. Réveil : secousse (1 PA) ou premiers soins.\">Inconscient</a>, <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"À Terre : −1 ec mêlée/Athlétisme/Acrobatie, −2 ec jet (arc impossible), −2 défense (tir/magie sans malus). Déplacement +1 PA/case, se relever 1 PA.\">À Terre</a>).\n                                    En général, tes adversaires te laissent là où tu es tombé et passent à une\n                                    autre cible : tu ne bouges plus, tu ne les menaces plus. Exemple : tu t'effondres\n                                    au milieu d'une fusillade, le tireur en face réoriente son arme vers ton\n                                    allié debout. Mais ce n'est pas automatique : une bête affamée, un tueur\n                                    méthodique ou un ennemi qui veut s'assurer du résultat peut quand même\n                                    t'achever. Et là, tu es sans défense : il doit encore réussir son attaque,\n                                    mais tu ne peux ni parer ni esquiver. Si son coup te touche, tu meurs.\n                                    Exemple : le tueur s'accroupit près de toi et vise ta tête — un seul coup\n                                    suffit. Ton MJ tranche selon la situation.</li>\n                                <li><strong>Dernier Souffle (Le Baroud d'Honneur) :</strong> Tu refuses de\n                                    t'évanouir. Tu restes conscient, au sol (<a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"À Terre : −1 ec mêlée/Athlétisme/Acrobatie, −2 ec jet (arc impossible), −2 défense (tir/magie sans malus). Déplacement +1 PA/case, se relever 1 PA.\">À Terre</a> et\n                                    <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"Agonisant : à l'article de la mort (À Terre ; Endurance Physique Diff 4 +1/tour, ou Dernier Souffle : +1 Essoufflement/jet). Stabilisation : Premiers Soins Diff 6.\">Agonisant</a>). Tu gardes tes PA et tu peux encore agir. Mais chaque\n                                    épreuve que tu tentes te coûte <strong>+1 <a class=\"rule-ref\" href=\"livre_1.html#sec-4-2\" data-tip=\"Essoufflement : 1 point = des PA d'urgence ; ne part pas tout seul, action dédiée pour souffler (Livre I §4.2).\">Essoufflement</a> direct</strong> : dès\n                                    que tu lances les dés — épreuve de compétence ou <a class=\"rule-ref\" href=\"livre_2.html#chap-7\" data-tip=\"Face-à-Face : chacun lance son dé + PA − malus, le meilleur gagne (Livre II §7.3).\">face à face</a> — ton souffle\n                                    monte d'un cran. Les gestes simples sans jet (ramper d'une case, parler,\n                                    lâcher un objet) ne te coûtent rien. Si ton Essoufflement dépasse ta\n                                    Constitution, ton cœur lâche pour de bon.\n                                    Exemple : tu lances ta corde à ton allié pour le tirer à couvert — c'est une\n                                    épreuve, +1 Essoufflement. Ramper d'une case juste après, sans jet, ne coûte\n                                    rien. Mais dès qu'un lancer de trop fait passer ton souffle au-dessus de ta Constitution :\n                                    arrêt cardiaque définitif.\n                                </li>\n                            </ul>\n                        </li>\n                    </ul>\n\n                    <h3 id=\"sec-23-3\">23.3 Le Point de Miracle : L'Ultime Rempart contre la Mort</h3>\n                    <p>\n                        Chaque Personnage Joueur (PJ) commence sa carrière avec <strong>1 Point de Miracle</strong>\n                        inscrit sur sa fiche de personnage.\n                    </p>\n                    <div class=\"callout warning\">\n                        <div class=\"callout-header\">\n                            <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\"\n                                stroke-width=\"2\">\n                                <circle cx=\"12\" cy=\"12\" r=\"10\" />\n                                <line x1=\"12\" y1=\"8\" x2=\"12\" y2=\"12\" />\n                                <line x1=\"12\" y1=\"16\" x2=\"12.01\" y2=\"16\" />\n                            </svg>\n                            Usage Vital du Point de Miracle\n                        </div>\n                        <div class=\"callout-body\">\n                            Lorsqu'un PJ subit un coup mortel ou atteint ou dépasse son seuil létal (<span\n                                class=\"hl-ruby\">Constitution &times; 5</span>), le joueur peut dépenser son Point de\n                            Miracle. Le coup est providentiellement dévié (la balle ricoche sur un briquet en métal, la\n                            lame glisse sur une boucle de ceinture, un éclat de nytharite absorbe le rayon). Le PJ\n                            échappe tout simplement à la mort immédiate et tombe\n                            <a class=\"rule-ref\" href=\"#sec-24-5\" data-tip=\"Inconscient : lâche ce qu'il tient en main ; aucune action ni réaction. Réveil : secousse (1 PA) ou premiers soins.\"><strong>Inconscient</strong></a> et\n                            <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"À Terre : −1 ec mêlée/Athlétisme/Acrobatie, −2 ec jet (arc impossible), −2 défense (tir/magie sans malus). Déplacement +1 PA/case, se relever 1 PA.\"><strong>À Terre</strong></a>.<br><br>\n                            <em>Régénération :</em> Un Point de Miracle ne se régénère jamais par simple repos. Il ne\n                            peut être racheté qu'avec <strong>20 points d'<a class=\"rule-ref\" href=\"livre_1.html#chap-5\" data-tip=\"XP : expérience dépensée pour monter tes entraînements ou racheter un Point de Miracle (Livre I §5).\">XP</a></strong> ou accordé par le Maître de Jeu\n                            lors de l'accomplissement d'un jalon narratif transcendant.\n                        </div>\n                    </div>\n\n                    <h3>23.4 Résistances & Vulnérabilités Raciales</h3>\n                    <p>\n                        Certains dons raciaux (<a class=\"rule-ref\" href=\"livre_1.html#chap-2\" data-tip=\"Dons raciaux : 1 au choix à la création, résistances et traits d'espèce (Livre I §2.2).\">Livre I §2.2</a>) confèrent une <strong>résistance</strong> ou une\n                        <strong>vulnérabilité</strong> à un élément (feu, froid, toxines, gaz, etc.). Sans cette\n                        mention explicite, aucune espèce n'est résistante ni vulnérable : les dégâts directs sont\n                        réduits par l'<a class=\"rule-ref\" href=\"livre_8.html#chap-33\" data-tip=\"Armures : réduisent les dégâts directs de chaque coup (Livre VIII §33.1).\">armure</a> (<a class=\"rule-ref\" href=\"#chap-23\" data-tip=\"Typologie des dégâts : directs réduits par l'armure, résiduels et absolus l'ignorent (§23.1).\">§23.1</a>), sans distinction d'élément.\n                    </p>\n                    <div class=\"callout-body\">\n                        &bull; <strong>Résistance (élément) :</strong> les dégâts directs de cet élément sont réduits\n                        du montant indiqué, <strong>après l'armure</strong>. Les dégâts\n                        résiduels du même élément démarrent à -1 (minimum 1).<br>\n                        &bull; <strong>Vulnérabilité (élément) :</strong> +1 dégât subi de cet élément (appliqué\n                        après réductions) ; -2 aux épreuves de Constitution contre cet élément, sauf mention\n                        contraire.<br>\n                        &bull; <strong>Non-cumul :</strong> un personnage ne choisit qu'un seul don racial à la\n                        création ; si deux sources accordent une résistance au même élément, seule la plus forte\n                        s'applique.\n                    </div>\n\n                    <!-- ================= CHAPITRE 27 ================= -->\n                    "
     }
    ],
    "nav": "Seuils, Encaissement & Séquelles"
@@ -60,7 +60,7 @@
    "blocs": [
     {
      "type": "html",
-     "html": "\n\n                    <p>\n                        Les états modifient profondément ta capacité d'action. Et ils sont tous\n                        cumulatifs : un état n'en chasse pas un autre, leurs effets s'additionnent.\n                        Exemple : si tu es Déstabilisé (−2) et Étourdi (−1), ton prochain jet prend\n                        −3. Ils se cumulent aussi avec les autres couches de malus du jet — le plus\n                        fort malus météo/nuit (<a class=\"rule-ref\" href=\"livre_2.html#sec-8-6\" data-tip=\"Cumul malus : 1 malus météo/nuit max (§8.1) + traits de milieu raciaux (§8.5) + malus tactiques (§21.3) + états actifs (§24), sans double comptage.\">Livre II §8.6</a>), tes traits de milieu (<a class=\"rule-ref\" href=\"livre_2.html#sec-8-5\" data-tip=\"Milieux & races : affinités et inaptitudes environnementales (cumulables avec la météo).\">§8.5</a>) et les malus tactiques (<a class=\"rule-ref\" href=\"livre_5.html#sec-21-3\" data-tip=\"Cumul tactique : couvert, visée et Canon Entravé se cumulent avec 1 malus météo/nuit max, les traits de milieu et les états actifs.\">Livre V §21.3</a>) — sans jamais compter deux fois un effet déjà inclus (un voile P4 applique <em>Aveugle</em> seul, sans −2 météo ; <em>Canon Entravé</em> ne compte qu'une fois). Ils sont rangés en quatre familles : <strong>états préjudiciables</strong>,\n                        <strong>états bénéfiques (buffs)</strong>, <strong>statuts vitaux</strong> et\n                        <strong>états matériels</strong>.\n                    </p>\n\n                    <h3 id=\"sec-24-1\">24.1 États Préjudiciables & Afflictions en Combat</h3>\n                    <p>\n                        Tu connais la douleur. Voici sa petite sœur : la cécité.\n                        Un flash en pleine face, un éclat de nytharite, le plein soleil au sortir d'une galerie —\n                        et le monde s'éteint. Tu deviens <strong>Aveugle</strong> : vision nulle,\n                        −4 à distance, −2 en mêlée et en défense. Compte tes tours, protège tes yeux,\n                        et pense au <strong>Masque Filtrant</strong>. Pour la nuit et la lumière, voir\n                        <a class=\"rule-ref\" href=\"livre_2.html#chap-8\" data-tip=\"Nuit & lumière : claire, noire, éblouissante (§8.6).\">Livre II §8.6</a>.\n                    </p>\n                    "
+     "html": "\n\n                    <p>\n                        Les états modifient profondément ta capacité d'action. Des <strong>états\n                        différents</strong> se cumulent entre eux : un état n'en chasse pas un autre,\n                        leurs effets s'additionnent. Exemple : si tu es Déstabilisé (−2) et Étourdi\n                        (−1), ton prochain jet prend −3. En revanche, <strong>ils ne sont pas\n                        cumulables individuellement</strong> : un même état appliqué plusieurs fois ne\n                        s'additionne pas avec lui-même (hors mécanismes explicites à paliers comme\n                        <em>Affamé</em> ou <em>Assoiffé</em> en <a class=\"rule-ref\" href=\"#sec-24-3\" data-tip=\"Affamé & Assoiffé : 2 L + 1 ration / jour ; faim (48 h / 1 semaine / 2 semaines, mort après 3 semaines) et soif (24 h / 48 h / 72 h, mort après 4 jours) (§24.3).\">§24.3</a>, ou\n                        d'escalade comme <em>Étourdi → Sonné</em> en <a class=\"rule-ref\" href=\"#sec-23-encaissement\" data-tip=\"Choc Traumatique : si une zone dépasse CON×2, épreuve d'Endurance ou effet dédié (§23).\">§23</a>).\n                        Ils se cumulent aussi avec les autres couches de malus du jet — le plus\n                        fort malus météo/nuit (<a class=\"rule-ref\" href=\"livre_2.html#sec-8-6\" data-tip=\"Cumul malus : 1 malus météo/nuit max (§8.1) + traits de milieu raciaux (§8.5) + malus tactiques (§21.3) + états actifs (§24), sans double comptage.\">Livre II §8.6</a>), tes traits de milieu (<a class=\"rule-ref\" href=\"livre_2.html#sec-8-5\" data-tip=\"Milieux & races : affinités et inaptitudes environnementales (cumulables avec la météo).\">§8.5</a>) et les malus tactiques (<a class=\"rule-ref\" href=\"livre_5.html#sec-21-3\" data-tip=\"Cumul tactique : couvert, visée et Canon Entravé se cumulent avec 1 malus météo/nuit max, les traits de milieu et les états actifs.\">Livre V §21.3</a>) — sans jamais compter deux fois un effet déjà inclus. Ils sont rangés en quatre familles : <strong>états préjudiciables</strong>,\n                        <strong>états bénéfiques</strong>, <strong>statuts vitaux</strong> et\n                        <strong>états matériels</strong>.\n                    </p>\n\n                    <h3 id=\"sec-24-1\">24.1 États Préjudiciables & Afflictions en Combat</h3>\n                    <p>\n                        Un coup lourd qui te coupe les jambes, un éclat devant les yeux, un ennemi qui bloque ton arme longue :\n                        ces dix-huit états entravent tes jets, tes déplacements ou ta capacité d'action jusqu'à expiration, remise debout ou soin.\n                    </p>\n                    "
     },
     {
      "type": "ref",
@@ -68,7 +68,7 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <h3 id=\"sec-24-2\">24.2 États à Dégâts Résiduels (DoT) : tick, aggravation, soin</h3>\n                    "
+     "html": "\n\n                    <h3 id=\"sec-24-2\">24.2 États à Dégâts Résiduels : déclenchement, aggravation, soin</h3>\n                    "
     },
     {
      "type": "ref",
@@ -76,7 +76,7 @@
     },
     {
      "type": "html",
-     "html": "\n                    <p>\n                        <strong>Aggravation :</strong> un résiduel aggravé (ex : <a class=\"rule-ref\" href=\"#sec-24-2\" data-tip=\"Résiduel aggravé : dégâts doublés, +1/tour au lieu de décroître. Seul un soin l’arrête.\">Hémorragie Profonde</a>) inflige\n                        le double et <strong>croît de +1/tour</strong> au lieu de décroître — seul un soin l'arrête.\n                        <strong>Atteinte du Seuil Létal par dégâts résiduels :</strong> résolution via l'arbre standard (<a href=\"#sec-23-2\">§23.2</a>, Dernier Souffle possible).\n                    </p>\n\n                    <h3 id=\"sec-24-3\">24.3 Faim & Soif : Affamé & Privation</h3>\n                    <p>\n                        Tu peux tenir sans magie. Pas sans eau.\n                        Compte en jours, pas en tours. Le MJ coche à chaque aube\n                        qui a bu et mangé ces dernières 24 h.\n                    </p>\n                    <div class=\"table-container\"><table class=\"codex-table\">\n                    <thead><tr><th>Besoin / 24 h</th><th>Toi</th><th>Cléien (<em>Frugalité</em>)</th></tr></thead>\n                    <tbody>\n                    <tr><td>Eau</td><td><strong>2 L</strong></td><td><strong>1 L</strong></td></tr>\n                    <tr><td>Nourriture</td><td><strong>1 ration</strong></td><td><strong>1 ration / 2 jours</strong></td></tr>\n                    </tbody></table></div>\n                    <ul>\n                        <li><strong>Privation (soif) :</strong> 24 h sans 2 L (1 L Cléien)\n                            = <strong>Privation 1</strong> automatique (<strong>−1 ec</strong> à tout).\n                            Chaque aube suivante sans eau : épreuve de\n                            <a class=\"rule-ref\" href=\"livre_3.html#chap-12\" data-tip=\"Système Immunitaire : résister aux toxines, poisons et gaz (CON, §12).\">Constitution</a>\n                            Diff <strong>4 + 2 par niveau subi</strong>\n                            (<a class=\"rule-ref\" href=\"livre_2.html#chap-7\" data-tip=\"Seuils 0–34 : 4–5 Difficile, 6–7 Extrêmement Difficile (§7.1).\">Livre II §7.1</a>).\n                            Succès = tu tiens. Échec = +1 niveau (max 3).\n                            <strong>Privation 2 : −2 ec. Privation 3 : −2 ec + Ralenti + 2 dégâts directs / jour</strong>\n                            (ignore armure et bouclier, résolution au Seuil Létal via\n                            <a class=\"rule-ref\" href=\"#sec-23-2\" data-tip=\"Seuil Létal (CON×5) : atteint ? Encaissement CON×2 tranche entre Mort, Inconscient, Sombrer ou Dernier Souffle (§23.2).\">§23.2</a>).\n                            <em>Tick à l'aube. Cumul avec le reste (<a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"États cumulatifs : Déstabilisé + Étourdi = −3 (§24).\">§24</a>).</em></li>\n                        <li><strong>Affamé (faim) :</strong> 48 h sans ration\n                            = <strong>Affamé 1</strong> automatique (<strong>−1 ec</strong> à tout).\n                            Chaque 2e aube suivante sans ration : épreuve de Constitution\n                            Diff <strong>3 + 1 par niveau subi</strong>. Échec = +1 niveau (max 3).\n                            <strong>Affamé 2 : −2 ec. Affamé 3 : −2 ec + nuit divisée par 2 + 1 dégât direct / jour.</strong></li>\n                        <li><strong>Cumul :</strong> Affamé + Privation s'additionnent, comme tous les états.\n                            <em>Exemple : Privation 2 (−2) + Affamé 1 (−1) = −3 à ton prochain jet.</em></li>\n                        <li><strong>Soin :</strong> boire 2 L (1 L Cléien) = −1 Privation aussitôt.\n                            24 h hydraté + nuit sûre = Privation levée.\n                            Manger 1 ration (une demi-ration suffit au Cléien) = −1 Affamé aussitôt.\n                            48 h nourri = Affamé levé.\n                            Ni <a class=\"rule-ref\" href=\"livre_6.html#chap-25\" data-tip=\"Premiers Soins : stabilise, lève Souffrant, jamais la faim (§25.1).\">Premiers Soins</a>\n                            ni magie ne remplacent l'eau et la nourriture.</li>\n                        <li><strong>Nuit sûre (<a class=\"rule-ref\" href=\"livre_6.html#chap-25\" data-tip=\"Nuit sûre 6–8 h : retire CON dégâts, ×2 si soignant veillé, Essoufflement à zéro (§25.2).\">§25.2</a>) :</strong>\n                            avec eau + ration = récup normale (CON dégâts retirés, ×2 si soignant).\n                            Avec eau mais sans ration = moitié (CON÷2 dégâts retirés, arrondi inférieur, min 1).\n                            Sans eau = aucun dégât retiré, ton\n                            <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"Essoufflement : 1 point = des PA d'urgence ; ne part pas tout seul, action dédiée pour souffler (§4.2).\">Essoufflement</a>\n                            ne retombe pas.</li>\n                        <li><strong>Cléien :</strong> besoins divisés par deux\n                            (<a class=\"rule-ref\" href=\"livre_1.html#chap-2\" data-tip=\"Frugalité Cleyane : besoins en eau et nourriture réduits de moitié ; +2 Constitution contre la privation (Livre I §2.2).\">Livre I §2.2</a>)\n                            et <strong>+2</strong> aux épreuves CON contre faim et soif.\n                            En aride, <em>Fille du désert</em> donne +2\n                            <a class=\"rule-ref\" href=\"livre_3.html#chap-13\" data-tip=\"Nature & Survie : pistage, orientation, abris, trouver eau et vivres (INS, §13.3).\">Nature &amp; Survie</a>\n                            pour trouver de quoi tenir : une réussite = 1 jour pour toi (2 L + 1 ration).</li>\n                    </ul>\n                    <p>\n                        <em>Exemple 1 — soif :</em> Roger (CON 4, dé d4) traverse le reg sans eau.\n                        Aube J1 : Privation 1 (−1 ec). Le soir il boit 2 L : Privation levée.\n                        S'il ne boit pas, aube J2 : épreuve CON Diff 6 (4 + 2×1), avec −1.\n                        Il tire 3 + 2 PA d'effort − 1 = 4 &lt; 6 : Privation 2 (−2 ec).\n                    </p>\n                    <p>\n                        <em>Exemple 2 — faim :</em> Kader, Cléien (CON 3, dé d4, Frugalité),\n                        2 jours sans ration : Affamé 1 (−1 ec, épreuve à +2 quand elle viendra).\n                        Il mange 1 ration — deux jours pour lui — et boit 1 L : Affamé levé demain\n                        s'il reste hydraté. Nuit avec eau mais sans ration : 3÷2 = 1 dégât retiré.\n                    </p>\n\n                    <h3 id=\"sec-24-4\">24.4 États Bénéfiques (Buffs) & Amplificateurs</h3>\n                    "
+     "html": "\n                    <p>\n                        <strong>Aggravation :</strong> un résiduel aggravé (ex : <a class=\"rule-ref\" href=\"#sec-24-2\" data-tip=\"Résiduel aggravé : dégâts doublés, +1/tour au lieu de décroître. Seul un soin l’arrête.\">Hémorragie Profonde</a>) inflige\n                        le double et <strong>croît de +1/tour</strong> au lieu de décroître — seul un soin l'arrête.\n                        <strong>Atteinte du Seuil Létal par dégâts résiduels :</strong> résolution via l'arbre standard (<a href=\"#sec-23-2\">§23.2</a>, Dernier Souffle possible).\n                    </p>\n\n                    <h3 id=\"sec-24-3\">24.3 Faim & Soif : Affamé & Assoiffé</h3>\n                    <p>\n                        Tu peux tenir sans magie. Pas sans eau.\n                        Compte en tranches de 24 h, pas en tours : les joueurs décident quand\n                        ils boivent et mangent, et le délai repart dès qu'ils s'hydratent ou mangent.\n                    </p>\n                    <div class=\"table-container\"><table class=\"codex-table\">\n                    <thead><tr><th>Besoin / 24 h</th><th>Toi</th><th>Cléien (<em>Frugalité</em>)</th></tr></thead>\n                    <tbody>\n                    <tr><td>Eau</td><td><strong>2 L</strong></td><td><strong>1 L</strong></td></tr>\n                    <tr><td>Nourriture</td><td><strong>1 ration</strong></td><td><strong>1 ration / 2 jours</strong></td></tr>\n                    </tbody></table></div>\n                    <ul>\n                        <li><strong>Assoiffé (soif) :</strong> 3 phases progressives, puis la mort au niveau 4.<br>\n                            <strong>Niveau 1 (24 h sans boire) :</strong> <strong>−1 ec</strong> à tous les jets.<br>\n                            <strong>Niveau 2 (48 h / 2 jours) :</strong> <strong>−2 ec</strong> à tous les jets, aucune guérison de dégâts en nuit sûre et l'<a class=\"rule-ref\" href=\"livre_1.html#sec-4-2\" data-tip=\"Essoufflement : 1 point = des PA d'urgence ; ne part pas tout seul, action dédiée pour souffler (§4.2).\">Essoufflement</a> ne retombe pas au repos.<br>\n                            <strong>Niveau 3 (72 h / 3 jours) :</strong> <strong>−3 ec</strong> à tous les jets, <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"Ralenti : actions hors déplacement ×2 PA ; déplacement +1 PA/case (§24.1).\"><strong>Ralenti</strong></a>, aucune guérison au repos et <strong>2 dégâts directs par jour</strong> (ignore armure et bouclier, résolution au Seuil Létal via <a class=\"rule-ref\" href=\"#sec-23-2\" data-tip=\"Seuil Létal (CON×5) : atteint ? Encaissement CON×2 tranche entre Mort, Inconscient, Sombrer ou Dernier Souffle (§23.2).\">§23.2</a>).<br>\n                            <strong>Niveau 4 (4 jours / 96 h) :</strong> <strong>Mort</strong> par déshydratation.<br>\n                            <em>Cumul avec le reste (<a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"États cumulatifs : Déstabilisé + Étourdi = −3 (§24).\">§24</a>).</em></li>\n                        <li><strong>Affamé (faim) :</strong> 3 phases progressives, puis la mort au niveau 4.<br>\n                            <strong>Niveau 1 (48 h sans manger) :</strong> <strong>−1 ec</strong> à tous les jets.<br>\n                            <strong>Niveau 2 (1 semaine / 7 jours) :</strong> <strong>−2 ec</strong> et guérison de nuit sûre réduite de moitié (<code>CON ÷ 2</code> dégâts retirés au lieu de <code>CON</code>, arrondi inférieur, minimum 1).<br>\n                            <strong>Niveau 3 (2 semaines / 14 jours) :</strong> <strong>−3 ec</strong>, aucune guérison de dégâts au repos et <strong>1 dégât direct par jour</strong> (ignore armure et bouclier, résolution au Seuil Létal via <a class=\"rule-ref\" href=\"#sec-23-2\" data-tip=\"Seuil Létal (CON×5) : atteint ? Encaissement CON×2 tranche entre Mort, Inconscient, Sombrer ou Dernier Souffle (§23.2).\">§23.2</a>).<br>\n                            <strong>Niveau 4 (3 semaines / 21 jours) :</strong> <strong>Mort</strong> par inanition.</li>\n                        <li><strong>Cumul :</strong> Affamé + Assoiffé s'additionnent, comme tous les états.\n                            <em>Exemple : Assoiffé 2 (−2) + Affamé 1 (−1) = −3 à ton prochain jet.</em></li>\n                        <li><strong>Soin :</strong> boire 2 L (1 L Cléien) enlève aussitôt 1 niveau d'Assoiffé (1 ec de malus, une seule fois avant de dormir — boire davantage d'un coup n'accélère rien) ; un cycle de sommeil complet après avoir bu lève le reste.\n                            Manger 1 ration (une demi-ration suffit au Cléien) = −1 niveau d'Affamé (1 palier récupéré par jour nourri, jusqu'à disparition complète).\n                            Ni <a class=\"rule-ref\" href=\"livre_6.html#chap-25\" data-tip=\"Premiers Soins : stabilise, lève Souffrant, jamais la faim (§25.1).\">Premiers Soins</a>\n                            ni magie ne remplacent l'eau et la nourriture.</li>\n                        <li><strong>Nuit sûre (<a class=\"rule-ref\" href=\"livre_6.html#chap-25\" data-tip=\"Nuit sûre 6–8 h : retire CON dégâts, ×2 si soignant veillé, Essoufflement à zéro (§25.2).\">§25.2</a>) :</strong>\n                            avec eau + ration = récup normale (CON dégâts retirés, ×2 si soignant).\n                            Avec eau mais sans ration = moitié (CON÷2 dégâts retirés, arrondi inférieur, min 1 ; 0 dès Affamé 3).\n                            Sans eau = aucun dégât retiré, ton\n                            <a class=\"rule-ref\" href=\"livre_1.html#sec-4-2\" data-tip=\"Essoufflement : 1 point = des PA d'urgence ; ne part pas tout seul, action dédiée pour souffler (§4.2).\">Essoufflement</a>\n                            ne retombe pas.</li>\n                        <li><strong>Cléien :</strong> besoins divisés par deux\n                            (<a class=\"rule-ref\" href=\"livre_1.html#chap-2\" data-tip=\"Frugalité Cleyane : besoins en eau et nourriture réduits de moitié ; +2 Constitution contre la privation (Livre I §2.2).\">Livre I §2.2</a>)\n                            et <strong>+2</strong> aux épreuves CON contre faim et soif.\n                            En aride, <a class=\"rule-ref\" href=\"livre_1.html#chap-2\" data-tip=\"Fille du désert (don Cléien) : +2 Nature & Survie en milieu aride pour trouver eau et vivres (Livre I §2.2).\"><em>Fille du désert</em></a> donne +2\n                            <a class=\"rule-ref\" href=\"livre_3.html#chap-13\" data-tip=\"Nature & Survie : pistage, orientation, abris, trouver eau et vivres (INS, §13.3).\">Nature &amp; Survie</a>\n                            pour trouver de quoi tenir : une réussite = 1 jour pour toi (2 L + 1 ration).</li>\n                    </ul>\n                    <p>\n                        <em>Exemple 1 — soif :</em> Roger (CON 4) traverse le reg sans eau.\n                        Après 24 h sans boire : Assoiffé 1 (−1 ec). Le soir il boit 2 L : Assoiffé 1 est aussitôt levé.\n                        S'il ne boit pas, au bout de 48 h il passe Assoiffé 2 (−2 ec, aucune guérison de dégâts ni récupération d'Essoufflement la nuit),\n                        puis Assoiffé 3 après 72 h (−3 ec, Ralenti et 2 dégâts directs par jour), et meurt après 4 jours sans eau.\n                    </p>\n                    <p>\n                        <em>Exemple 2 — faim :</em> Kader, Cléien (CON 3, dé d4, Frugalité),\n                        48 h sans manger : Affamé 1 (−1 ec). S'il reste sans manger 1 semaine,\n                        il passe Affamé 2 (−2 ec et guérison de nuit sûre réduite de moitié). Il mange 1 ration — deux jours de vivres pour lui —\n                        et boit 1 L : Affamé 1 est aussitôt levé. Nuit avec eau mais sans ration : 3÷2 = 1 dégât retiré.\n                    </p>\n\n                    <h3 id=\"sec-24-4\">24.4 États Bénéfiques & Amplificateurs</h3>\n                    "
     },
     {
      "type": "ref",
@@ -120,7 +120,7 @@
    "blocs": [
     {
      "type": "html",
-     "html": "\n\n                    <p>\n                        Face aux traumatismes du champ de bataille, la médecine d'urgence repose sur la compétence\n                        <strong>Premiers Soins</strong> (liée à l'Érudition ou à l'Intelligence).\n                    </p>\n\n                    <h3>25.1 Protocole de Premiers Soins d'Urgence</h3>\n                    <ul>\n                        <li><strong>Temps d'Action :</strong> Réaliser des premiers soins en combat nécessite <strong>3\n                                PA</strong> d'immobilisation au chevet du blessé.</li>\n                        <li><strong>Stabiliser un Agonisant :</strong> Une réussite sur une épreuve de Premiers Soins\n                            (Difficulté 12) stoppe l'hémorragie et ramène un <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"Agonisant : aucune action raisonnée, fuite de 6 cases (1d8). Persiste jusqu’à stabilisation médicale.\">agonisant</a> à l'état <a class=\"rule-ref\" href=\"#sec-24-5\" data-tip=\"Inconscient : lâche ce qu'il tient en main ; aucune action ni réaction. Réveil : secousse (1 PA) ou premiers soins.\">Inconscient stable</a>.</li>\n                        <li><strong>Levée de l'État Souffrant :</strong> N'importe quel soin (Premiers Soins, bandage, seringue ou magie curative) lève immédiatement l'état <a class=\"rule-ref\" href=\"#sec-24-5\" data-tip=\"Souffrant : blessure grave levée par n'importe quel soin (§24.5).\">Souffrant</a>.</li>\n                    </ul>\n\n                    <h3>25.2 Convalescence Naturelle vs Soins Arcaniques</h3>\n                    <p>\n                        Le repos physiologique permet au corps de réparer ses tissus selon un rythme biologique régulier\n                        — à condition de dormir vraiment, dans un lieu vraiment sûr :\n                    </p>\n                    <ul>\n                        <li><strong>Nuit sûre (6 à 8 h, lieu sûr) :</strong> tu dors sans être attaqué.\n                            Les tours de garde silencieux sont autorisés ; une alerte ou un assaut annule la nuit.\n                            Au réveil, tu effaces <strong>CON dégâts</strong> (forfait fixe, pas de calcul),\n                            <strong>×2</strong> si un soignant a veillé sur toi avec magie ou arcanotech.\n                            <em>Exemple : Roger (CON 4) s'endort avec 10 dégâts. Au matin : 10 − 4 = 6 dégâts restants. Avec un rituel\n                            de Mina pendant la nuit : 10 − 8 = 2 dégâts.</em></li>\n                        <li><strong>Ce que la nuit répare :</strong> ton <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"Essoufflement : 1 point = des PA d'urgence ; ne part pas tout seul, action dédiée pour souffler (§4.2).\">Essoufflement</a>\n                            retombe à zéro. Un stabilisé se réveille (<a class=\"rule-ref\" href=\"#sec-24-5\" data-tip=\"Inconscient : lâche ce qu'il tient en main ; aucune action ni réaction. Réveil : secousse (1 PA) ou premiers soins.\">Inconscient stable</a>\n                            → conscient). Le <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"Saignement : perte de dégâts par tour sans compression (§24.1).\">Saignement</a>\n                            s'arrête.\n                            Tes dons <strong>1×/jour</strong> (ex. <em>Sève Vive</em> du Taurien) sont rechargés —\n                            les dons s'activent gratuitement quand tu veux (<a class=\"rule-ref\" href=\"livre_1.html#chap-2\" data-tip=\"Dons raciaux : 1 au choix à la création, activation gratuite (§2.2).\">Livre I §2.2</a>),\n                            la nuit ne fait que les recharger.</li>\n                        <li><strong>Ce que la nuit ne répare jamais :</strong> l'état\n                            <a class=\"rule-ref\" href=\"#sec-24-5\" data-tip=\"Souffrant : blessure grave levée par n'importe quel soin (§24.5).\">Souffrant</a>\n                            (il exige un soin actif, §25.1), les poisons et maladies installés\n                            (ils exigent leur traitement dédié), ni le\n                            <a class=\"rule-ref\" href=\"#sec-23-3\" data-tip=\"Point de Miracle : dévie un coup mortel, tu échappes à la mort (Inconscient, À Terre). Rachat : 20 XP ou jalon MJ.\">Point de Miracle</a>\n                            (20 XP ou jalon MJ, jamais le repos). Faim et soif suivent\n                            <a class=\"rule-ref\" href=\"#sec-24-3\" data-tip=\"Affamé & Privation : 2 L + 1 ration / jour, −1 ec par niveau, soin = eau + nourriture (§24.3).\">§24.3</a> :\n                            sans eau, aucun dégât effacé et Essoufflement conservé ; sans ration, moitié seulement : dors le ventre vide à tes risques.</li>\n                    </ul>\n                    "
+     "html": "\n\n                    <p>\n                        Face aux traumatismes du champ de bataille, la médecine d'urgence repose sur la compétence\n                        <a class=\"rule-ref\" href=\"livre_3.html#chap-13\" data-tip=\"Premiers Soins (ÉRU) : stabilisation d'urgence, pose de garrot, soins de terrain (Livre III §13.1).\"><strong>Premiers Soins</strong></a> (liée à l'Érudition ou à l'Intelligence).\n                    </p>\n\n                    <h3>25.1 Protocole de Premiers Soins d'Urgence</h3>\n                    <ul>\n                        <li><strong>Temps d'Action :</strong> Réaliser des premiers soins en combat nécessite <strong>3\n                                PA</strong> d'immobilisation au chevet du blessé.</li>\n                        <li><strong>Stabiliser un Agonisant :</strong> Une réussite sur une épreuve de Premiers Soins\n                            (Difficulté 6) stoppe l'hémorragie et ramène un <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"Agonisant : à l'article de la mort (À Terre ; Endurance Physique Diff 4 +1/tour, ou Dernier Souffle : +1 Essoufflement/jet). Stabilisation : Premiers Soins Diff 6.\">agonisant</a> à l'état <a class=\"rule-ref\" href=\"#sec-24-5\" data-tip=\"Inconscient : lâche ce qu'il tient en main ; aucune action ni réaction. Réveil : secousse (1 PA) ou premiers soins.\">Inconscient stable</a>.</li>\n                        <li><strong>Levée de l'État Souffrant :</strong> N'importe quel soin (Premiers Soins, bandage, <a class=\"rule-ref\" href=\"livre_8.html#chap-33\" data-tip=\"Seringues de soins : 1 PA, retirent −5 à −20 dégâts mais ne guérissent pas les maladies (Livre VIII §33.3).\">seringue</a> ou magie curative) lève immédiatement l'état <a class=\"rule-ref\" href=\"#sec-24-5\" data-tip=\"Souffrant : blessure grave levée par n'importe quel soin (§24.5).\">Souffrant</a>.</li>\n                    </ul>\n\n                    <h3>25.2 Convalescence Naturelle vs Soins Arcaniques</h3>\n                    <p>\n                        Le repos physiologique permet au corps de réparer ses tissus selon un rythme biologique régulier\n                        — à condition de dormir vraiment, dans un lieu vraiment sûr :\n                    </p>\n                    <ul>\n                        <li><strong>Nuit sûre (6 à 8 h, lieu sûr) :</strong> tu dors sans être attaqué.\n                            Les tours de garde silencieux sont autorisés ; une alerte ou un assaut annule la nuit.\n                            Au réveil, tu effaces <strong>CON dégâts</strong> (forfait fixe, pas de calcul),\n                            <strong>×2</strong> si un soignant a veillé sur toi avec magie ou arcanotech.\n                            <em>Exemple : Roger (CON 4) s'endort avec 10 dégâts. Au matin : 10 − 4 = 6 dégâts restants. Avec un rituel\n                            de Mina pendant la nuit : 10 − 8 = 2 dégâts.</em></li>\n                        <li><strong>Ce que la nuit répare :</strong> ton <a class=\"rule-ref\" href=\"livre_1.html#sec-4-2\" data-tip=\"Essoufflement : 1 point = des PA d'urgence ; ne part pas tout seul, action dédiée pour souffler (§4.2).\">Essoufflement</a>\n                            retombe à zéro. Un stabilisé se réveille (<a class=\"rule-ref\" href=\"#sec-24-5\" data-tip=\"Inconscient : lâche ce qu'il tient en main ; aucune action ni réaction. Réveil : secousse (1 PA) ou premiers soins.\">Inconscient stable</a>\n                            → conscient). Le <a class=\"rule-ref\" href=\"#sec-24-2\" data-tip=\"Saignement : dégâts directs en début de tour, puis −1/tour. Tout soin l'arrête (§24.2).\">Saignement</a>\n                            s'arrête.\n                            Tes dons <strong>1×/jour</strong> (ex. <em>Sève Vive</em> du Taurien) sont rechargés —\n                            les dons s'activent gratuitement quand tu veux (<a class=\"rule-ref\" href=\"livre_1.html#chap-2\" data-tip=\"Dons raciaux : 1 au choix à la création, activation gratuite (§2.2).\">Livre I §2.2</a>),\n                            la nuit ne fait que les recharger.</li>\n                        <li><strong>Ce que la nuit ne répare jamais :</strong> l'état\n                            <a class=\"rule-ref\" href=\"#sec-24-5\" data-tip=\"Souffrant : blessure grave levée par n'importe quel soin (§24.5).\">Souffrant</a>\n                            (il exige un soin actif, <a class=\"rule-ref\" href=\"#chap-25\" data-tip=\"Premiers Soins : 3 PA au chevet, ou tout soin actif (bandage, seringue, magie) pour lever Souffrant (§25.1).\">§25.1</a>), les poisons et maladies installés\n                            (ils exigent leur traitement dédié), ni le\n                            <a class=\"rule-ref\" href=\"#sec-23-3\" data-tip=\"Point de Miracle : dévie un coup mortel, tu échappes à la mort (Inconscient, À Terre). Rachat : 20 XP ou jalon MJ.\">Point de Miracle</a>\n                            (20 XP ou jalon MJ, jamais le repos). Faim et soif suivent\n                            <a class=\"rule-ref\" href=\"#sec-24-3\" data-tip=\"Affamé & Assoiffé : 2 L + 1 ration / jour, 3 phases progressives puis mort au niveau 4, soin = eau + nourriture (§24.3).\">§24.3</a> :\n                            sans eau, aucun dégât effacé et <a class=\"rule-ref\" href=\"livre_1.html#sec-4-2\" data-tip=\"Essoufflement : 1 point = des PA d'urgence ; ne part pas tout seul, action dédiée pour souffler (Livre I §4.2).\">Essoufflement</a> conservé ; sans ration, moitié seulement : dors le ventre vide à tes risques.</li>\n                    </ul>\n                    "
     },
     {
      "type": "ref",
@@ -140,7 +140,7 @@
    "blocs": [
     {
      "type": "html",
-     "html": "\n\n                    <p>\n                        Une maladie peut porter <strong>n'importe quel nom</strong> (fluff) : ce qui compte à la table,\n                        c'est sa <strong>signature mécanique</strong> — 7 blocs qui la rendent générative et rejouable\n                        avec les règles existantes (DoT §24.2, états §24.1, seuils Con&times;2 / Con&times;5 §23,\n                        Premiers Soins §25.1, résistances §23.4, pharmacopée Livre VIII §33.3). Le MJ tire ou choisit\n                        chaque bloc, puis remplit la fiche-type.\n                    </p>\n                    "
+     "html": "\n\n                    <p>\n                        Une maladie peut porter <strong>n'importe quel nom</strong> (fluff) : ce qui compte à la table,\n                        c'est sa <strong>signature mécanique</strong> — 7 blocs qui la rendent générative et rejouable\n                        avec les règles existantes (<a class=\"rule-ref\" href=\"#sec-24-2\" data-tip=\"Dégâts résiduels : Saignement, Empoisonné, En Feu, Asphyxie (§24.2).\">dégâts résiduels §24.2</a>, <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"États préjudiciables : malus et afflictions cumulables (§24.1).\">états §24.1</a>, <a class=\"rule-ref\" href=\"#chap-23\" data-tip=\"Seuils : Encaissement CON×2 par zone, Létal CON×5 total (§23).\">seuils Con&times;2 / Con&times;5 §23</a>,\n                        <a class=\"rule-ref\" href=\"#chap-25\" data-tip=\"Premiers Soins : 3 PA au chevet, Difficulté 6 pour stabiliser (§25.1).\">Premiers Soins §25.1</a>, <a class=\"rule-ref\" href=\"#chap-23\" data-tip=\"Résistances & vulnérabilités raciales : réduction après armure, résiduels à −1 (min 1) (§23.4).\">résistances §23.4</a>, <a class=\"rule-ref\" href=\"livre_8.html#chap-33\" data-tip=\"Pharmacopée : seringues de soins, stimulants et consommables médicaux (Livre VIII §33.3).\">pharmacopée Livre VIII §33.3</a>). Le MJ tire ou choisit\n                        chaque bloc, puis remplit la fiche-type.\n                    </p>\n                    "
     },
     {
      "type": "ref",
@@ -164,7 +164,7 @@
     },
     {
      "type": "html",
-     "html": "\n                    <p>\n                        <strong>Virulence (difficulté CON) :</strong> bénigne 6 · commune 10 · sévère 14 · grave 18 ·\n                        mortelle 22+. <strong>Incubation :</strong> 1d6 heures (aiguë), 1d6 jours (lente), ou\n                        1 épisode narratif (arcanique). Pendant l'incubation : aucun symptôme, mais contagiosité selon\n                        vecteur ci-dessus. Résistances raciales §23.4 et Livre I §2.2 s'appliquent\n                        (ex : Gueule des Mines +2 CON immunitaire, Sang-Chaud de Cléia vs chaleur).\n                    </p>\n\n                    <h3>26.3 Stades : durée, transition, effets système</h3>\n                    <p>\n                        Chaque stade = <strong>durée + 1 à 2 effets système + transition</strong>. Transition par défaut :\n                        durée écoulée &rarr; épreuve CON vs Virulence : <strong>réussite = rémission</strong> (stade&minus;1\n                        ou guérison si stade 1), <strong>échec = aggravation</strong> (stade+1). Soin adapté avant l'échéance\n                        = bonus +2 au jet ou rémission directe (MJ).\n                    </p>\n                    "
+     "html": "\n                    <p>\n                        <strong>Virulence (difficulté CON) :</strong> bénigne 6 · commune 10 · sévère 14 · grave 18 ·\n                        mortelle 22+. <strong>Incubation :</strong> 1d6 heures (aiguë), 1d6 jours (lente), ou\n                        1 épisode narratif (arcanique). Pendant l'incubation : aucun symptôme, mais contagiosité selon\n                        vecteur ci-dessus. Résistances raciales <a class=\"rule-ref\" href=\"#chap-23\" data-tip=\"Résistances raciales : résiduels à −1 (min 1) et +2 CON contre l'élément (§23.4).\">§23.4</a> et <a class=\"rule-ref\" href=\"livre_1.html#chap-2\" data-tip=\"Dons raciaux : Gueule des Mines (+2 CON immunitaire), Sang-Chaud de Cléia (résistance chaleur/feu) (Livre I §2.2).\">Livre I §2.2</a> s'appliquent\n                        (ex : Gueule des Mines +2 CON immunitaire, Sang-Chaud de Cléia vs chaleur).\n                    </p>\n\n                    <h3>26.3 Stades : durée, transition, effets système</h3>\n                    <p>\n                        Chaque stade = <strong>durée + 1 à 2 effets système + transition</strong>. Transition par défaut :\n                        durée écoulée &rarr; <a class=\"rule-ref\" href=\"livre_3.html#chap-12\" data-tip=\"Système Immunitaire (CON) : résister aux maladies, toxines et poisons (Livre III §12).\">épreuve CON</a> vs Virulence : <strong>réussite = rémission</strong> (stade&minus;1\n                        ou guérison si stade 1), <strong>échec = aggravation</strong> (stade+1). Soin adapté avant l'échéance\n                        = bonus +2 au jet ou rémission directe (MJ).\n                    </p>\n                    "
     },
     {
      "type": "ref",
@@ -172,7 +172,7 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <h3>26.4 Diagnostic, traitement, terrain, issues</h3>\n                    <ul>\n                        <li><strong>Diagnostic :</strong> symptômes visibles = Érudition / Premiers Soins dif. 8–12 ;\n                            nature exacte + stade = dif. Virulence (labo / rituel +4 si arcanique). Échec = 1 stade de retard au diagnostic.</li>\n                        <li><strong>Traitement :</strong> Premiers Soins (3 PA, §25.1) dif. = Virulence ; kit requis\n                            (chirurgie si parasitaire, extinction si En Feu, désobstruction si Asphyxie) ; seringues\n                            (Livre VIII §33.3) retirent des dégâts mais <strong>ne lèvent pas le DoT pathologique</strong>\n                            (cf. §24.2 : Empoisonné/Feu/Asphyxie exigent traitement dédié) ; convalescence\n                            Con + Endurance / nuit (§25.2).</li>\n                        <li><strong>Terrain :</strong> CON 1–2 : +1 stade initial ; résistances raciales §23.4\n                            (résiduel à &minus;1, +2 CON vs élément) ; Automates : immunisés aux organiques sauf mention.</li>\n                        <li><strong>Issues :</strong> guérison (immunité 1d6 mois / souche), <strong>porteur sain</strong>\n                            (contagieux sans symptômes), <strong>chronicité</strong> (stade 2 permanent, crises au stress),\n                            <strong>séquelles</strong> (&minus;1 ec pendant 10&minus;Con jours comme §25.3, ou cicatrice :\n                            &minus;1 <a class=\"rule-ref\" href=\"#sec-23-2\" data-tip=\"Encaissement = CON × 2 : seuil comparé aux dégâts du coup (§23.2).\">Encaissement</a>), <strong>mort</strong> via Seuil Létal (Con&times;5, arbre §23.2).</li>\n                        <li><strong>Mutation (option MJ) :</strong> à chaque nouvelle zone, 1d6 : 1–4 souche stable,\n                            5 virulence +2, 6 nouveau vecteur ou résistance au traitement précédent.</li>\n                    </ul>\n\n                    <h3>26.5 Exemples prêts à jouer</h3>\n                    "
+     "html": "\n\n                    <h3>26.4 Diagnostic, traitement, terrain, issues</h3>\n                    <ul>\n                        <li><strong>Diagnostic :</strong> symptômes visibles = <a class=\"rule-ref\" href=\"livre_3.html#chap-13\" data-tip=\"Érudition & Premiers Soins (ÉRU) : diagnostic et soins de terrain (Livre III §13.1).\">Érudition / Premiers Soins</a> dif. 8–12 ;\n                            nature exacte + stade = dif. Virulence (labo / rituel +4 si arcanique). Échec = 1 stade de retard au diagnostic.</li>\n                        <li><strong>Traitement :</strong> <a class=\"rule-ref\" href=\"#chap-25\" data-tip=\"Premiers Soins : 3 PA d'immobilisation au chevet du blessé (§25.1).\">Premiers Soins (3 PA, §25.1)</a> dif. = Virulence ; kit requis\n                            (chirurgie si parasitaire, extinction si En Feu, désobstruction si Asphyxie) ; <a class=\"rule-ref\" href=\"livre_8.html#chap-33\" data-tip=\"Seringues de soins : 1 PA, retirent −5 à −20 dégâts mais ne guérissent pas les maladies (Livre VIII §33.3).\">seringues\n                            (Livre VIII §33.3)</a> retirent des dégâts mais <strong>ne lèvent pas les dégâts résiduels pathologiques</strong>\n                            (cf. <a class=\"rule-ref\" href=\"#sec-24-2\" data-tip=\"Dégâts résiduels : Empoisonné, En Feu et Asphyxie exigent chacun leur traitement dédié (§24.2).\">§24.2</a> : Empoisonné/Feu/Asphyxie exigent traitement dédié) ; convalescence\n                            Con + Endurance / nuit (<a class=\"rule-ref\" href=\"#chap-25\" data-tip=\"Convalescence (§25.2) : nuit sûre (6–8 h) en lieu sûr, récupère CON dégâts (×2 avec soignant).\">§25.2</a>).</li>\n                        <li><strong>Terrain :</strong> CON 1–2 : +1 stade initial ; résistances raciales <a class=\"rule-ref\" href=\"#chap-23\" data-tip=\"Résistances raciales : résiduel à −1 (min 1) et +2 CON contre l'élément (§23.4).\">§23.4</a>\n                            (résiduel à &minus;1, +2 CON vs élément) ; Automates : immunisés aux organiques sauf mention.</li>\n                        <li><strong>Issues :</strong> guérison (immunité 1d6 mois / souche), <strong>porteur sain</strong>\n                            (contagieux sans symptômes), <strong>chronicité</strong> (stade 2 permanent, crises au stress),\n                            <strong>séquelles</strong> (&minus;1 ec pendant 10&minus;Con jours comme <a class=\"rule-ref\" href=\"#chap-25\" data-tip=\"Séquelle Post-Mortem : −1 ec pendant 10 − CON jours (§25.3).\">§25.3</a>, ou cicatrice :\n                            &minus;1 <a class=\"rule-ref\" href=\"#sec-23-2\" data-tip=\"Encaissement = CON × 2 : seuil comparé aux dégâts du coup (§23.2).\">Encaissement</a>), <strong>mort</strong> via Seuil Létal (Con&times;5, arbre <a class=\"rule-ref\" href=\"#sec-23-2\" data-tip=\"Seuil Létal (CON×5) : arbre de résolution entre Mort, Inconscient, Sombrer ou Dernier Souffle (§23.2).\">§23.2</a>).</li>\n                        <li><strong>Mutation (option MJ) :</strong> à chaque nouvelle zone, 1d6 : 1–4 souche stable,\n                            5 virulence +2, 6 nouveau vecteur ou résistance au traitement précédent.</li>\n                    </ul>\n\n                    <h3>26.5 Exemples prêts à jouer</h3>\n                    "
     },
     {
      "type": "ref",
@@ -180,7 +180,7 @@
     },
     {
      "type": "html",
-     "html": "\n                    <p>\n                        <strong>Procédure de table :</strong> 1) exposition &rarr; jet CON vs Virulence ;\n                        2) si infecté, note incubation ; 3) à chaque échéance de stade, jet CON (rémission / aggravation) ;\n                        4) soins = bonus ou rémission ; 5) quarantaine du groupe = pas de jet secondaire.\n                        Voir pharmacopée : <a href=\"livre_8.html#chap-33\">Livre VIII §33.3</a>.\n                    </p>\n\n                    <div class=\"codex-signature\">\n                        <div class=\"sig-meta\">\n                            <strong>LIVRE VI DU CODEX UNIVERSEL</strong><br>\n                            Traumatologie, Compendium des 18 États & Chirurgie de Champ de Bataille<br>\n                            <em>Validé par les chirurgiens impériaux et les guérisseurs de la Cinquième Force.</em>\n                        </div>\n                        <div class=\"sig-stamp\">\n                            <span class=\"stamp-title\">STATUT BIOLOGIQUE</span>\n                            <span class=\"stamp-date\">HOMOLOGUÉ // PRÊT POUR LA TABLE</span>\n                        </div>\n                    </div>\n\n                    <!-- PAGINATION ENTRE LIVRES -->\n                    <div class=\"chapter-pagination\">\n                        <a href=\"livre_5.html\" class=\"pagination-btn\">\n                            <div>\n                                <div class=\"pagination-label\">Livre Précédent</div>\n                                <div class=\"pagination-title\">← Livre V : Combat Tactique</div>\n                            </div>\n                        </a>\n                        <a href=\"livre_7.html\" class=\"pagination-btn\">\n                            <div>\n                                <div class=\"pagination-label\">Livre Suivant</div>\n                                <div class=\"pagination-title\">Livre VII : Historiques &amp; Passés →</div>\n                            </div>\n                        </a>\n                    </div>\n\n                "
+     "html": "\n                    <p>\n                        <strong>Procédure de table :</strong> 1) exposition &rarr; jet CON vs Virulence ;\n                        2) si infecté, note incubation ; 3) à chaque échéance de stade, jet CON (rémission / aggravation) ;\n                        4) soins = bonus ou rémission ; 5) quarantaine du groupe = pas de jet secondaire.\n                        Voir pharmacopée : <a class=\"rule-ref\" href=\"livre_8.html#chap-33\" data-tip=\"Pharmacopée : seringues de soins, stimulants et consommables médicaux (Livre VIII §33.3).\">Livre VIII §33.3</a>.\n                    </p>\n\n                    <div class=\"codex-signature\">\n                        <div class=\"sig-meta\">\n                            <strong>LIVRE VI DU CODEX UNIVERSEL</strong><br>\n                            Traumatologie, Compendium des 18 États & Chirurgie de Champ de Bataille<br>\n                            <em>Validé par les chirurgiens impériaux et les guérisseurs de la Cinquième Force.</em>\n                        </div>\n                        <div class=\"sig-stamp\">\n                            <span class=\"stamp-title\">STATUT BIOLOGIQUE</span>\n                            <span class=\"stamp-date\">HOMOLOGUÉ // PRÊT POUR LA TABLE</span>\n                        </div>\n                    </div>\n\n                    <!-- PAGINATION ENTRE LIVRES -->\n                    <div class=\"chapter-pagination\">\n                        <a href=\"livre_5.html\" class=\"pagination-btn\">\n                            <div>\n                                <div class=\"pagination-label\">Livre Précédent</div>\n                                <div class=\"pagination-title\">← Livre V : Combat Tactique</div>\n                            </div>\n                        </a>\n                        <a href=\"livre_7.html\" class=\"pagination-btn\">\n                            <div>\n                                <div class=\"pagination-label\">Livre Suivant</div>\n                                <div class=\"pagination-title\">Livre VII : Historiques &amp; Passés →</div>\n                            </div>\n                        </a>\n                    </div>\n\n                "
     }
    ],
    "nav": "Générateur de Pathologies"
@@ -195,7 +195,7 @@
      "titre": "<span>Capacité d'Encaissement</span>\n                                <span class=\"pill-badge cyan\">Seuil d'Encaissement</span>",
      "top": false,
      "monde": "Physiologie // Musculature & Densité Osseuse",
-     "corps_brut": "\n                            <div class=\"formula-math\" style=\"font-size: 1.25em; margin: 15px 0;\">\n                                <span class=\"hl-cyan\">Capacité d'Encaissement</span> = <span\n                                    class=\"hl-gold\">Constitution</span> &times; 2\n                            </div>\n                            <p>\n                                C'est la quantité maximale de dégâts accumulés sur une même zone anatomique (Niveau 1, <a class=\"rule-ref\" href=\"livre_5.html#sec-22-1\" data-tip=\"Visée Niveau 1 : 6 zones larges sans malus pour le suivi d'Encaissement CON×2 (§22.1).\">Livre V §22.1</a>) qu'un corps peut supporter sans traumatisme localisé. Dès que les dégâts cumulés sur une zone dépassent ce seuil (<code>&gt; CON &times; 2</code>), le personnage subit un <strong>Choc Traumatique</strong> sur cette zone : il effectue gratuitement (<code>0 PA</code>) une épreuve d'<a class=\"rule-ref\" href=\"livre_3.html#chap-12\" data-tip=\"Endurance Physique : encaisser, tenir l'effort (CON/FOR, §12).\">Endurance Physique</a> (mises d'effort en PA ou en Essoufflement autorisées en réaction) contre une <strong>Difficulté de 3, plus 1 par point de dégât qui dépasse son Encaissement</strong> (soit 4 dès le premier dégât en trop). Réussie : aucun nouveau jet sur cette zone tant qu'elle ne subit pas de nouveaux dégâts. Ratée : l'<a class=\"rule-ref\" href=\"#sec-23-encaissement\" data-tip=\"Choc Traumatique par zone : table des effets dédiés lorsque les dégâts de la zone dépassent CON×2 (§23).\">effet dédié à la zone</a> s'applique jusqu'au prochain soin.\n                            </p>\n                            ",
+     "corps_brut": "\n                            <div class=\"formula-math\" style=\"font-size: 1.25em; margin: 15px 0;\">\n                                <span class=\"hl-cyan\">Capacité d'Encaissement</span> = <span\n                                    class=\"hl-gold\">Constitution</span> &times; 2\n                            </div>\n                            <p>\n                                C'est la quantité maximale de dégâts accumulés sur une même zone anatomique (Niveau 1, <a class=\"rule-ref\" href=\"livre_5.html#sec-22-1\" data-tip=\"Visée Niveau 1 : 6 zones larges sans malus pour le suivi d'Encaissement CON×2 (§22.1).\">Livre V §22.1</a>) qu'un corps peut supporter sans traumatisme localisé. Dès que les dégâts cumulés sur une zone dépassent ce seuil (<code>&gt; CON &times; 2</code>), le personnage subit un <strong>Choc Traumatique</strong> sur cette zone : il effectue gratuitement (<code>0 PA</code>) une épreuve d'<a class=\"rule-ref\" href=\"livre_3.html#chap-12\" data-tip=\"Endurance Physique : encaisser, tenir l'effort (CON/FOR, §12).\">Endurance Physique</a> (mises d'effort en <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (Livre I §4).\">PA</a> ou en <a class=\"rule-ref\" href=\"livre_1.html#sec-4-2\" data-tip=\"Essoufflement : 1 point = des PA d'urgence ; ne part pas tout seul, action dédiée pour souffler (Livre I §4.2).\">Essoufflement</a> autorisées en réaction) contre une <strong>Difficulté de 3, plus 1 par point de dégât qui dépasse son Encaissement</strong> (soit 4 dès le premier dégât en trop). Réussie : aucun nouveau jet sur cette zone tant qu'elle ne subit pas de nouveaux dégâts. Ratée : l'<a class=\"rule-ref\" href=\"#sec-23-encaissement\" data-tip=\"Choc Traumatique par zone : table des effets dédiés lorsque les dégâts de la zone dépassent CON×2 (§23).\">effet dédié à la zone</a> s'applique jusqu'au prochain soin.\n                            </p>\n                            ",
      "pieds": [
       {
        "ton": "cyan",
@@ -207,7 +207,7 @@
      "titre": "<span>Maximum Létal</span>\n                                <span class=\"pill-badge ruby\">Seuil Critique Absolu</span>",
      "top": false,
      "monde": "Physiologie // Rupture Organique Totale",
-     "corps_brut": "\n                            <div class=\"formula-math\" style=\"font-size: 1.25em; margin: 15px 0;\">\n                                <span class=\"hl-ruby\">Maximum Létal</span> = <span class=\"hl-gold\">Constitution</span>\n                                &times; 5\n                            </div>\n                            <p>\n                                Le seuil au-delà duquel les fonctions vitales lâchent. Si le total de\n                                dégâts subis par un personnage atteint ou dépasse <span class=\"hl-ruby\">Constitution\n                                    &times; 5</span>, il bascule dans l'arbre du <a href=\"#sec-23-2\">Seuil Létal (§23.2)</a>\n                                — Mort ou Inconscient si le coup fatal &gt; Encaissement, sinon Sombrer ou Dernier Souffle —\n                                sauf dépense d'un <a class=\"rule-ref\" href=\"#sec-23-3\" data-tip=\"Point de Miracle : dévie un coup mortel, tu échappes à la mort (Inconscient, À Terre). Rachat : 20 XP ou jalon MJ.\">Point de Miracle</a> pour échapper à la mort (<strong>Inconscient</strong> et <strong>À Terre</strong>).\n                            </p>\n                            ",
+     "corps_brut": "\n                            <div class=\"formula-math\" style=\"font-size: 1.25em; margin: 15px 0;\">\n                                <span class=\"hl-ruby\">Maximum Létal</span> = <span class=\"hl-gold\">Constitution</span>\n                                &times; 5\n                            </div>\n                            <p>\n                                Le seuil au-delà duquel les fonctions vitales lâchent. Si le total de\n                                dégâts subis par un personnage atteint ou dépasse <span class=\"hl-ruby\">Constitution\n                                    &times; 5</span>, il bascule dans l'arbre du <a class=\"rule-ref\" href=\"#sec-23-2\" data-tip=\"Seuil Létal (CON×5) : atteint ? Encaissement CON×2 tranche entre Mort, Inconscient, Sombrer ou Dernier Souffle (§23.2).\">Seuil Létal (§23.2)</a>\n                                — Mort ou Inconscient si le coup fatal &gt; Encaissement, sinon Sombrer ou Dernier Souffle —\n                                sauf dépense d'un <a class=\"rule-ref\" href=\"#sec-23-3\" data-tip=\"Point de Miracle : dévie un coup mortel, tu échappes à la mort (Inconscient, À Terre). Rachat : 20 XP ou jalon MJ.\">Point de Miracle</a> pour échapper à la mort (<a class=\"rule-ref\" href=\"#sec-24-5\" data-tip=\"Inconscient : lâche ce qu'il tient en main ; aucune action ni réaction. Réveil : secousse (1 PA) ou premiers soins.\"><strong>Inconscient</strong></a> et <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"À Terre : −1 ec mêlée/Athlétisme/Acrobatie, −2 ec jet (arc impossible), −2 défense (tir/magie sans malus). Déplacement +1 PA/case, se relever 1 PA.\"><strong>À Terre</strong></a>).\n                            </p>\n                            ",
      "pieds": [
       {
        "ton": "ruby",
@@ -228,7 +228,7 @@
     [
      "<strong>1. Tête / Cou</strong>",
      "<a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"Étourdi : −1 ec sur tous les jets.\"><strong>Étourdi</strong></a> (<code>&minus;1 ec</code> sur tous les jets).",
-     "Si déjà Étourdi par ce seuil (nouveau coup + échec) ou dépassement d'au moins 3 dégâts : <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"Sonné : aucune action. La créature tombe immédiatement à terre.\"><strong>Sonné</strong></a> 1 tour (tombe <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.\">À Terre</a>, aucune action)."
+     "Si déjà Étourdi par ce seuil (nouveau coup + échec) ou dépassement d'au moins 3 dégâts : <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"Sonné : aucune action. La créature tombe immédiatement à terre.\"><strong>Sonné</strong></a> 1 tour (tombe <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"À Terre : −1 ec mêlée/Athlétisme/Acrobatie, −2 ec jet (arc impossible), −2 défense (tir/magie sans malus). Déplacement +1 PA/case, se relever 1 PA.\">À Terre</a>, aucune action)."
     ],
     [
      "<strong>2. Torse / Dos</strong> <em>(défaut)</em>",
@@ -248,12 +248,12 @@
     [
      "<strong>5. Jambe gauche</strong>",
      "<a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"Ralenti : actions hors déplacement ×2 PA ; déplacement +1 PA/case (§24.1).\"><strong>Ralenti</strong></a> (actions hors déplacement <code>&times;2 PA</code>, déplacement <code>+1 PA/case</code>, course et charge impossibles).",
-     "Si les <strong>2 jambes</strong> sont traumatisées : <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.\"><strong>À Terre</strong></a> + <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"Immobilisé : impossible de faire la moindre action de mouvement (§24.1).\"><strong>Immobilisé</strong></a> (ramper uniquement à <code>+1 PA/case</code>, impossible de se relever)."
+     "Si les <strong>2 jambes</strong> sont traumatisées : <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"À Terre : −1 ec mêlée/Athlétisme/Acrobatie, −2 ec jet (arc impossible), −2 défense (tir/magie sans malus). Déplacement +1 PA/case, se relever 1 PA.\"><strong>À Terre</strong></a> + <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"Immobilisé : impossible de faire la moindre action de mouvement (§24.1).\"><strong>Immobilisé</strong></a> (ramper uniquement à <code>+1 PA/case</code>, impossible de se relever)."
     ],
     [
      "<strong>6. Jambe droite</strong>",
      "<a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"Ralenti : actions hors déplacement ×2 PA ; déplacement +1 PA/case (§24.1).\"><strong>Ralenti</strong></a> (actions hors déplacement <code>&times;2 PA</code>, déplacement <code>+1 PA/case</code>, course et charge impossibles).",
-     "Si les <strong>2 jambes</strong> sont traumatisées : <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.\"><strong>À Terre</strong></a> + <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"Immobilisé : impossible de faire la moindre action de mouvement (§24.1).\"><strong>Immobilisé</strong></a> (ramper uniquement à <code>+1 PA/case</code>, impossible de se relever)."
+     "Si les <strong>2 jambes</strong> sont traumatisées : <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"À Terre : −1 ec mêlée/Athlétisme/Acrobatie, −2 ec jet (arc impossible), −2 défense (tir/magie sans malus). Déplacement +1 PA/case, se relever 1 PA.\"><strong>À Terre</strong></a> + <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"Immobilisé : impossible de faire la moindre action de mouvement (§24.1).\"><strong>Immobilisé</strong></a> (ramper uniquement à <code>+1 PA/case</code>, impossible de se relever)."
     ]
    ],
    "classe": "data-table"
@@ -269,12 +269,12 @@
     [
      "<strong>Dégâts Directs (Physiques)</strong>",
      "Impact direct d'une lame, d'un projectile ou d'une onde de choc.",
-     "Réduits par l'<strong>Armure</strong> de la cible. Si les dégâts après réduction sont &le; 0, le personnage encaisse sans dommage, mais les autres effets de l'impact s'activent quand même s'il y en a (sort, pouvoir, don ou spécialisation, hors visée de point vital — <a class=\"rule-ref\" href=\"livre_5.html#sec-22-1\" data-tip=\"Visée §22.1 : si ≤ 0 dégât après armure, les effets de point vital (Niveau 2) ne passent pas ; sort, pouvoir, don ou spécialisation s'activent.\">Livre V §22.1</a>)."
+     "Réduits par l'<a class=\"rule-ref\" href=\"livre_8.html#chap-33\" data-tip=\"Armures : réduisent les dégâts directs de chaque coup (Livre VIII §33.1).\"><strong>Armure</strong></a> de la cible. Si les dégâts après réduction sont &le; 0, le personnage encaisse sans dommage, mais les autres effets de l'impact s'activent quand même s'il y en a (sort, pouvoir, don ou spécialisation, hors visée de point vital — <a class=\"rule-ref\" href=\"livre_5.html#sec-22-1\" data-tip=\"Visée §22.1 : si ≤ 0 dégât après armure, les effets de point vital (Niveau 2) ne passent pas ; sort, pouvoir, don ou spécialisation s'activent.\">Livre V §22.1</a>)."
     ],
     [
      "<strong>Dégâts Résiduels (Continus)</strong>",
-     "Saignement, brûlure (<em>En Feu</em>), poison (<em>Empoisonné</em>) ou suffocation (<em>Asphyxie</em>) : des dégâts qui reviennent à chaque tour mais <strong>faiblissent de 1 par tour</strong> jusqu'à s'éteindre (ex. 3 résiduels = 3 dégâts, puis 2, puis 1, puis fin).",
-     "<strong>Au début de chaque tour de la victime</strong>, elle subit autant de dégâts que le score actuel, puis ce score <strong>baisse de 1</strong> (3 → 2 → 1 → 0, l'effet s'arrête). Ces dégâts <strong>ignorent l'armure</strong> ; <em>En Feu</em> tape le <strong>bouclier</strong> d'abord et <em>Asphyxie</em> retire aussi <strong>1 PA</strong>. Tout <strong>soin arrête le Saignement</strong> (bandage, seringue, premiers soins) ; <em>Empoisonné</em>, <em>En Feu</em> et <em>Asphyxie</em> exigent chacun le traitement adapté (kit de chirurgie, extinction, désobstruction). Sans soin, un résiduel <strong>aggravé</strong> (ex. Hémorragie Profonde) <strong>augmente de +1 par tour</strong> au lieu de baisser."
+     "<a class=\"rule-ref\" href=\"#sec-24-2\" data-tip=\"Saignement : dégâts directs en début de tour, puis −1/tour. Tout soin l'arrête (§24.2).\">Saignement</a>, brûlure (<a class=\"rule-ref\" href=\"#sec-24-2\" data-tip=\"En Feu : 2 dégâts/tour par défaut (bouclier d'abord), puis −1/tour. Extinction requise (§24.2).\"><em>En Feu</em></a>), poison (<a class=\"rule-ref\" href=\"#sec-24-2\" data-tip=\"Empoisonné : dégâts directs en début de tour, puis −1/tour. Kit de chirurgie requis (§24.2).\"><em>Empoisonné</em></a>) ou suffocation (<a class=\"rule-ref\" href=\"#sec-24-2\" data-tip=\"Asphyxie : dégâts + drain de 1 PA par tour. Désobstruction requise (§24.2).\"><em>Asphyxie</em></a>) : des dégâts qui reviennent à chaque tour mais <strong>faiblissent de 1 par tour</strong> jusqu'à s'éteindre (ex. 3 résiduels = 3 dégâts, puis 2, puis 1, puis fin).",
+     "<strong>Au début de chaque tour de la victime</strong>, elle subit autant de dégâts que le score actuel, puis ce score <strong>baisse de 1</strong> (3 → 2 → 1 → 0, l'effet s'arrête). Ces dégâts <strong>ignorent l'armure</strong> ; <em>En Feu</em> tape le <a class=\"rule-ref\" href=\"livre_8.html#chap-33\" data-tip=\"Champs de force / Boucliers : absorbent les dégâts avant le corps ; En Feu les frappe d'abord (Livre VIII §33.2).\"><strong>bouclier</strong></a> d'abord et <em>Asphyxie</em> retire aussi <strong>1 <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Réserve rechargée au début de chaque tour (Livre I §4).\">PA</a></strong>. Tout <strong>soin arrête le Saignement</strong> (bandage, seringue, premiers soins) ; <em>Empoisonné</em>, <em>En Feu</em> et <em>Asphyxie</em> exigent chacun le traitement adapté (kit de chirurgie, extinction, désobstruction). Sans soin, un résiduel <strong>aggravé</strong> (ex. <a class=\"rule-ref\" href=\"#sec-24-2\" data-tip=\"Résiduel aggravé : dégâts doublés, +1/tour au lieu de décroître. Seul un soin l'arrête (§24.2).\">Hémorragie Profonde</a>) <strong>augmente de +1 par tour</strong> au lieu de baisser."
     ],
     [
      "<strong>Dégâts Absolus (Arcaniques)</strong>",
@@ -294,70 +294,112 @@
    ],
    "lignes": [
     [
-     "<span class=\"table-badge ruby\">Déstabilisé</span>",
-     "Une créature est physiquement débalancée suite à un impact lourd.",
-     "<strong>-2 ec</strong> (épreuves de compétence), déplacement rampant\n                                        (<strong>+1 PA/case</strong>, non cumulatif avec À Terre pour ramper).",
-     "Variable (1 à 6 tours en combat)."
+     "<span class=\"table-badge ruby\">Canon Entravé</span>",
+     "Contrainte spatiale d'encombrement : arme longue tenue avec un ennemi adjacent (dist 1).",
+     "<strong>-2 au tir</strong> balistique (annulable pour +1 PA de visée de rétention). Parade à l'arme pénalisée d'un niveau de dé sans spécialisation.",
+     "Tant qu'un adversaire conscient occupe une case adjacente."
+    ],
+    [
+     "<span class=\"table-badge ruby\">Assourdi</span>",
+     "Tympans saturés par une détonation, un coup violent, un bruit assourdissant ou un effet sonique.",
+     "Épreuves d'<a class=\"rule-ref\" href=\"livre_3.html#chap-13\" data-tip=\"Écoute : percevoir un bruit discret, une approche (OUI, §13.3).\">Écoute</a> impossibles : tu n'entends ni les ordres, ni les avertissements, ni les menaces hors champ de vision. <strong>-2</strong> en <a class=\"rule-ref\" href=\"livre_3.html#chap-13\" data-tip=\"Observation : repérer, analyser visuellement ou auditivement (VIS/OUI, §13.3).\">Observation</a> contre toute approche ou embuscade hors de ton champ de vue.",
+     "Variable selon les circonstances."
     ],
     [
      "<span class=\"table-badge ruby\">Étourdi</span>",
      "Une créature a la tête qui tourne ou le regard trouble.",
      "<strong>-1 ec</strong> sur tous les jets.",
-     "Court (1 à 2 tours en combat)."
+     "Variable selon les circonstances."
     ],
     [
-     "<span class=\"table-badge ruby\">Immobilisé</span>",
-     "Une créature est entravée, prise au piège ou gelée sur place.",
-     "<strong>Désavantage :</strong> Impossible d'effectuer la moindre action de\n                                        mouvement.",
-     "Variable (1 à 6 tours en combat)."
-    ],
-    [
-     "<span class=\"table-badge ruby\">Paralysé</span>",
-     "Système nerveux totalement tétanisé par un choc électrique ou mental.",
-     "<strong>Incapacité Totale :</strong> Ne peut faire aucune action ni réaction. Attaqué ? Défense Passive imposée (score 0, <a class=\"rule-ref\" href=\"livre_5.html#sec-20-2-cibles\" data-tip=\"Cible hors d'état de se défendre : Inconscient = dégâts max sans jet, Paralysé = Passive 0 imposée, Sonné = −2 à terre (Livre V §20.2).\">Livre V §20.2</a>).",
-     "Court (1 à 2 tours en combat)."
-    ],
-    [
-     "<span class=\"table-badge ruby\">Sonné</span>",
-     "Commotion violente combinant paralysie et perte de conscience brève.",
-     "Ne peut faire aucune action. <strong>La créature tombe immédiatement à\n                                            terre</strong> à son tour. Attaqué ? Il pare à −2 une fois à terre (<a class=\"rule-ref\" href=\"livre_5.html#sec-20-2-cibles\" data-tip=\"Cible hors d'état de se défendre : Inconscient = dégâts max sans jet, Paralysé = Passive 0 imposée, Sonné = −2 à terre (Livre V §20.2).\">Livre V §20.2</a>).",
-     "Court (1 à 2 tours en combat)."
+     "<span class=\"table-badge ruby\">Accroupi</span>",
+     "Une créature est assise, accroupie ou posée sur un genou.",
+     "<strong>-1 ec</strong> au corps-à-corps, aux armes de jet et en <em>Athlétisme / Acrobatie</em> ; <strong>-1</strong> en défense. Tir (armes à feu, arbalète, arc) et magie sans malus. Déplacement accroupi : <strong>+1 PA par case</strong> (se relever coûte 1 PA).",
+     "Jusqu'à ce que la créature dépense 1 PA pour se relever."
     ],
     [
      "<span class=\"table-badge ruby\">À terre</span>",
-     "Une créature est étendue sur le sol ou agenouillée.",
-     "<strong>-1 ec</strong> aux épreuves d'attaque, <strong>-2</strong>\n                                        en défense. Déplacement : <strong>+1 PA par case</strong> (non cumulatif avec Déstabilisé pour ramper ; se relever coûte 1 PA).",
-     "Jusqu'à ce que la créature dépense ses PA pour se relever."
+     "Une créature est étendue sur le sol (sur le dos ou à plat ventre).",
+     "<strong>-1 ec</strong> au corps-à-corps et en <em>Athlétisme / Acrobatie</em>, <strong>-2 ec</strong> aux armes de jet (lancer sans élan ; arc impossible allongé) ; <strong>-2</strong> en défense. Tir (armes à feu, arbalète) et magie sans malus. Déplacement rampant : <strong>+1 PA par case</strong> (non cumulatif avec Déstabilisé pour ramper ; se relever coûte 1 PA).",
+     "Jusqu'à ce que la créature dépense 1 PA pour se relever."
+    ],
+    [
+     "<span class=\"table-badge ruby\">Déstabilisé</span>",
+     "Une créature est physiquement déséquilibrée à la suite d'un impact lourd.",
+     "<strong>-2 ec</strong> (épreuves de compétence), déplacement rampant\n                                        (<strong>+1 PA/case</strong>, non cumulatif avec <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"À Terre : −1 ec mêlée/Athlétisme/Acrobatie, −2 ec jet (arc impossible), −2 défense (tir/magie sans malus). Déplacement +1 PA/case, se relever 1 PA.\">À Terre</a> pour ramper).",
+     "Variable selon les circonstances."
+    ],
+    [
+     "<span class=\"table-badge ruby\">Affamé</span>",
+     "48 h sans manger : faim installée (3 phases progressives, mort au niveau 4 après 3 semaines).",
+     "<strong>Niveau 1 (48 h) :</strong> -1 ec à tous les jets.<br><strong>Niveau 2 (1 semaine) :</strong> -2 ec et guérison de nuit sûre réduite de moitié.<br><strong>Niveau 3 (2 semaines) :</strong> -3 ec, aucune guérison au repos et 1 dégât direct par jour.<br><strong>Niveau 4 (3 semaines) :</strong> Mort.<br>Cumul avec Assoiffé (<a class=\"rule-ref\" href=\"#sec-24-3\" data-tip=\"Affamé & Assoiffé : faim en 3 phases (48 h / 1 semaine / 2 semaines, mort après 3 semaines), soin par nourriture (§24.3).\">§24.3</a>).",
+     "Jusqu'à manger (1 ration / jour = -1 niveau jusqu'à disparition)."
+    ],
+    [
+     "<span class=\"table-badge ruby\">Somnolent</span>",
+     "24 h sans dormir : fatigue nerveuse et baisse de vigilance installées (3 phases progressives).",
+     "<strong>Niveau 1 (24 h sans dormir) :</strong> -1 ec à tous les jets.<br><strong>Niveau 2 (48 h) :</strong> -2 ec à tous les jets et aucune guérison de dégâts ni récupération d'Essoufflement hors sommeil complet.<br><strong>Niveau 3 (72 h et plus) :</strong> -3 ec à tous les jets, hallucinations et micro-sommeils : toutes les 6 h, ainsi qu'à la fin de chaque combat, épreuve d'<a class=\"rule-ref\" href=\"livre_3.html#chap-12\" data-tip=\"Endurance Physique : encaisser, tenir l'effort (CON/FOR, §12).\">Endurance Physique</a> (Difficulté 4, puis +1 toutes les 6 h), ou tu tombes <a class=\"rule-ref\" href=\"#sec-24-5\" data-tip=\"Inconscient : lâche ce qu'il tient en main ; aucune action ni réaction. Réveil : secousse (1 PA) ou premiers soins.\">Inconscient</a> (sommeil forcé).",
+     "Jusqu'à dormir (un cycle de sommeil complet de 6 à 8 h enlève 1 niveau ; 2 nuits de repos lèvent tout)."
+    ],
+    [
+     "<span class=\"table-badge ruby\">Assoiffé</span>",
+     "24 h sans boire (2 L) : soif installée (3 phases progressives, mort au niveau 4 après 4 jours).",
+     "<strong>Niveau 1 (24 h) :</strong> -1 ec à tous les jets.<br><strong>Niveau 2 (48 h) :</strong> -2 ec, aucune guérison de dégâts ni récupération d'Essoufflement au repos.<br><strong>Niveau 3 (72 h) :</strong> -3 ec, <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"Ralenti : actions hors déplacement ×2 PA ; déplacement +1 PA/case (§24.1).\">Ralenti</a>, aucune guérison au repos et 2 dégâts directs par jour (ignore armure et bouclier).<br><strong>Niveau 4 (4 jours) :</strong> Mort.<br>Cumul avec Affamé (<a class=\"rule-ref\" href=\"#sec-24-3\" data-tip=\"Affamé & Assoiffé : soif en 3 phases (24 h / 48 h / 72 h, mort après 4 jours), soin par hydratation (§24.3).\">§24.3</a>).",
+     "Jusqu'à boire : 2 L enlèvent aussitôt 1 niveau (1 fois max avant repos) ; un cycle de sommeil après avoir bu lève le reste."
     ],
     [
      "<span class=\"table-badge ruby\">Ralenti</span>",
      "Ralentissement musculaire ou distorsion gravitationnelle locale.",
-     "<strong>Actions hors déplacement &times;2 PA</strong> ((base + encombrement) &times; 2). <strong>Déplacement : +1 PA/case</strong> (cumulatif avec Terrain difficile, À Terre/Déstabilisé et encombrement).",
-     "Variable (1 à 5 tours en combat)."
+     "<strong>Actions hors déplacement &times;2 PA.</strong> <strong>Déplacement : +1 PA/case</strong> (cumulatif avec <a class=\"rule-ref\" href=\"livre_2.html#sec-8-4\" data-tip=\"Terrains difficiles : 1 case coûte 2 PA (Livre II §8.4).\">Terrain difficile</a>, <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"À Terre : −1 ec mêlée/Athlétisme/Acrobatie, −2 ec jet (arc impossible), −2 défense (tir/magie sans malus). Déplacement +1 PA/case, se relever 1 PA.\">À Terre</a>/Déstabilisé et encombrement).",
+     "Variable selon les circonstances."
+    ],
+    [
+     "<span class=\"table-badge ruby\">Aveugle</span>",
+     "Un éclair te brûle la rétine : blanc total, puis noir. Tu ne vois plus tes mains.",
+     "<strong>-4</strong> aux attaques à distance, <strong>-2</strong> en mêlée et en défense, vision nulle (<a class=\"rule-ref\" href=\"livre_2.html#sec-8-6\" data-tip=\"Nuit & lumière : éblouissement = Aveugle temporaire ; Masque Filtrant immunise (Livre II §8.6).\">Livre II §8.6</a>).",
+     "Variable selon les circonstances."
+    ],
+    [
+     "<span class=\"table-badge ruby\">Immobilisé</span>",
+     "Une créature est entravée, prise au piège ou gelée sur place.",
+     "Impossible d'effectuer la moindre action de mouvement.",
+     "Variable selon les circonstances."
+    ],
+    [
+     "<span class=\"table-badge ruby\">Ligoté</span>",
+     "Les mains ou les bras sont entravés par des menottes, cordes, liens ou un filet.",
+     "Impossible d'effectuer toute action nécessitant les mains (attaquer ou parer à l'arme, tirer, utiliser un objet, gestes fins). <strong>-2</strong> en défense (Esquive uniquement) et en <em>Athlétisme / Acrobatie</em>. Se cumule avec <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"Immobilisé : impossible de faire la moindre action de mouvement (§24.1).\">Immobilisé</a> si les jambes sont aussi liées.",
+     "Jusqu'à être libéré ou réussir à briser / crocheter ses liens."
+    ],
+    [
+     "<span class=\"table-badge ruby\">Surpris</span>",
+     "Pris de court par une embuscade, un tireur caché, un piège ou une attaque totalement inattendue.",
+     "Aucune réaction possible face à l'attaque qui déclenche la surprise : ta défense tombe automatiquement à 0 (<strong>Défense Passive imposée</strong>, <a class=\"rule-ref\" href=\"livre_5.html#sec-20-2\" data-tip=\"Défense Passive : le défenseur ne lance rien, score 0, touche auto avec ta marge (§20.2).\">Livre V §20.2</a>). En ouverture de combat, la surprise ne peut se déclencher <strong>qu'une seule fois par combat</strong>, offrant <strong>un seul tour complet avant l'initiative</strong> (<a href=\"livre_5.html#chap-20\">Livre V §20</a>) ; au jet d'initiative qui suit, tous les combattants démarrent avec leurs PA pleins, sauf une créature ayant bénéficié de cette surprise qui ne récupère pas ses PA avant le début de son tour d'initiative.",
+     "Jusqu'à la résolution de l'instant qui déclenche la surprise (se dissipe aussitôt après ; toute attaque suivante dans le même tour est défendue normalement)."
+    ],
+    [
+     "<span class=\"table-badge ruby\">Paniqué</span>",
+     "La créature perd tout sang-froid sous l'effet de la terreur ou d'un choc nerveux.",
+     "Aucune action volontaire (ni attaque, ni sort, ni soin). Le personnage fuit en courant de <strong>6 cases</strong> dans une direction aléatoire (1d8). Peut encore se défendre en réaction, avec <strong>-2 en défense</strong>.",
+     "Variable selon les circonstances."
+    ],
+    [
+     "<span class=\"table-badge ruby\">Sonné</span>",
+     "Commotion violente combinant paralysie et perte de conscience brève.",
+     "Ne peut faire aucune action. <strong>La créature tombe immédiatement <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"À Terre : −1 ec mêlée/Athlétisme/Acrobatie, −2 ec jet (arc impossible), −2 défense (tir/magie sans malus). Déplacement +1 PA/case, se relever 1 PA.\">À Terre</a></strong>, mais peut encore parer en réaction avec un malus de −2 (<a class=\"rule-ref\" href=\"livre_5.html#sec-20-2-cibles\" data-tip=\"Cible hors d'état de se défendre : Inconscient = dégâts max sans jet, Paralysé = Passive 0 imposée, Sonné = −2 à terre (Livre V §20.2).\">Livre V §20.2</a>).",
+     "Variable selon les circonstances."
+    ],
+    [
+     "<span class=\"table-badge ruby\">Paralysé</span>",
+     "Système nerveux totalement tétanisé par un choc électrique ou mental.",
+     "<strong>Incapacité totale :</strong> ne peut faire aucune action ni réaction. En cas d'attaque, sa défense tombe à 0 (Défense Passive imposée, <a class=\"rule-ref\" href=\"livre_5.html#sec-20-2-cibles\" data-tip=\"Cible hors d'état de se défendre : Inconscient = dégâts max sans jet, Paralysé = Passive 0 imposée, Sonné = −2 à terre (Livre V §20.2).\">Livre V §20.2</a>).",
+     "Variable selon les circonstances."
     ],
     [
      "<span class=\"table-badge ruby\">Agonisant</span>",
-     "La créature a perdu ses moyens vitaux et panique nerveusement.",
-     "Ne peut prendre aucune action raisonnée. Le personnage fuit en courant de\n                                        <strong>6 cases</strong> dans une direction aléatoire (1d8).",
-     "Jusqu'à stabilisation médicale."
-    ],
-    [
-     "<span class=\"table-badge ruby\">Affamé</span>",
-     "48 h sans ration : faim installée.",
-     "<strong>-1 ec</strong> par niveau (max 3 ; niveau 2 : <strong>-2 ec</strong> ; niveau 3 : <strong>-2 ec</strong> + nuit ÷2 + 1 dégât direct / jour). Cumul avec Privation (§24.3).",
-     "Jours (aube). Soin : 1 ration = -1 niveau ; 48 h nourri = levé."
-    ],
-    [
-     "<span class=\"table-badge ruby\">Privation</span>",
-     "24 h sans eau (2 L, 1 L Cléien) : soif installée.",
-     "<strong>-1 ec</strong> par niveau (max 3 ; niveau 2 : <strong>-2 ec</strong> ; niveau 3 : <strong>-2 ec</strong> + Ralenti + 2 dégâts directs / jour, ignore armure/bouclier). Cumul avec Affamé (§24.3).",
-     "Jours (aube, épreuve CON Diff 4+2/niveau). Soin : 2 L (1 L Cléien) = -1 niveau."
-    ],
-    [
-     "<span class=\"table-badge ruby\">Canon Entravé</span>",
-     "Contrainte spatiale d'encombrement : arme longue tenue avec un ennemi adjacent (dist 1).",
-     "<strong>-2 au tir</strong> balistique (annulable pour +1 PA de visée de rétention). Parade à l'arme pénalisée d'un niveau de dé sans spécialisation.",
-     "Tant qu'un adversaire conscient occupe un hexagone adjacent."
+     "La créature est à l'article de la mort (hémorragie critique ou défaillance vitale).",
+     "Au sol (<a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"À Terre : −1 ec mêlée/Athlétisme/Acrobatie, −2 ec jet (arc impossible), −2 défense (tir/magie sans malus). Déplacement +1 PA/case, se relever 1 PA.\">À Terre</a>).<br><strong>Agonie critique (<a class=\"rule-ref\" href=\"#sec-23-2\" data-tip=\"Seuil Létal (CON×5) : arbre de résolution entre Mort, Inconscient, Sombrer ou Dernier Souffle (§23.2).\">§23.2</a>) :</strong> épreuve gratuite (<code>0 PA</code>) d'<a class=\"rule-ref\" href=\"livre_3.html#chap-12\" data-tip=\"Endurance Physique : encaisser, tenir l'effort (CON/FOR, §12).\">Endurance Physique</a> au début de chaque tour (Difficulté 4, puis +1/tour : 4, 5, 6…), mort au premier échec sans stabilisation (<a class=\"rule-ref\" href=\"#chap-25\" data-tip=\"Premiers Soins : 3 PA d'immobilisation au chevet du blessé, Difficulté 6 pour stabiliser (§25.1).\">Premiers Soins</a> Diff 6).<br><strong><a class=\"rule-ref\" href=\"#sec-23-2\" data-tip=\"Dernier Souffle : au Seuil Létal (coup ≤ Encaissement), reste conscient et agis, +1 Essoufflement par jet (§23.2).\">Dernier Souffle</a> :</strong> conscient et actif, mais +1 <a class=\"rule-ref\" href=\"livre_1.html#sec-4-2\" data-tip=\"Essoufflement : 1 point = des PA d'urgence ; ne part pas tout seul, action dédiée pour souffler (§4.2).\">Essoufflement</a> par épreuve (mort si Essoufflement &gt; CON).",
+     "Jusqu'à stabilisation médicale (Premiers Soins, Difficulté 6)."
     ]
    ],
    "classe": "data-table"
@@ -366,14 +408,14 @@
    "type": "table",
    "colonnes": [
     "État",
-    "Tick en début de tour personnel",
+    "Déclenchement en début de tour",
     "Soin / Dissipation"
    ],
    "lignes": [
     [
      "<span class=\"table-badge ruby\">Saignement</span>",
-     "Valeur résiduelle en dégâts directs (ignore armure et bouclier), puis −1/tour.\n                                        Sans valeur posée : 1 dégât/tour. Ex : Frappe Jugulaire = entraînements en résiduels.",
-     "<strong>Tout soin stoppe</strong> : bandage, seringue, premiers soins, Homéostasie.\n                                        Sinon persiste jusqu'à 0."
+     "Valeur résiduelle en dégâts directs (ignore armure et bouclier), puis −1/tour.\n                                        Sans valeur posée : 1 dégât/tour. Ex : <a class=\"rule-ref\" href=\"livre_3.html#chap-12\" data-tip=\"Frappe Jugulaire (spécialisation Maniement d'Arme) : inflige des dégâts résiduels de Saignement (Livre III §12).\">Frappe Jugulaire</a> = entraînements en résiduels.",
+     "<strong>Tout soin l'arrête</strong> : bandage, <a class=\"rule-ref\" href=\"livre_8.html#chap-33\" data-tip=\"Seringues de soins : 1 PA, retirent −5 à −20 dégâts et arrêtent le Saignement (Livre VIII §33.3).\">seringue</a>, premiers soins, Homéostasie.\n                                        Sinon persiste jusqu'à 0."
     ],
     [
      "<span class=\"table-badge ruby\">Empoisonné</span>",
@@ -382,13 +424,13 @@
     ],
     [
      "<span class=\"table-badge ruby\">En Feu</span>",
-     "Valeur résiduelle (sans valeur : 2 dégâts/tour), <strong>bouclier d'abord</strong>,\n                                        ignore l'armure, puis −1/tour.",
+     "Valeur résiduelle (sans valeur : 2 dégâts/tour), <a class=\"rule-ref\" href=\"livre_8.html#chap-33\" data-tip=\"Champs de force / Boucliers : absorbent les dégâts avant le corps ; En Feu les frappe d'abord (Livre VIII §33.2).\"><strong>bouclier d'abord</strong></a>,\n                                        ignore l'armure, puis −1/tour.",
      "Extinction (kit + premiers soins), résine de Mina, Coagulation Flash. S'éteint à 0."
     ],
     [
      "<span class=\"table-badge ruby\">Asphyxie</span>",
-     "Valeur résiduelle en dégâts (sans valeur : 1 dégât/tour) <strong>+ drain de 1 PA</strong>\n                                        sur la réserve rechargée, puis −1/tour.",
-     "Désobstruction (premiers soins + kit), résine de Mina, masque en prévention."
+     "Valeur résiduelle en dégâts (sans valeur : 1 dégât/tour) <strong>+ drain de 1 <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Réserve rechargée au début de chaque tour (Livre I §4).\">PA</a></strong>\n                                        sur la réserve rechargée, puis −1/tour.",
+     "Désobstruction (premiers soins + kit), résine de Mina, <a class=\"rule-ref\" href=\"livre_2.html#sec-8-6\" data-tip=\"Masque Filtrant : protège contre l'Asphyxie par gaz et l'éblouissement (Livre II §8.6).\">masque</a> en prévention."
     ]
    ],
    "classe": "data-table"
@@ -405,32 +447,38 @@
     [
      "<span class=\"table-badge cyan\">Survolté</span>",
      "Afflux massif d'adrénaline ou stimulation nerveuse arcanique.",
-     "<strong>+1 ec</strong> sur tous les tests, <strong>+3 PA</strong>\n                                        supplémentaires par tour !",
-     "1 à 5 tours en combat."
+     "<strong>+1 ec</strong> sur tous les jets, <strong>+3 PA</strong>\n                                        supplémentaires par tour !",
+     "Variable selon les circonstances."
     ],
     [
      "<span class=\"table-badge green\">En transe</span>",
      "Harmonie synaptique parfaite, perception en temps ralenti.",
      "<strong>+2 ec</strong> sur tous les jets, <strong>+5 PA</strong> par tour !",
-     "Court (1 à 2 tours en combat)."
+     "Variable selon les circonstances."
     ],
     [
      "<span class=\"table-badge cyan\">Accéléré</span>",
      "Distorsion spatiale ou propulsion cinétique des membres.",
-     "<strong>Toute action de déplacement coûte la MOITIÉ des PA</strong> (arrondi au\n                                        supérieur). Annule et est annulé par <strong>Ralenti</strong> sur le coût de déplacement.",
-     "1 à 2 tours en combat."
+     "<strong>Toute action de déplacement coûte la MOITIÉ des PA</strong> (arrondi au\n                                        supérieur). Annule et est annulé par <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"Ralenti : actions hors déplacement ×2 PA ; déplacement +1 PA/case (§24.1).\"><strong>Ralenti</strong></a> sur le coût de déplacement.",
+     "Variable selon les circonstances."
     ],
     [
      "<span class=\"table-badge cyan\">Rapide</span>",
      "Foulée amplifiée et réflexes moteurs aiguisés.",
      "<strong>+3 PA réservés exclusivement aux déplacements</strong> à chaque tour.",
-     "1 à 6 tours en combat."
+     "Variable selon les circonstances."
     ],
     [
      "<span class=\"table-badge amber\">Lévitation / En Vol</span>",
      "Répulsion gravitationnelle de Cinquième Force.",
      "Déplacement aérien libre, coût de déplacement réduit de moitié (-1 ec si le\n                                        sujet n'a pas la spécialisation Aérien ou Acrobate).",
      "Variable selon la réserve d'énergie."
+    ],
+    [
+     "<span class=\"table-badge green\">Dissimulé / Caché</span>",
+     "Hors de vue derrière un couvert, dans la pénombre, un écran de fumée ou grâce à une réussite en Discrétion / camouflage.",
+     "Impossible à cibler par une attaque directe tant que l'ennemi ne t'a pas repéré (épreuve d'<a class=\"rule-ref\" href=\"livre_3.html#chap-13\" data-tip=\"Observation : repérer, analyser visuellement ou auditivement (VIS/OUI, §13.3).\">Observation</a> ou <a class=\"rule-ref\" href=\"livre_3.html#chap-13\" data-tip=\"Écoute : percevoir un bruit discret, une approche (OUI, §13.3).\">Écoute</a> opposée à ta <a class=\"rule-ref\" href=\"livre_3.html#chap-12\" data-tip=\"Discrétion : se cacher, se déplacer sans bruit (AGI/INT, §12.2).\">Discrétion</a>). Ta première attaque depuis la cachette inflige <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"Surpris : aucune réaction face à l'attaque qui déclenche la surprise (Défense Passive à 0). Se dissipe aussitôt après.\">Surpris</a> à la cible (<strong>Défense Passive à 0</strong>, <a class=\"rule-ref\" href=\"livre_5.html#sec-20-2\" data-tip=\"Défense Passive : le défenseur ne lance rien, score 0, touche auto avec ta marge (§20.2).\">Livre V §20.2</a>).",
+     "Jusqu'à être repéré, attaquer ou sortir à découvert."
     ]
    ],
    "classe": "data-table"
@@ -452,7 +500,7 @@
      "top": false,
      "monde": "Statut Pur // Traumatisme Ouvert",
      "corps_attrs": " style=\"font-size: 0.9em; margin-top: 10px;\"",
-     "corps_html": "Le personnage souffre d'une blessure critique ou d'un traumatisme ouvert. <strong>Tout soin lève immédiatement l'état Souffrant</strong> (Premiers Soins, bandage, seringue ou magie curative, <a href=\"#chap-25\">§25.1</a>).",
+     "corps_html": "Le personnage souffre d'une blessure critique ou d'un traumatisme ouvert. <strong>Tout soin lève immédiatement l'état Souffrant</strong> (Premiers Soins, bandage, seringue ou magie curative, <a class=\"rule-ref\" href=\"#chap-25\" data-tip=\"Premiers Soins : 3 PA au chevet, ou tout soin actif (bandage, seringue, magie) pour lever Souffrant (§25.1).\">§25.1</a>).",
      "pieds": []
     },
     {
@@ -479,8 +527,8 @@
      "La cible est repoussée d'autant de cases que le différentiel (max 1 case par\n                                        niveau d'entraînement)."
     ],
     [
-     "<strong>Refoulement (Push-Kick)</strong>",
-     "Arts Martiaux au contact + Choc (&gt; CON &times; 2), Critique ou Diff &ge; 4",
+     "<strong>Refoulement</strong>",
+     "<a class=\"rule-ref\" href=\"livre_5.html#sec-22-2\" data-tip=\"Arts Martiaux — Refoulement : sur choc (> CON×2), critique ou diff ≥ 4, repousse d'1 case et Déstabilise si obstacle (Livre V §22.2).\">Arts Martiaux</a> au contact + <a class=\"rule-ref\" href=\"#sec-23-encaissement\" data-tip=\"Choc Traumatique : déclenché dès que les dégâts d'une zone dépassent CON×2 (§23).\">Choc (&gt; CON &times; 2)</a>, <a class=\"rule-ref\" href=\"livre_2.html#chap-9\" data-tip=\"Critique : dé au maximum (6 sur d6, 8 sur d8) — second jet sur la table (Livre II §9.1).\">Critique</a> ou Diff &ge; 4",
      "La cible est repoussée d'1 case en arrière (Distance = 2), brisant l'état <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"Canon Entravé : arme longue + ennemi adjacent = −2 au tir (annulable pour +1 PA de visée).\">Canon Entravé</a>. Si la trajectoire est bloquée par un obstacle, la cible subit l'état <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (+1 PA/case, non cumulatif avec À Terre pour ramper).\">Déstabilisé</a>."
     ],
     [
@@ -505,17 +553,17 @@
     ],
     [
      "<strong>Assommer</strong>",
-     "Différentiel de 10+ et visée crânienne (niveau 2)",
+     "Différentiel de 10+ et <a class=\"rule-ref\" href=\"livre_5.html#sec-22-1\" data-tip=\"Visée Niveau 2 (point vital Tête/Crâne) : malus de visée ciblée pour frapper un point vital (Livre V §22.1).\">visée crânienne (niveau 2)</a>",
      "La cible bascule immédiatement dans l'état <a class=\"rule-ref\" href=\"#sec-24-5\" data-tip=\"Inconscient : lâche ce qu'il tient en main ; aucune action ni réaction. Réveil : secousse (1 PA) ou premiers soins.\"><strong>Inconscient</strong></a> pour 1\n                                        tour minimum."
     ],
     [
      "<strong>Posséder</strong>",
-     "Différentiel de 10+ en Magie de l'Esprit",
+     "Différentiel de 10+ en <a class=\"rule-ref\" href=\"livre_3.html#chap-11\" data-tip=\"Magie de l'Esprit (MAG, INT) : Télékinésie, Télépathie, Clairvoyance (Livre III §11, Livre IV §18.1).\">Magie de l'Esprit</a>",
      "Prend le contrôle des actions de la créature pendant 1 tour. Amnésie totale de\n                                        la victime."
     ],
     [
      "<strong>Désintégrer</strong>",
-     "Différentiel de 20+ et Spécialisation Destruction 6",
+     "Différentiel de 20+ et Spécialisation <a class=\"rule-ref\" href=\"livre_4.html#sec-19-4\" data-tip=\"Destruction (Magie Primale) : voie offensive de Cinquième Force (Livre IV §19.4).\">Destruction</a> 6",
      "<strong>Mort instantanée et totale :</strong> la matière de la cible est\n                                        vaporisée sans laisser de dépouille."
     ]
    ],
@@ -534,11 +582,11 @@
      "pieds": []
     },
     {
-     "titre": "<span>Jammé, Détruit & Anéanti</span>\n                                <span class=\"pill-badge ruby\">Hors-Service</span>",
+     "titre": "<span>Enrayé, Détruit & Anéanti</span>\n                                <span class=\"pill-badge ruby\">Hors-Service</span>",
      "top": false,
      "corps_tag": "ul",
      "corps_attrs": " style=\"padding-left: 15px; margin-top: 10px; font-size: 0.9em;\"",
-     "corps_html": "<li><strong>Jammé (Enrayé) :</strong> Inutilisable temporairement, mais réparable sur le\n                                    terrain en dépensant <strong>2 PA</strong>.</li>\n                                <li><strong>Détruit :</strong> En morceaux et inutilisable, mais restaurable en atelier\n                                    avec pièces de rechange.</li>\n                                <li><strong>Anéanti :</strong> Totalement pulvérisé, irrécupérable et irréparable.</li>",
+     "corps_html": "<li><strong>Enrayé :</strong> Inutilisable temporairement, mais réparable sur le\n                                    terrain en dépensant <strong>2 PA</strong>.</li>\n                                <li><strong>Détruit :</strong> En morceaux et inutilisable, mais restaurable en atelier\n                                    avec pièces de rechange.</li>\n                                <li><strong>Anéanti :</strong> Totalement pulvérisé, irrécupérable et irréparable.</li>",
      "pieds": []
     }
    ]
@@ -622,7 +670,7 @@
      "<strong>Contact / gouttelettes</strong>",
      {
       "attrs": " rowspan=\"4\"",
-      "html": "Épreuve de <strong>Constitution vs Virulence</strong> (difficulté 0–34, Livre II §7) à chaque exposition franche. Masque / combinaison / quarantaine : +2 à +4 au jet ou pas de jet."
+      "html": "Épreuve de <strong>Constitution vs Virulence</strong> (<a class=\"rule-ref\" href=\"livre_2.html#chap-7\" data-tip=\"Seuils 0–34 : 0–1 Trivial, 2–3 Facile, 4–5 Difficile, 6–7 Extrêmement Difficile, 10+ Héroïque (Livre II §7.1).\">difficulté 0–34, Livre II §7</a>) à chaque exposition franche. <a class=\"rule-ref\" href=\"livre_2.html#sec-8-6\" data-tip=\"Masque Filtrant : protège contre les gaz et aérosols (Livre II §8.6).\">Masque</a> / combinaison / quarantaine : +2 à +4 au jet ou pas de jet."
      },
      "Stade symptomatique uniquement"
     ],
@@ -662,12 +710,12 @@
     [
      "<strong>3 — Grave</strong>",
      "1–3 jours",
-     "<a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"Agonisant : aucune action raisonnée, fuite de 6 cases (1d8). Persiste jusqu’à stabilisation médicale.\">Agonisant</a> partiel (fuite impossible, prostré) ou <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"À Terre : −1 ec en attaque, −2 en défense. Déplacement +1 PA/case (1 case = 2 PA). Se relever coûte 1 PA.\">À terre</a> ; DoT aggravé (+1/tour) ; statut <a class=\"rule-ref\" href=\"#sec-24-5\" data-tip=\"Souffrant : blessure grave levée par n'importe quel soin (§24.5).\">Souffrant</a> (levée : n'importe quel soin, §24.5)"
+     "<a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"Agonisant : à l'article de la mort (À Terre ; Endurance Physique Diff 4 +1/tour, ou Dernier Souffle : +1 Essoufflement/jet). Stabilisation : Premiers Soins Diff 6.\">Agonisant</a> (prostré) ou <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"À Terre : −1 ec mêlée/Athlétisme/Acrobatie, −2 ec jet (arc impossible), −2 défense (tir/magie sans malus). Déplacement +1 PA/case, se relever 1 PA.\">À terre</a> ; DoT aggravé (+1/tour) ; statut <a class=\"rule-ref\" href=\"#sec-24-5\" data-tip=\"Souffrant : blessure grave levée par n'importe quel soin (§24.5).\">Souffrant</a> (levée : n'importe quel soin, §24.5)"
     ],
     [
      "<strong>4 — Terminal</strong>",
      "Heures",
-     "Atteinte du Seuil Létal (Con&times;5) : arbre §23.2 ; Point de Miracle applicable"
+     "Atteinte du Seuil Létal (Con&times;5) : arbre <a class=\"rule-ref\" href=\"#sec-23-2\" data-tip=\"Seuil Létal (CON×5) : arbre de résolution entre Mort, Inconscient, Sombrer ou Dernier Souffle (§23.2).\">§23.2</a> ; <a class=\"rule-ref\" href=\"#sec-23-3\" data-tip=\"Point de Miracle : dévie un coup mortel, tu échappes à la mort (Inconscient, À Terre). Rachat : 20 XP ou jalon MJ.\">Point de Miracle</a> applicable"
     ]
    ],
    "classe": "data-table"
@@ -689,7 +737,7 @@
      "top": false,
      "monde": "Relique / aérosol // Incubation 1 épisode",
      "corps_attrs": " style=\"font-size: 0.9em; margin-top: 10px;\"",
-     "corps_html": "S1 : &minus;1 ec global. S2 : <a class=\"rule-ref\" href=\"#sec-24-2\" data-tip=\"Asphyxie : dégâts + drain de 1 PA par tour. Soin : désobstruction (premiers soins + kit).\">Asphyxie</a> 1 + drain 1 PA. S3 : DoT aggravé,\n                                <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"Agonisant : aucune action raisonnée, fuite de 6 cases (1d8). Persiste jusqu’à stabilisation médicale.\">Agonisant</a>. Médecine mundane : stabilise (dif. 18) ; guérison : rituel + résine\n                                de Mina. Mutation sur 6 : devient contact direct.",
+     "corps_html": "S1 : &minus;1 ec global. S2 : <a class=\"rule-ref\" href=\"#sec-24-2\" data-tip=\"Asphyxie : dégâts + drain de 1 PA par tour. Soin : désobstruction (premiers soins + kit).\">Asphyxie</a> 1 + drain 1 PA. S3 : DoT aggravé,\n                                <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"Agonisant : à l'article de la mort (À Terre ; Endurance Physique Diff 4 +1/tour, ou Dernier Souffle : +1 Essoufflement/jet). Stabilisation : Premiers Soins Diff 6.\">Agonisant</a>. Médecine mundane : stabilise (dif. 18) ; guérison : rituel + résine\n                                de Mina. Mutation sur 6 : devient contact direct.",
      "pieds": []
     }
    ]
@@ -714,7 +762,7 @@
   "etats_dot": {
    "colonnes": [
     "État",
-    "Tick en début de tour personnel",
+    "Déclenchement en début de tour",
     "Soin / Dissipation"
    ]
   },
@@ -823,156 +871,204 @@
   ],
   "etats_prejudiciables": [
    {
-    "etat": "Déstabilisé",
-    "description": "Une créature est physiquement débalancée suite à un impact lourd.",
-    "malus": "-2 ec (épreuves de compétence), déplacement rampant (+1 PA/case, non cumulatif avec À Terre pour ramper).",
-    "duree": "Variable (1 à 6 tours en combat)."
+    "etat": "Canon Entravé",
+    "description": "Contrainte spatiale d'encombrement : arme longue tenue avec un ennemi adjacent (dist 1).",
+    "malus": "-2 au tir balistique (annulable pour +1 PA de visée de rétention). Parade à l'arme pénalisée d'un niveau de dé sans spécialisation.",
+    "duree": "Tant qu'un adversaire conscient occupe une case adjacente."
+   },
+   {
+    "etat": "Assourdi",
+    "description": "Tympans saturés par une détonation, un coup violent, un bruit assourdissant ou un effet sonique.",
+    "malus": "Épreuves d'Écoute impossibles : tu n'entends ni les ordres, ni les avertissements, ni les menaces hors champ de vision. -2 en Observation contre toute approche ou embuscade hors de ton champ de vue.",
+    "duree": "Variable selon les circonstances."
    },
    {
     "etat": "Étourdi",
     "description": "Une créature a la tête qui tourne ou le regard trouble.",
     "malus": "-1 ec sur tous les jets.",
-    "duree": "Variable (1 à 20 tours en combat)."
+    "duree": "Variable selon les circonstances."
    },
    {
-    "etat": "Immobilisé",
-    "description": "Une créature est entravée, prise au piège ou gelée sur place.",
-    "malus": "Désavantage : Impossible d'effectuer la moindre action de mouvement.",
-    "duree": "Variable (1 à 6 tours en combat)."
-   },
-   {
-    "etat": "Paralysé",
-    "description": "Système nerveux totalement tétanisé par un choc électrique ou mental.",
-    "malus": "Incapacité Totale : Ne peut faire aucune action ni réaction.",
-    "duree": "Court (1 à 2 tours en combat)."
-   },
-   {
-    "etat": "Sonné",
-    "description": "Commotion violente combinant paralysie et perte de conscience brève.",
-    "malus": "Ne peut faire aucune action. La créature tombe immédiatement à terre à son tour.",
-    "duree": "Court (1 à 2 tours en combat)."
+    "etat": "Accroupi",
+    "description": "Une créature est assise, accroupie ou posée sur un genou.",
+    "malus": "-1 ec au corps-à-corps, aux armes de jet et en Athlétisme / Acrobatie ; -1 en défense. Tir (armes à feu, arbalète, arc) et magie sans malus. Déplacement accroupi : +1 PA par case (se relever coûte 1 PA).",
+    "duree": "Jusqu'à ce que la créature dépense 1 PA pour se relever."
    },
    {
     "etat": "À terre",
-    "description": "Une créature est étendue sur le sol ou agenouillée.",
-    "malus": "-1 ec aux épreuves d'attaque, -2 en défense. Déplacement : +1 PA par case (non cumulatif avec Déstabilisé pour ramper ; se relever coûte 1 PA).",
-    "duree": "Jusqu'à ce que la créature dépense ses PA pour se relever."
+    "description": "Une créature est étendue sur le sol (sur le dos ou à plat ventre).",
+    "malus": "-1 ec au corps-à-corps et en Athlétisme / Acrobatie, -2 ec aux armes de jet (lancer sans élan ; arc impossible allongé) ; -2 en défense. Tir (armes à feu, arbalète) et magie sans malus. Déplacement rampant : +1 PA par case (non cumulatif avec Déstabilisé pour ramper ; se relever coûte 1 PA).",
+    "duree": "Jusqu'à ce que la créature dépense 1 PA pour se relever."
+   },
+   {
+    "etat": "Déstabilisé",
+    "description": "Une créature est physiquement déséquilibrée à la suite d'un impact lourd.",
+    "malus": "-2 ec (épreuves de compétence), déplacement rampant (+1 PA/case, non cumulatif avec À Terre pour ramper).",
+    "duree": "Variable selon les circonstances."
+   },
+   {
+    "etat": "Affamé",
+    "description": "48 h sans manger : faim installée (3 phases progressives, mort au niveau 4 après 3 semaines).",
+    "malus": "Niveau 1 (48 h) : -1 ec à tous les jets ; Niveau 2 (1 semaine) : -2 ec et guérison de nuit sûre réduite de moitié ; Niveau 3 (2 semaines) : -3 ec, aucune guérison au repos et 1 dégât direct par jour ; Niveau 4 (3 semaines) : Mort. Cumul avec Assoiffé (§24.3).",
+    "duree": "Jusqu'à manger (1 ration / jour = -1 niveau jusqu'à disparition)."
+   },
+   {
+    "etat": "Somnolent",
+    "description": "24 h sans dormir : fatigue nerveuse et baisse de vigilance installées (3 phases progressives).",
+    "malus": "Niveau 1 (24 h sans dormir) : -1 ec à tous les jets. Niveau 2 (48 h) : -2 ec à tous les jets et aucune guérison de dégâts ni récupération d'Essoufflement hors sommeil complet. Niveau 3 (72 h et plus) : -3 ec à tous les jets, hallucinations et micro-sommeils : toutes les 6 h, ainsi qu'à la fin de chaque combat, épreuve d'Endurance Physique (Difficulté 4, puis +1 toutes les 6 h), ou tu tombes Inconscient (sommeil forcé).",
+    "duree": "Jusqu'à dormir (un cycle de sommeil complet de 6 à 8 h enlève 1 niveau ; 2 nuits de repos lèvent tout)."
+   },
+   {
+    "etat": "Assoiffé",
+    "description": "24 h sans boire (2 L) : soif installée (3 phases progressives, mort au niveau 4 après 4 jours).",
+    "malus": "Niveau 1 (24 h) : -1 ec à tous les jets ; Niveau 2 (48 h) : -2 ec, aucune guérison de dégâts ni récupération d'Essoufflement au repos ; Niveau 3 (72 h) : -3 ec, Ralenti, aucune guérison au repos et 2 dégâts directs par jour (ignore armure et bouclier) ; Niveau 4 (4 jours) : Mort. Cumul avec Affamé (§24.3).",
+    "duree": "Jusqu'à boire : 2 L enlèvent aussitôt 1 niveau (1 fois max avant repos) ; un cycle de sommeil après avoir bu lève le reste."
    },
    {
     "etat": "Ralenti",
     "description": "Ralentissement musculaire ou distorsion gravitationnelle locale.",
-    "malus": "Actions hors déplacement ×2 PA ((base + encombrement) × 2) ; déplacement +1 PA/case (cumulatif avec Terrain difficile, À Terre/Déstabilisé et encombrement ; annulé mutuellement par Accéléré sur le déplacement).",
-    "duree": "Variable (1 à 5 tours en combat)."
-   },
-   {
-    "etat": "Agonisant",
-    "description": "La créature a perdu ses moyens vitaux et panique nerveusement.",
-    "malus": "Ne peut prendre aucune action raisonnée. Le personnage fuit en courant de 6 cases dans une direction aléatoire (1d8).",
-    "duree": "Jusqu'à stabilisation médicale."
-   },
-   {
-    "etat": "Affamé",
-    "description": "48 h sans ration : faim installée.",
-    "malus": "-1 ec par niveau (max 3 ; niveau 2 : -2 ec ; niveau 3 : -2 ec + nuit ÷2 + 1 dégât direct / jour). Cumul avec Privation (§24.3).",
-    "duree": "Jours (aube). Soin : 1 ration = -1 niveau ; 48 h nourri = levé."
-   },
-   {
-    "etat": "Privation",
-    "description": "24 h sans eau (2 L, 1 L Cléien) : soif installée.",
-    "malus": "-1 ec par niveau (max 3 ; niveau 2 : -2 ec ; niveau 3 : -2 ec + Ralenti + 2 dégâts directs / jour, ignore armure/bouclier). Cumul avec Affamé (§24.3).",
-    "duree": "Jours (aube, épreuve CON Diff 4+2/niveau). Soin : 2 L (1 L Cléien) = -1 niveau."
-   },
-   {
-    "etat": "Canon Entravé",
-    "description": "Contrainte spatiale d'encombrement : arme longue tenue avec un ennemi adjacent (dist 1).",
-    "malus": "-2 au tir balistique (annulable pour +1 PA de visée de rétention). Parade à l'arme pénalisée d'un niveau de dé sans spécialisation.",
-    "duree": "Tant qu'un adversaire conscient occupe un hexagone adjacent."
+    "malus": "Actions hors déplacement ×2 PA ; déplacement +1 PA/case (cumulatif avec Terrain difficile, À Terre/Déstabilisé et encombrement ; annulé mutuellement par Accéléré sur le déplacement).",
+    "duree": "Variable selon les circonstances."
    },
    {
     "etat": "Aveugle",
     "description": "Un éclair te brûle la rétine : blanc total, puis noir. Tu ne vois plus tes mains.",
     "malus": "-4 aux attaques à distance, -2 en mêlée et en défense, vision nulle.",
-    "duree": "Flash/éclat : 1 tour (2 tours si l’éclat part à 3 cases ou moins). Zones persistantes (M18, CM-6) : 2 tours ou sortie de zone. Masque Filtrant : immunise (gaz et flash)."
+    "duree": "Variable selon les circonstances."
+   },
+   {
+    "etat": "Immobilisé",
+    "description": "Une créature est entravée, prise au piège ou gelée sur place.",
+    "malus": "Impossible d'effectuer la moindre action de mouvement.",
+    "duree": "Variable selon les circonstances."
+   },
+   {
+    "etat": "Ligoté",
+    "description": "Les mains ou les bras sont entravés par des menottes, cordes, liens ou un filet.",
+    "malus": "Impossible d'effectuer toute action nécessitant les mains (attaquer ou parer à l'arme, tirer, utiliser un objet, gestes fins). -2 en défense (Esquive uniquement) et en Athlétisme / Acrobatie. Se cumule avec Immobilisé si les jambes sont aussi liées.",
+    "duree": "Jusqu'à être libéré ou réussir à briser / crocheter ses liens."
+   },
+   {
+    "etat": "Surpris",
+    "description": "Pris de court par une embuscade, un tireur caché, un piège ou une attaque totalement inattendue.",
+    "malus": "Aucune réaction possible face à l'attaque qui déclenche la surprise : ta défense tombe automatiquement à 0 (Défense Passive imposée, Livre V §20.2). En ouverture de combat, la surprise ne peut se déclencher qu'une seule fois par combat, offrant un seul tour complet avant l'initiative (Livre V §20) ; au jet d'initiative qui suit, tous les combattants démarrent avec leurs PA pleins, sauf une créature ayant bénéficié de cette surprise qui ne récupère pas ses PA avant le début de son tour d'initiative.",
+    "duree": "Jusqu'à la résolution de l'instant qui déclenche la surprise (se dissipe aussitôt après ; toute attaque suivante dans le même tour est défendue normalement)."
+   },
+   {
+    "etat": "Paniqué",
+    "description": "La créature perd tout sang-froid sous l'effet de la terreur ou d'un choc nerveux.",
+    "malus": "Aucune action volontaire (ni attaque, ni sort, ni soin). Le personnage fuit en courant de 6 cases dans une direction aléatoire (1d8). Peut encore se défendre en réaction, avec -2 en défense.",
+    "duree": "Variable selon les circonstances."
+   },
+   {
+    "etat": "Sonné",
+    "description": "Commotion violente combinant paralysie et perte de conscience brève.",
+    "malus": "Ne peut faire aucune action. La créature tombe immédiatement À Terre, mais peut encore parer en réaction avec un malus de −2 (Livre V §20.2).",
+    "duree": "Variable selon les circonstances."
+   },
+   {
+    "etat": "Paralysé",
+    "description": "Système nerveux totalement tétanisé par un choc électrique ou mental.",
+    "malus": "Incapacité totale : ne peut faire aucune action ni réaction. En cas d'attaque, sa défense tombe à 0 (Défense Passive imposée, Livre V §20.2).",
+    "duree": "Variable selon les circonstances."
+   },
+   {
+    "etat": "Agonisant",
+    "description": "La créature est à l'article de la mort (hémorragie critique ou défaillance vitale).",
+    "malus": "Au sol (À Terre). Agonie critique (§23.2) : épreuve gratuite (0 PA) d'Endurance Physique au début de chaque tour (Difficulté 4, puis +1/tour : 4, 5, 6…), mort au premier échec sans stabilisation (Premiers Soins Diff 6, §25.1). Dernier Souffle (§23.2) : conscient et actif, mais +1 Essoufflement par épreuve (mort si Essoufflement > CON).",
+    "duree": "Jusqu'à stabilisation médicale (Premiers Soins, Difficulté 6)."
    }
   ],
   "etats_par_nom": {
    "Déstabilisé": {
     "etat": "Déstabilisé",
-    "description": "Une créature est physiquement débalancée suite à un impact lourd.",
+    "description": "Une créature est physiquement déséquilibrée à la suite d'un impact lourd.",
     "malus": "-2 ec (épreuves de compétence), déplacement rampant (+1 PA/case, non cumulatif avec À Terre pour ramper).",
-    "duree": "Variable (1 à 6 tours en combat)."
+    "duree": "Variable selon les circonstances."
    },
    "Étourdi": {
     "etat": "Étourdi",
     "description": "Une créature a la tête qui tourne ou le regard trouble.",
     "malus": "-1 ec sur tous les jets.",
-    "duree": "Variable (1 à 20 tours en combat)."
+    "duree": "Variable selon les circonstances."
    },
    "Immobilisé": {
     "etat": "Immobilisé",
     "description": "Une créature est entravée, prise au piège ou gelée sur place.",
-    "malus": "Désavantage : Impossible d'effectuer la moindre action de mouvement.",
-    "duree": "Variable (1 à 6 tours en combat)."
+    "malus": "Impossible d'effectuer la moindre action de mouvement.",
+    "duree": "Variable selon les circonstances."
    },
    "Paralysé": {
     "etat": "Paralysé",
     "description": "Système nerveux totalement tétanisé par un choc électrique ou mental.",
-    "malus": "Incapacité Totale : Ne peut faire aucune action ni réaction. Attaqué : Défense Passive imposée (score 0, Livre V §20.2).",
-    "duree": "Court (1 à 2 tours en combat)."
+    "malus": "Incapacité totale : ne peut faire aucune action ni réaction. En cas d'attaque, sa défense tombe à 0 (Défense Passive imposée, Livre V §20.2).",
+    "duree": "Variable selon les circonstances."
    },
    "Sonné": {
     "etat": "Sonné",
     "description": "Commotion violente combinant paralysie et perte de conscience brève.",
-    "malus": "Ne peut faire aucune action. La créature tombe immédiatement à terre à son tour. Attaqué : il pare à −2 une fois à terre (Livre V §20.2).",
-    "duree": "Court (1 à 2 tours en combat)."
+    "malus": "Ne peut faire aucune action. La créature tombe immédiatement À Terre, mais peut encore parer en réaction avec un malus de −2 (Livre V §20.2).",
+    "duree": "Variable selon les circonstances."
+   },
+   "Accroupi": {
+    "etat": "Accroupi",
+    "description": "Une créature est assise, accroupie ou posée sur un genou.",
+    "malus": "-1 ec au corps-à-corps, aux armes de jet et en Athlétisme / Acrobatie ; -1 en défense. Tir (armes à feu, arbalète, arc) et magie sans malus. Déplacement accroupi : +1 PA par case (se relever coûte 1 PA).",
+    "duree": "Jusqu'à ce que la créature dépense 1 PA pour se relever."
    },
    "À terre": {
     "etat": "À terre",
-    "description": "Une créature est étendue sur le sol ou agenouillée.",
-    "malus": "-1 ec aux épreuves d'attaque, -2 en défense. Déplacement : +1 PA par case (non cumulatif avec Déstabilisé pour ramper ; se relever coûte 1 PA).",
-    "duree": "Jusqu'à ce que la créature dépense ses PA pour se relever."
+    "description": "Une créature est étendue sur le sol (sur le dos ou à plat ventre).",
+    "malus": "-1 ec au corps-à-corps et en Athlétisme / Acrobatie, -2 ec aux armes de jet (lancer sans élan ; arc impossible allongé) ; -2 en défense. Tir (armes à feu, arbalète) et magie sans malus. Déplacement rampant : +1 PA par case (non cumulatif avec Déstabilisé pour ramper ; se relever coûte 1 PA).",
+    "duree": "Jusqu'à ce que la créature dépense 1 PA pour se relever."
    },
    "Ralenti": {
     "etat": "Ralenti",
     "description": "Ralentissement musculaire ou distorsion gravitationnelle locale.",
-    "malus": "Actions hors déplacement ×2 PA ((base + encombrement) × 2) ; déplacement +1 PA/case (cumulatif avec Terrain difficile, À Terre/Déstabilisé et encombrement ; annulé mutuellement par Accéléré sur le déplacement).",
-    "duree": "Variable (1 à 5 tours en combat)."
+    "malus": "Actions hors déplacement ×2 PA ; déplacement +1 PA/case (cumulatif avec Terrain difficile, À Terre/Déstabilisé et encombrement ; annulé mutuellement par Accéléré sur le déplacement).",
+    "duree": "Variable selon les circonstances."
+   },
+   "Paniqué": {
+    "etat": "Paniqué",
+    "description": "La créature perd tout sang-froid sous l'effet de la terreur ou d'un choc nerveux.",
+    "malus": "Aucune action volontaire (ni attaque, ni sort, ni soin). Le personnage fuit en courant de 6 cases dans une direction aléatoire (1d8). Peut encore se défendre en réaction, avec -2 en défense.",
+    "duree": "Variable selon les circonstances."
    },
    "Agonisant": {
     "etat": "Agonisant",
-    "description": "La créature a perdu ses moyens vitaux et panique nerveusement.",
-    "malus": "Ne peut prendre aucune action raisonnée. Le personnage fuit en courant de 6 cases dans une direction aléatoire (1d8).",
-    "duree": "Jusqu'à stabilisation médicale."
+    "description": "La créature est à l'article de la mort (hémorragie critique ou défaillance vitale).",
+    "malus": "Au sol (À Terre). Agonie critique (§23.2) : épreuve gratuite (0 PA) d'Endurance Physique au début de chaque tour (Difficulté 4, puis +1/tour : 4, 5, 6…), mort au premier échec sans stabilisation (Premiers Soins Diff 6, §25.1). Dernier Souffle (§23.2) : conscient et actif, mais +1 Essoufflement par épreuve (mort si Essoufflement > CON).",
+    "duree": "Jusqu'à stabilisation médicale (Premiers Soins, Difficulté 6)."
    },
    "Canon Entravé": {
     "etat": "Canon Entravé",
     "description": "Contrainte spatiale d'encombrement : arme longue tenue avec un ennemi adjacent (dist 1).",
     "malus": "-2 au tir balistique (annulable pour +1 PA de visée de rétention). Parade à l'arme pénalisée d'un niveau de dé sans spécialisation.",
-    "duree": "Tant qu'un adversaire conscient occupe un hexagone adjacent."
+    "duree": "Tant qu'un adversaire conscient occupe une case adjacente."
    },
    "Survolté": {
     "etat": "Survolté",
     "description": "Afflux massif d'adrénaline ou stimulation nerveuse arcanique.",
-    "bonus": "+1 ec sur tous les tests, +3 PA supplémentaires par tour !",
-    "duree": "1 à 5 tours en combat."
+    "bonus": "+1 ec sur tous les jets, +3 PA supplémentaires par tour !",
+    "duree": "Variable selon les circonstances."
    },
    "En transe": {
     "etat": "En transe",
     "description": "Harmonie synaptique parfaite, perception en temps ralenti.",
     "bonus": "+2 ec sur tous les jets, +5 PA par tour !",
-    "duree": "Court (1 à 2 tours en combat)."
+    "duree": "Variable selon les circonstances."
    },
    "Accéléré": {
     "etat": "Accéléré",
     "description": "Distorsion spatiale ou propulsion cinétique des membres.",
     "bonus": "Toute action de déplacement coûte la MOITIÉ des PA (arrondi au supérieur). Annule et est annulé par Ralenti sur le coût de déplacement.",
-    "duree": "1 à 2 tours en combat."
+    "duree": "Variable selon les circonstances."
    },
    "Rapide": {
     "etat": "Rapide",
     "description": "Foulée amplifiée et réflexes moteurs aiguisés.",
     "bonus": "+3 PA réservés exclusivement aux déplacements à chaque tour.",
-    "duree": "1 à 6 tours en combat."
+    "duree": "Variable selon les circonstances."
    },
    "Lévitation / En Vol": {
     "etat": "Lévitation / En Vol",
@@ -984,26 +1080,56 @@
     "etat": "Aveugle",
     "description": "Un éclair te brûle la rétine : blanc total, puis noir. Tu ne vois plus tes mains.",
     "malus": "-4 aux attaques à distance, -2 en mêlée et en défense, vision nulle.",
-    "duree": "Flash/éclat : 1 tour (2 tours si l’éclat part à 3 cases ou moins). Zones persistantes (M18, CM-6) : 2 tours ou sortie de zone. Masque Filtrant : immunise (gaz et flash)."
+    "duree": "Variable selon les circonstances."
    },
    "Affamé": {
     "etat": "Affamé",
-    "description": "48 h sans ration : faim installée.",
-    "malus": "-1 ec par niveau (max 3 ; niveau 2 : -2 ec ; niveau 3 : -2 ec + nuit ÷2 + 1 dégât direct / jour). Cumul avec Privation (§24.3).",
-    "duree": "Jours (aube). Soin : 1 ration = -1 niveau ; 48 h nourri = levé."
+    "description": "48 h sans manger : faim installée (3 phases progressives, mort au niveau 4 après 3 semaines).",
+    "malus": "Niveau 1 (48 h) : -1 ec à tous les jets ; Niveau 2 (1 semaine) : -2 ec et guérison de nuit sûre réduite de moitié ; Niveau 3 (2 semaines) : -3 ec, aucune guérison au repos et 1 dégât direct par jour ; Niveau 4 (3 semaines) : Mort. Cumul avec Assoiffé (§24.3).",
+    "duree": "Jusqu'à manger (1 ration / jour = -1 niveau jusqu'à disparition)."
    },
-   "Privation": {
-    "etat": "Privation",
-    "description": "24 h sans eau (2 L, 1 L Cléien) : soif installée.",
-    "malus": "-1 ec par niveau (max 3 ; niveau 2 : -2 ec ; niveau 3 : -2 ec + Ralenti + 2 dégâts directs / jour, ignore armure/bouclier). Cumul avec Affamé (§24.3).",
-    "duree": "Jours (aube, épreuve CON Diff 4+2/niveau). Soin : 2 L (1 L Cléien) = -1 niveau."
+   "Assoiffé": {
+    "etat": "Assoiffé",
+    "description": "24 h sans boire (2 L) : soif installée (3 phases progressives, mort au niveau 4 après 4 jours).",
+    "malus": "Niveau 1 (24 h) : -1 ec à tous les jets ; Niveau 2 (48 h) : -2 ec, aucune guérison de dégâts ni récupération d'Essoufflement au repos ; Niveau 3 (72 h) : -3 ec, Ralenti, aucune guérison au repos et 2 dégâts directs par jour (ignore armure et bouclier) ; Niveau 4 (4 jours) : Mort. Cumul avec Affamé (§24.3).",
+    "duree": "Jusqu'à boire : 2 L enlèvent aussitôt 1 niveau (1 fois max avant repos) ; un cycle de sommeil après avoir bu lève le reste."
+   },
+   "Ligoté": {
+    "etat": "Ligoté",
+    "description": "Les mains ou les bras sont entravés par des menottes, cordes, liens ou un filet.",
+    "malus": "Impossible d'effectuer toute action nécessitant les mains (attaquer ou parer à l'arme, tirer, utiliser un objet, gestes fins). -2 en défense (Esquive uniquement) et en Athlétisme / Acrobatie. Se cumule avec Immobilisé si les jambes sont aussi liées.",
+    "duree": "Jusqu'à être libéré ou réussir à briser / crocheter ses liens."
+   },
+   "Dissimulé / Caché": {
+    "etat": "Dissimulé / Caché",
+    "description": "Hors de vue derrière un couvert, dans la pénombre, un écran de fumée ou grâce à une réussite en Discrétion / camouflage.",
+    "bonus": "Impossible à cibler par une attaque directe tant que l'ennemi ne t'a pas repéré (Observation ou Écoute opposé à ta Discrétion). Ta première attaque depuis la cachette prend la cible par surprise (Défense Passive à 0, Livre V §20.2).",
+    "duree": "Jusqu'à être repéré, attaquer ou sortir à découvert."
+   },
+   "Assourdi": {
+    "etat": "Assourdi",
+    "description": "Tympans saturés par une détonation, un coup violent, un bruit assourdissant ou un effet sonique.",
+    "malus": "Épreuves d'Écoute impossibles : tu n'entends ni les ordres, ni les avertissements, ni les menaces hors champ de vision. -2 en Observation contre toute approche ou embuscade hors de ton champ de vue.",
+    "duree": "Variable selon les circonstances."
+   },
+   "Somnolent": {
+    "etat": "Somnolent",
+    "description": "24 h sans dormir : fatigue nerveuse et baisse de vigilance installées (3 phases progressives).",
+    "malus": "Niveau 1 (24 h sans dormir) : -1 ec à tous les jets. Niveau 2 (48 h) : -2 ec à tous les jets et aucune guérison de dégâts ni récupération d'Essoufflement hors sommeil complet. Niveau 3 (72 h et plus) : -3 ec à tous les jets, hallucinations et micro-sommeils : toutes les 6 h, ainsi qu'à la fin de chaque combat, épreuve d'Endurance Physique (Difficulté 4, puis +1 toutes les 6 h), ou tu tombes Inconscient (sommeil forcé).",
+    "duree": "Jusqu'à dormir (un cycle de sommeil complet de 6 à 8 h enlève 1 niveau ; 2 nuits de repos lèvent tout)."
+   },
+   "Surpris": {
+    "etat": "Surpris",
+    "description": "Pris de court par une embuscade, un tireur caché, un piège ou une attaque totalement inattendue.",
+    "malus": "Aucune réaction possible face à l'attaque qui déclenche la surprise : ta défense tombe automatiquement à 0 (Défense Passive imposée, Livre V §20.2). En ouverture de combat, la surprise ne peut se déclencher qu'une seule fois par combat, offrant un seul tour complet avant l'initiative (Livre V §20) ; au jet d'initiative qui suit, tous les combattants démarrent avec leurs PA pleins, sauf une créature ayant bénéficié de cette surprise qui ne récupère pas ses PA avant le début de son tour d'initiative.",
+    "duree": "Jusqu'à la résolution de l'instant qui déclenche la surprise (se dissipe aussitôt après ; toute attaque suivante dans le même tour est défendue normalement)."
    }
   },
   "etats_dot": [
    {
     "etat": "Saignement",
     "tick": "Valeur résiduelle en dégâts directs (ignore armure et bouclier), puis −1/tour. Sans valeur posée : 1 dégât/tour. Ex : Frappe Jugulaire = entraînements en résiduels.",
-    "soin": "Tout soin stoppe : bandage, seringue, premiers soins, Homéostasie. Sinon persiste jusqu'à 0."
+    "soin": "Tout soin l'arrête : bandage, seringue, premiers soins, Homéostasie. Sinon persiste jusqu'à 0."
    },
    {
     "etat": "Empoisonné",
@@ -1025,32 +1151,38 @@
    {
     "etat": "Survolté",
     "description": "Afflux massif d'adrénaline ou stimulation nerveuse arcanique.",
-    "bonus": "+1 ec sur tous les tests, +3 PA supplémentaires par tour !",
-    "duree": "1 à 5 tours en combat."
+    "bonus": "+1 ec sur tous les jets, +3 PA supplémentaires par tour !",
+    "duree": "Variable selon les circonstances."
    },
    {
     "etat": "En transe",
     "description": "Harmonie synaptique parfaite, perception en temps ralenti.",
     "bonus": "+2 ec sur tous les jets, +5 PA par tour !",
-    "duree": "Court (1 à 2 tours en combat)."
+    "duree": "Variable selon les circonstances."
    },
    {
     "etat": "Accéléré",
     "description": "Distorsion spatiale ou propulsion cinétique des membres.",
     "bonus": "Toute action de déplacement coûte la MOITIÉ des PA (arrondi au supérieur). Annule et est annulé par Ralenti sur le coût de déplacement.",
-    "duree": "1 à 2 tours en combat."
+    "duree": "Variable selon les circonstances."
    },
    {
     "etat": "Rapide",
     "description": "Foulée amplifiée et réflexes moteurs aiguisés.",
     "bonus": "+3 PA réservés exclusivement aux déplacements à chaque tour.",
-    "duree": "1 à 6 tours en combat."
+    "duree": "Variable selon les circonstances."
    },
    {
     "etat": "Lévitation / En Vol",
     "description": "Répulsion gravitationnelle de Cinquième Force.",
     "bonus": "Déplacement aérien libre, coût de déplacement réduit de moitié (-1 ec si le sujet n'a pas la spécialisation Aérien ou Acrobate).",
     "duree": "Variable selon la réserve d'énergie."
+   },
+   {
+    "etat": "Dissimulé / Caché",
+    "description": "Hors de vue derrière un couvert, dans la pénombre, un écran de fumée ou grâce à une réussite en Discrétion / camouflage.",
+    "bonus": "Impossible à cibler par une attaque directe tant que l'ennemi ne t'a pas repéré (Observation ou Écoute opposé à ta Discrétion). Ta première attaque depuis la cachette prend la cible par surprise (Défense Passive à 0, Livre V §20.2).",
+    "duree": "Jusqu'à être repéré, attaquer ou sortir à découvert."
    }
   ],
   "statuts_vitaux": [
@@ -1074,7 +1206,7 @@
     "consequence": "La cible est repoussée d'autant de cases que le différentiel (max 1 case par niveau d'entraînement)."
    },
    {
-    "effet": "Refoulement (Push-Kick)",
+    "effet": "Refoulement",
     "prerequis": "Arts Martiaux au contact + Choc (> CON × 2), Critique ou Diff ≥ 4",
     "consequence": "La cible est repoussée d'1 case en arrière (Distance = 2), brisant l'état Canon Entravé. Si la trajectoire est bloquée par un obstacle, la cible subit l'état Déstabilisé."
    },
@@ -1120,8 +1252,8 @@
     "texte": "Parfait État : L'objet est totalement neuf ou réparé à 100%. Rendement maximal. Endommagé : L'objet a encaissé des impacts ou de l'usure, mais conserve toutes ses fonctions nominales."
    },
    {
-    "etat": "Jammé, Détruit & Anéanti Hors-Service",
-    "texte": "Jammé (Enrayé) : Inutilisable temporairement, mais réparable sur le terrain en dépensant 2 PA. Détruit : En morceaux et inutilisable, mais restaurable en atelier avec pièces de rechange. Anéanti : Totalement pulvérisé, irrécupérable et irréparable."
+    "etat": "Enrayé, Détruit & Anéanti Hors-Service",
+    "texte": "Enrayé : Inutilisable temporairement, mais réparable sur le terrain en dépensant 2 PA. Détruit : En morceaux et inutilisable, mais restaurable en atelier avec pièces de rechange. Anéanti : Totalement pulvérisé, irrécupérable et irréparable."
    }
   ],
   "recuperation_quotidienne": {
@@ -1216,7 +1348,7 @@
     "stade": 3,
     "nom": "Grave",
     "duree": "1–3 jours",
-    "effets": "Agonisant partiel (fuite impossible, prostré) ou À terre ; DoT aggravé (+1/tour) ; statut Souffrant (levée : n'importe quel soin, §24.5)"
+    "effets": "Agonisant (prostré) ou À terre ; DoT aggravé (+1/tour) ; statut Souffrant (levée : n'importe quel soin, §24.5)"
    },
    {
     "stade": 4,

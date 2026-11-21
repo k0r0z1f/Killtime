@@ -1,6 +1,6 @@
 {
  "version": 3,
- "updated": "2026-11-18",
+ "updated": "2026-11-20",
  "activeId": "board-revue-rp",
  "boards": [
   {
@@ -389,7 +389,7 @@
      "id": "RP-026",
      "title": "Relire chap. 24. Compendium des 18 États & Effets",
      "epic": "Livre VI — Santé & États",
-     "status": "todo",
+     "status": "in_progress",
      "priority": "high",
      "order": 5,
      "scene": "",
@@ -398,7 +398,8 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_6.html#chap-24",
-     "details": "Vérification humaine — livre_6.html#chap-23. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici. MAJ 2026-11-07 — titre corrigé (chap. 26→24 après renumérotation ; 16→18 États, intitulé canon). | Note 2026-11-18 : anticipation sur §24.5 (Inconscient lâche immédiatement tout ce qu'il tient en main) et §24.6 (lien #sec-24-5 sur Assommer) posée lors de RP-025."
+     "updated": "2026-11-20",
+     "details": "Vérification humaine — livre_6.html#chap-24. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici. MAJ 2026-11-07 — titre corrigé (chap. 26→24 après renumérotation ; 16→18 États, intitulé canon). | Note 2026-11-18 : anticipation sur §24.5 (Inconscient lâche immédiatement tout ce qu'il tient en main) et §24.6 (lien #sec-24-5 sur Assommer) posée lors de RP-025. | §24.1 FAIT (2026-11-20) : 18 états préjudiciables réordonnés du moins contraignant au plus contraignant (Canon Entravé → Agonisant), intro chap-24/bloc-00.md alignée sur « dix-huit états ». Scission d'À terre en Accroupi et À terre (allongé) + sync de 69 infobulles À Terre dans Livres I–VI. Séparation Paniqué (fuite 6 cases 1d8, parade −2, pièce O27 renommée dans Livre III) et Agonisant (Agonie critique au début de chaque tour + Dernier Souffle, stabilisation Premiers Soins Diff 6). Nettoyage rédactionnel de Ralenti, Immobilisé, Sonné (tombe immédiatement À Terre, parade −2, harmonisé avec Livre V §20.2) et Paralysé (Défense Passive imposée), durées uniformisées (« Variable selon les circonstances. »). Ajouts : Assourdi, Somnolent (3 phases 24 h / 48 h / 72 h+, test toutes les 6 h et fin de combat), Ligoté, Surpris (règle d'ouverture Livre V §20). Ivre / Intoxiqué reporté vers RP-208 ; propriétés d'armes (Arme de jet, etc.) reportées vers RP-209. Anticipations déjà posées sur §24.3 (Affamé/Assoiffé, RP-213) et §24.4 (durées + Dissimulé / Caché, RP-213). Reste à relire §24.2–§24.6 pour clore RP-026."
     },
     {
      "id": "RP-027",
@@ -2249,7 +2250,7 @@
      "id": "RP-150",
      "title": "Corriger RP-026 (titre 16→18 États + ancre)",
      "epic": "Livre VI — Santé & États",
-     "status": "todo",
+     "status": "done",
      "priority": "low",
      "order": 149,
      "scene": "",
@@ -2258,7 +2259,8 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_6.html#chap-24",
-     "details": "Hygiène kanban (constat 2026-11-05) : RP-026 titre « 16 États » vs contenu réel « 18 États » (data/livre_6.json, §24.3 RP-125) ; details pointant livre_6.html#chap-23 au lieu de #chap-24. Corriger titre + ancre. DONE = RP-026 exact."
+     "updated": "2026-11-20",
+     "details": "Hygiène kanban (constat 2026-11-05) : RP-026 titre « 16 États » vs contenu réel « 18 États » (data/livre_6.json, §24.3 RP-125) ; details pointant livre_6.html#chap-23 au lieu de #chap-24. Corriger titre + ancre. DONE = RP-026 exact. | FAIT 2026-11-20 : titre RP-026 déjà à « 18 États » et ancre dans details corrigée (livre_6.html#chap-23 → livre_6.html#chap-24)."
     },
     {
      "id": "RP-151",
@@ -3146,8 +3148,104 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_6.html#chap-23",
-     "updated": "2026-11-18",
-     "details": "Issu de RP-206 (2026-11-14) — Notes & conseils à trancher/intégrer hors Livre V : (1) Affiner si besoin la synergie avec les spécialisations de visée chirurgicale du Livre III (Frappe Jugulaire, Lame rapide, etc.). (2) Préciser sur les armes/types de dégâts (Livre VI/VIII) la cohérence type de dégâts × point vital (Tranchant/Perforant pour Saignements artériels/abdomen ; Contondant/Mains nues pour Crâne, Plexus, Genou, Périnée). (3) Fiche PJ (fiche_pj.html) : ajouter une mini-silhouette à 6 zones pour suivre les dégâts cumulés vers CON×2 (§23) — effets des zones (> CON×2) et rejet de la main directrice déjà tranchés le 2026-11-18 dans RP-025 (Bras inutilisable, Jambe Ralenti, Souffrant levé par tout soin). (4) Cohérence inter-livres & code : aligner effets_epreuve du Livre VI (Assommer, Désarmer, Saigner), vérifier le seuil Premiers Soins Difficulté 12 dans Livre VI §25.1 vs l'échelle 0–34 du Livre II §7.1 (voir RP-027 / RP-177), et synchroniser KilltimeTactics/Assets/Scripts/Core/Combat/CombatProgressionService.cs (anciennes chaînes de déviation médicale)."
+     "updated": "2026-11-20",
+     "details": "Issu de RP-206 (2026-11-14) — Notes & conseils à trancher/intégrer hors Livre V : (1) Affiner si besoin la synergie avec les spécialisations de visée chirurgicale du Livre III (Frappe Jugulaire, Lame rapide, etc.). (2) Préciser sur les armes/types de dégâts (Livre VI/VIII) la cohérence type de dégâts × point vital (Tranchant/Perforant pour Saignements artériels/abdomen ; Contondant/Mains nues pour Crâne, Plexus, Genou, Périnée). (3) Fiche PJ (fiche_pj.html) : ajouter une mini-silhouette à 6 zones pour suivre les dégâts cumulés vers CON×2 (§23) — effets des zones (> CON×2) et rejet de la main directrice déjà tranchés le 2026-11-18 dans RP-025 (Bras inutilisable, Jambe Ralenti, Souffrant levé par tout soin). (4) Cohérence inter-livres & code : aligner effets_epreuve du Livre VI (Assommer, Désarmer, Saigner), seuil Premiers Soins Difficulté 12 → 6 tranché et appliqué dans tout le Livre VI (§23.2, §24.1, §25.1, §26) le 2026-11-20 (RP-212), et synchroniser KilltimeTactics/Assets/Scripts/Core/Combat/CombatProgressionService.cs (anciennes chaînes de déviation médicale)."
+    },
+    {
+     "id": "RP-208",
+     "title": "Table de création de drogues, alcools et stupéfiants (Livre VI / VIII)",
+     "epic": "Livre VI — Santé & États",
+     "status": "todo",
+     "priority": "low",
+     "order": 205,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "livre_6.html#chap-26",
+     "updated": "2026-11-20",
+     "details": "Concevoir une table générative de drogues, alcools, stimulants et stupéfiants (sur le modèle du générateur de pathologies du Livre VI §26, relié à la pharmacopée Livre VIII §33.3) : nature de la substance, vecteur/dose, effets positifs et négatifs en vocabulaire système (bonus PA/+ec, malus de coordination/jugement, accoutumance, redescente, surdose, antidotes) et état dédié si nécessaire (Ivre / Intoxiqué retiré de §24.1 en attendant cette table)."
+    },
+    {
+     "id": "RP-209",
+     "title": "Propriétés d'armes : Arme de jet et traits tactiques (Livre VIII)",
+     "epic": "Livre VIII — Arsenal",
+     "status": "todo",
+     "priority": "medium",
+     "order": 206,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "livre_8.html#chap-31",
+     "updated": "2026-11-20",
+     "details": "Définir un système de propriétés d'armes dans le Livre VIII (§31–§32, en lien avec le code DLPH et les compétences Livre III) : ajouter la propriété « Arme de jet » (grenades, dagues/couteaux de lancer, javelots, hachettes, projectiles lancés à la main — portée de lancer, compétence associée, lien avec les malus d'Accroupi et À terre en Livre VI §24.1) ainsi que les autres propriétés tactiques nécessaires à l'arsenal (ex. Allonge, Silencieuse, Perforante, Zone, Dissimulable, Rechargement, Polyvalente, Non létale, etc.), puis catégoriser les armes existantes et ajouter d'éventuelles armes de jet dédiées."
+    },
+    {
+     "id": "RP-210",
+     "title": "Purge globale « hexagone » → « case » (Livres IV et VI)",
+     "epic": "Livre IV — 5e Force & Magie",
+     "status": "done",
+     "priority": "medium",
+     "order": 207,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "livre_4.html#chap-18",
+     "updated": "2026-11-20",
+     "details": "FAIT 2026-11-20 — Remplacement exhaustif de toutes les occurrences d'« hexagone(s) » par « case(s) » (avec accords FR) dans content/livre_4/sections/chap-18/bloc-04.md (1), data/livre_4.json (53, recompilé + donnees/mecaniques) et data/livre_6.json (3). Vérification transversale : 0 occurrence restante dans content/, data/livre_*.json et livre_*.html."
+    },
+    {
+     "id": "RP-211",
+     "title": "Surprise d'ouverture & remplissage initial des PA à l'initiative (Livres I, V et VI)",
+     "epic": "Livre V — Combat Tactique",
+     "status": "done",
+     "priority": "high",
+     "order": 208,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "livre_5.html#chap-20",
+     "updated": "2026-11-20",
+     "details": "FAIT 2026-11-20 — Formalisation de la surprise d'ouverture (version cinématique) et du remplissage initial des PA au début du combat dans Livre I (§4 chap-4/bloc-02.md exemple Roger, §4.3 chap-4/bloc-09.md), Livre V (§20 Séquence Fondamentale chap-20/bloc-00.md + lien §20.2 Défense Passive) et Livre VI (§24.1 Surpris, donnees/mecaniques). Règles gravées : (1) la surprise ne peut se déclencher qu'une seule fois par combat, offrant un seul tour complet avant l'initiative (formulation discrète sur « l'instant qui déclenche la surprise », laissant subtilement la porte ouverte aux attaques synchronisées sans le spoiler) ; (2) seul cet instant inflige Surpris (Défense Passive à 0), puis l'état se dissipe ; (3) au jet d'initiative qui suit, tous les combattants démarrent avec leurs PA pleins et leur réaction libre (comme en début de tour), sauf une créature ayant bénéficié de la surprise qui ne récupère pas ses PA avant le début de son tour d'initiative."
+    },
+    {
+     "id": "RP-212",
+     "title": "Stabilisation Premiers Soins (Diff 12 → 6) & seuil Dernier Souffle (Essoufflement > CON)",
+     "epic": "Livre VI — Santé & États",
+     "status": "done",
+     "priority": "high",
+     "order": 209,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "livre_6.html#chap-25",
+     "updated": "2026-11-20",
+     "details": "FAIT 2026-11-20 — (1) Abaissement du seuil de stabilisation d'un Agonisant via Premiers Soins (3 PA) de Difficulté 12 (Prodigieux) à Difficulté 6 (Extrêmement Difficile, cohérent avec l'échelle Livre II §7.1) dans tout le Livre VI : content/livre_6/sections/chap-23/bloc-06.md (§23.2), chap-25/bloc-00.md (§25.1), chap-26/bloc-00.md, data/livre_6.json (donnees/mecaniques Agonisant, stades_maladie, maladies_exemples) ; diagnostic de maladie dif. 8–12 en §26.4 conservé. (2) Correction du seuil de mort en Dernier Souffle (Essoufflement = CON → Essoufflement > CON, « dépasse votre/ta Constitution ») dans Livre I §4.1 (chap-4/bloc-03.md) et Livre VI (§23.2, §24.1 Agonisant)."
+    },
+    {
+     "id": "RP-213",
+     "title": "Refonte Faim & Soif (Affamé / Assoiffé en 3 phases + mort niv. 4) & §24.4 Dissimulé / Caché",
+     "epic": "Livre VI — Santé & États",
+     "status": "done",
+     "priority": "high",
+     "order": 210,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "livre_6.html#sec-24-3",
+     "updated": "2026-11-20",
+     "details": "FAIT 2026-11-20 — (1) Renommage Privation → Assoiffé, suppression du déclencheur « à l'aube » et de la mention Cléien dans le tableau §24.1 (conservée en §24.3). Recalibrage réaliste en 3 phases + mort au niveau 4 : Affamé (48 h −1 ec / 1 sem. −2 ec + guérison nuit sûre réduite de moitié / 2 sem. −3 ec + 0 guérison + 1 dégât direct/jour / 3 sem. Mort ; soin 1 ration/jour = −1 niveau) et Assoiffé (24 h −1 ec / 48 h −2 ec + aucune guérison ni récup Essoufflement / 72 h −3 ec + Ralenti + 2 dégâts directs/jour / 4 jours Mort ; soin 2 L = −1 niveau immédiat 1 fois max avant repos, puis cycle de sommeil lève le reste). Mise en forme <br> sans abréviations télégraphiques dans data/livre_6.json, chap-24/bloc-04.md et chap-25/bloc-00.md. (2) Uniformisation des durées d'états de combat en §24.1 et §24.4 (« Variable selon les circonstances. ») et ajout de Dissimulé / Caché en §24.4 (donnees + mecaniques, 6 états bénéfiques)."
     }
    ]
   }

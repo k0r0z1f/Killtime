@@ -38,7 +38,7 @@ livre: 4
                             data-tip="Offensif — Tu exploses : 12 dégâts absolus dans un rayon de 2 cases (§19.4)">Nova
                             Thermique</a>,
                         il te faut <a class="rule-ref" href="#sec-19-4"
-                            data-tip="Offensif — Ton souffle embrase un cône de 3 hexagones adjacents (§19.4)">Fournaise
+                            data-tip="Offensif — Ton souffle embrase un cône de 3 cases adjacentes (§19.4)">Fournaise
                             Déferlante</a> avant. Le détail est au
                         <a class="rule-ref" href="#sec-19-4"
                             data-tip="Compendium : chaque ligne est une spécialisation à acheter, même tarif qu'au Livre III (§19.4).">§19.4</a>.
