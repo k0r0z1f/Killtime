@@ -92,15 +92,7 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <h3 id=\"sec-24-5\">24.5 Les Effets Spéciaux Déclenchés sur Épreuve</h3>\n                    "
-    },
-    {
-     "type": "ref",
-     "cible": "effets_epreuve"
-    },
-    {
-     "type": "html",
-     "html": "\n\n                    <h3 id=\"sec-24-6\">24.6 Les 5 États des Objets & Équipements</h3>\n                    "
+     "html": "\n\n                    <h3 id=\"sec-24-5\">24.5 Les 5 États des Objets & Équipements</h3>\n                    "
     },
     {
      "type": "ref",
@@ -414,7 +406,7 @@
    "lignes": [
     [
      "<span class=\"table-badge ruby\">Saignement</span>",
-     "Si la victime effectue une <a class=\"rule-ref\" href=\"livre_5.html#sec-21-1\" data-tip=\"Course &amp; Poursuite : action principale à 4 PA, +30 cases/tour (Livre V §21.1).\">Course</a>, une <a class=\"rule-ref\" href=\"livre_5.html#sec-20-8\" data-tip=\"Charge d'Assaut : élan offensif au contact (Livre V §20.8).\">Charge</a> ou dépense de l'<a class=\"rule-ref\" href=\"livre_1.html#sec-4-2\" data-tip=\"Essoufflement : 1 point = des PA d'urgence ; ne part pas tout seul, action dédiée pour souffler (Livre I §4.2).\">Essoufflement</a> pendant son tour, la plaie ne coagule pas : au début de son tour suivant, elle subit les dégâts normalement mais le score ne baisse pas.",
+     "Si la victime effectue une <a class=\"rule-ref\" href=\"livre_5.html#sec-21-1\" data-tip=\"Course &amp; Poursuite : action principale à 4 PA, +30 cases/tour (Livre V §21.1).\">Course</a>, une <a class=\"rule-ref\" href=\"livre_5.html#sec-20-9\" data-tip=\"Charge d'Assaut : élan offensif au contact (Livre V §20.9).\">Charge</a> ou dépense de l'<a class=\"rule-ref\" href=\"livre_1.html#sec-4-2\" data-tip=\"Essoufflement : 1 point = des PA d'urgence ; ne part pas tout seul, action dédiée pour souffler (Livre I §4.2).\">Essoufflement</a> pendant son tour, la plaie ne coagule pas : au début de son tour suivant, elle subit les dégâts normalement mais le score ne baisse pas.",
      "<strong>Tout soin l'arrête</strong> : bandage, <a class=\"rule-ref\" href=\"livre_8.html#chap-33\" data-tip=\"Seringues de soins : 1 PA, retirent −5 à −20 dégâts et arrêtent le Saignement (Livre VIII §33.3).\">seringue</a>, premiers soins, magie curative.\n                                        Sinon persiste jusqu'à 0."
     ],
     [
@@ -518,62 +510,6 @@
      "pieds": []
     }
    ]
-  },
-  "effets_epreuve": {
-   "type": "table",
-   "colonnes": [
-    "Effet Déclenché",
-    "Prérequis & Différentiel",
-    "Conséquence Immédiate sur la Cible"
-   ],
-   "lignes": [
-    [
-     "<strong>Repousser</strong>",
-     "Différentiel de 1+ en corps-à-corps ou magie",
-     "La cible est repoussée d'autant de cases que le différentiel (max 1 case par\n                                        niveau d'entraînement)."
-    ],
-    [
-     "<strong>Refoulement</strong>",
-     "<a class=\"rule-ref\" href=\"livre_5.html#sec-22-2\" data-tip=\"Arts Martiaux — Refoulement : sur choc (> CON×2), critique ou diff ≥ 4, repousse d'1 case et Déstabilise si obstacle (Livre V §22.2).\">Arts Martiaux</a> au contact + <a class=\"rule-ref\" href=\"#sec-23-encaissement\" data-tip=\"Choc Traumatique : déclenché dès que les dégâts d'une zone dépassent CON×2 (§23).\">Choc (&gt; CON &times; 2)</a>, <a class=\"rule-ref\" href=\"livre_2.html#chap-9\" data-tip=\"Critique : dé au maximum (6 sur d6, 8 sur d8) — second jet sur la table (Livre II §9.1).\">Critique</a> ou Diff &ge; 4",
-     "La cible est repoussée d'1 case en arrière (Distance = 2), brisant l'état <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"Canon Entravé : arme longue + ennemi adjacent = −2 au tir (annulable pour +1 PA de visée).\">Canon Entravé</a>. Si la trajectoire est bloquée par un obstacle, la cible subit l'état <a class=\"rule-ref\" href=\"#sec-24-1\" data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (+1 PA/case, non cumulatif avec À Terre pour ramper).\">Déstabilisé</a>."
-    ],
-    [
-     "<strong>Attirer</strong>",
-     "Différentiel de 1+ avec grappin ou télékinésie",
-     "La cible est attirée vers l'origine d'autant de cases que le différentiel ou\n                                        l'entraînement."
-    ],
-    [
-     "<strong>Saigner</strong>",
-     "Différentiel de 5+ avec arme tranchante/perforante",
-     "Inflige des <strong>dégâts résiduels</strong> continus égaux au niveau\n                                        d'entraînement à chaque tour."
-    ],
-    [
-     "<strong>Brûler</strong>",
-     "Différentiel de 5+ avec feu ou plasma",
-     "La cible prend feu et subit des dégâts de brûlure pendant 1 à 3 tours\n                                        consécutifs."
-    ],
-    [
-     "<strong>Désarmer</strong>",
-     "Différentiel de 5+ et 3 entraînements martiaux",
-     "L'arme tenue par la cible vole à 2 cases d'elle au sol."
-    ],
-    [
-     "<strong>Assommer</strong>",
-     "Différentiel de 10+ et <a class=\"rule-ref\" href=\"livre_5.html#sec-22-1\" data-tip=\"Visée Niveau 2 (point vital Tête/Crâne) : malus de visée ciblée pour frapper un point vital (Livre V §22.1).\">visée crânienne (niveau 2)</a>",
-     "La cible bascule immédiatement dans l'état <a class=\"rule-ref\" href=\"#sec-24-4\" data-tip=\"Inconscient : lâche ce qu'il tient en main ; aucune action ni réaction. Réveil : secousse (1 PA) ou premiers soins.\"><strong>Inconscient</strong></a> pour 1\n                                        tour minimum."
-    ],
-    [
-     "<strong>Posséder</strong>",
-     "Différentiel de 10+ en <a class=\"rule-ref\" href=\"livre_3.html#chap-11\" data-tip=\"Magie de l'Esprit (MAG, INT) : Télékinésie, Télépathie, Clairvoyance (Livre III §11, Livre IV §18.1).\">Magie de l'Esprit</a>",
-     "Prend le contrôle des actions de la créature pendant 1 tour. Amnésie totale de\n                                        la victime."
-    ],
-    [
-     "<strong>Désintégrer</strong>",
-     "Différentiel de 20+ et Spécialisation <a class=\"rule-ref\" href=\"livre_4.html#sec-19-4\" data-tip=\"Destruction (Magie Primale) : voie offensive de Cinquième Force (Livre IV §19.4).\">Destruction</a> 6",
-     "<strong>Mort instantanée et totale :</strong> la matière de la cible est\n                                        vaporisée sans laisser de dépouille."
-    ]
-   ],
-   "classe": "data-table"
   },
   "etats_objets": {
    "type": "cartes",
@@ -778,13 +714,6 @@
     "Description",
     "Bonus & Avantages Tactiques",
     "Durée Typique"
-   ]
-  },
-  "effets_epreuve": {
-   "colonnes": [
-    "Effet Déclenché",
-    "Prérequis & Différentiel",
-    "Conséquence Immédiate sur la Cible"
    ]
   },
   "agents_pathogenes": {
@@ -1215,53 +1144,6 @@
    {
     "statut": "Mort Trépas Clinique",
     "texte": "La conscience a quitté la chair (Seuil Létal §23.2, sauf dépense d'un Point de Miracle §23.3). Le sujet est hors jeu : il lâche ce qu'il tient en main et ne peut plus effectuer aucune action ni réaction. Seules certaines spécialisations, technologies ou méthodes arcaniques peuvent le ramener à la vie, selon la règle de résurrection (§25.3 : −1 ec sur toutes les épreuves pendant 10 − CON jours)."
-   }
-  ],
-  "effets_epreuve": [
-   {
-    "effet": "Repousser",
-    "prerequis": "Différentiel de 1+ en corps-à-corps ou magie",
-    "consequence": "La cible est repoussée d'autant de cases que le différentiel (max 1 case par niveau d'entraînement)."
-   },
-   {
-    "effet": "Refoulement",
-    "prerequis": "Arts Martiaux au contact + Choc (> CON × 2), Critique ou Diff ≥ 4",
-    "consequence": "La cible est repoussée d'1 case en arrière (Distance = 2), brisant l'état Canon Entravé. Si la trajectoire est bloquée par un obstacle, la cible subit l'état Déstabilisé."
-   },
-   {
-    "effet": "Attirer",
-    "prerequis": "Différentiel de 1+ avec grappin ou télékinésie",
-    "consequence": "La cible est attirée vers l'origine d'autant de cases que le différentiel ou l'entraînement."
-   },
-   {
-    "effet": "Saigner",
-    "prerequis": "Différentiel de 5+ avec arme tranchante/perforante",
-    "consequence": "Inflige des dégâts résiduels égaux au niveau d'entraînement à chaque tour."
-   },
-   {
-    "effet": "Brûler",
-    "prerequis": "Différentiel de 5+ avec feu ou plasma",
-    "consequence": "La cible prend feu et subit des dégâts de brûlure pendant 1 à 3 tours consécutifs."
-   },
-   {
-    "effet": "Désarmer",
-    "prerequis": "Différentiel de 5+ et 3 entraînements martiaux",
-    "consequence": "L'arme tenue par la cible vole à 2 cases d'elle au sol."
-   },
-   {
-    "effet": "Assommer",
-    "prerequis": "Différentiel de 10+ et visée crânienne (niveau 2)",
-    "consequence": "La cible bascule immédiatement dans l'état Inconscient pour 1 tour minimum."
-   },
-   {
-    "effet": "Posséder",
-    "prerequis": "Différentiel de 10+ en Magie de l'Esprit",
-    "consequence": "Prend le contrôle des actions de la créature pendant 1 tour. Amnésie totale de la victime."
-   },
-   {
-    "effet": "Désintégrer",
-    "prerequis": "Différentiel de 20+ et Spécialisation Destruction 6",
-    "consequence": "Mort instantanée et totale : la matière de la cible est vaporisée sans laisser de dépouille."
    }
   ],
   "etats_objets": [

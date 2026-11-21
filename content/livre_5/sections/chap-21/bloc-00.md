@@ -16,7 +16,7 @@ livre: 5
                         Tu veux semer un ou plusieurs ennemis ? Ce n'est pas juste courir.
                         <strong>Prérequis &amp; départ :</strong> aucun poursuivant à moins de <strong>4 cases (6 m)</strong>
                         (romps d'abord la mêlée selon le
-                        <a class="rule-ref" href="#sec-20-5" data-tip="Opportunité : quitter le contact expose à frappe, poursuite, blocage ou balayage (§20.5).">§20.5</a>).
+                        <a class="rule-ref" href="#sec-20-6" data-tip="Opportunité : quitter le contact expose à frappe, poursuite, blocage ou balayage (§20.6).">§20.6</a>).
                         La poursuite démarre toujours à <strong>4 cases d'écart</strong>.
                         Elle se joue <strong>dans l'ordre d'initiative normal</strong> : fuir ou poursuivre
                         coûte ton <strong>action principale du tour (4 <a class="rule-ref" href="livre_1.html#chap-4" data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a>)</strong> et remplace tout autre déplacement ce
