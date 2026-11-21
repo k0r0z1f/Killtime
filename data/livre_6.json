@@ -498,15 +498,15 @@
      "top": false,
      "monde": "Statut Pur // Syncope / Sommeil",
      "corps_attrs": " style=\"font-size: 0.9em; margin-top: 10px;\"",
-     "corps_html": "La créature est endormie ou assommée : elle <strong>lâche immédiatement tout ce qu'elle tient en main</strong> (arme, bouclier ou objet tombent au sol ; ramasser coûte 1 PA) et ne peut effectuer aucune action ni réaction.\n                                Elle peut être réveillée par une secousse vigoureuse (1 PA d'un allié) ou par\n                                l'application de premiers soins. Frappé pendant ce temps ? Ton attaquant inflige les dégâts maximum, sans jet (<a class=\"rule-ref\" href=\"livre_5.html#sec-20-2-cibles\" data-tip=\"Cible hors d'état de se défendre : Inconscient = dégâts max sans jet, Paralysé = Passive 0 imposée, Sonné = −2 à terre (Livre V §20.2).\">Livre V §20.2</a>).",
+     "corps_html": "La créature est endormie ou assommée : elle <strong>lâche immédiatement tout ce qu'elle tient en main</strong> (arme, bouclier ou objet tombent au sol) et ne peut effectuer aucune action ni réaction.\n                                Elle peut être réveillée par une secousse vigoureuse (1 PA d'un allié) ou par\n                                l'application de premiers soins. Toute attaque portée contre elle dans cet état inflige les dégâts maximum, sans jet (<a class=\"rule-ref\" href=\"livre_5.html#sec-20-2-cibles\" data-tip=\"Cible hors d'état de se défendre : Inconscient = dégâts max sans jet, Paralysé = Passive 0 imposée, Sonné = −2 à terre (Livre V §20.2).\">Livre V §20.2</a>).",
      "pieds": []
     },
     {
      "titre": "<span>Souffrant</span>\n                                <span class=\"pill-badge ruby\">Blessure Grave</span>",
      "top": false,
-     "monde": "Statut Pur // Traumatisme Ouvert",
+     "monde": "Statut Pur // Choc Traumatique",
      "corps_attrs": " style=\"font-size: 0.9em; margin-top: 10px;\"",
-     "corps_html": "Le personnage souffre d'une blessure critique ou d'un traumatisme ouvert. <strong>Tout soin lève immédiatement l'état Souffrant</strong> (Premiers Soins, bandage, seringue ou magie curative, <a class=\"rule-ref\" href=\"#chap-25\" data-tip=\"Premiers Soins : 3 PA au chevet, ou tout soin actif (bandage, seringue, magie) pour lever Souffrant (§25.1).\">§25.1</a>).",
+     "corps_html": "Statut déclenché sur échec d'un <a class=\"rule-ref\" href=\"#sec-23-encaissement\" data-tip=\"Choc Traumatique : si les dégâts cumulés d'une zone dépassent CON×2, épreuve gratuite d'Endurance Physique (Diff 3 + 1/dégât en trop) sinon effet dédié + Souffrant (§23).\">Choc Traumatique</a>, sur choc d'un <a class=\"rule-ref\" href=\"livre_5.html#sec-22-1\" data-tip=\"Visée Niveau 2 : points vitaux (Cœur, Abdomen/Viscères posent Souffrant sur choc > CON×2) (Livre V §22.1).\">point vital</a> ou par une <a class=\"rule-ref\" href=\"#chap-26\" data-tip=\"Pathologies : une maladie au stade 3 (Grave) peut poser le statut Souffrant (§26.3).\">pathologie grave</a>. Tant que <strong>Souffrant</strong> est actif, l'effet de la zone traumatisée persiste et une nuit de repos ne le lève jamais (<a class=\"rule-ref\" href=\"#chap-25\" data-tip=\"Convalescence (§25.2) : une nuit sûre (6–8 h) efface CON dégâts mais ne lève jamais Souffrant.\">§25.2</a>). <strong>Tout soin actif lève immédiatement l'état Souffrant</strong> et l'effet de la zone (Premiers Soins, bandage, <a class=\"rule-ref\" href=\"livre_8.html#chap-33\" data-tip=\"Seringues de soins : 1 PA, retirent −5 à −20 dégâts mais ne guérissent pas les maladies (Livre VIII §33.3).\">seringue</a> ou magie curative, <a class=\"rule-ref\" href=\"#chap-25\" data-tip=\"Premiers Soins : 3 PA au chevet, ou tout soin actif (bandage, seringue, magie) pour lever Souffrant (§25.1).\">§25.1</a>).",
      "pieds": []
     },
     {
@@ -514,7 +514,7 @@
      "top": false,
      "monde": "Statut Pur // Arrêt Métabolique",
      "corps_attrs": " style=\"font-size: 0.9em; margin-top: 10px;\"",
-     "corps_html": "La conscience a quitté la chair. Le sujet ne peut plus agir à moins d'un rituel\n                                arcanique de rappel de l'âme ou d'une défibrillation chirurgicale dans les 10 tours\n                                suivant le décès.",
+     "corps_html": "La conscience a quitté la chair (<a class=\"rule-ref\" href=\"#sec-23-2\" data-tip=\"Seuil Létal (CON×5) : arbre de résolution entre Mort, Inconscient, Sombrer ou Dernier Souffle (§23.2).\">Seuil Létal</a>, sauf dépense d'un <a class=\"rule-ref\" href=\"#sec-23-3\" data-tip=\"Point de Miracle : dévie un coup mortel, tu échappes à la mort (Inconscient, À Terre). Rachat : 20 XP ou jalon MJ.\">Point de Miracle</a>). Le sujet est hors jeu : il lâche ce qu'il tient en main et ne peut plus effectuer aucune action ni réaction. Seules certaines spécialisations, technologies ou méthodes arcaniques peuvent le ramener à la vie, selon la <a class=\"rule-ref\" href=\"#chap-25\" data-tip=\"Résurrection (§25.3) : séquelle post-mortem de −1 ec sur toutes les épreuves pendant 10 − CON jours.\">règle de résurrection (§25.3)</a>.",
      "pieds": []
     }
    ]
@@ -1206,15 +1206,15 @@
   "statuts_vitaux": [
    {
     "statut": "Inconscient Inerte",
-    "texte": "La créature est endormie ou assommée : elle lâche immédiatement tout ce qu'elle tient en main (arme, bouclier ou objet tombent au sol ; ramasser coûte 1 PA) et ne peut effectuer aucune action ni réaction. Elle peut être réveillée par une secousse vigoureuse (1 PA d'un allié) ou par l'application de premiers soins. Frappé pendant ce temps : dégâts maximum automatiques, sans jet (Livre V §20.2)."
+    "texte": "La créature est endormie ou assommée : elle lâche immédiatement tout ce qu'elle tient en main (arme, bouclier ou objet tombent au sol) et ne peut effectuer aucune action ni réaction. Elle peut être réveillée par une secousse vigoureuse (1 PA d'un allié) ou par l'application de premiers soins. Toute attaque portée contre elle dans cet état inflige les dégâts maximum, sans jet (Livre V §20.2)."
    },
    {
     "statut": "Souffrant Blessure Grave",
-    "texte": "Le personnage souffre d'une blessure critique ou d'un traumatisme ouvert. Tout soin lève immédiatement l'état Souffrant (Premiers Soins, bandage, seringue ou magie curative, §25.1)."
+    "texte": "Statut déclenché sur échec d'un Choc Traumatique (§23), sur choc d'un point vital (Cœur, Abdomen/Viscères, Livre V §22.1) ou par une pathologie grave (§26.3). Tant que Souffrant est actif, l'effet de la zone traumatisée persiste et une nuit de repos ne le lève jamais (§25.2). Tout soin actif lève immédiatement l'état Souffrant et l'effet de la zone (Premiers Soins, bandage, seringue ou magie curative, §25.1)."
    },
    {
     "statut": "Mort Trépas Clinique",
-    "texte": "La conscience a quitté la chair. Le sujet ne peut plus agir à moins d'un rituel arcanique de rappel de l'âme ou d'une défibrillation chirurgicale dans les 10 tours suivant le décès."
+    "texte": "La conscience a quitté la chair (Seuil Létal §23.2, sauf dépense d'un Point de Miracle §23.3). Le sujet est hors jeu : il lâche ce qu'il tient en main et ne peut plus effectuer aucune action ni réaction. Seules certaines spécialisations, technologies ou méthodes arcaniques peuvent le ramener à la vie, selon la règle de résurrection (§25.3 : −1 ec sur toutes les épreuves pendant 10 − CON jours)."
    }
   ],
   "effets_epreuve": [
