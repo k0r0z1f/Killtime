@@ -50,10 +50,10 @@ format: raw
                                 <div class="pagination-title">← Livre XI : Cosmologie &amp; Atlas des Mondes</div>
                             </div>
                         </a>
-                        <a href="index.html" class="pagination-btn">
+                        <a href="appendice_actions.html" class="pagination-btn">
                             <div>
-                                <div class="pagination-label">Terminus du Codex</div>
-                                <div class="pagination-title">Index Général du Système RP →</div>
+                                <div class="pagination-label">Appendice Suivant</div>
+                                <div class="pagination-title">Appendice A : Compendium des Actions →</div>
                             </div>
                         </a>
                     </div>

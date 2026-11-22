@@ -29,6 +29,12 @@ GROUPES = {'L.I': 1, 'L.II': 2, 'L.III': 3, 'L.IV': 4, 'L.V': 5, 'L.VI': 6,
 RE_GROUPE = re.compile(
     r'(group-tag">L\.([IVX]+)</span>.*?<ul class="nav-items-list">)(.*?)(</ul>)',
     re.S)
+RE_APPENDICE = re.compile(
+    r'(group-tag">A\.I</span>.*?<ul class="nav-items-list">)(.*?)(</ul>)',
+    re.S)
+RE_APPENDICE_B = re.compile(
+    r'(group-tag">A\.II</span>.*?<ul class="nav-items-list">)(.*?)(</ul>)',
+    re.S)
 
 
 def charger_livre(n):
@@ -90,6 +96,50 @@ def entrees(n, page):
     return '\n'.join(lignes) + '\n                        '
 
 
+def entrees_appendice(page):
+    """Rendu des <li> du groupe Appendice A (A.I) depuis data/appendice_actions.json."""
+    p = os.path.join(RACINE, 'data', 'appendice_actions.json')
+    if not os.path.exists(p):
+        return ''
+    with open(p, encoding='utf-8') as f:
+        d = json.load(f)
+    propre = (page == 'appendice_actions.html')
+    lignes = [
+        '                            <li><a href="%s" class="nav-item-link">'
+        '<span>Toutes les Actions (Filtres)</span></a></li>' % (
+            '#compendium-actions' if propre else 'appendice_actions.html'
+        )
+    ]
+    for c in d.get('categories', []):
+        href = ('#cat-%s' % c['id']) if propre else ('appendice_actions.html#cat-%s' % c['id'])
+        lignes.append(
+            '                            <li><a href="%s" class="nav-item-link">'
+            '<span>%s</span></a></li>' % (href, c['nav']))
+    return '\n'.join(lignes) + '\n                        '
+
+
+def entrees_appendice_glossaire(page):
+    """Rendu des <li> du groupe Appendice B (A.II) depuis data/appendice_glossaire.json."""
+    p = os.path.join(RACINE, 'data', 'appendice_glossaire.json')
+    if not os.path.exists(p):
+        return ''
+    with open(p, encoding='utf-8') as f:
+        d = json.load(f)
+    propre = (page == 'appendice_glossaire.html')
+    lignes = [
+        '                            <li><a href="%s" class="nav-item-link">'
+        '<span>Tous les Termes (A–Z)</span></a></li>' % (
+            '#glossaire-mecaniques' if propre else 'appendice_glossaire.html'
+        )
+    ]
+    for dm in d.get('domaines', []):
+        href = ('#dom-%s' % dm['id']) if propre else ('appendice_glossaire.html#dom-%s' % dm['id'])
+        lignes.append(
+            '                            <li><a href="%s" class="nav-item-link">'
+            '<span>%s</span></a></li>' % (href, dm['nav']))
+    return '\n'.join(lignes) + '\n                        '
+
+
 def pages_cibles():
     out = []
     for fn in sorted(os.listdir(RACINE)):
@@ -109,7 +159,18 @@ def regenere(page):
         n = GROUPES['L.' + m.group(2)]
         return m.group(1) + '\n' + entrees(n, page) + m.group(4)
 
-    return RE_GROUPE.sub(_sub, t)
+    out = RE_GROUPE.sub(_sub, t)
+    if RE_APPENDICE.search(out):
+        out = RE_APPENDICE.sub(
+            lambda m: m.group(1) + '\n' + entrees_appendice(page) + m.group(3),
+            out
+        )
+    if RE_APPENDICE_B.search(out):
+        out = RE_APPENDICE_B.sub(
+            lambda m: m.group(1) + '\n' + entrees_appendice_glossaire(page) + m.group(3),
+            out
+        )
+    return out
 
 
 def main():

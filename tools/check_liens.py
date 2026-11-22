@@ -70,8 +70,8 @@ for n in [1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12]:
         for b in s.get('blocs', []):
             for a in re.finditer(r'id="([\w-]+)"', b.get('html') or ''):
                 anc.add(a.group(1))
-    # effet_html / mecaniques : aussi des ancres id="..." possibles
-    for a in re.finditer(r'id="([\w-]+)"', json.dumps(d, ensure_ascii=False)):
+    # effet_html / mecaniques / donnees : aussi des ancres id="..." possibles
+    for a in re.finditer(r'id="([\w-]+)"', json.dumps(d, ensure_ascii=False).replace('\\"', '"')):
         anc.add(a.group(1))
     ancres[cle] = anc
 
@@ -110,10 +110,33 @@ for n in [3, 4, 5, 6, 7, 8, 10, 11, 12]:
 
 
 # ---------- 2. balayage des textes ----------
-HREF = re.compile(r'href="(livre_\d+\.html|#[^"]*?)"')
+HREF = re.compile(r'href="((?:livre_\d+|appendice_actions|appendice_glossaire)\.html|#[^"]*?)"')
 HREF_LIVRE = re.compile(r'href="(livre_(\d+)\.html)#([\w-]+)"')
+HREF_APPENDICE = re.compile(r'href="((?:appendice_actions|appendice_glossaire)\.html)#([\w-]+)"')
 HREF_PAGE = re.compile(r'href="(index|tables|fiche_pj|roadmap|financement|admin|kanban_[a-z]+|atlas_[a-z0-9]+|tactics_[a-z_]+|project_evolution)\.html(#[^"]*)?"')
 SECT = re.compile(r'§(\d+)')
+
+if os.path.exists(os.path.join(RACINE, 'appendice_actions.html')):
+    anc_app = set(re.findall(r'id="([\w-]+)"', lire('appendice_actions.html')))
+    if os.path.exists(os.path.join(RACINE, 'data', 'appendice_actions.json')):
+        d_app = json.loads(lire('data/appendice_actions.json'))
+        for c in d_app.get('categories', []):
+            anc_app.add('cat-' + c['id'])
+        for a in d_app.get('actions', []):
+            anc_app.add('act-' + a['id'])
+    ancres['appendice_actions'] = anc_app
+
+if os.path.exists(os.path.join(RACINE, 'appendice_glossaire.html')):
+    anc_gloss = set(re.findall(r'id="([\w-]+)"', lire('appendice_glossaire.html')))
+    for ch in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ':
+        anc_gloss.add('lettre-' + ch)
+    if os.path.exists(os.path.join(RACINE, 'data', 'appendice_glossaire.json')):
+        d_gloss = json.loads(lire('data/appendice_glossaire.json'))
+        for dm in d_gloss.get('domaines', []):
+            anc_gloss.add('dom-' + dm['id'])
+        for tm in d_gloss.get('termes', []):
+            anc_gloss.add('term-' + tm['id'])
+    ancres['appendice_glossaire'] = anc_gloss
 
 CONTEXTE = []  # (nom, cle_livre_ou_None, texte)
 
@@ -124,6 +147,10 @@ def ajouter(nom, cle, texte):
 
 for p in sorted(glob.glob('data/livre_*.json', root_dir=RACINE)):
     ajouter(p, p.split('/')[-1].replace('.json', ''), lire(p).replace('\\"', '"'))
+if os.path.exists(os.path.join(RACINE, 'data', 'appendice_actions.json')):
+    ajouter('data/appendice_actions.json', None, lire('data/appendice_actions.json').replace('\\"', '"'))
+if os.path.exists(os.path.join(RACINE, 'data', 'appendice_glossaire.json')):
+    ajouter('data/appendice_glossaire.json', None, lire('data/appendice_glossaire.json').replace('\\"', '"'))
 for p in sorted(glob.glob('content/**/*.md', root_dir=RACINE, recursive=True)):
     if os.path.basename(p) == 'README.md':
         continue
@@ -144,6 +171,11 @@ for nom, cle, txt in CONTEXTE:
             continue
         if ancre not in ancres.get('livre_%d' % nlivre, set()):
             err('%s: ancre morte %s' % (nom, m.group(0)))
+    for m in HREF_APPENDICE.finditer(txt):
+        cible_app = m.group(1).replace('.html', '')
+        ancre = m.group(2)
+        if ancre not in ancres.get(cible_app, set()):
+            err('%s: ancre appendice morte %s' % (nom, m.group(0)))
     for m in HREF.finditer(txt):
         h = m.group(1)
         if h.startswith('#'):
@@ -160,6 +192,72 @@ for nom, cle, txt in CONTEXTE:
             # ecarte les faux positifs type "§" suivi d'un nombre non-chapitre :
             # aucun connu dans le perimetre ; tout ecart est une erreur.
             err('%s: reference §%s sans chapitre' % (nom, m.group(1)))
+
+# ---------- 2d. liens JSON de l'Appendice A ----------
+if os.path.exists(os.path.join(RACINE, 'data', 'appendice_actions.json')):
+    try:
+        d_app = json.loads(lire('data/appendice_actions.json'))
+        cats_app = {c['id'] for c in d_app.get('categories', [])}
+        for a in d_app.get('actions', []):
+            if a.get('categorie') not in cats_app:
+                err('appendice_actions.json: categorie inconnue %r pour %s' % (a.get('categorie'), a.get('id')))
+            liens = [a.get('source')] + list(a.get('refs') or [])
+            for lk in liens:
+                if not lk or not lk.get('href'):
+                    continue
+                mm = re.fullmatch(r'livre_(\d+)\.html#([\w-]+)', lk['href'])
+                if not mm:
+                    err('appendice_actions.json %s: href invalide %r' % (a.get('id'), lk['href']))
+                else:
+                    cle_l = 'livre_%d' % int(mm.group(1))
+                    if mm.group(2) not in ancres.get(cle_l, set()):
+                        err('appendice_actions.json %s: ancre morte %s' % (a.get('id'), lk['href']))
+    except Exception as e:  # noqa: BLE001
+        err('appendice_actions.json illisible (%s)' % e)
+
+# ---------- 2e. liens JSON de l'Appendice B (Glossaire) ----------
+if os.path.exists(os.path.join(RACINE, 'data', 'appendice_glossaire.json')):
+    try:
+        d_gloss = json.loads(lire('data/appendice_glossaire.json'))
+        doms_gloss = {dm['id'] for dm in d_gloss.get('domaines', [])}
+        seen_ids = set()
+        seen_terms = set()
+        forbidden_keys = {'definition', 'resume', 'desc', 'description'}
+        for dm in d_gloss.get('domaines', []):
+            if forbidden_keys & set(dm.keys()):
+                err('appendice_glossaire.json domaine %s: champ definition interdit' % dm.get('id'))
+        for tm in d_gloss.get('termes', []):
+            tid = tm.get('id')
+            tname = tm.get('terme')
+            if not tid or tid in seen_ids:
+                err('appendice_glossaire.json: id invalide ou duplique %r' % tid)
+            seen_ids.add(tid)
+            if not tname or tname in seen_terms:
+                err('appendice_glossaire.json: terme manquant ou duplique %r' % tname)
+            seen_terms.add(tname)
+            if tm.get('domaine') not in doms_gloss:
+                err('appendice_glossaire.json: domaine inconnu %r pour %s' % (tm.get('domaine'), tid))
+            if forbidden_keys & set(tm.keys()):
+                err('appendice_glossaire.json %s: champ definition interdit' % tid)
+            liens = list(tm.get('liens') or [])
+            if not liens:
+                err('appendice_glossaire.json %s: aucun lien' % tid)
+            for lk in liens:
+                if not lk or not lk.get('href'):
+                    err('appendice_glossaire.json %s: lien sans href' % tid)
+                    continue
+                mm = re.fullmatch(r'livre_(\d+)\.html#([\w-]+)', lk['href'])
+                if not mm:
+                    err('appendice_glossaire.json %s: href invalide %r' % (tid, lk['href']))
+                else:
+                    n_lk = int(mm.group(1))
+                    if lk.get('livre') != n_lk:
+                        err('appendice_glossaire.json %s: livre %r != href %s' % (tid, lk.get('livre'), lk['href']))
+                    cle_l = 'livre_%d' % n_lk
+                    if mm.group(2) not in ancres.get(cle_l, set()):
+                        err('appendice_glossaire.json %s: ancre morte %s' % (tid, lk['href']))
+    except Exception as e:  # noqa: BLE001
+        err('appendice_glossaire.json illisible (%s)' % e)
 
 # ---------- 2b. solution durable §2 : le numero doit coller a son ancre --
 # Regle : un §N "nu" (hors <a>) est accepte seul ou en reference multiple,
