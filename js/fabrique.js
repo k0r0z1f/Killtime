@@ -1,5 +1,5 @@
 /* ==========================================================================
-   FABRIQUE DE TECHNIQUES — ATELIER GRAPHE (Livre III chap-15, Livre IX chap-39).
+   FABRIQUE DE TECHNIQUES — ATELIER GRAPHE (Livre III chap-15, Livre IX chap-38).
    Moteur pur FabriqueEngine.compute (châssis + 1-3 pièces,
    M1-M4/M7 par carte effet, M6 hybride auto, croisé ×2
    par carte, signature 7+, plafond PA 6, incompatibilités, prérequis) + initFabrique()

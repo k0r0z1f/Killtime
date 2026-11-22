@@ -24,10 +24,10 @@ livre: 6
                             physiologiques stricts</strong> dérivés de la Constitution. Ce livre rassemble les règles
                         d'encaissement, le seuil létal (<span class="hl-ruby">Constitution &times; 5</span>), le
                         compendium officiel complet des <strong>19 états et altérations de statut</strong>, la médecine
-                        de premiers soins et le protocole de résurrection.
+                        de premiers soins, le protocole de résurrection et les bases face aux maladies.
                     </p>
 
                     <hr class="doc-divider">
 
-                    <!-- ================= CHAPITRE 26 ================= -->
+                    <!-- ================= CHAPITRE 23 ================= -->
                     

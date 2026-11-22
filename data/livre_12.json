@@ -13,13 +13,13 @@
    "blocs": [
     {
      "type": "html",
-     "html": "\n\n                    <div class=\"doc-badge-row\">\n                        <span class=\"doc-badge-pill\">\n                            <svg width=\"12\" height=\"12\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\"\n                                stroke-width=\"2\">\n                                <path d=\"M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z\" />\n                                <circle cx=\"12\" cy=\"12\" r=\"3\" />\n                            </svg>\n                            Livre XII — Bestiaire &amp; Entités Hostiles\n                        </span>\n                        <span class=\"doc-badge-pill accent\">3 Rangs de Menace</span>\n                        <span class=\"doc-badge-pill live\">Homologué Tables de Jeu</span>\n                    </div>\n\n                    <h1 class=\"doc-title\">Livre XII : Le Bestiaire&nbsp;&amp; Menaces Cosmiques</h1>\n                    <p class=\"doc-lead\">\n                        Dans le Système RP, les adversaires ne sont pas de simples sacs à coups passifs.\n                        Tout ennemi — du coupe-jarret embusqué dans les taillis jusqu'au titan de magma largué à travers\n                        les lignes temporelles par Capricius — opère sous la <strong>même rigueur mathématique que les\n                            héros</strong> : calcul dynamique des Points d'Action (PA), seuils d'encaissement\n                        anatomique, malus d'essoufflement et ripostes en réaction. Ce compendium rassemble l'ensemble\n                        des profils martiaux, faunes indigènes et avatars d'annihilation du multivers.\n                    </p>\n\n                    <hr class=\"doc-divider\">\n\n                    <!-- ================= CHAPITRE 42 ================= -->\n                    "
+     "html": "\n\n                    <div class=\"doc-badge-row\">\n                        <span class=\"doc-badge-pill\">\n                            <svg width=\"12\" height=\"12\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\"\n                                stroke-width=\"2\">\n                                <path d=\"M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z\" />\n                                <circle cx=\"12\" cy=\"12\" r=\"3\" />\n                            </svg>\n                            Livre XII — Bestiaire &amp; Entités Hostiles\n                        </span>\n                        <span class=\"doc-badge-pill accent\">3 Rangs de Menace</span>\n                        <span class=\"doc-badge-pill live\">Homologué Tables de Jeu</span>\n                    </div>\n\n                    <h1 class=\"doc-title\">Livre XII : Le Bestiaire&nbsp;&amp; Menaces Cosmiques</h1>\n                    <p class=\"doc-lead\">\n                        Dans le Système RP, les adversaires ne sont pas de simples sacs à coups passifs.\n                        Tout ennemi — du coupe-jarret embusqué dans les taillis jusqu'au titan de magma largué à travers\n                        les lignes temporelles par Capricius — opère sous la <strong>même rigueur mathématique que les\n                            héros</strong> : calcul dynamique des Points d'Action (PA), seuils d'encaissement\n                        anatomique, malus d'essoufflement et ripostes en réaction. Ce compendium rassemble l'ensemble\n                        des profils martiaux, faunes indigènes et avatars d'annihilation du multivers, ainsi qu'un\n                        générateur modulaire de pathologies pour calibrer les menaces biologiques, arcaniques ou cybernétiques.\n                    </p>\n\n                    <hr class=\"doc-divider\">\n\n                    <!-- ================= CHAPITRE 48 ================= -->\n                    "
     }
    ]
   },
   {
-   "id": "chap-49",
-   "symbole": "Chapitre 49.",
+   "id": "chap-48",
+   "symbole": "Chapitre 48.",
    "titre": "Typologie des Adversaires &amp; Calibrage Tactique",
    "blocs": [
     {
@@ -32,7 +32,7 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <h3>49.2 Table de Calibrage des Rencontres</h3>\n                    "
+     "html": "\n\n                    <h3>48.2 Table de Calibrage des Rencontres</h3>\n                    "
     },
     {
      "type": "ref",
@@ -40,14 +40,14 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <hr class=\"doc-divider\">\n\n                    <!-- ================= CHAPITRE 43 ================= -->\n                    "
+     "html": "\n\n                    <hr class=\"doc-divider\">\n\n                    <!-- ================= CHAPITRE 42 ================= -->\n                    "
     }
    ],
    "nav": "Typologie & Calibrage"
   },
   {
-   "id": "chap-50",
-   "symbole": "Chapitre 50.",
+   "id": "chap-49",
+   "symbole": "Chapitre 49.",
    "titre": "Humanoïdes, Hors-la-Loi &amp; Factions Mortelles",
    "blocs": [
     {
@@ -92,14 +92,14 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <hr class=\"doc-divider\">\n\n                    <!-- ================= CHAPITRE 44 ================= -->\n                    "
+     "html": "\n\n                    <hr class=\"doc-divider\">\n\n                    <!-- ================= CHAPITRE 43 ================= -->\n                    "
     }
    ],
    "nav": "Humanoïdes & Factions"
   },
   {
-   "id": "chap-51",
-   "symbole": "Chapitre 51.",
+   "id": "chap-50",
+   "symbole": "Chapitre 50.",
    "titre": "Faune Sauvage &amp; Monstres Telluriques d'Hybris",
    "blocs": [
     {
@@ -120,19 +120,19 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <hr class=\"doc-divider\">\n\n                    <!-- ================= CHAPITRE 45 ================= -->\n                    "
+     "html": "\n\n                    <hr class=\"doc-divider\">\n\n                    <!-- ================= CHAPITRE 44 ================= -->\n                    "
     }
    ],
    "nav": "Faune & Monstres d'Hybris"
   },
   {
-   "id": "chap-52",
-   "symbole": "Chapitre 52.",
+   "id": "chap-51",
+   "symbole": "Chapitre 51.",
    "titre": "Entités Cosmiques, Arcaniques &amp; Disciples de l'Entropie",
    "blocs": [
     {
      "type": "html",
-     "html": "\n\n                    <p>\n                        Au sommet de l'échelle des périls trônent les manifestations de la crise cosmique causée par\n                        Capricius et l'inondation d'Eau Sombre.\n                    </p>\n\n                    <p>\n                        Les Disciples relèvent de <strong>deux générations</strong> : le <strong>prototype de\n                            Terre</strong>, œuvre solitaire de Capricius (~−1 Ga, tir balistique plasma à ~c,\n                        ré-impression lithosphérique à l'arrivée en 1772 HSC), puis la <strong>série industrielle\n                            impériale (Air, Feu, Eau)</strong>, projetée par trous de ver + 5e Force (Livre X §40.3) —\n                        plus rapide, mais dépendante d'un ancrage. Feu et Eau, largués en dormance, restent à ce jour\n                        <strong>non révélés</strong>.\n                    </p>\n\n                    <!-- FICHE MINULICAN -->\n                    "
+     "html": "\n\n                    <p>\n                        Au sommet de l'échelle des périls trônent les manifestations de la crise cosmique causée par\n                        Capricius et l'inondation d'Eau Sombre.\n                    </p>\n\n                    <p>\n                        Les Disciples relèvent de <strong>deux générations</strong> : le <strong>prototype de\n                            Terre</strong>, œuvre solitaire de Capricius (~−1 Ga, tir balistique plasma à ~c,\n                        ré-impression lithosphérique à l'arrivée en 1772 HSC), puis la <strong>série industrielle\n                            impériale (Air, Feu, Eau)</strong>, projetée par trous de ver + 5e Force (Livre X §39.3) —\n                        plus rapide, mais dépendante d'un ancrage. Feu et Eau, largués en dormance, restent à ce jour\n                        <strong>non révélés</strong>.\n                    </p>\n\n                    <!-- FICHE MINULICAN -->\n                    "
     },
     {
      "type": "ref",
@@ -172,14 +172,14 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <hr class=\"doc-divider\">\n\n                    <!-- ================= CHAPITRE 46 ================= -->\n                    "
+     "html": "\n\n                    <hr class=\"doc-divider\">\n\n                    <!-- ================= CHAPITRE 45 ================= -->\n                    "
     }
    ],
    "nav": "Entités & Disciples"
   },
   {
-   "id": "chap-53",
-   "symbole": "Chapitre 53.",
+   "id": "chap-52",
+   "symbole": "Chapitre 52.",
    "titre": "Automates de Guerre &amp; Cybernétique Impériale",
    "blocs": [
     {
@@ -192,10 +192,82 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <hr class=\"doc-divider\">\n\n                    <!-- ================= MODULE INTERACTIF ================= -->\n                    <h3>Module Interactif : Sélecteur &amp; Télémétrie du Bestiaire</h3>\n                    <p>\n                        Filtrez instantanément les menaces du multivers pour préparer vos tables de jeu ou consulter les\n                        caractéristiques à la volée :\n                    </p>\n\n                    <div class=\"bestiary-filter-bar\">\n                        <button class=\"bestiary-filter-btn active\" data-bfilter=\"all\">Toutes les Menaces (15+)</button>\n                        <button class=\"bestiary-filter-btn\" data-bfilter=\"minions\">Petites Merdes (Minions)</button>\n                        <button class=\"bestiary-filter-btn\" data-bfilter=\"bandits\">Bandits &amp; Hors-la-Loi</button>\n                        <button class=\"bestiary-filter-btn\" data-bfilter=\"monsters\">Faune &amp; Monstres\n                            d'Hybris</button>\n                        <button class=\"bestiary-filter-btn\" data-bfilter=\"boss\">Boss &amp; Disciples Cosmiques</button>\n                        <button class=\"bestiary-filter-btn\" data-bfilter=\"tech\">Automates &amp; Cybernétique</button>\n                    </div>\n\n                    <div id=\"bestiaryReport\"\n                        style=\"padding: 14px 18px; background: rgba(244, 63, 94, 0.06); border: 1px dashed var(--ruby-danger); border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 0.82rem; color: var(--ruby-danger); margin-bottom: 24px;\">\n                        Affichage Global : 15 entités répertoriées &bull; 3 Rangs de Danger &bull; 4 Boss Légendaires\n                        d'Élite &bull; 100% Calibré pour le Système RP.\n                    </div>\n\n                    <div class=\"codex-signature\">\n                        <div class=\"sig-meta\">\n                            <strong>LIVRE XII DU CODEX UNIVERSEL</strong><br>\n                            Compendium Officiel du Bestiaire &amp; Fléaux Cosmiques<br>\n                            <em>Approuvé pour l'ensemble des Maîtres de Jeu et tables d'affrontements tactiques.</em>\n                        </div>\n                        <div class=\"sig-stamp\">\n                            <span class=\"stamp-title\">BESTIAIRE HOMOLOGUÉ</span>\n                            <span class=\"stamp-date\">12 / 12 LIVRES DU CODEX VALIDÉS</span>\n                        </div>\n                    </div>\n\n                    <!-- PAGINATION ENTRE LIVRES -->\n                    <div class=\"chapter-pagination\">\n                        <a href=\"livre_11.html\" class=\"pagination-btn\">\n                            <div>\n                                <div class=\"pagination-label\">Livre Précédent</div>\n                                <div class=\"pagination-title\">← Livre XI : Cosmologie &amp; Atlas des Mondes</div>\n                            </div>\n                        </a>\n                        <a href=\"appendice_actions.html\" class=\"pagination-btn\">\n                            <div>\n                                <div class=\"pagination-label\">Appendice Suivant</div>\n                                <div class=\"pagination-title\">Appendice A : Compendium des Actions →</div>\n                            </div>\n                        </a>\n                    </div>\n\n                "
+     "html": "\n\n                    <hr class=\"doc-divider\">\n\n                    <!-- ================= MODULE INTERACTIF ================= -->\n                    <h3>Module Interactif : Sélecteur &amp; Télémétrie du Bestiaire</h3>\n                    <p>\n                        Filtrez instantanément les menaces du multivers pour préparer vos tables de jeu ou consulter les\n                        caractéristiques à la volée :\n                    </p>\n\n                    <div class=\"bestiary-filter-bar\">\n                        <button class=\"bestiary-filter-btn active\" data-bfilter=\"all\">Toutes les Menaces (15+)</button>\n                        <button class=\"bestiary-filter-btn\" data-bfilter=\"minions\">Petites Merdes (Minions)</button>\n                        <button class=\"bestiary-filter-btn\" data-bfilter=\"bandits\">Bandits &amp; Hors-la-Loi</button>\n                        <button class=\"bestiary-filter-btn\" data-bfilter=\"monsters\">Faune &amp; Monstres\n                            d'Hybris</button>\n                        <button class=\"bestiary-filter-btn\" data-bfilter=\"boss\">Boss &amp; Disciples Cosmiques</button>\n                        <button class=\"bestiary-filter-btn\" data-bfilter=\"tech\">Automates &amp; Cybernétique</button>\n                    </div>\n\n                    <div id=\"bestiaryReport\"\n                        style=\"padding: 14px 18px; background: rgba(244, 63, 94, 0.06); border: 1px dashed var(--ruby-danger); border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 0.82rem; color: var(--ruby-danger); margin-bottom: 24px;\">\n                        Affichage Global : 15 entités répertoriées &bull; 3 Rangs de Danger &bull; 4 Boss Légendaires\n                        d'Élite &bull; 100% Calibré pour le Système RP.\n                    </div>\n\n                    <hr class=\"doc-divider\">\n                    "
     }
    ],
    "nav": "Automates & Cybernétique"
+  },
+  {
+   "id": "chap-53",
+   "symbole": "Chapitre 53.",
+   "titre": "Générateur Modulaire de Pathologies",
+   "blocs": [
+    {
+     "type": "html",
+     "html": "\n\n                    <p>\n                        Une maladie peut porter <strong>n'importe quel nom</strong> (fluff) : ce qui compte à la table,\n                        c'est sa <strong>signature mécanique</strong> — un assemblage modulaire de briques chiffrées en\n                        <strong>Indice de Gravité (IG)</strong> sur <strong>1 à 6 stades</strong>, intégralement rejouable\n                        avec les règles existantes (<a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\" data-tip=\"Dégâts résiduels : Saignement, Empoisonné, En Feu, Asphyxie (§24.2).\">dégâts résiduels §24.2</a>,\n                        <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"États préjudiciables : malus et afflictions cumulables (§24.1).\">états §24.1</a>,\n                        <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Seuils : Encaissement CON×2 par zone, Létal CON×5 total (§23).\">seuils CON&times;2 / CON&times;5 §23</a>,\n                        <a class=\"rule-ref\" href=\"livre_6.html#chap-25\" data-tip=\"Premiers Soins (§25.1 : 3 PA, Diff 6 pour stabiliser) et Convalescence (§25.2 : Repos sûr).\">Premiers Soins &amp; Repos sûr §25</a>,\n                        <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Résistances &amp; vulnérabilités raciales : réduction après armure, résiduels à −1 (min 1) (§23.4).\">résistances §23.4</a>,\n                        <a class=\"rule-ref\" href=\"livre_8.html#chap-32\" data-tip=\"Pharmacopée : seringues de soins, stimulants et consommables médicaux (Livre VIII §32.3).\">pharmacopée Livre VIII §32.3</a>).\n                        Le MJ choisit ou tire chaque module, additionne leur valeur en IG et lit directement la\n                        <strong>Classe de Gravité (I à V)</strong> de la pathologie. (Rappels essentiels pour les joueurs : <a class=\"rule-ref\" href=\"livre_6.html#sec-25-4\" data-tip=\"Maladies &amp; Pathologies (Bases du Joueur) : 6 natures, épreuve immunitaire, évolution par stades et soins (Livre VI §25.4).\">Livre VI §25.4</a>.)\n                    </p>\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "fiche_pathologie"
+    },
+    {
+     "type": "ref",
+     "cible": "classes_gravite"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <h3 id=\"sec-53-1\">53.1 Nature de l'agent pathogène</h3>\n                    <p>\n                        La nature de l'agent détermine ce qui le soigne efficacement, ce qui échoue contre lui et son\n                        socle d'<strong>Indice de Gravité</strong> (<code>+0</code> à <code>+3</code>). Sauf mention explicite,\n                        les <strong>Automates</strong> sont immunisés aux agents organiques (<code>1</code> à <code>4</code>)\n                        mais exposés aux agents <strong>Arcanique</strong> (<code>5</code>) et <strong>Nanotech / Cyber</strong> (<code>6</code>).\n                    </p>\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "agents_pathogenes"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <h3 id=\"sec-53-2\">53.2 Transmission, Virulence &amp; Cadence</h3>\n                    <p>\n                        La <strong>Virulence</strong> est un module indépendant de la gravité des symptômes, recalibré sur\n                        l'échelle officielle des difficultés (<a class=\"rule-ref\" href=\"livre_2.html#chap-7\" data-tip=\"Seuils 0–34 : 3 Facile, 4–5 Difficile/Très Difficile, 6–7 Extrêmement Difficile, 10–11 Héroïque, 12–15 Prodigieux, 16–19 Légendaire (Livre II §7.1).\">Livre II §7.1</a>) :\n                        une maladie peut ainsi être très contagieuse mais bénigne, ou rare mais mortelle.\n                    </p>\n                    <p>\n                        <strong>Épreuve immunitaire :</strong> à chaque exposition franche, puis à chaque échéance de stade,\n                        la victime effectue une <strong>épreuve gratuite (<code>0 PA</code> d'activation)</strong> de\n                        <a class=\"rule-ref\" href=\"livre_3.html#chap-12\" data-tip=\"Système Immunitaire (CON) : résister aux maladies, toxines, poisons et radiations (Livre III §12).\">Système Immunitaire (CON)</a>\n                        contre la <strong>Virulence</strong>. Hors combat, aucune mise libre de PA de tour n'est autorisée\n                        (on ne commande pas son immunité à volonté) ; en revanche, les\n                        <a class=\"rule-ref\" href=\"livre_2.html#chap-7\" data-tip=\"Réussites automatiques : selon le palier de dé du personnage, les seuils bas réussissent sans jet (Livre II §7.2).\">réussites automatiques</a>,\n                        les protections (<a class=\"rule-ref\" href=\"livre_2.html#sec-8-6\" data-tip=\"Masque Filtrant : protège contre les gaz, fumées et aérosols (Livre II §8.6).\">Masque Filtrant</a>, quarantaine),\n                        les <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Résistances raciales : résiduels à −1 (min 1) et +2 CON contre l'élément (§23.4).\">résistances</a> et\n                        <a class=\"rule-ref\" href=\"livre_1.html#chap-2\" data-tip=\"Dons raciaux : Gueule des Mines (+2 Système Immunitaire, −1 Empoisonné/Asphyxie), Sang-Chaud de Cléia (−1 En Feu, +2 CON chaleur) (Livre I §2.2).\">dons raciaux</a>,\n                        les <a class=\"rule-ref\" href=\"#sec-53-5\" data-tip=\"Traitement adapté : confère +2 au prochain jet de transition ou provoque une rémission immédiate sur marge 3+ (§53.5).\">soins adaptés</a>\n                        et l'effort d'<a class=\"rule-ref\" href=\"livre_1.html#sec-4-2\" data-tip=\"Essoufflement : un personnage conscient peut prendre des points d'Essoufflement (+1 par point, dans la limite de sa CON) pour soutenir un jet critique (Livre I §4.2).\">Essoufflement volontaire</a>\n                        (<code>+1</code> par point pris par un personnage conscient, dans la limite du plafond <code>CON</code>) s'appliquent normalement.\n                    </p>\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "transmission"
+    },
+    {
+     "type": "ref",
+     "cible": "virulence_paliers"
+    },
+    {
+     "type": "ref",
+     "cible": "cadence_incubation"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <h3 id=\"sec-53-3\">53.3 Composer les Stades (1 à 6 max) &amp; Catalogue des Effets</h3>\n                    <p>\n                        Une pathologie compte entre <strong>1 et 6 stades</strong> (du malaise éclair à 1–2 stades au fléau\n                        dégénératif à 5–6 stades). Le <strong>Stade 1 est inclus (<code>+0 IG</code>)</strong>, puis chaque\n                        stade ajouté de 2 à 6 ajoute <strong><code>+1 IG</code></strong> (2 stades = <code>+1</code>, 3 = <code>+2</code>,\n                        4 = <code>+3</code>, 5 = <code>+4</code>, 6 = <code>+5</code>). Chaque stade s'écrit en trois éléments :\n                        <strong>Nom libre (fluff)</strong> + <strong>Durée d'échéance</strong> (cadence globale ou propre au stade ;\n                        l'IG retient la cadence la plus rapide parmi les stades actifs) + <strong>1 ou plusieurs effets système</strong>\n                        piochés dans le catalogue ci-dessous.\n                    </p>\n                    <ul>\n                        <li><strong>Mode d'application (hybride) :</strong> par défaut, la maladie fonctionne en\n                            <strong>Mode Remplacement (<code>+0 IG</code>)</strong> — seuls les effets du stade courant s'appliquent,\n                            remplaçant ceux du stade inférieur. Avec le modulateur optionnel\n                            <strong>Mode Cumulatif / Dégénératif</strong> (<code>+2 IG</code> pour 2–3 stades,\n                            <code>+3 IG</code> pour 4–6 stades), chaque nouveau stade conserve tous les effets des stades\n                            précédents et y ajoute les siens selon les règles de cumul du\n                            <a class=\"rule-ref\" href=\"livre_6.html#chap-24\" data-tip=\"Cumul des États : deux états différents se cumulent ; un même état ne se cumule jamais avec lui-même (§24).\">chapitre 24</a>\n                            (un même état ne s'additionne jamais avec lui-même ; les états distincts, malus et dégâts s'additionnent).</li>\n                        <li><strong>Décompte des effets dans l'IG (sans double comptage) :</strong> additionne la valeur d'IG de chaque\n                            effet <strong>nouveau ou renforcé</strong> dans tes stades. En Mode Remplacement, un même effet reconduit\n                            à l'identique d'un stade précédent ne compte qu'une fois ; si son intensité augmente (par exemple\n                            <code>−1 ec</code> &rarr; <code>−2 ec</code> ou <code>1 dégât/cycle</code> &rarr; <code>2–3 dégâts/cycle</code>),\n                            ajoute uniquement la différence entre les deux paliers.</li>\n                        <li><strong>Transition par défaut :</strong> une fois la durée du stade écoulée, la cible lance\n                            <a class=\"rule-ref\" href=\"livre_3.html#chap-12\" data-tip=\"Système Immunitaire (CON) : épreuve gratuite (0 PA) contre la Virulence (Livre III §12).\">Système Immunitaire (CON)</a>\n                            contre la <strong>Virulence</strong> : <strong>réussite = rémission</strong> (<code>stade &minus; 1</code>,\n                            ou guérison depuis le stade 1) ; <strong>échec = aggravation</strong> (<code>stade + 1</code>, ou maintien\n                            au stade maximal avec renouvellement de ses dégâts et crises).</li>\n                        <li><strong>Dégâts pathologiques vs résiduels de combat :</strong> hors combat, les\n                            <strong>dégâts pathologiques par cycle</strong> sont des dégâts directs qui ignorent armure et bouclier.\n                            Les états à <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\" data-tip=\"Dégâts résiduels : Saignement, Empoisonné, En Feu, Asphyxie — score dégressif de 1 par tour en combat, ou aggravé (+1/tour, dégâts doublés) (§24.2).\">dégâts résiduels (§24.2)</a>\n                            posés par un stade (<code>Empoisonné</code>, <code>Saignement</code>, <code>En Feu</code>,\n                            <code>Asphyxie</code>) appliquent leurs propriétés persistantes pendant tout le stade\n                            (ex. <code>Empoisonné</code> divise par deux les soins de dégâts reçus) et déclenchent leur score de\n                            dégâts par tour lors des scènes de combat, d'effort intense ou de crise.</li>\n                    </ul>\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "effets_stades_pathologie"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <h3 id=\"sec-53-4\">53.4 Modulateurs de Pathologie, Terrain &amp; Issues</h3>\n                    <ul>\n                        <li><strong>Terrain &amp; prédispositions :</strong> un personnage avec <strong>CON 1–2</strong> démarre à\n                            <strong>+1 stade initial</strong> si la pathologie compte au moins 2 stades. Les\n                            <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Résistances &amp; vulnérabilités raciales : résiduel à −1 (min 1) et +2 / −2 aux jets de CON (§23.4).\">résistances raciales (§23.4)</a>\n                            et <a class=\"rule-ref\" href=\"livre_1.html#chap-2\" data-tip=\"Dons raciaux : Gueule des Mines, Sang-Chaud de Cléia, Frugalité Cleyane (Livre I §2.2).\">dons raciaux</a>\n                            s'appliquent normalement ; les <strong>Automates</strong> sont immunisés aux agents organiques sauf mention contraire.</li>\n                        <li><strong>Privation active :</strong> les états <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"Affamé, Assoiffé &amp; Somnolent : malus de −1 à −3 ec sur tous les jets selon le niveau (§24.1).\">Affamé, Assoiffé et Somnolent</a>\n                            appliquent leur malus (<code>−1</code> à <code>−3 ec</code>) aux jets de\n                            <a class=\"rule-ref\" href=\"livre_3.html#chap-12\" data-tip=\"Système Immunitaire (CON) : résister aux maladies et toxines (Livre III §12).\">Système Immunitaire</a>.</li>\n                        <li><strong>Immunité acquise (par défaut) :</strong> une guérison confère <strong>1d6 mois</strong>\n                            d'immunité contre la même souche, sauf modulateur contraire ci-dessous.</li>\n                    </ul>\n                    <p>\n                        Ajoute ou tire autant de <strong>modulateurs</strong> que nécessaire pour personnaliser la souche et ajuster son\n                        <strong>Indice de Gravité</strong> :\n                    </p>\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "modulateurs_pathologie"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <h3 id=\"sec-53-5\">53.5 Diagnostic, Traitement &amp; Procédure de Table</h3>\n                    <ul>\n                        <li><strong>Diagnostic :</strong> reconnaître un malaise courant ou des symptômes visibles demande une épreuve\n                            d'<a class=\"rule-ref\" href=\"livre_3.html#chap-13\" data-tip=\"Académie, Premiers Soins &amp; Médecine Avancée (ÉRU/INT) : diagnostic et traitement clinique (Livre III §13).\">Érudition / Académie, Premiers Soins ou Médecine Avancée</a>\n                            contre une <strong>Difficulté égale à la Virulence (minimum 4)</strong>, avec <code>+2</code> si la maladie\n                            possède le modulateur <em>Symptômes masqués</em> et <code>+2</code> sans laboratoire, matériel spécialisé ou rituel\n                            pour un agent <strong>Arcanique</strong> ou <strong>Nanotech / Cyber</strong>. La spécialisation\n                            <a class=\"rule-ref\" href=\"livre_3.html#chap-13\" data-tip=\"Diagnostic Vital (Médecine Avancée) : lit dégâts, seuils et état physiologique exact (Livre III §13).\">Diagnostic Vital</a>\n                            confère <strong><code>+2</code></strong> au jet. Réussite : révèle la nature de l'agent, le stade actif et la Classe de Gravité ;\n                            échec : 1 stade de retard au diagnostic ou nature incertaine.</li>\n                        <li><strong>Traitement adapté :</strong> appliquer un soin de terrain\n                            (<a class=\"rule-ref\" href=\"livre_6.html#chap-25\" data-tip=\"Premiers Soins : 3 PA d'immobilisation au chevet du blessé en combat, ou 1 scène hors combat (§25.1).\">Premiers Soins, 3 PA en combat / 1 scène hors combat</a>)\n                            ou le moyen imposé par la <a class=\"rule-ref\" href=\"#sec-53-1\" data-tip=\"Nature de l'agent : dicte le traitement efficace et ce qui reste inefficace (§53.1).\">nature de l'agent (§53.1)</a>\n                            (<a class=\"rule-ref\" href=\"livre_3.html#chap-13\" data-tip=\"Médecine Avancée (ÉRU, INT) : Chirurgie, Apothicaire de Guerre, Sérum Antidote (Livre III §13).\">Médecine Avancée</a>,\n                            <a class=\"rule-ref\" href=\"livre_4.html#chap-18\" data-tip=\"Magie Primale (MAG, INT) : soins, purge et régénération (Livre IV §18).\">Magie Primale / curative</a>,\n                            atelier d'<a class=\"rule-ref\" href=\"livre_3.html#chap-13\" data-tip=\"Ingénierie &amp; Arcanotech (INT, ÉRU) : purge électromagnétique et réparation cyber (Livre III §13).\">Ingénierie &amp; Arcanotech</a>)\n                            contre la <strong>Difficulté = Virulence</strong>, avec le kit ou le remède requis.\n                            <ul>\n                                <li><strong>Réussite simple :</strong> confère <strong><code>+2</code></strong> au prochain jet de transition\n                                    (et stabilise une <em>Crise d'Agonie</em> ou suspend pendant 1 scène un résiduel actif).</li>\n                                <li><strong>Réussite large (marge <code>3+</code>) ou remède spécifique :</strong> provoque une\n                                    <strong>rémission immédiate (<code>stade &minus; 1</code>)</strong> (sauf souche avec\n                                    <em>Résistance au traitement</em>, qui demande deux soins réussis).</li>\n                            </ul>\n                        </li>\n                        <li><strong>Limites des seringues (<a class=\"rule-ref\" href=\"livre_8.html#chap-32\" data-tip=\"Seringues de soins : 1 PA, retirent −5 à −20 dégâts mais ne guérissent pas les pathologies (Livre VIII §32.3).\">Livre VIII §32.3</a>) :</strong>\n                            les seringues de soins effacent des dégâts accumulés, mais <strong>ne guérissent pas une maladie</strong> et\n                            <strong>ne lèvent pas ses effets ni ses résiduels pathologiques</strong> (sous\n                            <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\" data-tip=\"Empoisonné : tous les soins de dégâts reçus sont réduits de moitié tant que le poison agit (§24.2).\">Empoisonné</a>,\n                            les dégâts soignés sont réduits de moitié).</li>\n                        <li><strong>Convalescence (<a class=\"rule-ref\" href=\"livre_6.html#chap-25\" data-tip=\"Repos sûr (§25.2) : 6 h de base (8 h garde ou veille, 10 h les deux), efface CON dégâts (×2 avec veille de soignant).\">§25.2</a>) :</strong>\n                            les dégâts déjà infligés par la pathologie s'effacent au <strong>Repos sûr</strong> (<code>CON</code> dégâts,\n                            <code>&times;2</code> avec veille de 2 h d'un soignant), sauf réduction de moitié ou blocage total imposés par le stade actif.</li>\n                    </ul>\n\n                    <p>\n                        <strong>Procédure de table (5 étapes) :</strong>\n                        1) Exposition &rarr; jet gratuit (<code>0 PA</code>) de\n                        <a class=\"rule-ref\" href=\"livre_3.html#chap-12\" data-tip=\"Système Immunitaire (CON) : résister à l'infection et aux transitions de stade (Livre III §12).\">Système Immunitaire</a>\n                        contre la Virulence ;\n                        2) Si infecté &rarr; noter le délai d'incubation et l'éventuelle contagion silencieuse ;\n                        3) Stade actif &rarr; appliquer les effets du stade (Mode Remplacement ou Cumulatif) ;\n                        4) À chaque échéance &rarr; jet contre Virulence (soin adapté = <code>+2</code> ou rémission directe sur marge <code>3+</code>) ;\n                        5) Résolution &amp; quarantaine &rarr; immunité <code>1d6</code> mois ou issue/séquelle (quarantaine stricte du groupe = aucun jet secondaire).\n                        Voir pharmacopée : <a class=\"rule-ref\" href=\"livre_8.html#chap-32\" data-tip=\"Pharmacopée : seringues de soins, stimulants et consommables médicaux (Livre VIII §32.3).\">Livre VIII §32.3</a>.\n                    </p>\n\n                    <h3 id=\"sec-53-6\">53.6 Exemples Assemblés (1 à 6 stades)</h3>\n                    <p>\n                        Quatre pathologies prêtes à jouer, du rhume à 1 stade au fléau dégénératif à 6 stades, avec le détail\n                        exact de leur <strong>Indice de Gravité</strong> :\n                    </p>\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "maladies_exemples"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <div class=\"codex-signature\">\n                        <div class=\"sig-meta\">\n                            <strong>LIVRE XII DU CODEX UNIVERSEL</strong><br>\n                            Compendium Officiel du Bestiaire &amp; Fléaux Cosmiques<br>\n                            <em>Approuvé pour l'ensemble des Maîtres de Jeu et tables d'affrontements tactiques.</em>\n                        </div>\n                        <div class=\"sig-stamp\">\n                            <span class=\"stamp-title\">BESTIAIRE HOMOLOGUÉ</span>\n                            <span class=\"stamp-date\">12 / 12 LIVRES DU CODEX VALIDÉS</span>\n                        </div>\n                    </div>\n\n                    <!-- PAGINATION ENTRE LIVRES -->\n                    <div class=\"chapter-pagination\">\n                        <a href=\"livre_11.html\" class=\"pagination-btn\">\n                            <div>\n                                <div class=\"pagination-label\">Livre Précédent</div>\n                                <div class=\"pagination-title\">← Livre XI : Cosmologie &amp; Atlas des Mondes</div>\n                            </div>\n                        </a>\n                        <a href=\"appendice_actions.html\" class=\"pagination-btn\">\n                            <div>\n                                <div class=\"pagination-label\">Appendice Suivant</div>\n                                <div class=\"pagination-title\">Appendice A : Compendium des Actions →</div>\n                            </div>\n                        </a>\n                    </div>\n\n                "
+    }
+   ],
+   "nav": "Générateur de Pathologies"
   }
  ],
  "donnees": {
@@ -1150,6 +1222,421 @@
      "suite_html": "<div class=\"tactics-box\">\n                                <strong>Morsure Hydraulique (3 PA) :</strong> Dégâts 3D. En cas de succès,\n                                verrouille ses mâchoires : la cible est <em>Immobilisée</em> et subit 2 dégâts\n                                automatiques au début de chaque tour jusqu'à ce que le chien soit détruit ou repoussé.\n                            </div>"
     }
    ]
+  },
+  "fiche_pathologie": {
+   "type": "formule",
+   "etiquette_tag": "div",
+   "etiquette_classe": "formula-label",
+   "etiquette_html": "Formule de l'Indice de Gravité (IG) &amp; Fiche-type",
+   "math_html": "<span class=\"hl-ruby\">IG</span> = Nature + Transmission + Virulence + Cadence + Stades <span class=\"hl-gold\">(+1 dès le 2e, max 6)</span> + Effets + Modulateurs",
+   "desc_html": "<strong>Fiche-type :</strong> Nom libre [Classe I–V &middot; IG] &mdash; Nature | Transmission | Virulence (Diff CON) | Incubation &amp; Cadence | Stades (1–6, Remplacement ou Cumulatif) | Diagnostic &amp; Traitement | Modulateurs &amp; Issues.<br>Effets exprimés <strong>uniquement</strong> en vocabulaire système : <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\" data-tip=\"Dégâts résiduels : Saignement, Empoisonné, En Feu, Asphyxie (§24.2).\">dégâts directs/résiduels §24.2</a>, <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"États préjudiciables : malus et afflictions cumulables (§24.1).\">états §24.1</a>, &minus;ec, drain PA, Essoufflement, <a class=\"rule-ref\" href=\"livre_6.html#chap-25\" data-tip=\"Repos sûr (§25.2) : 6/8/10 h, efface CON dégâts (×2 avec veille de soignant).\">Repos sûr §25.2</a>, <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Seuils : Encaissement CON×2 par zone, Létal CON×5 total (§23).\">seuils CON&times;2 / CON&times;5 §23</a>.",
+   "math_attrs": " style=\"font-size: 0.98em;\"",
+   "contenu": false,
+   "wide": true
+  },
+  "classes_gravite": {
+   "type": "table",
+   "colonnes": [
+    "Classe de Gravité",
+    "Indice (IG)",
+    "Profil &amp; Impact à la table",
+    "Prise en charge type"
+   ],
+   "lignes": [
+    [
+     "<span class=\"pill-badge emerald\">Classe I — Bénigne</span>",
+     "<strong>1 – 8</strong>",
+     "Malaise court (1–2 stades légers), gêne tactique mineure, rarement dangereuse.",
+     "Repos sûr, soins légers ou guérison spontanée."
+    ],
+    [
+     "<span class=\"pill-badge cyan\">Classe II — Commune</span>",
+     "<strong>9 – 16</strong>",
+     "Maladie courante (2–3 stades), malus nets ou contagion rapide, freine le groupe sans tuer seule.",
+     "Premiers Soins, repos sûr sous veille de soignant."
+    ],
+    [
+     "<span class=\"pill-badge amber\">Classe III — Sévère</span>",
+     "<strong>17 – 26</strong>",
+     "Pathologie sérieuse (3–4 stades), états lourds, dégâts pathologiques ou crises.",
+     "Soignant entraîné, kit ou remède dédié requis."
+    ],
+    [
+     "<span class=\"pill-badge ruby\">Classe IV — Critique</span>",
+     "<strong>27 – 37</strong>",
+     "Affection grave, dégénérative (4–6 stades) ou foudroyante, menace vitale ou séquelles durables.",
+     "Médecine Avancée, chirurgie, purge ou atelier spécialisé."
+    ],
+    [
+     "<span class=\"pill-badge ruby\">Classe V — Fléau</span>",
+     "<strong>38+</strong>",
+     "Peste majeure, souche arcanique/mutante ou arme biologique : létalité élevée, cumul ou pandémie.",
+     "Enjeu d'arc narratif : quarantaine, cure spécifique ou rituel majeur."
+    ]
+   ],
+   "classe": "data-table"
+  },
+  "agents_pathogenes": {
+   "type": "table",
+   "colonnes": [
+    "Nature (d6)",
+    "IG",
+    "Exemples",
+    "Traitement efficace",
+    "Limite / Note mécanique"
+   ],
+   "lignes": [
+    [
+     "<strong>1 — Bactérien</strong>",
+     "<strong>+0</strong>",
+     "Fièvre des tranchées, choléra des docks",
+     "Premiers Soins / Médecine Avancée + antibiotiques ou antiseptiques adaptés",
+     "Seringue de soins seule : efface des dégâts, ne guérit pas l'infection."
+    ],
+    [
+     "<strong>2 — Viral</strong>",
+     "<strong>+1</strong>",
+     "Fièvre des brumes, rhume des cales",
+     "Repos sûr + soins de soutien (veille de soignant <a class=\"rule-ref\" href=\"livre_6.html#chap-25\" data-tip=\"Veille de soignant : 2 h pendant un Repos sûr, double la récupération (CON ×2) (§25.2).\">§25.2</a>) ; vaccin en prévention",
+     "Antibiotiques inefficaces ; la guérison repose surtout sur le système immunitaire."
+    ],
+    [
+     "<strong>3 — Parasitaire / Fongique</strong>",
+     "<strong>+1</strong>",
+     "Ver des sables, spores d'Hybris",
+     "Extraction / Chirurgie (Médecine Avancée) ou antifongique dédié",
+     "Masque seul insuffisant si ingestion ou blessure ouverte."
+    ],
+    [
+     "<strong>4 — Toxique / Prion</strong>",
+     "<strong>+2</strong>",
+     "Mal des mineurs, dégénérescence nerveuse",
+     "Apothicaire de Guerre / antidote dédié, purge ou dialyse ; séquelles fréquentes",
+     "Non contagieux par défaut ; souvent irréversible sans purge ciblée."
+    ],
+    [
+     "<strong>5 — Arcanique (5e Force)</strong>",
+     "<strong>+3</strong>",
+     "Peste de Nynth, souffle cendré",
+     "Magie curative / rituel de purge + catalyseur adapté",
+     "Médecine courante : stabilise les symptômes, ne guérit jamais l'agent."
+    ],
+    [
+     "<strong>6 — Nanotech / Cyber</strong>",
+     "<strong>+2</strong>",
+     "Rouille grise, code dormant",
+     "Atelier d'Ingénierie &amp; Arcanotech + purge électromagnétique",
+     "Automates et implants ciblés ; Premiers Soins organiques : diagnostic seul."
+    ]
+   ],
+   "classe": "data-table"
+  },
+  "transmission": {
+   "type": "table",
+   "colonnes": [
+    "Vecteur / Modulateur",
+    "IG",
+    "Déclenchement du jet d'exposition",
+    "Contagiosité &amp; Protection"
+   ],
+   "lignes": [
+    [
+     "<strong>Non transmissible</strong> <em>(toxine, carence, source unique)</em>",
+     "<strong>+0</strong>",
+     "Exposition directe à la source (ingestion, piqûre, relique).",
+     "Aucune contagion inter-individuelle."
+    ],
+    [
+     "<strong>Sang / eau / nourriture</strong>",
+     "<strong>+1</strong>",
+     "Lors d'un partage (blessure ouverte, eau ou repas contaminés).",
+     "Échange direct uniquement ; filtrage ou ébullition annule le jet."
+    ],
+    [
+     "<strong>Contact / gouttelettes</strong>",
+     "<strong>+2</strong>",
+     "Proximité prolongée ou contact physique direct.",
+     "Stade symptomatique uniquement ; gants / quarantaine : +2 au jet ou pas de jet."
+    ],
+    [
+     "<strong>Vecteur animal / zone / arcanique</strong>",
+     "<strong>+2</strong>",
+     "1 jet par scène d'exposition dans la zone ou face au vecteur / à la relique.",
+     "Actif tant que la source ou le foyer persiste."
+    ],
+    [
+     "<strong>Aérien (aérosol / spores)</strong>",
+     "<strong>+3</strong>",
+     "Toute créature dans le même espace clos ou sous le vent (1 jet / scène).",
+     "Actif dès les premiers signes ; <a class=\"rule-ref\" href=\"livre_2.html#sec-8-6\" data-tip=\"Masque Filtrant : protège contre les gaz, fumées et aérosols (Livre II §8.6).\">Masque Filtrant</a> : +2 à +4 ou immunité si étanche."
+    ],
+    [
+     "<em>Modulateur — Contagion silencieuse</em>",
+     "<strong>+2</strong>",
+     "Contagieux dès la phase d'incubation (avant tout symptôme visible).",
+     "Complique le dépistage et la quarantaine préventive."
+    ],
+    [
+     "<em>Modulateur — Vecteur supplémentaire</em>",
+     "<strong>+2</strong>",
+     "Ajoute un second vecteur de cette table (ex. contact + eau).",
+     "Cumulable si la maladie emprunte plusieurs voies."
+    ]
+   ],
+   "classe": "data-table"
+  },
+  "virulence_paliers": {
+   "type": "table",
+   "colonnes": [
+    "Palier de Virulence",
+    "Difficulté CON",
+    "IG",
+    "Équivalent Livre II &amp; Repère à table"
+   ],
+   "lignes": [
+    [
+     "<strong>Bénigne</strong>",
+     "<strong>3</strong>",
+     "<strong>+0</strong>",
+     "Facile (<a class=\"rule-ref\" href=\"livre_2.html#chap-7\" data-tip=\"Seuils 0–34 : 3 Facile (Livre II §7.1).\">§7.1</a>) — adulte moyen (1d4) résiste souvent seul ; réussite auto dès 1d8."
+    ],
+    [
+     "<strong>Commune</strong>",
+     "<strong>5</strong>",
+     "<strong>+1</strong>",
+     "Difficile / Très Difficile (<a class=\"rule-ref\" href=\"livre_2.html#chap-7\" data-tip=\"Seuils 0–34 : 4–5 Difficile / Très Difficile (Livre II §7.1).\">§7.1</a>) — exige un soin (+2), un effort ou un bon dé ; auto dès 1d12."
+    ],
+    [
+     "<strong>Sévère</strong>",
+     "<strong>7</strong>",
+     "<strong>+2</strong>",
+     "Extrêmement Difficile (<a class=\"rule-ref\" href=\"livre_2.html#chap-7\" data-tip=\"Seuils 0–34 : 6–7 Extrêmement Difficile (Livre II §7.1).\">§7.1</a>) — forte CON, entraînement immunitaire ou traitement actif requis ; auto dès 2d8."
+    ],
+    [
+     "<strong>Grave</strong>",
+     "<strong>10</strong>",
+     "<strong>+3</strong>",
+     "Héroïque (<a class=\"rule-ref\" href=\"livre_2.html#chap-7\" data-tip=\"Seuils 0–34 : 10–11 Héroïque (Livre II §7.1).\">§7.1</a>) — aggravation quasi certaine sans diagnostic ni traitement adapté ; auto dès 2d12."
+    ],
+    [
+     "<strong>Mortelle</strong>",
+     "<strong>14</strong>",
+     "<strong>+4</strong>",
+     "Prodigieux (<a class=\"rule-ref\" href=\"livre_2.html#chap-7\" data-tip=\"Seuils 0–34 : 12–15 Prodigieux (Livre II §7.1).\">§7.1</a>) — fléau majeur exigeant soin spécialisé, résistance dédiée ou effort lourd."
+    ],
+    [
+     "<strong>Cataclysmique</strong>",
+     "<strong>18+</strong>",
+     "<strong>+5</strong>",
+     "Légendaire / Mythique (<a class=\"rule-ref\" href=\"livre_2.html#chap-7\" data-tip=\"Seuils 0–34 : 16–19 Légendaire, 20–22 Mythique (Livre II §7.1).\">§7.1</a>) — souche arcanique ou arme biologique : cure spécifique ou miracle indispensable."
+    ]
+   ],
+   "classe": "data-table"
+  },
+  "cadence_incubation": {
+   "type": "table",
+   "colonnes": [
+    "Paramètre temporel",
+    "Délai / Durée type",
+    "IG",
+    "Effet sur le rythme de jeu"
+   ],
+   "lignes": [
+    [
+     "<strong>Incubation — Immédiate / Aiguë</strong>",
+     "Minutes à 1d6 heures",
+     "<strong>+1</strong>",
+     "Frappe vite ; laisse peu de temps pour isoler ou préparer un remède."
+    ],
+    [
+     "<strong>Incubation — Standard</strong>",
+     "1d6 jours",
+     "<strong>+0</strong>",
+     "Rythme classique entre exposition et premiers signes."
+    ],
+    [
+     "<strong>Incubation — Lente / Latente</strong>",
+     "1d6 semaines ou 1 épisode",
+     "<strong>+0</strong>",
+     "Laisse du temps avant le Stade 1 (très sournoise avec <em>Contagion silencieuse</em>)."
+    ],
+    [
+     "<strong>Cadence — Foudroyante</strong>",
+     "1d6 heures / stade",
+     "<strong>+3</strong>",
+     "Escalade dans la journée : urgence vitale immédiate."
+    ],
+    [
+     "<strong>Cadence — Rapide</strong>",
+     "12 à 24 heures / stade",
+     "<strong>+2</strong>",
+     "1 jet de transition par jour ; pression soutenue sur le groupe."
+    ],
+    [
+     "<strong>Cadence — Standard</strong>",
+     "2 à 3 jours / stade",
+     "<strong>+1</strong>",
+     "Laisse le temps de voyager, diagnostiquer et chercher un traitement."
+    ],
+    [
+     "<strong>Cadence — Lente / Chronique</strong>",
+     "1 à 2 semaines ou 1 épisode / stade",
+     "<strong>+0</strong>",
+     "Usure progressive, laisse des fenêtres d'enquête et de soins."
+    ]
+   ],
+   "classe": "data-table"
+  },
+  "effets_stades_pathologie": {
+   "type": "table",
+   "colonnes": [
+    "Palier",
+    "IG",
+    "Effets système disponibles (vocabulaire Codex)",
+    "Application à table"
+   ],
+   "lignes": [
+    [
+     "<span class=\"pill-badge emerald\">Léger</span>",
+     "<strong>+1</strong>",
+     "Malus ciblé &minus;1 ec (1 attribut ou famille) &middot; État léger (<a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"États préjudiciables (§24.1) : Étourdi (−1 ec), Affaibli (−1 ec durable), Assourdi, ou privation niv. 1.\">§24.1</a> : <em>Étourdi</em>, <em>Affaibli</em>, <em>Assourdi</em>, ou privation niv. 1 <em>Affamé</em> / <em>Assoiffé</em> / <em>Somnolent</em>) &middot; Plancher +1 Essoufflement &middot; 1 dégât direct par cycle.",
+     "Gêne persistante ; les dégâts pathologiques ignorent armure et bouclier."
+    ],
+    [
+     "<span class=\"pill-badge cyan\">Modéré</span>",
+     "<strong>+2</strong>",
+     "Malus ciblé &minus;2 ec &middot; Guérison au Repos sûr réduite de moitié (<a class=\"rule-ref\" href=\"livre_6.html#chap-25\" data-tip=\"Repos sûr (§25.2) : efface CON dégâts (×2 avec veille), ici divisé par deux.\">§25.2</a>) &middot; État modéré (<a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"États préjudiciables (§24.1) : Déstabilisé, Ralenti, Aveugle, À terre.\">§24.1</a> : <em>Déstabilisé</em>, <em>Ralenti</em>, <em>Aveugle</em>, <em>À terre</em>) &middot; Drain &minus;1 PA max (ou &minus;1 Encaissement / Essoufflement max) &middot; 2–3 dégâts directs par cycle <strong>ou</strong> Résiduel de scène <em>Empoisonné 1–2</em>, <em>Saignement 2</em> ou <em>En Feu 2</em> (<a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\" data-tip=\"Dégâts résiduels (§24.2) : Empoisonné réduit de moitié les soins de dégâts.\">§24.2</a>) &middot; Statut <a class=\"rule-ref\" href=\"livre_6.html#sec-24-4\" data-tip=\"Souffrant : blessure grave ; un soin ordinaire suspend Souffrant pathologique pour 1 scène (§24.4).\">Souffrant</a> pathologique.",
+     "Empoisonné divise les soins de dégâts par deux tant que le stade dure ; un soin ordinaire ne suspend Souffrant pathologique que pour 1 scène."
+    ],
+    [
+     "<span class=\"pill-badge amber\">Sévère</span>",
+     "<strong>+3</strong>",
+     "Blocage total du Repos sûr (0 dégât effacé, Essoufflement conservé, <a class=\"rule-ref\" href=\"livre_6.html#chap-25\" data-tip=\"Repos sûr (§25.2) : récupération annulée tant que ce stade persiste.\">§25.2</a>) &middot; État sévère (<a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"États préjudiciables (§24.1) : Immobilisé, Paniqué, Sonné ou privation niv. 2–3.\">§24.1</a> : <em>Immobilisé</em>, <em>Paniqué</em> en crise, <em>Sonné</em> 1 tour sur crise / échec Endurance Diff 4, ou privation niv. 2–3) &middot; Drain &minus;2 PA max ou &minus;2 Encaissement (min 1) &middot; 4–5 dégâts directs par cycle <strong>ou</strong> Résiduel <em>Asphyxie 2</em> (<a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\" data-tip=\"Asphyxie (§24.2) : dégâts résiduels + perte d'1 PA en début de tour.\">§24.2</a>).",
+     "Entrave lourde ; Asphyxie 2 retire 1 PA et inflige ses résiduels lors des scènes d'effort ou de combat."
+    ],
+    [
+     "<span class=\"pill-badge ruby\">Critique</span>",
+     "<strong>+4</strong>",
+     "État incapacitant (<a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"Paralysé (§24.1) : aucune action ni réaction, défense à 0.\">Paralysé</a> ou coma <a class=\"rule-ref\" href=\"livre_6.html#sec-24-4\" data-tip=\"Inconscient (§24.4) : aucune action ni réaction ; ici non réveillable par secousse.\">Inconscient</a> non réveillable par secousse) &middot; CON dégâts directs par cycle <strong>ou</strong> <strong>Résiduel aggravé</strong> en crise / combat (dégâts doublés, +1/tour, <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\" data-tip=\"Aggravation (§24.2) : un résiduel aggravé inflige le double et croît de +1/tour.\">§24.2</a>) &middot; <strong>Crise d'Agonie</strong> (<a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"Agonisant (§24.1) : À terre, Endurance Physique Diff 4 (+1/tour) jusqu'à stabilisation Diff 6 ou mort.\">Agonisant</a> <a class=\"rule-ref\" href=\"livre_6.html#sec-23-2\" data-tip=\"Agonie critique (§23.2) : même arbre d'Endurance Physique et stabilisation.\">§23.2</a> : À terre, Endurance Diff 4 +1/tour à l'échéance ou sur effort, jusqu'à stabilisation Diff 6 ou mort).",
+     "Urgence vitale immédiate ; exige stabilisation ou traitement dédié."
+    ],
+    [
+     "<span class=\"pill-badge ruby\">Terminal</span>",
+     "<strong>+5</strong>",
+     "<strong>Atteinte du Seuil Létal (CON &times; 5, <a class=\"rule-ref\" href=\"livre_6.html#sec-23-2\" data-tip=\"Seuil Létal (CON×5) : arbre de résolution entre Mort, Inconscient, Sombrer ou Dernier Souffle (§23.2).\">§23.2</a>)</strong> à l'échéance sur échec de transition ou sans remède immédiat.",
+     "Déclenche l'arbre du Seuil Létal (<a class=\"rule-ref\" href=\"livre_6.html#sec-23-2\" data-tip=\"Seuil Létal (§23.2) : résolution de l'atteinte à CON×5.\">§23.2</a>) ; un <a class=\"rule-ref\" href=\"livre_6.html#sec-23-3\" data-tip=\"Point de Miracle (§23.3) : dévie la mort (Inconscient, À terre).\">Point de Miracle (§23.3)</a> reste utilisable (laisse Inconscient, À terre et stabilisé au stade précédent)."
+    ]
+   ],
+   "classe": "data-table"
+  },
+  "modulateurs_pathologie": {
+   "type": "table",
+   "colonnes": [
+    "Modulateur / Issue (optionnel)",
+    "IG",
+    "Règle mécanique"
+   ],
+   "lignes": [
+    [
+     "<strong>Auto-limitée (bénigne)</strong>",
+     "<strong>&minus;1</strong>",
+     "Guérit spontanément à l'issue de la durée totale des stades ; aucune aggravation au-delà du stade max, jamais létale."
+    ],
+    [
+     "<strong>Mode Cumulatif (2–3 stades)</strong>",
+     "<strong>+2</strong>",
+     "Chaque stade conserve les effets des stades inférieurs et y ajoute les siens (<a class=\"rule-ref\" href=\"livre_6.html#chap-24\" data-tip=\"Cumul des États (§24) : états distincts cumulables, jamais deux fois le même état.\">§24</a>)."
+    ],
+    [
+     "<strong>Mode Cumulatif (4–6 stades)</strong>",
+     "<strong>+3</strong>",
+     "Même règle sur une pathologie longue de 4 à 6 stades (usure dégénérative lourde)."
+    ],
+    [
+     "<strong>Sans rémission spontanée</strong>",
+     "<strong>+2</strong>",
+     "Une réussite au jet de transition <strong>stabilise</strong> le stade (pas d'aggravation) au lieu de le faire reculer ; seul un traitement adapté permet la rémission."
+    ],
+    [
+     "<strong>Escalade rapide</strong>",
+     "<strong>+2</strong>",
+     "Sur échec de 4+ (ou échec critique) au jet de transition, la victime saute directement de <strong>+2 stades</strong>."
+    ],
+    [
+     "<strong>Symptômes masqués</strong>",
+     "<strong>+1</strong>",
+     "+2 à la difficulté de diagnostic ; un échec peut indiquer une mauvaise nature d'agent."
+    ],
+    [
+     "<strong>Résistance au traitement</strong>",
+     "<strong>+2</strong>",
+     "Exige un équipement spécialisé (laboratoire, bloc chirurgical, rituel ou atelier) ou <strong>2 traitements réussis</strong> pour obtenir 1 stade de rémission."
+    ],
+    [
+     "<strong>Porteur sain</strong>",
+     "<strong>+1</strong>",
+     "Même en cas de résistance réussie (ou après guérison), la cible peut rester contagieuse sans symptôme pendant 1d6 jours (ou jusqu'à purge)."
+    ],
+    [
+     "<strong>Chronicité</strong>",
+     "<strong>+1</strong>",
+     "En fin d'évolution, le stade 1 ou 2 devient permanent ; des crises se réveillent sur stress intense, privation ou blessure grave."
+    ],
+    [
+     "<strong>Séquelles durables</strong>",
+     "<strong>+1</strong>",
+     "Après guérison d'un stade 3+, inflige l'état <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"Affaibli (§24.1) : −1 ec sur tous les jets, cumulable.\">Affaibli</a> pendant 10 &minus; CON jours (comme <a class=\"rule-ref\" href=\"livre_6.html#chap-25\" data-tip=\"Séquelle Post-Mortem (§25.3) : Affaibli pendant 10 − CON jours.\">§25.3</a>) ou une cicatrice (&minus;1 <a class=\"rule-ref\" href=\"livre_6.html#sec-23-2\" data-tip=\"Encaissement = CON × 2 (§23.2).\">Encaissement</a> jusqu'à chirurgie / soin majeur)."
+    ],
+    [
+     "<strong>Souche mutante</strong>",
+     "<strong>+2</strong>",
+     "À chaque nouvelle zone ou foyer, 1d6 : 1–4 souche stable ; 5 Virulence +2 (max 22) ; 6 nouveau vecteur ou résistance au traitement précédent."
+    ],
+    [
+     "<strong>Immunité courte / nulle</strong>",
+     "<strong>+1</strong>",
+     "Supprime l'immunité acquise par défaut (1d6 mois) après guérison : réinfection immédiate possible."
+    ]
+   ],
+   "classe": "data-table"
+  },
+  "maladies_exemples": {
+   "type": "cartes",
+   "grille": 2,
+   "cartes": [
+    {
+     "titre": "<span>Rhume des Cales</span>\n                                <span class=\"pill-badge emerald\">Classe I &middot; IG 4</span>",
+     "top": false,
+     "monde": "Viral &middot; Contact &middot; Virulence 3 &middot; 1 stade (Remplacement)",
+     "corps_attrs": " style=\"font-size: 0.9em; margin-top: 10px;\"",
+     "corps_html": "<strong>Incubation :</strong> standard (1d6 jours). <strong>S1 — Coup de froid (2 j) :</strong> &minus;1 ec ciblé (Force / Endurance). <strong>Modulateur :</strong> Auto-limitée (guérit seule après 2 j).<br><strong>Calcul IG :</strong> Viral (+1) + Contact (+2) + Vir. 3 (+0) + Incub. std (+0) + Cad. std (+1) + 1 stade (+0) + Effet (+1) + Auto-limitée (&minus;1) = <strong>IG 4</strong>.",
+     "pieds": []
+    },
+    {
+     "titre": "<span>Fièvre des Brumes</span>\n                                <span class=\"pill-badge cyan\">Classe II &middot; IG 16</span>",
+     "top": false,
+     "monde": "Viral &middot; Aérien &middot; Virulence 5 &middot; 3 stades (Remplacement)",
+     "corps_attrs": " style=\"font-size: 0.9em; margin-top: 10px;\"",
+     "corps_html": "<strong>Incubation :</strong> standard (1d6 jours). <strong>S1 — Frissons (2 j) :</strong> &minus;1 ec FOR, <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"Étourdi : −1 ec sur tous les jets (§24.1).\">Étourdi</a>. <strong>S2 — Fièvre haute (3 j) :</strong> <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"Ralenti : actions hors déplacement ×2 PA ; déplacement +1 PA/case (§24.1).\">Ralenti</a>, <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\" data-tip=\"Empoisonné : soins de dégâts divisés par deux ; résiduel en combat (§24.2).\">Empoisonné 1</a> pathologique. <strong>S3 — Prostration (2 j) :</strong> <a class=\"rule-ref\" href=\"livre_6.html#sec-24-4\" data-tip=\"Souffrant : blessure grave ; soin ordinaire suspend 1 scène en pathologie (§24.4).\">Souffrant</a> pathologique, Empoisonné 1 reconduit. <strong>Traitement :</strong> Repos sûr sous veille + soins de soutien (Diff 5) ; seringue = dégâts seuls. Immunité 1d6 mois.<br><strong>Calcul IG :</strong> Viral (+1) + Aérien (+3) + Vir. 5 (+1) + Incub. std (+0) + Cad. std (+1) + 3 stades (+2) + Effets (+1+1+2+2+2 = +8) = <strong>IG 16</strong>.",
+     "pieds": []
+    },
+    {
+     "titre": "<span>Fièvre des Tranchées</span>\n                                <span class=\"pill-badge amber\">Classe III &middot; IG 24</span>",
+     "top": false,
+     "monde": "Bactérien &middot; Sang / Eau &middot; Virulence 7 &middot; 4 stades (Remplacement)",
+     "corps_attrs": " style=\"font-size: 0.9em; margin-top: 10px;\"",
+     "corps_html": "<strong>Incubation :</strong> aiguë (1d6 heures). <strong>S1 — Torpeur (24 h) :</strong> <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"Affaibli : −1 ec sur tous les jets, cumulable (§24.1).\">Affaibli</a>. <strong>S2 — Hémorragie (24 h) :</strong> <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (+1 PA/case) (§24.1).\">Déstabilisé</a>, <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\" data-tip=\"Saignement : dégâts résiduels en début de tour ; ne baisse pas après effort intense (§24.2).\">Saignement 2</a> sur effort / crise. <strong>S3 — Décompensation (24 h) :</strong> blocage total Repos sûr, <a class=\"rule-ref\" href=\"livre_6.html#sec-24-4\" data-tip=\"Souffrant : suspendu 1 scène par soin ordinaire (§24.4).\">Souffrant</a> pathologique. <strong>S4 — Choc septique (12 h) :</strong> Crise d'Agonie (<a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"Agonisant : Endurance Diff 4 (+1/tour) jusqu'à stabilisation Diff 6 ou mort (§24.1).\">Agonisant</a>). <strong>Traitement :</strong> Premiers Soins / Médecine Avancée + antibiotiques (Diff 7). Modulateur : Séquelles durables.<br><strong>Calcul IG :</strong> Bactérien (+0) + Sang/Eau (+1) + Vir. 7 (+2) + Incub. aiguë (+1) + Cad. rapide (+2) + 4 stades (+3) + Effets (+1+2+2+3+2+4 = +14) + Séquelles (+1) = <strong>IG 24</strong>.",
+     "pieds": []
+    },
+    {
+     "titre": "<span>Peste de Nynth</span>\n                                <span class=\"pill-badge ruby\">Classe V &middot; IG 45</span>",
+     "top": false,
+     "monde": "Arcanique &middot; Aérien + Silencieuse &middot; Virulence 10 &middot; 6 stades (Cumulatif)",
+     "corps_attrs": " style=\"font-size: 0.9em; margin-top: 10px;\"",
+     "corps_html": "<strong>Incubation :</strong> lente (1 épisode, contagieuse). <em>Mode Cumulatif : chaque stade ajoute sa couche aux précédents.</em> <strong>S1 — Écho cendré (2 j) :</strong> <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"Affaibli : −1 ec sur tous les jets, cumulable (§24.1).\">Affaibli</a>. <strong>S2 — Essoufflement gris (2 j) :</strong> + &minus;1 PA max. <strong>S3 — Souffle obstrué (24 h) :</strong> + <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\" data-tip=\"Asphyxie : dégâts résiduels + perte d'1 PA en début de tour (§24.2).\">Asphyxie 2</a>. <strong>S4 — Fièvre de faille (24 h) :</strong> + blocage total Repos sûr. <strong>S5 — Embrasement interne (24 h) :</strong> + <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\" data-tip=\"Résiduel aggravé : dégâts doublés et +1/tour (§24.2).\">Résiduel aggravé</a>. <strong>S6 — Calcination (12 h) :</strong> + Seuil Létal CON&times;5 (<a class=\"rule-ref\" href=\"livre_6.html#sec-23-2\" data-tip=\"Seuil Létal (CON×5) : arbre de résolution (§23.2).\">§23.2</a>). <strong>Traitement :</strong> médecine courante stabilise seulement ; guérison par magie curative / rituel de purge (Diff 10, résistant). <strong>Modulateurs :</strong> Sans rémission spontanée, Résistance au traitement, Souche mutante.<br><strong>Calcul IG :</strong> Arcanique (+3) + Aérien (+3) + Silencieuse (+2) + Vir. 10 (+3) + Incub. lente (+0) + Cad. rapide (+2) + 6 stades (+5) + Cumulatif 4–6 (+3) + Effets (+1+2+3+3+4+5 = +18) + Modulateurs (+2+2+2 = +6) = <strong>IG 45</strong>.",
+     "pieds": []
+    }
+   ]
   }
  },
  "tableaux": {
@@ -1159,6 +1646,62 @@
     "Composition Recommandée (Groupe de 4 PJ)",
     "Ratio PA Ennemis / PJ",
     "Objectif Tactique"
+   ]
+  },
+  "classes_gravite": {
+   "colonnes": [
+    "Classe de Gravité",
+    "Indice (IG)",
+    "Profil & Impact à la table",
+    "Prise en charge type"
+   ]
+  },
+  "agents_pathogenes": {
+   "colonnes": [
+    "Nature (d6)",
+    "IG",
+    "Exemples",
+    "Traitement efficace",
+    "Limite / Note mécanique"
+   ]
+  },
+  "transmission": {
+   "colonnes": [
+    "Vecteur / Modulateur",
+    "IG",
+    "Déclenchement du jet d'exposition",
+    "Contagiosité & Protection"
+   ]
+  },
+  "virulence_paliers": {
+   "colonnes": [
+    "Palier de Virulence",
+    "Difficulté CON",
+    "IG",
+    "Équivalent Livre II & Repère à table"
+   ]
+  },
+  "cadence_incubation": {
+   "colonnes": [
+    "Paramètre temporel",
+    "Délai / Durée type",
+    "IG",
+    "Effet sur le rythme de jeu"
+   ]
+  },
+  "effets_stades_pathologie": {
+   "colonnes": [
+    "Palier",
+    "IG",
+    "Effets système disponibles (vocabulaire Codex)",
+    "Application à table"
+   ]
+  },
+  "modulateurs_pathologie": {
+   "colonnes": [
+    "Modulateur / Issue (optionnel)",
+    "IG",
+    "Règle mécanique"
    ]
   }
  },
@@ -1745,6 +2288,377 @@
     "composition": "1 Boss Suprême (La Bête, Minulican, Disciples de Capricius)",
     "ratio_pa": "Spécial (PA doublés + Actions Légendaires)",
     "objectif": "Survie collective, coordination de sorts et de faiblesses."
+   }
+  ],
+  "fiche_pathologie": {
+   "etiquette": "Formule de l'Indice de Gravité (IG) & Fiche-type",
+   "formule_ig": "IG = Nature + Transmission + Virulence + Cadence + Stades (+1 dès le 2e, max 6) + Effets + Modulateurs",
+   "signature": "Nom libre [Classe I–V · IG] — Nature | Transmission | Virulence (Diff CON) | Incubation & Cadence | Stades (1–6, Remplacement ou Cumulatif) | Diagnostic & Traitement | Modulateurs & Issues",
+   "texte": "Effets exprimés uniquement en vocabulaire système : dégâts directs/résiduels (§24.2), états (§24.1), −ec, drain PA, Essoufflement, Repos sûr (§25.2), seuils CON×2 / CON×5 (§23)."
+  },
+  "classes_gravite": [
+   {
+    "classe": "Classe I — Bénigne",
+    "ig": "1–8",
+    "min_ig": 1,
+    "max_ig": 8,
+    "profil": "Malaise court (1–2 stades légers), gêne tactique mineure, rarement dangereuse.",
+    "prise_en_charge": "Repos sûr, soins légers ou guérison spontanée."
+   },
+   {
+    "classe": "Classe II — Commune",
+    "ig": "9–16",
+    "min_ig": 9,
+    "max_ig": 16,
+    "profil": "Maladie courante (2–3 stades), malus nets ou contagion rapide, freine le groupe sans tuer seule.",
+    "prise_en_charge": "Premiers Soins, repos sûr sous veille de soignant."
+   },
+   {
+    "classe": "Classe III — Sévère",
+    "ig": "17–26",
+    "min_ig": 17,
+    "max_ig": 26,
+    "profil": "Pathologie sérieuse (3–4 stades), états lourds, dégâts pathologiques ou crises.",
+    "prise_en_charge": "Soignant entraîné, kit ou remède dédié requis."
+   },
+   {
+    "classe": "Classe IV — Critique",
+    "ig": "27–37",
+    "min_ig": 27,
+    "max_ig": 37,
+    "profil": "Affection grave, dégénérative (4–6 stades) ou foudroyante, menace vitale ou séquelles durables.",
+    "prise_en_charge": "Médecine Avancée, chirurgie, purge ou atelier spécialisé."
+   },
+   {
+    "classe": "Classe V — Fléau",
+    "ig": "38+",
+    "min_ig": 38,
+    "max_ig": null,
+    "profil": "Peste majeure, souche arcanique/mutante ou arme biologique : létalité élevée, cumul ou pandémie.",
+    "prise_en_charge": "Enjeu d'arc narratif : quarantaine, cure spécifique ou rituel majeur."
+   }
+  ],
+  "agents_pathogenes": [
+   {
+    "d6": 1,
+    "nature": "Bactérien",
+    "ig": 0,
+    "exemples": "Fièvre des tranchées, choléra des docks",
+    "traitement": "Premiers Soins / Médecine Avancée + antibiotiques ou antiseptiques adaptés",
+    "inefficace": "Seringue de soins seule : efface des dégâts, ne guérit pas l'infection."
+   },
+   {
+    "d6": 2,
+    "nature": "Viral",
+    "ig": 1,
+    "exemples": "Fièvre des brumes, rhume des cales",
+    "traitement": "Repos sûr + soins de soutien (veille de soignant §25.2) ; vaccin en prévention",
+    "inefficace": "Antibiotiques inefficaces ; la guérison repose surtout sur le système immunitaire."
+   },
+   {
+    "d6": 3,
+    "nature": "Parasitaire / Fongique",
+    "ig": 1,
+    "exemples": "Ver des sables, spores d'Hybris",
+    "traitement": "Extraction / Chirurgie (Médecine Avancée) ou antifongique dédié",
+    "inefficace": "Masque seul insuffisant si ingestion ou blessure ouverte."
+   },
+   {
+    "d6": 4,
+    "nature": "Toxique / Prion",
+    "ig": 2,
+    "exemples": "Mal des mineurs, dégénérescence nerveuse",
+    "traitement": "Apothicaire de Guerre / antidote dédié, purge ou dialyse ; séquelles fréquentes",
+    "inefficace": "Non contagieux par défaut ; souvent irréversible sans purge ciblée."
+   },
+   {
+    "d6": 5,
+    "nature": "Arcanique (5e Force)",
+    "ig": 3,
+    "exemples": "Peste de Nynth, souffle cendré",
+    "traitement": "Magie curative / rituel de purge + catalyseur adapté",
+    "inefficace": "Médecine courante : stabilise les symptômes, ne guérit jamais l'agent."
+   },
+   {
+    "d6": 6,
+    "nature": "Nanotech / Cyber",
+    "ig": 2,
+    "exemples": "Rouille grise, code dormant",
+    "traitement": "Atelier d'Ingénierie & Arcanotech + purge électromagnétique",
+    "inefficace": "Automates et implants ciblés ; Premiers Soins organiques : diagnostic seul."
+   }
+  ],
+  "transmission": [
+   {
+    "vecteur": "Non transmissible",
+    "ig": 0,
+    "type": "vecteur",
+    "jet": "Exposition directe à la source (ingestion, piqûre, relique).",
+    "periode": "Aucune contagion inter-individuelle."
+   },
+   {
+    "vecteur": "Sang / eau / nourriture",
+    "ig": 1,
+    "type": "vecteur",
+    "jet": "Lors d'un partage (blessure ouverte, eau ou repas contaminés).",
+    "periode": "Échange direct uniquement ; filtrage ou ébullition annule le jet."
+   },
+   {
+    "vecteur": "Contact / gouttelettes",
+    "ig": 2,
+    "type": "vecteur",
+    "jet": "Proximité prolongée ou contact physique direct.",
+    "periode": "Stade symptomatique uniquement ; gants / quarantaine : +2 au jet ou pas de jet."
+   },
+   {
+    "vecteur": "Vecteur animal / zone / arcanique",
+    "ig": 2,
+    "type": "vecteur",
+    "jet": "1 jet par scène d'exposition dans la zone ou face au vecteur / à la relique.",
+    "periode": "Actif tant que la source ou le foyer persiste."
+   },
+   {
+    "vecteur": "Aérien (aérosol / spores)",
+    "ig": 3,
+    "type": "vecteur",
+    "jet": "Toute créature dans le même espace clos ou sous le vent (1 jet / scène).",
+    "periode": "Actif dès les premiers signes ; Masque Filtrant (Livre II §8.6) : +2 à +4 ou immunité si étanche."
+   },
+   {
+    "vecteur": "Modulateur — Contagion silencieuse",
+    "ig": 2,
+    "type": "modulateur",
+    "jet": "Contagieux dès la phase d'incubation (avant tout symptôme visible).",
+    "periode": "Complique le dépistage et la quarantaine préventive."
+   },
+   {
+    "vecteur": "Modulateur — Vecteur supplémentaire",
+    "ig": 2,
+    "type": "modulateur",
+    "jet": "Ajoute un second vecteur de cette table (ex. contact + eau).",
+    "periode": "Cumulable si la maladie emprunte plusieurs voies."
+   }
+  ],
+  "virulence_paliers": [
+   {
+    "palier": "Bénigne",
+    "difficulte": 3,
+    "ig": 0,
+    "repere": "Facile (§7.1) — adulte moyen (1d4) résiste souvent seul ; réussite auto dès 1d8."
+   },
+   {
+    "palier": "Commune",
+    "difficulte": 5,
+    "ig": 1,
+    "repere": "Difficile / Très Difficile (§7.1) — exige un soin (+2), un effort ou un bon dé ; auto dès 1d12."
+   },
+   {
+    "palier": "Sévère",
+    "difficulte": 7,
+    "ig": 2,
+    "repere": "Extrêmement Difficile (§7.1) — forte CON, entraînement immunitaire ou traitement actif requis ; auto dès 2d8."
+   },
+   {
+    "palier": "Grave",
+    "difficulte": 10,
+    "ig": 3,
+    "repere": "Héroïque (§7.1) — aggravation quasi certaine sans diagnostic ni traitement adapté ; auto dès 2d12."
+   },
+   {
+    "palier": "Mortelle",
+    "difficulte": 14,
+    "ig": 4,
+    "repere": "Prodigieux (§7.1) — fléau majeur exigeant soin spécialisé, résistance dédiée ou effort lourd."
+   },
+   {
+    "palier": "Cataclysmique",
+    "difficulte": 18,
+    "ig": 5,
+    "repere": "Légendaire / Mythique (§7.1) — souche arcanique ou arme biologique : cure spécifique ou miracle indispensable."
+   }
+  ],
+  "cadence_incubation": [
+   {
+    "parametre": "Incubation — Immédiate / Aiguë",
+    "delai": "Minutes à 1d6 heures",
+    "ig": 1,
+    "effet": "Frappe vite ; laisse peu de temps pour isoler ou préparer un remède."
+   },
+   {
+    "parametre": "Incubation — Standard",
+    "delai": "1d6 jours",
+    "ig": 0,
+    "effet": "Rythme classique entre exposition et premiers signes."
+   },
+   {
+    "parametre": "Incubation — Lente / Latente",
+    "delai": "1d6 semaines ou 1 épisode",
+    "ig": 0,
+    "effet": "Laisse du temps avant le Stade 1 (très sournoise avec Contagion silencieuse)."
+   },
+   {
+    "parametre": "Cadence — Foudroyante",
+    "delai": "1d6 heures / stade",
+    "ig": 3,
+    "effet": "Escalade dans la journée : urgence vitale immédiate."
+   },
+   {
+    "parametre": "Cadence — Rapide",
+    "delai": "12 à 24 heures / stade",
+    "ig": 2,
+    "effet": "1 jet de transition par jour ; pression soutenue sur le groupe."
+   },
+   {
+    "parametre": "Cadence — Standard",
+    "delai": "2 à 3 jours / stade",
+    "ig": 1,
+    "effet": "Laisse le temps de voyager, diagnostiquer et chercher un traitement."
+   },
+   {
+    "parametre": "Cadence — Lente / Chronique",
+    "delai": "1 à 2 semaines ou 1 épisode / stade",
+    "ig": 0,
+    "effet": "Usure progressive, laisse des fenêtres d'enquête et de soins."
+   }
+  ],
+  "effets_stades_pathologie": [
+   {
+    "palier": "Léger",
+    "ig": 1,
+    "effets": "Malus ciblé −1 ec · État léger (§24.1 : Étourdi, Affaibli, Assourdi, ou privation niv. 1) · Plancher +1 Essoufflement · 1 dégât direct par cycle.",
+    "note": "Gêne persistante ; les dégâts pathologiques ignorent armure et bouclier."
+   },
+   {
+    "palier": "Modéré",
+    "ig": 2,
+    "effets": "Malus ciblé −2 ec · Guérison au Repos sûr réduite de moitié (§25.2) · État modéré (§24.1 : Déstabilisé, Ralenti, Aveugle, À terre) · Drain −1 PA max (ou −1 Encaissement / Essoufflement max) · 2–3 dégâts directs par cycle ou Résiduel de scène Empoisonné 1–2, Saignement 2 ou En Feu 2 (§24.2) · Statut Souffrant pathologique (§24.4).",
+    "note": "Empoisonné divise les soins de dégâts par deux tant que le stade dure ; un soin ordinaire ne suspend Souffrant pathologique que pour 1 scène."
+   },
+   {
+    "palier": "Sévère",
+    "ig": 3,
+    "effets": "Blocage total du Repos sûr (0 dégât effacé, Essoufflement conservé, §25.2) · État sévère (§24.1 : Immobilisé, Paniqué en crise, Sonné 1 tour sur crise / échec Endurance Diff 4, ou privation niv. 2–3) · Drain −2 PA max ou −2 Encaissement (min 1) · 4–5 dégâts directs par cycle ou Résiduel Asphyxie 2 (§24.2).",
+    "note": "Entrave lourde ; Asphyxie 2 retire 1 PA et inflige ses résiduels lors des scènes d'effort ou de combat."
+   },
+   {
+    "palier": "Critique",
+    "ig": 4,
+    "effets": "État incapacitant (Paralysé §24.1 ou coma Inconscient §24.4 non réveillable par secousse) · CON dégâts directs par cycle ou Résiduel aggravé en crise / combat (dégâts doublés, +1/tour, §24.2) · Crise d'Agonie (Agonisant §24.1 / §23.2 : À terre, Endurance Diff 4 +1/tour à l'échéance ou sur effort, jusqu'à stabilisation Diff 6 ou mort).",
+    "note": "Urgence vitale immédiate ; exige stabilisation ou traitement dédié."
+   },
+   {
+    "palier": "Terminal",
+    "ig": 5,
+    "effets": "Atteinte du Seuil Létal (CON × 5, §23.2) à l'échéance sur échec de transition ou sans remède immédiat.",
+    "note": "Déclenche l'arbre du Seuil Létal (§23.2) ; un Point de Miracle (§23.3) reste utilisable (laisse Inconscient, À terre et stabilisé au stade précédent)."
+   }
+  ],
+  "modulateurs_pathologie": [
+   {
+    "modulateur": "Auto-limitée (bénigne)",
+    "ig": -1,
+    "regle": "Guérit spontanément à l'issue de la durée totale des stades ; aucune aggravation au-delà du stade max, jamais létale."
+   },
+   {
+    "modulateur": "Mode Cumulatif (2–3 stades)",
+    "ig": 2,
+    "regle": "Chaque stade conserve les effets des stades inférieurs et y ajoute les siens (§24)."
+   },
+   {
+    "modulateur": "Mode Cumulatif (4–6 stades)",
+    "ig": 3,
+    "regle": "Même règle sur une pathologie longue de 4 à 6 stades (usure dégénérative lourde)."
+   },
+   {
+    "modulateur": "Sans rémission spontanée",
+    "ig": 2,
+    "regle": "Une réussite au jet de transition stabilise le stade (pas d'aggravation) au lieu de le faire reculer ; seul un traitement adapté permet la rémission."
+   },
+   {
+    "modulateur": "Escalade rapide",
+    "ig": 2,
+    "regle": "Sur échec de 4+ (ou échec critique) au jet de transition, la victime saute directement de +2 stades."
+   },
+   {
+    "modulateur": "Symptômes masqués",
+    "ig": 1,
+    "regle": "+2 à la difficulté de diagnostic ; un échec peut indiquer une mauvaise nature d'agent."
+   },
+   {
+    "modulateur": "Résistance au traitement",
+    "ig": 2,
+    "regle": "Exige un équipement spécialisé (laboratoire, bloc chirurgical, rituel ou atelier) ou 2 traitements réussis pour obtenir 1 stade de rémission."
+   },
+   {
+    "modulateur": "Porteur sain",
+    "ig": 1,
+    "regle": "Même en cas de résistance réussie (ou après guérison), la cible peut rester contagieuse sans symptôme pendant 1d6 jours (ou jusqu'à purge)."
+   },
+   {
+    "modulateur": "Chronicité",
+    "ig": 1,
+    "regle": "En fin d'évolution, le stade 1 ou 2 devient permanent ; des crises se réveillent sur stress intense, privation ou blessure grave."
+   },
+   {
+    "modulateur": "Séquelles durables",
+    "ig": 1,
+    "regle": "Après guérison d'un stade 3+, inflige l'état Affaibli (§24.1) pendant 10 − CON jours (comme §25.3) ou une cicatrice (−1 Encaissement jusqu'à chirurgie / soin majeur)."
+   },
+   {
+    "modulateur": "Souche mutante",
+    "ig": 2,
+    "regle": "À chaque nouvelle zone ou foyer, 1d6 : 1–4 souche stable ; 5 Virulence +2 (max 22) ; 6 nouveau vecteur ou résistance au traitement précédent."
+   },
+   {
+    "modulateur": "Immunité courte / nulle",
+    "ig": 1,
+    "regle": "Supprime l'immunité acquise par défaut (1d6 mois) après guérison : réinfection immédiate possible."
+   }
+  ],
+  "maladies_exemples": [
+   {
+    "nom": "Rhume des Cales",
+    "classe": "Classe I",
+    "ig": 4,
+    "nature": "Viral",
+    "transmission": "Contact",
+    "virulence": 3,
+    "stades": 1,
+    "mode": "Remplacement",
+    "texte": "Incubation standard (1d6 j). S1 — Coup de froid (2 j) : −1 ec ciblé (FOR / Endurance). Auto-limitée. IG = 1+2+0+0+1+0+1−1 = 4."
+   },
+   {
+    "nom": "Fièvre des Brumes",
+    "classe": "Classe II",
+    "ig": 16,
+    "nature": "Viral",
+    "transmission": "Aérien",
+    "virulence": 5,
+    "stades": 3,
+    "mode": "Remplacement",
+    "texte": "Incubation standard (1d6 j). S1 (2 j) : −1 ec FOR, Étourdi. S2 (3 j) : Ralenti, Empoisonné 1 pathologique. S3 (2 j) : Souffrant pathologique, Empoisonné 1 reconduit. IG = 1+3+1+0+1+2+8 = 16."
+   },
+   {
+    "nom": "Fièvre des Tranchées",
+    "classe": "Classe III",
+    "ig": 24,
+    "nature": "Bactérien",
+    "transmission": "Sang / eau / nourriture",
+    "virulence": 7,
+    "stades": 4,
+    "mode": "Remplacement",
+    "texte": "Incubation aiguë (1d6 h). S1 (24 h) : Affaibli. S2 (24 h) : Déstabilisé, Saignement 2 sur effort/crise. S3 (24 h) : blocage Repos sûr, Souffrant pathologique. S4 (12 h) : Crise d'Agonie (Agonisant). Séquelles durables. IG = 0+1+2+1+2+3+14+1 = 24."
+   },
+   {
+    "nom": "Peste de Nynth",
+    "classe": "Classe V",
+    "ig": 45,
+    "nature": "Arcanique",
+    "transmission": "Aérien + Contagion silencieuse",
+    "virulence": 10,
+    "stades": 6,
+    "mode": "Cumulatif",
+    "texte": "Incubation lente (1 épisode). S1 (2 j) : Affaibli. S2 (2 j) : + −1 PA max. S3 (24 h) : + Asphyxie 2. S4 (24 h) : + blocage Repos sûr. S5 (24 h) : + Résiduel aggravé. S6 (12 h) : + Seuil Létal CON×5. Sans rémission spontanée, Résistance au traitement, Souche mutante. IG = 3+5+3+0+2+5+3+18+6 = 45."
    }
   ]
  }

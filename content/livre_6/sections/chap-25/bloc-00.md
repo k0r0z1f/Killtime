@@ -16,7 +16,7 @@ livre: 6
                                 PA</strong> d'immobilisation au chevet du blessé.</li>
                         <li><strong>Stabiliser un Agonisant :</strong> Une réussite sur une épreuve de Premiers Soins
                             (Difficulté 6) stoppe l'hémorragie et ramène un <a class="rule-ref" href="#sec-24-1" data-tip="Agonisant : à l'article de la mort (À Terre ; Endurance Physique Diff 4 +1/tour, ou Dernier Souffle : +1 Essoufflement/jet). Stabilisation : Premiers Soins Diff 6.">agonisant</a> à l'état <a class="rule-ref" href="#sec-24-4" data-tip="Inconscient : lâche ce qu'il tient en main ; aucune action ni réaction. Réveil : secousse (1 PA) ou premiers soins.">Inconscient stable</a>.</li>
-                        <li><strong>Levée de l'État Souffrant :</strong> N'importe quel soin (Premiers Soins, bandage, <a class="rule-ref" href="livre_8.html#chap-33" data-tip="Seringues de soins : 1 PA, retirent −5 à −20 dégâts mais ne guérissent pas les maladies (Livre VIII §33.3).">seringue</a> ou magie curative) lève immédiatement l'état <a class="rule-ref" href="#sec-24-4" data-tip="Souffrant : blessure grave levée par n'importe quel soin (§24.4).">Souffrant</a>.</li>
+                        <li><strong>Levée de l'État Souffrant :</strong> N'importe quel soin (Premiers Soins, bandage, <a class="rule-ref" href="livre_8.html#chap-32" data-tip="Seringues de soins : 1 PA, retirent −5 à −20 dégâts mais ne guérissent pas les maladies (Livre VIII §32.3).">seringue</a> ou magie curative) lève immédiatement l'état <a class="rule-ref" href="#sec-24-4" data-tip="Souffrant : blessure grave levée par n'importe quel soin (§24.4).">Souffrant</a>.</li>
                     </ul>
 
                     <h3>25.2 Convalescence & Repos Sûr</h3>

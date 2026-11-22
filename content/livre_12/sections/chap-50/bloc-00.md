@@ -6,9 +6,9 @@ livre: 12
 
 
                     <p>
-                        Les adversaires humanoïdes constituent la majorité des affrontements dans les cités, les routes
-                        de campagne et les avant-postes coloniaux.
+                        La biosphère jeune et tumultueuse d'Hybris héberge des espèces aux métabolismes dopés par les
+                        veines souterraines de nytharite.
                     </p>
 
-                    <!-- FICHE BANDIT 1 -->
+                    <!-- FICHE THE BEAST -->
                     

@@ -72,2810 +72,5641 @@
    "id": "tour-10-secondes",
    "terme": "Tour de 10 Secondes (Cycle)",
    "domaine": "fondations",
-   "alias": ["tour", "cycle", "10s", "round"],
+   "alias": [
+    "tour",
+    "cycle",
+    "10s",
+    "round"
+   ],
    "liens": [
-    { "label": "Livre I §1", "livre": 1, "href": "livre_1.html#chap-1" },
-    { "label": "Livre V §20", "livre": 5, "href": "livre_5.html#chap-20" }
+    {
+     "label": "Livre I §1",
+     "livre": 1,
+     "href": "livre_1.html#chap-1"
+    },
+    {
+     "label": "Livre V §20",
+     "livre": 5,
+     "href": "livre_5.html#chap-20"
+    }
    ]
   },
   {
    "id": "points-action",
    "terme": "Points d'Action (PA)",
    "domaine": "fondations",
-   "alias": ["PA", "reserve PA", "cout PA"],
+   "alias": [
+    "PA",
+    "reserve PA",
+    "cout PA"
+   ],
    "liens": [
-    { "label": "Livre I §4", "livre": 1, "href": "livre_1.html#chap-4" },
-    { "label": "Livre I §1", "livre": 1, "href": "livre_1.html#chap-1" },
-    { "label": "Livre V §20.2", "livre": 5, "href": "livre_5.html#sec-20-2" },
-    { "label": "Livre V §20.5", "livre": 5, "href": "livre_5.html#sec-20-5" }
+    {
+     "label": "Livre I §4",
+     "livre": 1,
+     "href": "livre_1.html#chap-4"
+    },
+    {
+     "label": "Livre I §1",
+     "livre": 1,
+     "href": "livre_1.html#chap-1"
+    },
+    {
+     "label": "Livre V §20.2",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-2"
+    },
+    {
+     "label": "Livre V §20.5",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-5"
+    }
    ]
   },
   {
    "id": "formule-points-action",
    "terme": "Formule des Points d'Action",
    "domaine": "fondations",
-   "alias": ["calcul PA", "Max(Agi,Int) + Rap + Min"],
+   "alias": [
+    "calcul PA",
+    "Max(Agi,Int) + Rap + Min"
+   ],
    "liens": [
-    { "label": "Livre I §4", "livre": 1, "href": "livre_1.html#chap-4" }
+    {
+     "label": "Livre I §4",
+     "livre": 1,
+     "href": "livre_1.html#chap-4"
+    }
    ]
   },
   {
    "id": "regle-or-test-competence",
    "terme": "Règle d'Or (Test de Compétence)",
    "domaine": "fondations",
-   "alias": ["attribut brut", "competence precise"],
+   "alias": [
+    "attribut brut",
+    "competence precise"
+   ],
    "liens": [
-    { "label": "Livre I §1", "livre": 1, "href": "livre_1.html#chap-1" },
-    { "label": "Livre II §6", "livre": 2, "href": "livre_2.html#chap-6" }
+    {
+     "label": "Livre I §1",
+     "livre": 1,
+     "href": "livre_1.html#chap-1"
+    },
+    {
+     "label": "Livre II §6",
+     "livre": 2,
+     "href": "livre_2.html#chap-6"
+    }
    ]
   },
   {
    "id": "echelle-technologique",
    "terme": "Échelle Technologique",
    "domaine": "fondations",
-   "alias": ["niveau tech", "cosmologie"],
+   "alias": [
+    "niveau tech",
+    "cosmologie"
+   ],
    "liens": [
-    { "label": "Livre I §2", "livre": 1, "href": "livre_1.html#chap-2" }
+    {
+     "label": "Livre I §2",
+     "livre": 1,
+     "href": "livre_1.html#chap-2"
+    }
    ]
   },
   {
    "id": "affinite-magique-especes",
    "terme": "Affinité Magique des Espèces",
    "domaine": "fondations",
-   "alias": ["eveil", "magie especes"],
+   "alias": [
+    "eveil",
+    "magie especes"
+   ],
    "liens": [
-    { "label": "Livre I §2", "livre": 1, "href": "livre_1.html#chap-2" }
+    {
+     "label": "Livre I §2",
+     "livre": 1,
+     "href": "livre_1.html#chap-2"
+    }
    ]
   },
   {
    "id": "especes-jouables",
    "terme": "Espèces Jouables",
    "domaine": "fondations",
-   "alias": ["Humain", "Derek", "Taurien", "Cleien", "Mikyai", "Vardien", "Nain"],
+   "alias": [
+    "Humain",
+    "Derek",
+    "Taurien",
+    "Cleien",
+    "Mikyai",
+    "Vardien",
+    "Nain"
+   ],
    "liens": [
-    { "label": "Livre I §2", "livre": 1, "href": "livre_1.html#chap-2" }
+    {
+     "label": "Livre I §2",
+     "livre": 1,
+     "href": "livre_1.html#chap-2"
+    }
    ]
   },
   {
    "id": "don-racial",
    "terme": "Don Racial",
    "domaine": "fondations",
-   "alias": ["don", "racial", "seve vive", "gueule de granit"],
+   "alias": [
+    "don",
+    "racial",
+    "seve vive",
+    "gueule de granit"
+   ],
    "liens": [
-    { "label": "Livre I §2", "livre": 1, "href": "livre_1.html#chap-2" },
-    { "label": "Livre VI §23", "livre": 6, "href": "livre_6.html#chap-23" }
+    {
+     "label": "Livre I §2",
+     "livre": 1,
+     "href": "livre_1.html#chap-2"
+    },
+    {
+     "label": "Livre VI §23",
+     "livre": 6,
+     "href": "livre_6.html#chap-23"
+    }
    ]
   },
   {
    "id": "profil-personnage",
    "terme": "Profil de Personnage (PJ / PNJ Élite / Sbire)",
    "domaine": "fondations",
-   "alias": ["PJ", "PNJ", "sbire", "elite"],
+   "alias": [
+    "PJ",
+    "PNJ",
+    "sbire",
+    "elite"
+   ],
    "liens": [
-    { "label": "Livre I §3", "livre": 1, "href": "livre_1.html#chap-3" },
-    { "label": "Livre XII §49", "livre": 12, "href": "livre_12.html#chap-49" }
+    {
+     "label": "Livre I §3",
+     "livre": 1,
+     "href": "livre_1.html#chap-3"
+    },
+    {
+     "label": "Livre XII §48",
+     "livre": 12,
+     "href": "livre_12.html#chap-48"
+    }
    ]
   },
   {
    "id": "budget-creation-initiale",
    "terme": "Budget de Création Initiale",
    "domaine": "fondations",
-   "alias": ["piliers", "secondaires", "points depart"],
+   "alias": [
+    "piliers",
+    "secondaires",
+    "points depart"
+   ],
    "liens": [
-    { "label": "Livre I §3", "livre": 1, "href": "livre_1.html#chap-3" }
+    {
+     "label": "Livre I §3",
+     "livre": 1,
+     "href": "livre_1.html#chap-3"
+    }
    ]
   },
   {
    "id": "attributs-majeurs",
    "terme": "Attributs Majeurs",
    "domaine": "fondations",
-   "alias": ["caracteristiques", "8 attributs"],
+   "alias": [
+    "caracteristiques",
+    "8 attributs"
+   ],
    "liens": [
-    { "label": "Livre I §3", "livre": 1, "href": "livre_1.html#chap-3" }
+    {
+     "label": "Livre I §3",
+     "livre": 1,
+     "href": "livre_1.html#chap-3"
+    }
    ]
   },
   {
    "id": "attribut-force",
    "terme": "Force (FOR)",
    "domaine": "fondations",
-   "alias": ["FOR"],
+   "alias": [
+    "FOR"
+   ],
    "liens": [
-    { "label": "Livre I §3", "livre": 1, "href": "livre_1.html#chap-3" },
-    { "label": "Livre III §12", "livre": 3, "href": "livre_3.html#chap-12" }
+    {
+     "label": "Livre I §3",
+     "livre": 1,
+     "href": "livre_1.html#chap-3"
+    },
+    {
+     "label": "Livre III §12",
+     "livre": 3,
+     "href": "livre_3.html#chap-12"
+    }
    ]
   },
   {
    "id": "attribut-agilite",
    "terme": "Agilité (AGI)",
    "domaine": "fondations",
-   "alias": ["AGI"],
+   "alias": [
+    "AGI"
+   ],
    "liens": [
-    { "label": "Livre I §3", "livre": 1, "href": "livre_1.html#chap-3" },
-    { "label": "Livre III §12", "livre": 3, "href": "livre_3.html#chap-12" }
+    {
+     "label": "Livre I §3",
+     "livre": 1,
+     "href": "livre_1.html#chap-3"
+    },
+    {
+     "label": "Livre III §12",
+     "livre": 3,
+     "href": "livre_3.html#chap-12"
+    }
    ]
   },
   {
    "id": "attribut-constitution",
    "terme": "Constitution (CON)",
    "domaine": "fondations",
-   "alias": ["CON"],
+   "alias": [
+    "CON"
+   ],
    "liens": [
-    { "label": "Livre I §3", "livre": 1, "href": "livre_1.html#chap-3" },
-    { "label": "Livre III §12", "livre": 3, "href": "livre_3.html#chap-12" },
-    { "label": "Livre VI §23", "livre": 6, "href": "livre_6.html#chap-23" }
+    {
+     "label": "Livre I §3",
+     "livre": 1,
+     "href": "livre_1.html#chap-3"
+    },
+    {
+     "label": "Livre III §12",
+     "livre": 3,
+     "href": "livre_3.html#chap-12"
+    },
+    {
+     "label": "Livre VI §23",
+     "livre": 6,
+     "href": "livre_6.html#chap-23"
+    }
    ]
   },
   {
    "id": "attribut-rapidite",
    "terme": "Rapidité d'Exécution (RAP)",
    "domaine": "fondations",
-   "alias": ["RAP", "rapidite"],
+   "alias": [
+    "RAP",
+    "rapidite"
+   ],
    "liens": [
-    { "label": "Livre I §3", "livre": 1, "href": "livre_1.html#chap-3" },
-    { "label": "Livre I §4", "livre": 1, "href": "livre_1.html#chap-4" }
+    {
+     "label": "Livre I §3",
+     "livre": 1,
+     "href": "livre_1.html#chap-3"
+    },
+    {
+     "label": "Livre I §4",
+     "livre": 1,
+     "href": "livre_1.html#chap-4"
+    }
    ]
   },
   {
    "id": "attribut-intelligence",
    "terme": "Intelligence (INT)",
    "domaine": "fondations",
-   "alias": ["INT"],
+   "alias": [
+    "INT"
+   ],
    "liens": [
-    { "label": "Livre I §3", "livre": 1, "href": "livre_1.html#chap-3" },
-    { "label": "Livre III §13", "livre": 3, "href": "livre_3.html#chap-13" }
+    {
+     "label": "Livre I §3",
+     "livre": 1,
+     "href": "livre_1.html#chap-3"
+    },
+    {
+     "label": "Livre III §13",
+     "livre": 3,
+     "href": "livre_3.html#chap-13"
+    }
    ]
   },
   {
    "id": "attribut-erudition",
    "terme": "Érudition (ÉRU)",
    "domaine": "fondations",
-   "alias": ["ERU", "erudition"],
+   "alias": [
+    "ERU",
+    "erudition"
+   ],
    "liens": [
-    { "label": "Livre I §3", "livre": 1, "href": "livre_1.html#chap-3" },
-    { "label": "Livre I §3 (Étape 6)", "livre": 1, "href": "livre_1.html#sec-etape-6" },
-    { "label": "Livre III §13", "livre": 3, "href": "livre_3.html#chap-13" }
+    {
+     "label": "Livre I §3",
+     "livre": 1,
+     "href": "livre_1.html#chap-3"
+    },
+    {
+     "label": "Livre I §3 (Étape 6)",
+     "livre": 1,
+     "href": "livre_1.html#sec-etape-6"
+    },
+    {
+     "label": "Livre III §13",
+     "livre": 3,
+     "href": "livre_3.html#chap-13"
+    }
    ]
   },
   {
    "id": "attribut-charisme",
    "terme": "Charisme (CHA)",
    "domaine": "fondations",
-   "alias": ["CHA"],
+   "alias": [
+    "CHA"
+   ],
    "liens": [
-    { "label": "Livre I §3", "livre": 1, "href": "livre_1.html#chap-3" },
-    { "label": "Livre III §13", "livre": 3, "href": "livre_3.html#chap-13" }
+    {
+     "label": "Livre I §3",
+     "livre": 1,
+     "href": "livre_1.html#chap-3"
+    },
+    {
+     "label": "Livre III §13",
+     "livre": 3,
+     "href": "livre_3.html#chap-13"
+    }
    ]
   },
   {
    "id": "attribut-instinct-sagesse",
    "terme": "Instinct / Sagesse (INS / SAG)",
    "domaine": "fondations",
-   "alias": ["INS", "SAG", "instinct", "sagesse"],
+   "alias": [
+    "INS",
+    "SAG",
+    "instinct",
+    "sagesse"
+   ],
    "liens": [
-    { "label": "Livre I §3", "livre": 1, "href": "livre_1.html#chap-3" },
-    { "label": "Livre III §13", "livre": 3, "href": "livre_3.html#chap-13" }
+    {
+     "label": "Livre I §3",
+     "livre": 1,
+     "href": "livre_1.html#chap-3"
+    },
+    {
+     "label": "Livre III §13",
+     "livre": 3,
+     "href": "livre_3.html#chap-13"
+    }
    ]
   },
   {
    "id": "plafond-naturel-attributs",
    "terme": "Plafond Naturel des Attributs",
    "domaine": "fondations",
-   "alias": ["plafond 10", "maximum 10"],
+   "alias": [
+    "plafond 10",
+    "maximum 10"
+   ],
    "liens": [
-    { "label": "Livre I §5.3", "livre": 1, "href": "livre_1.html#sec-5-3" },
-    { "label": "Livre II §6", "livre": 2, "href": "livre_2.html#chap-6" }
+    {
+     "label": "Livre I §5.3",
+     "livre": 1,
+     "href": "livre_1.html#sec-5-3"
+    },
+    {
+     "label": "Livre II §6",
+     "livre": 2,
+     "href": "livre_2.html#chap-6"
+    }
    ]
   },
   {
    "id": "perceptions-vision-ouie",
    "terme": "Perceptions (Vision & Ouïe)",
    "domaine": "fondations",
-   "alias": ["vision", "ouie", "sens"],
+   "alias": [
+    "vision",
+    "ouie",
+    "sens"
+   ],
    "liens": [
-    { "label": "Livre I §3", "livre": 1, "href": "livre_1.html#chap-3" },
-    { "label": "Livre V §21.4", "livre": 5, "href": "livre_5.html#sec-21-4" }
+    {
+     "label": "Livre I §3",
+     "livre": 1,
+     "href": "livre_1.html#chap-3"
+    },
+    {
+     "label": "Livre V §21.4",
+     "livre": 5,
+     "href": "livre_5.html#sec-21-4"
+    }
    ]
   },
   {
    "id": "attribut-magie-eveil",
    "terme": "Magie (Attribut MAG & Éveil)",
    "domaine": "fondations",
-   "alias": ["MAG", "eveil", "organe interne"],
+   "alias": [
+    "MAG",
+    "eveil",
+    "organe interne"
+   ],
    "liens": [
-    { "label": "Livre I §3", "livre": 1, "href": "livre_1.html#chap-3" },
-    { "label": "Livre IV §18", "livre": 4, "href": "livre_4.html#chap-18" }
+    {
+     "label": "Livre I §3",
+     "livre": 1,
+     "href": "livre_1.html#chap-3"
+    },
+    {
+     "label": "Livre IV §18",
+     "livre": 4,
+     "href": "livre_4.html#chap-18"
+    }
    ]
   },
   {
    "id": "entrainements-gratuits-erudition",
    "terme": "Entraînements Gratuits (Bonus d'Érudition)",
    "domaine": "fondations",
-   "alias": ["etape 6", "entrainements offerts"],
+   "alias": [
+    "etape 6",
+    "entrainements offerts"
+   ],
    "liens": [
-    { "label": "Livre I §3 (Étape 6)", "livre": 1, "href": "livre_1.html#sec-etape-6" },
-    { "label": "Livre I §5.4", "livre": 1, "href": "livre_1.html#sec-5-4" },
-    { "label": "Livre III §11.1", "livre": 3, "href": "livre_3.html#sec-11-1" }
+    {
+     "label": "Livre I §3 (Étape 6)",
+     "livre": 1,
+     "href": "livre_1.html#sec-etape-6"
+    },
+    {
+     "label": "Livre I §5.4",
+     "livre": 1,
+     "href": "livre_1.html#sec-5-4"
+    },
+    {
+     "label": "Livre III §11.1",
+     "livre": 3,
+     "href": "livre_3.html#sec-11-1"
+    }
    ]
   },
   {
    "id": "quota-attaque-tour",
    "terme": "Quota d'Attaque par Tour",
    "domaine": "fondations",
-   "alias": ["1 attaque", "2d6", "seconde attaque"],
+   "alias": [
+    "1 attaque",
+    "2d6",
+    "seconde attaque"
+   ],
    "liens": [
-    { "label": "Livre I §4", "livre": 1, "href": "livre_1.html#chap-4" },
-    { "label": "Livre V §20.2", "livre": 5, "href": "livre_5.html#sec-20-2" }
+    {
+     "label": "Livre I §4",
+     "livre": 1,
+     "href": "livre_1.html#chap-4"
+    },
+    {
+     "label": "Livre V §20.2",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-2"
+    }
    ]
   },
   {
    "id": "initiative",
    "terme": "Initiative",
    "domaine": "fondations",
-   "alias": ["ordre de passage", "tour initiative"],
+   "alias": [
+    "ordre de passage",
+    "tour initiative"
+   ],
    "liens": [
-    { "label": "Livre I §4.3", "livre": 1, "href": "livre_1.html#sec-4-3" },
-    { "label": "Livre V §20", "livre": 5, "href": "livre_5.html#chap-20" }
+    {
+     "label": "Livre I §4.3",
+     "livre": 1,
+     "href": "livre_1.html#sec-4-3"
+    },
+    {
+     "label": "Livre V §20",
+     "livre": 5,
+     "href": "livre_5.html#chap-20"
+    }
    ]
   },
   {
    "id": "piste-progression",
    "terme": "Piste de Progression",
    "domaine": "fondations",
-   "alias": ["cases", "cocher", "progression"],
+   "alias": [
+    "cases",
+    "cocher",
+    "progression"
+   ],
    "liens": [
-    { "label": "Livre I §5", "livre": 1, "href": "livre_1.html#chap-5" },
-    { "label": "Livre II §6", "livre": 2, "href": "livre_2.html#chap-6" },
-    { "label": "Livre III §11.1", "livre": 3, "href": "livre_3.html#sec-11-1" }
+    {
+     "label": "Livre I §5",
+     "livre": 1,
+     "href": "livre_1.html#chap-5"
+    },
+    {
+     "label": "Livre II §6",
+     "livre": 2,
+     "href": "livre_2.html#chap-6"
+    },
+    {
+     "label": "Livre III §11.1",
+     "livre": 3,
+     "href": "livre_3.html#sec-11-1"
+    }
    ]
   },
   {
    "id": "entrainement-compagnons",
    "terme": "Entraînement entre Compagnons",
    "domaine": "fondations",
-   "alias": ["4 heures", "exercices intensifs"],
+   "alias": [
+    "4 heures",
+    "exercices intensifs"
+   ],
    "liens": [
-    { "label": "Livre I §5", "livre": 1, "href": "livre_1.html#chap-5" }
+    {
+     "label": "Livre I §5",
+     "livre": 1,
+     "href": "livre_1.html#chap-5"
+    }
    ]
   },
   {
    "id": "spontaneite-progression",
    "terme": "Spontanéité (Progression)",
    "domaine": "fondations",
-   "alias": ["actions improvisees"],
+   "alias": [
+    "actions improvisees"
+   ],
    "liens": [
-    { "label": "Livre I §5", "livre": 1, "href": "livre_1.html#chap-5" }
+    {
+     "label": "Livre I §5",
+     "livre": 1,
+     "href": "livre_1.html#chap-5"
+    }
    ]
   },
   {
    "id": "xp-lie",
    "terme": "XP Lié",
    "domaine": "fondations",
-   "alias": ["banque XP", "reserve XP"],
+   "alias": [
+    "banque XP",
+    "reserve XP"
+   ],
    "liens": [
-    { "label": "Livre I §5.2", "livre": 1, "href": "livre_1.html#sec-5-2" },
-    { "label": "Livre I §5.3", "livre": 1, "href": "livre_1.html#sec-5-3" }
+    {
+     "label": "Livre I §5.2",
+     "livre": 1,
+     "href": "livre_1.html#sec-5-2"
+    },
+    {
+     "label": "Livre I §5.3",
+     "livre": 1,
+     "href": "livre_1.html#sec-5-3"
+    }
    ]
   },
   {
    "id": "plafond-anti-farm",
    "terme": "Plafond Anti-Farm (XP Lié)",
    "domaine": "fondations",
-   "alias": ["anti-farm", "niveau + 2", "conversion"],
+   "alias": [
+    "anti-farm",
+    "niveau + 2",
+    "conversion"
+   ],
    "liens": [
-    { "label": "Livre I §5.2", "livre": 1, "href": "livre_1.html#sec-5-2" }
+    {
+     "label": "Livre I §5.2",
+     "livre": 1,
+     "href": "livre_1.html#sec-5-2"
+    }
    ]
   },
   {
    "id": "xp-libre",
    "terme": "XP Libre",
    "domaine": "fondations",
-   "alias": ["XP general", "recompense MJ"],
+   "alias": [
+    "XP general",
+    "recompense MJ"
+   ],
    "liens": [
-    { "label": "Livre I §5.2", "livre": 1, "href": "livre_1.html#sec-5-2" },
-    { "label": "Livre I §5.3", "livre": 1, "href": "livre_1.html#sec-5-3" }
+    {
+     "label": "Livre I §5.2",
+     "livre": 1,
+     "href": "livre_1.html#sec-5-2"
+    },
+    {
+     "label": "Livre I §5.3",
+     "livre": 1,
+     "href": "livre_1.html#sec-5-3"
+    }
    ]
   },
   {
    "id": "tarif-croise-xp",
    "terme": "Tarif Croisé (×2 XP)",
    "domaine": "fondations",
-   "alias": ["croise", "taux double", "2 pour 1"],
+   "alias": [
+    "croise",
+    "taux double",
+    "2 pour 1"
+   ],
    "liens": [
-    { "label": "Livre I §5.3", "livre": 1, "href": "livre_1.html#sec-5-3" }
+    {
+     "label": "Livre I §5.3",
+     "livre": 1,
+     "href": "livre_1.html#sec-5-3"
+    }
    ]
   },
   {
    "id": "montee-caracteristique",
    "terme": "Montée de Caractéristique",
    "domaine": "fondations",
-   "alias": ["N+1 XP", "evolution attribut"],
+   "alias": [
+    "N+1 XP",
+    "evolution attribut"
+   ],
    "liens": [
-    { "label": "Livre I §5.3", "livre": 1, "href": "livre_1.html#sec-5-3" }
+    {
+     "label": "Livre I §5.3",
+     "livre": 1,
+     "href": "livre_1.html#sec-5-3"
+    }
    ]
   },
   {
    "id": "xp-total",
    "terme": "XP Total",
    "domaine": "fondations",
-   "alias": ["cumul XP", "valeur personnage"],
+   "alias": [
+    "cumul XP",
+    "valeur personnage"
+   ],
    "liens": [
-    { "label": "Livre I §5.4", "livre": 1, "href": "livre_1.html#sec-5-4" }
+    {
+     "label": "Livre I §5.4",
+     "livre": 1,
+     "href": "livre_1.html#sec-5-4"
+    }
    ]
   },
   {
    "id": "fiche-personnage-prototype",
    "terme": "Fiche de Personnage Prototype",
    "domaine": "fondations",
-   "alias": ["Roger", "fiche PJ"],
+   "alias": [
+    "Roger",
+    "fiche PJ"
+   ],
    "liens": [
-    { "label": "Livre I §Fiche PJ", "livre": 1, "href": "livre_1.html#chap-fiche" }
+    {
+     "label": "Livre I §Fiche PJ",
+     "livre": 1,
+     "href": "livre_1.html#chap-fiche"
+    }
    ]
   },
   {
    "id": "echelle-des",
    "terme": "Échelle des Dés",
    "domaine": "epreuves",
-   "alias": ["d2", "d4", "d6", "d8", "d10", "d12", "2d6", "2d8", "2d10", "2d12"],
+   "alias": [
+    "d2",
+    "d4",
+    "d6",
+    "d8",
+    "d10",
+    "d12",
+    "2d6",
+    "2d8",
+    "2d10",
+    "2d12"
+   ],
    "liens": [
-    { "label": "Livre II §6", "livre": 2, "href": "livre_2.html#chap-6" }
+    {
+     "label": "Livre II §6",
+     "livre": 2,
+     "href": "livre_2.html#chap-6"
+    }
    ]
   },
   {
    "id": "crans-de-de",
    "terme": "Crans de Dé",
    "domaine": "epreuves",
-   "alias": ["niveaux de de", "paliers"],
+   "alias": [
+    "niveaux de de",
+    "paliers"
+   ],
    "liens": [
-    { "label": "Livre II §6", "livre": 2, "href": "livre_2.html#chap-6" }
+    {
+     "label": "Livre II §6",
+     "livre": 2,
+     "href": "livre_2.html#chap-6"
+    }
    ]
   },
   {
    "id": "entrainement-competence",
    "terme": "Entraînement de Compétence",
    "domaine": "epreuves",
-   "alias": ["+1 cran", "cases entrainement"],
+   "alias": [
+    "+1 cran",
+    "cases entrainement"
+   ],
    "liens": [
-    { "label": "Livre II §6", "livre": 2, "href": "livre_2.html#chap-6" },
-    { "label": "Livre III §11.1", "livre": 3, "href": "livre_3.html#sec-11-1" }
+    {
+     "label": "Livre II §6",
+     "livre": 2,
+     "href": "livre_2.html#chap-6"
+    },
+    {
+     "label": "Livre III §11.1",
+     "livre": 3,
+     "href": "livre_3.html#sec-11-1"
+    }
    ]
   },
   {
    "id": "plafond-entrainements",
    "terme": "Plafond d'Entraînements",
    "domaine": "epreuves",
-   "alias": ["3 max", "6 max", "palier 2d6"],
+   "alias": [
+    "3 max",
+    "6 max",
+    "palier 2d6"
+   ],
    "liens": [
-    { "label": "Livre I §3 (Étape 6)", "livre": 1, "href": "livre_1.html#sec-etape-6" },
-    { "label": "Livre II §6", "livre": 2, "href": "livre_2.html#chap-6" },
-    { "label": "Livre III §11.1", "livre": 3, "href": "livre_3.html#sec-11-1" }
+    {
+     "label": "Livre I §3 (Étape 6)",
+     "livre": 1,
+     "href": "livre_1.html#sec-etape-6"
+    },
+    {
+     "label": "Livre II §6",
+     "livre": 2,
+     "href": "livre_2.html#chap-6"
+    },
+    {
+     "label": "Livre III §11.1",
+     "livre": 3,
+     "href": "livre_3.html#sec-11-1"
+    }
    ]
   },
   {
    "id": "epreuve-caracteristique",
    "terme": "Épreuve de Caractéristique (EC)",
    "domaine": "epreuves",
-   "alias": ["EC", "jet", "test"],
+   "alias": [
+    "EC",
+    "jet",
+    "test"
+   ],
    "liens": [
-    { "label": "Livre II §7", "livre": 2, "href": "livre_2.html#chap-7" },
-    { "label": "Livre I §1", "livre": 1, "href": "livre_1.html#chap-1" }
+    {
+     "label": "Livre II §7",
+     "livre": 2,
+     "href": "livre_2.html#chap-7"
+    },
+    {
+     "label": "Livre I §1",
+     "livre": 1,
+     "href": "livre_1.html#chap-1"
+    }
    ]
   },
   {
    "id": "echelle-seuils-difficulte",
    "terme": "Échelle des Seuils de Difficulté",
    "domaine": "epreuves",
-   "alias": ["0 a 34", "ND", "difficulte"],
+   "alias": [
+    "0 a 34",
+    "ND",
+    "difficulte"
+   ],
    "liens": [
-    { "label": "Livre II §7", "livre": 2, "href": "livre_2.html#chap-7" }
+    {
+     "label": "Livre II §7",
+     "livre": 2,
+     "href": "livre_2.html#chap-7"
+    }
    ]
   },
   {
    "id": "reussite-automatique",
    "terme": "Réussite Automatique",
    "domaine": "epreuves",
-   "alias": ["seuil auto", "reflexe"],
+   "alias": [
+    "seuil auto",
+    "reflexe"
+   ],
    "liens": [
-    { "label": "Livre II §7", "livre": 2, "href": "livre_2.html#chap-7" }
+    {
+     "label": "Livre II §7",
+     "livre": 2,
+     "href": "livre_2.html#chap-7"
+    }
    ]
   },
   {
    "id": "epreuve-opposee-face-a-face",
    "terme": "Épreuve Opposée / Face-à-Face (VS)",
    "domaine": "epreuves",
-   "alias": ["VS", "duel", "face a face"],
+   "alias": [
+    "VS",
+    "duel",
+    "face a face"
+   ],
    "liens": [
-    { "label": "Livre II §7", "livre": 2, "href": "livre_2.html#chap-7" },
-    { "label": "Livre I §1", "livre": 1, "href": "livre_1.html#chap-1" },
-    { "label": "Livre V §20.2", "livre": 5, "href": "livre_5.html#sec-20-2" }
+    {
+     "label": "Livre II §7",
+     "livre": 2,
+     "href": "livre_2.html#chap-7"
+    },
+    {
+     "label": "Livre I §1",
+     "livre": 1,
+     "href": "livre_1.html#chap-1"
+    },
+    {
+     "label": "Livre V §20.2",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-2"
+    }
    ]
   },
   {
    "id": "differentiel-touche",
    "terme": "Différentiel de Touche (Δ)",
    "domaine": "epreuves",
-   "alias": ["delta", "marge", "differentiel"],
+   "alias": [
+    "delta",
+    "marge",
+    "differentiel"
+   ],
    "liens": [
-    { "label": "Livre II §7", "livre": 2, "href": "livre_2.html#chap-7" },
-    { "label": "Livre V §22.1", "livre": 5, "href": "livre_5.html#sec-22-1" }
+    {
+     "label": "Livre II §7",
+     "livre": 2,
+     "href": "livre_2.html#chap-7"
+    },
+    {
+     "label": "Livre V §22.1",
+     "livre": 5,
+     "href": "livre_5.html#sec-22-1"
+    }
    ]
   },
   {
    "id": "touche-superficielle",
    "terme": "Touche Superficielle (Δ = 0)",
    "domaine": "epreuves",
-   "alias": ["egalite", "effleure"],
+   "alias": [
+    "egalite",
+    "effleure"
+   ],
    "liens": [
-    { "label": "Livre II §7", "livre": 2, "href": "livre_2.html#chap-7" },
-    { "label": "Livre V §22.1", "livre": 5, "href": "livre_5.html#sec-22-1" }
+    {
+     "label": "Livre II §7",
+     "livre": 2,
+     "href": "livre_2.html#chap-7"
+    },
+    {
+     "label": "Livre V §22.1",
+     "livre": 5,
+     "href": "livre_5.html#sec-22-1"
+    }
    ]
   },
   {
    "id": "touche-franche",
    "terme": "Touche Franche (Δ > 0)",
    "domaine": "epreuves",
-   "alias": ["degats base + delta"],
+   "alias": [
+    "degats base + delta"
+   ],
    "liens": [
-    { "label": "Livre II §7", "livre": 2, "href": "livre_2.html#chap-7" },
-    { "label": "Livre V §22.1", "livre": 5, "href": "livre_5.html#sec-22-1" }
+    {
+     "label": "Livre II §7",
+     "livre": 2,
+     "href": "livre_2.html#chap-7"
+    },
+    {
+     "label": "Livre V §22.1",
+     "livre": 5,
+     "href": "livre_5.html#sec-22-1"
+    }
    ]
   },
   {
    "id": "declaration-masquee-jetons",
    "terme": "Déclaration Masquée (Jetons) & Variante Ouverte",
    "domaine": "epreuves",
-   "alias": ["jetons", "mise secrete", "declaration ouverte"],
+   "alias": [
+    "jetons",
+    "mise secrete",
+    "declaration ouverte"
+   ],
    "liens": [
-    { "label": "Livre II §7", "livre": 2, "href": "livre_2.html#chap-7" },
-    { "label": "Livre V §20.2", "livre": 5, "href": "livre_5.html#sec-20-2" }
+    {
+     "label": "Livre II §7",
+     "livre": 2,
+     "href": "livre_2.html#chap-7"
+    },
+    {
+     "label": "Livre V §20.2",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-2"
+    }
    ]
   },
   {
    "id": "reussite-critique",
    "terme": "Réussite Critique (Max Naturel)",
    "domaine": "epreuves",
-   "alias": ["critique", "max naturel"],
+   "alias": [
+    "critique",
+    "max naturel"
+   ],
    "liens": [
-    { "label": "Livre II §9", "livre": 2, "href": "livre_2.html#chap-9" }
+    {
+     "label": "Livre II §9",
+     "livre": 2,
+     "href": "livre_2.html#chap-9"
+    }
    ]
   },
   {
    "id": "echec-critique",
    "terme": "Échec Critique (1 Naturel)",
    "domaine": "epreuves",
-   "alias": ["fumble", "1 naturel"],
+   "alias": [
+    "fumble",
+    "1 naturel"
+   ],
    "liens": [
-    { "label": "Livre II §9", "livre": 2, "href": "livre_2.html#chap-9" }
+    {
+     "label": "Livre II §9",
+     "livre": 2,
+     "href": "livre_2.html#chap-9"
+    }
    ]
   },
   {
    "id": "jet-de-consequence",
    "terme": "Jet de Conséquence",
    "domaine": "epreuves",
-   "alias": ["relance critique"],
+   "alias": [
+    "relance critique"
+   ],
    "liens": [
-    { "label": "Livre II §9", "livre": 2, "href": "livre_2.html#chap-9" }
+    {
+     "label": "Livre II §9",
+     "livre": 2,
+     "href": "livre_2.html#chap-9"
+    }
    ]
   },
   {
    "id": "table-effets-critiques",
    "terme": "Table Universelle des Effets Critiques",
    "domaine": "epreuves",
-   "alias": ["1 a 24", "d24", "table critiques"],
+   "alias": [
+    "1 a 24",
+    "d24",
+    "table critiques"
+   ],
    "liens": [
-    { "label": "Livre II §9", "livre": 2, "href": "livre_2.html#chap-9" }
+    {
+     "label": "Livre II §9",
+     "livre": 2,
+     "href": "livre_2.html#chap-9"
+    }
    ]
   },
   {
    "id": "climat-meteo-paliers",
    "terme": "Climat & Météo (Paliers P1–P4)",
    "domaine": "epreuves",
-   "alias": ["P1", "P2", "P3", "P4", "tempete", "brouillard"],
+   "alias": [
+    "P1",
+    "P2",
+    "P3",
+    "P4",
+    "tempete",
+    "brouillard"
+   ],
    "liens": [
-    { "label": "Livre II §8.1", "livre": 2, "href": "livre_2.html#sec-8-1" }
+    {
+     "label": "Livre II §8.1",
+     "livre": 2,
+     "href": "livre_2.html#sec-8-1"
+    }
    ]
   },
   {
    "id": "chutes",
    "terme": "Chutes",
    "domaine": "epreuves",
-   "alias": ["H - 2", "hauteur"],
+   "alias": [
+    "H - 2",
+    "hauteur"
+   ],
    "liens": [
-    { "label": "Livre II §8.2", "livre": 2, "href": "livre_2.html#sec-8-2" }
+    {
+     "label": "Livre II §8.2",
+     "livre": 2,
+     "href": "livre_2.html#sec-8-2"
+    }
    ]
   },
   {
    "id": "dangers-souterrains",
    "terme": "Dangers Souterrains (Gaz, Éboulements, Poches)",
    "domaine": "epreuves",
-   "alias": ["gaz inflammable", "eboulement", "poche"],
+   "alias": [
+    "gaz inflammable",
+    "eboulement",
+    "poche"
+   ],
    "liens": [
-    { "label": "Livre II §8.3", "livre": 2, "href": "livre_2.html#sec-8-3" }
+    {
+     "label": "Livre II §8.3",
+     "livre": 2,
+     "href": "livre_2.html#sec-8-3"
+    }
    ]
   },
   {
    "id": "terrain-difficile",
    "terme": "Terrain Difficile",
    "domaine": "epreuves",
-   "alias": ["2 PA/case", "boue", "gravats"],
+   "alias": [
+    "2 PA/case",
+    "boue",
+    "gravats"
+   ],
    "liens": [
-    { "label": "Livre II §8.4", "livre": 2, "href": "livre_2.html#sec-8-4" },
-    { "label": "Livre V §20.5", "livre": 5, "href": "livre_5.html#sec-20-5" }
+    {
+     "label": "Livre II §8.4",
+     "livre": 2,
+     "href": "livre_2.html#sec-8-4"
+    },
+    {
+     "label": "Livre V §20.5",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-5"
+    }
    ]
   },
   {
    "id": "nage-escalade-combat",
    "terme": "Nage & Escalade en Combat",
    "domaine": "epreuves",
-   "alias": ["nager", "escalader", "franchissement"],
+   "alias": [
+    "nager",
+    "escalader",
+    "franchissement"
+   ],
    "liens": [
-    { "label": "Livre II §8.4", "livre": 2, "href": "livre_2.html#sec-8-4" },
-    { "label": "Livre III §12", "livre": 3, "href": "livre_3.html#chap-12" }
+    {
+     "label": "Livre II §8.4",
+     "livre": 2,
+     "href": "livre_2.html#sec-8-4"
+    },
+    {
+     "label": "Livre III §12",
+     "livre": 3,
+     "href": "livre_3.html#chap-12"
+    }
    ]
   },
   {
    "id": "milieux-environnement",
    "terme": "Milieux (Naturel, Artificiel, Pollué, Aride, Souterrain, Clos)",
    "domaine": "epreuves",
-   "alias": ["naturel", "artificiel", "pollue", "aride", "souterrain", "clos"],
+   "alias": [
+    "naturel",
+    "artificiel",
+    "pollue",
+    "aride",
+    "souterrain",
+    "clos"
+   ],
    "liens": [
-    { "label": "Livre II §8.5", "livre": 2, "href": "livre_2.html#sec-8-5" }
+    {
+     "label": "Livre II §8.5",
+     "livre": 2,
+     "href": "livre_2.html#sec-8-5"
+    }
    ]
   },
   {
    "id": "nuit-claire-nuit-noire",
    "terme": "Nuit Claire & Nuit Noire",
    "domaine": "epreuves",
-   "alias": ["obscurite", "8 cases", "4 cases"],
+   "alias": [
+    "obscurite",
+    "8 cases",
+    "4 cases"
+   ],
    "liens": [
-    { "label": "Livre II §8.6", "livre": 2, "href": "livre_2.html#sec-8-6" }
+    {
+     "label": "Livre II §8.6",
+     "livre": 2,
+     "href": "livre_2.html#sec-8-6"
+    }
    ]
   },
   {
    "id": "lampe-allumee",
    "terme": "Lampe Allumée",
    "domaine": "epreuves",
-   "alias": ["torche", "eclairage"],
+   "alias": [
+    "torche",
+    "eclairage"
+   ],
    "liens": [
-    { "label": "Livre II §8.6", "livre": 2, "href": "livre_2.html#sec-8-6" },
-    { "label": "Livre V §21.4", "livre": 5, "href": "livre_5.html#sec-21-4-cacher" }
+    {
+     "label": "Livre II §8.6",
+     "livre": 2,
+     "href": "livre_2.html#sec-8-6"
+    },
+    {
+     "label": "Livre V §21.4",
+     "livre": 5,
+     "href": "livre_5.html#sec-21-4-cacher"
+    }
    ]
   },
   {
    "id": "vision-thermique",
    "terme": "Vision Thermique",
    "domaine": "epreuves",
-   "alias": ["lunettes thermiques", "infrarouge"],
+   "alias": [
+    "lunettes thermiques",
+    "infrarouge"
+   ],
    "liens": [
-    { "label": "Livre II §8.6", "livre": 2, "href": "livre_2.html#sec-8-6" }
+    {
+     "label": "Livre II §8.6",
+     "livre": 2,
+     "href": "livre_2.html#sec-8-6"
+    }
    ]
   },
   {
    "id": "vision-nocturne",
    "terme": "Vision Nocturne",
    "domaine": "epreuves",
-   "alias": ["nyctalopie", "sang des profondeurs"],
+   "alias": [
+    "nyctalopie",
+    "sang des profondeurs"
+   ],
    "liens": [
-    { "label": "Livre II §8.6", "livre": 2, "href": "livre_2.html#sec-8-6" }
+    {
+     "label": "Livre II §8.6",
+     "livre": 2,
+     "href": "livre_2.html#sec-8-6"
+    }
    ]
   },
   {
    "id": "eblouissement-masque-filtrant",
    "terme": "Éblouissement & Masque Filtrant",
    "domaine": "epreuves",
-   "alias": ["flash", "lumiere vive", "masque"],
+   "alias": [
+    "flash",
+    "lumiere vive",
+    "masque"
+   ],
    "liens": [
-    { "label": "Livre II §8.6", "livre": 2, "href": "livre_2.html#sec-8-6" }
+    {
+     "label": "Livre II §8.6",
+     "livre": 2,
+     "href": "livre_2.html#sec-8-6"
+    }
    ]
   },
   {
    "id": "cumul-meteo-nuit",
    "terme": "Cumul Météo & Nuit",
    "domaine": "epreuves",
-   "alias": ["plafond vue", "malus le plus fort"],
+   "alias": [
+    "plafond vue",
+    "malus le plus fort"
+   ],
    "liens": [
-    { "label": "Livre II §8.6", "livre": 2, "href": "livre_2.html#sec-8-6" },
-    { "label": "Livre VI §24", "livre": 6, "href": "livre_6.html#chap-24" }
+    {
+     "label": "Livre II §8.6",
+     "livre": 2,
+     "href": "livre_2.html#sec-8-6"
+    },
+    {
+     "label": "Livre VI §24",
+     "livre": 6,
+     "href": "livre_6.html#chap-24"
+    }
    ]
   },
   {
    "id": "defi-hors-combat-etapes",
    "terme": "Défi Hors-Combat par Étapes",
    "domaine": "epreuves",
-   "alias": ["challenge", "3 a 7 etapes", "groupe"],
+   "alias": [
+    "challenge",
+    "3 a 7 etapes",
+    "groupe"
+   ],
    "liens": [
-    { "label": "Livre II §10", "livre": 2, "href": "livre_2.html#chap-10" }
+    {
+     "label": "Livre II §10",
+     "livre": 2,
+     "href": "livre_2.html#chap-10"
+    }
    ]
   },
   {
    "id": "pa-essoufflement-hors-combat",
    "terme": "PA & Essoufflement Hors-Combat",
    "domaine": "epreuves",
-   "alias": ["quota PA defi", "essoufflement volontaire"],
+   "alias": [
+    "quota PA defi",
+    "essoufflement volontaire"
+   ],
    "liens": [
-    { "label": "Livre II §10", "livre": 2, "href": "livre_2.html#chap-10" }
+    {
+     "label": "Livre II §10",
+     "livre": 2,
+     "href": "livre_2.html#chap-10"
+    }
    ]
   },
   {
    "id": "tentatives-rattrapage",
    "terme": "Tentatives de Rattrapage",
    "domaine": "epreuves",
-   "alias": ["0 a 3 rattrapages", "progression defi"],
+   "alias": [
+    "0 a 3 rattrapages",
+    "progression defi"
+   ],
    "liens": [
-    { "label": "Livre II §10", "livre": 2, "href": "livre_2.html#chap-10" }
+    {
+     "label": "Livre II §10",
+     "livre": 2,
+     "href": "livre_2.html#chap-10"
+    }
    ]
   },
   {
    "id": "competence-de-base",
    "terme": "Compétence de Base",
    "domaine": "competences",
-   "alias": ["27 competences", "tronc"],
+   "alias": [
+    "27 competences",
+    "tronc"
+   ],
    "liens": [
-    { "label": "Livre III §11", "livre": 3, "href": "livre_3.html#chap-11" }
+    {
+     "label": "Livre III §11",
+     "livre": 3,
+     "href": "livre_3.html#chap-11"
+    }
    ]
   },
   {
    "id": "calcul-rang-base",
    "terme": "Calcul du Rang de Base",
    "domaine": "competences",
-   "alias": ["moyenne arrondie superieur"],
+   "alias": [
+    "moyenne arrondie superieur"
+   ],
    "liens": [
-    { "label": "Livre III §11.1", "livre": 3, "href": "livre_3.html#sec-11-1" }
+    {
+     "label": "Livre III §11.1",
+     "livre": 3,
+     "href": "livre_3.html#sec-11-1"
+    }
    ]
   },
   {
    "id": "categories-fonctionnelles-action",
    "terme": "Catégories Fonctionnelles d'Action",
    "domaine": "competences",
-   "alias": ["Offensif", "Defensif", "Utilitaire", "Social", "Hybride"],
+   "alias": [
+    "Offensif",
+    "Defensif",
+    "Utilitaire",
+    "Social",
+    "Hybride"
+   ],
    "liens": [
-    { "label": "Livre III §11", "livre": 3, "href": "livre_3.html#chap-11" }
+    {
+     "label": "Livre III §11",
+     "livre": 3,
+     "href": "livre_3.html#chap-11"
+    }
    ]
   },
   {
    "id": "defense-non-exclusive",
    "terme": "Défense Non-Exclusive",
    "domaine": "competences",
-   "alias": ["parer sans specialisation", "-1 niveau de de"],
+   "alias": [
+    "parer sans specialisation",
+    "-1 niveau de de"
+   ],
    "liens": [
-    { "label": "Livre III §11", "livre": 3, "href": "livre_3.html#chap-11" },
-    { "label": "Livre V §20.2", "livre": 5, "href": "livre_5.html#sec-20-2" }
+    {
+     "label": "Livre III §11",
+     "livre": 3,
+     "href": "livre_3.html#chap-11"
+    },
+    {
+     "label": "Livre V §20.2",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-2"
+    }
    ]
   },
   {
    "id": "arbre-force",
    "terme": "Arbre de la Force (FOR)",
    "domaine": "competences",
-   "alias": ["Mains Nues", "Maniement d'Arme", "Athletisme", "Defense Corporelle"],
+   "alias": [
+    "Mains Nues",
+    "Maniement d'Arme",
+    "Athletisme",
+    "Defense Corporelle"
+   ],
    "liens": [
-    { "label": "Livre III §12", "livre": 3, "href": "livre_3.html#chap-12" }
+    {
+     "label": "Livre III §12",
+     "livre": 3,
+     "href": "livre_3.html#chap-12"
+    }
    ]
   },
   {
    "id": "actions-physiques-force",
    "terme": "Actions Physiques de Force",
    "domaine": "competences",
-   "alias": ["pousser", "soulever", "agripper", "armure lourde"],
+   "alias": [
+    "pousser",
+    "soulever",
+    "agripper",
+    "armure lourde"
+   ],
    "liens": [
-    { "label": "Livre III §12", "livre": 3, "href": "livre_3.html#chap-12" }
+    {
+     "label": "Livre III §12",
+     "livre": 3,
+     "href": "livre_3.html#chap-12"
+    }
    ]
   },
   {
    "id": "arbre-agilite",
    "terme": "Arbre de l'Agilité (AGI)",
    "domaine": "competences",
-   "alias": ["Acrobatie", "Discretion", "Esquive", "Ballistique", "Pilotage", "Subterfuge"],
+   "alias": [
+    "Acrobatie",
+    "Discretion",
+    "Esquive",
+    "Ballistique",
+    "Pilotage",
+    "Subterfuge"
+   ],
    "liens": [
-    { "label": "Livre III §12", "livre": 3, "href": "livre_3.html#chap-12" }
+    {
+     "label": "Livre III §12",
+     "livre": 3,
+     "href": "livre_3.html#chap-12"
+    }
    ]
   },
   {
    "id": "arbre-constitution",
    "terme": "Arbre de la Constitution (CON)",
    "domaine": "competences",
-   "alias": ["Endurance Physique", "Cardio", "Systeme Immunitaire"],
+   "alias": [
+    "Endurance Physique",
+    "Cardio",
+    "Systeme Immunitaire"
+   ],
    "liens": [
-    { "label": "Livre III §12", "livre": 3, "href": "livre_3.html#chap-12" }
+    {
+     "label": "Livre III §12",
+     "livre": 3,
+     "href": "livre_3.html#chap-12"
+    }
    ]
   },
   {
    "id": "arbre-intelligence-erudition",
    "terme": "Arbre Intelligence & Érudition (INT / ÉRU)",
    "domaine": "competences",
-   "alias": ["Academie", "Premiers Soins", "Medecine Avancee", "Ingenierie", "Strategie"],
+   "alias": [
+    "Academie",
+    "Premiers Soins",
+    "Medecine Avancee",
+    "Ingenierie",
+    "Strategie"
+   ],
    "liens": [
-    { "label": "Livre III §13", "livre": 3, "href": "livre_3.html#chap-13" }
+    {
+     "label": "Livre III §13",
+     "livre": 3,
+     "href": "livre_3.html#chap-13"
+    }
    ]
   },
   {
    "id": "arbre-charisme",
    "terme": "Arbre du Charisme (CHA)",
    "domaine": "competences",
-   "alias": ["Communication", "Intimidation", "Leadership"],
+   "alias": [
+    "Communication",
+    "Intimidation",
+    "Leadership"
+   ],
    "liens": [
-    { "label": "Livre III §13", "livre": 3, "href": "livre_3.html#chap-13" }
+    {
+     "label": "Livre III §13",
+     "livre": 3,
+     "href": "livre_3.html#chap-13"
+    }
    ]
   },
   {
    "id": "arbre-sagesse-instinct",
    "terme": "Arbre Sagesse & Instinct (INS / SAG)",
    "domaine": "competences",
-   "alias": ["Observation", "Ecoute", "Intuition", "Nature", "Artisanat"],
+   "alias": [
+    "Observation",
+    "Ecoute",
+    "Intuition",
+    "Nature",
+    "Artisanat"
+   ],
    "liens": [
-    { "label": "Livre III §13", "livre": 3, "href": "livre_3.html#chap-13" }
+    {
+     "label": "Livre III §13",
+     "livre": 3,
+     "href": "livre_3.html#chap-13"
+    }
    ]
   },
   {
    "id": "specialisations",
    "terme": "Spécialisations",
    "domaine": "competences",
-   "alias": ["spe", "5 XP", "10 XP", "compendium specialisations"],
+   "alias": [
+    "spe",
+    "5 XP",
+    "10 XP",
+    "compendium specialisations"
+   ],
    "liens": [
-    { "label": "Livre III §14", "livre": 3, "href": "livre_3.html#chap-14" },
-    { "label": "Livre I §5.3", "livre": 1, "href": "livre_1.html#sec-5-3" }
+    {
+     "label": "Livre III §14",
+     "livre": 3,
+     "href": "livre_3.html#chap-14"
+    },
+    {
+     "label": "Livre I §5.3",
+     "livre": 1,
+     "href": "livre_1.html#sec-5-3"
+    }
    ]
   },
   {
    "id": "fabrique-techniques-maison",
    "terme": "Fabrique de Techniques Maison",
    "domaine": "competences",
-   "alias": ["technique maison", "creation technique"],
+   "alias": [
+    "technique maison",
+    "creation technique"
+   ],
    "liens": [
-    { "label": "Livre III §15", "livre": 3, "href": "livre_3.html#chap-15" },
-    { "label": "Livre IX §39", "livre": 9, "href": "livre_9.html#chap-39" }
+    {
+     "label": "Livre III §15",
+     "livre": 3,
+     "href": "livre_3.html#chap-15"
+    },
+    {
+     "label": "Livre IX §38",
+     "livre": 9,
+     "href": "livre_9.html#chap-38"
+    }
    ]
   },
   {
    "id": "regle-deux-monnaies",
    "terme": "Règle des Deux Monnaies",
    "domaine": "competences",
-   "alias": ["XP et PA", "budget fabrique"],
+   "alias": [
+    "XP et PA",
+    "budget fabrique"
+   ],
    "liens": [
-    { "label": "Livre III §15", "livre": 3, "href": "livre_3.html#sec-15-regle" }
+    {
+     "label": "Livre III §15",
+     "livre": 3,
+     "href": "livre_3.html#sec-15-regle"
+    }
    ]
   },
   {
    "id": "fiche-technique-technique",
    "terme": "Fiche Technique d'une Technique",
    "domaine": "competences",
-   "alias": ["logements", "cadre", "accord MJ"],
+   "alias": [
+    "logements",
+    "cadre",
+    "accord MJ"
+   ],
    "liens": [
-    { "label": "Livre III §15.1", "livre": 3, "href": "livre_3.html#sec-15-1" }
+    {
+     "label": "Livre III §15.1",
+     "livre": 3,
+     "href": "livre_3.html#sec-15-1"
+    }
    ]
   },
   {
    "id": "regles-assemblage-fabrique",
    "terme": "Règles d'Assemblage (les 9 règles)",
    "domaine": "competences",
-   "alias": ["9 regles", "6 PA max", "3 pieces"],
+   "alias": [
+    "9 regles",
+    "6 PA max",
+    "3 pieces"
+   ],
    "liens": [
-    { "label": "Livre III §15", "livre": 3, "href": "livre_3.html#sec-15-regles" }
+    {
+     "label": "Livre III §15",
+     "livre": 3,
+     "href": "livre_3.html#sec-15-regles"
+    }
    ]
   },
   {
    "id": "ensembles-chassis-c0-c4",
    "terme": "Ensembles ◆ (Châssis C0–C4)",
    "domaine": "competences",
-   "alias": ["C0", "C2", "C3", "C4", "chassis", "passif", "reaction", "opportunite"],
+   "alias": [
+    "C0",
+    "C2",
+    "C3",
+    "C4",
+    "chassis",
+    "passif",
+    "reaction",
+    "opportunite"
+   ],
    "liens": [
-    { "label": "Livre III §15.2", "livre": 3, "href": "livre_3.html#sec-15-chassis" }
+    {
+     "label": "Livre III §15.2",
+     "livre": 3,
+     "href": "livre_3.html#sec-15-chassis"
+    }
    ]
   },
   {
    "id": "technique-signature",
    "terme": "Technique Signature",
    "domaine": "competences",
-   "alias": ["7 XP", "unique par personnage"],
+   "alias": [
+    "7 XP",
+    "unique par personnage"
+   ],
    "liens": [
-    { "label": "Livre III §15", "livre": 3, "href": "livre_3.html#chap-15" },
-    { "label": "Livre III §15", "livre": 3, "href": "livre_3.html#sec-15-regles" }
+    {
+     "label": "Livre III §15",
+     "livre": 3,
+     "href": "livre_3.html#chap-15"
+    },
+    {
+     "label": "Livre III §15",
+     "livre": 3,
+     "href": "livre_3.html#sec-15-regles"
+    }
    ]
   },
   {
    "id": "pieces-offensives-fabrique",
    "terme": "Pièces Offensives (Fabrique)",
    "domaine": "competences",
-   "alias": ["O1", "O18", "O28", "catalogue offensif"],
+   "alias": [
+    "O1",
+    "O18",
+    "O28",
+    "catalogue offensif"
+   ],
    "liens": [
-    { "label": "Livre III §15.3", "livre": 3, "href": "livre_3.html#sec-15-off" }
+    {
+     "label": "Livre III §15.3",
+     "livre": 3,
+     "href": "livre_3.html#sec-15-off"
+    }
    ]
   },
   {
    "id": "pieces-defensives-fabrique",
    "terme": "Pièces Défensives (Fabrique)",
    "domaine": "competences",
-   "alias": ["D1", "D6", "D8", "catalogue defensif"],
+   "alias": [
+    "D1",
+    "D6",
+    "D8",
+    "catalogue defensif"
+   ],
    "liens": [
-    { "label": "Livre III §15.4", "livre": 3, "href": "livre_3.html#sec-15-def" }
+    {
+     "label": "Livre III §15.4",
+     "livre": 3,
+     "href": "livre_3.html#sec-15-def"
+    }
    ]
   },
   {
    "id": "pieces-utilitaires-fabrique",
    "terme": "Pièces Utilitaires (Fabrique)",
    "domaine": "competences",
-   "alias": ["U7", "U11", "catalogue utilitaire"],
+   "alias": [
+    "U7",
+    "U11",
+    "catalogue utilitaire"
+   ],
    "liens": [
-    { "label": "Livre III §15.5", "livre": 3, "href": "livre_3.html#sec-15-ut" }
+    {
+     "label": "Livre III §15.5",
+     "livre": 3,
+     "href": "livre_3.html#sec-15-ut"
+    }
    ]
   },
   {
    "id": "pieces-sociales-fabrique",
    "terme": "Pièces Sociales (Fabrique)",
    "domaine": "competences",
-   "alias": ["S1", "catalogue social"],
+   "alias": [
+    "S1",
+    "catalogue social"
+   ],
    "liens": [
-    { "label": "Livre III §15.6", "livre": 3, "href": "livre_3.html#sec-15-soc" }
+    {
+     "label": "Livre III §15.6",
+     "livre": 3,
+     "href": "livre_3.html#sec-15-soc"
+    }
    ]
   },
   {
    "id": "modificateurs-finitions-fabrique",
    "terme": "Modificateurs & Finitions (Fabrique)",
    "domaine": "competences",
-   "alias": ["portee", "zone", "duree", "hors-competence"],
+   "alias": [
+    "portee",
+    "zone",
+    "duree",
+    "hors-competence"
+   ],
    "liens": [
-    { "label": "Livre III §15.7", "livre": 3, "href": "livre_3.html#sec-15-modif" }
+    {
+     "label": "Livre III §15.7",
+     "livre": 3,
+     "href": "livre_3.html#sec-15-modif"
+    }
    ]
   },
   {
    "id": "cartes-conditions-prerequis",
    "terme": "Cartes Conditions & Prérequis (Fabrique)",
    "domaine": "competences",
-   "alias": ["prerequis gratuit", "condition declenchement"],
+   "alias": [
+    "prerequis gratuit",
+    "condition declenchement"
+   ],
    "liens": [
-    { "label": "Livre III §15.1", "livre": 3, "href": "livre_3.html#sec-15-1" },
-    { "label": "Livre III §15.7", "livre": 3, "href": "livre_3.html#sec-15-modif" }
+    {
+     "label": "Livre III §15.1",
+     "livre": 3,
+     "href": "livre_3.html#sec-15-1"
+    },
+    {
+     "label": "Livre III §15.7",
+     "livre": 3,
+     "href": "livre_3.html#sec-15-modif"
+    }
    ]
   },
   {
    "id": "famille-hybride-fabrique",
    "terme": "Famille Hybride",
    "domaine": "competences",
-   "alias": ["+1 XP hybride", "deux types"],
+   "alias": [
+    "+1 XP hybride",
+    "deux types"
+   ],
    "liens": [
-    { "label": "Livre III §15.1", "livre": 3, "href": "livre_3.html#sec-15-1" }
+    {
+     "label": "Livre III §15.1",
+     "livre": 3,
+     "href": "livre_3.html#sec-15-1"
+    }
    ]
   },
   {
    "id": "incompatibilites-pieces-fabrique",
    "terme": "Incompatibilités de Pièces (Fabrique)",
    "domaine": "competences",
-   "alias": ["O7 O15", "D6", "garde totale"],
+   "alias": [
+    "O7 O15",
+    "D6",
+    "garde totale"
+   ],
    "liens": [
-    { "label": "Livre III §15", "livre": 3, "href": "livre_3.html#sec-15-regles" }
+    {
+     "label": "Livre III §15",
+     "livre": 3,
+     "href": "livre_3.html#sec-15-regles"
+    }
    ]
   },
   {
    "id": "cinquieme-force",
    "terme": "Cinquième Force (5e Force)",
    "domaine": "magie",
-   "alias": ["5e Force", "magie", "energie"],
+   "alias": [
+    "5e Force",
+    "magie",
+    "energie"
+   ],
    "liens": [
-    { "label": "Livre IV §16", "livre": 4, "href": "livre_4.html#chap-16" }
+    {
+     "label": "Livre IV §16",
+     "livre": 4,
+     "href": "livre_4.html#chap-16"
+    }
    ]
   },
   {
    "id": "organe-interne-resonance",
    "terme": "Organe Interne & Résonance",
    "domaine": "magie",
-   "alias": ["organe", "resonance", "canalisation"],
+   "alias": [
+    "organe",
+    "resonance",
+    "canalisation"
+   ],
    "liens": [
-    { "label": "Livre IV §16.1", "livre": 4, "href": "livre_4.html#sec-16-1" }
+    {
+     "label": "Livre IV §16.1",
+     "livre": 4,
+     "href": "livre_4.html#sec-16-1"
+    }
    ]
   },
   {
    "id": "saturation-echauffement-arcanique",
    "terme": "Saturation / Échauffement Arcanique",
    "domaine": "magie",
-   "alias": ["surchauffe", "echauffement"],
+   "alias": [
+    "surchauffe",
+    "echauffement"
+   ],
    "liens": [
-    { "label": "Livre IV §16", "livre": 4, "href": "livre_4.html#sec-16-2" },
-    { "label": "Livre I §4.2", "livre": 1, "href": "livre_1.html#sec-4-2" }
+    {
+     "label": "Livre IV §16",
+     "livre": 4,
+     "href": "livre_4.html#sec-16-2"
+    },
+    {
+     "label": "Livre I §4.2",
+     "livre": 1,
+     "href": "livre_1.html#sec-4-2"
+    }
    ]
   },
   {
    "id": "champs-interference-anti-magie",
    "terme": "Champs d'Interférence Destructifs (Anti-Magie)",
    "domaine": "magie",
-   "alias": ["anti-magie", "interference"],
+   "alias": [
+    "anti-magie",
+    "interference"
+   ],
    "liens": [
-    { "label": "Livre IV §16", "livre": 4, "href": "livre_4.html#sec-16-2" }
+    {
+     "label": "Livre IV §16",
+     "livre": 4,
+     "href": "livre_4.html#sec-16-2"
+    }
    ]
   },
   {
    "id": "moteur-magique-nytharite",
    "terme": "Moteur Magique & Nytharite",
    "domaine": "magie",
-   "alias": ["Magical Engine", "nytharite", "magitek"],
+   "alias": [
+    "Magical Engine",
+    "nytharite",
+    "magitek"
+   ],
    "liens": [
-    { "label": "Livre IV §17", "livre": 4, "href": "livre_4.html#chap-17" }
+    {
+     "label": "Livre IV §17",
+     "livre": 4,
+     "href": "livre_4.html#chap-17"
+    }
    ]
   },
   {
    "id": "composants-moteur-magique",
    "terme": "Composants du Moteur Magique",
    "domaine": "magie",
-   "alias": ["chambre resonance", "stabilisateurs", "noeuds", "recyclage"],
+   "alias": [
+    "chambre resonance",
+    "stabilisateurs",
+    "noeuds",
+    "recyclage"
+   ],
    "liens": [
-    { "label": "Livre IV §17", "livre": 4, "href": "livre_4.html#chap-17" }
+    {
+     "label": "Livre IV §17",
+     "livre": 4,
+     "href": "livre_4.html#chap-17"
+    }
    ]
   },
   {
    "id": "voies-arcaniques",
    "terme": "Voies Arcaniques",
    "domaine": "magie",
-   "alias": ["3 voies", "canaux"],
+   "alias": [
+    "3 voies",
+    "canaux"
+   ],
    "liens": [
-    { "label": "Livre IV §18", "livre": 4, "href": "livre_4.html#chap-18" },
-    { "label": "Livre IV §18.1", "livre": 4, "href": "livre_4.html#sec-18-1" }
+    {
+     "label": "Livre IV §18",
+     "livre": 4,
+     "href": "livre_4.html#chap-18"
+    },
+    {
+     "label": "Livre IV §18.1",
+     "livre": 4,
+     "href": "livre_4.html#sec-18-1"
+    }
    ]
   },
   {
    "id": "magie-elementale",
    "terme": "Magie Élémentale",
    "domaine": "magie",
-   "alias": ["Feu", "Air", "Eau", "Terre"],
+   "alias": [
+    "Feu",
+    "Air",
+    "Eau",
+    "Terre"
+   ],
    "liens": [
-    { "label": "Livre IV §18", "livre": 4, "href": "livre_4.html#chap-18" },
-    { "label": "Livre IV §18.1", "livre": 4, "href": "livre_4.html#sec-18-1" }
+    {
+     "label": "Livre IV §18",
+     "livre": 4,
+     "href": "livre_4.html#chap-18"
+    },
+    {
+     "label": "Livre IV §18.1",
+     "livre": 4,
+     "href": "livre_4.html#sec-18-1"
+    }
    ]
   },
   {
    "id": "magie-primale",
    "terme": "Magie Primale",
    "domaine": "magie",
-   "alias": ["Vie", "Creation", "Destruction"],
+   "alias": [
+    "Vie",
+    "Creation",
+    "Destruction"
+   ],
    "liens": [
-    { "label": "Livre IV §18", "livre": 4, "href": "livre_4.html#chap-18" },
-    { "label": "Livre IV §18.1", "livre": 4, "href": "livre_4.html#sec-18-1" }
+    {
+     "label": "Livre IV §18",
+     "livre": 4,
+     "href": "livre_4.html#chap-18"
+    },
+    {
+     "label": "Livre IV §18.1",
+     "livre": 4,
+     "href": "livre_4.html#sec-18-1"
+    }
    ]
   },
   {
    "id": "magie-esprit",
    "terme": "Magie de l'Esprit",
    "domaine": "magie",
-   "alias": ["Psyche", "Telekinesie", "Telepathie", "Clairvoyance"],
+   "alias": [
+    "Psyche",
+    "Telekinesie",
+    "Telepathie",
+    "Clairvoyance"
+   ],
    "liens": [
-    { "label": "Livre IV §18", "livre": 4, "href": "livre_4.html#chap-18" },
-    { "label": "Livre IV §18.1", "livre": 4, "href": "livre_4.html#sec-18-1" }
+    {
+     "label": "Livre IV §18",
+     "livre": 4,
+     "href": "livre_4.html#chap-18"
+    },
+    {
+     "label": "Livre IV §18.1",
+     "livre": 4,
+     "href": "livre_4.html#sec-18-1"
+    }
    ]
   },
   {
    "id": "portee-sorts-malus-distance",
    "terme": "Portée des Sorts & Malus de Distance",
    "domaine": "magie",
-   "alias": ["portee sort", "tranches MAG", "-1 niveau de de"],
+   "alias": [
+    "portee sort",
+    "tranches MAG",
+    "-1 niveau de de"
+   ],
    "liens": [
-    { "label": "Livre IV §18", "livre": 4, "href": "livre_4.html#sec-18-portee" }
+    {
+     "label": "Livre IV §18",
+     "livre": 4,
+     "href": "livre_4.html#sec-18-portee"
+    }
    ]
   },
   {
    "id": "lien-telepathique-permanent",
    "terme": "Lien Télépathique Permanent",
    "domaine": "magie",
-   "alias": ["Telepathic Bond", "resonance symbiotique", "5 XP"],
+   "alias": [
+    "Telepathic Bond",
+    "resonance symbiotique",
+    "5 XP"
+   ],
    "liens": [
-    { "label": "Livre IV §18.2", "livre": 4, "href": "livre_4.html#sec-18-2" }
+    {
+     "label": "Livre IV §18.2",
+     "livre": 4,
+     "href": "livre_4.html#sec-18-2"
+    }
    ]
   },
   {
    "id": "communication-telepathique-instantanee",
    "terme": "Communication Télépathique Instantanée",
    "domaine": "magie",
-   "alias": ["parole mentale", "0 PA"],
+   "alias": [
+    "parole mentale",
+    "0 PA"
+   ],
    "liens": [
-    { "label": "Livre IV §18.2", "livre": 4, "href": "livre_4.html#sec-18-2" }
+    {
+     "label": "Livre IV §18.2",
+     "livre": 4,
+     "href": "livre_4.html#sec-18-2"
+    }
    ]
   },
   {
    "id": "synchronisation-tactique-telepathie",
    "terme": "Synchronisation Tactique (Télépathie)",
    "domaine": "magie",
-   "alias": ["+1 EC", "3 cases"],
+   "alias": [
+    "+1 EC",
+    "3 cases"
+   ],
    "liens": [
-    { "label": "Livre IV §18.2", "livre": 4, "href": "livre_4.html#sec-18-2" }
+    {
+     "label": "Livre IV §18.2",
+     "livre": 4,
+     "href": "livre_4.html#sec-18-2"
+    }
    ]
   },
   {
    "id": "ancrage-thermodynamique",
    "terme": "Ancrage Thermodynamique",
    "domaine": "magie",
-   "alias": ["absorber surchauffe"],
+   "alias": [
+    "absorber surchauffe"
+   ],
    "liens": [
-    { "label": "Livre IV §18.2", "livre": 4, "href": "livre_4.html#sec-18-2" },
-    { "label": "Livre IV §16", "livre": 4, "href": "livre_4.html#sec-16-2" }
+    {
+     "label": "Livre IV §18.2",
+     "livre": 4,
+     "href": "livre_4.html#sec-18-2"
+    },
+    {
+     "label": "Livre IV §16",
+     "livre": 4,
+     "href": "livre_4.html#sec-16-2"
+    }
    ]
   },
   {
    "id": "atelier-creation-pouvoirs",
    "terme": "Atelier de Création Modulaire de Pouvoirs",
    "domaine": "magie",
-   "alias": ["creation sort", "modulaire"],
+   "alias": [
+    "creation sort",
+    "modulaire"
+   ],
    "liens": [
-    { "label": "Livre IV §19", "livre": 4, "href": "livre_4.html#chap-19" },
-    { "label": "Livre IX §35", "livre": 9, "href": "livre_9.html#chap-35" }
+    {
+     "label": "Livre IV §19",
+     "livre": 4,
+     "href": "livre_4.html#chap-19"
+    },
+    {
+     "label": "Livre IX §34",
+     "livre": 9,
+     "href": "livre_9.html#chap-34"
+    }
    ]
   },
   {
    "id": "regle-or-creation-xp-pa",
    "terme": "Règle d'Or de Création (XP = PA)",
    "domaine": "magie",
-   "alias": ["1 XP = 1 PA", "cout creation"],
+   "alias": [
+    "1 XP = 1 PA",
+    "cout creation"
+   ],
    "liens": [
-    { "label": "Livre IV §19", "livre": 4, "href": "livre_4.html#sec-19-regle" }
+    {
+     "label": "Livre IV §19",
+     "livre": 4,
+     "href": "livre_4.html#sec-19-regle"
+    }
    ]
   },
   {
    "id": "fiche-technique-pouvoir",
    "terme": "Fiche Technique d'un Pouvoir",
    "domaine": "magie",
-   "alias": ["attribut associe", "type pouvoir"],
+   "alias": [
+    "attribut associe",
+    "type pouvoir"
+   ],
    "liens": [
-    { "label": "Livre IV §19.1", "livre": 4, "href": "livre_4.html#sec-19-1" }
+    {
+     "label": "Livre IV §19.1",
+     "livre": 4,
+     "href": "livre_4.html#sec-19-1"
+    }
    ]
   },
   {
    "id": "sort-en-reaction",
    "terme": "Sort en Réaction",
    "domaine": "magie",
-   "alias": ["+2 XP", "+2 PA", "mur reflexe"],
+   "alias": [
+    "+2 XP",
+    "+2 PA",
+    "mur reflexe"
+   ],
    "liens": [
-    { "label": "Livre IV §19.1", "livre": 4, "href": "livre_4.html#sec-19-1" },
-    { "label": "Livre IV §19.3", "livre": 4, "href": "livre_4.html#sec-19-3" }
+    {
+     "label": "Livre IV §19.1",
+     "livre": 4,
+     "href": "livre_4.html#sec-19-1"
+    },
+    {
+     "label": "Livre IV §19.3",
+     "livre": 4,
+     "href": "livre_4.html#sec-19-3"
+    }
    ]
   },
   {
    "id": "effets-modulaires-achetables",
    "terme": "Effets Modulaires Achetables",
    "domaine": "magie",
-   "alias": ["catalogue effets", "briques"],
+   "alias": [
+    "catalogue effets",
+    "briques"
+   ],
    "liens": [
-    { "label": "Livre IV §19.2", "livre": 4, "href": "livre_4.html#sec-19-2" }
+    {
+     "label": "Livre IV §19.2",
+     "livre": 4,
+     "href": "livre_4.html#sec-19-2"
+    }
    ]
   },
   {
    "id": "pouvoirs-hybrides",
    "terme": "Pouvoirs Hybrides",
    "domaine": "magie",
-   "alias": ["+1 XP par categorie", "multi-categories"],
+   "alias": [
+    "+1 XP par categorie",
+    "multi-categories"
+   ],
    "liens": [
-    { "label": "Livre IV §19", "livre": 4, "href": "livre_4.html#sec-19-hybride" }
+    {
+     "label": "Livre IV §19",
+     "livre": 4,
+     "href": "livre_4.html#sec-19-hybride"
+    }
    ]
   },
   {
    "id": "specialisations-arcanes",
    "terme": "Spécialisations Arcanes",
    "domaine": "magie",
-   "alias": ["compendium arcanes", "arbres sorts"],
+   "alias": [
+    "compendium arcanes",
+    "arbres sorts"
+   ],
    "liens": [
-    { "label": "Livre IV §19.4", "livre": 4, "href": "livre_4.html#sec-19-4" }
+    {
+     "label": "Livre IV §19.4",
+     "livre": 4,
+     "href": "livre_4.html#sec-19-4"
+    }
    ]
   },
   {
    "id": "sequence-tour-combat",
    "terme": "Séquence du Tour de Combat",
    "domaine": "combat",
-   "alias": ["round", "debut tour", "milieu", "fin tour"],
+   "alias": [
+    "round",
+    "debut tour",
+    "milieu",
+    "fin tour"
+   ],
    "liens": [
-    { "label": "Livre V §20", "livre": 5, "href": "livre_5.html#chap-20" }
+    {
+     "label": "Livre V §20",
+     "livre": 5,
+     "href": "livre_5.html#chap-20"
+    }
    ]
   },
   {
    "id": "tour-embuscade",
    "terme": "Tour d'Embuscade",
    "domaine": "combat",
-   "alias": ["embuscade", "tour gratuit"],
+   "alias": [
+    "embuscade",
+    "tour gratuit"
+   ],
    "liens": [
-    { "label": "Livre V §20", "livre": 5, "href": "livre_5.html#chap-20" },
-    { "label": "Livre V §21.4", "livre": 5, "href": "livre_5.html#sec-21-4" }
+    {
+     "label": "Livre V §20",
+     "livre": 5,
+     "href": "livre_5.html#chap-20"
+    },
+    {
+     "label": "Livre V §21.4",
+     "livre": 5,
+     "href": "livre_5.html#sec-21-4"
+    }
    ]
   },
   {
    "id": "recharge-pa-reaction-libre",
    "terme": "Recharge de PA & Réaction Libre",
    "domaine": "combat",
-   "alias": ["remise au max", "sans cumul"],
+   "alias": [
+    "remise au max",
+    "sans cumul"
+   ],
    "liens": [
-    { "label": "Livre V §20", "livre": 5, "href": "livre_5.html#chap-20" },
-    { "label": "Livre I §1", "livre": 1, "href": "livre_1.html#chap-1" }
+    {
+     "label": "Livre V §20",
+     "livre": 5,
+     "href": "livre_5.html#chap-20"
+    },
+    {
+     "label": "Livre I §1",
+     "livre": 1,
+     "href": "livre_1.html#chap-1"
+    }
    ]
   },
   {
    "id": "postures-combat",
    "terme": "Postures de Combat",
    "domaine": "combat",
-   "alias": ["posture", "defaut"],
+   "alias": [
+    "posture",
+    "defaut"
+   ],
    "liens": [
-    { "label": "Livre V §20.1", "livre": 5, "href": "livre_5.html#sec-20-1" }
+    {
+     "label": "Livre V §20.1",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-1"
+    }
    ]
   },
   {
    "id": "posture-preventive",
    "terme": "Posture Préventive",
    "domaine": "combat",
-   "alias": ["protege prioritaire", "-1 attaque"],
+   "alias": [
+    "protege prioritaire",
+    "-1 attaque"
+   ],
    "liens": [
-    { "label": "Livre V §20.1", "livre": 5, "href": "livre_5.html#sec-20-1" },
-    { "label": "Livre V §20.7", "livre": 5, "href": "livre_5.html#sec-20-7" }
+    {
+     "label": "Livre V §20.1",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-1"
+    },
+    {
+     "label": "Livre V §20.7",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-7"
+    }
    ]
   },
   {
    "id": "posture-defensive",
    "terme": "Posture Défensive",
    "domaine": "combat",
-   "alias": ["+1 defense", "-1 attaque"],
+   "alias": [
+    "+1 defense",
+    "-1 attaque"
+   ],
    "liens": [
-    { "label": "Livre V §20.1", "livre": 5, "href": "livre_5.html#sec-20-1" }
+    {
+     "label": "Livre V §20.1",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-1"
+    }
    ]
   },
   {
    "id": "posture-offensive",
    "terme": "Posture Offensive",
    "domaine": "combat",
-   "alias": ["+1 attaque", "-1 defense"],
+   "alias": [
+    "+1 attaque",
+    "-1 defense"
+   ],
    "liens": [
-    { "label": "Livre V §20.1", "livre": 5, "href": "livre_5.html#sec-20-1" }
+    {
+     "label": "Livre V §20.1",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-1"
+    }
    ]
   },
   {
    "id": "economie-pa-1-pa",
    "terme": "Économie des PA (1 PA = +1)",
    "domaine": "combat",
-   "alias": ["1 PA = +1"],
+   "alias": [
+    "1 PA = +1"
+   ],
    "liens": [
-    { "label": "Livre V §20.2", "livre": 5, "href": "livre_5.html#sec-20-2" }
+    {
+     "label": "Livre V §20.2",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-2"
+    }
    ]
   },
   {
    "id": "mise-effort-pa-pe",
    "terme": "Mise d'Effort (PA / PE)",
    "domaine": "combat",
-   "alias": ["effort", "mises", "jetons"],
+   "alias": [
+    "effort",
+    "mises",
+    "jetons"
+   ],
    "liens": [
-    { "label": "Livre V §20.2", "livre": 5, "href": "livre_5.html#sec-20-2" },
-    { "label": "Livre V §20.3", "livre": 5, "href": "livre_5.html#sec-20-3" }
+    {
+     "label": "Livre V §20.2",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-2"
+    },
+    {
+     "label": "Livre V §20.3",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-3"
+    }
    ]
   },
   {
    "id": "defense-active",
    "terme": "Défense Active",
    "domaine": "combat",
-   "alias": ["1 PA", "de -2 a 0 PA"],
+   "alias": [
+    "1 PA",
+    "de -2 a 0 PA"
+   ],
    "liens": [
-    { "label": "Livre V §20.2", "livre": 5, "href": "livre_5.html#sec-20-2" }
+    {
+     "label": "Livre V §20.2",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-2"
+    }
    ]
   },
   {
    "id": "parade-defense-corporelle",
    "terme": "Parade / Défense Corporelle",
    "domaine": "combat",
-   "alias": ["parer", "bouclier", "blocage"],
+   "alias": [
+    "parer",
+    "bouclier",
+    "blocage"
+   ],
    "liens": [
-    { "label": "Livre V §20.2", "livre": 5, "href": "livre_5.html#sec-20-2" },
-    { "label": "Livre III §11", "livre": 3, "href": "livre_3.html#chap-11" },
-    { "label": "Livre III §12", "livre": 3, "href": "livre_3.html#chap-12" }
+    {
+     "label": "Livre V §20.2",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-2"
+    },
+    {
+     "label": "Livre III §11",
+     "livre": 3,
+     "href": "livre_3.html#chap-11"
+    },
+    {
+     "label": "Livre III §12",
+     "livre": 3,
+     "href": "livre_3.html#chap-12"
+    }
    ]
   },
   {
    "id": "esquive",
    "terme": "Esquive",
    "domaine": "combat",
-   "alias": ["esquiver", "eviter"],
+   "alias": [
+    "esquiver",
+    "eviter"
+   ],
    "liens": [
-    { "label": "Livre V §20.2", "livre": 5, "href": "livre_5.html#sec-20-2" },
-    { "label": "Livre III §12", "livre": 3, "href": "livre_3.html#chap-12" }
+    {
+     "label": "Livre V §20.2",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-2"
+    },
+    {
+     "label": "Livre III §12",
+     "livre": 3,
+     "href": "livre_3.html#chap-12"
+    }
    ]
   },
   {
    "id": "defense-passive",
    "terme": "Défense Passive",
    "domaine": "combat",
-   "alias": ["score 0", "0 PA", "ne pas se defendre"],
+   "alias": [
+    "score 0",
+    "0 PA",
+    "ne pas se defendre"
+   ],
    "liens": [
-    { "label": "Livre V §20.2", "livre": 5, "href": "livre_5.html#sec-20-2" },
-    { "label": "Livre II §7", "livre": 2, "href": "livre_2.html#chap-7" }
+    {
+     "label": "Livre V §20.2",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-2"
+    },
+    {
+     "label": "Livre II §7",
+     "livre": 2,
+     "href": "livre_2.html#chap-7"
+    }
    ]
   },
   {
    "id": "cible-hors-etat-defendre",
    "terme": "Cible Hors d'État de se Défendre",
    "domaine": "combat",
-   "alias": ["Inconscient", "Paralyse", "Sonne"],
+   "alias": [
+    "Inconscient",
+    "Paralyse",
+    "Sonne"
+   ],
    "liens": [
-    { "label": "Livre V §20.2", "livre": 5, "href": "livre_5.html#sec-20-2-cibles" }
+    {
+     "label": "Livre V §20.2",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-2-cibles"
+    }
    ]
   },
   {
    "id": "regle-specificite",
    "terme": "Règle de Spécificité",
    "domaine": "combat",
-   "alias": ["pouvoir vs regle de base"],
+   "alias": [
+    "pouvoir vs regle de base"
+   ],
    "liens": [
-    { "label": "Livre V §20.2", "livre": 5, "href": "livre_5.html#sec-20-2" }
+    {
+     "label": "Livre V §20.2",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-2"
+    }
    ]
   },
   {
    "id": "action-principale",
    "terme": "Action Principale",
    "domaine": "combat",
-   "alias": ["1 par tour", "2 PA"],
+   "alias": [
+    "1 par tour",
+    "2 PA"
+   ],
    "liens": [
-    { "label": "Livre V §20.2", "livre": 5, "href": "livre_5.html#sec-20-2" },
-    { "label": "Livre V §20.5", "livre": 5, "href": "livre_5.html#sec-20-5" },
-    { "label": "Livre I §4", "livre": 1, "href": "livre_1.html#chap-4" }
+    {
+     "label": "Livre V §20.2",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-2"
+    },
+    {
+     "label": "Livre V §20.5",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-5"
+    },
+    {
+     "label": "Livre I §4",
+     "livre": 1,
+     "href": "livre_1.html#chap-4"
+    }
    ]
   },
   {
    "id": "micro-action",
    "terme": "Micro-Action",
    "domaine": "combat",
-   "alias": ["1 PA", "sans limite"],
+   "alias": [
+    "1 PA",
+    "sans limite"
+   ],
    "liens": [
-    { "label": "Livre V §20.5", "livre": 5, "href": "livre_5.html#sec-20-5" }
+    {
+     "label": "Livre V §20.5",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-5"
+    }
    ]
   },
   {
    "id": "action-en-progression",
    "terme": "Action en Progression",
    "domaine": "combat",
-   "alias": ["etalee", "+2", "-1"],
+   "alias": [
+    "etalee",
+    "+2",
+    "-1"
+   ],
    "liens": [
-    { "label": "Livre V §20.5", "livre": 5, "href": "livre_5.html#sec-20-5" }
+    {
+     "label": "Livre V §20.5",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-5"
+    }
    ]
   },
   {
    "id": "reaction-libre",
    "terme": "Réaction Libre",
    "domaine": "combat",
-   "alias": ["1 par cycle"],
+   "alias": [
+    "1 par cycle"
+   ],
    "liens": [
-    { "label": "Livre V §20.2", "livre": 5, "href": "livre_5.html#sec-20-2" },
-    { "label": "Livre V §20.5", "livre": 5, "href": "livre_5.html#sec-20-5" },
-    { "label": "Livre V §20.6", "livre": 5, "href": "livre_5.html#sec-20-6" }
+    {
+     "label": "Livre V §20.2",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-2"
+    },
+    {
+     "label": "Livre V §20.5",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-5"
+    },
+    {
+     "label": "Livre V §20.6",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-6"
+    }
    ]
   },
   {
    "id": "reactions-defensives-illimitees",
    "terme": "Réactions Défensives Illimitées",
    "domaine": "combat",
-   "alias": ["hors de ton tour", "parer illimite"],
+   "alias": [
+    "hors de ton tour",
+    "parer illimite"
+   ],
    "liens": [
-    { "label": "Livre V §20.2", "livre": 5, "href": "livre_5.html#sec-20-2" },
-    { "label": "Livre V §20.5", "livre": 5, "href": "livre_5.html#sec-20-5" }
+    {
+     "label": "Livre V §20.2",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-2"
+    },
+    {
+     "label": "Livre V §20.5",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-5"
+    }
    ]
   },
   {
    "id": "guet",
    "terme": "Guet",
    "domaine": "combat",
-   "alias": ["2 PA reserves", "tir reserve", "360"],
+   "alias": [
+    "2 PA reserves",
+    "tir reserve",
+    "360"
+   ],
    "liens": [
-    { "label": "Livre V §20.2", "livre": 5, "href": "livre_5.html#sec-20-2" },
-    { "label": "Livre V §20.5", "livre": 5, "href": "livre_5.html#sec-20-5" }
+    {
+     "label": "Livre V §20.2",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-2"
+    },
+    {
+     "label": "Livre V §20.5",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-5"
+    }
    ]
   },
   {
    "id": "essoufflement-ess-pe",
    "terme": "Essoufflement (ESS / PE)",
    "domaine": "combat",
-   "alias": ["ESS", "PE", "PA urgence"],
+   "alias": [
+    "ESS",
+    "PE",
+    "PA urgence"
+   ],
    "liens": [
-    { "label": "Livre I §4.2", "livre": 1, "href": "livre_1.html#sec-4-2" },
-    { "label": "Livre V §20.3", "livre": 5, "href": "livre_5.html#sec-20-3" }
+    {
+     "label": "Livre I §4.2",
+     "livre": 1,
+     "href": "livre_1.html#sec-4-2"
+    },
+    {
+     "label": "Livre V §20.3",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-3"
+    }
    ]
   },
   {
    "id": "plafond-essoufflement",
    "terme": "Plafond d'Essoufflement",
    "domaine": "combat",
-   "alias": ["CON", "max essoufflement"],
+   "alias": [
+    "CON",
+    "max essoufflement"
+   ],
    "liens": [
-    { "label": "Livre I §4.2", "livre": 1, "href": "livre_1.html#sec-4-2" },
-    { "label": "Livre V §20.3", "livre": 5, "href": "livre_5.html#sec-20-3" }
+    {
+     "label": "Livre I §4.2",
+     "livre": 1,
+     "href": "livre_1.html#sec-4-2"
+    },
+    {
+     "label": "Livre V §20.3",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-3"
+    }
    ]
   },
   {
    "id": "reprendre-son-souffle",
    "terme": "Reprendre son Souffle",
    "domaine": "combat",
-   "alias": ["souffler", "recuperer ESS"],
+   "alias": [
+    "souffler",
+    "recuperer ESS"
+   ],
    "liens": [
-    { "label": "Livre V §20.3", "livre": 5, "href": "livre_5.html#sec-20-3" },
-    { "label": "Livre I §4.2", "livre": 1, "href": "livre_1.html#sec-4-2" }
+    {
+     "label": "Livre V §20.3",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-3"
+    },
+    {
+     "label": "Livre I §4.2",
+     "livre": 1,
+     "href": "livre_1.html#sec-4-2"
+    }
    ]
   },
   {
    "id": "effets-speciaux-epreuve",
    "terme": "Effets Spéciaux sur Épreuve",
    "domaine": "combat",
-   "alias": ["effets declenches"],
+   "alias": [
+    "effets declenches"
+   ],
    "liens": [
-    { "label": "Livre V §20.4", "livre": 5, "href": "livre_5.html#sec-20-4" }
+    {
+     "label": "Livre V §20.4",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-4"
+    }
    ]
   },
   {
    "id": "effet-repousser",
    "terme": "Repousser",
    "domaine": "combat",
-   "alias": ["push", "projection"],
+   "alias": [
+    "push",
+    "projection"
+   ],
    "liens": [
-    { "label": "Livre V §20.4", "livre": 5, "href": "livre_5.html#sec-20-4" }
+    {
+     "label": "Livre V §20.4",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-4"
+    }
    ]
   },
   {
    "id": "effet-refoulement",
    "terme": "Refoulement",
    "domaine": "combat",
-   "alias": ["recul force"],
+   "alias": [
+    "recul force"
+   ],
    "liens": [
-    { "label": "Livre V §20.4", "livre": 5, "href": "livre_5.html#sec-20-4" },
-    { "label": "Livre V §22.3", "livre": 5, "href": "livre_5.html#sec-22-3" }
+    {
+     "label": "Livre V §20.4",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-4"
+    },
+    {
+     "label": "Livre V §22.3",
+     "livre": 5,
+     "href": "livre_5.html#sec-22-3"
+    }
    ]
   },
   {
    "id": "effet-attirer",
    "terme": "Attirer",
    "domaine": "combat",
-   "alias": ["grappin", "telekinesie"],
+   "alias": [
+    "grappin",
+    "telekinesie"
+   ],
    "liens": [
-    { "label": "Livre V §20.4", "livre": 5, "href": "livre_5.html#sec-20-4" }
+    {
+     "label": "Livre V §20.4",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-4"
+    }
    ]
   },
   {
    "id": "effet-saigner",
    "terme": "Saigner (Effet sur Épreuve)",
    "domaine": "combat",
-   "alias": ["tranchant", "percant"],
+   "alias": [
+    "tranchant",
+    "percant"
+   ],
    "liens": [
-    { "label": "Livre V §20.4", "livre": 5, "href": "livre_5.html#sec-20-4" },
-    { "label": "Livre VI §24.2", "livre": 6, "href": "livre_6.html#sec-24-2" }
+    {
+     "label": "Livre V §20.4",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-4"
+    },
+    {
+     "label": "Livre VI §24.2",
+     "livre": 6,
+     "href": "livre_6.html#sec-24-2"
+    }
    ]
   },
   {
    "id": "effet-bruler",
    "terme": "Brûler (Effet sur Épreuve)",
    "domaine": "combat",
-   "alias": ["feu", "flamme"],
+   "alias": [
+    "feu",
+    "flamme"
+   ],
    "liens": [
-    { "label": "Livre V §20.4", "livre": 5, "href": "livre_5.html#sec-20-4" },
-    { "label": "Livre VI §24.2", "livre": 6, "href": "livre_6.html#sec-24-2" }
+    {
+     "label": "Livre V §20.4",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-4"
+    },
+    {
+     "label": "Livre VI §24.2",
+     "livre": 6,
+     "href": "livre_6.html#sec-24-2"
+    }
    ]
   },
   {
    "id": "effet-desarmer",
    "terme": "Désarmer",
    "domaine": "combat",
-   "alias": ["faire lacher arme"],
+   "alias": [
+    "faire lacher arme"
+   ],
    "liens": [
-    { "label": "Livre V §20.4", "livre": 5, "href": "livre_5.html#sec-20-4" }
+    {
+     "label": "Livre V §20.4",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-4"
+    }
    ]
   },
   {
    "id": "effet-assommer",
    "terme": "Assommer",
    "domaine": "combat",
-   "alias": ["hors combat", "KO"],
+   "alias": [
+    "hors combat",
+    "KO"
+   ],
    "liens": [
-    { "label": "Livre V §20.4", "livre": 5, "href": "livre_5.html#sec-20-4" }
+    {
+     "label": "Livre V §20.4",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-4"
+    }
    ]
   },
   {
    "id": "effet-posseder",
    "terme": "Posséder",
    "domaine": "combat",
-   "alias": ["controle mental", "possession"],
+   "alias": [
+    "controle mental",
+    "possession"
+   ],
    "liens": [
-    { "label": "Livre V §20.4", "livre": 5, "href": "livre_5.html#sec-20-4" }
+    {
+     "label": "Livre V §20.4",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-4"
+    }
    ]
   },
   {
    "id": "effet-desintegrer",
    "terme": "Désintégrer",
    "domaine": "combat",
-   "alias": ["destruction matiere"],
+   "alias": [
+    "destruction matiere"
+   ],
    "liens": [
-    { "label": "Livre V §20.4", "livre": 5, "href": "livre_5.html#sec-20-4" }
+    {
+     "label": "Livre V §20.4",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-4"
+    }
    ]
   },
   {
    "id": "pas-tactique",
    "terme": "Pas Tactique",
    "domaine": "combat",
-   "alias": ["1,5 m", "1 case", "deplacement"],
+   "alias": [
+    "1,5 m",
+    "1 case",
+    "deplacement"
+   ],
    "liens": [
-    { "label": "Livre V §21", "livre": 5, "href": "livre_5.html#chap-21" },
-    { "label": "Livre V §20.5", "livre": 5, "href": "livre_5.html#sec-20-5" }
+    {
+     "label": "Livre V §21",
+     "livre": 5,
+     "href": "livre_5.html#chap-21"
+    },
+    {
+     "label": "Livre V §20.5",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-5"
+    }
    ]
   },
   {
    "id": "cumul-surcouts-deplacement",
    "terme": "Cumul des Surcoûts de Déplacement",
    "domaine": "combat",
-   "alias": ["cout par case", "non cumulatif accroupi"],
+   "alias": [
+    "cout par case",
+    "non cumulatif accroupi"
+   ],
    "liens": [
-    { "label": "Livre V §20.5", "livre": 5, "href": "livre_5.html#sec-20-5" }
+    {
+     "label": "Livre V §20.5",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-5"
+    }
    ]
   },
   {
    "id": "reactions-opportunite",
    "terme": "Réactions d'Opportunité",
    "domaine": "combat",
-   "alias": ["contact rompu", "4 reactions"],
+   "alias": [
+    "contact rompu",
+    "4 reactions"
+   ],
    "liens": [
-    { "label": "Livre V §20.6", "livre": 5, "href": "livre_5.html#sec-20-6" }
+    {
+     "label": "Livre V §20.6",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-6"
+    }
    ]
   },
   {
    "id": "decrochage",
    "terme": "Décrochage",
    "domaine": "combat",
-   "alias": ["desengager", "1 PA activation"],
+   "alias": [
+    "desengager",
+    "1 PA activation"
+   ],
    "liens": [
-    { "label": "Livre V §20.6", "livre": 5, "href": "livre_5.html#sec-20-6" },
-    { "label": "Livre V §22.2", "livre": 5, "href": "livre_5.html#sec-22-2" }
+    {
+     "label": "Livre V §20.6",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-6"
+    },
+    {
+     "label": "Livre V §22.2",
+     "livre": 5,
+     "href": "livre_5.html#sec-22-2"
+    }
    ]
   },
   {
    "id": "frappe-opportunite",
    "terme": "Frappe d'Opportunité",
    "domaine": "combat",
-   "alias": ["0 PA", "coup reflexe"],
+   "alias": [
+    "0 PA",
+    "coup reflexe"
+   ],
    "liens": [
-    { "label": "Livre V §20.6", "livre": 5, "href": "livre_5.html#sec-20-6" }
+    {
+     "label": "Livre V §20.6",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-6"
+    }
    ]
   },
   {
    "id": "poursuite-opportunite",
    "terme": "Poursuite d'Opportunité",
    "domaine": "combat",
-   "alias": ["suivi 1 case", "1 PA"],
+   "alias": [
+    "suivi 1 case",
+    "1 PA"
+   ],
    "liens": [
-    { "label": "Livre V §20.6", "livre": 5, "href": "livre_5.html#sec-20-6" }
+    {
+     "label": "Livre V §20.6",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-6"
+    }
    ]
   },
   {
    "id": "blocage-opportunite",
    "terme": "Blocage d'Opportunité",
    "domaine": "combat",
-   "alias": ["annuler pas", "Athletisme"],
+   "alias": [
+    "annuler pas",
+    "Athletisme"
+   ],
    "liens": [
-    { "label": "Livre V §20.6", "livre": 5, "href": "livre_5.html#sec-20-6" }
+    {
+     "label": "Livre V §20.6",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-6"
+    }
    ]
   },
   {
    "id": "balayage-opportunite",
    "terme": "Balayage d'Opportunité",
    "domaine": "combat",
-   "alias": ["jambes", "0 PA"],
+   "alias": [
+    "jambes",
+    "0 PA"
+   ],
    "liens": [
-    { "label": "Livre V §20.6", "livre": 5, "href": "livre_5.html#sec-20-6" }
+    {
+     "label": "Livre V §20.6",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-6"
+    }
    ]
   },
   {
    "id": "garde-corps-prise-coup",
    "terme": "Garde du Corps & Prise de Coup",
    "domaine": "combat",
-   "alias": ["redirection coup", "proteger allie"],
+   "alias": [
+    "redirection coup",
+    "proteger allie"
+   ],
    "liens": [
-    { "label": "Livre V §20.7", "livre": 5, "href": "livre_5.html#sec-20-7" }
+    {
+     "label": "Livre V §20.7",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-7"
+    }
    ]
   },
   {
    "id": "lutte-prise-cac",
    "terme": "Lutte (Prise au Corps-à-Corps)",
    "domaine": "combat",
-   "alias": ["ceinturer", "prise"],
+   "alias": [
+    "ceinturer",
+    "prise"
+   ],
    "liens": [
-    { "label": "Livre V §20.8", "livre": 5, "href": "livre_5.html#sec-20-8" }
+    {
+     "label": "Livre V §20.8",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-8"
+    }
    ]
   },
   {
    "id": "se-liberer-prise",
    "terme": "Se Libérer d'une Prise",
    "domaine": "combat",
-   "alias": ["briser prise", "2 PA"],
+   "alias": [
+    "briser prise",
+    "2 PA"
+   ],
    "liens": [
-    { "label": "Livre V §20.8", "livre": 5, "href": "livre_5.html#sec-20-8" }
+    {
+     "label": "Livre V §20.8",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-8"
+    }
    ]
   },
   {
    "id": "relacher-prise",
    "terme": "Relâcher une Prise",
    "domaine": "combat",
-   "alias": ["rupture volontaire", "0 PA"],
+   "alias": [
+    "rupture volontaire",
+    "0 PA"
+   ],
    "liens": [
-    { "label": "Livre V §20.8", "livre": 5, "href": "livre_5.html#sec-20-8" }
+    {
+     "label": "Livre V §20.8",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-8"
+    }
    ]
   },
   {
    "id": "trainee-de-corps",
    "terme": "Traînée de Corps",
    "domaine": "combat",
-   "alias": ["trainer", "2 PA", "1 case"],
+   "alias": [
+    "trainer",
+    "2 PA",
+    "1 case"
+   ],
    "liens": [
-    { "label": "Livre V §20.8", "livre": 5, "href": "livre_5.html#sec-20-8" }
+    {
+     "label": "Livre V §20.8",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-8"
+    }
    ]
   },
   {
    "id": "etranglement",
    "terme": "Étranglement",
    "domaine": "combat",
-   "alias": ["compression gorge", "asphyxie"],
+   "alias": [
+    "compression gorge",
+    "asphyxie"
+   ],
    "liens": [
-    { "label": "Livre V §20.8", "livre": 5, "href": "livre_5.html#sec-20-8" },
-    { "label": "Livre VI §24.2", "livre": 6, "href": "livre_6.html#sec-24-2" }
+    {
+     "label": "Livre V §20.8",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-8"
+    },
+    {
+     "label": "Livre VI §24.2",
+     "livre": 6,
+     "href": "livre_6.html#sec-24-2"
+    }
    ]
   },
   {
    "id": "charge-assaut",
    "terme": "Charge d'Assaut",
    "domaine": "combat",
-   "alias": ["3+ cases", "+2 degats", "-1 defense"],
+   "alias": [
+    "3+ cases",
+    "+2 degats",
+    "-1 defense"
+   ],
    "liens": [
-    { "label": "Livre V §20.9", "livre": 5, "href": "livre_5.html#sec-20-9" }
+    {
+     "label": "Livre V §20.9",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-9"
+    }
    ]
   },
   {
    "id": "course-poursuite",
    "terme": "Course & Poursuite (« Se Sauver en Combat »)",
    "domaine": "combat",
-   "alias": ["fuir", "poursuivre", "30 cases", "4 PA"],
+   "alias": [
+    "fuir",
+    "poursuivre",
+    "30 cases",
+    "4 PA"
+   ],
    "liens": [
-    { "label": "Livre V §21.1", "livre": 5, "href": "livre_5.html#sec-21-1" }
+    {
+     "label": "Livre V §21.1",
+     "livre": 5,
+     "href": "livre_5.html#sec-21-1"
+    }
    ]
   },
   {
    "id": "plaquage-poursuite",
    "terme": "Plaquage en Poursuite",
    "domaine": "combat",
-   "alias": ["tackler", "1 case"],
+   "alias": [
+    "tackler",
+    "1 case"
+   ],
    "liens": [
-    { "label": "Livre V §21.1", "livre": 5, "href": "livre_5.html#sec-21-1" }
+    {
+     "label": "Livre V §21.1",
+     "livre": 5,
+     "href": "livre_5.html#sec-21-1"
+    }
    ]
   },
   {
    "id": "limite-endurance-poursuite",
    "terme": "Limite d'Endurance en Poursuite",
    "domaine": "combat",
-   "alias": ["8 tours", "9e tour", "allure divisee"],
+   "alias": [
+    "8 tours",
+    "9e tour",
+    "allure divisee"
+   ],
    "liens": [
-    { "label": "Livre V §21.1", "livre": 5, "href": "livre_5.html#sec-21-1" }
+    {
+     "label": "Livre V §21.1",
+     "livre": 5,
+     "href": "livre_5.html#sec-21-1"
+    }
    ]
   },
   {
    "id": "attaque-combinee-groupe",
    "terme": "Attaque Combinée de Groupe",
    "domaine": "combat",
-   "alias": ["2 ou 3 participants", "sommation"],
+   "alias": [
+    "2 ou 3 participants",
+    "sommation"
+   ],
    "liens": [
-    { "label": "Livre V §21.2", "livre": 5, "href": "livre_5.html#sec-21-2" }
+    {
+     "label": "Livre V §21.2",
+     "livre": 5,
+     "href": "livre_5.html#sec-21-2"
+    }
    ]
   },
   {
    "id": "couvert",
    "terme": "Couvert",
    "domaine": "combat",
-   "alias": ["decouvert", "moitie couvert", "trois-quarts", "couvert total"],
+   "alias": [
+    "decouvert",
+    "moitie couvert",
+    "trois-quarts",
+    "couvert total"
+   ],
    "liens": [
-    { "label": "Livre V §21.3", "livre": 5, "href": "livre_5.html#sec-21-3" }
+    {
+     "label": "Livre V §21.3",
+     "livre": 5,
+     "href": "livre_5.html#sec-21-3"
+    }
    ]
   },
   {
    "id": "ligne-de-mire",
    "terme": "Ligne de Mire",
    "domaine": "combat",
-   "alias": ["meilleur coin", "visibilite"],
+   "alias": [
+    "meilleur coin",
+    "visibilite"
+   ],
    "liens": [
-    { "label": "Livre V §21.3", "livre": 5, "href": "livre_5.html#sec-21-3" }
+    {
+     "label": "Livre V §21.3",
+     "livre": 5,
+     "href": "livre_5.html#sec-21-3"
+    }
    ]
   },
   {
    "id": "effets-zone-sous-couvert",
    "terme": "Effets de Zone sous Couvert",
    "domaine": "combat",
-   "alias": ["-2 degats", "grenade", "souffle"],
+   "alias": [
+    "-2 degats",
+    "grenade",
+    "souffle"
+   ],
    "liens": [
-    { "label": "Livre V §21.3", "livre": 5, "href": "livre_5.html#sec-21-3" },
-    { "label": "Livre VIII §32", "livre": 8, "href": "livre_8.html#chap-32" }
+    {
+     "label": "Livre V §21.3",
+     "livre": 5,
+     "href": "livre_5.html#sec-21-3"
+    },
+    {
+     "label": "Livre VIII §31",
+     "livre": 8,
+     "href": "livre_8.html#chap-31"
+    }
    ]
   },
   {
    "id": "brouillard-guerre-asymetrique",
    "terme": "Brouillard de Guerre Asymétrique",
    "domaine": "combat",
-   "alias": ["non visible", "masque"],
+   "alias": [
+    "non visible",
+    "masque"
+   ],
    "liens": [
-    { "label": "Livre V §21.4", "livre": 5, "href": "livre_5.html#sec-21-4" }
+    {
+     "label": "Livre V §21.4",
+     "livre": 5,
+     "href": "livre_5.html#sec-21-4"
+    }
    ]
   },
   {
    "id": "vision-360-angles-morts",
    "terme": "Vision à 360° vs Angles Morts",
    "domaine": "combat",
-   "alias": ["dos", "hors combat"],
+   "alias": [
+    "dos",
+    "hors combat"
+   ],
    "liens": [
-    { "label": "Livre V §21.4", "livre": 5, "href": "livre_5.html#sec-21-4" }
+    {
+     "label": "Livre V §21.4",
+     "livre": 5,
+     "href": "livre_5.html#sec-21-4"
+    }
    ]
   },
   {
    "id": "observation-active",
    "terme": "Observation Active",
    "domaine": "combat",
-   "alias": ["reperer", "1 PA", "seuil 4"],
+   "alias": [
+    "reperer",
+    "1 PA",
+    "seuil 4"
+   ],
    "liens": [
-    { "label": "Livre V §21.4", "livre": 5, "href": "livre_5.html#sec-21-4" }
+    {
+     "label": "Livre V §21.4",
+     "livre": 5,
+     "href": "livre_5.html#sec-21-4"
+    }
    ]
   },
   {
    "id": "se-cacher",
    "terme": "Se Cacher",
    "domaine": "combat",
-   "alias": ["2 PA", "furtivite", "pas de yo-yo"],
+   "alias": [
+    "2 PA",
+    "furtivite",
+    "pas de yo-yo"
+   ],
    "liens": [
-    { "label": "Livre V §21.4", "livre": 5, "href": "livre_5.html#sec-21-4-cacher" }
+    {
+     "label": "Livre V §21.4",
+     "livre": 5,
+     "href": "livre_5.html#sec-21-4-cacher"
+    }
    ]
   },
   {
    "id": "deplacement-furtif",
    "terme": "Déplacement Furtif",
    "domaine": "combat",
-   "alias": ["+1 PA/case", "2 PA/case"],
+   "alias": [
+    "+1 PA/case",
+    "2 PA/case"
+   ],
    "liens": [
-    { "label": "Livre V §21.4", "livre": 5, "href": "livre_5.html#sec-21-4-cacher" },
-    { "label": "Livre V §20.5", "livre": 5, "href": "livre_5.html#sec-20-5" }
+    {
+     "label": "Livre V §21.4",
+     "livre": 5,
+     "href": "livre_5.html#sec-21-4-cacher"
+    },
+    {
+     "label": "Livre V §20.5",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-5"
+    }
    ]
   },
   {
    "id": "actions-silencieuses",
    "terme": "Actions Silencieuses",
    "domaine": "combat",
-   "alias": ["hors de vue", "sans briser cache"],
+   "alias": [
+    "hors de vue",
+    "sans briser cache"
+   ],
    "liens": [
-    { "label": "Livre V §21.4", "livre": 5, "href": "livre_5.html#sec-21-4-cacher" }
+    {
+     "label": "Livre V §21.4",
+     "livre": 5,
+     "href": "livre_5.html#sec-21-4-cacher"
+    }
    ]
   },
   {
    "id": "technique-duo",
    "terme": "Technique-Duo (Résonance Dyadique)",
    "domaine": "combat",
-   "alias": ["duo", "cinetique", "calcul"],
+   "alias": [
+    "duo",
+    "cinetique",
+    "calcul"
+   ],
    "liens": [
-    { "label": "Livre V §21.5", "livre": 5, "href": "livre_5.html#sec-21-5" }
+    {
+     "label": "Livre V §21.5",
+     "livre": 5,
+     "href": "livre_5.html#sec-21-5"
+    }
    ]
   },
   {
    "id": "epreuve-synchronisation-duo",
    "terme": "Épreuve de Synchronisation (Duo)",
    "domaine": "combat",
-   "alias": ["ND synchro", "parfaite", "semi-succes"],
+   "alias": [
+    "ND synchro",
+    "parfaite",
+    "semi-succes"
+   ],
    "liens": [
-    { "label": "Livre V §21.5", "livre": 5, "href": "livre_5.html#sec-21-5" }
+    {
+     "label": "Livre V §21.5",
+     "livre": 5,
+     "href": "livre_5.html#sec-21-5"
+    }
    ]
   },
   {
    "id": "localisation-anatomique-niveau-1",
    "terme": "Localisation Anatomique (Niveau 1)",
    "domaine": "combat",
-   "alias": ["6 zones larges", "tete", "torse", "bras", "jambe"],
+   "alias": [
+    "6 zones larges",
+    "tete",
+    "torse",
+    "bras",
+    "jambe"
+   ],
    "liens": [
-    { "label": "Livre V §22.1", "livre": 5, "href": "livre_5.html#sec-22-1" }
+    {
+     "label": "Livre V §22.1",
+     "livre": 5,
+     "href": "livre_5.html#sec-22-1"
+    }
    ]
   },
   {
    "id": "visee-chirurgicale-niveau-2",
    "terme": "Visée Chirurgicale / Points Vitaux (Niveau 2)",
    "domaine": "combat",
-   "alias": ["point vital", "trachee", "coeur", "carotide"],
+   "alias": [
+    "point vital",
+    "trachee",
+    "coeur",
+    "carotide"
+   ],
    "liens": [
-    { "label": "Livre V §22.1", "livre": 5, "href": "livre_5.html#sec-22-1" }
+    {
+     "label": "Livre V §22.1",
+     "livre": 5,
+     "href": "livre_5.html#sec-22-1"
+    }
    ]
   },
   {
    "id": "punition-de-visee",
    "terme": "Punition de Visée",
    "domaine": "combat",
-   "alias": ["-1", "-2", "annulation PA"],
+   "alias": [
+    "-1",
+    "-2",
+    "annulation PA"
+   ],
    "liens": [
-    { "label": "Livre V §22.1", "livre": 5, "href": "livre_5.html#sec-22-1" }
+    {
+     "label": "Livre V §22.1",
+     "livre": 5,
+     "href": "livre_5.html#sec-22-1"
+    }
    ]
   },
   {
    "id": "formule-degats-reels",
    "terme": "Formule des Dégâts Réels",
    "domaine": "combat",
-   "alias": ["Degats Arme + Delta - Armure"],
+   "alias": [
+    "Degats Arme + Delta - Armure"
+   ],
    "liens": [
-    { "label": "Livre V §22.1", "livre": 5, "href": "livre_5.html#sec-22-1" }
+    {
+     "label": "Livre V §22.1",
+     "livre": 5,
+     "href": "livre_5.html#sec-22-1"
+    }
    ]
   },
   {
    "id": "mains-nues-regle-combat",
    "terme": "Mains Nues (Règle de Combat)",
    "domaine": "combat",
-   "alias": ["0 + delta", "+1 essoufflement"],
+   "alias": [
+    "0 + delta",
+    "+1 essoufflement"
+   ],
    "liens": [
-    { "label": "Livre V §22.1", "livre": 5, "href": "livre_5.html#sec-22-1" },
-    { "label": "Livre III §12", "livre": 3, "href": "livre_3.html#chap-12" }
+    {
+     "label": "Livre V §22.1",
+     "livre": 5,
+     "href": "livre_5.html#sec-22-1"
+    },
+    {
+     "label": "Livre III §12",
+     "livre": 3,
+     "href": "livre_3.html#chap-12"
+    }
    ]
   },
   {
    "id": "tir-retention-vise",
    "terme": "Tir en Rétention & Tir Visé de Rétention",
    "domaine": "combat",
-   "alias": ["canon entrave", "contact arme longue"],
+   "alias": [
+    "canon entrave",
+    "contact arme longue"
+   ],
    "liens": [
-    { "label": "Livre V §22.2", "livre": 5, "href": "livre_5.html#sec-22-2" }
+    {
+     "label": "Livre V §22.2",
+     "livre": 5,
+     "href": "livre_5.html#sec-22-2"
+    }
    ]
   },
   {
    "id": "coup-crosse-canon",
    "terme": "Coup de Crosse / Canon",
    "domaine": "combat",
-   "alias": ["crosse", "melee arme longue"],
+   "alias": [
+    "crosse",
+    "melee arme longue"
+   ],
    "liens": [
-    { "label": "Livre V §22.2", "livre": 5, "href": "livre_5.html#sec-22-2" }
+    {
+     "label": "Livre V §22.2",
+     "livre": 5,
+     "href": "livre_5.html#sec-22-2"
+    }
    ]
   },
   {
    "id": "frappe-martiale-contact",
    "terme": "Frappe Martiale au Contact",
    "domaine": "combat",
-   "alias": ["Arts Martiaux", "repousse 1 case"],
+   "alias": [
+    "Arts Martiaux",
+    "repousse 1 case"
+   ],
    "liens": [
-    { "label": "Livre V §22.2", "livre": 5, "href": "livre_5.html#sec-22-2" }
+    {
+     "label": "Livre V §22.2",
+     "livre": 5,
+     "href": "livre_5.html#sec-22-2"
+    }
    ]
   },
   {
    "id": "combat-vehicules",
    "terme": "Combat de Véhicules",
    "domaine": "combat",
-   "alias": ["zones essentielles", "zones superficielles", "eperonnage"],
+   "alias": [
+    "zones essentielles",
+    "zones superficielles",
+    "eperonnage"
+   ],
    "liens": [
-    { "label": "Livre V §22.3", "livre": 5, "href": "livre_5.html#sec-22-3" }
+    {
+     "label": "Livre V §22.3",
+     "livre": 5,
+     "href": "livre_5.html#sec-22-3"
+    }
    ]
   },
   {
    "id": "echelle-calibres-blindage",
    "terme": "Échelle des Calibres & Seuils de Blindage",
    "domaine": "combat",
-   "alias": ["resistance vehicule", "calibres"],
+   "alias": [
+    "resistance vehicule",
+    "calibres"
+   ],
    "liens": [
-    { "label": "Livre V §22.3", "livre": 5, "href": "livre_5.html#sec-22-3" }
+    {
+     "label": "Livre V §22.3",
+     "livre": 5,
+     "href": "livre_5.html#sec-22-3"
+    }
    ]
   },
   {
    "id": "seuil-encaissement",
    "terme": "Seuil d'Encaissement",
    "domaine": "sante",
-   "alias": ["CAP", "CON x 2", "encaissement"],
+   "alias": [
+    "CAP",
+    "CON x 2",
+    "encaissement"
+   ],
    "liens": [
-    { "label": "Livre VI §23", "livre": 6, "href": "livre_6.html#chap-23" },
-    { "label": "Livre VI §23", "livre": 6, "href": "livre_6.html#sec-23-encaissement" },
-    { "label": "Livre I §4.1", "livre": 1, "href": "livre_1.html#sec-4-1" }
+    {
+     "label": "Livre VI §23",
+     "livre": 6,
+     "href": "livre_6.html#chap-23"
+    },
+    {
+     "label": "Livre VI §23",
+     "livre": 6,
+     "href": "livre_6.html#sec-23-encaissement"
+    },
+    {
+     "label": "Livre I §4.1",
+     "livre": 1,
+     "href": "livre_1.html#sec-4-1"
+    }
    ]
   },
   {
    "id": "choc-traumatique",
    "terme": "Choc Traumatique",
    "domaine": "sante",
-   "alias": ["effets par zone", "CON x 2"],
+   "alias": [
+    "effets par zone",
+    "CON x 2"
+   ],
    "liens": [
-    { "label": "Livre VI §23", "livre": 6, "href": "livre_6.html#sec-23-encaissement" },
-    { "label": "Livre V §22.1", "livre": 5, "href": "livre_5.html#sec-22-1" }
+    {
+     "label": "Livre VI §23",
+     "livre": 6,
+     "href": "livre_6.html#sec-23-encaissement"
+    },
+    {
+     "label": "Livre V §22.1",
+     "livre": 5,
+     "href": "livre_5.html#sec-22-1"
+    }
    ]
   },
   {
    "id": "typologie-degats",
    "terme": "Typologie des Dégâts",
    "domaine": "sante",
-   "alias": ["Directs", "Residuels", "Absolus"],
+   "alias": [
+    "Directs",
+    "Residuels",
+    "Absolus"
+   ],
    "liens": [
-    { "label": "Livre VI §23", "livre": 6, "href": "livre_6.html#chap-23" }
+    {
+     "label": "Livre VI §23",
+     "livre": 6,
+     "href": "livre_6.html#chap-23"
+    }
    ]
   },
   {
    "id": "degats-directs",
    "terme": "Dégâts Directs",
    "domaine": "sante",
-   "alias": ["physiques", "armure"],
+   "alias": [
+    "physiques",
+    "armure"
+   ],
    "liens": [
-    { "label": "Livre VI §23", "livre": 6, "href": "livre_6.html#chap-23" }
+    {
+     "label": "Livre VI §23",
+     "livre": 6,
+     "href": "livre_6.html#chap-23"
+    }
    ]
   },
   {
    "id": "degats-residuels",
    "terme": "Dégâts Résiduels",
    "domaine": "sante",
-   "alias": ["continus", "DoT"],
+   "alias": [
+    "continus",
+    "DoT"
+   ],
    "liens": [
-    { "label": "Livre VI §23", "livre": 6, "href": "livre_6.html#chap-23" },
-    { "label": "Livre VI §24.2", "livre": 6, "href": "livre_6.html#sec-24-2" }
+    {
+     "label": "Livre VI §23",
+     "livre": 6,
+     "href": "livre_6.html#chap-23"
+    },
+    {
+     "label": "Livre VI §24.2",
+     "livre": 6,
+     "href": "livre_6.html#sec-24-2"
+    }
    ]
   },
   {
    "id": "decroissance-aggravation-residuels",
    "terme": "Décroissance & Aggravation des Résiduels",
    "domaine": "sante",
-   "alias": ["residuel aggrave", "-1/tour", "+1/tour"],
+   "alias": [
+    "residuel aggrave",
+    "-1/tour",
+    "+1/tour"
+   ],
    "liens": [
-    { "label": "Livre VI §24.2", "livre": 6, "href": "livre_6.html#sec-24-2" }
+    {
+     "label": "Livre VI §24.2",
+     "livre": 6,
+     "href": "livre_6.html#sec-24-2"
+    }
    ]
   },
   {
    "id": "degats-absolus",
    "terme": "Dégâts Absolus",
    "domaine": "sante",
-   "alias": ["arcaniques", "ignorent armure"],
+   "alias": [
+    "arcaniques",
+    "ignorent armure"
+   ],
    "liens": [
-    { "label": "Livre VI §23", "livre": 6, "href": "livre_6.html#chap-23" }
+    {
+     "label": "Livre VI §23",
+     "livre": 6,
+     "href": "livre_6.html#chap-23"
+    }
    ]
   },
   {
    "id": "seuil-letal-maximum-letal",
    "terme": "Seuil Létal / Maximum Létal",
    "domaine": "sante",
-   "alias": ["MAX", "CON x 5"],
+   "alias": [
+    "MAX",
+    "CON x 5"
+   ],
    "liens": [
-    { "label": "Livre VI §23.2", "livre": 6, "href": "livre_6.html#sec-23-2" },
-    { "label": "Livre I §4.1", "livre": 1, "href": "livre_1.html#sec-4-1" }
+    {
+     "label": "Livre VI §23.2",
+     "livre": 6,
+     "href": "livre_6.html#sec-23-2"
+    },
+    {
+     "label": "Livre I §4.1",
+     "livre": 1,
+     "href": "livre_1.html#sec-4-1"
+    }
    ]
   },
   {
    "id": "arbre-resolution-seuil-letal",
    "terme": "Arbre de Résolution du Seuil Létal",
    "domaine": "sante",
-   "alias": ["branche 1", "branche 2", "CON x 5"],
+   "alias": [
+    "branche 1",
+    "branche 2",
+    "CON x 5"
+   ],
    "liens": [
-    { "label": "Livre VI §23.2", "livre": 6, "href": "livre_6.html#sec-23-2" }
+    {
+     "label": "Livre VI §23.2",
+     "livre": 6,
+     "href": "livre_6.html#sec-23-2"
+    }
    ]
   },
   {
    "id": "mort-instantanee",
    "terme": "Mort Instantanée",
    "domaine": "sante",
-   "alias": ["tete crane", "traumatisme incompressible"],
+   "alias": [
+    "tete crane",
+    "traumatisme incompressible"
+   ],
    "liens": [
-    { "label": "Livre VI §23.2", "livre": 6, "href": "livre_6.html#sec-23-2" }
+    {
+     "label": "Livre VI §23.2",
+     "livre": 6,
+     "href": "livre_6.html#sec-23-2"
+    }
    ]
   },
   {
    "id": "sombrer",
    "terme": "Sombrer",
    "domaine": "sante",
-   "alias": ["syncope protectrice"],
+   "alias": [
+    "syncope protectrice"
+   ],
    "liens": [
-    { "label": "Livre VI §23.2", "livre": 6, "href": "livre_6.html#sec-23-2" }
+    {
+     "label": "Livre VI §23.2",
+     "livre": 6,
+     "href": "livre_6.html#sec-23-2"
+    }
    ]
   },
   {
    "id": "dernier-souffle",
    "terme": "Dernier Souffle",
    "domaine": "sante",
-   "alias": ["baroud honneur", "+1 essoufflement"],
+   "alias": [
+    "baroud honneur",
+    "+1 essoufflement"
+   ],
    "liens": [
-    { "label": "Livre VI §23.2", "livre": 6, "href": "livre_6.html#sec-23-2" }
+    {
+     "label": "Livre VI §23.2",
+     "livre": 6,
+     "href": "livre_6.html#sec-23-2"
+    }
    ]
   },
   {
    "id": "point-de-miracle",
    "terme": "Point de Miracle (PM)",
    "domaine": "sante",
-   "alias": ["PM", "20 XP", "chance heroique"],
+   "alias": [
+    "PM",
+    "20 XP",
+    "chance heroique"
+   ],
    "liens": [
-    { "label": "Livre VI §23.3", "livre": 6, "href": "livre_6.html#sec-23-3" },
-    { "label": "Livre I §1", "livre": 1, "href": "livre_1.html#chap-1" },
-    { "label": "Livre I §3", "livre": 1, "href": "livre_1.html#chap-3" }
+    {
+     "label": "Livre VI §23.3",
+     "livre": 6,
+     "href": "livre_6.html#sec-23-3"
+    },
+    {
+     "label": "Livre I §1",
+     "livre": 1,
+     "href": "livre_1.html#chap-1"
+    },
+    {
+     "label": "Livre I §3",
+     "livre": 1,
+     "href": "livre_1.html#chap-3"
+    }
    ]
   },
   {
    "id": "resistances-vulnerabilites-raciales",
    "terme": "Résistances & Vulnérabilités Raciales",
    "domaine": "sante",
-   "alias": ["resistance", "vulnerabilite", "non-cumul"],
+   "alias": [
+    "resistance",
+    "vulnerabilite",
+    "non-cumul"
+   ],
    "liens": [
-    { "label": "Livre VI §23", "livre": 6, "href": "livre_6.html#chap-23" },
-    { "label": "Livre I §2", "livre": 1, "href": "livre_1.html#chap-2" }
+    {
+     "label": "Livre VI §23",
+     "livre": 6,
+     "href": "livre_6.html#chap-23"
+    },
+    {
+     "label": "Livre I §2",
+     "livre": 1,
+     "href": "livre_1.html#chap-2"
+    }
    ]
   },
   {
    "id": "cumul-des-etats",
    "terme": "Cumul des États",
    "domaine": "sante",
-   "alias": ["non cumulable individuellement", "cumul etats differents"],
+   "alias": [
+    "non cumulable individuellement",
+    "cumul etats differents"
+   ],
    "liens": [
-    { "label": "Livre VI §24", "livre": 6, "href": "livre_6.html#chap-24" }
+    {
+     "label": "Livre VI §24",
+     "livre": 6,
+     "href": "livre_6.html#chap-24"
+    }
    ]
   },
   {
    "id": "premiers-soins-urgence",
    "terme": "Premiers Soins d'Urgence",
    "domaine": "sante",
-   "alias": ["3 PA", "soin"],
+   "alias": [
+    "3 PA",
+    "soin"
+   ],
    "liens": [
-    { "label": "Livre VI §25", "livre": 6, "href": "livre_6.html#chap-25" },
-    { "label": "Livre III §13", "livre": 3, "href": "livre_3.html#chap-13" }
+    {
+     "label": "Livre VI §25",
+     "livre": 6,
+     "href": "livre_6.html#chap-25"
+    },
+    {
+     "label": "Livre III §13",
+     "livre": 3,
+     "href": "livre_3.html#chap-13"
+    }
    ]
   },
   {
    "id": "stabilisation-agonisant",
    "terme": "Stabilisation d'un Agonisant",
    "domaine": "sante",
-   "alias": ["stabiliser"],
+   "alias": [
+    "stabiliser"
+   ],
    "liens": [
-    { "label": "Livre VI §25", "livre": 6, "href": "livre_6.html#chap-25" },
-    { "label": "Livre VI §24.1", "livre": 6, "href": "livre_6.html#sec-24-1" }
+    {
+     "label": "Livre VI §25",
+     "livre": 6,
+     "href": "livre_6.html#chap-25"
+    },
+    {
+     "label": "Livre VI §24.1",
+     "livre": 6,
+     "href": "livre_6.html#sec-24-1"
+    }
    ]
   },
   {
    "id": "levee-etat-souffrant",
    "terme": "Levée de l'État Souffrant",
    "domaine": "sante",
-   "alias": ["tout soin", "souffrant"],
+   "alias": [
+    "tout soin",
+    "souffrant"
+   ],
    "liens": [
-    { "label": "Livre VI §25", "livre": 6, "href": "livre_6.html#chap-25" },
-    { "label": "Livre VI §23", "livre": 6, "href": "livre_6.html#sec-23-encaissement" }
+    {
+     "label": "Livre VI §25",
+     "livre": 6,
+     "href": "livre_6.html#chap-25"
+    },
+    {
+     "label": "Livre VI §23",
+     "livre": 6,
+     "href": "livre_6.html#sec-23-encaissement"
+    }
    ]
   },
   {
    "id": "convalescence-nuit-sure",
    "terme": "Convalescence & Repos Sûr",
    "domaine": "sante",
-   "alias": ["6h", "8h", "10h", "tour de garde", "jour ou nuit", "repos", "rechargement dons"],
+   "alias": [
+    "6h",
+    "8h",
+    "10h",
+    "tour de garde",
+    "jour ou nuit",
+    "repos",
+    "rechargement dons"
+   ],
    "liens": [
-    { "label": "Livre VI §25", "livre": 6, "href": "livre_6.html#chap-25" }
+    {
+     "label": "Livre VI §25",
+     "livre": 6,
+     "href": "livre_6.html#chap-25"
+    }
    ]
   },
   {
    "id": "taux-recuperation-quotidien",
    "terme": "Récupération par Repos Sûr",
    "domaine": "sante",
-   "alias": ["CON degats", "par repos sur", "taux recuperation"],
+   "alias": [
+    "CON degats",
+    "par repos sur",
+    "taux recuperation"
+   ],
    "liens": [
-    { "label": "Livre VI §25", "livre": 6, "href": "livre_6.html#chap-25" }
+    {
+     "label": "Livre VI §25",
+     "livre": 6,
+     "href": "livre_6.html#chap-25"
+    }
    ]
   },
   {
    "id": "soins-arcaniques",
    "terme": "Veille de Soignant",
    "domaine": "sante",
-   "alias": ["soignant", "x2 recuperation", "+2h veille", "soins arcaniques"],
+   "alias": [
+    "soignant",
+    "x2 recuperation",
+    "+2h veille",
+    "soins arcaniques"
+   ],
    "liens": [
-    { "label": "Livre VI §25", "livre": 6, "href": "livre_6.html#chap-25" }
+    {
+     "label": "Livre VI §25",
+     "livre": 6,
+     "href": "livre_6.html#chap-25"
+    }
    ]
   },
   {
    "id": "resurrection-poids-trepas",
    "terme": "Résurrection & Poids du Trépas",
    "domaine": "sante",
-   "alias": ["Affaibli", "-1 ec", "10 - CON jours", "sequelle post-mortem"],
+   "alias": [
+    "Affaibli",
+    "-1 ec",
+    "10 - CON jours",
+    "sequelle post-mortem"
+   ],
    "liens": [
-    { "label": "Livre VI §25", "livre": 6, "href": "livre_6.html#chap-25" }
+    {
+     "label": "Livre VI §25",
+     "livre": 6,
+     "href": "livre_6.html#chap-25"
+    }
    ]
   },
   {
    "id": "generateur-pathologies",
    "terme": "Générateur de Pathologies",
    "domaine": "sante",
-   "alias": ["maladie", "fiche-type pathologie"],
+   "alias": [
+    "maladie",
+    "fiche-type pathologie",
+    "pathologie modulaire"
+   ],
    "liens": [
-    { "label": "Livre VI §26", "livre": 6, "href": "livre_6.html#chap-26" }
+    {
+     "label": "Livre XII §53",
+     "livre": 12,
+     "href": "livre_12.html#chap-53"
+    },
+    {
+     "label": "Livre VI §25.4",
+     "livre": 6,
+     "href": "livre_6.html#sec-25-4"
+    }
+   ]
+  },
+  {
+   "id": "indice-de-gravite",
+   "terme": "Indice de Gravité (IG)",
+   "domaine": "sante",
+   "alias": [
+    "classe de gravite",
+    "dangerosite",
+    "classes I a V",
+    "score pathologie"
+   ],
+   "liens": [
+    {
+     "label": "Livre XII §53",
+     "livre": 12,
+     "href": "livre_12.html#chap-53"
+    }
    ]
   },
   {
    "id": "nature-agent-pathogene",
    "terme": "Nature de l'Agent Pathogène",
    "domaine": "sante",
-   "alias": ["bacterien", "viral", "parasitaire", "toxique", "arcanique", "nanotech"],
+   "alias": [
+    "bacterien",
+    "viral",
+    "parasitaire",
+    "toxique",
+    "arcanique",
+    "nanotech"
+   ],
    "liens": [
-    { "label": "Livre VI §26", "livre": 6, "href": "livre_6.html#chap-26" }
+    {
+     "label": "Livre XII §53.1",
+     "livre": 12,
+     "href": "livre_12.html#sec-53-1"
+    },
+    {
+     "label": "Livre VI §25.4",
+     "livre": 6,
+     "href": "livre_6.html#sec-25-4"
+    }
    ]
   },
   {
    "id": "transmission-virulence-incubation",
-   "terme": "Transmission, Virulence & Incubation",
+   "terme": "Transmission, Virulence & Cadence",
    "domaine": "sante",
-   "alias": ["vecteur", "contagiosite", "difficulte CON"],
+   "alias": [
+    "vecteur",
+    "contagiosite",
+    "virulence",
+    "incubation",
+    "cadence",
+    "epreuve immunitaire"
+   ],
    "liens": [
-    { "label": "Livre VI §26", "livre": 6, "href": "livre_6.html#chap-26" }
+    {
+     "label": "Livre XII §53.2",
+     "livre": 12,
+     "href": "livre_12.html#sec-53-2"
+    },
+    {
+     "label": "Livre VI §25.4",
+     "livre": 6,
+     "href": "livre_6.html#sec-25-4"
+    }
    ]
   },
   {
    "id": "stades-maladie",
-   "terme": "Stades de Maladie",
+   "terme": "Stades Modulaires (1 à 6) & Effets Pathologiques",
    "domaine": "sante",
-   "alias": ["prodrome", "declare", "grave", "terminal"],
+   "alias": [
+    "stades",
+    "remplacement",
+    "cumulatif",
+    "degats pathologiques",
+    "catalogue effets"
+   ],
    "liens": [
-    { "label": "Livre VI §26", "livre": 6, "href": "livre_6.html#chap-26" }
+    {
+     "label": "Livre XII §53.3",
+     "livre": 12,
+     "href": "livre_12.html#sec-53-3"
+    },
+    {
+     "label": "Livre VI §25.4",
+     "livre": 6,
+     "href": "livre_6.html#sec-25-4"
+    }
    ]
   },
   {
    "id": "transition-stade-pathologie",
    "terme": "Transition de Stade (Pathologie)",
    "domaine": "sante",
-   "alias": ["remission", "aggravation"],
+   "alias": [
+    "remission",
+    "aggravation"
+   ],
    "liens": [
-    { "label": "Livre VI §26", "livre": 6, "href": "livre_6.html#chap-26" }
+    {
+     "label": "Livre XII §53.3",
+     "livre": 12,
+     "href": "livre_12.html#sec-53-3"
+    },
+    {
+     "label": "Livre VI §25.4",
+     "livre": 6,
+     "href": "livre_6.html#sec-25-4"
+    }
    ]
   },
   {
-   "id": "diagnostic-traitement-pathologies",
-   "terme": "Diagnostic & Traitement des Pathologies",
+   "id": "modulateurs-pathologie",
+   "terme": "Modulateurs de Pathologie",
    "domaine": "sante",
-   "alias": ["diagnostic", "traitement"],
+   "alias": [
+    "auto-limitee",
+    "mode cumulatif",
+    "sans remission",
+    "escalade rapide",
+    "resistance traitement"
+   ],
    "liens": [
-    { "label": "Livre VI §26", "livre": 6, "href": "livre_6.html#chap-26" }
+    {
+     "label": "Livre XII §53.4",
+     "livre": 12,
+     "href": "livre_12.html#sec-53-4"
+    }
    ]
   },
   {
    "id": "issues-mutation-pathogene",
    "terme": "Issues & Mutation Pathogène",
    "domaine": "sante",
-   "alias": ["porteur sain", "chronicite", "sequelles", "mutation"],
+   "alias": [
+    "porteur sain",
+    "chronicite",
+    "sequelles",
+    "mutation"
+   ],
    "liens": [
-    { "label": "Livre VI §26", "livre": 6, "href": "livre_6.html#chap-26" }
+    {
+     "label": "Livre XII §53.4",
+     "livre": 12,
+     "href": "livre_12.html#sec-53-4"
+    },
+    {
+     "label": "Livre VI §25.4",
+     "livre": 6,
+     "href": "livre_6.html#sec-25-4"
+    }
+   ]
+  },
+  {
+   "id": "diagnostic-traitement-pathologies",
+   "terme": "Diagnostic & Traitement des Pathologies",
+   "domaine": "sante",
+   "alias": [
+    "diagnostic",
+    "traitement"
+   ],
+   "liens": [
+    {
+     "label": "Livre VI §25.4",
+     "livre": 6,
+     "href": "livre_6.html#sec-25-4"
+    },
+    {
+     "label": "Livre XII §53.5",
+     "livre": 12,
+     "href": "livre_12.html#sec-53-5"
+    }
    ]
   },
   {
    "id": "etat-canon-entrave",
    "terme": "Canon Entravé",
    "domaine": "etats",
-   "alias": ["etat prejudiciable", "arme longue contact"],
+   "alias": [
+    "etat prejudiciable",
+    "arme longue contact"
+   ],
    "liens": [
-    { "label": "Livre VI §24.1", "livre": 6, "href": "livre_6.html#sec-24-1" },
-    { "label": "Livre V §22.2", "livre": 5, "href": "livre_5.html#sec-22-2" }
+    {
+     "label": "Livre VI §24.1",
+     "livre": 6,
+     "href": "livre_6.html#sec-24-1"
+    },
+    {
+     "label": "Livre V §22.2",
+     "livre": 5,
+     "href": "livre_5.html#sec-22-2"
+    }
    ]
   },
   {
    "id": "etat-assourdi",
    "terme": "Assourdi",
    "domaine": "etats",
-   "alias": ["etat prejudiciable", "ouie"],
+   "alias": [
+    "etat prejudiciable",
+    "ouie"
+   ],
    "liens": [
-    { "label": "Livre VI §24.1", "livre": 6, "href": "livre_6.html#sec-24-1" }
+    {
+     "label": "Livre VI §24.1",
+     "livre": 6,
+     "href": "livre_6.html#sec-24-1"
+    }
    ]
   },
   {
    "id": "etat-etourdi",
    "terme": "Étourdi",
    "domaine": "etats",
-   "alias": ["etat prejudiciable"],
+   "alias": [
+    "etat prejudiciable"
+   ],
    "liens": [
-    { "label": "Livre VI §24.1", "livre": 6, "href": "livre_6.html#sec-24-1" }
+    {
+     "label": "Livre VI §24.1",
+     "livre": 6,
+     "href": "livre_6.html#sec-24-1"
+    }
    ]
   },
   {
    "id": "etat-affaibli",
    "terme": "Affaibli",
    "domaine": "etats",
-   "alias": ["etat prejudiciable", "-1 ec", "poids du trepas", "sequelle"],
+   "alias": [
+    "etat prejudiciable",
+    "-1 ec",
+    "poids du trepas",
+    "sequelle"
+   ],
    "liens": [
-    { "label": "Livre VI §24.1", "livre": 6, "href": "livre_6.html#sec-24-1" },
-    { "label": "Livre VI §25.3", "livre": 6, "href": "livre_6.html#chap-25" }
+    {
+     "label": "Livre VI §24.1",
+     "livre": 6,
+     "href": "livre_6.html#sec-24-1"
+    },
+    {
+     "label": "Livre VI §25.3",
+     "livre": 6,
+     "href": "livre_6.html#chap-25"
+    }
    ]
   },
   {
    "id": "etat-accroupi",
    "terme": "Accroupi",
    "domaine": "etats",
-   "alias": ["etat prejudiciable", "couvert"],
+   "alias": [
+    "etat prejudiciable",
+    "couvert"
+   ],
    "liens": [
-    { "label": "Livre VI §24.1", "livre": 6, "href": "livre_6.html#sec-24-1" },
-    { "label": "Livre V §20.5", "livre": 5, "href": "livre_5.html#sec-20-5" },
-    { "label": "Livre V §21.3", "livre": 5, "href": "livre_5.html#sec-21-3" }
+    {
+     "label": "Livre VI §24.1",
+     "livre": 6,
+     "href": "livre_6.html#sec-24-1"
+    },
+    {
+     "label": "Livre V §20.5",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-5"
+    },
+    {
+     "label": "Livre V §21.3",
+     "livre": 5,
+     "href": "livre_5.html#sec-21-3"
+    }
    ]
   },
   {
    "id": "etat-a-terre",
    "terme": "À Terre",
    "domaine": "etats",
-   "alias": ["etat prejudiciable", "au sol", "ramper"],
+   "alias": [
+    "etat prejudiciable",
+    "au sol",
+    "ramper"
+   ],
    "liens": [
-    { "label": "Livre VI §24.1", "livre": 6, "href": "livre_6.html#sec-24-1" },
-    { "label": "Livre V §20.5", "livre": 5, "href": "livre_5.html#sec-20-5" },
-    { "label": "Livre V §21.3", "livre": 5, "href": "livre_5.html#sec-21-3" }
+    {
+     "label": "Livre VI §24.1",
+     "livre": 6,
+     "href": "livre_6.html#sec-24-1"
+    },
+    {
+     "label": "Livre V §20.5",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-5"
+    },
+    {
+     "label": "Livre V §21.3",
+     "livre": 5,
+     "href": "livre_5.html#sec-21-3"
+    }
    ]
   },
   {
    "id": "etat-destabilise",
    "terme": "Déstabilisé",
    "domaine": "etats",
-   "alias": ["etat prejudiciable"],
+   "alias": [
+    "etat prejudiciable"
+   ],
    "liens": [
-    { "label": "Livre VI §24.1", "livre": 6, "href": "livre_6.html#sec-24-1" },
-    { "label": "Livre V §20.5", "livre": 5, "href": "livre_5.html#sec-20-5" }
+    {
+     "label": "Livre VI §24.1",
+     "livre": 6,
+     "href": "livre_6.html#sec-24-1"
+    },
+    {
+     "label": "Livre V §20.5",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-5"
+    }
    ]
   },
   {
    "id": "etat-affame",
    "terme": "Affamé",
    "domaine": "etats",
-   "alias": ["etat prejudiciable", "faim"],
+   "alias": [
+    "etat prejudiciable",
+    "faim"
+   ],
    "liens": [
-    { "label": "Livre VI §24.1", "livre": 6, "href": "livre_6.html#sec-24-1" }
+    {
+     "label": "Livre VI §24.1",
+     "livre": 6,
+     "href": "livre_6.html#sec-24-1"
+    }
    ]
   },
   {
    "id": "etat-somnolent",
    "terme": "Somnolent",
    "domaine": "etats",
-   "alias": ["etat prejudiciable", "sommeil"],
+   "alias": [
+    "etat prejudiciable",
+    "sommeil"
+   ],
    "liens": [
-    { "label": "Livre VI §24.1", "livre": 6, "href": "livre_6.html#sec-24-1" }
+    {
+     "label": "Livre VI §24.1",
+     "livre": 6,
+     "href": "livre_6.html#sec-24-1"
+    }
    ]
   },
   {
    "id": "etat-assoiffe",
    "terme": "Assoiffé",
    "domaine": "etats",
-   "alias": ["etat prejudiciable", "soif"],
+   "alias": [
+    "etat prejudiciable",
+    "soif"
+   ],
    "liens": [
-    { "label": "Livre VI §24.1", "livre": 6, "href": "livre_6.html#sec-24-1" }
+    {
+     "label": "Livre VI §24.1",
+     "livre": 6,
+     "href": "livre_6.html#sec-24-1"
+    }
    ]
   },
   {
    "id": "etat-ralenti",
    "terme": "Ralenti",
    "domaine": "etats",
-   "alias": ["etat prejudiciable", "x2 PA"],
+   "alias": [
+    "etat prejudiciable",
+    "x2 PA"
+   ],
    "liens": [
-    { "label": "Livre VI §24.1", "livre": 6, "href": "livre_6.html#sec-24-1" },
-    { "label": "Livre V §20.5", "livre": 5, "href": "livre_5.html#sec-20-5" }
+    {
+     "label": "Livre VI §24.1",
+     "livre": 6,
+     "href": "livre_6.html#sec-24-1"
+    },
+    {
+     "label": "Livre V §20.5",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-5"
+    }
    ]
   },
   {
    "id": "etat-aveugle",
    "terme": "Aveugle",
    "domaine": "etats",
-   "alias": ["etat prejudiciable", "cecite"],
+   "alias": [
+    "etat prejudiciable",
+    "cecite"
+   ],
    "liens": [
-    { "label": "Livre VI §24.1", "livre": 6, "href": "livre_6.html#sec-24-1" },
-    { "label": "Livre II §8.1", "livre": 2, "href": "livre_2.html#sec-8-1" },
-    { "label": "Livre II §8.6", "livre": 2, "href": "livre_2.html#sec-8-6" }
+    {
+     "label": "Livre VI §24.1",
+     "livre": 6,
+     "href": "livre_6.html#sec-24-1"
+    },
+    {
+     "label": "Livre II §8.1",
+     "livre": 2,
+     "href": "livre_2.html#sec-8-1"
+    },
+    {
+     "label": "Livre II §8.6",
+     "livre": 2,
+     "href": "livre_2.html#sec-8-6"
+    }
    ]
   },
   {
    "id": "etat-immobilise",
    "terme": "Immobilisé",
    "domaine": "etats",
-   "alias": ["etat prejudiciable", "lutte"],
+   "alias": [
+    "etat prejudiciable",
+    "lutte"
+   ],
    "liens": [
-    { "label": "Livre VI §24.1", "livre": 6, "href": "livre_6.html#sec-24-1" },
-    { "label": "Livre V §20.8", "livre": 5, "href": "livre_5.html#sec-20-8" }
+    {
+     "label": "Livre VI §24.1",
+     "livre": 6,
+     "href": "livre_6.html#sec-24-1"
+    },
+    {
+     "label": "Livre V §20.8",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-8"
+    }
    ]
   },
   {
    "id": "etat-ligote",
    "terme": "Ligoté",
    "domaine": "etats",
-   "alias": ["etat prejudiciable", "entrave", "liens"],
+   "alias": [
+    "etat prejudiciable",
+    "entrave",
+    "liens"
+   ],
    "liens": [
-    { "label": "Livre VI §24.1", "livre": 6, "href": "livre_6.html#sec-24-1" }
+    {
+     "label": "Livre VI §24.1",
+     "livre": 6,
+     "href": "livre_6.html#sec-24-1"
+    }
    ]
   },
   {
    "id": "etat-surpris",
    "terme": "Surpris",
    "domaine": "etats",
-   "alias": ["etat prejudiciable", "defense passive 0"],
+   "alias": [
+    "etat prejudiciable",
+    "defense passive 0"
+   ],
    "liens": [
-    { "label": "Livre VI §24.1", "livre": 6, "href": "livre_6.html#sec-24-1" },
-    { "label": "Livre V §21.4", "livre": 5, "href": "livre_5.html#sec-21-4-cacher" }
+    {
+     "label": "Livre VI §24.1",
+     "livre": 6,
+     "href": "livre_6.html#sec-24-1"
+    },
+    {
+     "label": "Livre V §21.4",
+     "livre": 5,
+     "href": "livre_5.html#sec-21-4-cacher"
+    }
    ]
   },
   {
    "id": "etat-panique",
    "terme": "Paniqué",
    "domaine": "etats",
-   "alias": ["etat prejudiciable", "fuite"],
+   "alias": [
+    "etat prejudiciable",
+    "fuite"
+   ],
    "liens": [
-    { "label": "Livre VI §24.1", "livre": 6, "href": "livre_6.html#sec-24-1" }
+    {
+     "label": "Livre VI §24.1",
+     "livre": 6,
+     "href": "livre_6.html#sec-24-1"
+    }
    ]
   },
   {
    "id": "etat-sonne",
    "terme": "Sonné",
    "domaine": "etats",
-   "alias": ["etat prejudiciable", "-2 defense"],
+   "alias": [
+    "etat prejudiciable",
+    "-2 defense"
+   ],
    "liens": [
-    { "label": "Livre VI §24.1", "livre": 6, "href": "livre_6.html#sec-24-1" },
-    { "label": "Livre V §20.2", "livre": 5, "href": "livre_5.html#sec-20-2-cibles" }
+    {
+     "label": "Livre VI §24.1",
+     "livre": 6,
+     "href": "livre_6.html#sec-24-1"
+    },
+    {
+     "label": "Livre V §20.2",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-2-cibles"
+    }
    ]
   },
   {
    "id": "etat-paralyse",
    "terme": "Paralysé",
    "domaine": "etats",
-   "alias": ["etat prejudiciable"],
+   "alias": [
+    "etat prejudiciable"
+   ],
    "liens": [
-    { "label": "Livre VI §24.1", "livre": 6, "href": "livre_6.html#sec-24-1" },
-    { "label": "Livre V §20.2", "livre": 5, "href": "livre_5.html#sec-20-2-cibles" }
+    {
+     "label": "Livre VI §24.1",
+     "livre": 6,
+     "href": "livre_6.html#sec-24-1"
+    },
+    {
+     "label": "Livre V §20.2",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-2-cibles"
+    }
    ]
   },
   {
    "id": "etat-agonisant",
    "terme": "Agonisant",
    "domaine": "etats",
-   "alias": ["etat prejudiciable", "agonie"],
+   "alias": [
+    "etat prejudiciable",
+    "agonie"
+   ],
    "liens": [
-    { "label": "Livre VI §24.1", "livre": 6, "href": "livre_6.html#sec-24-1" },
-    { "label": "Livre VI §23.2", "livre": 6, "href": "livre_6.html#sec-23-2" },
-    { "label": "Livre VI §25", "livre": 6, "href": "livre_6.html#chap-25" }
+    {
+     "label": "Livre VI §24.1",
+     "livre": 6,
+     "href": "livre_6.html#sec-24-1"
+    },
+    {
+     "label": "Livre VI §23.2",
+     "livre": 6,
+     "href": "livre_6.html#sec-23-2"
+    },
+    {
+     "label": "Livre VI §25",
+     "livre": 6,
+     "href": "livre_6.html#chap-25"
+    }
    ]
   },
   {
    "id": "etat-saignement",
    "terme": "Saignement",
    "domaine": "etats",
-   "alias": ["etat residuel", "DoT"],
+   "alias": [
+    "etat residuel",
+    "DoT"
+   ],
    "liens": [
-    { "label": "Livre VI §24.2", "livre": 6, "href": "livre_6.html#sec-24-2" },
-    { "label": "Livre V §20.4", "livre": 5, "href": "livre_5.html#sec-20-4" }
+    {
+     "label": "Livre VI §24.2",
+     "livre": 6,
+     "href": "livre_6.html#sec-24-2"
+    },
+    {
+     "label": "Livre V §20.4",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-4"
+    }
    ]
   },
   {
    "id": "etat-empoisonne",
    "terme": "Empoisonné",
    "domaine": "etats",
-   "alias": ["etat residuel", "poison", "DoT"],
+   "alias": [
+    "etat residuel",
+    "poison",
+    "DoT"
+   ],
    "liens": [
-    { "label": "Livre VI §24.2", "livre": 6, "href": "livre_6.html#sec-24-2" }
+    {
+     "label": "Livre VI §24.2",
+     "livre": 6,
+     "href": "livre_6.html#sec-24-2"
+    }
    ]
   },
   {
    "id": "etat-en-feu",
    "terme": "En Feu",
    "domaine": "etats",
-   "alias": ["etat residuel", "brulure", "DoT"],
+   "alias": [
+    "etat residuel",
+    "brulure",
+    "DoT"
+   ],
    "liens": [
-    { "label": "Livre VI §24.2", "livre": 6, "href": "livre_6.html#sec-24-2" },
-    { "label": "Livre V §20.4", "livre": 5, "href": "livre_5.html#sec-20-4" }
+    {
+     "label": "Livre VI §24.2",
+     "livre": 6,
+     "href": "livre_6.html#sec-24-2"
+    },
+    {
+     "label": "Livre V §20.4",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-4"
+    }
    ]
   },
   {
    "id": "etat-asphyxie",
    "terme": "Asphyxie",
    "domaine": "etats",
-   "alias": ["etat residuel", "suffocation", "DoT"],
+   "alias": [
+    "etat residuel",
+    "suffocation",
+    "DoT"
+   ],
    "liens": [
-    { "label": "Livre VI §24.2", "livre": 6, "href": "livre_6.html#sec-24-2" },
-    { "label": "Livre V §20.8", "livre": 5, "href": "livre_5.html#sec-20-8" }
+    {
+     "label": "Livre VI §24.2",
+     "livre": 6,
+     "href": "livre_6.html#sec-24-2"
+    },
+    {
+     "label": "Livre V §20.8",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-8"
+    }
    ]
   },
   {
    "id": "etat-survolte",
    "terme": "Survolté",
    "domaine": "etats",
-   "alias": ["etat benefique"],
+   "alias": [
+    "etat benefique"
+   ],
    "liens": [
-    { "label": "Livre VI §24.3", "livre": 6, "href": "livre_6.html#sec-24-3" }
+    {
+     "label": "Livre VI §24.3",
+     "livre": 6,
+     "href": "livre_6.html#sec-24-3"
+    }
    ]
   },
   {
    "id": "etat-en-transe",
    "terme": "En Transe",
    "domaine": "etats",
-   "alias": ["etat benefique"],
+   "alias": [
+    "etat benefique"
+   ],
    "liens": [
-    { "label": "Livre VI §24.3", "livre": 6, "href": "livre_6.html#sec-24-3" }
+    {
+     "label": "Livre VI §24.3",
+     "livre": 6,
+     "href": "livre_6.html#sec-24-3"
+    }
    ]
   },
   {
    "id": "etat-rapide",
    "terme": "Rapide",
    "domaine": "etats",
-   "alias": ["etat benefique", "+3 PA deplacement", "speed"],
+   "alias": [
+    "etat benefique",
+    "+3 PA deplacement",
+    "speed"
+   ],
    "liens": [
-    { "label": "Livre VI §24.3", "livre": 6, "href": "livre_6.html#sec-24-3" },
-    { "label": "Livre VIII §33", "livre": 8, "href": "livre_8.html#chap-33" }
+    {
+     "label": "Livre VI §24.3",
+     "livre": 6,
+     "href": "livre_6.html#sec-24-3"
+    },
+    {
+     "label": "Livre VIII §32",
+     "livre": 8,
+     "href": "livre_8.html#chap-32"
+    }
    ]
   },
   {
    "id": "etat-accelere",
    "terme": "Accéléré",
    "domaine": "etats",
-   "alias": ["etat benefique"],
+   "alias": [
+    "etat benefique"
+   ],
    "liens": [
-    { "label": "Livre VI §24.3", "livre": 6, "href": "livre_6.html#sec-24-3" }
+    {
+     "label": "Livre VI §24.3",
+     "livre": 6,
+     "href": "livre_6.html#sec-24-3"
+    }
    ]
   },
   {
    "id": "etat-en-vol",
    "terme": "En Vol",
    "domaine": "etats",
-   "alias": ["etat benefique", "vol"],
+   "alias": [
+    "etat benefique",
+    "vol"
+   ],
    "liens": [
-    { "label": "Livre VI §24.3", "livre": 6, "href": "livre_6.html#sec-24-3" }
+    {
+     "label": "Livre VI §24.3",
+     "livre": 6,
+     "href": "livre_6.html#sec-24-3"
+    }
    ]
   },
   {
    "id": "etat-levitation",
    "terme": "Lévitation",
    "domaine": "etats",
-   "alias": ["etat benefique", "flotter"],
+   "alias": [
+    "etat benefique",
+    "flotter"
+   ],
    "liens": [
-    { "label": "Livre VI §24.3", "livre": 6, "href": "livre_6.html#sec-24-3" }
+    {
+     "label": "Livre VI §24.3",
+     "livre": 6,
+     "href": "livre_6.html#sec-24-3"
+    }
    ]
   },
   {
    "id": "etat-dissimule-cache",
    "terme": "Dissimulé / Caché",
    "domaine": "etats",
-   "alias": ["etat benefique", "furtif", "cache"],
+   "alias": [
+    "etat benefique",
+    "furtif",
+    "cache"
+   ],
    "liens": [
-    { "label": "Livre VI §24.3", "livre": 6, "href": "livre_6.html#sec-24-3" },
-    { "label": "Livre V §21.4", "livre": 5, "href": "livre_5.html#sec-21-4-cacher" }
+    {
+     "label": "Livre VI §24.3",
+     "livre": 6,
+     "href": "livre_6.html#sec-24-3"
+    },
+    {
+     "label": "Livre V §21.4",
+     "livre": 5,
+     "href": "livre_5.html#sec-21-4-cacher"
+    }
    ]
   },
   {
    "id": "statut-inconscient",
    "terme": "Inconscient",
    "domaine": "etats",
-   "alias": ["statut vital", "inerte", "lache objets"],
+   "alias": [
+    "statut vital",
+    "inerte",
+    "lache objets"
+   ],
    "liens": [
-    { "label": "Livre VI §24.4", "livre": 6, "href": "livre_6.html#sec-24-4" },
-    { "label": "Livre V §20.2", "livre": 5, "href": "livre_5.html#sec-20-2-cibles" },
-    { "label": "Livre VI §23.2", "livre": 6, "href": "livre_6.html#sec-23-2" }
+    {
+     "label": "Livre VI §24.4",
+     "livre": 6,
+     "href": "livre_6.html#sec-24-4"
+    },
+    {
+     "label": "Livre V §20.2",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-2-cibles"
+    },
+    {
+     "label": "Livre VI §23.2",
+     "livre": 6,
+     "href": "livre_6.html#sec-23-2"
+    }
    ]
   },
   {
    "id": "statut-souffrant",
    "terme": "Souffrant",
    "domaine": "etats",
-   "alias": ["statut vital", "blessure grave"],
+   "alias": [
+    "statut vital",
+    "blessure grave"
+   ],
    "liens": [
-    { "label": "Livre VI §24.4", "livre": 6, "href": "livre_6.html#sec-24-4" },
-    { "label": "Livre VI §23", "livre": 6, "href": "livre_6.html#sec-23-encaissement" },
-    { "label": "Livre VI §25", "livre": 6, "href": "livre_6.html#chap-25" }
+    {
+     "label": "Livre VI §24.4",
+     "livre": 6,
+     "href": "livre_6.html#sec-24-4"
+    },
+    {
+     "label": "Livre VI §23",
+     "livre": 6,
+     "href": "livre_6.html#sec-23-encaissement"
+    },
+    {
+     "label": "Livre VI §25",
+     "livre": 6,
+     "href": "livre_6.html#chap-25"
+    }
    ]
   },
   {
    "id": "statut-mort",
    "terme": "Mort",
    "domaine": "etats",
-   "alias": ["statut vital", "trepas clinique"],
+   "alias": [
+    "statut vital",
+    "trepas clinique"
+   ],
    "liens": [
-    { "label": "Livre VI §24.4", "livre": 6, "href": "livre_6.html#sec-24-4" },
-    { "label": "Livre VI §23.2", "livre": 6, "href": "livre_6.html#sec-23-2" },
-    { "label": "Livre VI §25", "livre": 6, "href": "livre_6.html#chap-25" }
+    {
+     "label": "Livre VI §24.4",
+     "livre": 6,
+     "href": "livre_6.html#sec-24-4"
+    },
+    {
+     "label": "Livre VI §23.2",
+     "livre": 6,
+     "href": "livre_6.html#sec-23-2"
+    },
+    {
+     "label": "Livre VI §25",
+     "livre": 6,
+     "href": "livre_6.html#chap-25"
+    }
    ]
   },
   {
    "id": "objet-parfait-etat",
    "terme": "Parfait État (Objet)",
    "domaine": "etats",
-   "alias": ["etat materiel", "equipement"],
+   "alias": [
+    "etat materiel",
+    "equipement"
+   ],
    "liens": [
-    { "label": "Livre VI §24.5", "livre": 6, "href": "livre_6.html#sec-24-5" }
+    {
+     "label": "Livre VI §24.5",
+     "livre": 6,
+     "href": "livre_6.html#sec-24-5"
+    }
    ]
   },
   {
    "id": "objet-endommage",
    "terme": "Endommagé (Objet)",
    "domaine": "etats",
-   "alias": ["etat materiel", "equipement"],
+   "alias": [
+    "etat materiel",
+    "equipement"
+   ],
    "liens": [
-    { "label": "Livre VI §24.5", "livre": 6, "href": "livre_6.html#sec-24-5" }
+    {
+     "label": "Livre VI §24.5",
+     "livre": 6,
+     "href": "livre_6.html#sec-24-5"
+    }
    ]
   },
   {
    "id": "objet-enraye",
    "terme": "Enrayé (Objet)",
    "domaine": "etats",
-   "alias": ["etat materiel", "2 PA", "debloquer"],
+   "alias": [
+    "etat materiel",
+    "2 PA",
+    "debloquer"
+   ],
    "liens": [
-    { "label": "Livre VI §24.5", "livre": 6, "href": "livre_6.html#sec-24-5" }
+    {
+     "label": "Livre VI §24.5",
+     "livre": 6,
+     "href": "livre_6.html#sec-24-5"
+    }
    ]
   },
   {
    "id": "objet-detruit",
    "terme": "Détruit (Objet)",
    "domaine": "etats",
-   "alias": ["etat materiel", "hors service"],
+   "alias": [
+    "etat materiel",
+    "hors service"
+   ],
    "liens": [
-    { "label": "Livre VI §24.5", "livre": 6, "href": "livre_6.html#sec-24-5" }
+    {
+     "label": "Livre VI §24.5",
+     "livre": 6,
+     "href": "livre_6.html#sec-24-5"
+    }
    ]
   },
   {
    "id": "objet-aneanti",
    "terme": "Anéanti (Objet)",
    "domaine": "etats",
-   "alias": ["etat materiel", "irreparable"],
+   "alias": [
+    "etat materiel",
+    "irreparable"
+   ],
    "liens": [
-    { "label": "Livre VI §24.5", "livre": 6, "href": "livre_6.html#sec-24-5" }
+    {
+     "label": "Livre VI §24.5",
+     "livre": 6,
+     "href": "livre_6.html#sec-24-5"
+    }
    ]
   },
   {
    "id": "historique-et-passe",
    "terme": "Historique & Passé (Étape 2)",
    "domaine": "equipement",
-   "alias": ["etape 2", "background", "4 cases"],
+   "alias": [
+    "etape 2",
+    "background",
+    "4 cases"
+   ],
    "liens": [
-    { "label": "Livre VII §27", "livre": 7, "href": "livre_7.html#chap-27" }
+    {
+     "label": "Livre VII §26",
+     "livre": 7,
+     "href": "livre_7.html#chap-26"
+    }
    ]
   },
   {
    "id": "bonus-historique",
    "terme": "Bonus d'Historique",
    "domaine": "equipement",
-   "alias": ["+2 competence", "non cumul"],
+   "alias": [
+    "+2 competence",
+    "non cumul"
+   ],
    "liens": [
-    { "label": "Livre VII §27", "livre": 7, "href": "livre_7.html#chap-27" }
+    {
+     "label": "Livre VII §26",
+     "livre": 7,
+     "href": "livre_7.html#chap-26"
+    }
    ]
   },
   {
    "id": "marqueur-epoque",
    "terme": "Marqueur d'Époque [E0–E5]",
    "domaine": "equipement",
-   "alias": ["E0", "E1", "E2", "E3", "E4", "E5", "epoque"],
+   "alias": [
+    "E0",
+    "E1",
+    "E2",
+    "E3",
+    "E4",
+    "E5",
+    "epoque"
+   ],
    "liens": [
-    { "label": "Livre VII §27", "livre": 7, "href": "livre_7.html#chap-27" }
+    {
+     "label": "Livre VII §26",
+     "livre": 7,
+     "href": "livre_7.html#chap-26"
+    }
    ]
   },
   {
    "id": "enfance-d6",
    "terme": "Enfance",
    "domaine": "equipement",
-   "alias": ["d6", "milieu origine"],
+   "alias": [
+    "d6",
+    "milieu origine"
+   ],
    "liens": [
-    { "label": "Livre VII §28", "livre": 7, "href": "livre_7.html#chap-28" }
+    {
+     "label": "Livre VII §27",
+     "livre": 7,
+     "href": "livre_7.html#chap-27"
+    }
    ]
   },
   {
    "id": "metier-d12",
    "terme": "Métier",
    "domaine": "equipement",
-   "alias": ["d12", "parcours"],
+   "alias": [
+    "d12",
+    "parcours"
+   ],
    "liens": [
-    { "label": "Livre VII §29", "livre": 7, "href": "livre_7.html#chap-29" }
+    {
+     "label": "Livre VII §28",
+     "livre": 7,
+     "href": "livre_7.html#chap-28"
+    }
    ]
   },
   {
    "id": "atout-historique",
    "terme": "Atout d'Historique",
    "domaine": "equipement",
-   "alias": ["atout", "trait situatif"],
+   "alias": [
+    "atout",
+    "trait situatif"
+   ],
    "liens": [
-    { "label": "Livre VII §27", "livre": 7, "href": "livre_7.html#chap-27" },
-    { "label": "Livre VII §29", "livre": 7, "href": "livre_7.html#chap-29" }
+    {
+     "label": "Livre VII §26",
+     "livre": 7,
+     "href": "livre_7.html#chap-26"
+    },
+    {
+     "label": "Livre VII §28",
+     "livre": 7,
+     "href": "livre_7.html#chap-28"
+    }
    ]
   },
   {
    "id": "attache-historique",
    "terme": "Attache",
    "domaine": "equipement",
-   "alias": ["prise MJ", "lien narratif"],
+   "alias": [
+    "prise MJ",
+    "lien narratif"
+   ],
    "liens": [
-    { "label": "Livre VII §27", "livre": 7, "href": "livre_7.html#chap-27" },
-    { "label": "Livre VII §29", "livre": 7, "href": "livre_7.html#chap-29" }
+    {
+     "label": "Livre VII §26",
+     "livre": 7,
+     "href": "livre_7.html#chap-26"
+    },
+    {
+     "label": "Livre VII §28",
+     "livre": 7,
+     "href": "livre_7.html#chap-28"
+    }
    ]
   },
   {
    "id": "evenement-marquant",
    "terme": "Événement Marquant",
    "domaine": "equipement",
-   "alias": ["d12", "1x/session", "sequelle", "echo 10"],
+   "alias": [
+    "d12",
+    "1x/session",
+    "sequelle",
+    "echo 10"
+   ],
    "liens": [
-    { "label": "Livre VII §30", "livre": 7, "href": "livre_7.html#chap-30" }
+    {
+     "label": "Livre VII §29",
+     "livre": 7,
+     "href": "livre_7.html#chap-29"
+    }
    ]
   },
   {
    "id": "ancrage-narratif",
    "terme": "Ancrage Narratif",
    "domaine": "equipement",
-   "alias": ["3 questions", "recit pur"],
+   "alias": [
+    "3 questions",
+    "recit pur"
+   ],
    "liens": [
-    { "label": "Livre VII §30", "livre": 7, "href": "livre_7.html#chap-30" }
+    {
+     "label": "Livre VII §29",
+     "livre": 7,
+     "href": "livre_7.html#chap-29"
+    }
    ]
   },
   {
    "id": "code-universel-arme-dlph",
    "terme": "Code Universel d'Arme (DLPH)",
    "domaine": "equipement",
-   "alias": ["DLPH", "degats", "livres", "portee", "maniement"],
+   "alias": [
+    "DLPH",
+    "degats",
+    "livres",
+    "portee",
+    "maniement"
+   ],
    "liens": [
-    { "label": "Livre VIII §31", "livre": 8, "href": "livre_8.html#chap-31" }
+    {
+     "label": "Livre VIII §30",
+     "livre": 8,
+     "href": "livre_8.html#chap-30"
+    }
    ]
   },
   {
    "id": "armes-metal-allonge",
    "terme": "Armes Métal & Allonge",
    "domaine": "equipement",
-   "alias": ["epees", "haches", "hast", "arc"],
+   "alias": [
+    "epees",
+    "haches",
+    "hast",
+    "arc"
+   ],
    "liens": [
-    { "label": "Livre VIII §31", "livre": 8, "href": "livre_8.html#chap-31" }
+    {
+     "label": "Livre VIII §30",
+     "livre": 8,
+     "href": "livre_8.html#chap-30"
+    }
    ]
   },
   {
    "id": "epees-laser",
    "terme": "Épées Laser",
    "domaine": "equipement",
-   "alias": ["confinement plasma", "sabre", "arcanotech"],
+   "alias": [
+    "confinement plasma",
+    "sabre",
+    "arcanotech"
+   ],
    "liens": [
-    { "label": "Livre VIII §32", "livre": 8, "href": "livre_8.html#chap-32" }
+    {
+     "label": "Livre VIII §31",
+     "livre": 8,
+     "href": "livre_8.html#chap-31"
+    }
    ]
   },
   {
    "id": "fusils-laser-armes-distance",
    "terme": "Fusils Laser & Armes à Distance",
    "domaine": "equipement",
-   "alias": ["deglazer", "tir precis"],
+   "alias": [
+    "deglazer",
+    "tir precis"
+   ],
    "liens": [
-    { "label": "Livre VIII §32", "livre": 8, "href": "livre_8.html#chap-32" }
+    {
+     "label": "Livre VIII §31",
+     "livre": 8,
+     "href": "livre_8.html#chap-31"
+    }
    ]
   },
   {
    "id": "grenades-munitions-explosives",
    "terme": "Grenades & Munitions Explosives",
    "domaine": "equipement",
-   "alias": ["fragmentation", "breche", "thermobarique"],
+   "alias": [
+    "fragmentation",
+    "breche",
+    "thermobarique"
+   ],
    "liens": [
-    { "label": "Livre VIII §32", "livre": 8, "href": "livre_8.html#chap-32" },
-    { "label": "Livre V §21.3", "livre": 5, "href": "livre_5.html#sec-21-3" }
+    {
+     "label": "Livre VIII §31",
+     "livre": 8,
+     "href": "livre_8.html#chap-31"
+    },
+    {
+     "label": "Livre V §21.3",
+     "livre": 5,
+     "href": "livre_5.html#sec-21-3"
+    }
    ]
   },
   {
    "id": "armures-corporelles",
    "terme": "Armures Corporelles",
    "domaine": "equipement",
-   "alias": ["armure legere", "armure lourde", "absorption"],
+   "alias": [
+    "armure legere",
+    "armure lourde",
+    "absorption"
+   ],
    "liens": [
-    { "label": "Livre VIII §33", "livre": 8, "href": "livre_8.html#chap-33" },
-    { "label": "Livre V §22.1", "livre": 5, "href": "livre_5.html#sec-22-1" }
+    {
+     "label": "Livre VIII §32",
+     "livre": 8,
+     "href": "livre_8.html#chap-32"
+    },
+    {
+     "label": "Livre V §22.1",
+     "livre": 5,
+     "href": "livre_5.html#sec-22-1"
+    }
    ]
   },
   {
    "id": "encombrement-armure",
    "terme": "Encombrement d'Armure",
    "domaine": "equipement",
-   "alias": ["+1 PA", "+2 PA", "malus PA"],
+   "alias": [
+    "+1 PA",
+    "+2 PA",
+    "malus PA"
+   ],
    "liens": [
-    { "label": "Livre VIII §33", "livre": 8, "href": "livre_8.html#chap-33" },
-    { "label": "Livre V §20.5", "livre": 5, "href": "livre_5.html#sec-20-5" }
+    {
+     "label": "Livre VIII §32",
+     "livre": 8,
+     "href": "livre_8.html#chap-32"
+    },
+    {
+     "label": "Livre V §20.5",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-5"
+    }
    ]
   },
   {
    "id": "champs-force-personnels",
    "terme": "Champs de Force Personnels",
    "domaine": "equipement",
-   "alias": ["ecran", "bouclier energetique"],
+   "alias": [
+    "ecran",
+    "bouclier energetique"
+   ],
    "liens": [
-    { "label": "Livre VIII §33", "livre": 8, "href": "livre_8.html#chap-33" }
+    {
+     "label": "Livre VIII §32",
+     "livre": 8,
+     "href": "livre_8.html#chap-32"
+    }
    ]
   },
   {
    "id": "combinaisons-spatiales",
    "terme": "Combinaisons Spatiales",
    "domaine": "equipement",
-   "alias": ["spacesuit"],
+   "alias": [
+    "spacesuit"
+   ],
    "liens": [
-    { "label": "Livre VIII §33", "livre": 8, "href": "livre_8.html#chap-33" }
+    {
+     "label": "Livre VIII §32",
+     "livre": 8,
+     "href": "livre_8.html#chap-32"
+    }
    ]
   },
   {
    "id": "pharmacopee-tactique",
    "terme": "Pharmacopée Tactique",
    "domaine": "equipement",
-   "alias": ["antidouleurs", "speed", "seringue", "rations"],
+   "alias": [
+    "antidouleurs",
+    "speed",
+    "seringue",
+    "rations"
+   ],
    "liens": [
-    { "label": "Livre VIII §33", "livre": 8, "href": "livre_8.html#chap-33" },
-    { "label": "Livre VI §25", "livre": 6, "href": "livre_6.html#chap-25" }
+    {
+     "label": "Livre VIII §32",
+     "livre": 8,
+     "href": "livre_8.html#chap-32"
+    },
+    {
+     "label": "Livre VI §25",
+     "livre": 6,
+     "href": "livre_6.html#chap-25"
+    }
    ]
   },
   {
    "id": "fleuve-du-temps-inertie-causale",
    "terme": "Fleuve du Temps & Inertie Causale",
    "domaine": "causalite",
-   "alias": ["causalite", "flux subquantique"],
+   "alias": [
+    "causalite",
+    "flux subquantique"
+   ],
    "liens": [
-    { "label": "Livre X §40", "livre": 10, "href": "livre_10.html#chap-40" }
+    {
+     "label": "Livre X §39",
+     "livre": 10,
+     "href": "livre_10.html#chap-39"
+    }
    ]
   },
   {
    "id": "boucle-arriere-propagation-avant",
    "terme": "Boucle Arrière vs Propagation vers l'Avant",
    "domaine": "causalite",
-   "alias": ["Backward Loop", "vecteur aval"],
+   "alias": [
+    "Backward Loop",
+    "vecteur aval"
+   ],
    "liens": [
-    { "label": "Livre X §40", "livre": 10, "href": "livre_10.html#chap-40" }
+    {
+     "label": "Livre X §39",
+     "livre": 10,
+     "href": "livre_10.html#chap-39"
+    }
    ]
   },
   {
    "id": "effet-papillon-inverse",
    "terme": "Effet Papillon Inversé",
    "domaine": "causalite",
-   "alias": ["Reverse Butterfly Effect"],
+   "alias": [
+    "Reverse Butterfly Effect"
+   ],
    "liens": [
-    { "label": "Livre X §40", "livre": 10, "href": "livre_10.html#chap-40" }
+    {
+     "label": "Livre X §39",
+     "livre": 10,
+     "href": "livre_10.html#chap-39"
+    }
    ]
   },
   {
    "id": "theoreme-ancre-causale-descendante",
    "terme": "Théorème de l'Ancre Causale Descendante",
    "domaine": "causalite",
-   "alias": ["stabilite causale", "0.9999"],
+   "alias": [
+    "stabilite causale",
+    "0.9999"
+   ],
    "liens": [
-    { "label": "Livre X §40", "livre": 10, "href": "livre_10.html#chap-40" }
+    {
+     "label": "Livre X §39",
+     "livre": 10,
+     "href": "livre_10.html#chap-39"
+    }
    ]
   },
   {
    "id": "piliers-de-transmission",
    "terme": "Piliers de Transmission",
    "domaine": "causalite",
-   "alias": ["ancre minerale", "courant vivant", "capsule biometrique"],
+   "alias": [
+    "ancre minerale",
+    "courant vivant",
+    "capsule biometrique"
+   ],
    "liens": [
-    { "label": "Livre X §40", "livre": 10, "href": "livre_10.html#chap-40" }
+    {
+     "label": "Livre X §39",
+     "livre": 10,
+     "href": "livre_10.html#chap-39"
+    }
    ]
   },
   {
    "id": "trous-de-ver-spatiaux",
    "terme": "Trous de Ver Spatiaux",
    "domaine": "causalite",
-   "alias": ["front causal", "transit spatial"],
+   "alias": [
+    "front causal",
+    "transit spatial"
+   ],
    "liens": [
-    { "label": "Livre X §40", "livre": 10, "href": "livre_10.html#chap-40" }
+    {
+     "label": "Livre X §39",
+     "livre": 10,
+     "href": "livre_10.html#chap-39"
+    }
    ]
   },
   {
    "id": "chronotrames-goulots-etranglement",
    "terme": "Chronotrames & Goulots d'Étranglement Causals",
    "domaine": "causalite",
-   "alias": ["Causal Bottlenecks", "chronotrame"],
+   "alias": [
+    "Causal Bottlenecks",
+    "chronotrame"
+   ],
    "liens": [
-    { "label": "Livre X §41", "livre": 10, "href": "livre_10.html#chap-41" }
+    {
+     "label": "Livre X §40",
+     "livre": 10,
+     "href": "livre_10.html#chap-40"
+    }
    ]
   },
   {
    "id": "inalterabilite-du-goulot",
    "terme": "Inaltérabilité du Goulot",
    "domaine": "causalite",
-   "alias": ["regle MJ", "convergence"],
+   "alias": [
+    "regle MJ",
+    "convergence"
+   ],
    "liens": [
-    { "label": "Livre X §41", "livre": 10, "href": "livre_10.html#chap-41" },
-    { "label": "Livre X §43", "livre": 10, "href": "livre_10.html#chap-43" }
+    {
+     "label": "Livre X §40",
+     "livre": 10,
+     "href": "livre_10.html#chap-40"
+    },
+    {
+     "label": "Livre X §42",
+     "livre": 10,
+     "href": "livre_10.html#chap-42"
+    }
    ]
   },
   {
    "id": "paradoxes-variance-temporelle",
    "terme": "Paradoxes & Variance Temporelle",
    "domaine": "causalite",
-   "alias": ["0.0001%", "friction visqueuse"],
+   "alias": [
+    "0.0001%",
+    "friction visqueuse"
+   ],
    "liens": [
-    { "label": "Livre X §41", "livre": 10, "href": "livre_10.html#chap-41" }
+    {
+     "label": "Livre X §40",
+     "livre": 10,
+     "href": "livre_10.html#chap-40"
+    }
    ]
   },
   {
    "id": "distorsions-temporelles",
    "terme": "Distorsions Temporelles",
    "domaine": "causalite",
-   "alias": ["zone neutre", "onde mineure", "tension majeure", "rupture"],
+   "alias": [
+    "zone neutre",
+    "onde mineure",
+    "tension majeure",
+    "rupture"
+   ],
    "liens": [
-    { "label": "Livre X §41", "livre": 10, "href": "livre_10.html#chap-41" }
+    {
+     "label": "Livre X §40",
+     "livre": 10,
+     "href": "livre_10.html#chap-40"
+    }
    ]
   },
   {
    "id": "clairsentience-8-echelons",
    "terme": "Clairsentience (8 Échelons)",
    "domaine": "causalite",
-   "alias": ["premonition", "echelon", "DMN"],
+   "alias": [
+    "premonition",
+    "echelon",
+    "DMN"
+   ],
    "liens": [
-    { "label": "Livre X §42", "livre": 10, "href": "livre_10.html#chap-42" }
+    {
+     "label": "Livre X §41",
+     "livre": 10,
+     "href": "livre_10.html#chap-41"
+    }
    ]
   },
   {
    "id": "lecture-impact-predictive",
    "terme": "Lecture d'Impact Prédictive",
    "domaine": "causalite",
-   "alias": ["2 PA", "reaction", "echelon 3"],
+   "alias": [
+    "2 PA",
+    "reaction",
+    "echelon 3"
+   ],
    "liens": [
-    { "label": "Livre X §42", "livre": 10, "href": "livre_10.html#chap-42" }
+    {
+     "label": "Livre X §41",
+     "livre": 10,
+     "href": "livre_10.html#chap-41"
+    }
    ]
   },
   {
    "id": "verrouillage-probabiliste",
    "terme": "Verrouillage Probabiliste",
    "domaine": "causalite",
-   "alias": ["3 PA", "echelon 6"],
+   "alias": [
+    "3 PA",
+    "echelon 6"
+   ],
    "liens": [
-    { "label": "Livre X §42", "livre": 10, "href": "livre_10.html#chap-42" }
+    {
+     "label": "Livre X §41",
+     "livre": 10,
+     "href": "livre_10.html#chap-41"
+    }
    ]
   },
   {
    "id": "reliques-temoins-capsules",
    "terme": "Reliques Témoins & Capsules Temporelles",
    "domaine": "causalite",
-   "alias": ["empreinte biometrique", "reliquaire"],
+   "alias": [
+    "empreinte biometrique",
+    "reliquaire"
+   ],
    "liens": [
-    { "label": "Livre X §43", "livre": 10, "href": "livre_10.html#chap-43" }
+    {
+     "label": "Livre X §42",
+     "livre": 10,
+     "href": "livre_10.html#chap-42"
+    }
    ]
   },
   {
    "id": "graphes-temporels-dag",
    "terme": "Graphes Temporels (DAG)",
    "domaine": "causalite",
-   "alias": ["DAG", "graphe acyclique dirige"],
+   "alias": [
+    "DAG",
+    "graphe acyclique dirige"
+   ],
    "liens": [
-    { "label": "Livre X §43", "livre": 10, "href": "livre_10.html#chap-43" }
+    {
+     "label": "Livre X §42",
+     "livre": 10,
+     "href": "livre_10.html#chap-42"
+    }
    ]
   },
   {
    "id": "lois-temporelles",
    "terme": "Lois Temporelles",
    "domaine": "causalite",
-   "alias": ["4 lois", "vecteur aval", "ancrage inverse", "resistance synaptique"],
+   "alias": [
+    "4 lois",
+    "vecteur aval",
+    "ancrage inverse",
+    "resistance synaptique"
+   ],
    "liens": [
-    { "label": "Livre X §43", "livre": 10, "href": "livre_10.html#chap-43" }
+    {
+     "label": "Livre X §42",
+     "livre": 10,
+     "href": "livre_10.html#chap-42"
+    }
    ]
   },
   {
    "id": "rangs-de-menace",
    "terme": "Rangs de Menace",
    "domaine": "causalite",
-   "alias": ["Minions", "Reguliers", "Elites", "Boss"],
+   "alias": [
+    "Minions",
+    "Reguliers",
+    "Elites",
+    "Boss"
+   ],
    "liens": [
-    { "label": "Livre XII §49", "livre": 12, "href": "livre_12.html#chap-49" }
+    {
+     "label": "Livre XII §48",
+     "livre": 12,
+     "href": "livre_12.html#chap-48"
+    }
    ]
   },
   {
    "id": "calibrage-des-rencontres",
    "terme": "Calibrage des Rencontres",
    "domaine": "causalite",
-   "alias": ["ratio PA", "equilibrage MJ"],
+   "alias": [
+    "ratio PA",
+    "equilibrage MJ"
+   ],
    "liens": [
-    { "label": "Livre XII §49", "livre": 12, "href": "livre_12.html#chap-49" }
+    {
+     "label": "Livre XII §48",
+     "livre": 12,
+     "href": "livre_12.html#chap-48"
+    }
    ]
   },
   {
    "id": "createur-fiche-pj",
    "terme": "Créateur de Fiche PJ",
    "domaine": "causalite",
-   "alias": ["outil web", "fiche dynamique"],
+   "alias": [
+    "outil web",
+    "fiche dynamique"
+   ],
    "liens": [
-    { "label": "Livre IX §34", "livre": 9, "href": "livre_9.html#chap-34" }
+    {
+     "label": "Livre IX §33",
+     "livre": 9,
+     "href": "livre_9.html#chap-33"
+    }
    ]
   },
   {
    "id": "atelier-de-sorts-outil",
    "terme": "Atelier de Sorts",
    "domaine": "causalite",
-   "alias": ["outil web", "XP=PA"],
+   "alias": [
+    "outil web",
+    "XP=PA"
+   ],
    "liens": [
-    { "label": "Livre IX §35", "livre": 9, "href": "livre_9.html#chap-35" }
+    {
+     "label": "Livre IX §34",
+     "livre": 9,
+     "href": "livre_9.html#chap-34"
+    }
    ]
   },
   {
    "id": "lanceur-polyedrique-critiques",
    "terme": "Lanceur Polyédrique & Critiques",
    "domaine": "causalite",
-   "alias": ["outil web", "des"],
+   "alias": [
+    "outil web",
+    "des"
+   ],
    "liens": [
-    { "label": "Livre IX §36", "livre": 9, "href": "livre_9.html#chap-36" }
+    {
+     "label": "Livre IX §35",
+     "livre": 9,
+     "href": "livre_9.html#chap-35"
+    }
    ]
   },
   {
    "id": "resolveur-de-challenges",
    "terme": "Résolveur de Challenges",
    "domaine": "causalite",
-   "alias": ["outil web", "defi hors-combat"],
+   "alias": [
+    "outil web",
+    "defi hors-combat"
+   ],
    "liens": [
-    { "label": "Livre IX §37", "livre": 9, "href": "livre_9.html#chap-37" }
+    {
+     "label": "Livre IX §36",
+     "livre": 9,
+     "href": "livre_9.html#chap-36"
+    }
    ]
   },
   {
    "id": "simulateur-de-chronotrames",
    "terme": "Simulateur de Chronotrames",
    "domaine": "causalite",
-   "alias": ["outil web", "clairsentience"],
+   "alias": [
+    "outil web",
+    "clairsentience"
+   ],
    "liens": [
-    { "label": "Livre IX §38", "livre": 9, "href": "livre_9.html#chap-38" }
+    {
+     "label": "Livre IX §37",
+     "livre": 9,
+     "href": "livre_9.html#chap-37"
+    }
    ]
   },
   {
    "id": "fabrique-techniques-outil-web",
    "terme": "Fabrique de Techniques (Outil Web)",
    "domaine": "causalite",
-   "alias": ["outil web", "puzzle 4-6 XP"],
+   "alias": [
+    "outil web",
+    "puzzle 4-6 XP"
+   ],
    "liens": [
-    { "label": "Livre IX §39", "livre": 9, "href": "livre_9.html#chap-39" }
+    {
+     "label": "Livre IX §38",
+     "livre": 9,
+     "href": "livre_9.html#chap-38"
+    }
    ]
   }
  ]
 }
-

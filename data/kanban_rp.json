@@ -399,11 +399,11 @@
      "scale": null,
      "suggestedAsset": "livre_6.html#chap-24",
      "updated": "2026-11-22",
-     "details": "Vérification humaine — livre_6.html#chap-24. Checklist : [ ] orthographe/typo FR ; [x] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [x] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici. MAJ 2026-11-07 — titre corrigé (chap. 26→24 après renumérotation ; 16→18 États, intitulé canon). | Note 2026-11-18 : anticipation sur §24.5 (Inconscient lâche immédiatement tout ce qu'il tient en main) et §24.6 (lien #sec-24-5 sur Assommer) posée lors de RP-025. | §24.1 FAIT (2026-11-20) : 18 états préjudiciables réordonnés du moins contraignant au plus contraignant (Canon Entravé → Agonisant), intro chap-24/bloc-00.md alignée sur « dix-huit états ». Scission d'À terre en Accroupi et À terre (allongé) + sync de 69 infobulles À Terre dans Livres I–VI. Séparation Paniqué (fuite 6 cases 1d8, parade −2, pièce O27 renommée dans Livre III) et Agonisant (Agonie critique au début de chaque tour + Dernier Souffle, stabilisation Premiers Soins Diff 6). Nettoyage rédactionnel de Ralenti, Immobilisé, Sonné (tombe immédiatement À Terre, parade −2, harmonisé avec Livre V §20.2) et Paralysé (Défense Passive imposée), durées uniformisées (« Variable selon les circonstances. »). Ajouts : Assourdi, Somnolent (3 phases 24 h / 48 h / 72 h+, test toutes les 6 h et fin de combat), Ligoté, Surpris (règle d'ouverture Livre V §20). Ivre / Intoxiqué reporté vers RP-208 ; propriétés d'armes (Arme de jet, etc.) reportées vers RP-209. Anticipations déjà posées sur §24.3 (Affamé/Assoiffé, RP-213) et §24.4 (durées + Dissimulé / Caché, RP-213). | §24.2 FAIT & retrait ancien §24.3 (2026-11-21, RP-214) : (1) Intro §24.2 (chap-24/bloc-02.md) pose la règle commune des dégâts résiduels (toujours posés avec un score de départ ; au début du tour de la victime avant la recharge des PA, elle subit ce score — armure et boucliers ignorés sauf exception — puis le score baisse de 1 jusqu'à 0). (2) Purge des valeurs par défaut (« sans valeur posée »), des spécialisations dans le core (Frappe Jugulaire, Homéostasie→magie curative, Hémorragie Profonde) et des mentions « résine de Mina » / « Seringue seule : non » en §24.2. (3) Colonne centrale renommée Particularité (donnees/tableaux/mecaniques) avec une particularité propre par état : Saignement (ne baisse pas au tour suivant après Course, Charge ou Essoufflement), Empoisonné (Anti-soin : soins de dégâts reçus réduits de moitié ; dissipation par Antidote, Médecine Avancée matériel de chimie/apothicaire ou magie de purge), En Feu (un bouclier énergétique ou magique absorbe d'abord, armure et bouclier physique ignorés ; Action d'extinction au coût en PA égal au score résiduel courant), Asphyxie (−1 PA sur la réserve rechargée ; Rétablir la respiration en sortant du gaz/fumée, masque, rupture d'étranglement ou Premiers Soins 3 PA / magie curative pour dégager les voies obstruées). (4) Paragraphe Aggravation épuré en chap-24/bloc-04.md. (5) Synchronisation de §23.1 types_degats et des infobulles Saignement, Empoisonné, En Feu et Asphyxie dans Livres I, III, IV, V et VI. (6) Retrait de l'ancienne sous-section §24.3 Faim & Soif (couverte par Affamé/Assoiffé en §24.1) et décalage §24.4–§24.7 → §24.3–§24.6 + resynchronisation des ancres #sec-24-3..6 et renvois §24.4 dans Livres I, II, III, V et VI. | §24.3 FAIT — 1er check mécanique (2026-11-21, RP-215) : refonte des 7 états bénéfiques (Survolté, En transe, Rapide, Accéléré, scission Lévitation / En Vol en deux états distincts + sync infobulles Livre IV, annulation complète et mutuelle Accéléré ↔ Ralenti + sync Livre V, nettoyage rédactionnel, liaison Dissimulé / Caché ↔ Surpris §24.1 et Se cacher Livre V §21.4) + séparation sémantique Surpris (§24.1 pur) vs Tour d'Embuscade (Livre V §20 / Livre I §4.3, RP-204/RP-211). | §24.4 FAIT — 1er check mécanique (2026-11-21, RP-216) : Inconscient nettoyé (retrait du coût de ramassage, porté en Livre V §20.4 à 1 PA sur la case de l'objet ou une case adjacente ; phrase d'attaque reformulée sans forme interrogative) ; Souffrant explicité mécaniquement sans malus propre avec liens/tooltips canon (Choc Traumatique #sec-23-encaissement, point vital Livre V §22.1, pathologie grave §26.3, convalescence §25.2 et levée par tout soin actif §25.1) ; Mort nettoyé (retrait des exemples spécifiques rituel/défibrillation 10 tours → formulation générique spécialisations, technologies ou méthodes arcaniques + liens Seuil Létal #sec-23-2, Point de Miracle #sec-23-3 et Résurrection #chap-25 §25.3). | §24.5 FAIT — 1er check mécanique (2026-11-21, RP-217) : ancien §24.5 (Les Effets Spéciaux Déclenchés sur Épreuve, effets_epreuve) déplacé vers Livre V §20.4 (décalage Livre V §20.4–§20.8 → §20.5–§20.9 et renvois Livres II/III/V/VI ; révision mécanique suivie en RP-218) ; ancien §24.6 → §24.5 (Les 5 États des Objets & Équipements) validé RAS. 1er check & mécanique du chap. 24 (§24.1–§24.5) COMPLET — reste uniquement le QA final (orthographe/typo FR, ton lecteur, exemples) pour clore RP-026. | MAJ 2026-11-22 (RP-230) : ajout du 19e état préjudiciable Affaibli (−1 ec sur tous les jets, cumulable avec les autres états dont Étourdi ; résurrection §25.3 & séquelles §26.4), compendium 18→19 États + sync nav 19 pages & Appendice B."
+     "details": "Vérification humaine — livre_6.html#chap-24. Checklist : [ ] orthographe/typo FR ; [x] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [x] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici. MAJ 2026-11-07 — titre corrigé (chap. 26→24 après renumérotation ; 16→18 États, intitulé canon). | Note 2026-11-18 : anticipation sur §24.5 (Inconscient lâche immédiatement tout ce qu'il tient en main) et §24.6 (lien #sec-24-5 sur Assommer) posée lors de RP-025. | §24.1 FAIT (2026-11-20) : 18 états préjudiciables réordonnés du moins contraignant au plus contraignant (Canon Entravé → Agonisant), intro chap-24/bloc-00.md alignée sur « dix-huit états ». Scission d'À terre en Accroupi et À terre (allongé) + sync de 69 infobulles À Terre dans Livres I–VI. Séparation Paniqué (fuite 6 cases 1d8, parade −2, pièce O27 renommée dans Livre III) et Agonisant (Agonie critique au début de chaque tour + Dernier Souffle, stabilisation Premiers Soins Diff 6). Nettoyage rédactionnel de Ralenti, Immobilisé, Sonné (tombe immédiatement À Terre, parade −2, harmonisé avec Livre V §20.2) et Paralysé (Défense Passive imposée), durées uniformisées (« Variable selon les circonstances. »). Ajouts : Assourdi, Somnolent (3 phases 24 h / 48 h / 72 h+, test toutes les 6 h et fin de combat), Ligoté, Surpris (règle d'ouverture Livre V §20). Ivre / Intoxiqué reporté vers RP-208 ; propriétés d'armes (Arme de jet, etc.) reportées vers RP-209. Anticipations déjà posées sur §24.3 (Affamé/Assoiffé, RP-213) et §24.4 (durées + Dissimulé / Caché, RP-213). | §24.2 FAIT & retrait ancien §24.3 (2026-11-21, RP-214) : (1) Intro §24.2 (chap-24/bloc-02.md) pose la règle commune des dégâts résiduels (toujours posés avec un score de départ ; au début du tour de la victime avant la recharge des PA, elle subit ce score — armure et boucliers ignorés sauf exception — puis le score baisse de 1 jusqu'à 0). (2) Purge des valeurs par défaut (« sans valeur posée »), des spécialisations dans le core (Frappe Jugulaire, Homéostasie→magie curative, Hémorragie Profonde) et des mentions « résine de Mina » / « Seringue seule : non » en §24.2. (3) Colonne centrale renommée Particularité (donnees/tableaux/mecaniques) avec une particularité propre par état : Saignement (ne baisse pas au tour suivant après Course, Charge ou Essoufflement), Empoisonné (Anti-soin : soins de dégâts reçus réduits de moitié ; dissipation par Antidote, Médecine Avancée matériel de chimie/apothicaire ou magie de purge), En Feu (un bouclier énergétique ou magique absorbe d'abord, armure et bouclier physique ignorés ; Action d'extinction au coût en PA égal au score résiduel courant), Asphyxie (−1 PA sur la réserve rechargée ; Rétablir la respiration en sortant du gaz/fumée, masque, rupture d'étranglement ou Premiers Soins 3 PA / magie curative pour dégager les voies obstruées). (4) Paragraphe Aggravation épuré en chap-24/bloc-04.md. (5) Synchronisation de §23.1 types_degats et des infobulles Saignement, Empoisonné, En Feu et Asphyxie dans Livres I, III, IV, V et VI. (6) Retrait de l'ancienne sous-section §24.3 Faim & Soif (couverte par Affamé/Assoiffé en §24.1) et décalage §24.4–§24.7 → §24.3–§24.6 + resynchronisation des ancres #sec-24-3..6 et renvois §24.4 dans Livres I, II, III, V et VI. | §24.3 FAIT — 1er check mécanique (2026-11-21, RP-215) : refonte des 7 états bénéfiques (Survolté, En transe, Rapide, Accéléré, scission Lévitation / En Vol en deux états distincts + sync infobulles Livre IV, annulation complète et mutuelle Accéléré ↔ Ralenti + sync Livre V, nettoyage rédactionnel, liaison Dissimulé / Caché ↔ Surpris §24.1 et Se cacher Livre V §21.4) + séparation sémantique Surpris (§24.1 pur) vs Tour d'Embuscade (Livre V §20 / Livre I §4.3, RP-204/RP-211). | §24.4 FAIT — 1er check mécanique (2026-11-21, RP-216) : Inconscient nettoyé (retrait du coût de ramassage, porté en Livre V §20.4 à 1 PA sur la case de l'objet ou une case adjacente ; phrase d'attaque reformulée sans forme interrogative) ; Souffrant explicité mécaniquement sans malus propre avec liens/tooltips canon (Choc Traumatique #sec-23-encaissement, point vital Livre V §22.1, pathologie grave §26.3, convalescence §25.2 et levée par tout soin actif §25.1) ; Mort nettoyé (retrait des exemples spécifiques rituel/défibrillation 10 tours → formulation générique spécialisations, technologies ou méthodes arcaniques + liens Seuil Létal #sec-23-2, Point de Miracle #sec-23-3 et Résurrection #chap-25 §25.3). | §24.5 FAIT — 1er check mécanique (2026-11-21, RP-217) : ancien §24.5 (Les Effets Spéciaux Déclenchés sur Épreuve, effets_epreuve) déplacé vers Livre V §20.4 (décalage Livre V §20.4–§20.8 → §20.5–§20.9 et renvois Livres II/III/V/VI ; révision mécanique suivie en RP-218) ; ancien §24.6 → §24.5 (Les 5 États des Objets & Équipements) validé RAS. 1er check & mécanique du chap. 24 (§24.1–§24.5) COMPLET — reste uniquement le QA final (orthographe/typo FR, ton lecteur, exemples) pour clore RP-026. | MAJ 2026-11-22 (RP-230) : ajout du 19e état préjudiciable Affaibli (−1 ec sur tous les jets, cumulable avec les autres états dont Étourdi ; résurrection §25.3 & séquelles §26.4), compendium 18→19 États + sync nav 19 pages & Appendice B. | MAJ 2026-11-22 (RP-231) : renvois Affaibli & Souffrant ré-aiguillés vers §25.4 (1er check & mécanique Livre VI COMPLET)."
     },
     {
      "id": "RP-027",
-     "title": "Relire chap. 25. Premiers Soins & Résurrection",
+     "title": "Relire chap. 25. Premiers Soins, Mort & Maladies",
      "epic": "Livre VI — Santé & États",
      "status": "in_progress",
      "priority": "high",
@@ -415,11 +415,11 @@
      "scale": null,
      "suggestedAsset": "livre_6.html#chap-25",
      "updated": "2026-11-22",
-     "details": "Vérification humaine — livre_6.html#chap-25. Checklist : [ ] orthographe/typo FR ; [x] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [x] exemples chiffrés rejoués ; [x] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici. | 1er check & mécanique FAIT (2026-11-22, RP-230) : §25.1 validé (3 PA, Diff 6 stabilisation, tout soin lève Souffrant). §25.2 refondu en « Convalescence & Repos Sûr » (de jour comme de nuit, délai anti-enchaînement de 12 h après fin du repos précédent ; barème 6 h de base / 8 h avec tours de garde ou veille de soignant / 10 h avec les deux ; définition des tours de garde = relais silencieux de 2 h ; retrait de « avec magie ou arcanotech » et définition mécanique de soignant = ≥ 1 entraînement Premiers Soins ou Médecine Avancée, ou sort/pouvoir de soin, veille de 2 h automatique sans jet pour ×2 dégâts effacés ; retrait de la parenthèse « forfait fixe » et de la précision superflue sur l'activation des dons ; correction de l'encadré recuperation_quotidienne : retrait de + Niveau d'Endurance et des points d'énergie arcanique, alignement §26.4 et fix CSS max-width: 100% pour les formules empilées). §25.3 conservé (Poids du Retour à la Vie, 10 − CON jours) et relié au nouvel état préjudiciable Affaibli (§24.1, 19e état, −1 ec sur tous les jets, cumulable avec Étourdi) + sync Appendice A, Appendice B et menus latéraux (19 pages). Reste uniquement le QA final (orthographe/typo FR, ton lecteur) pour clore RP-027."
+     "details": "Vérification humaine — livre_6.html#chap-25. Checklist : [ ] orthographe/typo FR ; [x] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [x] exemples chiffrés rejoués ; [x] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici. | 1er check & mécanique FAIT (2026-11-22, RP-230) : §25.1 validé (3 PA, Diff 6 stabilisation, tout soin lève Souffrant). §25.2 refondu en « Convalescence & Repos Sûr » (de jour comme de nuit, délai anti-enchaînement de 12 h après fin du repos précédent ; barème 6 h de base / 8 h avec tours de garde ou veille de soignant / 10 h avec les deux ; définition des tours de garde = relais silencieux de 2 h ; retrait de « avec magie ou arcanotech » et définition mécanique de soignant = ≥ 1 entraînement Premiers Soins ou Médecine Avancée, ou sort/pouvoir de soin, veille de 2 h automatique sans jet pour ×2 dégâts effacés ; retrait de la parenthèse « forfait fixe » et de la précision superflue sur l'activation des dons ; correction de l'encadré recuperation_quotidienne : retrait de + Niveau d'Endurance et des points d'énergie arcanique, alignement §26.4 et fix CSS max-width: 100% pour les formules empilées). §25.3 conservé (Poids du Retour à la Vie, 10 − CON jours) et relié au nouvel état préjudiciable Affaibli (§24.1, 19e état, −1 ec sur tous les jets, cumulable avec Étourdi) + sync Appendice A, Appendice B et menus latéraux (19 pages). Reste uniquement le QA final (orthographe/typo FR, ton lecteur) pour clore RP-027. | MAJ 2026-11-22 (RP-231) : ajout §25.4 Maladies & Pathologies (Bases du Joueur) suite au déplacement du générateur complet vers Livre XII §53. (1er check & mécanique Livre VI COMPLET)."
     },
     {
      "id": "RP-028",
-     "title": "Relire chap. 31. Nomenclature & Armes Métal",
+     "title": "Relire chap. 30. Nomenclature & Armes Métal",
      "epic": "Livre VII — Arsenal",
      "status": "todo",
      "priority": "medium",
@@ -429,12 +429,12 @@
      "primitive": "",
      "pos": null,
      "scale": null,
-     "suggestedAsset": "livre_8.html#chap-31",
-     "details": "Vérification humaine — livre_8.html#chap-30. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
+     "suggestedAsset": "livre_8.html#chap-30",
+     "details": "Vérification humaine — livre_8.html#chap-29. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
     },
     {
      "id": "RP-029",
-     "title": "Relire chap. 32. Épées Laser & Fusils Arcanotech",
+     "title": "Relire chap. 31. Épées Laser & Fusils Arcanotech",
      "epic": "Livre VII — Arsenal",
      "status": "todo",
      "priority": "medium",
@@ -444,12 +444,12 @@
      "primitive": "",
      "pos": null,
      "scale": null,
-     "suggestedAsset": "livre_8.html#chap-32",
-     "details": "Vérification humaine — livre_8.html#chap-31. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
+     "suggestedAsset": "livre_8.html#chap-31",
+     "details": "Vérification humaine — livre_8.html#chap-30. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
     },
     {
      "id": "RP-030",
-     "title": "Relire chap. 33. Blindages, Écrans & Pharmacopée",
+     "title": "Relire chap. 32. Blindages, Écrans & Pharmacopée",
      "epic": "Livre VII — Arsenal",
      "status": "todo",
      "priority": "medium",
@@ -459,12 +459,12 @@
      "primitive": "",
      "pos": null,
      "scale": null,
-     "suggestedAsset": "livre_8.html#chap-33",
-     "details": "Vérification humaine — livre_8.html#chap-32. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
+     "suggestedAsset": "livre_8.html#chap-32",
+     "details": "Vérification humaine — livre_8.html#chap-31. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
     },
     {
      "id": "RP-031",
-     "title": "Relire chap. 34. Créateur de Fiche PJ",
+     "title": "Relire chap. 33. Créateur de Fiche PJ",
      "epic": "Livre VIII — Outils Web",
      "status": "todo",
      "priority": "medium",
@@ -474,12 +474,12 @@
      "primitive": "",
      "pos": null,
      "scale": null,
-     "suggestedAsset": "livre_9.html#chap-34",
-     "details": "Vérification humaine — livre_9.html#chap-33. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici. MAJ 2026-11-07 — ancre réalignée (livre_9.html#chap-36→livre_9.html#chap-34 : l’ancre visait le mauvais outil)."
+     "suggestedAsset": "livre_9.html#chap-33",
+     "details": "Vérification humaine — livre_9.html#chap-32. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici. MAJ 2026-11-07 — ancre réalignée (livre_9.html#chap-35→livre_9.html#chap-33 : l’ancre visait le mauvais outil)."
     },
     {
      "id": "RP-032",
-     "title": "Relire chap. 35. Atelier de Sorts (XP=PA)",
+     "title": "Relire chap. 34. Atelier de Sorts (XP=PA)",
      "epic": "Livre VIII — Outils Web",
      "status": "todo",
      "priority": "medium",
@@ -489,12 +489,12 @@
      "primitive": "",
      "pos": null,
      "scale": null,
-     "suggestedAsset": "livre_9.html#chap-35",
-     "details": "Vérification humaine — livre_9.html#chap-34. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici. MAJ 2026-11-07 — ancre réalignée (livre_9.html#chap-37→livre_9.html#chap-35 : l’ancre visait le mauvais outil)."
+     "suggestedAsset": "livre_9.html#chap-34",
+     "details": "Vérification humaine — livre_9.html#chap-33. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici. MAJ 2026-11-07 — ancre réalignée (livre_9.html#chap-36→livre_9.html#chap-34 : l’ancre visait le mauvais outil)."
     },
     {
      "id": "RP-033",
-     "title": "Relire chap. 36. Lanceur Polyédrique & Critiques",
+     "title": "Relire chap. 35. Lanceur Polyédrique & Critiques",
      "epic": "Livre VIII — Outils Web",
      "status": "todo",
      "priority": "medium",
@@ -504,12 +504,12 @@
      "primitive": "",
      "pos": null,
      "scale": null,
-     "suggestedAsset": "livre_9.html#chap-36",
-     "details": "Vérification humaine — livre_9.html#chap-35. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici. MAJ 2026-11-07 — ancre réalignée (livre_9.html#chap-38→livre_9.html#chap-36 : l’ancre visait le mauvais outil)."
+     "suggestedAsset": "livre_9.html#chap-35",
+     "details": "Vérification humaine — livre_9.html#chap-34. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici. MAJ 2026-11-07 — ancre réalignée (livre_9.html#chap-37→livre_9.html#chap-35 : l’ancre visait le mauvais outil)."
     },
     {
      "id": "RP-034",
-     "title": "Relire chap. 37. Résolveur de Challenges",
+     "title": "Relire chap. 36. Résolveur de Challenges",
      "epic": "Livre VIII — Outils Web",
      "status": "todo",
      "priority": "medium",
@@ -519,12 +519,12 @@
      "primitive": "",
      "pos": null,
      "scale": null,
-     "suggestedAsset": "livre_9.html#chap-37",
-     "details": "Vérification humaine — livre_9.html#chap-36. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici. MAJ 2026-11-07 — ancre réalignée (livre_9.html#chap-39→livre_9.html#chap-37 : l’ancre visait le mauvais outil)."
+     "suggestedAsset": "livre_9.html#chap-36",
+     "details": "Vérification humaine — livre_9.html#chap-35. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici. MAJ 2026-11-07 — ancre réalignée (livre_9.html#chap-38→livre_9.html#chap-36 : l’ancre visait le mauvais outil)."
     },
     {
      "id": "RP-035",
-     "title": "Relire chap. 38. Simulateur de Chronotrames",
+     "title": "Relire chap. 37. Simulateur de Chronotrames",
      "epic": "Livre VIII — Outils Web",
      "status": "todo",
      "priority": "medium",
@@ -534,12 +534,12 @@
      "primitive": "",
      "pos": null,
      "scale": null,
-     "suggestedAsset": "livre_9.html#chap-38",
-     "details": "Vérification humaine — livre_9.html#chap-37. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
+     "suggestedAsset": "livre_9.html#chap-37",
+     "details": "Vérification humaine — livre_9.html#chap-36. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
     },
     {
      "id": "RP-036",
-     "title": "Relire chap. 40. Fleuve du Temps & Causalité",
+     "title": "Relire chap. 39. Fleuve du Temps & Causalité",
      "epic": "Livre IX — Temps & MJ",
      "status": "todo",
      "priority": "medium",
@@ -549,12 +549,12 @@
      "primitive": "",
      "pos": null,
      "scale": null,
-     "suggestedAsset": "livre_10.html#chap-40",
-     "details": "Vérification humaine — livre_10.html#chap-38. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
+     "suggestedAsset": "livre_10.html#chap-39",
+     "details": "Vérification humaine — livre_10.html#chap-37. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
     },
     {
      "id": "RP-037",
-     "title": "Relire chap. 41. Topologie des Chronotrames",
+     "title": "Relire chap. 40. Topologie des Chronotrames",
      "epic": "Livre IX — Temps & MJ",
      "status": "todo",
      "priority": "medium",
@@ -564,12 +564,12 @@
      "primitive": "",
      "pos": null,
      "scale": null,
-     "suggestedAsset": "livre_10.html#chap-41",
-     "details": "Vérification humaine — livre_10.html#chap-39. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
+     "suggestedAsset": "livre_10.html#chap-40",
+     "details": "Vérification humaine — livre_10.html#chap-38. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
     },
     {
      "id": "RP-038",
-     "title": "Relire chap. 42. Clairsentience (8 Échelons)",
+     "title": "Relire chap. 41. Clairsentience (8 Échelons)",
      "epic": "Livre IX — Temps & MJ",
      "status": "todo",
      "priority": "medium",
@@ -579,12 +579,12 @@
      "primitive": "",
      "pos": null,
      "scale": null,
-     "suggestedAsset": "livre_10.html#chap-42",
-     "details": "Vérification humaine — livre_10.html#chap-40. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
+     "suggestedAsset": "livre_10.html#chap-41",
+     "details": "Vérification humaine — livre_10.html#chap-39. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
     },
     {
      "id": "RP-039",
-     "title": "Relire chap. 43. Mécaniques Chronales en Jeu",
+     "title": "Relire chap. 42. Mécaniques Chronales en Jeu",
      "epic": "Livre IX — Temps & MJ",
      "status": "todo",
      "priority": "medium",
@@ -594,12 +594,12 @@
      "primitive": "",
      "pos": null,
      "scale": null,
-     "suggestedAsset": "livre_10.html#chap-43",
-     "details": "Vérification humaine — livre_10.html#chap-41. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
+     "suggestedAsset": "livre_10.html#chap-42",
+     "details": "Vérification humaine — livre_10.html#chap-40. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
     },
     {
      "id": "RP-040",
-     "title": "Relire chap. 44. Univers & 36 Élianes",
+     "title": "Relire chap. 43. Univers & 36 Élianes",
      "epic": "Livre X — Atlas",
      "status": "todo",
      "priority": "low",
@@ -609,12 +609,12 @@
      "primitive": "",
      "pos": null,
      "scale": null,
-     "suggestedAsset": "livre_11.html#chap-44",
-     "details": "Vérification humaine — livre_11.html#chap-42. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
+     "suggestedAsset": "livre_11.html#chap-43",
+     "details": "Vérification humaine — livre_11.html#chap-41. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
     },
     {
      "id": "RP-041",
-     "title": "Relire chap. 45. Galaxies & Systèmes",
+     "title": "Relire chap. 44. Galaxies & Systèmes",
      "epic": "Livre X — Atlas",
      "status": "todo",
      "priority": "low",
@@ -624,12 +624,12 @@
      "primitive": "",
      "pos": null,
      "scale": null,
-     "suggestedAsset": "livre_11.html#chap-45",
-     "details": "Vérification humaine — livre_11.html#chap-43. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
+     "suggestedAsset": "livre_11.html#chap-44",
+     "details": "Vérification humaine — livre_11.html#chap-42. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
     },
     {
      "id": "RP-042",
-     "title": "Relire chap. 46. Planètes & Vaisseaux",
+     "title": "Relire chap. 45. Planètes & Vaisseaux",
      "epic": "Livre X — Atlas",
      "status": "todo",
      "priority": "low",
@@ -639,12 +639,12 @@
      "primitive": "",
      "pos": null,
      "scale": null,
-     "suggestedAsset": "livre_11.html#chap-46",
-     "details": "Vérification humaine — livre_11.html#chap-44. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
+     "suggestedAsset": "livre_11.html#chap-45",
+     "details": "Vérification humaine — livre_11.html#chap-43. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
     },
     {
      "id": "RP-043",
-     "title": "Relire chap. 47. Atlas des Continents",
+     "title": "Relire chap. 46. Atlas des Continents",
      "epic": "Livre X — Atlas",
      "status": "todo",
      "priority": "low",
@@ -654,12 +654,12 @@
      "primitive": "",
      "pos": null,
      "scale": null,
-     "suggestedAsset": "livre_11.html#chap-47",
-     "details": "Vérification humaine — livre_11.html#chap-45. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
+     "suggestedAsset": "livre_11.html#chap-46",
+     "details": "Vérification humaine — livre_11.html#chap-44. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
     },
     {
      "id": "RP-044",
-     "title": "Relire chap. 48. Cités & Points d'Intérêt",
+     "title": "Relire chap. 47. Cités & Points d'Intérêt",
      "epic": "Livre X — Atlas",
      "status": "todo",
      "priority": "low",
@@ -669,12 +669,12 @@
      "primitive": "",
      "pos": null,
      "scale": null,
-     "suggestedAsset": "livre_11.html#chap-48",
-     "details": "Vérification humaine — livre_11.html#chap-46. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
+     "suggestedAsset": "livre_11.html#chap-47",
+     "details": "Vérification humaine — livre_11.html#chap-45. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
     },
     {
      "id": "RP-045",
-     "title": "Relire chap. 49. Typologie & Calibrage",
+     "title": "Relire chap. 48. Typologie & Calibrage",
      "epic": "Livre XI — Bestiaire",
      "status": "todo",
      "priority": "medium",
@@ -684,12 +684,12 @@
      "primitive": "",
      "pos": null,
      "scale": null,
-     "suggestedAsset": "livre_12.html#chap-49",
-     "details": "Vérification humaine — livre_12.html#chap-47. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
+     "suggestedAsset": "livre_12.html#chap-48",
+     "details": "Vérification humaine — livre_12.html#chap-46. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
     },
     {
      "id": "RP-046",
-     "title": "Relire chap. 50. Humanoïdes & Factions",
+     "title": "Relire chap. 49. Humanoïdes & Factions",
      "epic": "Livre XI — Bestiaire",
      "status": "todo",
      "priority": "medium",
@@ -699,12 +699,12 @@
      "primitive": "",
      "pos": null,
      "scale": null,
-     "suggestedAsset": "livre_12.html#chap-50",
-     "details": "Vérification humaine — livre_12.html#chap-48. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
+     "suggestedAsset": "livre_12.html#chap-49",
+     "details": "Vérification humaine — livre_12.html#chap-47. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
     },
     {
      "id": "RP-047",
-     "title": "Relire chap. 51. Faune & Monstres d'Hybris",
+     "title": "Relire chap. 50. Faune & Monstres d'Hybris",
      "epic": "Livre XI — Bestiaire",
      "status": "todo",
      "priority": "medium",
@@ -714,12 +714,12 @@
      "primitive": "",
      "pos": null,
      "scale": null,
-     "suggestedAsset": "livre_12.html#chap-51",
-     "details": "Vérification humaine — livre_12.html#chap-49. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
+     "suggestedAsset": "livre_12.html#chap-50",
+     "details": "Vérification humaine — livre_12.html#chap-48. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
     },
     {
      "id": "RP-048",
-     "title": "Relire chap. 52. Entités & Disciples",
+     "title": "Relire chap. 51. Entités & Disciples",
      "epic": "Livre XI — Bestiaire",
      "status": "todo",
      "priority": "medium",
@@ -729,12 +729,12 @@
      "primitive": "",
      "pos": null,
      "scale": null,
-     "suggestedAsset": "livre_12.html#chap-52",
-     "details": "Vérification humaine — livre_12.html#chap-50. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
+     "suggestedAsset": "livre_12.html#chap-51",
+     "details": "Vérification humaine — livre_12.html#chap-49. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
     },
     {
      "id": "RP-049",
-     "title": "Relire chap. 53. Automates & Cybernétique",
+     "title": "Relire chap. 52. Automates & Cybernétique",
      "epic": "Livre XI — Bestiaire",
      "status": "todo",
      "priority": "medium",
@@ -744,12 +744,12 @@
      "primitive": "",
      "pos": null,
      "scale": null,
-     "suggestedAsset": "livre_12.html#chap-53",
-     "details": "Vérification humaine — livre_12.html#chap-51. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
+     "suggestedAsset": "livre_12.html#chap-52",
+     "details": "Vérification humaine — livre_12.html#chap-50. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
     },
     {
      "id": "RP-050",
-     "title": "Relire chap. 27. Principes & Procédure (Étape 2)",
+     "title": "Relire chap. 26. Principes & Procédure (Étape 2)",
      "epic": "Livre VII — Historiques",
      "status": "todo",
      "priority": "high",
@@ -759,12 +759,12 @@
      "primitive": "",
      "pos": null,
      "scale": null,
-     "suggestedAsset": "livre_7.html#chap-27",
-     "details": "Vérification humaine — livre_7.html#chap-26. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (modificateurs +2 au total, anti-cumul, attaches, pas de palier/PA/dégâts) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici. MAJ 2026-11-07 — titre corrigé (chap. 29→27 après renumérotation ; le chap. 29 actuel = Métiers, couvert par RP-052)."
+     "suggestedAsset": "livre_7.html#chap-26",
+     "details": "Vérification humaine — livre_7.html#chap-26. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (modificateurs +2 au total, anti-cumul, attaches, pas de palier/PA/dégâts) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici. MAJ 2026-11-07 — titre corrigé (chap. 28→27 après renumérotation ; le chap. 28 actuel = Métiers, couvert par RP-052)."
     },
     {
      "id": "RP-051",
-     "title": "Relire chap. 28. Enfances : 6 Milieux (d6)",
+     "title": "Relire chap. 27. Enfances : 6 Milieux (d6)",
      "epic": "Livre VII — Historiques",
      "status": "todo",
      "priority": "medium",
@@ -774,12 +774,12 @@
      "primitive": "",
      "pos": null,
      "scale": null,
-     "suggestedAsset": "livre_7.html#chap-28",
-     "details": "Vérification humaine — livre_7.html#chap-27. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (modificateurs +2 au total, anti-cumul, attaches, pas de palier/PA/dégâts) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
+     "suggestedAsset": "livre_7.html#chap-27",
+     "details": "Vérification humaine — livre_7.html#chap-26. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (modificateurs +2 au total, anti-cumul, attaches, pas de palier/PA/dégâts) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
     },
     {
      "id": "RP-052",
-     "title": "Relire chap. 29. Métiers : 12 Parcours (d12)",
+     "title": "Relire chap. 28. Métiers : 12 Parcours (d12)",
      "epic": "Livre VII — Historiques",
      "status": "todo",
      "priority": "high",
@@ -789,12 +789,12 @@
      "primitive": "",
      "pos": null,
      "scale": null,
-     "suggestedAsset": "livre_7.html#chap-29",
-     "details": "Vérification humaine — livre_7.html#chap-28. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (modificateurs +2 au total, anti-cumul, attaches, pas de palier/PA/dégâts) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
+     "suggestedAsset": "livre_7.html#chap-28",
+     "details": "Vérification humaine — livre_7.html#chap-27. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (modificateurs +2 au total, anti-cumul, attaches, pas de palier/PA/dégâts) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
     },
     {
      "id": "RP-053",
-     "title": "Relire chap. 30. Événement Marquant & Ancrage",
+     "title": "Relire chap. 29. Événement Marquant & Ancrage",
      "epic": "Livre VII — Historiques",
      "status": "todo",
      "priority": "medium",
@@ -804,14 +804,14 @@
      "primitive": "",
      "pos": null,
      "scale": null,
-     "suggestedAsset": "livre_7.html#chap-30",
-     "details": "Vérification humaine — livre_7.html#chap-29. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (modificateurs +2 au total, anti-cumul, attaches, pas de palier/PA/dégâts) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
+     "suggestedAsset": "livre_7.html#chap-29",
+     "details": "Vérification humaine — livre_7.html#chap-28. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (modificateurs +2 au total, anti-cumul, attaches, pas de palier/PA/dégâts) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
     },
     {
      "id": "RP-054",
-     "title": "Relire chap. 26. Générateur de Pathologies",
-     "epic": "Livre VI — Santé & États",
-     "status": "todo",
+     "title": "Relire chap. 53. Générateur de Pathologies",
+     "epic": "Livre XI — Bestiaire",
+     "status": "in_progress",
      "priority": "high",
      "order": 7,
      "scene": "",
@@ -819,8 +819,9 @@
      "primitive": "",
      "pos": null,
      "scale": null,
-     "suggestedAsset": "livre_6.html#chap-26",
-     "details": "Vérification humaine — livre_6.html#chap-25. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
+     "suggestedAsset": "livre_12.html#chap-53",
+     "details": "Vérification humaine — livre_12.html#chap-53. Checklist : [ ] orthographe/typo FR ; [x] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [x] exemples chiffrés rejoués ; [x] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici. | 1er check & mécanique FAIT (2026-11-22, RP-231) : refonte modulaire complète du générateur de pathologies et déplacement Livre VI §26 → Livre XII §53 (synthèse bases joueur en Livre VI §25.4) — Indice de Gravité (IG, Classes I–V : 1–8 / 9–16 / 17–26 / 27–37 / 38+), Virulence indépendante recalibrée sur Livre II §7.1 (3 / 5 / 7 / 10 / 14 / 18+), séparation Incubation vs Cadence d'évolution, 1 à 6 stades modulaires hybrides (Mode Remplacement par défaut + Mode Cumulatif / Dégénératif optionnel +2/+3 IG), catalogue d'effets en 5 paliers (Léger à Terminal) avec distinction dégâts pathologiques / résiduels de scène et Crise d'Agonie, 12 modulateurs & issues, épreuve immunitaire gratuite 0 PA (sans mise libre de PA hors combat, Essoufflement volontaire autorisé), diagnostic/traitement détaillés (marge 3+ = rémission immédiate), retrait des anglicismes (DoT, tick, mundane) et références isolées, 4 exemples assemblés (IG 4 / 16 / 24 / 45) et synchro Appendice A & Appendice B. Reste uniquement le QA final (orthographe/typo FR, ton lecteur) pour clore RP-054. (1er check & mécanique Livre VI COMPLET).",
+     "updated": "2026-11-22"
     },
     {
      "id": "RP-055",
@@ -1074,7 +1075,7 @@
      "primitive": "",
      "pos": null,
      "scale": null,
-     "suggestedAsset": "livre_6.html#chap-26",
+     "suggestedAsset": "livre_6.html#chap-24",
      "details": "FAIT 2026-11-03 — Aveugle défini au compendium §26.1 : entrée mecaniques (etats_prejudiciables 9→10 + etats_par_nom) avec malus Unity exacts (-4 distance, -2 mêlée/défense, vision nulle), durées (flash 1 tour / 2 si ≤3 cases, zones M18/CM-6 2 tours ou sortie, Masque Filtrant immunise) + prose MJ en chap-26/bloc-00 + lien §8.6. Tips §8.6 finalisés (mention RP-071 retirée). Don B Derek inchangé (cohérent via §8.6). build+check 6/2 OK, liens OK."
     },
     {
@@ -1884,12 +1885,12 @@
      "primitive": "",
      "pos": null,
      "scale": null,
-     "suggestedAsset": "livre_6.html#chap-26",
+     "suggestedAsset": "livre_6.html#chap-24",
      "details": "FAIT 2026-11-04 — §26.3 créé (sec-26-3) : besoins 2 L + 1 ration / 24 h (Cléien Frugalité : 1 L + 1 ration/2 j, +2 CON vs privation, Livre I §2.2) ; Privation auto à 24 h sans eau puis épreuve CON Diff 4+2/niveau (max 3 : −1/−2/−2+Ralenti+2 PV directs/j, tick aube, ignore armure/bouclier) ; Affamé auto à 48 h sans ration puis épreuve CON Diff 3+1/niveau (max 3 : −1/−2/−2+nuit÷2+1 PV direct/j) ; cumul Affamé+Privation ; soin = eau/nourriture seule (2 L/1 ration = −1 niveau, 24 h hydraté / 48 h nourri = levé) ; nuit §27.2 branchée (sans eau = 0 PV + Essoufflement conservé, sans ration = moitié) ; 2 exemples chiffrés (Roger CON 4 d4, Kader Cléien CON 3 d4) ; rule-refs §§25.2/26/27.2 + Livres I/II/III. Table états +11 lignes (Affamé, Privation, donnees+mecaniques+par_nom). Fichiers : chap-26/bloc-04.md, chap-27/bloc-00.md. Checks : build_livres 6 OK, nav OK, liens OK (266 textes). Suivi 2026-11-04 — suppression bis/ter : chap-26 renuméroté 26.1–26.7 (DoT §26.2, Faim §26.3, Bénéfiques §26.4, Vitaux §26.5, Effets §26.6, Objets §26.7, ~70 refs MAJ), création en 6 étapes (1bis→2, 2→3, 3→4, 4→5, 5→6 + sec-etape-6), liens morts §25.1bis réparés (→§26.2), 16→18 États, RP-050 '(Étape 2)'. Checks : build 11/11 + nav + liens verts."
     },
     {
      "id": "RP-126",
-     "title": "Définir l'encombrement des armures (Livre VIII §33.1)",
+     "title": "Définir l'encombrement des armures (Livre VIII §32.1)",
      "epic": "Livre VIII — Arsenal",
      "status": "done",
      "priority": "medium",
@@ -1899,7 +1900,7 @@
      "primitive": "",
      "pos": null,
      "scale": null,
-     "suggestedAsset": "livre_8.html#chap-33",
+     "suggestedAsset": "livre_8.html#chap-32",
      "details": "FAIT 2026-11-03 — Encombrement défini au §35.1 (titre disait §34.1, blindages au chap. 35) : 0/1/2 (Légères et champs/boucliers 0 ; Lourdes Prot 3-5 et 7 Optimisée 1 ; Prot 6-7 2), +X PA par action, mises aveugles et cumul Milkor -1 exclus, Ralenti double le total, don Mikyai C ignore 1 point. Barème ancré Unity ApCostModifier + RD-078. Fichiers : bloc-00.md (règle + exemples), lien rule-ref don Mikyai C vers livre_8.html#chap-35. Cartes armures inchangées. Note : commentaires Unity Fate.cs/Actions.cs citent encore §33.1/§33.2 (obsolète, hors scope RP). Preuves : check 8 OK (13 textes), nav OK, liens OK (1-55)."
     },
     {
@@ -1994,7 +1995,7 @@
     },
     {
      "id": "RP-133",
-     "title": "Relire chap. 39. Fabrique de Techniques (outil)",
+     "title": "Relire chap. 38. Fabrique de Techniques (outil)",
      "epic": "Livre IX — Outils Web",
      "status": "todo",
      "priority": "medium",
@@ -2004,8 +2005,8 @@
      "primitive": "",
      "pos": null,
      "scale": null,
-     "suggestedAsset": "livre_9.html#chap-39",
-     "details": "Vérification humaine — livre_9.html#chap-39. Seul chapitre du Livre IX sans tâche (RP-031..035 couvrent 36-40, constat 2026-11-05). Checklist : [ ] orthographe/typo FR ; [ ] coûts/effets conformes data/livre_3.json (43 pièces, RP-130) ; [ ] exemples rejoués dans l'outil ; [ ] liens + ancres OK. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici. MAJ 2026-11-07 — titre corrigé (chap. 41→39 : l’outil vit en chap. 39, page statique livre_9)."
+     "suggestedAsset": "livre_9.html#chap-38",
+     "details": "Vérification humaine — livre_9.html#chap-38. Seul chapitre du Livre IX sans tâche (RP-031..035 couvrent 36-40, constat 2026-11-05). Checklist : [ ] orthographe/typo FR ; [ ] coûts/effets conformes data/livre_3.json (43 pièces, RP-130) ; [ ] exemples rejoués dans l'outil ; [ ] liens + ancres OK. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici. MAJ 2026-11-07 — titre corrigé (chap. 40→39 : l’outil vit en chap. 38, page statique livre_9)."
     },
     {
      "id": "RP-134",
@@ -2079,7 +2080,7 @@
      "primitive": "",
      "pos": null,
      "scale": null,
-     "suggestedAsset": "livre_12.html#chap-50",
+     "suggestedAsset": "livre_12.html#chap-49",
      "details": "Suite DIVERGENCES RP-097 notées sans toucher : V/O Bandits #1 6/5 et #2 6/3 (livre) vs 3/3 (Unity, #3 à 3/3 incohérent) ; PA livre vs formule (Bandit#2 7 vs 8, Bête 13 vs ?). Décision MJ : fixer les stats canon livre, corriger content/livre_12 + data/livre_12.json, ouvrir tâche miroir Unity. DONE = stats canon fixées + RP-097 annoté."
     },
     {
@@ -2155,7 +2156,8 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_6.html",
-     "details": "Comme RP-063/064, pour le Livre VI (chap. 23-26 ; RP-025/026/027/054 + RP-125 bouffe/privation à intégrer). Checklist : [ ] ton MJ accueillant (phrases courtes, 2e personne, exemples concrets, modele = preface index.html) ; [ ] aucun jargon sans explication ; [ ] mecaniques strictement intactes ; [ ] orthographe/typo FR ; [ ] liens + ancres OK. DONE = relu + reformule — ajouter date + initiales ici. MAJ 2026-11-07 — plage corrigée (chap. 23-28→chap. 23-26 après renumérotation)."
+     "details": "Comme RP-063/064, pour le Livre VI (chap. 23-25 ; RP-025/026/027 + RP-125 bouffe/privation ; ex-RP-054 déplacé en Livre XII chap. 53). Checklist : [ ] ton MJ accueillant (phrases courtes, 2e personne, exemples concrets, modele = preface index.html) ; [ ] aucun jargon sans explication ; [ ] mecaniques strictement intactes ; [ ] orthographe/typo FR ; [ ] liens + ancres OK. DONE = relu + reformule — ajouter date + initiales ici. MAJ 2026-11-07 — plage corrigée (chap. 23-28→chap. 23-26 après renumérotation). | MAJ 2026-11-22 — 1er check & mécanique Livre VI COMPLET (chap. 23 RP-025 done, chap. 24 RP-026 / RP-213..217 / RP-230, chap. 25 dont §25.4 bases maladies RP-027 / RP-230 / RP-231 ; générateur complet déplacé en Livre XII §53 RP-054 / RP-231) ; plage recalée chap. 23-25. Prêt pour QA finale.",
+     "updated": "2026-11-22"
     },
     {
      "id": "RP-144",
@@ -2170,7 +2172,7 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_7.html",
-     "details": "Comme RP-063/064, pour le Livre VII Historiques (chap. 27-30 ; RP-050..053). Checklist : [ ] ton MJ accueillant (phrases courtes, 2e personne, exemples concrets, modele = preface index.html) ; [ ] aucun jargon sans explication ; [ ] mecaniques strictement intactes ; [ ] orthographe/typo FR ; [ ] liens + ancres OK. DONE = relu + reformule — ajouter date + initiales ici. MAJ 2026-11-07 — plage corrigée (chap. 27-32→chap. 27-30 après renumérotation)."
+     "details": "Comme RP-063/064, pour le Livre VII Historiques (chap. 26-29 ; RP-050..053). Checklist : [ ] ton MJ accueillant (phrases courtes, 2e personne, exemples concrets, modele = preface index.html) ; [ ] aucun jargon sans explication ; [ ] mecaniques strictement intactes ; [ ] orthographe/typo FR ; [ ] liens + ancres OK. DONE = relu + reformule — ajouter date + initiales ici. MAJ 2026-11-07 — plage corrigée (chap. 26-32→chap. 26-29 après renumérotation)."
     },
     {
      "id": "RP-145",
@@ -2185,7 +2187,7 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_8.html",
-     "details": "Comme RP-063/064, pour l'Arsenal (chap. 31-33 ; RP-028..030 + RP-126 encombrement à intégrer). Checklist : [ ] ton MJ accueillant (phrases courtes, 2e personne, exemples concrets, modele = preface index.html) ; [ ] aucun jargon sans explication ; [ ] mecaniques strictement intactes ; [ ] orthographe/typo FR ; [ ] liens + ancres OK. DONE = relu + reformule — ajouter date + initiales ici. MAJ 2026-11-07 — plage corrigée (chap. 31-35→chap. 31-33 après renumérotation)."
+     "details": "Comme RP-063/064, pour l'Arsenal (chap. 30-32 ; RP-028..030 + RP-126 encombrement à intégrer). Checklist : [ ] ton MJ accueillant (phrases courtes, 2e personne, exemples concrets, modele = preface index.html) ; [ ] aucun jargon sans explication ; [ ] mecaniques strictement intactes ; [ ] orthographe/typo FR ; [ ] liens + ancres OK. DONE = relu + reformule — ajouter date + initiales ici. MAJ 2026-11-07 — plage corrigée (chap. 30-35→chap. 30-32 après renumérotation)."
     },
     {
      "id": "RP-146",
@@ -2200,7 +2202,7 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_9.html",
-     "details": "Comme RP-063/064, pour les Outils Web (chap. 34-41 ; RP-031..035 + RP-133). Textes d'aide/placeholders des outils inclus. Checklist : [ ] ton MJ accueillant (phrases courtes, 2e personne, exemples concrets, modele = preface index.html) ; [ ] aucun jargon sans explication ; [ ] mecaniques strictement intactes ; [ ] orthographe/typo FR ; [ ] liens + ancres OK. DONE = relu + reformule — ajouter date + initiales ici."
+     "details": "Comme RP-063/064, pour les Outils Web (chap. 33-38 ; RP-031..035 + RP-133). Textes d'aide/placeholders des outils inclus. Checklist : [ ] ton MJ accueillant (phrases courtes, 2e personne, exemples concrets, modele = preface index.html) ; [ ] aucun jargon sans explication ; [ ] mecaniques strictement intactes ; [ ] orthographe/typo FR ; [ ] liens + ancres OK. DONE = relu + reformule — ajouter date + initiales ici."
     },
     {
      "id": "RP-147",
@@ -2215,7 +2217,7 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_10.html",
-     "details": "Comme RP-063/064, pour Temps & MJ (chap. 40-45 ; RP-036..039). Checklist : [ ] ton MJ accueillant (phrases courtes, 2e personne, exemples concrets, modele = preface index.html) ; [ ] aucun jargon sans explication ; [ ] mecaniques strictement intactes ; [ ] orthographe/typo FR ; [ ] liens + ancres OK. DONE = relu + reformule — ajouter date + initiales ici."
+     "details": "Comme RP-063/064, pour Temps & MJ (chap. 39-42 ; RP-036..039). Checklist : [ ] ton MJ accueillant (phrases courtes, 2e personne, exemples concrets, modele = preface index.html) ; [ ] aucun jargon sans explication ; [ ] mecaniques strictement intactes ; [ ] orthographe/typo FR ; [ ] liens + ancres OK. DONE = relu + reformule — ajouter date + initiales ici."
     },
     {
      "id": "RP-148",
@@ -2230,7 +2232,7 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_11.html",
-     "details": "Comme RP-063/064, pour l'Atlas (chap. 44-50 ; RP-040..044). Checklist : [ ] ton MJ accueillant (phrases courtes, 2e personne, exemples concrets, modele = preface index.html) ; [ ] aucun jargon sans explication ; [ ] mecaniques strictement intactes ; [ ] orthographe/typo FR ; [ ] liens + ancres OK. DONE = relu + reformule — ajouter date + initiales ici."
+     "details": "Comme RP-063/064, pour l'Atlas (chap. 43-47 ; RP-040..044). Checklist : [ ] ton MJ accueillant (phrases courtes, 2e personne, exemples concrets, modele = preface index.html) ; [ ] aucun jargon sans explication ; [ ] mecaniques strictement intactes ; [ ] orthographe/typo FR ; [ ] liens + ancres OK. DONE = relu + reformule — ajouter date + initiales ici."
     },
     {
      "id": "RP-149",
@@ -2245,7 +2247,7 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_12.html",
-     "details": "Comme RP-063/064, pour le Bestiaire (chap. 49-55 ; RP-045..049 + stats RP-138 tranchées avant). Checklist : [ ] ton MJ accueillant (phrases courtes, 2e personne, exemples concrets, modele = preface index.html) ; [ ] aucun jargon sans explication ; [ ] mecaniques strictement intactes ; [ ] orthographe/typo FR ; [ ] liens + ancres OK. DONE = relu + reformule — ajouter date + initiales ici."
+     "details": "Comme RP-063/064, pour le Bestiaire (chap. 48-53 ; RP-045..049 + RP-054 + stats RP-138 tranchées avant). Checklist : [ ] ton MJ accueillant (phrases courtes, 2e personne, exemples concrets, modele = preface index.html) ; [ ] aucun jargon sans explication ; [ ] mecaniques strictement intactes ; [ ] orthographe/typo FR ; [ ] liens + ancres OK. DONE = relu + reformule — ajouter date + initiales ici."
     },
     {
      "id": "RP-150",
@@ -2276,7 +2278,7 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "data/kanban_rp.json",
-     "details": "Hygiène kanban (constat 2026-11-05) : epics relecture décalés d'un cran vs nav (RP-028..030 « Livre VII — Arsenal » = L.VIII ; RP-031..035 « Livre VIII — Outils » = L.IX ; RP-036..039 « Livre IX — Temps » = L.X ; RP-040..044 « Livre X — Atlas » = L.XI ; RP-045..049 « Livre XI — Bestiaire » = L.XII). Renommer vers les labels corrects (déjà utilisés par RP-093/094/095/096/097 et RP-133/138/145..149) + corriger RP-094 (« Livre IX = chap 33-38 » → outils = 36-41). Sans toucher aux statuts. DONE = epics cohérents nav."
+     "details": "Hygiène kanban (constat 2026-11-05) : epics relecture décalés d'un cran vs nav (RP-028..030 « Livre VII — Arsenal » = L.VIII ; RP-031..035 « Livre VIII — Outils » = L.IX ; RP-036..039 « Livre IX — Temps » = L.X ; RP-040..044 « Livre X — Atlas » = L.XI ; RP-045..049 « Livre XI — Bestiaire » = L.XII). Renommer vers les labels corrects (déjà utilisés par RP-093/094/095/096/097 et RP-133/138/145..149) + corriger RP-094 (« Livre IX = chap 32-38 » → outils = 36-41). Sans toucher aux statuts. DONE = epics cohérents nav."
     },
     {
      "id": "RP-152",
@@ -2531,7 +2533,7 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_10.html",
-     "details": "Comme RP-063/064, pour le Livre X (chap. 40-43 ; 1ers checks RP-036..039 à intégrer). PÉRIMÈTRE À DÉTERMINER (2026-11-07) : reformulation probable, arbitrage en attente. Checklist : [ ] ton MJ accueillant (phrases courtes, 2e personne, exemples concrets, modele = preface index.html) ; [ ] aucun jargon sans explication ; [ ] mecaniques strictement intactes ; [ ] orthographe/typo FR ; [ ] liens + ancres OK. DONE = relu + reformule — ajouter date + initiales ici."
+     "details": "Comme RP-063/064, pour le Livre X (chap. 39-43 ; 1ers checks RP-036..039 à intégrer). PÉRIMÈTRE À DÉTERMINER (2026-11-07) : reformulation probable, arbitrage en attente. Checklist : [ ] ton MJ accueillant (phrases courtes, 2e personne, exemples concrets, modele = preface index.html) ; [ ] aucun jargon sans explication ; [ ] mecaniques strictement intactes ; [ ] orthographe/typo FR ; [ ] liens + ancres OK. DONE = relu + reformule — ajouter date + initiales ici."
     },
     {
      "id": "RP-169",
@@ -2546,7 +2548,7 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_11.html",
-     "details": "Comme RP-063/064, pour le Livre XI (chap. 44-48 ; 1ers checks RP-040..044 à intégrer). PÉRIMÈTRE À DÉTERMINER (2026-11-07) : reformulation probable, arbitrage en attente. Checklist : [ ] ton MJ accueillant (phrases courtes, 2e personne, exemples concrets, modele = preface index.html) ; [ ] aucun jargon sans explication ; [ ] mecaniques strictement intactes ; [ ] orthographe/typo FR ; [ ] liens + ancres OK. DONE = relu + reformule — ajouter date + initiales ici."
+     "details": "Comme RP-063/064, pour le Livre XI (chap. 43-48 ; 1ers checks RP-040..044 à intégrer). PÉRIMÈTRE À DÉTERMINER (2026-11-07) : reformulation probable, arbitrage en attente. Checklist : [ ] ton MJ accueillant (phrases courtes, 2e personne, exemples concrets, modele = preface index.html) ; [ ] aucun jargon sans explication ; [ ] mecaniques strictement intactes ; [ ] orthographe/typo FR ; [ ] liens + ancres OK. DONE = relu + reformule — ajouter date + initiales ici."
     },
     {
      "id": "RP-170",
@@ -2561,7 +2563,7 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_12.html",
-     "details": "Comme RP-063/064, pour le Livre XII (chap. 49-53 ; 1ers checks RP-045..049 à intégrer). PÉRIMÈTRE À DÉTERMINER (2026-11-07) : reformulation probable, arbitrage en attente. Checklist : [ ] ton MJ accueillant (phrases courtes, 2e personne, exemples concrets, modele = preface index.html) ; [ ] aucun jargon sans explication ; [ ] mecaniques strictement intactes ; [ ] orthographe/typo FR ; [ ] liens + ancres OK. DONE = relu + reformule — ajouter date + initiales ici."
+     "details": "Comme RP-063/064, pour le Livre XII (chap. 48-53 ; 1ers checks RP-045..049 à intégrer). PÉRIMÈTRE À DÉTERMINER (2026-11-07) : reformulation probable, arbitrage en attente. Checklist : [ ] ton MJ accueillant (phrases courtes, 2e personne, exemples concrets, modele = preface index.html) ; [ ] aucun jargon sans explication ; [ ] mecaniques strictement intactes ; [ ] orthographe/typo FR ; [ ] liens + ancres OK. DONE = relu + reformule — ajouter date + initiales ici."
     },
     {
      "id": "RP-171",
@@ -2718,7 +2720,7 @@
      "scale": null,
      "suggestedAsset": "",
      "updated": "2026-11-10",
-     "details": "Remplacer 4 jets de Force brute par Athlétisme/Endurance; renvoyer Agripper à Lutte (§20.7) et Armure Lourde à Encombrement (§33.1). Fichiers: content/livre_3/sections/chap-12/, data/livre_3.json. (Audit sysRP 2026-11-10.)"
+     "details": "Remplacer 4 jets de Force brute par Athlétisme/Endurance; renvoyer Agripper à Lutte (§20.7) et Armure Lourde à Encombrement (§32.1). Fichiers: content/livre_3/sections/chap-12/, data/livre_3.json. (Audit sysRP 2026-11-10.)"
     },
     {
      "id": "RP-181",
@@ -3164,9 +3166,9 @@
      "primitive": "",
      "pos": null,
      "scale": null,
-     "suggestedAsset": "livre_6.html#chap-26",
-     "updated": "2026-11-20",
-     "details": "Concevoir une table générative de drogues, alcools, stimulants, stupéfiants et poisons complexes/altérants (sur le modèle du générateur de pathologies du Livre VI §26, relié à la pharmacopée Livre VIII §33.3) : nature de la substance, vecteur/dose, effets positifs et négatifs en vocabulaire système (bonus PA/+ec, malus de coordination/jugement, accoutumance, redescente, surdose, antidotes) et état dédié si nécessaire (Ivre / Intoxiqué retiré de §24.1 en attendant cette table ; Empoisonné en §24.2 reste la brique de combat pour les dégâts toxiques résiduels + anti-soin)."
+     "suggestedAsset": "livre_12.html#chap-53",
+     "updated": "2026-11-22",
+     "details": "Concevoir une table générative de drogues, alcools, stimulants, stupéfiants et poisons complexes/altérants (sur le modèle du générateur de pathologies du Livre XII §53, relié aux bases Livre VI §25.4 et à la pharmacopée Livre VIII §32.3) : nature de la substance, vecteur/dose, effets positifs et négatifs en vocabulaire système (bonus PA/+ec, malus de coordination/jugement, accoutumance, redescente, surdose, antidotes) et état dédié si nécessaire (Ivre / Intoxiqué retiré de §24.1 en attendant cette table ; Empoisonné en §24.2 reste la brique de combat pour les dégâts toxiques résiduels + anti-soin)."
     },
     {
      "id": "RP-209",
@@ -3180,9 +3182,9 @@
      "primitive": "",
      "pos": null,
      "scale": null,
-     "suggestedAsset": "livre_8.html#chap-31",
+     "suggestedAsset": "livre_8.html#chap-30",
      "updated": "2026-11-20",
-     "details": "Définir un système de propriétés d'armes dans le Livre VIII (§31–§32, en lien avec le code DLPH et les compétences Livre III) : ajouter la propriété « Arme de jet » (grenades, dagues/couteaux de lancer, javelots, hachettes, projectiles lancés à la main — portée de lancer, compétence associée, lien avec les malus d'Accroupi et À terre en Livre VI §24.1) ainsi que les autres propriétés tactiques nécessaires à l'arsenal (ex. Allonge, Silencieuse, Perforante, Zone, Dissimulable, Rechargement, Polyvalente, Non létale, etc.), puis catégoriser les armes existantes et ajouter d'éventuelles armes de jet dédiées."
+     "details": "Définir un système de propriétés d'armes dans le Livre VIII (§30–§31, en lien avec le code DLPH et les compétences Livre III) : ajouter la propriété « Arme de jet » (grenades, dagues/couteaux de lancer, javelots, hachettes, projectiles lancés à la main — portée de lancer, compétence associée, lien avec les malus d'Accroupi et À terre en Livre VI §24.1) ainsi que les autres propriétés tactiques nécessaires à l'arsenal (ex. Allonge, Silencieuse, Perforante, Zone, Dissimulable, Rechargement, Polyvalente, Non létale, etc.), puis catégoriser les armes existantes et ajouter d'éventuelles armes de jet dédiées."
     },
     {
      "id": "RP-210",
@@ -3404,7 +3406,7 @@
      "primitive": "",
      "pos": null,
      "scale": null,
-     "suggestedAsset": "livre_9.html#chap-34",
+     "suggestedAsset": "livre_9.html#chap-33",
      "updated": "2026-11-21",
      "details": "Rendre les outils Livre IX / fiche_pj.html / tables.html confortables au pouce : (1) agrandir les cibles tactiles (.stepper-btn >= 44×44px) ; (2) remplacer la popup 1180×940 de [data-popout] (codex.js) par un lien/onglet standard sur mobile ; (3) adapter le graphe nodal et le menu contextuel de la Fabrique (.fab-graph) au tactile ; (4) éviter les collisions entre #ktDockFab, #kdShareSel, bouton thème et clavier virtuel."
     },
@@ -3519,6 +3521,22 @@
      "suggestedAsset": "livre_6.html#chap-25",
      "updated": "2026-11-22",
      "details": "FAIT 2026-11-22 (1er check & mécanique chap. 25) — (1) §25.2 renommé « Convalescence & Repos Sûr » : utilisable de jour comme de nuit ; délai anti-enchaînement de 12 h depuis la fin du repos sûr précédent (à la 2e personne) ; barème 6 h (sans tour de garde ni veille) / 8 h (avec tours de garde ou veille de soignant) / 10 h (avec les deux) ; définition des tours de garde (relais silencieux de 2 h pour compléter 6 h de sommeil) ; retrait de « avec magie ou arcanotech » et définition mécanique de soignant (≥ 1 entraînement en Premiers Soins ou Médecine Avancée, ou sort/pouvoir de soin ; veille de 2 h automatique sans jet pour ×2 dégâts effacés) ; retrait de « (forfait fixe, pas de calcul) » et de la précision superflue sur l'activation des dons. (2) Encadré recuperation_quotidienne (livre_6.json donnees/mecaniques) & §26.4 : retrait de + Niveau d'Endurance et des points d'énergie arcanique, aligné sur CON dégâts par repos sûr (×2 avec veille), wide: true + fix css/style.css (.formula-box > .formula-math + .formula-desc { max-width: 100%; }). (3) Ajout du 19e état préjudiciable Affaibli (−1 ec sur tous les jets, cumulable avec Étourdi) en §24.1 ; §25.3 (Poids du Trépas, 10 − CON jours) conservé et relié à Affaibli (ainsi que séquelles §26.4 et Mort §24.4) ; compendium 18→19 États + sync Appendice A, Appendice B et 19 pages HTML (build_nav)."
+    },
+    {
+     "id": "RP-231",
+     "title": "Livre VI §25.4 & Livre XII §53 (1er check mécanique : Générateur modulaire de pathologies en L.XII, bases joueur en L.VI, décalage 27–53 → 26–52)",
+     "epic": "Livre VI — Santé & États",
+     "status": "done",
+     "priority": "high",
+     "order": 228,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "livre_12.html#chap-53",
+     "updated": "2026-11-22",
+     "details": "FAIT 2026-11-22 (1er check & mécanique pathologies + déplacement Livre VI → Livre XII) — (1) Refonte modulaire complète du Générateur de Pathologies : Indice de Gravité (IG, Classes I–V : Bénigne 1–8, Commune 9–16, Sévère 17–26, Critique 27–37, Fléau 38+), Virulence indépendante recalibrée sur Livre II §7.1 (3 / 5 / 7 / 10 / 14 / 18+), épreuve immunitaire gratuite 0 PA (sans mise libre de PA hors combat ; Essoufflement volontaire autorisé), 1 à 6 stades modulaires hybrides (Remplacement +0 IG / Cumulatif +2 ou +3 IG), catalogue d'effets en 5 paliers (Léger +1 à Terminal +5), séparation Incubation / Cadence, 12 modulateurs & issues, retrait des anglicismes (DoT, tick, mundane) et références isolées, 4 fiches exemples chiffrées (IG 4 / 16 / 24 / 45). (2) Déplacement du générateur complet côté MJ en Livre XII §53 (nouveau chapitre 53 après Automates §52), remplacement dans le Livre VI par la sous-section joueur §25.4 Maladies & Pathologies (Bases du Joueur), et renumérotation continue des chapitres 27–53 → 26–52 sur Livres VII–XII (total maintenu à 1–53). (3) Synchronisation Appendice A, Appendice B, menus latéraux (19 pages), atlas_mondes et Kanban RP."
     }
    ]
   }

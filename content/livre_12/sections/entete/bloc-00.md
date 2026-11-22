@@ -25,10 +25,11 @@ livre: 12
                         les lignes temporelles par Capricius — opère sous la <strong>même rigueur mathématique que les
                             héros</strong> : calcul dynamique des Points d'Action (PA), seuils d'encaissement
                         anatomique, malus d'essoufflement et ripostes en réaction. Ce compendium rassemble l'ensemble
-                        des profils martiaux, faunes indigènes et avatars d'annihilation du multivers.
+                        des profils martiaux, faunes indigènes et avatars d'annihilation du multivers, ainsi qu'un
+                        générateur modulaire de pathologies pour calibrer les menaces biologiques, arcaniques ou cybernétiques.
                     </p>
 
                     <hr class="doc-divider">
 
-                    <!-- ================= CHAPITRE 42 ================= -->
+                    <!-- ================= CHAPITRE 48 ================= -->
                     

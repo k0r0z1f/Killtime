@@ -114,7 +114,7 @@
     {
      "label": "Arsenal Métal L.VIII",
      "livre": 8,
-     "href": "livre_8.html#chap-31"
+     "href": "livre_8.html#chap-30"
     }
    ],
    "tags": [
@@ -176,7 +176,7 @@
     {
      "label": "Fusils Laser L.VIII",
      "livre": 8,
-     "href": "livre_8.html#chap-32"
+     "href": "livre_8.html#chap-31"
     }
    ],
    "tags": [
@@ -407,9 +407,9 @@
    "conditions": "Une grenade ciblée sur un ennemi exige qu'il soit visible ; un effet de zone aveugle reste envisageable contre une zone suspecte sans bonus (Livre V §21.4).",
    "modificateurs": "Effets de zone et couvert (§21.3) : moitié couvert réduit de −2 dégâts, trois-quarts couvert de −3, couvert total réduit de −4 et bloque les éclats. Contre-mesures : Mur Inébranlable (encaisse sans refoulement ni Déstabilisé), Barrière Cinétique (arrête projectiles et grenades).",
    "source": {
-    "label": "Livre VIII §32.3 & Livre V §21.3",
+    "label": "Livre VIII §31.3 & Livre V §21.3",
     "livre": 8,
-    "href": "livre_8.html#chap-32"
+    "href": "livre_8.html#chap-31"
    },
    "refs": [
     {
@@ -2150,9 +2150,9 @@
      "href": "livre_2.html#sec-8-4"
     },
     {
-     "label": "Encombrement L.VIII §33",
+     "label": "Encombrement L.VIII §32",
      "livre": 8,
-     "href": "livre_8.html#chap-33"
+     "href": "livre_8.html#chap-32"
     }
    ],
    "tags": [
@@ -2954,12 +2954,12 @@
    "procedure": [
     "En Face-à-Face (§20.2) : cacher sa mise en jetons (1 couleur = PA, 1 autre = PE) dans le poing fermé avant de révéler simultanément avec l'adversaire. Les jetons montrés sont immédiatement payés.",
     "En Épreuve solo ou Défi Hors-Combat (§10) : annoncer et soustraire les PA/PE injectés de sa réserve pour garantir le seuil.",
-    "Hors de tout surcoût d'encombrement : les PA misés pour +1 au jet ne paient pas le malus d'armure lourde (Livre VIII §33)."
+    "Hors de tout surcoût d'encombrement : les PA misés pour +1 au jet ne paient pas le malus d'armure lourde (Livre VIII §32)."
    ],
    "conditions": "Les PA injectés s'ajoutent après le coût de base de l'action ou de la réaction. Variante ouverte sans jetons : l'attaquant annonce d'abord sa mise à voix haute, puis le défenseur.",
    "modificateurs": "Note : en Technique-Duo (§21.5), la mise de PA sur la synchro de carac brute est autorisée et encouragée (1–2 PA). À 0 PA en défense, aucune mise en PA n'est possible.",
    "source": {
-    "label": "Livre V §20.2 & Livre VIII §33",
+    "label": "Livre V §20.2 & Livre VIII §32",
     "livre": 5,
     "href": "livre_5.html#sec-20-2"
    },
@@ -2970,9 +2970,9 @@
      "href": "livre_5.html#sec-20-3"
     },
     {
-     "label": "Encombrement L.VIII §33",
+     "label": "Encombrement L.VIII §32",
      "livre": 8,
-     "href": "livre_8.html#chap-33"
+     "href": "livre_8.html#chap-32"
     }
    ],
    "tags": [
@@ -3387,21 +3387,21 @@
    "resume": "Boire une potion, s'injecter ou injecter une seringue médicale d'urgence (−5/−10/−20 dégâts) ou activer un objet simple.",
    "procedure": [
     "Dépenser 1 PA (+ encombrement ; ×2 sous Ralenti).",
-    "Seringue de soins (Livre VIII §33) : retire immédiatement 5, 10 ou 20 dégâts (ou 10 généralisés sur tous les membres), lève Souffrant (§25) et stoppe Saignement (§24.2), mais ne lève pas les résiduels d'Empoisonné/pathologie.",
+    "Seringue de soins (Livre VIII §32) : retire immédiatement 5, 10 ou 20 dégâts (ou 10 généralisés sur tous les membres), lève Souffrant (§25) et stoppe Saignement (§24.2), mais ne lève pas les résiduels d'Empoisonné/pathologie.",
     "Boire une potion ou s'injecter une seringue hors de vue reste silencieux et ne rompt pas Dissimulé / Caché (§21.4)."
    ],
    "conditions": "Impossible si Ligoté, Paralysé, Sonné ou Inconscient. Sous Empoisonné, les soins de dégâts reçus sont réduits de moitié (§24.2).",
    "modificateurs": "À noter : les seringues s'achètent à 900 CE (−5), 2 000 CE (−10), 2 500 CE (−10 généralisée) ou 5 000 CE (−20).",
    "source": {
-    "label": "Livre V §20.5 & Livre VIII §33",
+    "label": "Livre V §20.5 & Livre VIII §32",
     "livre": 5,
     "href": "livre_5.html#sec-20-5"
    },
    "refs": [
     {
-     "label": "Pharmacopée L.VIII §33",
+     "label": "Pharmacopée L.VIII §32",
      "livre": 8,
-     "href": "livre_8.html#chap-33"
+     "href": "livre_8.html#chap-32"
     },
     {
      "label": "Soins L.VI §25",
@@ -3455,9 +3455,9 @@
    "conditions": "Posséder la dose (500 CE ou fabriquée via Apothicaire de Guerre / Stimulant Neuro-Accélérateur, Livre III §14).",
    "modificateurs": "Permet de continuer à combattre au-delà des limites physiologiques normales pendant toute la durée active.",
    "source": {
-    "label": "Livre VIII §33",
+    "label": "Livre VIII §32",
     "livre": 8,
-    "href": "livre_8.html#chap-33"
+    "href": "livre_8.html#chap-32"
    },
    "refs": [
     {
@@ -3801,7 +3801,7 @@
     "Agonisant (§25 & §23.2) : réussir Premiers Soins (Difficulté 6) stoppe l'hémorragie critique et ramène le mourant à Inconscient stable.",
     "Effets immédiats (§24.2 & §24.4) : lève l'état Souffrant (et l'effet traumatique de la zone blessée), stoppe le Saignement et dégage des voies respiratoires obstruées (Asphyxie)."
    ],
-   "conditions": "En cas de poison (Empoisonné), exige un antidote, Médecine Avancée (chimie/apothicaire) ou magie de purge. Pour une pathologie, le kit adapté et une difficulté égale à la Virulence sont requis (§26).",
+   "conditions": "En cas de poison (Empoisonné), exige un antidote, Médecine Avancée (chimie/apothicaire) ou magie de purge. Pour une pathologie, le kit adapté et une difficulté égale à la Virulence sont requis (§25.4 / Livre XII §53).",
    "modificateurs": "Sous Empoisonné actif, la quantité de dégâts soignée est divisée par deux (§24.2). Chirurgie & Cocktail Panacée améliorent fortement l'efficacité.",
    "source": {
     "label": "Livre VI §25",
@@ -3820,9 +3820,14 @@
      "href": "livre_6.html#sec-24-2"
     },
     {
-     "label": "Pathologies §26",
+     "label": "Maladies §25.4",
      "livre": 6,
-     "href": "livre_6.html#chap-26"
+     "href": "livre_6.html#sec-25-4"
+    },
+    {
+     "label": "Générateur MJ §53",
+     "livre": 12,
+     "href": "livre_12.html#chap-53"
     }
    ],
    "tags": [
@@ -4121,7 +4126,7 @@
    "contexte": "Combat & Hors-Combat",
    "timing": "À l'exposition, échéance de stade ou soin",
    "portee": "Contact ou laboratoire/rituel",
-   "jet": "Érudition / Premiers Soins (Diff 8–12 ou Virulence)",
+   "jet": "Érudition / Premiers Soins / Médecine Avancée (Diff = Virulence, min 4)",
    "requiert_jet": true,
    "consomme_reaction_libre": false,
    "silencieux": false,
@@ -4138,20 +4143,30 @@
    ],
    "limite": "Selon stades de la maladie",
    "ralenti_effet": "Coût ×2 PA sous Ralenti",
-   "resume": "Identifier la nature et le stade d'une maladie (bactérienne, virale, parasitaire, toxique, arcanique ou nanotech) puis appliquer le traitement adapté.",
+   "resume": "Identifier la nature de l'agent, le stade actif (1 à 6) et la Classe de Gravité (I–V, Indice de Gravité) d'une pathologie puis appliquer le traitement adapté ou déclencher une rémission.",
    "procedure": [
-    "Diagnostic : symptômes visibles = Érudition / Premiers Soins Diff 8–12 ; nature exacte + stade = Diff Virulence (+4 sans labo/rituel si arcanique). Échec = 1 stade de retard.",
-    "Traitement : Premiers Soins (3 PA) contre Diff = Virulence avec kit adapté à l'agent (chirurgie si parasitaire, antibiotiques/résine si bactérien, rituel si arcanique, atelier EM si nanotech). Les seringues retirent des dégâts mais ne guérissent pas un résiduel pathologique.",
-    "Soin adapté avant l'échéance d'un stade : +2 au jet de rémission CON vs Virulence (ou rémission directe selon MJ)."
+    "Diagnostic : épreuve d'Érudition / Académie, Premiers Soins ou Médecine Avancée contre Difficulté = Virulence (minimum 4 ; +2 si Symptômes masqués ; +2 sans matériel/rituel pour un agent Arcanique ou Nanotech ; +2 avec Diagnostic Vital). Échec = 1 stade de retard ou nature incertaine.",
+    "Traitement : Premiers Soins (3 PA en combat / 1 scène hors combat) ou moyen imposé par la nature de l'agent (Médecine Avancée, Magie Primale / curative, atelier d'Ingénierie & Arcanotech) contre Difficulté = Virulence (paliers 3 / 5 / 7 / 10 / 14 / 18+) avec kit ou remède adapté. Les seringues effacent des dégâts mais ne guérissent jamais une pathologie.",
+    "Rémission & épreuve immunitaire : un soin adapté réussi confère +2 au prochain jet de transition (Système Immunitaire vs Virulence, épreuve gratuite 0 PA sans mise libre de PA hors combat ; Essoufflement volontaire autorisé). Une marge de 3+ (ou un remède spécifique) provoque une rémission immédiate (−1 stade), sauf Résistance au traitement."
    ],
-   "conditions": "Les Automates sont immunisés aux agents organiques sauf mention ; seuls les nanotechs/cyber les affectent.",
-   "modificateurs": "Résistances raciales §23.4 et Gueule des Mines (+2 CON immunitaire) réduisent les risques de contamination.",
+   "conditions": "Stades modulaires de 1 à 6 (Mode Remplacement par défaut ou Mode Cumulatif optionnel). Les Automates sont immunisés aux agents organiques (1–4) sauf mention ; seuls les agents Arcaniques (5) et Nanotechs / Cyber (6) les affectent.",
+   "modificateurs": "Résistances raciales §23.4 et Gueule des Mines (+2 Système Immunitaire, −1 Empoisonné/Asphyxie) s'appliquent. CON 1–2 : +1 stade initial (si ≥ 2 stades). Affamé, Assoiffé et Somnolent appliquent leur malus au jet immunitaire.",
    "source": {
-    "label": "Livre VI §26",
+    "label": "Livre VI §25.4",
     "livre": 6,
-    "href": "livre_6.html#chap-26"
+    "href": "livre_6.html#sec-25-4"
    },
    "refs": [
+    {
+     "label": "Diagnostic & Traitement (L.XII §53.5)",
+     "livre": 12,
+     "href": "livre_12.html#sec-53-5"
+    },
+    {
+     "label": "Générateur Pathologies (L.XII §53)",
+     "livre": 12,
+     "href": "livre_12.html#chap-53"
+    },
     {
      "label": "Résistances §23.4",
      "livre": 6,
@@ -4161,10 +4176,12 @@
    "tags": [
     "maladie",
     "pathologie",
+    "indice de gravité",
     "diagnostic",
     "virulence",
     "contagion",
-    "traitement"
+    "traitement",
+    "stades"
    ]
   },
   {
@@ -4327,9 +4344,9 @@
    },
    "refs": [
     {
-     "label": "Rations L.VIII §33",
+     "label": "Rations L.VIII §32",
      "livre": 8,
-     "href": "livre_8.html#chap-33"
+     "href": "livre_8.html#chap-32"
     }
    ],
    "tags": [
@@ -4864,18 +4881,18 @@
     "Dès qu'un adversaire déclare une attaque contre le prescient, dépenser 2 PA (en plus ou dans le cadre de la défense).",
     "Gagne immédiatement +1 palier de dé en Esquive ou en Parade contre cette attaque précise (ex. d6 ➔ d8)."
    ],
-   "conditions": "Requiert au minimum l'Échelon 3 (Intermédiaire — Visions Dirigées) de Clairsentience (Livre X §42).",
+   "conditions": "Requiert au minimum l'Échelon 3 (Intermédiaire — Visions Dirigées) de Clairsentience (Livre X §41).",
    "modificateurs": "Cumulable avec les mises cachées habituelles. Note : à l'Échelon 4, le prescient bénéficie aussi passivement de +2 à l'Initiative et +1 dé en Esquive au 1er tour d'embuscade.",
    "source": {
-    "label": "Livre X §42",
+    "label": "Livre X §41",
     "livre": 10,
-    "href": "livre_10.html#chap-42"
+    "href": "livre_10.html#chap-41"
    },
    "refs": [
     {
-     "label": "Échelons Clairsentience §42",
+     "label": "Échelons Clairsentience §41",
      "livre": 10,
-     "href": "livre_10.html#chap-42"
+     "href": "livre_10.html#chap-41"
     }
    ],
    "tags": [
@@ -4920,12 +4937,12 @@
     "Dépenser 3 PA (Action Principale) pour analyser les six prochaines trajectoires probables de la cible.",
     "Désigner une case précise : si la cible s'y déplace ou y reste, toutes les attaques alliées dirigées contre elle bénéficient d'une réduction de difficulté de −4 jusqu'au tour suivant."
    ],
-   "conditions": "Requiert au minimum l'Échelon 6 (Expert — Arborescence des Futurs) de Clairsentience (Livre X §42).",
+   "conditions": "Requiert au minimum l'Échelon 6 (Expert — Arborescence des Futurs) de Clairsentience (Livre X §41).",
    "modificateurs": "Attention au coût cognitif de l'Échelon 6 (Analysis Paralysis : −2 PA d'hésitation si échec d'un test d'INT en cas de saturation).",
    "source": {
-    "label": "Livre X §42",
+    "label": "Livre X §41",
     "livre": 10,
-    "href": "livre_10.html#chap-42"
+    "href": "livre_10.html#chap-41"
    },
    "refs": [],
    "tags": [
@@ -4969,18 +4986,18 @@
     "Observer une personne, une porte ou un carrefour en restant immobile et en concentration totale pendant 1 minute.",
     "Le MJ révèle des échos du passé récent ou des probabilités immédiates à l'horizon d'une heure dans le contexte proche."
    ],
-   "conditions": "Requiert l'Échelon 3+ de Clairsentience (Livre X §42). Au-delà de l'Échelon 4, une utilisation prolongée inflige de la fatigue cognitive ou des malus de concentration (§43).",
+   "conditions": "Requiert l'Échelon 3+ de Clairsentience (Livre X §41). Au-delà de l'Échelon 4, une utilisation prolongée inflige de la fatigue cognitive ou des malus de concentration (§42).",
    "modificateurs": "Complète les spécialisations de Clairvoyance (Lecture d'Objet, Écho du Passé, Témoin du Passé).",
    "source": {
-    "label": "Livre X §42 & §43",
+    "label": "Livre X §41 & §42",
     "livre": 10,
-    "href": "livre_10.html#chap-42"
+    "href": "livre_10.html#chap-41"
    },
    "refs": [
     {
-     "label": "Lois Chronales §43",
+     "label": "Lois Chronales §42",
      "livre": 10,
-     "href": "livre_10.html#chap-43"
+     "href": "livre_10.html#chap-42"
     }
    ],
    "tags": [
@@ -5036,9 +5053,9 @@
    },
    "refs": [
     {
-     "label": "Bestiaire L.XII §49",
+     "label": "Bestiaire L.XII §48",
      "livre": 12,
-     "href": "livre_12.html#chap-49"
+     "href": "livre_12.html#chap-48"
     }
    ],
    "tags": [
@@ -5254,7 +5271,7 @@
     "Au lancement de l'initiative, chacun remplit sa réserve de PA au maximum et dispose de sa réaction libre dès le round 1 (sauf une créature ayant bénéficié d'un Tour d'Embuscade, qui garde son reliquat jusqu'à son propre tour)."
    ],
    "conditions": "Premiers Réflexes (+1 palier au dé d'Initiative), Fleuret Éclair (+2), Clairsentience Échelon 4 (+2 Initiative).",
-   "modificateurs": "À Égalité d'Échelon ou Migraines chronales (Onde Mineure L.X §41 : −1 PA au 1er tour de chaque scène pendant 24 h).",
+   "modificateurs": "À Égalité d'Échelon ou Migraines chronales (Onde Mineure L.X §40 : −1 PA au 1er tour de chaque scène pendant 24 h).",
    "source": {
     "label": "Livre I §4.3 & Livre V §20",
     "livre": 1,

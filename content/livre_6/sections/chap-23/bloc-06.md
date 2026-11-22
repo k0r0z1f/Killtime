@@ -84,7 +84,7 @@ format: raw
                         Certains dons raciaux (<a class="rule-ref" href="livre_1.html#chap-2" data-tip="Dons raciaux : 1 au choix à la création, résistances et traits d'espèce (Livre I §2.2).">Livre I §2.2</a>) confèrent une <strong>résistance</strong> ou une
                         <strong>vulnérabilité</strong> à un élément (feu, froid, toxines, gaz, etc.). Sans cette
                         mention explicite, aucune espèce n'est résistante ni vulnérable : les dégâts directs sont
-                        réduits par l'<a class="rule-ref" href="livre_8.html#chap-33" data-tip="Armures : réduisent les dégâts directs de chaque coup (Livre VIII §33.1).">armure</a> (<a class="rule-ref" href="#chap-23" data-tip="Typologie des dégâts : directs réduits par l'armure, résiduels et absolus l'ignorent (§23.1).">§23.1</a>), sans distinction d'élément.
+                        réduits par l'<a class="rule-ref" href="livre_8.html#chap-32" data-tip="Armures : réduisent les dégâts directs de chaque coup (Livre VIII §32.1).">armure</a> (<a class="rule-ref" href="#chap-23" data-tip="Typologie des dégâts : directs réduits par l'armure, résiduels et absolus l'ignorent (§23.1).">§23.1</a>), sans distinction d'élément.
                     </p>
                     <div class="callout-body">
                         &bull; <strong>Résistance (élément) :</strong> les dégâts directs de cet élément sont réduits
@@ -98,5 +98,5 @@ format: raw
                         s'applique.
                     </div>
 
-                    <!-- ================= CHAPITRE 27 ================= -->
+                    <!-- ================= CHAPITRE 26 ================= -->
                     
