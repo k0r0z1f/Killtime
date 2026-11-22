@@ -24,7 +24,8 @@ livre: 6
                             Le Poids du Retour à la Vie (Séquelle Post-Mortem)
                         </div>
                         <div class="callout-body">
-                            Le ressuscité subit une <strong>pénalité de -1 ec sur l'ensemble de ses épreuves</strong>
+                            Le ressuscité subit l'état <a class="rule-ref" href="#sec-24-1" data-tip="Affaibli : −1 ec sur tous les jets ; faiblesse durable cumulable avec les autres états (§24.1)."><strong>Affaibli</strong></a>
+                            (<strong>-1 ec sur l'ensemble de ses épreuves</strong>, cumulable avec les autres états)
                             pendant un nombre de jours réels égal à :
                             <div
                                 style="margin: 10px 0; font-family: 'JetBrains Mono', monospace; font-weight: 700; color: var(--ruby-danger);">

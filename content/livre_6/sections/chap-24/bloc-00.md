@@ -23,6 +23,6 @@ livre: 6
                     <h3 id="sec-24-1">24.1 États Préjudiciables & Afflictions en Combat</h3>
                     <p>
                         Un coup lourd qui te coupe les jambes, un éclat devant les yeux, un ennemi qui bloque ton arme longue :
-                        ces dix-huit états entravent tes jets, tes déplacements ou ta capacité d'action jusqu'à expiration, remise debout ou soin.
+                        ces dix-neuf états entravent tes jets, tes déplacements ou ta capacité d'action jusqu'à expiration, remise debout ou soin.
                     </p>
                     

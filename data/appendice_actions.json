@@ -4200,7 +4200,7 @@
    "resume": "Ramener à la vie un être tombé à l'état Mort par magie primale suprême ou réanimation d'urgence, au prix d'une lourde convalescence.",
    "procedure": [
     "Exécuter la spécialisation, technologie ou magie suprême autorisant le retour depuis l'état Mort (ex. Transfusion Symbiotique ou Renaissance Symbiotique en Magie Primale, Livre IV §19.4).",
-    "Appliquer le Poids du Retour à la Vie (§25) : le ressuscité subit une pénalité de −1 ec sur l'ensemble de ses épreuves pendant (10 − Constitution) jours réels."
+    "Appliquer le Poids du Retour à la Vie (§25) : le ressuscité subit l'état Affaibli (−1 ec sur l'ensemble de ses épreuves, §24.1) pendant (10 − Constitution) jours réels."
    ],
    "conditions": "Exige le cadavre et une méthode explicitement habilitée à relever d'entre les morts (§24.4 & §25).",
    "modificateurs": "Un personnage à CON 5 récupère en 5 jours ; un personnage à CON 1 souffre 9 jours de −1 ec.",
@@ -4231,18 +4231,18 @@
   },
   {
    "id": "nuit-sure-convalescence",
-   "nom": "Prendre une Nuit Sûre & Convalescence",
+   "nom": "Prendre un Repos Sûr & Convalescence",
    "categorie": "soins",
    "types": [
     "Utilitaire"
    ],
    "cadence": "Hors-Combat",
    "cadence_cle": "hors_combat",
-   "cout_pa": "6–8 h (hors combat)",
+   "cout_pa": "6 h (8 h garde ou veille ; 10 h les deux)",
    "cout_pa_groupe": "hors_combat",
    "cout_pa_tri": 100,
    "contexte": "Hors-Combat",
-   "timing": "Repos nocturne en lieu sûr",
+   "timing": "Repos en lieu sûr (jour ou nuit)",
    "portee": "Campement / refuge sûr",
    "jet": "Aucun jet",
    "requiert_jet": false,
@@ -4254,16 +4254,16 @@
    "attributs": [
     "CON"
    ],
-   "limite": "1 nuit / cycle quotidien",
+   "limite": "Délai de 12 h après la fin du repos sûr précédent",
    "ralenti_effet": "Non applicable",
-   "resume": "Dormir 6 à 8 heures en sécurité pour effacer des dégâts, vider son Essoufflement, recharger ses dons et récupérer de la privation.",
+   "resume": "Dormir en sécurité (6 h de base ; 8 h avec tours de garde ou veille de soignant ; 10 h avec les deux) pour effacer des dégâts, vider son Essoufflement, recharger ses dons et récupérer de la privation.",
    "procedure": [
-    "Récupération de base (§25) : efface un forfait fixe de dégâts égal à Constitution (doublé ×2 si un soignant veille avec magie ou arcanotech). Note : la formule encadrée du chapitre mentionne aussi Constitution + niveau d'Endurance.",
+    "Récupération de base (§25) : à la fin du repos sûr (6 h sans tour de garde ni veille ; 8 h avec tours de garde ou veille de soignant ; 10 h avec les deux), efface autant de dégâts que ta Constitution (doublé ×2 automatiquement, sans jet, si un soignant veille 2 h). Soignant : au moins 1 entraînement en Premiers Soins ou Médecine Avancée, ou un sort/pouvoir de soin.",
     "Effets automatiques : Essoufflement retombe à 0 ; un Inconscient stable se réveille ; le Saignement s'arrête ; les dons 1×/jour sont rechargés ; Somnolent perd 1 niveau (2 nuits lèvent tout).",
-    "Limites : une nuit sûre ne lève JAMAIS l'état Souffrant (exige soin actif), ni les poisons/maladies installés, ni le Point de Miracle. Sans eau : 0 dégât effacé et Essoufflement conservé ; sans ration : moitié seulement."
+    "Limites : un repos sûr ne lève JAMAIS l'état Souffrant (exige soin actif), ni les poisons/maladies installés, ni le Point de Miracle. Sans eau : 0 dégât effacé et Essoufflement conservé ; sans ration : moitié seulement."
    ],
-   "conditions": "Un assaut ou une alerte pendant le sommeil annule la nuit sûre (les tours de garde silencieux sont autorisés).",
-   "modificateurs": "Sous Affamé Niveau 2 : guérison nocturne réduite de moitié ; Niveau 3 : aucune guérison au repos.",
+   "conditions": "Un assaut ou une alerte pendant le sommeil annule le repos sûr. Les tours de garde sont des relais silencieux de 2 h (+2 h au repos total pour que chacun complète 6 h de sommeil). Peut être effectué de jour comme de nuit. Tu ne peux pas bénéficier d'un repos sûr si tu en as déjà terminé un dans les 12 dernières heures.",
+   "modificateurs": "Sous Affamé Niveau 2 : guérison de repos sûr réduite de moitié ; Niveau 3 : aucune guérison au repos.",
    "source": {
     "label": "Livre VI §25",
     "livre": 6,
@@ -4278,7 +4278,7 @@
    ],
    "tags": [
     "repos",
-    "nuit sûre",
+    "repos sûr",
     "dormir",
     "convalescence",
     "soin",
@@ -4319,7 +4319,7 @@
     "Rappel des seuils (§24.1) : Assoiffé tue au Niveau 4 après 4 jours ; Affamé tue au Niveau 4 après 3 semaines."
    ],
    "conditions": "Don Cléien Frugalité Cleyane : divise par deux les besoins en eau et en nourriture (+2 CON contre la privation).",
-   "modificateurs": "Hydratation insuffisante bloque totalement la guérison nocturne et la purge d'Essoufflement au repos.",
+   "modificateurs": "Hydratation insuffisante bloque totalement la guérison et la purge d'Essoufflement au repos sûr.",
    "source": {
     "label": "Livre VI §24.1 & §25",
     "livre": 6,
@@ -4633,7 +4633,7 @@
    "procedure": [
     "Sauf précision contraire (Livre I §2), un don racial s'active gratuitement (0 PA, pas d'action requise), quand vous voulez, sur simple respect de ses conditions.",
     "Exemples actifs : Sang-Froid (Humain, 1×/session : annule 1 PE ou échec moral/peur), Sève Vive (Taurien, 1×/jour au sol naturel : purge 1 PE ou 1 résiduel ≤ 2), Régénération Karkjiue (Mikyai, 1×/combat : −1 sur un résiduel posé, stoppe Saignement 1), Ne Lâche Rien (Vardien, 1×/session : agit 1 tour en Dernier Souffle sans PE).",
-    "Les dons à quota 1×/jour se rechargent lors d'une nuit sûre (Livre VI §25)."
+    "Les dons à quota 1×/jour se rechargent lors d'un repos sûr (Livre VI §25)."
    ],
    "conditions": "1 seul don racial choisi définitivement à la création de personnage. Ne se cumule pas avec une deuxième résistance raciale identique (§23.4).",
    "modificateurs": "Les dons passifs permanents (Endurance Coloniale, Ossature Dense, Technicien-Guerrier, Accord Sylvestre, Pas des Crêtes…) s'appliquent en continu.",
@@ -4644,7 +4644,7 @@
    },
    "refs": [
     {
-     "label": "Recharge Nuit Sûre L.VI §25",
+     "label": "Recharge Repos Sûr L.VI §25",
      "livre": 6,
      "href": "livre_6.html#chap-25"
     },

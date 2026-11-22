@@ -2016,27 +2016,27 @@
   },
   {
    "id": "convalescence-nuit-sure",
-   "terme": "Convalescence & Nuit Sûre",
+   "terme": "Convalescence & Repos Sûr",
    "domaine": "sante",
-   "alias": ["6 a 8h", "repos", "rechargement dons"],
+   "alias": ["6h", "8h", "10h", "tour de garde", "jour ou nuit", "repos", "rechargement dons"],
    "liens": [
     { "label": "Livre VI §25", "livre": 6, "href": "livre_6.html#chap-25" }
    ]
   },
   {
    "id": "taux-recuperation-quotidien",
-   "terme": "Taux de Récupération Quotidien",
+   "terme": "Récupération par Repos Sûr",
    "domaine": "sante",
-   "alias": ["CON + Endurance", "par nuit"],
+   "alias": ["CON degats", "par repos sur", "taux recuperation"],
    "liens": [
     { "label": "Livre VI §25", "livre": 6, "href": "livre_6.html#chap-25" }
    ]
   },
   {
    "id": "soins-arcaniques",
-   "terme": "Soins Arcaniques",
+   "terme": "Veille de Soignant",
    "domaine": "sante",
-   "alias": ["x2 recuperation"],
+   "alias": ["soignant", "x2 recuperation", "+2h veille", "soins arcaniques"],
    "liens": [
     { "label": "Livre VI §25", "livre": 6, "href": "livre_6.html#chap-25" }
    ]
@@ -2045,7 +2045,7 @@
    "id": "resurrection-poids-trepas",
    "terme": "Résurrection & Poids du Trépas",
    "domaine": "sante",
-   "alias": ["-1 ec", "10 - CON jours", "sequelle post-mortem"],
+   "alias": ["Affaibli", "-1 ec", "10 - CON jours", "sequelle post-mortem"],
    "liens": [
     { "label": "Livre VI §25", "livre": 6, "href": "livre_6.html#chap-25" }
    ]
@@ -2139,6 +2139,16 @@
    "alias": ["etat prejudiciable"],
    "liens": [
     { "label": "Livre VI §24.1", "livre": 6, "href": "livre_6.html#sec-24-1" }
+   ]
+  },
+  {
+   "id": "etat-affaibli",
+   "terme": "Affaibli",
+   "domaine": "etats",
+   "alias": ["etat prejudiciable", "-1 ec", "poids du trepas", "sequelle"],
+   "liens": [
+    { "label": "Livre VI §24.1", "livre": 6, "href": "livre_6.html#sec-24-1" },
+    { "label": "Livre VI §25.3", "livre": 6, "href": "livre_6.html#chap-25" }
    ]
   },
   {

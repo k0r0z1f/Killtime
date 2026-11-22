@@ -930,6 +930,7 @@ body::before {
 
 .formula-box > .formula-math + .formula-desc {
     margin-top: 10px;
+    max-width: 100%;
 }
 
 /* Termes cliquables (rule-ref) : jamais coupés en deux lignes,
