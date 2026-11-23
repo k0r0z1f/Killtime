@@ -5897,15 +5897,15 @@
    "silencieux": false,
    "competences": [],
    "attributs": [],
-   "limite": "Actions spontanées ou entraînement encadré (anti-farm actif)",
+   "limite": "Max 1 case/jour/binôme ; max 1 XP lié/semaine via drills ; formateur niveau ≥ élève",
    "ralenti_effet": "Non applicable hors combat",
    "resume": "Demander à un compagnon expérimenté de vous encadrer lors d'une séance intensive de 4 heures pour faire progresser vos compétences.",
    "procedure": [
-    "Chaque jet réalisé dans le cadre d'un entraînement entre compagnons représente 4 heures d'exercices intensifs.",
-    "Chaque réussite coche 1 case sur la piste de la compétence (longueur de piste = base de compétence). Piste pleine ➔ +1 XP lié et remise à zéro.",
-    "Garde-fou anti-farm (§5.2 & §5.1) : le MJ rejette les tentatives calculées hors-jeu pour gratter des points ; si la réserve d'XP lié dépasse le niveau de compétence de +2, les 2 points en trop deviennent automatiquement +1 XP libre."
+    "1 jet = 4 heures d'exercices intensifs (hors combat, temps calme). Le formateur doit avoir un niveau supérieur ou égal à celui de l'élève dans la compétence travaillée.",
+    "Chaque réussite (seuil ≥ base) coche 1 case sur la piste de l'élève (max 1 case/jour/binôme, max 1 XP lié/semaine via drills toutes compétences confondues). Piste pleine ➔ +1 XP lié et remise à zéro.",
+    "Garde-fou anti-farm (§5.1 & §5.2) : hors drills, seuls les jets à enjeu cochent (adversaire actif ou seuil ≥ base + conséquence réelle à l'échec ; 0 case vs Défense 0/consentant/Paralysé/Inconscient, défense 0 PA sans mise ou 2e jet même action même scène) ; si la réserve d'XP lié dépasse le niveau de compétence de +2, les 2 points en trop deviennent automatiquement +1 XP libre."
    ],
-   "conditions": "Impossible en combat ou en temps de crise. Le partenaire doit encadrer sérieusement l'exercice.",
+   "conditions": "Impossible en combat ou en temps de crise. Formateur de niveau ≥ élève dans la compétence travaillée.",
    "modificateurs": "Nécessite également 4 heures d'entraînement en groupe pour préparer le tissage d'un Lien Télépathique (Livre IV §18.2).",
    "source": {
     "label": "Livre I §5",

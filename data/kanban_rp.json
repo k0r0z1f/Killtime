@@ -3726,7 +3726,7 @@
      "id": "RP-243",
      "title": "Audit F4 — Faille drills (entraînement entre compagnons 4 h)",
      "epic": "P0 — Socle Mécanique",
-     "status": "todo",
+     "status": "done",
      "priority": "medium",
      "order": 240,
      "scene": "",
@@ -3735,8 +3735,8 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_1.html#chap-5",
-     "updated": "2026-11-22",
-     "details": "Suite audit Livres I–VIII (file F2 → F5, après F3 RP-242) : encadrer/corriger la faille des drills d'entraînement entre compagnons (jets de 4 h en temps calme)."
+     "updated": "2026-11-23",
+     "details": "FAIT 2026-11-23 — Audit Livres I–VIII (F4, fix ferme à XP) : seuls les jets à enjeu cochent (adversaire actif ou seuil ≥ base + conséquence réelle à l'échec ; 2e jet même action même scène = 0 case ; zéro fiat « MJ veille »). Exclusions explicites ajoutées en Livre I §5 (bloc-03) : attaque vs Défense 0 / consentant / Paralysé / Inconscient = 0 case attaquant, défense à 0 PA sans mise = 0 case défenseur. Drills entre compagnons quotaés (bloc-04) : 1 jet = 4 h, max 1 case/jour/binôme, max 1 XP lié/semaine via drills, formateur niveau ≥ élève. Synchronisé dans data/livre_1.json (progression & mecaniques.progression.regle/drills) et Appendice A (data/appendice_actions.json : entrainer-compagnons). Checks verts (build_livres --check 1, check_liens)."
     },
     {
      "id": "RP-244",
