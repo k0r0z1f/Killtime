@@ -5019,7 +5019,9 @@
    "domaine": "equipement",
    "alias": [
     "d6",
-    "milieu origine"
+    "milieu origine",
+    "E0-E5",
+    "table d6"
    ],
    "liens": [
     {

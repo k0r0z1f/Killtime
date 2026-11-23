@@ -760,13 +760,14 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_7.html#chap-26",
-     "details": "Vérification humaine — livre_7.html#chap-26. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (modificateurs +2 au total, anti-cumul, attaches, pas de palier/PA/dégâts) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici. MAJ 2026-11-07 — titre corrigé (chap. 28→27 après renumérotation ; le chap. 28 actuel = Métiers, couvert par RP-052)."
+     "updated": "2026-11-22",
+     "details": "Vérification humaine — livre_7.html#chap-26. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (modificateurs +2 au total, anti-cumul, attaches, pas de palier/PA/dégâts) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici. MAJ 2026-11-07 — titre corrigé (chap. 28→27 après renumérotation ; le chap. 28 actuel = Métiers, couvert par RP-052). | MAJ 2026-11-22 (RP-234) : §26 intro et encadré §26.4 synchronisés avec les 6 tables d6 d'Enfance E0–E5 (chap. 27)."
     },
     {
      "id": "RP-051",
-     "title": "Relire chap. 27. Enfances : 6 Milieux (d6)",
+     "title": "Relire chap. 27. Enfances : 1 Table d6 par Contexte E0–E5",
      "epic": "Livre VII — Historiques",
-     "status": "todo",
+     "status": "in_progress",
      "priority": "medium",
      "order": 9,
      "scene": "",
@@ -775,7 +776,8 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_7.html#chap-27",
-     "details": "Vérification humaine — livre_7.html#chap-26. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (modificateurs +2 au total, anti-cumul, attaches, pas de palier/PA/dégâts) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
+     "updated": "2026-11-22",
+     "details": "Vérification humaine — livre_7.html#chap-27. Checklist : [ ] orthographe/typo FR ; [x] cohérence mécaniques avec les autres chapitres (modificateurs +2 au total, anti-cumul, attaches, pas de palier/PA/dégâts) ; [ ] exemples chiffrés rejoués ; [x] liens internes + ancres OK ; [x] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici. MAJ 2026-11-22 (RP-234) : 1er check & mécanique chap. 27 OK — refonte en 6 tables d6 dédiées (E0–E5, 36 enfances, compétences canoniques Livre III, créateur PJ Livre IX / fiche_pj, fiche prototype Livre I, Appendice B et nav 19 pages synchronisés). Reste uniquement le QA final (orthographe/typo FR, ton lecteur) pour clore RP-051."
     },
     {
      "id": "RP-052",
@@ -2172,7 +2174,8 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_7.html",
-     "details": "Comme RP-063/064, pour le Livre VII Historiques (chap. 26-29 ; RP-050..053). Checklist : [ ] ton MJ accueillant (phrases courtes, 2e personne, exemples concrets, modele = preface index.html) ; [ ] aucun jargon sans explication ; [ ] mecaniques strictement intactes ; [ ] orthographe/typo FR ; [ ] liens + ancres OK. DONE = relu + reformule — ajouter date + initiales ici. MAJ 2026-11-07 — plage corrigée (chap. 26-32→chap. 26-29 après renumérotation)."
+     "updated": "2026-11-22",
+     "details": "Comme RP-063/064, pour le Livre VII Historiques (chap. 26-29 ; RP-050..053). Checklist : [ ] ton MJ accueillant (phrases courtes, 2e personne, exemples concrets, modele = preface index.html) ; [ ] aucun jargon sans explication ; [ ] mecaniques strictement intactes ; [ ] orthographe/typo FR ; [ ] liens + ancres OK. DONE = relu + reformule — ajouter date + initiales ici. MAJ 2026-11-07 — plage corrigée (chap. 26-32→chap. 26-29 après renumérotation). | MAJ 2026-11-22 — début 1er check & mécanique Livre VII : chap. 27 Enfances refondu en 6 tables d6 E0–E5 (RP-051 in_progress, RP-234 done) ; restent chap. 26 (RP-050), chap. 28 (RP-052), chap. 29 (RP-053) et RP-190."
     },
     {
      "id": "RP-145",
@@ -2662,7 +2665,7 @@
      "id": "RP-177",
      "title": "P0-4 Assainir Livre VI (seuils, Agonisant, Aveugle, 24 états, soins)",
      "epic": "P0 — Socle Mécanique",
-     "status": "todo",
+     "status": "done",
      "priority": "high",
      "order": 174,
      "scene": "",
@@ -2671,8 +2674,8 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "",
-     "updated": "2026-11-10",
-     "details": "Aligner §25.2 et §26.4 sur CON PV/nuit; corriger carte 1 seuils_survie (coup unique ≥ CON×2) et 5 reliquats >; séparer Agonisant (déroute,-2) du Dernier Souffle et Miracle (Inconscient); ajouter Aveugle dans donnees.etats_prejudiciables.lignes; harmoniser Étourdi; compléter mecaniques.etats_par_nom (24 états); définir soin de base Premiers Soins/Souffrant; unifier Dégâts Physiques vs Absolus/Directs. Fichiers: content/livre_6/sections/, data/livre_6.json. (Audit sysRP 2026-11-10.)"
+     "updated": "2026-11-22",
+     "details": "Aligner §25.2 et §26.4 sur CON PV/nuit; corriger carte 1 seuils_survie (coup unique ≥ CON×2) et 5 reliquats >; séparer Agonisant (déroute,-2) du Dernier Souffle et Miracle (Inconscient); ajouter Aveugle dans donnees.etats_prejudiciables.lignes; harmoniser Étourdi; compléter mecaniques.etats_par_nom (24 états); définir soin de base Premiers Soins/Souffrant; unifier Dégâts Physiques vs Absolus/Directs. Fichiers: content/livre_6/sections/, data/livre_6.json. (Audit sysRP 2026-11-10.) | FAIT 2026-11-22 — Intégralement couvert et dépassé par les passes Livre VI (RP-025/026/027, RP-212..217, RP-230, RP-231 : seuils > CON×2 / CON×5 sans PV, Agonisant vs Dernier Souffle & Miracle, 19 états préjudiciables + 7 bénéfiques = 26/26 synchronisés dans etats_par_nom, Premiers Soins Diff 6 & Souffrant, Repos sûr 6/8/10 h, typologie Directs/Résiduels/Absolus)."
     },
     {
      "id": "RP-178",
@@ -2831,8 +2834,8 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "",
-     "updated": "2026-11-10",
-     "details": "Corriger giftMechanics() dans js/tools.js: Cléien Don 1 (-1 Encaissement), Taurien Don 1 (-1 PA), Humain Touche-à-tout (+1 entraînement gratuit bloqué par updateSkillsLimit()); ajouter 3 compétences arcaniques (Magie Élémentale/Primale/Esprit) dans fiche_pj.html + livre_9.html + SKILLS fabrique.js; afficher ESS en pts. + resync Unity RD-211 si touché. (Audit sysRP 2026-11-10.)"
+     "updated": "2026-11-22",
+     "details": "Corriger giftMechanics() dans js/tools.js: Cléien Don 1 (-1 Encaissement), Taurien Don 1 (-1 PA), Humain Touche-à-tout (+1 entraînement gratuit bloqué par updateSkillsLimit()); ajouter 3 compétences arcaniques (Magie Élémentale/Primale/Esprit) dans fiche_pj.html + livre_9.html + SKILLS fabrique.js; afficher ESS en pts. + resync Unity RD-211 si touché. (Audit sysRP 2026-11-10.) | MAJ 2026-11-22 (synchro L.V–VI) : purger aussi les reliquats post-audit dans js/tools.js (« à 0 PV » sur le don Frontalier Ne Lâche Rien L.134 → Seuil Létal CON×5 ; « test INS » sur Guerre intérieure L.149 → Intuition ; alignement seuils & états sur Livres V–VI finaux)."
     },
     {
      "id": "RP-188",
@@ -2863,8 +2866,8 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "",
-     "updated": "2026-11-10",
-     "details": "Retirer data-category=defensif sur Portée Étendue (+1 XP hybride à tort); passer 9 modules cumulables en <input type=number>; ajouter option Réaction (+2 XP/+2 PA); MAJ séquence duel; retirer 8 paliers obsolètes lanceur (1d4-1, 1d4+1, 1d6+2…). Fichiers: livre_9.html, js/tools.js. (Audit sysRP 2026-11-10.)"
+     "updated": "2026-11-22",
+     "details": "Retirer data-category=defensif sur Portée Étendue (+1 XP hybride à tort); passer 9 modules cumulables en <input type=number>; ajouter option Réaction (+2 XP/+2 PA); MAJ séquence duel; retirer 8 paliers obsolètes lanceur (1d4-1, 1d4+1, 1d6+2…). Fichiers: livre_9.html, js/tools.js. (Audit sysRP 2026-11-10.) | MAJ 2026-11-22 (synchro L.V–VI) : corriger aussi les reliquats dans livre_9.html (« Cible Débalancée » L.1210 → état canonique Livre VI §24.1 ; « Soins Arcaniques (+4 PV / point) » / « Rend 4 PV » L.1278–1282 → dégâts effacés sans mention PV ; vérifier tous états/résiduels/coûts PA de l'Atelier et du Résolveur)."
     },
     {
      "id": "RP-190",
@@ -3439,8 +3442,8 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "index.html",
-     "updated": "2026-11-21",
-     "details": "Créer une vue condensée de référence rapide (lisible sur smartphone et imprimable A4) : séquence d'un cycle 10 s, barème PA (§20.5), Face-à-Face (mises masquées), Visée Niv. 1 / Niv. 2, Choc Traumatique (> CON×2), Seuil Létal (CON×5) et 4 états résiduels (§24.2)."
+     "updated": "2026-11-22",
+     "details": "Créer une vue condensée de référence rapide (lisible sur smartphone et imprimable A4) : séquence d'un cycle 10 s, barème PA (§20.5), Face-à-Face (mises masquées), Visée Niv. 1 / Niv. 2, Choc Traumatique (> CON×2), Seuil Létal (CON×5) et 4 états résiduels (§24.2), Premiers Soins (Diff 6), Repos sûr (6/8/10 h, veille de soignant) et bases Maladies (§25.4)."
     },
     {
      "id": "RP-226",
@@ -3537,6 +3540,54 @@
      "suggestedAsset": "livre_12.html#chap-53",
      "updated": "2026-11-22",
      "details": "FAIT 2026-11-22 (1er check & mécanique pathologies + déplacement Livre VI → Livre XII) — (1) Refonte modulaire complète du Générateur de Pathologies : Indice de Gravité (IG, Classes I–V : Bénigne 1–8, Commune 9–16, Sévère 17–26, Critique 27–37, Fléau 38+), Virulence indépendante recalibrée sur Livre II §7.1 (3 / 5 / 7 / 10 / 14 / 18+), épreuve immunitaire gratuite 0 PA (sans mise libre de PA hors combat ; Essoufflement volontaire autorisé), 1 à 6 stades modulaires hybrides (Remplacement +0 IG / Cumulatif +2 ou +3 IG), catalogue d'effets en 5 paliers (Léger +1 à Terminal +5), séparation Incubation / Cadence, 12 modulateurs & issues, retrait des anglicismes (DoT, tick, mundane) et références isolées, 4 fiches exemples chiffrées (IG 4 / 16 / 24 / 45). (2) Déplacement du générateur complet côté MJ en Livre XII §53 (nouveau chapitre 53 après Automates §52), remplacement dans le Livre VI par la sous-section joueur §25.4 Maladies & Pathologies (Bases du Joueur), et renumérotation continue des chapitres 27–53 → 26–52 sur Livres VII–XII (total maintenu à 1–53). (3) Synchronisation Appendice A, Appendice B, menus latéraux (19 pages), atlas_mondes et Kanban RP."
+    },
+    {
+     "id": "RP-232",
+     "title": "Appendices A & B — Resynchro finale avant Beta Test (post-passes L.III–L.VIII)",
+     "epic": "Appendices",
+     "status": "todo",
+     "priority": "medium",
+     "order": 229,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "appendice_actions.html",
+     "updated": "2026-11-22",
+     "details": "Passe de resynchronisation complète d'appendice_actions.json (Appendice A) et appendice_glossaire.json (Appendice B) après les passes mécaniques restantes du Manuel du Joueur : Livre VII (RP-050..053 / RP-190), Livre VIII (RP-028..030 / RP-191 / RP-209 propriétés d'armes), Livre V §20.4 (RP-218) et correctifs Livres III–IV (RP-180..186). Vérifier check_liens.py et cohérence des compteurs/filtres."
+    },
+    {
+     "id": "RP-233",
+     "title": "Outil Web — Générateur interactif de Pathologies (Indice de Gravité I–V, 1–6 stades)",
+     "epic": "Livre IX — Outils Web",
+     "status": "todo",
+     "priority": "low",
+     "order": 230,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "livre_9.html",
+     "updated": "2026-11-22",
+     "details": "Optionnel / post-beta : ajouter un module web interactif dans le Livre IX (sur le modèle de l'Atelier de Sorts et de la Fabrique de Techniques) branché sur data/livre_12.json (chap. 53) pour composer une pathologie à la carte (Nature, Transmission, Virulence, Incubation/Cadence, 1 à 6 stades Remplacement/Cumulatif, catalogue d'effets et modulateurs), calculer l'Indice de Gravité (IG) et la Classe (I–V) en direct et exporter la fiche."
+    },
+    {
+     "id": "RP-234",
+     "title": "Livre VII chap. 27 (1er check mécanique : Enfances — 1 table d6 par contexte E0–E5, créateur PJ & nav)",
+     "epic": "Livre VII — Historiques",
+     "status": "done",
+     "priority": "high",
+     "order": 231,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "livre_7.html#chap-27",
+     "updated": "2026-11-22",
+     "details": "FAIT 2026-11-22 (1er check & mécanique Livre VII chap. 27) — (1) Refonte du chap. 27 en 6 tables d6 dédiées par contexte technologique E0–E5 (27.1 Primitive, 27.2 Médiévale, 27.3 Moderne, 27.4 Avancée, 27.5 Très Avancée, 27.6 Démiurgique) : 36 enfances calibrées à +2 dans 1 compétence canonique Livre III distincte par table (≈ ½ don racial, aucun accès Magie/Clairsentience/entraînement gratuit), barre d'accès rapide #sec-27-1..6 et encadré hors-époque ; mise à jour cohérente de §26 intro et §26.4. (2) Schéma data/livre_7.json enrichi (donnees.enfances_e0..e5, tableaux, mecaniques.enfances_par_epoque + rétrocompatibilité mecaniques.enfances sur E2, préservant Roger et Mara). (3) Synchronisation du créateur PJ (sélecteur #csEnfanceEpoque dans livre_9.html, fiche_pj.html et js/tools.js avec repli E2), fiche prototype Livre I, Appendice B (enfance-d6) et menus latéraux des 19 pages (build_nav.py)."
     }
    ]
   }

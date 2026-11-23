@@ -61,8 +61,8 @@ livre: 1
                         </h4>
                         <div class="tool-grid-3">
                             <div class="tool-form-group">
-                                <label class="tool-label">Enfance (d6)</label>
-                                <div class="field-value">2. Rues & Bas-fonds <span class="tool-label-hint">Gamin des toits : +2 <a class="rule-ref" href="livre_3.html#chap-13" data-tip="Observation : repérer un indice, un danger, un ennemi camouflé (Vision/Ouïe, §13.3).">Observation</a> en urbain.</span></div>
+                                <label class="tool-label">Enfance (d6 — [E0–E5])</label>
+                                <div class="field-value">[E2] 2. Rues &amp; Bas-fonds <span class="tool-label-hint">Gamin des toits : +2 <a class="rule-ref" href="livre_3.html#chap-13" data-tip="Observation : repérer un indice, un danger, un ennemi camouflé (Vision/Ouïe, §13.3).">Observation</a> en urbain.</span></div>
                             </div>
                             <div class="tool-form-group">
                                 <label class="tool-label">Métier (d12)</label>

@@ -10,13 +10,15 @@ livre: 7
                             Ce que le marqueur change — et ne change pas
                         </div>
                         <div class="callout-body">
-                            Le marqueur ne change <strong>jamais</strong> votre bonus : un Mécano
-                            forgeron [E1] et un Mécano orbital [E3] donnent le même +2/+2.
-                            Seuls le décor, l'atout (caisse à outils → forge → atelier orbital)
-                            et l'attache (dette, guilde, commanditaire) changent de nom.
-                            Si votre atout ne sert à rien dans l'époque jouée (une licence
-                            d'astroport en campagne E1), votre MJ le convertit en contact
-                            ou droit équivalent.
+                            Le marqueur ne change <strong>jamais</strong> la valeur de vos bonus :
+                            toutes les tables d'Enfance (E0 à E5, chap. 27) restent calibrées
+                            à <strong>+2 dans 1 compétence en contexte précis</strong>, et un
+                            Mécano forgeron [E1] comme un Mécano orbital [E3] donnent le même
+                            +2/+2. Sur le Métier et l'Événement, seuls le décor, l'atout
+                            (caisse à outils → forge → atelier orbital) et l'attache
+                            (dette, guilde, commanditaire) changent de nom. Si votre atout
+                            ne sert à rien dans l'époque jouée (une licence d'astroport en
+                            campagne E1), votre MJ le convertit en contact ou droit équivalent.
                         </div>
                     </div>
 

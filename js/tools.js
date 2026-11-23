@@ -81,6 +81,7 @@ function initCharacterSheet() {
     const pillarMajorSelect = document.getElementById('csPillarMajor');
     const pillarMinorSelect = document.getElementById('csPillarMinor');
     const pillarsRow = document.getElementById('csPillarsRow');
+    const enfanceEpoqueSelect = document.getElementById('csEnfanceEpoque');
     const enfanceSelect = document.getElementById('csEnfance');
     const metierSelect = document.getElementById('csMetier');
     const evenementSelect = document.getElementById('csEvenement');
@@ -143,8 +144,66 @@ function initCharacterSheet() {
     const ATTR_LABELS = { for: 'Force (FOR)', agi: 'Agilité (AGI)', con: 'Constitution (CON)', rap: 'Rapidité (RAP)', int: 'Intelligence (INT)', eru: 'Érudition (ÉRU)', cha: 'Charisme (CHA)', ins: 'Instinct (INS)', mag: 'Magie' };
     const CORE8 = ['for', 'agi', 'con', 'rap', 'int', 'eru', 'cha', 'ins'];
 
-    // Tables d'historique (Livre VII, chap. 26-32) — libellés courts pour le créateur.
-    const ENFANCES = [{n:'Soutes & Docks',d:'Enfant de station : +2 Subterfuge Manuel en milieu confiné.'},{n:'Rues & Bas-fonds',d:'Gamin des toits : +2 Observation en urbain.'},{n:'Ferme & Frontière',d:'Enfant des confins : +2 Nature & Survie en rural/sauvage.'},{n:'Clan & Tribu',d:'Sang des anciens : +2 Intuition en groupe.'},{n:'Cité & École',d:'Enfant instruit : +2 Académie (1 domaine).'},{n:'Caserne & Ordre',d:'Enfant de troupe : +2 Athlétisme.'}];
+    // Tables d'historique (Livre VII, chap. 26-29) — libellés courts pour le créateur.
+    const EPOQUES_ENFANCE = ['E0', 'E1', 'E2', 'E3', 'E4', 'E5'];
+    const ENFANCES_PAR_EPOQUE = {
+        E0: [
+            { n: 'Clan & Tribu', d: "Sang des anciens : +2 Intuition (hostilité d'un groupe, assemblée) ; 1 contact clanique narratif." },
+            { n: 'Piste & Gibier', d: "Enfant de la chasse : +2 Discrétion en milieu sauvage ou naturel uniquement." },
+            { n: 'Grottes & Falaises', d: "Grimpeur des pierres : +2 Athlétisme (escalade, obstacles) en terrain rocheux ou souterrain." },
+            { n: 'Nomades & Steppes', d: "Marcheur des saisons : +2 Nature & Survie (orientation, abris, météo) en milieu sauvage." },
+            { n: 'Taille & Bronze', d: "Mains du foyer : +2 Artisanat / Connaissance (outils rudimentaires : pierre, bois, os, cuir, bronze)." },
+            { n: 'Herbes & Foyer', d: "Enfant du guérisseur : +2 Premiers Soins (soins de fortune et remèdes naturels hors structure médicale)." }
+        ],
+        E1: [
+            { n: 'Forge & Guilde', d: "Apprenti du marteau : +2 Artisanat / Connaissance dans 1 métier d'atelier au choix." },
+            { n: 'Ruelles & Faubourgs', d: "Enfant des halles : +2 Subterfuge Manuel (pickpocket, crochetage mécanique, escamotage) en urbain/foule." },
+            { n: 'Glèbe & Lisière', d: "Enfant du terroir : +2 Endurance Physique (marches prolongées, charges lourdes, effort continu)." },
+            { n: 'Foire & Caravane', d: "Enfant des routes : +2 Communication (marchandage, rumeurs, contrôles) en lieu de commerce ou passage." },
+            { n: 'Abbaye & Scriptorium', d: "Novice des parchemins : +2 Académie dans 1 domaine au choix (aucun entraînement gratuit)." },
+            { n: 'Donjon & Remparts', d: "Page de garnison : +2 Observation (guet, approche, brèche) depuis un poste ou place fortifiée." }
+        ],
+        E2: [
+            { n: 'Ports & Entrepôts', d: "Gamin des quais : +2 Subterfuge Manuel en milieu industriel ou confiné ; ignore les malus d'exiguïté." },
+            { n: 'Rues & Bas-fonds', d: "Gamin des toits : +2 Observation (embuscades, filatures, planques) en milieu urbain uniquement." },
+            { n: 'Ferme & Frontière', d: "Enfant des confins : +2 Nature & Survie (orientation, abris, météo) en milieu rural ou sauvage." },
+            { n: 'Quartier & Foyer', d: "Enfant du bloc : +2 Intuition (hostilité d'un groupe, ambiance d'une rue/assemblée) ; 1 contact local narratif." },
+            { n: 'Cité & École', d: "Enfant instruit : +2 Académie dans 1 domaine au choix (aucun entraînement gratuit)." },
+            { n: 'Caserne & Ordre', d: "Enfant de troupe : +2 Athlétisme (franchissement, marches forcées, portage) + discipline." }
+        ],
+        E3: [
+            { n: 'Soutes & Docks', d: "Enfant de station : +2 Subterfuge Manuel en milieu confiné (vaisseau, station, souterrain) ; ignore exiguïté." },
+            { n: 'Dôme & Terraformation', d: "Enfant de colonie : +2 Système Immunitaire (poussières, air vicié, faibles radiations) en milieu hostile/confiné." },
+            { n: 'Pont & Navette', d: "Né dans le vide : +2 Acrobatie en faible gravité, apesanteur ou sur surface instable." },
+            { n: 'Mégacité & Bas-niveaux', d: "Enfant des néons : +2 Ingénierie & Arcanotech sur systèmes électroniques ou cybernétiques courants." },
+            { n: 'Convoi & Astroport', d: "Enfant des lignes stellaires : +2 Communication (négocier, douanes, infos de quai) en port ou astroport." },
+            { n: 'Écoute & Passerelle', d: "Enfant de quart : +2 Écoute (bruits mécaniques, pas, fréquences, murmures) en intérieur clos ou technique." }
+        ],
+        E4: [
+            { n: 'Arcs de Dyson', d: "Enfant des mégastructures : +2 Observation (orientation, repérage spatial) en milieu artificiel complexe." },
+            { n: 'Relais & Portails', d: "Enfant du transit : +2 Conduite & Pilotage (navette, véhicule rapide ou appareil de transit, 1 catégorie)." },
+            { n: 'Atelier de Nytharite', d: "Apprenti arcanotech : +2 Ingénierie & Arcanotech sur appareils arcanotech (aucun accès à la 5e Force)." },
+            { n: 'Cuves & Bio-sanctuaire', d: "Enfant des bassins : +2 Premiers Soins (stabilisation d'urgence, triage avancé, équipement médical)." },
+            { n: 'Enclave & Protocole', d: "Enfant des maisons stellaires : +2 Leadership (coordonner sous pression, crise, protocole)." },
+            { n: 'Ombres de la Sphère', d: "Passager clandestin : +2 Discrétion face aux capteurs, caméras et systèmes de surveillance." }
+        ],
+        E5: [
+            { n: 'Jardins de Post-Matière', d: "Enfant des formes : +2 Acrobatie en terrain altéré, instable, gravité anormale ou géométrie changeante." },
+            { n: 'Marges du Continuum', d: "Enfant des plis : +2 Intuition (anomalies physiques/temporelles, illusions, intentions ; aucune clairsentience)." },
+            { n: 'Observatoire des Trames', d: "Apprenti indexeur : +2 Penser / Stratégie (analyser un système complexe, anticiper un plan)." },
+            { n: 'Voile & Silence', d: "Enfant hors-temps : +2 Discrétion (effacer ses traces, échapper à une détection active)." },
+            { n: 'Chœur & Concile', d: "Enfant des Élianes : +2 Communication (diplomatie interculturelle, protocoles étrangers)." },
+            { n: 'Bastion des Lois', d: "Enfant des forges de réalité : +2 Endurance Physique face aux environnements éprouvants et efforts soutenus." }
+        ]
+    };
+    const ENFANCES = ENFANCES_PAR_EPOQUE.E2.map(e => ({ ...e }));
+    function currentEnfanceEpoque() {
+        const v = enfanceEpoqueSelect ? enfanceEpoqueSelect.value : 'E2';
+        return ENFANCES_PAR_EPOQUE[v] ? v : 'E2';
+    }
+    function currentEnfances() {
+        return ENFANCES_PAR_EPOQUE[currentEnfanceEpoque()] || ENFANCES;
+    }
     const METIERS = [{n:'Milicien',d:'+2 Tir (1 arme) & Observation ; armure légère ; rappelable.'},{n:'Médic',d:'+2 Premiers Soins & triage ; kit de soin ; serment du blessé.'},{n:'Mécano',d:'+2 Ingénierie & dépannage ; caisse à outils ; dette atelier.'},{n:'Pilote',d:'+2 Pilotage & navigation ; licence + contact ; crédit nef.'},{n:'Prospecteur',d:'+2 Survie extrême & endurance ; équipement ; exclusivité.'},{n:'Négociant',d:'+2 Négocier & évaluer ; contact + licence ; dette.'},{n:'Archiviste',d:'+2 Académie & détails ; archives ; censure.'},{n:'Artisan',d:'+2 Artisanat & entretien ; établi ; commande en cours.'},{n:'Chasseur',d:'+2 Traque & discrétion (nature) ; pièges ; quota.'},{n:'Infiltré',d:'+2 Discrétion & tromper ; faux papiers + planque ; service dû.'},{n:'Herboriste',d:'+2 Botanique & pharmacopée ; remèdes ; clientèle dangereuse.'},{n:'Officier',d:'+2 Leadership & intimidation ; insigne ; responsabilité.'}];
     const EVENEMENTS = [{n:'Frôlé la mort',d:'1×/session : ignore 1 échec de Choc Traumatique (Encaissement) ou annule 1 Essoufflement ; cauchemars.'},{n:'Dette de vie',d:'+2 pour protéger un allié ; créancier rappelable.'},{n:'Trahison subie',d:'Relance un jet intuition ; traître actif.'},{n:'Long exil',d:'+2 Survie en terrain inconnu ; −2 premier contact.'},{n:'Contact 5e Force',d:'1 question fermée au MJ ; repérable par sens magiques.'},{n:'Miracle inexpliqué',d:'Ignore 1 échec moral/peur ; un culte s’intéresse à toi.'},{n:'Guerre intérieure',d:'+2 sang-froid (violence) ; fracas = test INS ou +1 Essoufflement.'},{n:'Crime impuni',d:'+2 couvrir ses traces ; un témoin existe.'},{n:'Mentor perdu',d:'+2 domaine du mentor ; promesse à honorer.'},{n:'Écho temporel',d:'1 question fermée (danger) ; +1 Essoufflement/usage.'},{n:'Ruine & misère',d:'+2 improviser avec rien ; −2 contact huppé.'},{n:'Gloire locale',d:'+2 Communication (zone exploit) ; rival jaloux.'}];
 
@@ -191,10 +250,18 @@ function initCharacterSheet() {
         }
         const M7 = L7 && L7.mecaniques;
         if (M7) {
-            if (M7.enfances && M7.enfances.length === 6) {
-                ENFANCES.length = 0;
-                M7.enfances.forEach(e => ENFANCES.push({ n: String(e.nom).split(' — ')[0], d: e.texte }));
+            if (M7.enfances_par_epoque) {
+                for (const ep of EPOQUES_ENFANCE) {
+                    const list = M7.enfances_par_epoque[ep];
+                    if (Array.isArray(list) && list.length === 6) {
+                        ENFANCES_PAR_EPOQUE[ep] = list.map(e => ({ n: String(e.nom).split(' — ')[0], d: e.texte }));
+                    }
+                }
+            } else if (M7.enfances && M7.enfances.length === 6) {
+                ENFANCES_PAR_EPOQUE.E2 = M7.enfances.map(e => ({ n: String(e.nom).split(' — ')[0], d: e.texte }));
             }
+            ENFANCES.length = 0;
+            ENFANCES_PAR_EPOQUE.E2.forEach(e => ENFANCES.push({ ...e }));
             if (M7.metiers && M7.metiers.length === 12) {
                 METIERS.length = 0;
                 M7.metiers.forEach(m => METIERS.push({ n: m.metier, d: m.bonus + ' ; ' + m.atout + (m.attache ? ' ; ' + m.attache : '') }));
@@ -462,7 +529,7 @@ function initCharacterSheet() {
             return RACE_DATA[r].gifts.map((g, i) => ({ value: String(i), label: (i + 1) + '. ' + g, desc: RACE_DATA[r].giftNotes[i] || '' }));
         });
         attachDescDropdown(enfanceSelect, 'csDdEnfance', () =>
-            ENFANCES.map((e, i) => ({ value: String(i + 1), label: (i + 1) + '. ' + e.n, desc: e.d })));
+            currentEnfances().map((e, i) => ({ value: String(i + 1), label: (i + 1) + '. ' + e.n, desc: e.d })));
         attachDescDropdown(metierSelect, 'csDdMetier', () =>
             METIERS.map((m, i) => ({ value: String(i + 1), label: (i + 1) + '. ' + m.n, desc: m.d })));
         attachDescDropdown(evenementSelect, 'csDdEvenement', () =>
@@ -542,6 +609,7 @@ function initCharacterSheet() {
             attributes: { for: '5', agi: '3', con: '4', rap: '3', int: '2', eru: '3', cha: '1', ins: '3', mag: '0' },
             vision: '4',
             ouie: '3',
+            enfanceEpoque: 'E2',
             enfance: '2',
             metier: '1',
             evenement: '2',
@@ -1146,7 +1214,9 @@ function initCharacterSheet() {
         if (histDetail) {
             histDetail.innerHTML = '';
             const rows = [];
-            if (enfanceSelect && ENFANCES[parseInt(enfanceSelect.value) - 1]) rows.push(['Enfance', ENFANCES[parseInt(enfanceSelect.value) - 1]]);
+            const ep = currentEnfanceEpoque();
+            const enfList = currentEnfances();
+            if (enfanceSelect && enfList[parseInt(enfanceSelect.value) - 1]) rows.push(['Enfance [' + ep + ']', enfList[parseInt(enfanceSelect.value) - 1]]);
             if (metierSelect && METIERS[parseInt(metierSelect.value) - 1]) rows.push(['Métier', METIERS[parseInt(metierSelect.value) - 1]]);
             if (evenementSelect && evenementSelect.value !== '0' && EVENEMENTS[parseInt(evenementSelect.value) - 1]) rows.push(['Événement', EVENEMENTS[parseInt(evenementSelect.value) - 1]]);
             for (const [label, entry] of rows) {
@@ -1583,7 +1653,7 @@ function initCharacterSheet() {
     // Sauvegarde quand la saisie est terminée (blur / Entrée / sélection),
     // jamais pendant la frappe : flush immédiat du debounce en attente.
     // Enregistré après les handlers ci-dessus pour purger leur timer.
-    for (const el of [nameInput, ageInput, sexeSelect, mondeInput, ancrageInput, visionInput, ouieInput, enfanceSelect, metierSelect, evenementSelect, giftSelect, raceSelect, profileSelect, pillarMajorSelect, pillarMinorSelect]) {
+    for (const el of [nameInput, ageInput, sexeSelect, mondeInput, ancrageInput, visionInput, ouieInput, enfanceEpoqueSelect, enfanceSelect, metierSelect, evenementSelect, giftSelect, raceSelect, profileSelect, pillarMajorSelect, pillarMinorSelect]) {
         if (el) el.addEventListener('change', flushSync);
     }
     document.querySelectorAll('.skill-check').forEach(cb => cb.addEventListener('change', flushSync));
@@ -1623,6 +1693,29 @@ function initCharacterSheet() {
     bindHistoryRoll('csBtnMetier', metierSelect, 12);
     bindHistoryRoll('csBtnEvenement', evenementSelect, 12);
 
+    function rebuildEnfanceOptions(preserveVal) {
+        if (!enfanceSelect) return;
+        const prev = preserveVal ? (enfanceSelect.value || '2') : null;
+        enfanceSelect.innerHTML = '';
+        currentEnfances().forEach((e, i) => {
+            const opt = document.createElement('option');
+            opt.value = String(i + 1);
+            opt.textContent = (i + 1) + '. ' + e.n;
+            enfanceSelect.appendChild(opt);
+        });
+        if (prev && enfanceSelect.querySelector('option[value="' + prev + '"]')) {
+            enfanceSelect.value = prev;
+        }
+        renderDescDropdowns();
+    }
+    if (enfanceEpoqueSelect) {
+        enfanceEpoqueSelect.addEventListener('change', () => {
+            rebuildEnfanceOptions(true);
+            updateCharacterCalculations();
+            flushSync();
+        });
+    }
+
     // Peuple les selects statiques (piliers, historique).
     function populateStaticSelects() {
         for (const sel of [pillarMajorSelect, pillarMinorSelect]) {
@@ -1639,12 +1732,7 @@ function initCharacterSheet() {
         refreshPillarOptions();
         syncPillarPrev();
         if (enfanceSelect && enfanceSelect.options.length === 0) {
-            ENFANCES.forEach((e, i) => {
-                const opt = document.createElement('option');
-                opt.value = String(i + 1);
-                opt.textContent = (i + 1) + '. ' + e.n;
-                enfanceSelect.appendChild(opt);
-            });
+            rebuildEnfanceOptions(false);
         }
         if (metierSelect && metierSelect.options.length === 0) {
             METIERS.forEach((m, i) => {
@@ -1683,6 +1771,7 @@ function initCharacterSheet() {
             attributes: {},
             vision: visionInput ? visionInput.value : '',
             ouie: ouieInput ? ouieInput.value : '',
+            enfanceEpoque: currentEnfanceEpoque(),
             enfance: enfanceSelect ? enfanceSelect.value : '',
             metier: metierSelect ? metierSelect.value : '',
             evenement: evenementSelect ? evenementSelect.value : '',
@@ -1719,6 +1808,13 @@ function initCharacterSheet() {
         if (data.gift === 0 || data.gift) setVal(giftSelect, String(data.gift));
         if (data.vision !== undefined) setVal(visionInput, data.vision);
         if (data.ouie !== undefined) setVal(ouieInput, data.ouie);
+        if (enfanceEpoqueSelect && focused !== enfanceEpoqueSelect) {
+            const ep = (data.enfanceEpoque && ENFANCES_PAR_EPOQUE[data.enfanceEpoque]) ? data.enfanceEpoque : 'E2';
+            if (enfanceEpoqueSelect.value !== ep) {
+                enfanceEpoqueSelect.value = ep;
+                rebuildEnfanceOptions(false);
+            }
+        }
         if (data.enfance) setVal(enfanceSelect, String(data.enfance));
         if (data.metier) setVal(metierSelect, String(data.metier));
         if (data.evenement === 0 || data.evenement) setVal(evenementSelect, String(data.evenement));
@@ -1750,7 +1846,9 @@ function initCharacterSheet() {
             if (info.mag && ext.mag > 0) score = Math.max(score, ext.mag);
             return `${name} +${lvl} (${stepDie(dieForValue(score), lvl)})`;
         }).join(', ') || 'Aucune';
-        const enfTxt = d.enfance ? histTxt(ENFANCES, d.enfance) : '—';
+        const enfEp = d.enfanceEpoque || 'E2';
+        const enfList = ENFANCES_PAR_EPOQUE[enfEp] || ENFANCES;
+        const enfTxt = d.enfance ? ('[' + enfEp + '] ' + histTxt(enfList, d.enfance)) : '—';
         const metTxt = d.metier ? histTxt(METIERS, d.metier) : '—';
         const eveTxt = (d.evenement && d.evenement !== '0') ? histTxt(EVENEMENTS, d.evenement) : 'Aucun';
         return `=== FICHE DE PERSONNAGE RP (Codex v2.4) ===\n` +
@@ -1908,6 +2006,7 @@ function initCharacterSheet() {
                 attrInputs.mag.value = 0;
                 if (visionInput) visionInput.value = '4';
                 if (ouieInput) ouieInput.value = '3';
+                if (enfanceEpoqueSelect) { enfanceEpoqueSelect.value = 'E2'; rebuildEnfanceOptions(false); }
                 if (enfanceSelect) enfanceSelect.value = '2';
                 if (metierSelect) metierSelect.value = '1';
                 if (evenementSelect) evenementSelect.value = '2';

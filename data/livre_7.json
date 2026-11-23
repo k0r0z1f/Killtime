@@ -2,7 +2,7 @@
  "livre": "VII",
  "titre": "Historiques",
  "version": 1,
- "updated": "2026-10-31",
+ "updated": "2026-11-22",
  "source": "livre_7.html",
  "entete_html": "",
  "sections": [
@@ -24,7 +24,7 @@
    "blocs": [
     {
      "type": "html",
-     "html": "\n\n                    <p>\n                        Vous venez de poser l'identité, l'espèce et le concept (Étape 1,\n                        Livre I §3). Prenez deux minutes pour le passé, avant de répartir\n                        vos points (Étape 3). Tant que votre fiche n'est pas validée,\n                        vous pouvez encore tout changer : enfance, métier, même espèce\n                        ou concept si l'histoire vous emmène ailleurs.\n                    </p>\n\n                    <p>\n                        Vous avez <strong>4 cases</strong>, dont <strong>1 seule obligatoire</strong>\n                        (l'Enfance). Vous pouvez <strong>choisir</strong> ou <strong>lancer\n                        les dés</strong> (d6 enfance, d12 métier, d12 événement). Sur chaque\n                        case que vous prenez, notez une <strong>époque [E0–E5]</strong>\n                        (Échelle Technologique, Livre I §2.1, voir §26.4) : même bonus,\n                        juste le décor change.\n                    </p>\n\n                    "
+     "html": "\n\n                    <p>\n                        Vous venez de poser l'identité, l'espèce et le concept (Étape 1,\n                        Livre I §3). Prenez deux minutes pour le passé, avant de répartir\n                        vos points (Étape 3). Tant que votre fiche n'est pas validée,\n                        vous pouvez encore tout changer : enfance, métier, même espèce\n                        ou concept si l'histoire vous emmène ailleurs.\n                    </p>\n\n                    <p>\n                        Vous avez <strong>4 cases</strong>, dont <strong>1 seule obligatoire</strong>\n                        (l'Enfance). Vous pouvez <strong>choisir</strong> ou <strong>lancer\n                        les dés</strong> (d6 enfance, d12 métier, d12 événement). Sur chaque\n                        case que vous prenez, notez une <strong>époque [E0–E5]</strong>\n                        (Échelle Technologique, Livre I §2.1, voir §26.4) : votre contexte\n                        sélectionne la <strong>table d6 d'Enfance</strong> correspondante\n                        (chap. 27) et habille le décor du Métier et de l'Événement sans\n                        jamais changer votre budget de bonus.\n                    </p>\n\n                    "
     },
     {
      "type": "ref",
@@ -40,7 +40,7 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <div class=\"callout temporal\">\n                        <div class=\"callout-header\">\n                            Ce que le marqueur change — et ne change pas\n                        </div>\n                        <div class=\"callout-body\">\n                            Le marqueur ne change <strong>jamais</strong> votre bonus : un Mécano\n                            forgeron [E1] et un Mécano orbital [E3] donnent le même +2/+2.\n                            Seuls le décor, l'atout (caisse à outils → forge → atelier orbital)\n                            et l'attache (dette, guilde, commanditaire) changent de nom.\n                            Si votre atout ne sert à rien dans l'époque jouée (une licence\n                            d'astroport en campagne E1), votre MJ le convertit en contact\n                            ou droit équivalent.\n                        </div>\n                    </div>\n\n                    <!-- ================= CHAPITRE 26 ================= -->\n                    "
+     "html": "\n\n                    <div class=\"callout temporal\">\n                        <div class=\"callout-header\">\n                            Ce que le marqueur change — et ne change pas\n                        </div>\n                        <div class=\"callout-body\">\n                            Le marqueur ne change <strong>jamais</strong> la valeur de vos bonus :\n                            toutes les tables d'Enfance (E0 à E5, chap. 27) restent calibrées\n                            à <strong>+2 dans 1 compétence en contexte précis</strong>, et un\n                            Mécano forgeron [E1] comme un Mécano orbital [E3] donnent le même\n                            +2/+2. Sur le Métier et l'Événement, seuls le décor, l'atout\n                            (caisse à outils → forge → atelier orbital) et l'attache\n                            (dette, guilde, commanditaire) changent de nom. Si votre atout\n                            ne sert à rien dans l'époque jouée (une licence d'astroport en\n                            campagne E1), votre MJ le convertit en contact ou droit équivalent.\n                        </div>\n                    </div>\n\n                    <!-- ================= CHAPITRE 26 ================= -->\n                    "
     }
    ],
    "nav": "Principes & Procédure"
@@ -48,22 +48,62 @@
   {
    "id": "chap-27",
    "symbole": "27.",
-   "titre": "Enfances : 6 Milieux d'Origine (d6)",
+   "titre": "Enfances : 1 Table d6 par Contexte E0–E5",
    "blocs": [
     {
      "type": "html",
-     "html": "\n\n                    <p>\n                        Lancez <strong>1d6</strong> ou choisissez. Chaque enfance vous donne\n                        <strong>1 petit bonus</strong> : +2 à une compétence bien précise\n                        <strong>dans son contexte</strong>, ou un petit trait situatif.\n                        Hors contexte, pas de bonus. Exemple : votre +2 en ville ne vous\n                        aide pas en pleine forêt. Notez votre <strong>[E0–E5]</strong>\n                        (§26.4) : même bonus, juste le décor change.\n                    </p>\n\n                    "
+     "html": "\n\n                    <p>\n                        Repérez d'abord votre contexte technologique <strong>[E0–E5]</strong> (§26.4 —\n                        par défaut celui de la campagne), ouvrez la table correspondante ci-dessous,\n                        puis lancez <strong>1d6</strong> ou choisissez. Chaque enfance vous donne\n                        <strong>1 petit bonus</strong> : <strong>+2</strong> à une compétence bien\n                        précise <strong>dans son contexte</strong> (environ la moitié d'un don racial,\n                        §26.1). Hors contexte, pas de bonus. Notez <strong>Nom [Ex]</strong> sur\n                        votre fiche (§26.3).\n                    </p>\n\n                    <div style=\"display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 22px;\">\n                        <a href=\"#sec-27-1\" class=\"pill-badge amber\" style=\"text-decoration: none;\">27.1 [E0] Primitive</a>\n                        <a href=\"#sec-27-2\" class=\"pill-badge amber\" style=\"text-decoration: none;\">27.2 [E1] Médiévale</a>\n                        <a href=\"#sec-27-3\" class=\"pill-badge cyan\" style=\"text-decoration: none;\">27.3 [E2] Moderne</a>\n                        <a href=\"#sec-27-4\" class=\"pill-badge cyan\" style=\"text-decoration: none;\">27.4 [E3] Avancée</a>\n                        <a href=\"#sec-27-5\" class=\"pill-badge emerald\" style=\"text-decoration: none;\">27.5 [E4] Très Avancée</a>\n                        <a href=\"#sec-27-6\" class=\"pill-badge emerald\" style=\"text-decoration: none;\">27.6 [E5] Démiurgique</a>\n                    </div>\n\n                    <h3 id=\"sec-27-1\">27.1 Contexte [E0] — Primitive (d6)</h3>\n                    <p>\n                        <em>Pierre, os, bronze, chasse et tribus.</em> Vous avez grandi dans un monde\n                        sans fer forgé ni cités de pierre, au rythme du clan, du gibier et des saisons.\n                    </p>\n\n                    "
     },
     {
      "type": "ref",
-     "cible": "enfances"
+     "cible": "enfances_e0"
     },
     {
      "type": "html",
-     "html": "\n\n                    <!-- ================= CHAPITRE 26 ================= -->\n                    "
+     "html": "\n\n                    <h3 id=\"sec-27-2\">27.2 Contexte [E1] — Médiévale (d6)</h3>\n                    <p>\n                        <em>Forges d'acier, bourgs, châteaux, abbayes et guildes.</em> Vous avez grandi\n                        entre ateliers, champs communaux, routes marchandes et remparts.\n                    </p>\n\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "enfances_e1"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <h3 id=\"sec-27-3\">27.3 Contexte [E2] — Moderne (d6)</h3>\n                    <p>\n                        <em>Métropoles, balistique, silicium et États-nations.</em> Vous avez grandi\n                        entre quais industriels, rues bétonnées, écoles publiques et casernes.\n                    </p>\n\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "enfances_e2"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <h3 id=\"sec-27-4\">27.4 Contexte [E3] — Avancée (d6)</h3>\n                    <p>\n                        <em>Orbital, terraformation, cybernétique et interstellaire.</em> Vous avez grandi\n                        sous dôme, entre sas de station, ponts de navettes et néons de mégacité.\n                    </p>\n\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "enfances_e3"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <h3 id=\"sec-27-5\">27.5 Contexte [E4] — Très Avancée (d6)</h3>\n                    <p>\n                        <em>Sphères de Dyson, téléportation, nytharite et cuves arcaniques.</em> Vous avez\n                        grandi à l'échelle des mégastructures, des portails et des ateliers d'énergie.\n                    </p>\n\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "enfances_e4"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <h3 id=\"sec-27-6\">27.6 Contexte [E5] — Démiurgique (d6)</h3>\n                    <p>\n                        <em>Continuum manipulé et post-matière.</em> Vous avez grandi là où les lois\n                        physiques se plient et où l'on cartographie les embranchements du réel.\n                    </p>\n\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "enfances_e5"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <div class=\"callout arcane\" style=\"margin-top: 22px;\">\n                        <div class=\"callout-header\">\n                            Jouer une enfance hors de son époque de campagne (§26.4)\n                        </div>\n                        <div class=\"callout-body\">\n                            Vous venez d'un autre monde ou d'un autre âge que celui de la table ?\n                            Tirez ou choisissez dans la <strong>table d6 de votre époque d'origine</strong>,\n                            puis adaptez la portée du contexte avec votre MJ par simple analogie\n                            (ex. <em>Piste &amp; Gibier [E0]</em> garde son +2 <em>Discrétion</em> en\n                            forêt même dans une campagne [E3], et <em>Atelier de Nytharite [E4]</em>\n                            transpose son +2 <em>Ingénierie &amp; Arcanotech</em> sur les mécanismes\n                            du décor joué). Rappel : aucune enfance — même en [E4] ou [E5] — ne vous\n                            donne accès à la Cinquième Force (§29.3) ni à la clairsentience (Livre X §41).\n                        </div>\n                    </div>\n\n                    <!-- ================= CHAPITRE 28 ================= -->\n                    "
     }
    ],
-   "nav": "Enfances (d6)"
+   "nav": "Enfances E0–E5 (d6)"
   },
   {
    "id": "chap-28",
@@ -187,46 +227,286 @@
     ]
    ]
   },
-  "enfances": {
-   "type": "cartes",
-   "grille": 2,
-   "cartes": [
-    {
-     "titre": "1. Soutes &amp; Docks — Enfant de station",
-     "top": false,
-     "corps_html": "Vous avez grandi entre coursives et containers, dans le bruit\n                                des réacteurs. Vous savez passer où les autres coincent.<br>\n                                <strong>Vous gagnez :</strong> +2 <em>Subterfuge Manuel</em> (crochetage, dépannage\n                                improvisé) en milieu confiné (vaisseau, station, souterrain). Vous ignorez\n                                les malus d'exiguïté pour vous faufiler.",
-     "pieds": []
-    },
-    {
-     "titre": "2. Rues &amp; Bas-fonds — Gamin des toits",
-     "top": false,
-     "corps_html": "La ville vous a élevé : ses gangs, ses toits, ses recoins.\n                                Vous sentez quand on vous suit.<br>\n                                <strong>Vous gagnez :</strong> +2 <em>Observation</em> (repérer embuscades, filatures,\n                                planques) en milieu urbain uniquement.",
-     "pieds": []
-    },
-    {
-     "titre": "3. Ferme &amp; Frontière — Enfant des confins",
-     "top": false,
-     "corps_html": "Vous avez grandi au rythme des récoltes, des bêtes et des saisons.\n                                Vous savez lire le ciel et trouver un abri.<br>\n                                <strong>Vous gagnez :</strong> +2 <em>Nature &amp; Survie</em> (orientation, abris,\n                                lecture météo) en milieu rural ou sauvage.",
-     "pieds": []
-    },
-    {
-     "titre": "4. Clan &amp; Tribu — Sang des anciens",
-     "top": false,
-     "corps_html": "Les veillées et la parole des anciens vous ont formé. Vous sentez\n                                quand un groupe devient hostile.<br>\n                                <strong>Vous gagnez :</strong> +2 <em>Intuition</em> (pressentir l'hostilité d'un groupe,\n                                sens du danger en assemblée). Votre MJ peut ajouter 1 contact clanique,\n                                juste pour le récit (aucun effet chiffré).",
-     "pieds": []
-    },
-    {
-     "titre": "5. Cité &amp; École — Enfant instruit",
-     "top": false,
-     "corps_html": "Bancs d'école, bibliothèques, précepteurs. Vous savez où chercher\n                                et vous retenez vite.<br>\n                                <strong>Vous gagnez :</strong> +2 <em>Académie</em> dans 1 domaine au choix (histoire,\n                                linguistique, économie). Cela ne donne <strong>aucun</strong> entraînement gratuit :\n                                votre Érudition ne change pas.",
-     "pieds": []
-    },
-    {
-     "titre": "6. Caserne &amp; Ordre — Enfant de troupe",
-     "top": false,
-     "corps_html": "Vous avez grandi au son du clairon, entre dortoirs et terrains\n                                d'exercice. Marcher, porter, tenir : vous savez faire.<br>\n                                <strong>Vous gagnez :</strong> +2 <em>Athlétisme</em> (franchissement, marches forcées,\n                                portage) + habitudes de discipline (aucun bonus social).",
-     "pieds": []
-    }
+  "enfances_e0": {
+   "type": "table",
+   "colonnes": [
+    "d6",
+    "Enfance",
+    "Milieu &amp; Vécu",
+    "Bonus (+2 en contexte)"
+   ],
+   "lignes": [
+    [
+     "<strong>1</strong>",
+     "<strong>Clan &amp; Tribu</strong><br><em style=\"color:var(--text-secondary);font-size:0.86em;\">Sang des anciens</em>",
+     "Les veillées autour du feu et la parole des anciens vous ont formé. Vous lisez les tensions d'un cercle bien avant le premier geste brusque.",
+     "+2 <em>Intuition</em> (pressentir l'hostilité d'un groupe, sens du danger en assemblée). Votre MJ peut ajouter 1 contact clanique purement narratif (aucun effet chiffré)."
+    ],
+    [
+     "<strong>2</strong>",
+     "<strong>Piste &amp; Gibier</strong><br><em style=\"color:var(--text-secondary);font-size:0.86em;\">Enfant de la chasse</em>",
+     "Avant de manier le bronze, vous saviez suivre une trace dans la boue, remonter le vent et attendre sans un souffle.",
+     "+2 <em>Discrétion</em> (se fondre dans le décor, approcher à pas couverts) en milieu sauvage ou naturel uniquement."
+    ],
+    [
+     "<strong>3</strong>",
+     "<strong>Grottes &amp; Falaises</strong><br><em style=\"color:var(--text-secondary);font-size:0.86em;\">Grimpeur des pierres</em>",
+     "Vous avez grandi dans les abris sous roche, les gorges et les cavernes. Sauter d'un rebord ou ramper dans une faille est un réflexe.",
+     "+2 <em>Athlétisme</em> (escalade, franchissement d'obstacles naturels) en terrain rocheux, escarpé ou souterrain."
+    ],
+    [
+     "<strong>4</strong>",
+     "<strong>Nomades &amp; Steppes</strong><br><em style=\"color:var(--text-secondary);font-size:0.86em;\">Marcheur des saisons</em>",
+     "Votre peuple suit les troupeaux et les pluies. Vous savez lire le ciel, trouver l'eau et dresser un abri avant le gel.",
+     "+2 <em>Nature &amp; Survie</em> (orientation, abris, eau et météo) en milieu sauvage."
+    ],
+    [
+     "<strong>5</strong>",
+     "<strong>Taille &amp; Bronze</strong><br><em style=\"color:var(--text-secondary);font-size:0.86em;\">Mains du foyer</em>",
+     "Silex éclaté, os sculpté, moules de terre et premier bronze : vous avez façonné l'indispensable avec trois fois rien.",
+     "+2 <em>Artisanat / Connaissance</em> (tailler, réparer ou improviser un outil rudimentaire avec des matériaux bruts : pierre, bois, os, cuir, métal simple)."
+    ],
+    [
+     "<strong>6</strong>",
+     "<strong>Herbes &amp; Foyer</strong><br><em style=\"color:var(--text-secondary);font-size:0.86em;\">Enfant du guérisseur</em>",
+     "Vous broyiez les racines, nettoyiez les plaies au feu et reconnaissiez les baies dangereuses au premier coup d'œil.",
+     "+2 <em>Premiers Soins</em> (soins de fortune, bandages, cataplasmes et remèdes naturels hors structure médicale)."
+    ]
+   ]
+  },
+  "enfances_e1": {
+   "type": "table",
+   "colonnes": [
+    "d6",
+    "Enfance",
+    "Milieu &amp; Vécu",
+    "Bonus (+2 en contexte)"
+   ],
+   "lignes": [
+    [
+     "<strong>1</strong>",
+     "<strong>Forge &amp; Guilde</strong><br><em style=\"color:var(--text-secondary);font-size:0.86em;\">Apprenti du marteau</em>",
+     "Soufflets, enclumes, charbon et odeur d'acier trempé : vous avez grandi dans un atelier de guilde, à entretenir outils et ferrures dès l'aube.",
+     "+2 <em>Artisanat / Connaissance</em> dans 1 métier manuel d'atelier au choix (forge, charpente, sellerie, maçonnerie) pour façonner, évaluer ou réparer."
+    ],
+    [
+     "<strong>2</strong>",
+     "<strong>Ruelles &amp; Faubourgs</strong><br><em style=\"color:var(--text-secondary);font-size:0.86em;\">Enfant des halles</em>",
+     "Entre étals bondés, impasses boueuses et guet de nuit, vous avez appris à forcer un loquet, escamoter un objet et disparaître dans la cohue.",
+     "+2 <em>Subterfuge Manuel</em> (pickpocket, crochetage de serrures mécaniques, escamotage) en milieu urbain ou foule dense."
+    ],
+    [
+     "<strong>3</strong>",
+     "<strong>Glèbe &amp; Lisière</strong><br><em style=\"color:var(--text-secondary);font-size:0.86em;\">Enfant du terroir</em>",
+     "Moissons, bêtes, bois communaux et hivers longs : vous savez porter lourd et tenir d'un soleil à l'autre sans lâcher.",
+     "+2 <em>Endurance Physique</em> (marches prolongées, port de charges lourdes, résistance à l'effort continu et aux travaux de force)."
+    ],
+    [
+     "<strong>4</strong>",
+     "<strong>Foire &amp; Caravane</strong><br><em style=\"color:var(--text-secondary);font-size:0.86em;\">Enfant des routes</em>",
+     "De bourg en bourg sur les charrettes, vous avez grandi parmi les marchands, les péages et les rumeurs de taverne.",
+     "+2 <em>Communication</em> (marchandage, recueillir une rumeur, apaiser un contrôle ou un péage) dans un lieu de commerce ou de passage."
+    ],
+    [
+     "<strong>5</strong>",
+     "<strong>Abbaye &amp; Scriptorium</strong><br><em style=\"color:var(--text-secondary);font-size:0.86em;\">Novice des parchemins</em>",
+     "Encre de galle, parchemins et bibliothèques silencieuses : vous savez lire, classer et retrouver un vieux traité dans la poussière.",
+     "+2 <em>Académie</em> dans 1 domaine au choix (histoire, droit, théologie, héraldique, langues anciennes). Aucun entraînement gratuit : votre Érudition ne change pas."
+    ],
+    [
+     "<strong>6</strong>",
+     "<strong>Donjon &amp; Remparts</strong><br><em style=\"color:var(--text-secondary);font-size:0.86em;\">Page de garnison</em>",
+     "Rondes nocturnes, écuries seigneuriales, guet sur les créneaux : vous repérez un cavalier à l'horizon ou un intrus sous une poterne.",
+     "+2 <em>Observation</em> (guet, repérer une approche, une brèche ou un détail suspect) depuis un poste, une route ou une place fortifiée."
+    ]
+   ]
+  },
+  "enfances_e2": {
+   "type": "table",
+   "colonnes": [
+    "d6",
+    "Enfance",
+    "Milieu &amp; Vécu",
+    "Bonus (+2 en contexte)"
+   ],
+   "lignes": [
+    [
+     "<strong>1</strong>",
+     "<strong>Ports &amp; Entrepôts</strong><br><em style=\"color:var(--text-secondary);font-size:0.86em;\">Gamin des quais</em>",
+     "Vous avez grandi entre docks, hangars, conduits techniques et camions de fret. Vous savez dépanner au ruban adhésif et passer où les autres coincent.",
+     "+2 <em>Subterfuge Manuel</em> (crochetage, dépannage improvisé) en milieu industriel ou confiné (hangar, sous-sol, conduits). Vous ignorez les malus d'exiguïté pour vous faufiler."
+    ],
+    [
+     "<strong>2</strong>",
+     "<strong>Rues &amp; Bas-fonds</strong><br><em style=\"color:var(--text-secondary);font-size:0.86em;\">Gamin des toits</em>",
+     "La ville vous a élevé : ses gangs, ses toits, ses recoins. Vous sentez quand on vous suit et vous repérez un guet-apens au coin d'un boulevard.",
+     "+2 <em>Observation</em> (repérer embuscades, filatures, planques) en milieu urbain uniquement."
+    ],
+    [
+     "<strong>3</strong>",
+     "<strong>Ferme &amp; Frontière</strong><br><em style=\"color:var(--text-secondary);font-size:0.86em;\">Enfant des confins</em>",
+     "Vous avez grandi loin des métropoles, au rythme des récoltes, des bêtes et des saisons. Vous savez lire le ciel et trouver un abri.",
+     "+2 <em>Nature &amp; Survie</em> (orientation, abris, lecture météo) en milieu rural ou sauvage."
+    ],
+    [
+     "<strong>4</strong>",
+     "<strong>Quartier &amp; Foyer</strong><br><em style=\"color:var(--text-secondary);font-size:0.86em;\">Enfant du bloc</em>",
+     "Immeubles serrés, réunions de quartier, solidarité de palier : vous sentez tout de suite quand une foule ou une pièce bascule dans l'hostilité.",
+     "+2 <em>Intuition</em> (pressentir l'hostilité d'un groupe, lire l'ambiance d'une assemblée ou d'une rue). Votre MJ peut ajouter 1 contact local purement narratif (aucun effet chiffré)."
+    ],
+    [
+     "<strong>5</strong>",
+     "<strong>Cité &amp; École</strong><br><em style=\"color:var(--text-secondary);font-size:0.86em;\">Enfant instruit</em>",
+     "Bancs d'école, bibliothèques municipales, terminaux d'études : vous savez où chercher une information et vous retenez vite.",
+     "+2 <em>Académie</em> dans 1 domaine au choix (histoire, droit, sciences, économie, linguistique). Aucun entraînement gratuit : votre Érudition ne change pas."
+    ],
+    [
+     "<strong>6</strong>",
+     "<strong>Caserne &amp; Ordre</strong><br><em style=\"color:var(--text-secondary);font-size:0.86em;\">Enfant de troupe</em>",
+     "Vous avez grandi au son du clairon, entre dortoirs et terrains de manœuvre. Marcher, porter, tenir : vous savez faire.",
+     "+2 <em>Athlétisme</em> (franchissement, marches forcées, portage) + habitudes de discipline (aucun bonus social)."
+    ]
+   ]
+  },
+  "enfances_e3": {
+   "type": "table",
+   "colonnes": [
+    "d6",
+    "Enfance",
+    "Milieu &amp; Vécu",
+    "Bonus (+2 en contexte)"
+   ],
+   "lignes": [
+    [
+     "<strong>1</strong>",
+     "<strong>Soutes &amp; Docks</strong><br><em style=\"color:var(--text-secondary);font-size:0.86em;\">Enfant de station</em>",
+     "Vous avez grandi entre coursives, sas et conteneurs, dans le bruit des réacteurs. Vous savez passer où les autres coincent et bricoler sous pression.",
+     "+2 <em>Subterfuge Manuel</em> (crochetage de sas, dépannage improvisé) en milieu confiné (vaisseau, station, souterrain). Vous ignorez les malus d'exiguïté pour vous faufiler."
+    ],
+    [
+     "<strong>2</strong>",
+     "<strong>Dôme &amp; Terraformation</strong><br><em style=\"color:var(--text-secondary);font-size:0.86em;\">Enfant de colonie</em>",
+     "Poussière corrosive, air recyclé, sorties sous combinaison : votre organisme s'est forgé sur un monde encore inachevé.",
+     "+2 <em>Système Immunitaire</em> (poussières toxiques, air vicié, faibles radiations, pathogènes coloniaux) en milieu hostile ou confiné."
+    ],
+    [
+     "<strong>3</strong>",
+     "<strong>Pont &amp; Navette</strong><br><em style=\"color:var(--text-secondary);font-size:0.86em;\">Né dans le vide</em>",
+     "Gravité variable, manœuvres d'amarrage, sorties en apesanteur : vous gardez votre équilibre là où les planétaires perdent le nord.",
+     "+2 <em>Acrobatie</em> (équilibre, déplacements et réception) en faible gravité, apesanteur ou sur surface instable (pont de nef, véhicule, échafaudage)."
+    ],
+    [
+     "<strong>4</strong>",
+     "<strong>Mégacité &amp; Bas-niveaux</strong><br><em style=\"color:var(--text-secondary);font-size:0.86em;\">Enfant des néons</em>",
+     "Tours empilées, drones de surveillance, marchés cybernétiques : vous lisez un terminal public et récupérez un composant utile à la volée.",
+     "+2 <em>Ingénierie &amp; Arcanotech</em> (diagnostics rapides, récupération de composants, dépannage matériel courant) sur systèmes électroniques ou cybernétiques."
+    ],
+    [
+     "<strong>5</strong>",
+     "<strong>Convoi &amp; Astroport</strong><br><em style=\"color:var(--text-secondary);font-size:0.86em;\">Enfant des lignes stellaires</em>",
+     "Quais de transit, douanes orbitales, équipages de dix mondes : vous lisez un manifeste de fret et sentez l'arnaque avant la signature.",
+     "+2 <em>Communication</em> (négocier un passage, apaiser un contrôle douanier, recueillir une info de quai) dans un port, astroport ou carrefour de transit."
+    ],
+    [
+     "<strong>6</strong>",
+     "<strong>Écoute &amp; Passerelle</strong><br><em style=\"color:var(--text-secondary);font-size:0.86em;\">Enfant de quart</em>",
+     "Vous avez dormi bercé par les balises radio, les alarmes de coque et le ronronnement des moteurs : le moindre bruit anormal vous réveille net.",
+     "+2 <em>Écoute</em> (repérer une anomalie mécanique, un pas dans une coursive, une fréquence ou un murmure) en intérieur clos ou environnement technique."
+    ]
+   ]
+  },
+  "enfances_e4": {
+   "type": "table",
+   "colonnes": [
+    "d6",
+    "Enfance",
+    "Milieu &amp; Vécu",
+    "Bonus (+2 en contexte)"
+   ],
+   "lignes": [
+    [
+     "<strong>1</strong>",
+     "<strong>Arcs de Dyson</strong><br><em style=\"color:var(--text-secondary);font-size:0.86em;\">Enfant des mégastructures</em>",
+     "Des horizons qui remontent vers le ciel, des niveaux empilés sur des kilomètres : vous vous orientez dans les architectures titanesques sans perdre vos repères.",
+     "+2 <em>Observation</em> (repérage spatial, orientation dans les structures géantes, repérer accès ou anomalies architecturales) en milieu artificiel complexe."
+    ],
+    [
+     "<strong>2</strong>",
+     "<strong>Relais &amp; Portails</strong><br><em style=\"color:var(--text-secondary);font-size:0.86em;\">Enfant du transit</em>",
+     "Né entre deux sauts de téléportation, entre quais de portails et vecteurs sub-orbitaux, vous anticipez les trajectoires et encaissez les bascules brutales.",
+     "+2 <em>Conduite &amp; Pilotage</em> (manœuvres de précision, guidage de navette, véhicule rapide ou appareil de transit dans 1 catégorie au choix)."
+    ],
+    [
+     "<strong>3</strong>",
+     "<strong>Atelier de Nytharite</strong><br><em style=\"color:var(--text-secondary);font-size:0.86em;\">Apprenti arcanotech</em>",
+     "Vous avez grandi à calibrer des condensateurs, isoler des cristaux et relever des mesures de résonance — sans être nécessairement Éveillé vous-même.",
+     "+2 <em>Ingénierie &amp; Arcanotech</em> (diagnostic, entretien, réglage ou sécurisation d'appareils arcanotech). Ne donne <strong>aucun</strong> accès à la Cinquième Force (Magie inchangée)."
+    ],
+    [
+     "<strong>4</strong>",
+     "<strong>Cuves &amp; Bio-sanctuaire</strong><br><em style=\"color:var(--text-secondary);font-size:0.86em;\">Enfant des bassins</em>",
+     "Élevé parmi les médecins de régénération, les cuves arcaniques et les protocoles de triage avancé, vous reconnaissez une défaillance vitale au premier coup d'œil.",
+     "+2 <em>Premiers Soins</em> (stabilisation d'urgence, diagnostic de choc traumatique ou de toxicité, usage d'équipement médical avancé)."
+    ],
+    [
+     "<strong>5</strong>",
+     "<strong>Enclave &amp; Protocole</strong><br><em style=\"color:var(--text-secondary);font-size:0.86em;\">Enfant des maisons stellaires</em>",
+     "Conseils de secteurs, alliances entre cités-flottes, étiquette millimétrée : vous avez appris très jeune à garder votre sang-froid devant les puissants.",
+     "+2 <em>Leadership</em> (coordonner un groupe sous pression, tenir un rang ou imposer le calme dans une situation de crise ou de protocole)."
+    ],
+    [
+     "<strong>6</strong>",
+     "<strong>Ombres de la Sphère</strong><br><em style=\"color:var(--text-secondary);font-size:0.86em;\">Passager clandestin</em>",
+     "Vous avez survécu dans les anneaux de maintenance, les angles morts des portails et les grilles de capteurs sans jamais déclencher d'alerte.",
+     "+2 <em>Discrétion</em> (échapper aux capteurs, caméras, rondes automatisées ou systèmes de surveillance) en milieu artificiel ou sécurisé."
+    ]
+   ]
+  },
+  "enfances_e5": {
+   "type": "table",
+   "colonnes": [
+    "d6",
+    "Enfance",
+    "Milieu &amp; Vécu",
+    "Bonus (+2 en contexte)"
+   ],
+   "lignes": [
+    [
+     "<strong>1</strong>",
+     "<strong>Jardins de Post-Matière</strong><br><em style=\"color:var(--text-secondary);font-size:0.86em;\">Enfant des formes</em>",
+     "Vous avez grandi dans des architectures qui se recomposent à la pensée, où les murs coulent et où la gravité bascule d'une salle à l'autre.",
+     "+2 <em>Acrobatie</em> (réorientation, équilibre et réception de chute) en terrain altéré, instable, à gravité anormale ou géométrie changeante."
+    ],
+    [
+     "<strong>2</strong>",
+     "<strong>Marges du Continuum</strong><br><em style=\"color:var(--text-secondary);font-size:0.86em;\">Enfant des plis</em>",
+     "Né à la frontière de réalités courbées, vous sentez d'instinct les incohérences, les fausses pistes et les anomalies qui échappent aux yeux ordinaires.",
+     "+2 <em>Intuition</em> (détecter une anomalie physique ou temporelle, un paradoxe local, une illusion ou une intention cachée). Ne donne <strong>aucun</strong> pouvoir de clairsentience (Livre X §41)."
+    ],
+    [
+     "<strong>3</strong>",
+     "<strong>Observatoire des Trames</strong><br><em style=\"color:var(--text-secondary);font-size:0.86em;\">Apprenti indexeur</em>",
+     "Votre enfance s'est écoulée face aux modèles de probabilités, aux cartes d'embranchements et aux jeux stratégiques des architectes du continuum.",
+     "+2 <em>Penser / Stratégie</em> (analyser un système complexe, anticiper un enchaînement tactique ou déduire un plan d'ensemble)."
+    ],
+    [
+     "<strong>4</strong>",
+     "<strong>Voile &amp; Silence</strong><br><em style=\"color:var(--text-secondary);font-size:0.86em;\">Enfant hors-temps</em>",
+     "Élevé dans un refuge isolé des flux, à l'abri des regards démiurgiques, vous avez appris à ne laisser ni trace, ni écho, ni empreinte superflue.",
+     "+2 <em>Discrétion</em> (effacer ses traces, se soustraire à une détection active, rester inaperçu dans un lieu surveillé)."
+    ],
+    [
+     "<strong>5</strong>",
+     "<strong>Chœur &amp; Concile</strong><br><em style=\"color:var(--text-secondary);font-size:0.86em;\">Enfant des Élianes</em>",
+     "Vous avez grandi au milieu d'émissaires et de cultures séparées par des millénaires, où la moindre nuance de ton scelle un traité ou brise un monde.",
+     "+2 <em>Communication</em> (diplomatie interculturelle, décoder un protocole étranger, négocier face à une autorité ou une culture inconnue)."
+    ],
+    [
+     "<strong>6</strong>",
+     "<strong>Bastion des Lois</strong><br><em style=\"color:var(--text-secondary);font-size:0.86em;\">Enfant des forges de réalité</em>",
+     "Entre champs de contention, stabilisateurs de matière et surcharges énergétiques, votre corps s'est endurci aux environnements qui briseraient un voyageur non préparé.",
+     "+2 <em>Endurance Physique</em> (résister à la fatigue extrême, aux environnements physiquement éprouvants, pressions anormales ou efforts soutenus)."
+    ]
    ]
   },
   "metiers": {
@@ -410,6 +690,54 @@
   }
  },
  "tableaux": {
+  "enfances_e0": {
+   "colonnes": [
+    "d6",
+    "Enfance",
+    "Milieu &amp; Vécu",
+    "Bonus (+2 en contexte)"
+   ]
+  },
+  "enfances_e1": {
+   "colonnes": [
+    "d6",
+    "Enfance",
+    "Milieu &amp; Vécu",
+    "Bonus (+2 en contexte)"
+   ]
+  },
+  "enfances_e2": {
+   "colonnes": [
+    "d6",
+    "Enfance",
+    "Milieu &amp; Vécu",
+    "Bonus (+2 en contexte)"
+   ]
+  },
+  "enfances_e3": {
+   "colonnes": [
+    "d6",
+    "Enfance",
+    "Milieu &amp; Vécu",
+    "Bonus (+2 en contexte)"
+   ]
+  },
+  "enfances_e4": {
+   "colonnes": [
+    "d6",
+    "Enfance",
+    "Milieu &amp; Vécu",
+    "Bonus (+2 en contexte)"
+   ]
+  },
+  "enfances_e5": {
+   "colonnes": [
+    "d6",
+    "Enfance",
+    "Milieu &amp; Vécu",
+    "Bonus (+2 en contexte)"
+   ]
+  },
   "etapes_historique": {
    "colonnes": [
     "Entrée",
@@ -512,68 +840,370 @@
     "habillage": "Continuum manipulé, post-matière"
    }
   ],
+  "enfances_par_epoque": {
+   "E0": [
+    {
+     "d6": 1,
+     "epoque": "E0",
+     "nom": "Clan & Tribu — Sang des anciens",
+     "milieu": "Les veillées autour du feu et la parole des anciens vous ont formé. Vous lisez les tensions d'un cercle bien avant le premier geste brusque.",
+     "bonus": "+2 Intuition (pressentir l'hostilité d'un groupe, sens du danger en assemblée). Votre MJ peut ajouter 1 contact clanique purement narratif (aucun effet chiffré).",
+     "texte": "Les veillées autour du feu et la parole des anciens vous ont formé. Vous lisez les tensions d'un cercle bien avant le premier geste brusque. Vous gagnez : +2 Intuition (pressentir l'hostilité d'un groupe, sens du danger en assemblée). Votre MJ peut ajouter 1 contact clanique purement narratif (aucun effet chiffré)."
+    },
+    {
+     "d6": 2,
+     "epoque": "E0",
+     "nom": "Piste & Gibier — Enfant de la chasse",
+     "milieu": "Avant de manier le bronze, vous saviez suivre une trace dans la boue, remonter le vent et attendre sans un souffle.",
+     "bonus": "+2 Discrétion (se fondre dans le décor, approcher à pas couverts) en milieu sauvage ou naturel uniquement.",
+     "texte": "Avant de manier le bronze, vous saviez suivre une trace dans la boue, remonter le vent et attendre sans un souffle. Vous gagnez : +2 Discrétion (se fondre dans le décor, approcher à pas couverts) en milieu sauvage ou naturel uniquement."
+    },
+    {
+     "d6": 3,
+     "epoque": "E0",
+     "nom": "Grottes & Falaises — Grimpeur des pierres",
+     "milieu": "Vous avez grandi dans les abris sous roche, les gorges et les cavernes. Sauter d'un rebord ou ramper dans une faille est un réflexe.",
+     "bonus": "+2 Athlétisme (escalade, franchissement d'obstacles naturels) en terrain rocheux, escarpé ou souterrain.",
+     "texte": "Vous avez grandi dans les abris sous roche, les gorges et les cavernes. Sauter d'un rebord ou ramper dans une faille est un réflexe. Vous gagnez : +2 Athlétisme (escalade, franchissement d'obstacles naturels) en terrain rocheux, escarpé ou souterrain."
+    },
+    {
+     "d6": 4,
+     "epoque": "E0",
+     "nom": "Nomades & Steppes — Marcheur des saisons",
+     "milieu": "Votre peuple suit les troupeaux et les pluies. Vous savez lire le ciel, trouver l'eau et dresser un abri avant le gel.",
+     "bonus": "+2 Nature & Survie (orientation, abris, eau et météo) en milieu sauvage.",
+     "texte": "Votre peuple suit les troupeaux et les pluies. Vous savez lire le ciel, trouver l'eau et dresser un abri avant le gel. Vous gagnez : +2 Nature & Survie (orientation, abris, eau et météo) en milieu sauvage."
+    },
+    {
+     "d6": 5,
+     "epoque": "E0",
+     "nom": "Taille & Bronze — Mains du foyer",
+     "milieu": "Silex éclaté, os sculpté, moules de terre et premier bronze : vous avez façonné l'indispensable avec trois fois rien.",
+     "bonus": "+2 Artisanat / Connaissance (tailler, réparer ou improviser un outil rudimentaire avec des matériaux bruts : pierre, bois, os, cuir, métal simple).",
+     "texte": "Silex éclaté, os sculpté, moules de terre et premier bronze : vous avez façonné l'indispensable avec trois fois rien. Vous gagnez : +2 Artisanat / Connaissance (tailler, réparer ou improviser un outil rudimentaire avec des matériaux bruts : pierre, bois, os, cuir, métal simple)."
+    },
+    {
+     "d6": 6,
+     "epoque": "E0",
+     "nom": "Herbes & Foyer — Enfant du guérisseur",
+     "milieu": "Vous broyiez les racines, nettoyiez les plaies au feu et reconnaissiez les baies dangereuses au premier coup d'œil.",
+     "bonus": "+2 Premiers Soins (soins de fortune, bandages, cataplasmes et remèdes naturels hors structure médicale).",
+     "texte": "Vous broyiez les racines, nettoyiez les plaies au feu et reconnaissiez les baies dangereuses au premier coup d'œil. Vous gagnez : +2 Premiers Soins (soins de fortune, bandages, cataplasmes et remèdes naturels hors structure médicale)."
+    }
+   ],
+   "E1": [
+    {
+     "d6": 1,
+     "epoque": "E1",
+     "nom": "Forge & Guilde — Apprenti du marteau",
+     "milieu": "Soufflets, enclumes, charbon et odeur d'acier trempé : vous avez grandi dans un atelier de guilde, à entretenir outils et ferrures dès l'aube.",
+     "bonus": "+2 Artisanat / Connaissance dans 1 métier manuel d'atelier au choix (forge, charpente, sellerie, maçonnerie) pour façonner, évaluer ou réparer.",
+     "texte": "Soufflets, enclumes, charbon et odeur d'acier trempé : vous avez grandi dans un atelier de guilde, à entretenir outils et ferrures dès l'aube. Vous gagnez : +2 Artisanat / Connaissance dans 1 métier manuel d'atelier au choix (forge, charpente, sellerie, maçonnerie) pour façonner, évaluer ou réparer."
+    },
+    {
+     "d6": 2,
+     "epoque": "E1",
+     "nom": "Ruelles & Faubourgs — Enfant des halles",
+     "milieu": "Entre étals bondés, impasses boueuses et guet de nuit, vous avez appris à forcer un loquet, escamoter un objet et disparaître dans la cohue.",
+     "bonus": "+2 Subterfuge Manuel (pickpocket, crochetage de serrures mécaniques, escamotage) en milieu urbain ou foule dense.",
+     "texte": "Entre étals bondés, impasses boueuses et guet de nuit, vous avez appris à forcer un loquet, escamoter un objet et disparaître dans la cohue. Vous gagnez : +2 Subterfuge Manuel (pickpocket, crochetage de serrures mécaniques, escamotage) en milieu urbain ou foule dense."
+    },
+    {
+     "d6": 3,
+     "epoque": "E1",
+     "nom": "Glèbe & Lisière — Enfant du terroir",
+     "milieu": "Moissons, bêtes, bois communaux et hivers longs : vous savez porter lourd et tenir d'un soleil à l'autre sans lâcher.",
+     "bonus": "+2 Endurance Physique (marches prolongées, port de charges lourdes, résistance à l'effort continu et aux travaux de force).",
+     "texte": "Moissons, bêtes, bois communaux et hivers longs : vous savez porter lourd et tenir d'un soleil à l'autre sans lâcher. Vous gagnez : +2 Endurance Physique (marches prolongées, port de charges lourdes, résistance à l'effort continu et aux travaux de force)."
+    },
+    {
+     "d6": 4,
+     "epoque": "E1",
+     "nom": "Foire & Caravane — Enfant des routes",
+     "milieu": "De bourg en bourg sur les charrettes, vous avez grandi parmi les marchands, les péages et les rumeurs de taverne.",
+     "bonus": "+2 Communication (marchandage, recueillir une rumeur, apaiser un contrôle ou un péage) dans un lieu de commerce ou de passage.",
+     "texte": "De bourg en bourg sur les charrettes, vous avez grandi parmi les marchands, les péages et les rumeurs de taverne. Vous gagnez : +2 Communication (marchandage, recueillir une rumeur, apaiser un contrôle ou un péage) dans un lieu de commerce ou de passage."
+    },
+    {
+     "d6": 5,
+     "epoque": "E1",
+     "nom": "Abbaye & Scriptorium — Novice des parchemins",
+     "milieu": "Encre de galle, parchemins et bibliothèques silencieuses : vous savez lire, classer et retrouver un vieux traité dans la poussière.",
+     "bonus": "+2 Académie dans 1 domaine au choix (histoire, droit, théologie, héraldique, langues anciennes). Aucun entraînement gratuit : votre Érudition ne change pas.",
+     "texte": "Encre de galle, parchemins et bibliothèques silencieuses : vous savez lire, classer et retrouver un vieux traité dans la poussière. Vous gagnez : +2 Académie dans 1 domaine au choix (histoire, droit, théologie, héraldique, langues anciennes). Aucun entraînement gratuit : votre Érudition ne change pas."
+    },
+    {
+     "d6": 6,
+     "epoque": "E1",
+     "nom": "Donjon & Remparts — Page de garnison",
+     "milieu": "Rondes nocturnes, écuries seigneuriales, guet sur les créneaux : vous repérez un cavalier à l'horizon ou un intrus sous une poterne.",
+     "bonus": "+2 Observation (guet, repérer une approche, une brèche ou un détail suspect) depuis un poste, une route ou une place fortifiée.",
+     "texte": "Rondes nocturnes, écuries seigneuriales, guet sur les créneaux : vous repérez un cavalier à l'horizon ou un intrus sous une poterne. Vous gagnez : +2 Observation (guet, repérer une approche, une brèche ou un détail suspect) depuis un poste, une route ou une place fortifiée."
+    }
+   ],
+   "E2": [
+    {
+     "d6": 1,
+     "epoque": "E2",
+     "nom": "Ports & Entrepôts — Gamin des quais",
+     "milieu": "Vous avez grandi entre docks, hangars, conduits techniques et camions de fret. Vous savez dépanner au ruban adhésif et passer où les autres coincent.",
+     "bonus": "+2 Subterfuge Manuel (crochetage, dépannage improvisé) en milieu industriel ou confiné (hangar, sous-sol, conduits). Vous ignorez les malus d'exiguïté pour vous faufiler.",
+     "texte": "Vous avez grandi entre docks, hangars, conduits techniques et camions de fret. Vous savez dépanner au ruban adhésif et passer où les autres coincent. Vous gagnez : +2 Subterfuge Manuel (crochetage, dépannage improvisé) en milieu industriel ou confiné (hangar, sous-sol, conduits). Vous ignorez les malus d'exiguïté pour vous faufiler."
+    },
+    {
+     "d6": 2,
+     "epoque": "E2",
+     "nom": "Rues & Bas-fonds — Gamin des toits",
+     "milieu": "La ville vous a élevé : ses gangs, ses toits, ses recoins. Vous sentez quand on vous suit et vous repérez un guet-apens au coin d'un boulevard.",
+     "bonus": "+2 Observation (repérer embuscades, filatures, planques) en milieu urbain uniquement.",
+     "texte": "La ville vous a élevé : ses gangs, ses toits, ses recoins. Vous sentez quand on vous suit et vous repérez un guet-apens au coin d'un boulevard. Vous gagnez : +2 Observation (repérer embuscades, filatures, planques) en milieu urbain uniquement."
+    },
+    {
+     "d6": 3,
+     "epoque": "E2",
+     "nom": "Ferme & Frontière — Enfant des confins",
+     "milieu": "Vous avez grandi loin des métropoles, au rythme des récoltes, des bêtes et des saisons. Vous savez lire le ciel et trouver un abri.",
+     "bonus": "+2 Nature & Survie (orientation, abris, lecture météo) en milieu rural ou sauvage.",
+     "texte": "Vous avez grandi loin des métropoles, au rythme des récoltes, des bêtes et des saisons. Vous savez lire le ciel et trouver un abri. Vous gagnez : +2 Nature & Survie (orientation, abris, lecture météo) en milieu rural ou sauvage."
+    },
+    {
+     "d6": 4,
+     "epoque": "E2",
+     "nom": "Quartier & Foyer — Enfant du bloc",
+     "milieu": "Immeubles serrés, réunions de quartier, solidarité de palier : vous sentez tout de suite quand une foule ou une pièce bascule dans l'hostilité.",
+     "bonus": "+2 Intuition (pressentir l'hostilité d'un groupe, lire l'ambiance d'une assemblée ou d'une rue). Votre MJ peut ajouter 1 contact local purement narratif (aucun effet chiffré).",
+     "texte": "Immeubles serrés, réunions de quartier, solidarité de palier : vous sentez tout de suite quand une foule ou une pièce bascule dans l'hostilité. Vous gagnez : +2 Intuition (pressentir l'hostilité d'un groupe, lire l'ambiance d'une assemblée ou d'une rue). Votre MJ peut ajouter 1 contact local purement narratif (aucun effet chiffré)."
+    },
+    {
+     "d6": 5,
+     "epoque": "E2",
+     "nom": "Cité & École — Enfant instruit",
+     "milieu": "Bancs d'école, bibliothèques municipales, terminaux d'études : vous savez où chercher une information et vous retenez vite.",
+     "bonus": "+2 Académie dans 1 domaine au choix (histoire, droit, sciences, économie, linguistique). Aucun entraînement gratuit : votre Érudition ne change pas.",
+     "texte": "Bancs d'école, bibliothèques municipales, terminaux d'études : vous savez où chercher une information et vous retenez vite. Vous gagnez : +2 Académie dans 1 domaine au choix (histoire, droit, sciences, économie, linguistique). Aucun entraînement gratuit : votre Érudition ne change pas."
+    },
+    {
+     "d6": 6,
+     "epoque": "E2",
+     "nom": "Caserne & Ordre — Enfant de troupe",
+     "milieu": "Vous avez grandi au son du clairon, entre dortoirs et terrains de manœuvre. Marcher, porter, tenir : vous savez faire.",
+     "bonus": "+2 Athlétisme (franchissement, marches forcées, portage) + habitudes de discipline (aucun bonus social).",
+     "texte": "Vous avez grandi au son du clairon, entre dortoirs et terrains de manœuvre. Marcher, porter, tenir : vous savez faire. Vous gagnez : +2 Athlétisme (franchissement, marches forcées, portage) + habitudes de discipline (aucun bonus social)."
+    }
+   ],
+   "E3": [
+    {
+     "d6": 1,
+     "epoque": "E3",
+     "nom": "Soutes & Docks — Enfant de station",
+     "milieu": "Vous avez grandi entre coursives, sas et conteneurs, dans le bruit des réacteurs. Vous savez passer où les autres coincent et bricoler sous pression.",
+     "bonus": "+2 Subterfuge Manuel (crochetage de sas, dépannage improvisé) en milieu confiné (vaisseau, station, souterrain). Vous ignorez les malus d'exiguïté pour vous faufiler.",
+     "texte": "Vous avez grandi entre coursives, sas et conteneurs, dans le bruit des réacteurs. Vous savez passer où les autres coincent et bricoler sous pression. Vous gagnez : +2 Subterfuge Manuel (crochetage de sas, dépannage improvisé) en milieu confiné (vaisseau, station, souterrain). Vous ignorez les malus d'exiguïté pour vous faufiler."
+    },
+    {
+     "d6": 2,
+     "epoque": "E3",
+     "nom": "Dôme & Terraformation — Enfant de colonie",
+     "milieu": "Poussière corrosive, air recyclé, sorties sous combinaison : votre organisme s'est forgé sur un monde encore inachevé.",
+     "bonus": "+2 Système Immunitaire (poussières toxiques, air vicié, faibles radiations, pathogènes coloniaux) en milieu hostile ou confiné.",
+     "texte": "Poussière corrosive, air recyclé, sorties sous combinaison : votre organisme s'est forgé sur un monde encore inachevé. Vous gagnez : +2 Système Immunitaire (poussières toxiques, air vicié, faibles radiations, pathogènes coloniaux) en milieu hostile ou confiné."
+    },
+    {
+     "d6": 3,
+     "epoque": "E3",
+     "nom": "Pont & Navette — Né dans le vide",
+     "milieu": "Gravité variable, manœuvres d'amarrage, sorties en apesanteur : vous gardez votre équilibre là où les planétaires perdent le nord.",
+     "bonus": "+2 Acrobatie (équilibre, déplacements et réception) en faible gravité, apesanteur ou sur surface instable (pont de nef, véhicule, échafaudage).",
+     "texte": "Gravité variable, manœuvres d'amarrage, sorties en apesanteur : vous gardez votre équilibre là où les planétaires perdent le nord. Vous gagnez : +2 Acrobatie (équilibre, déplacements et réception) en faible gravité, apesanteur ou sur surface instable (pont de nef, véhicule, échafaudage)."
+    },
+    {
+     "d6": 4,
+     "epoque": "E3",
+     "nom": "Mégacité & Bas-niveaux — Enfant des néons",
+     "milieu": "Tours empilées, drones de surveillance, marchés cybernétiques : vous lisez un terminal public et récupérez un composant utile à la volée.",
+     "bonus": "+2 Ingénierie & Arcanotech (diagnostics rapides, récupération de composants, dépannage matériel courant) sur systèmes électroniques ou cybernétiques.",
+     "texte": "Tours empilées, drones de surveillance, marchés cybernétiques : vous lisez un terminal public et récupérez un composant utile à la volée. Vous gagnez : +2 Ingénierie & Arcanotech (diagnostics rapides, récupération de composants, dépannage matériel courant) sur systèmes électroniques ou cybernétiques."
+    },
+    {
+     "d6": 5,
+     "epoque": "E3",
+     "nom": "Convoi & Astroport — Enfant des lignes stellaires",
+     "milieu": "Quais de transit, douanes orbitales, équipages de dix mondes : vous lisez un manifeste de fret et sentez l'arnaque avant la signature.",
+     "bonus": "+2 Communication (négocier un passage, apaiser un contrôle douanier, recueillir une info de quai) dans un port, astroport ou carrefour de transit.",
+     "texte": "Quais de transit, douanes orbitales, équipages de dix mondes : vous lisez un manifeste de fret et sentez l'arnaque avant la signature. Vous gagnez : +2 Communication (négocier un passage, apaiser un contrôle douanier, recueillir une info de quai) dans un port, astroport ou carrefour de transit."
+    },
+    {
+     "d6": 6,
+     "epoque": "E3",
+     "nom": "Écoute & Passerelle — Enfant de quart",
+     "milieu": "Vous avez dormi bercé par les balises radio, les alarmes de coque et le ronronnement des moteurs : le moindre bruit anormal vous réveille net.",
+     "bonus": "+2 Écoute (repérer une anomalie mécanique, un pas dans une coursive, une fréquence ou un murmure) en intérieur clos ou environnement technique.",
+     "texte": "Vous avez dormi bercé par les balises radio, les alarmes de coque et le ronronnement des moteurs : le moindre bruit anormal vous réveille net. Vous gagnez : +2 Écoute (repérer une anomalie mécanique, un pas dans une coursive, une fréquence ou un murmure) en intérieur clos ou environnement technique."
+    }
+   ],
+   "E4": [
+    {
+     "d6": 1,
+     "epoque": "E4",
+     "nom": "Arcs de Dyson — Enfant des mégastructures",
+     "milieu": "Des horizons qui remontent vers le ciel, des niveaux empilés sur des kilomètres : vous vous orientez dans les architectures titanesques sans perdre vos repères.",
+     "bonus": "+2 Observation (repérage spatial, orientation dans les structures géantes, repérer accès ou anomalies architecturales) en milieu artificiel complexe.",
+     "texte": "Des horizons qui remontent vers le ciel, des niveaux empilés sur des kilomètres : vous vous orientez dans les architectures titanesques sans perdre vos repères. Vous gagnez : +2 Observation (repérage spatial, orientation dans les structures géantes, repérer accès ou anomalies architecturales) en milieu artificiel complexe."
+    },
+    {
+     "d6": 2,
+     "epoque": "E4",
+     "nom": "Relais & Portails — Enfant du transit",
+     "milieu": "Né entre deux sauts de téléportation, entre quais de portails et vecteurs sub-orbitaux, vous anticipez les trajectoires et encaissez les bascules brutales.",
+     "bonus": "+2 Conduite & Pilotage (manœuvres de précision, guidage de navette, véhicule rapide ou appareil de transit dans 1 catégorie au choix).",
+     "texte": "Né entre deux sauts de téléportation, entre quais de portails et vecteurs sub-orbitaux, vous anticipez les trajectoires et encaissez les bascules brutales. Vous gagnez : +2 Conduite & Pilotage (manœuvres de précision, guidage de navette, véhicule rapide ou appareil de transit dans 1 catégorie au choix)."
+    },
+    {
+     "d6": 3,
+     "epoque": "E4",
+     "nom": "Atelier de Nytharite — Apprenti arcanotech",
+     "milieu": "Vous avez grandi à calibrer des condensateurs, isoler des cristaux et relever des mesures de résonance — sans être nécessairement Éveillé vous-même.",
+     "bonus": "+2 Ingénierie & Arcanotech (diagnostic, entretien, réglage ou sécurisation d'appareils arcanotech). Ne donne aucun accès à la Cinquième Force (Magie inchangée).",
+     "texte": "Vous avez grandi à calibrer des condensateurs, isoler des cristaux et relever des mesures de résonance — sans être nécessairement Éveillé vous-même. Vous gagnez : +2 Ingénierie & Arcanotech (diagnostic, entretien, réglage ou sécurisation d'appareils arcanotech). Ne donne aucun accès à la Cinquième Force (Magie inchangée)."
+    },
+    {
+     "d6": 4,
+     "epoque": "E4",
+     "nom": "Cuves & Bio-sanctuaire — Enfant des bassins",
+     "milieu": "Élevé parmi les médecins de régénération, les cuves arcaniques et les protocoles de triage avancé, vous reconnaissez une défaillance vitale au premier coup d'œil.",
+     "bonus": "+2 Premiers Soins (stabilisation d'urgence, diagnostic de choc traumatique ou de toxicité, usage d'équipement médical avancé).",
+     "texte": "Élevé parmi les médecins de régénération, les cuves arcaniques et les protocoles de triage avancé, vous reconnaissez une défaillance vitale au premier coup d'œil. Vous gagnez : +2 Premiers Soins (stabilisation d'urgence, diagnostic de choc traumatique ou de toxicité, usage d'équipement médical avancé)."
+    },
+    {
+     "d6": 5,
+     "epoque": "E4",
+     "nom": "Enclave & Protocole — Enfant des maisons stellaires",
+     "milieu": "Conseils de secteurs, alliances entre cités-flottes, étiquette millimétrée : vous avez appris très jeune à garder votre sang-froid devant les puissants.",
+     "bonus": "+2 Leadership (coordonner un groupe sous pression, tenir un rang ou imposer le calme dans une situation de crise ou de protocole).",
+     "texte": "Conseils de secteurs, alliances entre cités-flottes, étiquette millimétrée : vous avez appris très jeune à garder votre sang-froid devant les puissants. Vous gagnez : +2 Leadership (coordonner un groupe sous pression, tenir un rang ou imposer le calme dans une situation de crise ou de protocole)."
+    },
+    {
+     "d6": 6,
+     "epoque": "E4",
+     "nom": "Ombres de la Sphère — Passager clandestin",
+     "milieu": "Vous avez survécu dans les anneaux de maintenance, les angles morts des portails et les grilles de capteurs sans jamais déclencher d'alerte.",
+     "bonus": "+2 Discrétion (échapper aux capteurs, caméras, rondes automatisées ou systèmes de surveillance) en milieu artificiel ou sécurisé.",
+     "texte": "Vous avez survécu dans les anneaux de maintenance, les angles morts des portails et les grilles de capteurs sans jamais déclencher d'alerte. Vous gagnez : +2 Discrétion (échapper aux capteurs, caméras, rondes automatisées ou systèmes de surveillance) en milieu artificiel ou sécurisé."
+    }
+   ],
+   "E5": [
+    {
+     "d6": 1,
+     "epoque": "E5",
+     "nom": "Jardins de Post-Matière — Enfant des formes",
+     "milieu": "Vous avez grandi dans des architectures qui se recomposent à la pensée, où les murs coulent et où la gravité bascule d'une salle à l'autre.",
+     "bonus": "+2 Acrobatie (réorientation, équilibre et réception de chute) en terrain altéré, instable, à gravité anormale ou géométrie changeante.",
+     "texte": "Vous avez grandi dans des architectures qui se recomposent à la pensée, où les murs coulent et où la gravité bascule d'une salle à l'autre. Vous gagnez : +2 Acrobatie (réorientation, équilibre et réception de chute) en terrain altéré, instable, à gravité anormale ou géométrie changeante."
+    },
+    {
+     "d6": 2,
+     "epoque": "E5",
+     "nom": "Marges du Continuum — Enfant des plis",
+     "milieu": "Né à la frontière de réalités courbées, vous sentez d'instinct les incohérences, les fausses pistes et les anomalies qui échappent aux yeux ordinaires.",
+     "bonus": "+2 Intuition (détecter une anomalie physique ou temporelle, un paradoxe local, une illusion ou une intention cachée). Ne donne aucun pouvoir de clairsentience (Livre X §41).",
+     "texte": "Né à la frontière de réalités courbées, vous sentez d'instinct les incohérences, les fausses pistes et les anomalies qui échappent aux yeux ordinaires. Vous gagnez : +2 Intuition (détecter une anomalie physique ou temporelle, un paradoxe local, une illusion ou une intention cachée). Ne donne aucun pouvoir de clairsentience (Livre X §41)."
+    },
+    {
+     "d6": 3,
+     "epoque": "E5",
+     "nom": "Observatoire des Trames — Apprenti indexeur",
+     "milieu": "Votre enfance s'est écoulée face aux modèles de probabilités, aux cartes d'embranchements et aux jeux stratégiques des architectes du continuum.",
+     "bonus": "+2 Penser / Stratégie (analyser un système complexe, anticiper un enchaînement tactique ou déduire un plan d'ensemble).",
+     "texte": "Votre enfance s'est écoulée face aux modèles de probabilités, aux cartes d'embranchements et aux jeux stratégiques des architectes du continuum. Vous gagnez : +2 Penser / Stratégie (analyser un système complexe, anticiper un enchaînement tactique ou déduire un plan d'ensemble)."
+    },
+    {
+     "d6": 4,
+     "epoque": "E5",
+     "nom": "Voile & Silence — Enfant hors-temps",
+     "milieu": "Élevé dans un refuge isolé des flux, à l'abri des regards démiurgiques, vous avez appris à ne laisser ni trace, ni écho, ni empreinte superflue.",
+     "bonus": "+2 Discrétion (effacer ses traces, se soustraire à une détection active, rester inaperçu dans un lieu surveillé).",
+     "texte": "Élevé dans un refuge isolé des flux, à l'abri des regards démiurgiques, vous avez appris à ne laisser ni trace, ni écho, ni empreinte superflue. Vous gagnez : +2 Discrétion (effacer ses traces, se soustraire à une détection active, rester inaperçu dans un lieu surveillé)."
+    },
+    {
+     "d6": 5,
+     "epoque": "E5",
+     "nom": "Chœur & Concile — Enfant des Élianes",
+     "milieu": "Vous avez grandi au milieu d'émissaires et de cultures séparées par des millénaires, où la moindre nuance de ton scelle un traité ou brise un monde.",
+     "bonus": "+2 Communication (diplomatie interculturelle, décoder un protocole étranger, négocier face à une autorité ou une culture inconnue).",
+     "texte": "Vous avez grandi au milieu d'émissaires et de cultures séparées par des millénaires, où la moindre nuance de ton scelle un traité ou brise un monde. Vous gagnez : +2 Communication (diplomatie interculturelle, décoder un protocole étranger, négocier face à une autorité ou une culture inconnue)."
+    },
+    {
+     "d6": 6,
+     "epoque": "E5",
+     "nom": "Bastion des Lois — Enfant des forges de réalité",
+     "milieu": "Entre champs de contention, stabilisateurs de matière et surcharges énergétiques, votre corps s'est endurci aux environnements qui briseraient un voyageur non préparé.",
+     "bonus": "+2 Endurance Physique (résister à la fatigue extrême, aux environnements physiquement éprouvants, pressions anormales ou efforts soutenus).",
+     "texte": "Entre champs de contention, stabilisateurs de matière et surcharges énergétiques, votre corps s'est endurci aux environnements qui briseraient un voyageur non préparé. Vous gagnez : +2 Endurance Physique (résister à la fatigue extrême, aux environnements physiquement éprouvants, pressions anormales ou efforts soutenus)."
+    }
+   ]
+  },
   "enfances": [
    {
     "d6": 1,
-    "nom": "Soutes & Docks — Enfant de station",
-    "texte": "Vous avez grandi entre coursives et containers, dans le bruit des réacteurs. Vous savez passer où les autres coincent. Vous gagnez : +2 Subterfuge Manuel (crochetage, dépannage improvisé) en milieu confiné (vaisseau, station, souterrain). Vous ignorez les malus d'exiguïté pour vous faufiler."
+    "nom": "Ports & Entrepôts — Gamin des quais",
+    "texte": "Vous avez grandi entre docks, hangars, conduits techniques et camions de fret. Vous savez dépanner au ruban adhésif et passer où les autres coincent. Vous gagnez : +2 Subterfuge Manuel (crochetage, dépannage improvisé) en milieu industriel ou confiné (hangar, sous-sol, conduits). Vous ignorez les malus d'exiguïté pour vous faufiler."
    },
    {
     "d6": 2,
     "nom": "Rues & Bas-fonds — Gamin des toits",
-    "texte": "La ville vous a élevé : ses gangs, ses toits, ses recoins. Vous sentez quand on vous suit. Vous gagnez : +2 Observation (repérer embuscades, filatures, planques) en milieu urbain uniquement."
+    "texte": "La ville vous a élevé : ses gangs, ses toits, ses recoins. Vous sentez quand on vous suit et vous repérez un guet-apens au coin d'un boulevard. Vous gagnez : +2 Observation (repérer embuscades, filatures, planques) en milieu urbain uniquement."
    },
    {
     "d6": 3,
     "nom": "Ferme & Frontière — Enfant des confins",
-    "texte": "Vous avez grandi au rythme des récoltes, des bêtes et des saisons. Vous savez lire le ciel et trouver un abri. Vous gagnez : +2 Nature & Survie (orientation, abris, lecture météo) en milieu rural ou sauvage."
+    "texte": "Vous avez grandi loin des métropoles, au rythme des récoltes, des bêtes et des saisons. Vous savez lire le ciel et trouver un abri. Vous gagnez : +2 Nature & Survie (orientation, abris, lecture météo) en milieu rural ou sauvage."
    },
    {
     "d6": 4,
-    "nom": "Clan & Tribu — Sang des anciens",
-    "texte": "Les veillées et la parole des anciens vous ont formé. Vous sentez quand un groupe devient hostile. Vous gagnez : +2 Intuition (pressentir l'hostilité d'un groupe, sens du danger en assemblée). Votre MJ peut ajouter 1 contact clanique, juste pour le récit (aucun effet chiffré)."
+    "nom": "Quartier & Foyer — Enfant du bloc",
+    "texte": "Immeubles serrés, réunions de quartier, solidarité de palier : vous sentez tout de suite quand une foule ou une pièce bascule dans l'hostilité. Vous gagnez : +2 Intuition (pressentir l'hostilité d'un groupe, lire l'ambiance d'une assemblée ou d'une rue). Votre MJ peut ajouter 1 contact local purement narratif (aucun effet chiffré)."
    },
    {
     "d6": 5,
     "nom": "Cité & École — Enfant instruit",
-    "texte": "Bancs d'école, bibliothèques, précepteurs. Vous savez où chercher et vous retenez vite. Vous gagnez : +2 Académie dans 1 domaine au choix (histoire, linguistique, économie). Cela ne donne aucun entraînement gratuit : votre Érudition ne change pas."
+    "texte": "Bancs d'école, bibliothèques municipales, terminaux d'études : vous savez où chercher une information et vous retenez vite. Vous gagnez : +2 Académie dans 1 domaine au choix (histoire, droit, sciences, économie, linguistique). Aucun entraînement gratuit : votre Érudition ne change pas."
    },
    {
     "d6": 6,
     "nom": "Caserne & Ordre — Enfant de troupe",
-    "texte": "Vous avez grandi au son du clairon, entre dortoirs et terrains d'exercice. Marcher, porter, tenir : vous savez faire. Vous gagnez : +2 Athlétisme (franchissement, marches forcées, portage) + habitudes de discipline (aucun bonus social)."
+    "texte": "Vous avez grandi au son du clairon, entre dortoirs et terrains de manœuvre. Marcher, porter, tenir : vous savez faire. Vous gagnez : +2 Athlétisme (franchissement, marches forcées, portage) + habitudes de discipline (aucun bonus social)."
    }
   ],
   "enfances_par_d6": {
    "1": {
     "d6": 1,
-    "nom": "Soutes & Docks — Enfant de station",
-    "texte": "Vous avez grandi entre coursives et containers, dans le bruit des réacteurs. Vous savez passer où les autres coincent. Vous gagnez : +2 Subterfuge Manuel (crochetage, dépannage improvisé) en milieu confiné (vaisseau, station, souterrain). Vous ignorez les malus d'exiguïté pour vous faufiler."
+    "nom": "Ports & Entrepôts — Gamin des quais",
+    "texte": "Vous avez grandi entre docks, hangars, conduits techniques et camions de fret. Vous savez dépanner au ruban adhésif et passer où les autres coincent. Vous gagnez : +2 Subterfuge Manuel (crochetage, dépannage improvisé) en milieu industriel ou confiné (hangar, sous-sol, conduits). Vous ignorez les malus d'exiguïté pour vous faufiler."
    },
    "2": {
     "d6": 2,
     "nom": "Rues & Bas-fonds — Gamin des toits",
-    "texte": "La ville vous a élevé : ses gangs, ses toits, ses recoins. Vous sentez quand on vous suit. Vous gagnez : +2 Observation (repérer embuscades, filatures, planques) en milieu urbain uniquement."
+    "texte": "La ville vous a élevé : ses gangs, ses toits, ses recoins. Vous sentez quand on vous suit et vous repérez un guet-apens au coin d'un boulevard. Vous gagnez : +2 Observation (repérer embuscades, filatures, planques) en milieu urbain uniquement."
    },
    "3": {
     "d6": 3,
     "nom": "Ferme & Frontière — Enfant des confins",
-    "texte": "Vous avez grandi au rythme des récoltes, des bêtes et des saisons. Vous savez lire le ciel et trouver un abri. Vous gagnez : +2 Nature & Survie (orientation, abris, lecture météo) en milieu rural ou sauvage."
+    "texte": "Vous avez grandi loin des métropoles, au rythme des récoltes, des bêtes et des saisons. Vous savez lire le ciel et trouver un abri. Vous gagnez : +2 Nature & Survie (orientation, abris, lecture météo) en milieu rural ou sauvage."
    },
    "4": {
     "d6": 4,
-    "nom": "Clan & Tribu — Sang des anciens",
-    "texte": "Les veillées et la parole des anciens vous ont formé. Vous sentez quand un groupe devient hostile. Vous gagnez : +2 Intuition (pressentir l'hostilité d'un groupe, sens du danger en assemblée). Votre MJ peut ajouter 1 contact clanique, juste pour le récit (aucun effet chiffré)."
+    "nom": "Quartier & Foyer — Enfant du bloc",
+    "texte": "Immeubles serrés, réunions de quartier, solidarité de palier : vous sentez tout de suite quand une foule ou une pièce bascule dans l'hostilité. Vous gagnez : +2 Intuition (pressentir l'hostilité d'un groupe, lire l'ambiance d'une assemblée ou d'une rue). Votre MJ peut ajouter 1 contact local purement narratif (aucun effet chiffré)."
    },
    "5": {
     "d6": 5,
     "nom": "Cité & École — Enfant instruit",
-    "texte": "Bancs d'école, bibliothèques, précepteurs. Vous savez où chercher et vous retenez vite. Vous gagnez : +2 Académie dans 1 domaine au choix (histoire, linguistique, économie). Cela ne donne aucun entraînement gratuit : votre Érudition ne change pas."
+    "texte": "Bancs d'école, bibliothèques municipales, terminaux d'études : vous savez où chercher une information et vous retenez vite. Vous gagnez : +2 Académie dans 1 domaine au choix (histoire, droit, sciences, économie, linguistique). Aucun entraînement gratuit : votre Érudition ne change pas."
    },
    "6": {
     "d6": 6,
     "nom": "Caserne & Ordre — Enfant de troupe",
-    "texte": "Vous avez grandi au son du clairon, entre dortoirs et terrains d'exercice. Marcher, porter, tenir : vous savez faire. Vous gagnez : +2 Athlétisme (franchissement, marches forcées, portage) + habitudes de discipline (aucun bonus social)."
+    "texte": "Vous avez grandi au son du clairon, entre dortoirs et terrains de manœuvre. Marcher, porter, tenir : vous savez faire. Vous gagnez : +2 Athlétisme (franchissement, marches forcées, portage) + habitudes de discipline (aucun bonus social)."
    }
   },
   "metiers": [
