@@ -777,7 +777,7 @@
      "scale": null,
      "suggestedAsset": "livre_7.html#chap-27",
      "updated": "2026-11-22",
-     "details": "Vérification humaine — livre_7.html#chap-27. Checklist : [ ] orthographe/typo FR ; [x] cohérence mécaniques avec les autres chapitres (modificateurs +2 au total, anti-cumul, attaches, pas de palier/PA/dégâts) ; [ ] exemples chiffrés rejoués ; [x] liens internes + ancres OK ; [x] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici. MAJ 2026-11-22 (RP-234) : 1er check & mécanique chap. 27 OK — refonte en 6 tables d6 dédiées (E0–E5, 36 enfances, compétences canoniques Livre III, créateur PJ Livre IX / fiche_pj, fiche prototype Livre I, Appendice B et nav 19 pages synchronisés). Reste uniquement le QA final (orthographe/typo FR, ton lecteur) pour clore RP-051."
+     "details": "Vérification humaine — livre_7.html#chap-27. Checklist : [ ] orthographe/typo FR ; [x] cohérence mécaniques avec les autres chapitres (modificateurs +2 au total, anti-cumul, attaches, pas de palier/PA/dégâts) ; [ ] exemples chiffrés rejoués ; [x] liens internes + ancres OK ; [x] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici. MAJ 2026-11-22 (RP-234) : 1er check & mécanique chap. 27 OK — refonte en 6 tables d6 dédiées (E0–E5, 36 enfances, compétences canoniques Livre III, créateur PJ Livre IX / fiche_pj, fiche prototype Livre I, Appendice B et nav 19 pages synchronisés). Reste uniquement le QA final (orthographe/typo FR, ton lecteur) pour clore RP-051. | MAJ 2026-11-22 (RP-237) : épuration fin de chapitre (retrait encadré hors-époque chap. 27) — 1er check & mécanique Livre VII COMPLET ; équilibrage des bonus prévu en Beta Test (RP-238)."
     },
     {
      "id": "RP-052",
@@ -793,13 +793,13 @@
      "scale": null,
      "suggestedAsset": "livre_7.html#chap-28",
      "updated": "2026-11-22",
-     "details": "Vérification humaine — livre_7.html#chap-28. Checklist : [ ] orthographe/typo FR ; [x] cohérence mécaniques avec les autres chapitres (modificateurs +2 au total, anti-cumul, attaches, pas de palier/PA/dégâts) ; [ ] exemples chiffrés rejoués ; [x] liens internes + ancres OK ; [x] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici. MAJ 2026-11-22 (RP-235) : 1er check & mécanique chap. 28 OK — refonte en 6 tables d8 dédiées (E0–E5, 48 métiers, compétences canoniques Livre III, créateur PJ Livre IX / fiche_pj, fiche prototype Livre I, Appendice B et nav 19 pages synchronisés). Reste uniquement le QA final (orthographe/typo FR, ton lecteur) pour clore RP-052."
+     "details": "Vérification humaine — livre_7.html#chap-28. Checklist : [ ] orthographe/typo FR ; [x] cohérence mécaniques avec les autres chapitres (modificateurs +2 au total, anti-cumul, attaches, pas de palier/PA/dégâts) ; [ ] exemples chiffrés rejoués ; [x] liens internes + ancres OK ; [x] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici. MAJ 2026-11-22 (RP-235) : 1er check & mécanique chap. 28 OK — refonte en 6 tables d8 dédiées (E0–E5, 48 métiers, compétences canoniques Livre III, créateur PJ Livre IX / fiche_pj, fiche prototype Livre I, Appendice B et nav 19 pages synchronisés). Reste uniquement le QA final (orthographe/typo FR, ton lecteur) pour clore RP-052. | MAJ 2026-11-22 (RP-237) : épuration fin de chapitre (retrait §28.7) — 1er check & mécanique Livre VII COMPLET ; équilibrage des bonus prévu en Beta Test (RP-238)."
     },
     {
      "id": "RP-053",
      "title": "Relire chap. 29. Événement Marquant & Ancrage",
      "epic": "Livre VII — Historiques",
-     "status": "todo",
+     "status": "in_progress",
      "priority": "medium",
      "order": 11,
      "scene": "",
@@ -808,7 +808,8 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_7.html#chap-29",
-     "details": "Vérification humaine — livre_7.html#chap-28. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (modificateurs +2 au total, anti-cumul, attaches, pas de palier/PA/dégâts) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
+     "updated": "2026-11-22",
+     "details": "Vérification humaine — livre_7.html#chap-29. Checklist : [ ] orthographe/typo FR ; [x] cohérence mécaniques avec les autres chapitres (modificateurs +2 au total, anti-cumul, attaches, pas de palier/PA/dégâts) ; [ ] exemples chiffrés rejoués ; [x] liens internes + ancres OK ; [x] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici. MAJ 2026-11-22 (RP-237) : 1er check & mécanique chap. 29 OK — retrait ex-§29.2 (Note temporelle Écho n°10) et ex-§29.3 (Et la magie, là-dedans ?), Ancrage passé en §29.2 (intro positive, encadré « Des prises pour votre MJ » adressé au joueur, à la discrétion du MJ si la campagne le permet). 1er check & mécanique Livre VII COMPLET ; restent QA final (orthographe/typo FR, ton lecteur, reliquat RP-190) et équilibrage des bonus en Beta Test (RP-238)."
     },
     {
      "id": "RP-054",
@@ -2176,7 +2177,7 @@
      "scale": null,
      "suggestedAsset": "livre_7.html",
      "updated": "2026-11-22",
-     "details": "Comme RP-063/064, pour le Livre VII Historiques (chap. 26-29 ; RP-050..053). Checklist : [ ] ton MJ accueillant (phrases courtes, 2e personne, exemples concrets, modele = preface index.html) ; [ ] aucun jargon sans explication ; [ ] mecaniques strictement intactes ; [ ] orthographe/typo FR ; [ ] liens + ancres OK. DONE = relu + reformule — ajouter date + initiales ici. MAJ 2026-11-07 — plage corrigée (chap. 26-32→chap. 26-29 après renumérotation). | MAJ 2026-11-22 — 1er check & mécanique Livre VII : chap. 26 (RP-050 in_progress, RP-236 done), chap. 27 Enfances 6 tables d6 E0–E5 (RP-051 in_progress, RP-234 done) et chap. 28 Métiers 6 tables d8 E0–E5 (RP-052 in_progress, RP-235 done) faits ; restent chap. 29 (RP-053) et reliquat RP-190 (Événement 7 / note 17 pts)."
+     "details": "Comme RP-063/064, pour le Livre VII Historiques (chap. 26-29 ; RP-050..053). Checklist : [ ] ton MJ accueillant (phrases courtes, 2e personne, exemples concrets, modele = preface index.html) ; [ ] aucun jargon sans explication ; [ ] mecaniques strictement intactes ; [ ] orthographe/typo FR ; [ ] liens + ancres OK. DONE = relu + reformule — ajouter date + initiales ici. MAJ 2026-11-07 — plage corrigée (chap. 26-32→chap. 26-29 après renumérotation). | MAJ 2026-11-22 — 1er check & mécanique Livre VII COMPLET (chap. 26 RP-050 / RP-236, chap. 27 Enfances 6 tables d6 E0–E5 RP-051 / RP-234, chap. 28 Métiers 6 tables d8 E0–E5 RP-052 / RP-235, chap. 29 Événements & Ancrage RP-053 / RP-237 ; équilibrage des bonus prévu en Beta Test RP-238). Prêt pour QA finale (reliquat RP-190 : Événements 7/8/11)."
     },
     {
      "id": "RP-145",
@@ -2883,8 +2884,8 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "",
-     "updated": "2026-11-12",
-     "details": "Événement 7 test INS→Intuition (brut); noms complets (Ingénierie, Artisanat, SubterfugeManuel…); note 17 pts Éveillé. Fichiers: data/livre_7.json + content/livre_7/. (Audit sysRP 2026-11-10 ; mention Cran retirée 2026-11-12 suite retrait §20.9.)"
+     "updated": "2026-11-22",
+     "details": "Événement 7 test INS→Intuition (brut); noms complets (Ingénierie, Artisanat, SubterfugeManuel…); note 17 pts Éveillé. Fichiers: data/livre_7.json + content/livre_7/. (Audit sysRP 2026-11-10 ; mention Cran retirée 2026-11-12 suite retrait §20.9.) | MAJ 2026-11-22 : noms complets Enfances/Métiers faits (RP-234/235) et ex-section Magie §29 supprimée (RP-237) ; ne restent que Événement 7 (test INS→Intuition) et noms complets Événements 8/11 (Subterfuge Manuel, Artisanat / Connaissance)."
     },
     {
      "id": "RP-191",
@@ -3621,6 +3622,38 @@
      "suggestedAsset": "livre_7.html#chap-26",
      "updated": "2026-11-22",
      "details": "FAIT 2026-11-22 (1er check & mécanique Livre VII chap. 26) — (1) Intro chap. 26 reformulée : 4 types d'entrées (un seul choix par type, sans mention de « cases »), époque [E0–E5] fixée par le MJ ou le cadre de campagne (retrait de la mention superflue sur le budget de bonus). (2) Tableau etapes_historique simplifié dans data/livre_7.json : suppression de la colonne Cumul, retrait de « + monde » sur A. Ancrage, libellé « Aucun — habillage narratif et récit pur ». (3) Épuration de bloc-02 et suppression de bloc-04 : retrait de l'ex-§26.1 (calibrage), de l'ex-§26.2 (où noter) et de l'encadré « Ce que le marqueur change » ; §26.1 ramené à 4 règles (Attache reformulée sans négation, Restez crédible recentré sur la cohérence d'époques) et §26.2 Époque de campagne [E0–E5] (fixée par le MJ). (4) Resynchronisation complète de tous les renvois §26.1/§26.2 dans Livre VII (chap. 26–29) et télémétrie livre_7.html."
+    },
+    {
+     "id": "RP-237",
+     "title": "Livre VII chap. 27–29 (clôture 1er check mécanique : épuration fins chap. 27/28, §29.2 Ancrage & voix joueur)",
+     "epic": "Livre VII — Historiques",
+     "status": "done",
+     "priority": "high",
+     "order": 234,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "livre_7.html#chap-29",
+     "updated": "2026-11-22",
+     "details": "FAIT 2026-11-22 (clôture 1er check & mécanique Livre VII) — (1) Épuration de fin de chap. 27 et chap. 28 : suppression de chap-27/bloc-12.md (encadré hors-époque) et de chap-28/bloc-12.md (sous-section 28.7 exemple Mara & encadré hors-époque). (2) Chap. 29 : suppression de l'ex-§29.2 (Note temporelle Écho n°10) et de l'ex-§29.3 (Et la magie, là-dedans ?) dans chap-29/bloc-02.md ; Ancrage renuméroté §29.2 (dans chap-29/bloc-02.md et data/livre_7.json etapes_historique). (3) Intro §29.2 reformulée sans négation (« purement narratif... dans le cadre de l'époque fixée pour la campagne ») et encadré « Des prises pour votre MJ » réécrit à l'adresse du joueur (à la discrétion du MJ et si la campagne le permet)."
+    },
+    {
+     "id": "RP-238",
+     "title": "Beta Test — Équilibrage des bonus du Livre VII (Enfances E0–E5, Métiers E0–E5, Événements)",
+     "epic": "Beta Test & Mobile / UX",
+     "status": "todo",
+     "priority": "medium",
+     "order": 235,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "livre_7.html",
+     "updated": "2026-11-22",
+     "details": "Pendant la phase Beta Test : recueillir les retours de table et équilibrer les divers bonus, portées de contexte, atouts, attaches et séquelles des 36 Enfances (chap. 27, 6 tables d6 E0–E5), 48 Métiers (chap. 28, 6 tables d8 E0–E5) et 12 Événements marquants (chap. 29)."
     }
    ]
   }
