@@ -8,7 +8,7 @@ livre: 12
                     <h3 id="sec-53-5">53.5 Diagnostic, Traitement &amp; Procédure de Table</h3>
                     <ul>
                         <li><strong>Diagnostic :</strong> reconnaître un malaise courant ou des symptômes visibles demande une épreuve
-                            d'<a class="rule-ref" href="livre_3.html#chap-13" data-tip="Académie, Premiers Soins &amp; Médecine Avancée (ÉRU/INT) : diagnostic et traitement clinique (Livre III §13).">Érudition / Académie, Premiers Soins ou Médecine Avancée</a>
+                            d'<a class="rule-ref" href="livre_3.html#chap-13" data-tip="Académie (INT), Premiers Soins (INS) &amp; Médecine Avancée (INT, INS) : diagnostic et traitement clinique (Livre III §13).">Académie, Premiers Soins ou Médecine Avancée</a>
                             contre une <strong>Difficulté égale à la Virulence (minimum 4)</strong>, avec <code>+2</code> si la maladie
                             possède le modulateur <em>Symptômes masqués</em> et <code>+2</code> sans laboratoire, matériel spécialisé ou rituel
                             pour un agent <strong>Arcanique</strong> ou <strong>Nanotech / Cyber</strong>. La spécialisation
@@ -18,9 +18,9 @@ livre: 12
                         <li><strong>Traitement adapté :</strong> appliquer un soin de terrain
                             (<a class="rule-ref" href="livre_6.html#chap-25" data-tip="Premiers Soins : 3 PA d'immobilisation au chevet du blessé en combat, ou 1 scène hors combat (§25.1).">Premiers Soins, 3 PA en combat / 1 scène hors combat</a>)
                             ou le moyen imposé par la <a class="rule-ref" href="#sec-53-1" data-tip="Nature de l'agent : dicte le traitement efficace et ce qui reste inefficace (§53.1).">nature de l'agent (§53.1)</a>
-                            (<a class="rule-ref" href="livre_3.html#chap-13" data-tip="Médecine Avancée (ÉRU, INT) : Chirurgie, Apothicaire de Guerre, Sérum Antidote (Livre III §13).">Médecine Avancée</a>,
+                            (<a class="rule-ref" href="livre_3.html#chap-13" data-tip="Médecine Avancée (INT, INS) : Chirurgie, Apothicaire de Guerre, Sérum Antidote (Livre III §13).">Médecine Avancée</a>,
                             <a class="rule-ref" href="livre_4.html#chap-18" data-tip="Magie Primale (MAG, INT) : soins, purge et régénération (Livre IV §18).">Magie Primale / curative</a>,
-                            atelier d'<a class="rule-ref" href="livre_3.html#chap-13" data-tip="Ingénierie &amp; Arcanotech (INT, ÉRU) : purge électromagnétique et réparation cyber (Livre III §13).">Ingénierie &amp; Arcanotech</a>)
+                            atelier d'<a class="rule-ref" href="livre_3.html#chap-13" data-tip="Ingénierie &amp; Arcanotech (INT, AGI) : purge électromagnétique et réparation cyber (Livre III §13).">Ingénierie &amp; Arcanotech</a>)
                             contre la <strong>Difficulté = Virulence</strong>, avec le kit ou le remède requis.
                             <ul>
                                 <li><strong>Réussite simple :</strong> confère <strong><code>+2</code></strong> au prochain jet de transition

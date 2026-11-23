@@ -628,11 +628,11 @@
                                 <div class="tool-form-group">
                                     <label class="tool-label" for="csProfile">Profil & Budget (Livre I §3)</label>
                                     <select id="csProfile" class="tool-select">
-                                        <option value="hero">Héros PJ (pilier à 5 + pilier à 4, 15 pts secondaires)
+                                        <option value="hero">Héros PJ (pilier à 5 + pilier à 4, 12 pts secondaires)
                                         </option>
-                                        <option value="elite">PNJ Élite / Soldat (2 piliers à 4, 15 pts secondaires)
+                                        <option value="elite">PNJ Élite / Soldat (2 piliers à 4, 12 pts secondaires)
                                         </option>
-                                        <option value="sbire">PNJ Sbire (12 pts au total, 1-3 chacun)</option>
+                                        <option value="sbire">PNJ Sbire (11 pts au total, 1-3 chacun)</option>
                                     </select>
                                 </div>
                             </div>
@@ -741,24 +741,28 @@
                                     placeholder="Ex: [E2] Frontière Chaude — doit tout à sa sœur disparue ; fuit les collecteurs de dettes, cherche la Voûte Céleste.">
                             </div>
                             <div id="csHistoryDetail" style="margin-top: 6px;"></div>
+                            <label style="display: flex; align-items: center; gap: 8px; margin-top: 10px; font-size: 0.82rem; color: var(--text-secondary); cursor: pointer;">
+                                <input type="checkbox" id="csPureHistoryRoll">
+                                <span><strong>Tirage historique pur (+1 Bagage)</strong> — Enfance (d6) et Métier (d8) tirés au hasard pur aux dés, sans choix manuel (Livre I Étape 6 / Livre VII §26).</span>
+                            </label>
 
                             <!-- ATTRIBUTS PHYSIQUES & MENTAUX -->
                             <h4
                                 style="margin: 20px 0 10px; font-family: var(--font-mono); font-size: 0.85rem; color: var(--arcane-cyan); text-transform: uppercase;">
-                                1. Les 8 Attributs Majeurs (Création Initiale &amp; Évolution N ➔ N+1 = N+1 XP)
+                                1. Les 7 Attributs Majeurs (Création Initiale &amp; Évolution N ➔ N+1 = N+1 XP)
                             </h4>
                             <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 10px;">
                                 <strong>Création Initiale :</strong> Répartition de départ régie par le profil
                                 sélectionné (Héros PJ, Soldat, Sbire). Choisissez d'abord vos
                                 <strong>2 piliers</strong> ci-dessus : le validateur vérifie leur valeur exacte, le
-                                plafond 1-3 des 6 autres et le total (15 secondaires, 17 si Magie ≥ 1).<br>
+                                plafond 1-3 des 5 autres et le total (12 secondaires, 14 si Magie ≥ 1).<br>
                                 <strong>Espèces :</strong> aucun modificateur d'attribut (Livre I §2.2) — choisissez
                                 votre <strong>don racial</strong> (1 parmi 5, définitif) et tirez Vision/Ouïe au
                                 <strong>1d6</strong> (minimum racial appliqué).<br>
                                 <strong>Évolution en Jeu (Achat XP) :</strong> Chaque palier d'attribut s'achète
                                 individuellement au tarif de <code>(N+1) XP</code> (passer de 4 à 5 = 5 XP, 5 à 6 = 6
                                 XP, 9 à 10 = 10 XP, plafond 10). L'achat met à jour en temps réel les PA, l'encaissement
-                                et le budget d'entraînements gratuits d'Érudition (+1 ÉRU = +1 gratuit).
+                                et les rangs/pistes des compétences liées (aucun entraînement gratuit n'est offert en jeu).
                             </p>
 
                             <div class="tool-grid-4">
@@ -810,16 +814,6 @@
                                         <input type="number" id="attrInt" class="stepper-val" value="2" min="1" max="10"
                                             readonly>
                                         <button class="stepper-btn" data-target="attrInt" data-step="1">+</button>
-                                    </div>
-                                </div>
-                                <!-- ERU -->
-                                <div class="tool-form-group">
-                                    <label class="tool-label" for="attrEru">Érudition (ÉRU)</label>
-                                    <div class="stepper-box">
-                                        <button class="stepper-btn" data-target="attrEru" data-step="-1">-</button>
-                                        <input type="number" id="attrEru" class="stepper-val" value="3" min="1" max="10"
-                                            readonly>
-                                        <button class="stepper-btn" data-target="attrEru" data-step="1">+</button>
                                     </div>
                                 </div>
                                 <!-- CHA -->
@@ -898,15 +892,14 @@
                                 </div>
                                 <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 12px;">
                                     Selon la règle officielle (Livre I, Étape 6), vous bénéficiez
-                                    d'<strong>entraînements
-                                        gratuits = votre Érudition</strong> (<span id="vitalTrainedCount">3</span>) : 1
-                                    case = +1 palier, plafond 3 (+3 déblocables à 2d6, max 6). <strong>+1 ÉRU = +1 gratuit</strong>.
+                                    d'un <strong>Bagage de création</strong> (<span id="vitalTrainedCount">3</span> entraînements de départ : base 3, +1 don Humain <em>Touche-à-tout</em>, +1 tirage historique pur, max 5 ; fixé à la création, jamais farmable en jeu) : 1
+                                    case = +1 palier, plafond 3 (+3 déblocables à 2d6, max 6).
                                     <br><strong>Effort max par jet (Livre II §6) :</strong> <code>1 + entraînements</code> de la compétence (0 entr. = +1, 1 = +2, 3 = +4, 6 élite 2d6+ = +7 ; PA, PE, Action en Progression, Survolté et En transe inclus).
                                     <br><strong>Progression organique (Livre I §5) :</strong> en jeu, chaque
                                     <strong>réussite</strong> coche 1 case dans la compétence utilisée (piste = base :
                                     3 → 3 cases, 5 → 5 cases). Piste pleine = <strong>+1 XP lié</strong>. Entraînement
-                                    5 XP liés/libre (10 si croisé). <strong>XP total = dépensés (gratuits
-                                        exclus).</strong>
+                                    5 XP liés/libre (10 si croisé). <strong>XP total = dépensés (Bagage de création
+                                        exclu).</strong>
                                 </p>
                                 <h5 style="margin: 4px 0 8px; font-family: var(--font-mono); font-size: 0.78rem; color: var(--arcane-cyan); text-transform: uppercase;">Arbre de la Force — Livre III §12.1</h5>
                                 <div class="tool-grid-4" style="font-size: 0.82rem;">
@@ -931,12 +924,12 @@
                                     <label style="display: flex; align-items: center; gap: 4px;" title="Livre III §12.3 — base = CON"><input type="checkbox" class="skill-check" id="skCardio-1" data-skill="Cardio" data-attrs="con"><input type="checkbox" class="skill-check" id="skCardio-2" data-skill="Cardio" data-attrs="con"><input type="checkbox" class="skill-check" id="skCardio-3" data-skill="Cardio" data-attrs="con"> Cardio (CON) <span class="pill-badge cyan skill-die" data-skillref="skCardio">—</span></label>
                                     <label style="display: flex; align-items: center; gap: 4px;" title="Livre III §12.3 — base = CON"><input type="checkbox" class="skill-check" id="skImmunite-1" data-skill="Système Immunitaire" data-attrs="con"><input type="checkbox" class="skill-check" id="skImmunite-2" data-skill="Système Immunitaire" data-attrs="con"><input type="checkbox" class="skill-check" id="skImmunite-3" data-skill="Système Immunitaire" data-attrs="con"> Système Immunitaire (CON) <span class="pill-badge cyan skill-die" data-skillref="skImmunite">—</span></label>
                                 </div>
-                                <h5 style="margin: 14px 0 8px; font-family: var(--font-mono); font-size: 0.78rem; color: var(--arcane-cyan); text-transform: uppercase;">Arbre de l'Intelligence & Érudition — Livre III §13.1</h5>
+                                <h5 style="margin: 14px 0 8px; font-family: var(--font-mono); font-size: 0.78rem; color: var(--arcane-cyan); text-transform: uppercase;">Arbre de l'Intelligence — Livre III §13.1</h5>
                                 <div class="tool-grid-4" style="font-size: 0.82rem;">
-                                    <label style="display: flex; align-items: center; gap: 4px;" title="Livre III §13.1 — base = moyenne ÉRU/INT"><input type="checkbox" class="skill-check" id="skAcademie-1" data-skill="Académie" data-attrs="eru,int"><input type="checkbox" class="skill-check" id="skAcademie-2" data-skill="Académie" data-attrs="eru,int"><input type="checkbox" class="skill-check" id="skAcademie-3" data-skill="Académie" data-attrs="eru,int"> Académie (ÉRU/INT) <span class="pill-badge cyan skill-die" data-skillref="skAcademie">—</span></label>
-                                    <label style="display: flex; align-items: center; gap: 4px;" title="Livre III §13.1 — base = ÉRU"><input type="checkbox" class="skill-check" id="skPremiersSoins-1" data-skill="Premiers Soins" data-attrs="eru"><input type="checkbox" class="skill-check" id="skPremiersSoins-2" data-skill="Premiers Soins" data-attrs="eru"><input type="checkbox" class="skill-check" id="skPremiersSoins-3" data-skill="Premiers Soins" data-attrs="eru"> Premiers Soins (ÉRU) <span class="pill-badge cyan skill-die" data-skillref="skPremiersSoins">—</span></label>
-                                    <label style="display: flex; align-items: center; gap: 4px;" title="Livre III §13.1 — base = moyenne ÉRU/INT"><input type="checkbox" class="skill-check" id="skMedecineAv-1" data-skill="Médecine Avancée" data-attrs="eru,int"><input type="checkbox" class="skill-check" id="skMedecineAv-2" data-skill="Médecine Avancée" data-attrs="eru,int"><input type="checkbox" class="skill-check" id="skMedecineAv-3" data-skill="Médecine Avancée" data-attrs="eru,int"> Médecine Avancée (ÉRU/INT) <span class="pill-badge cyan skill-die" data-skillref="skMedecineAv">—</span></label>
-                                    <label style="display: flex; align-items: center; gap: 4px;" title="Livre III §13.1 — base = moyenne INT/ÉRU"><input type="checkbox" class="skill-check" id="skIngenierie-1" data-skill="Ingénierie & Arcanotech" data-attrs="int,eru"><input type="checkbox" class="skill-check" id="skIngenierie-2" data-skill="Ingénierie & Arcanotech" data-attrs="int,eru"><input type="checkbox" class="skill-check" id="skIngenierie-3" data-skill="Ingénierie & Arcanotech" data-attrs="int,eru"> Ingénierie & Arcanotech (INT/ÉRU) <span class="pill-badge cyan skill-die" data-skillref="skIngenierie">—</span></label>
+                                    <label style="display: flex; align-items: center; gap: 4px;" title="Livre III §13.1 — base = INT"><input type="checkbox" class="skill-check" id="skAcademie-1" data-skill="Académie" data-attrs="int"><input type="checkbox" class="skill-check" id="skAcademie-2" data-skill="Académie" data-attrs="int"><input type="checkbox" class="skill-check" id="skAcademie-3" data-skill="Académie" data-attrs="int"> Académie (INT) <span class="pill-badge cyan skill-die" data-skillref="skAcademie">—</span></label>
+                                    <label style="display: flex; align-items: center; gap: 4px;" title="Livre III §13.1 — base = INS"><input type="checkbox" class="skill-check" id="skPremiersSoins-1" data-skill="Premiers Soins" data-attrs="ins"><input type="checkbox" class="skill-check" id="skPremiersSoins-2" data-skill="Premiers Soins" data-attrs="ins"><input type="checkbox" class="skill-check" id="skPremiersSoins-3" data-skill="Premiers Soins" data-attrs="ins"> Premiers Soins (INS) <span class="pill-badge cyan skill-die" data-skillref="skPremiersSoins">—</span></label>
+                                    <label style="display: flex; align-items: center; gap: 4px;" title="Livre III §13.1 — base = moyenne INT/INS"><input type="checkbox" class="skill-check" id="skMedecineAv-1" data-skill="Médecine Avancée" data-attrs="int,ins"><input type="checkbox" class="skill-check" id="skMedecineAv-2" data-skill="Médecine Avancée" data-attrs="int,ins"><input type="checkbox" class="skill-check" id="skMedecineAv-3" data-skill="Médecine Avancée" data-attrs="int,ins"> Médecine Avancée (INT/INS) <span class="pill-badge cyan skill-die" data-skillref="skMedecineAv">—</span></label>
+                                    <label style="display: flex; align-items: center; gap: 4px;" title="Livre III §13.1 — base = moyenne INT/AGI"><input type="checkbox" class="skill-check" id="skIngenierie-1" data-skill="Ingénierie & Arcanotech" data-attrs="int,agi"><input type="checkbox" class="skill-check" id="skIngenierie-2" data-skill="Ingénierie & Arcanotech" data-attrs="int,agi"><input type="checkbox" class="skill-check" id="skIngenierie-3" data-skill="Ingénierie & Arcanotech" data-attrs="int,agi"> Ingénierie & Arcanotech (INT/AGI) <span class="pill-badge cyan skill-die" data-skillref="skIngenierie">—</span></label>
                                     <label style="display: flex; align-items: center; gap: 4px;" title="Livre III §13.1 — base = INT"><input type="checkbox" class="skill-check" id="skStrategie-1" data-skill="Penser / Stratégie" data-attrs="int"><input type="checkbox" class="skill-check" id="skStrategie-2" data-skill="Penser / Stratégie" data-attrs="int"><input type="checkbox" class="skill-check" id="skStrategie-3" data-skill="Penser / Stratégie" data-attrs="int"> Penser / Stratégie (INT) <span class="pill-badge cyan skill-die" data-skillref="skStrategie">—</span></label>
                                 </div>
                                 <h5 style="margin: 14px 0 8px; font-family: var(--font-mono); font-size: 0.78rem; color: var(--arcane-cyan); text-transform: uppercase;">Arbre du Charisme — Livre III §13.2</h5>
@@ -950,7 +943,7 @@
                                     <label style="display: flex; align-items: center; gap: 4px;" title="Livre III §13.3 — base = moyenne Vision/Ouïe"><input type="checkbox" class="skill-check" id="skObservation-1" data-skill="Observation" data-attrs="vision,ouie"><input type="checkbox" class="skill-check" id="skObservation-2" data-skill="Observation" data-attrs="vision,ouie"><input type="checkbox" class="skill-check" id="skObservation-3" data-skill="Observation" data-attrs="vision,ouie"> Observation (Vision/Ouïe) <span class="pill-badge cyan skill-die" data-skillref="skObservation">—</span></label>
                                     <label style="display: flex; align-items: center; gap: 4px;" title="Livre III §13.3 — base = Ouïe"><input type="checkbox" class="skill-check" id="skEcoute-1" data-skill="Écoute" data-attrs="ouie"><input type="checkbox" class="skill-check" id="skEcoute-2" data-skill="Écoute" data-attrs="ouie"><input type="checkbox" class="skill-check" id="skEcoute-3" data-skill="Écoute" data-attrs="ouie"> Écoute (Ouïe) <span class="pill-badge cyan skill-die" data-skillref="skEcoute">—</span></label>
                                     <label style="display: flex; align-items: center; gap: 4px;" title="Livre III §13.3 — base = moyenne INT/INS"><input type="checkbox" class="skill-check" id="skIntuition-1" data-skill="Intuition" data-attrs="int,ins"><input type="checkbox" class="skill-check" id="skIntuition-2" data-skill="Intuition" data-attrs="int,ins"><input type="checkbox" class="skill-check" id="skIntuition-3" data-skill="Intuition" data-attrs="int,ins"> Intuition (INT/INS) <span class="pill-badge cyan skill-die" data-skillref="skIntuition">—</span></label>
-                                    <label style="display: flex; align-items: center; gap: 4px;" title="Livre III §13.3 — base = moyenne INS/INT/ÉRU"><input type="checkbox" class="skill-check" id="skSurvie-1" data-skill="Nature & Survie" data-attrs="ins,int,eru"><input type="checkbox" class="skill-check" id="skSurvie-2" data-skill="Nature & Survie" data-attrs="ins,int,eru"><input type="checkbox" class="skill-check" id="skSurvie-3" data-skill="Nature & Survie" data-attrs="ins,int,eru"> Nature & Survie (INS/INT/ÉRU) <span class="pill-badge cyan skill-die" data-skillref="skSurvie">—</span></label>
+                                    <label style="display: flex; align-items: center; gap: 4px;" title="Livre III §13.3 — base = moyenne INS/INT"><input type="checkbox" class="skill-check" id="skSurvie-1" data-skill="Nature & Survie" data-attrs="ins,int"><input type="checkbox" class="skill-check" id="skSurvie-2" data-skill="Nature & Survie" data-attrs="ins,int"><input type="checkbox" class="skill-check" id="skSurvie-3" data-skill="Nature & Survie" data-attrs="ins,int"> Nature & Survie (INS/INT) <span class="pill-badge cyan skill-die" data-skillref="skSurvie">—</span></label>
                                     <label style="display: flex; align-items: center; gap: 4px;" title="Livre III §13.3 — base = moyenne INS/INT"><input type="checkbox" class="skill-check" id="skArtisanat-1" data-skill="Artisanat / Connaissance" data-attrs="ins,int"><input type="checkbox" class="skill-check" id="skArtisanat-2" data-skill="Artisanat / Connaissance" data-attrs="ins,int"><input type="checkbox" class="skill-check" id="skArtisanat-3" data-skill="Artisanat / Connaissance" data-attrs="ins,int"> Artisanat / Connaissance (INS/INT) <span class="pill-badge cyan skill-die" data-skillref="skArtisanat">—</span></label>
                                 </div>
                             </div>
@@ -1006,7 +999,7 @@
                                 <div class="vital-metric-card cyan">
                                     <div class="vital-metric-title">Points d'Action (PA)</div>
                                     <div class="vital-metric-num" id="vitalPa">7</div>
-                                    <div class="vital-metric-sub">Max(Agi, Int) + Rap + Min(Core)</div>
+                                    <div class="vital-metric-sub">Max(Agi, Int) + Rap + Min(7 attr.)</div>
                                 </div>
                                 <div class="vital-metric-card emerald">
                                     <div class="vital-metric-title">Encaissement (CAP)</div>

@@ -13,7 +13,7 @@
    "blocs": [
     {
      "type": "html",
-     "html": "\n\n                    <p class=\"lead\">\n                        Chaque compétence part d'un ou plusieurs attributs. Elle fonctionne sur deux niveaux :\n                        la <strong>compétence de base</strong>, ta fondation large, celle que tout le monde partage.\n                        Et la <strong>spécialisation</strong>, ta botte en plus — celle qui\n                        te donne des effets que les autres n'ont pas.\n                    </p>\n\n                    <h3 id=\"sec-11-1\">11.1 Calcul du Rang de Base</h3>\n                    <p>\n                        Pour trouver ton score de base, prends la\n                        <strong><a class=\"rule-ref\" href=\"livre_2.html#chap-6\"\n                                data-tip=\"Base = moyenne des attributs liés : 1-2 +0 (d2), 3-4 +1 (d4), 5-6 +2 (d6), 7-8 +3 (d8), 9-10 +4 (d10) (Livre II §6.1).\">moyenne\n                                de tes attributs liés</a></strong>, arrondie au supérieur.\n                        Un seul attribut lié ? Garde sa valeur telle quelle.\n                    </p>\n                    <ul>\n                        <li><em>Exemple 1 :</em> <strong>Maniement d'Arme (FOR, AGI)</strong>. Tu as\n                            Force\n                            5 et Agilité 4 : la moyenne fait (5 + 4) / 2 = 4,5, arrondi à <strong>5</strong> → <strong><a\n                                    class=\"rule-ref\" href=\"livre_2.html#chap-6\"\n                                    data-tip=\"Niveau de dé : chaque cran monte le dé — d2 ➔ d4 ➔ d6 ➔ d8 ➔ d10 ➔ d12 (§6.1).\">+2\n                                    niveaux de\n                                    dé</a></strong> (dé associé sans entraînement : <strong>1d6</strong>).\n                        </li>\n                        <li><em>Exemple 2 :</em> <strong>Premiers Soins (ÉRU)</strong>. Tu as Érudition\n                            <strong>3</strong> → <strong>+1 niveau</strong> (dé associé :\n                            <strong>1d4</strong>). Ta piste de progression compte <strong>3 cases</strong> (<a\n                                class=\"rule-ref\" href=\"livre_1.html#chap-5\"\n                                data-tip=\"Progression : 1 réussite = 1 case. Piste pleine = +1 XP lié, piste à zéro (§5.1-5.2).\">Livre\n                                I §5</a>).\n                        </li>\n                        <li><em>Exemple 3 :</em> <strong>Athlétisme (CON, FOR, AGI)</strong>. Tu as CON 4, FOR 5,\n                            AGI 3 :\n                            la moyenne fait (4 + 5 + 3) / 3 = <strong>4</strong> → <strong>+1 niveau</strong> (dé\n                            associé\n                            : <strong>1d4</strong>).\n                        </li>\n                    </ul>\n                    <p>\n                        <strong>Ta progression (<a class=\"rule-ref\" href=\"livre_1.html#chap-5\"\n                                data-tip=\"Progression : 1 réussite = 1 case. Piste pleine = +1 XP lié, piste à zéro (§5.1-5.2).\">Livre\n                                I §5</a>) :</strong> ton rang de base fixe aussi la\n                        <strong>taille de ta <a class=\"rule-ref\" href=\"livre_1.html#chap-5\"\n                                data-tip=\"Piste de progression : autant de cases que votre base — base 3 → 3 cases, base 5 → 5 cases (§5.1).\">piste</a></strong>\n                        : base 3 → 3 cases, base 5 → 5 cases. Chaque\n                        <strong>réussite</strong> avec la compétence coche 1 case. Piste pleine ? Tu gagnes +1 <a\n                            class=\"rule-ref\" href=\"livre_1.html#sec-5-2\"\n                            data-tip=\"XP lié : une piste remplie = 1 XP réservé à sa compétence (§5.2).\">XP lié</a>,\n                        puis la piste repart à zéro. Tu le dépenses au coût normal, ou en\n                        <a class=\"rule-ref\" href=\"livre_1.html#sec-5-3\"\n                            data-tip=\"Coût croisé ×2 : dépenser l'XP d'une autre compétence coûte double (§5.3).\">croisé\n                            <strong>×2</strong></a>.\n                        <br><strong>Tes <a class=\"rule-ref\" href=\"livre_1.html#sec-etape-6\"\n                                data-tip=\"Entraînements gratuits : ton rang d'Érudition = autant de compétences montées d'un palier de dé (Étape 6).\">entraînements\n                                gratuits</a> :</strong> c'est ton <strong><a class=\"rule-ref\"\n                                href=\"livre_1.html#sec-etape-6\"\n                                data-tip=\"Érudition : ton score donne autant d'entraînements gratuits (ÉRU 3 → 3 gratuits) (Étape 6).\">Érudition</a></strong>\n                        qui les\n                        donne\n                        (ÉRU 3 → 3 gratuits, +1 ÉRU = +1 gratuit). Ils coûtent 0 XP et restent\n                        <strong><a class=\"rule-ref\" href=\"livre_1.html#sec-5-4\"\n                                data-tip=\"XP Total : tout l'XP investi depuis le début, hors réserves et hors entraînements gratuits (§5.4).\">hors\n                                de ton total</a></strong>.\n                        <br><strong>Maximum 3 <a class=\"rule-ref\" href=\"livre_2.html#chap-6\"\n                                data-tip=\"Entraînement : +1 palier chacun, plafond 3 (+3 déblocables à 2d6, max 6), 5 XP (10 si croisé) (§6.1).\">entraînements\n                                par compétence</a> :</strong> tu ne peux jamais dépasser 3 au départ,\n                        gratuits et achetés confondus — <strong>6 si ton dé a atteint 2d6</strong> (3 déblocables : 2d6 ➔ 2d8 ➔ 2d10 ➔ 2d12). Ce sont les 6 cases de ta fiche. Chaque entraînement donne\n                        <strong>+1 niveau de dé</strong>.\n                    </p>\n\n                    <h3>11.2 Les 5 Catégories Fonctionnelles d'Action</h3>\n                    "
+     "html": "\n\n                    <p class=\"lead\">\n                        Chaque compétence part d'un ou plusieurs attributs. Elle fonctionne sur deux niveaux :\n                        la <strong>compétence de base</strong>, ta fondation large, celle que tout le monde partage.\n                        Et la <strong>spécialisation</strong>, ta botte en plus — celle qui\n                        te donne des effets que les autres n'ont pas.\n                    </p>\n\n                    <h3 id=\"sec-11-1\">11.1 Calcul du Rang de Base</h3>\n                    <p>\n                        Pour trouver ton score de base, prends la\n                        <strong><a class=\"rule-ref\" href=\"livre_2.html#chap-6\"\n                                data-tip=\"Base = moyenne des attributs liés : 1-2 +0 (d2), 3-4 +1 (d4), 5-6 +2 (d6), 7-8 +3 (d8), 9-10 +4 (d10) (Livre II §6.1).\">moyenne\n                                de tes attributs liés</a></strong>, arrondie au supérieur.\n                        Un seul attribut lié ? Garde sa valeur telle quelle.\n                    </p>\n                    <ul>\n                        <li><em>Exemple 1 :</em> <strong>Maniement d'Arme (FOR, AGI)</strong>. Tu as\n                            Force\n                            5 et Agilité 4 : la moyenne fait (5 + 4) / 2 = 4,5, arrondi à <strong>5</strong> → <strong><a\n                                    class=\"rule-ref\" href=\"livre_2.html#chap-6\"\n                                    data-tip=\"Niveau de dé : chaque cran monte le dé — d2 ➔ d4 ➔ d6 ➔ d8 ➔ d10 ➔ d12 (§6.1).\">+2\n                                    niveaux de\n                                    dé</a></strong> (dé associé sans entraînement : <strong>1d6</strong>).\n                        </li>\n                        <li><em>Exemple 2 :</em> <strong>Premiers Soins (INS)</strong>. Tu as Instinct\n                            <strong>3</strong> → <strong>+1 niveau</strong> (dé associé :\n                            <strong>1d4</strong>). Ta piste de progression compte <strong>3 cases</strong> (<a\n                                class=\"rule-ref\" href=\"livre_1.html#chap-5\"\n                                data-tip=\"Progression : 1 réussite = 1 case. Piste pleine = +1 XP lié, piste à zéro (§5.1-5.2).\">Livre\n                                I §5</a>).\n                        </li>\n                        <li><em>Exemple 3 :</em> <strong>Athlétisme (CON, FOR, AGI)</strong>. Tu as CON 4, FOR 5,\n                            AGI 3 :\n                            la moyenne fait (4 + 5 + 3) / 3 = <strong>4</strong> → <strong>+1 niveau</strong> (dé\n                            associé\n                            : <strong>1d4</strong>).\n                        </li>\n                    </ul>\n                    <p>\n                        <strong>Ta progression (<a class=\"rule-ref\" href=\"livre_1.html#chap-5\"\n                                data-tip=\"Progression : 1 réussite = 1 case. Piste pleine = +1 XP lié, piste à zéro (§5.1-5.2).\">Livre\n                                I §5</a>) :</strong> ton rang de base fixe aussi la\n                        <strong>taille de ta <a class=\"rule-ref\" href=\"livre_1.html#chap-5\"\n                                data-tip=\"Piste de progression : autant de cases que votre base — base 3 → 3 cases, base 5 → 5 cases (§5.1).\">piste</a></strong>\n                        : base 3 → 3 cases, base 5 → 5 cases. Chaque\n                        <strong>réussite</strong> avec la compétence coche 1 case. Piste pleine ? Tu gagnes +1 <a\n                            class=\"rule-ref\" href=\"livre_1.html#sec-5-2\"\n                            data-tip=\"XP lié : une piste remplie = 1 XP réservé à sa compétence (§5.2).\">XP lié</a>,\n                        puis la piste repart à zéro. Tu le dépenses au coût normal, ou en\n                        <a class=\"rule-ref\" href=\"livre_1.html#sec-5-3\"\n                            data-tip=\"Coût croisé ×2 : dépenser l'XP d'une autre compétence coûte double (§5.3).\">croisé\n                            <strong>×2</strong></a>.\n                        <br><strong>Ton <a class=\"rule-ref\" href=\"livre_1.html#sec-etape-6\"\n                                data-tip=\"Bagage (Étape 6) : 3 entraînements de départ (+1 don Humain Touche-à-tout, +1 tirage historique pur, max 5), fixé à la création, jamais farmable en jeu.\">Bagage de départ</a> :</strong> tout héros commence avec <strong>3 entraînements gratuits</strong> à la création (+1 don Humain <em>Touche-à-tout</em>, +1 tirage historique pur <a href=\"livre_7.html\">Livre VII</a>, max 5). Ils sont fixés une seule fois à la création (aucune caractéristique n'en offre en jeu), coûtent 0 XP et restent\n                        <strong><a class=\"rule-ref\" href=\"livre_1.html#sec-5-4\"\n                                data-tip=\"XP Total : tout l'XP investi depuis le début, hors réserves et hors Bagage de création (§5.4).\">hors\n                                de ton total</a></strong>.\n                        <br><strong>Maximum 3 <a class=\"rule-ref\" href=\"livre_2.html#chap-6\"\n                                data-tip=\"Entraînement : +1 palier chacun, plafond 3 (+3 déblocables à 2d6, max 6), 5 XP (10 si croisé) (§6.1).\">entraînements\n                                par compétence</a> :</strong> tu ne peux jamais dépasser 3 au départ,\n                        gratuits et achetés confondus — <strong>6 si ton dé a atteint 2d6</strong> (3 déblocables : 2d6 ➔ 2d8 ➔ 2d10 ➔ 2d12). Ce sont les 6 cases de ta fiche. Chaque entraînement donne\n                        <strong>+1 niveau de dé</strong>.\n                    </p>\n\n                    <h3>11.2 Les 5 Catégories Fonctionnelles d'Action</h3>\n                    "
     },
     {
      "type": "ref",
@@ -69,11 +69,11 @@
    "blocs": [
     {
      "type": "html",
-     "html": "\n\n                    <!-- ARBRE INTELLIGENCE & ÉRUDITION -->\n                    <h3>13.1 Arbre de l'Intelligence & Érudition (INT / ÉRU)</h3>\n                    <p>\n                        Ici, c'est votre tête qui travaille. Vous réfléchissez, vous soignez,\n                        vous réparez, et vous comprenez comment marchent les machines.\n                    </p>\n\n                    "
+     "html": "\n\n                    <!-- ARBRE INTELLIGENCE -->\n                    <h3>13.1 Arbre de l'Intelligence (INT)</h3>\n                    <p>\n                        Ici, c'est votre tête qui travaille. Vous réfléchissez, vous soignez,\n                        vous réparez, et vous comprenez comment marchent les machines.\n                    </p>\n\n                    "
     },
     {
      "type": "ref",
-     "cible": "arbre_int_eru"
+     "cible": "arbre_int"
     },
     {
      "type": "html",
@@ -378,7 +378,7 @@
     ]
    ]
   },
-  "arbre_int_eru": {
+  "arbre_int": {
    "type": "table",
    "colonnes": [
     "Compétence de Base",
@@ -389,25 +389,25 @@
    "lignes": [
     [
      "<strong>Académie</strong>",
-     "Érudition, Intelligence",
+     "Intelligence",
      "Utilitaire",
      "Histoire des mondes, Linguistique, Économie impériale"
     ],
     [
      "<strong>Premiers Soins</strong>",
-     "Érudition",
+     "Instinct",
      "Utilitaire",
      "Stabilisation d'urgence, Pose de garrot, Soins de terrain"
     ],
     [
      "<strong>Médecine Avancée</strong>",
-     "Érudition, Intelligence",
+     "Intelligence, Instinct",
      "Utilitaire",
      "<strong>Chirurgie</strong> → Diagnostic Vital → Suture Réflexe → Greffe\n                                        d'Urgence\n                                        <br><strong>Apothicaire de Guerre</strong> → Stimulant Neuro-Accélérateur →\n                                        Sérum Antidote → Cocktail Panacée\n                                        <br>Traitement des infections, Pharmacologie"
     ],
     [
      "<strong>Ingénierie & Arcanotech</strong>",
-     "Intelligence, Érudition",
+     "Intelligence, Agilité",
      "Utilitaire",
      "<strong>Surfréquence Nytharite</strong> → Stabilisateur de Flux → Décharge\n                                        Harmonique → Résonance Infinie\n                                        <br>Réparation de réacteurs, Cristallographie Nytharite, Piratage"
     ],
@@ -477,7 +477,7 @@
     ],
     [
      "<strong>Nature & Survie</strong>",
-     "Instinct ou (Intelligence, Érudition)",
+     "Instinct, Intelligence",
      "Utilitaire",
      "Traque, Orientation, Botanique sauvage, Construction d'abris"
     ],
@@ -1598,7 +1598,7 @@
     ],
     [
      "<strong>Chirurgie</strong>",
-     "Médecine Avancée (ÉRU, INT)",
+     "Médecine Avancée (INT, INS)",
      "Utilitaire",
      "Referme les blessures critiques et lève l'état <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-4\"\n                                            data-tip=\"Souffrant : blessure grave levée par n'importe quel soin (§24.4).\">Souffrant</a>.\n                                        Soigne aussi les dégâts résiduels de <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Saignement : dégâts résiduels en début de tour, puis −1/tour (ne baisse pas après Course, Charge ou Essoufflement). Tout soin l'arrête (§24.2).\">saignement</a>."
     ],
@@ -1607,7 +1607,7 @@
       "attrs": " style=\"padding-left:2em;\"",
       "html": "↳ <strong>Diagnostic Vital</strong>"
      },
-     "Médecine Avancée (ÉRU, INT)",
+     "Médecine Avancée (INT, INS)",
      "Utilitaire",
      "Vous lisez dégâts subis, seuils et armure exacts d'une\n                                        unité examinée."
     ],
@@ -1616,7 +1616,7 @@
       "attrs": " style=\"padding-left:3.5em;\"",
       "html": "↳ <strong>Suture Réflexe</strong>"
      },
-     "Médecine Avancée (ÉRU, INT)",
+     "Médecine Avancée (INT, INS)",
      "Utilitaire",
      "Les premiers soins d'urgence passent\n                                        de 3 à 2 PA."
     ],
@@ -1625,13 +1625,13 @@
       "attrs": " style=\"padding-left:5em;\"",
       "html": "↳ <strong>Greffe d'Urgence</strong>"
      },
-     "Médecine Avancée (ÉRU, INT)",
+     "Médecine Avancée (INT, INS)",
      "Utilitaire",
      "Restaure un membre détruit ou amputé\n                                        en plein combat."
     ],
     [
      "<strong>Apothicaire de Guerre</strong>",
-     "Médecine Avancée (ÉRU, INT)",
+     "Médecine Avancée (INT, INS)",
      "Utilitaire",
      "Vous composez des stimulants (Antidouleurs, Speed) sans laboratoire."
     ],
@@ -1640,7 +1640,7 @@
       "attrs": " style=\"padding-left:2em;\"",
       "html": "↳ <strong>Stimulant Neuro-Accélérateur</strong>"
      },
-     "Médecine Avancée (ÉRU, INT)",
+     "Médecine Avancée (INT, INS)",
      "Utilitaire",
      "Stimulant Rapide (+3 PA de\n                                        mouvement) pendant 4 heures."
     ],
@@ -1649,7 +1649,7 @@
       "attrs": " style=\"padding-left:3.5em;\"",
       "html": "↳ <strong>Sérum Antidote</strong>"
      },
-     "Médecine Avancée (ÉRU, INT)",
+     "Médecine Avancée (INT, INS)",
      "Utilitaire",
      "Purge toutes les\n                                        altérations biologiques d'un allié au contact."
     ],
@@ -1658,13 +1658,13 @@
       "attrs": " style=\"padding-left:5em;\"",
       "html": "↳ <strong>Cocktail Panacée</strong>"
      },
-     "Médecine Avancée (ÉRU, INT)",
+     "Médecine Avancée (INT, INS)",
      "Utilitaire",
      "Soigne 15 dégâts et immunise contre tous\n                                        les états pendant 3 tours."
     ],
     [
      "<strong>Surfréquence Nytharite</strong>",
-     "Ingénierie & Arcanotech (INT, ÉRU)",
+     "Ingénierie & Arcanotech (INT, AGI)",
      "Utilitaire",
      "2 PA : double la puissance d'une arme laser ou d'un champ de force pendant\n                                        1 tour."
     ],
@@ -1673,7 +1673,7 @@
       "attrs": " style=\"padding-left:2em;\"",
       "html": "↳ <strong>Stabilisateur de Flux</strong>"
      },
-     "Ingénierie & Arcanotech (INT, ÉRU)",
+     "Ingénierie & Arcanotech (INT, AGI)",
      "Utilitaire",
      "Plus aucun risque d'endommager\n                                        ou de jammer l'équipement."
     ],
@@ -1682,7 +1682,7 @@
       "attrs": " style=\"padding-left:3.5em;\"",
       "html": "↳ <strong>Décharge Harmonique</strong>"
      },
-     "Ingénierie & Arcanotech (INT, ÉRU)",
+     "Ingénierie & Arcanotech (INT, AGI)",
      "Utilitaire",
      "+3 dégâts d'énergie pure à\n                                        toutes vos attaques du tour."
     ],
@@ -1691,7 +1691,7 @@
       "attrs": " style=\"padding-left:5em;\"",
       "html": "↳ <strong>Résonance Infinie</strong>"
      },
-     "Ingénierie & Arcanotech (INT, ÉRU)",
+     "Ingénierie & Arcanotech (INT, AGI)",
      "Utilitaire",
      "Surfréquence maintenue 3 tours\n                                        sans recharge."
     ],
@@ -2276,7 +2276,7 @@
     },
     {
      "corps_html": "« Le geste qui referme. » Ensemble ◆ C0 passif conditionnel (3 XP, 0 PA) + U1 −1 PA, action précise (3 XP) + Au contact (carte Condition, gratuite). Les premiers soins d’urgence passent de 3 à 2 PA, au contact.",
-     "monde": "Premiers Soins // ÉRU",
+     "monde": "Premiers Soins // INS",
      "pieds": [
       {
        "texte": "Création : 6 XP",
@@ -2343,7 +2343,7 @@
     "Spécialisations Disponibles"
    ]
   },
-  "arbre_int_eru": {
+  "arbre_int": {
    "colonnes": [
     "Compétence de Base",
     "Attributs Liés",
@@ -2379,7 +2379,7 @@
  "mecaniques": {
   "note": "Genere depuis livre_3.html (motif RP-075/Livre II). Source unique : regenerer.",
   "calcul_rang_base": {
-   "texte": "Pour trouver votre score de base, prenez la moyenne de vos attributs liés, arrondie vers le haut. Un seul attribut lié ? Gardez sa valeur telle quelle. Exemple 1 : Maniement des armes de contact (FOR, AGI). Vous avez Force 5 et Agilité 4, la moyenne fait (5 + 4) / 2 = 4.5, arrondi à 5 → +2 niveaux de dé (Dé associé sans entraînement : 1d6). Exemple 2 : Premiers Soins (ÉRU). Vous avez un niveau d'Érudition de 3 → +1 niveau (Dé associé : 1d4). Votre piste de progression : 3 cases (Livre I §5). Exemple 3 : Athlétisme (CON, FOR, AGI). Vous avez Con 4, For 5, Agi 3, la moyenne fait (4 + 5 + 3) / 3 = 4 → +1 niveau (Dé associé : 1d4). Votre progression (Livre I §5) : votre rang de base fixe aussi la taille de votre piste : base 3 → 3 cases, base 5 → 5 cases. Chaque réussite avec la compétence coche 1 case. Piste pleine ? Vous gagnez +1 XP lié, puis la piste repart à zéro. Vous le dépensez au coût normal, ou en croisé ×2. Vos entraînements gratuits : c'est votre Érudition qui les donne (ÉRU 3 → 3 gratuits, +1 ÉRU = +1 gratuit). Ils coûtent 0 XP et restent hors de votre total. Maximum 3 entraînements par compétence au départ — 6 si votre dé a atteint 2d6 (3 déblocables : 2d6 ➔ 2d8 ➔ 2d10 ➔ 2d12). Ce sont les 6 cases de votre fiche. Chaque entraînement donne +1 niveau de dé."
+   "texte": "Pour trouver votre score de base, prenez la moyenne de vos attributs liés, arrondie vers le haut. Un seul attribut lié ? Gardez sa valeur telle quelle. Exemple 1 : Maniement des armes de contact (FOR, AGI). Vous avez Force 5 et Agilité 4, la moyenne fait (5 + 4) / 2 = 4.5, arrondi à 5 → +2 niveaux de dé (Dé associé sans entraînement : 1d6). Exemple 2 : Premiers Soins (INS). Vous avez un niveau d'Instinct de 3 → +1 niveau (Dé associé : 1d4). Votre piste de progression : 3 cases (Livre I §5). Exemple 3 : Athlétisme (CON, FOR, AGI). Vous avez Con 4, For 5, Agi 3, la moyenne fait (4 + 5 + 3) / 3 = 4 → +1 niveau (Dé associé : 1d4). Votre progression (Livre I §5) : votre rang de base fixe aussi la taille de votre piste : base 3 → 3 cases, base 5 → 5 cases. Chaque réussite avec la compétence coche 1 case. Piste pleine ? Vous gagnez +1 XP lié, puis la piste repart à zéro. Vous le dépensez au coût normal, ou en croisé ×2. Votre Bagage de départ : tout héros commence avec 3 entraînements gratuits à la création (+1 don Humain Touche-à-tout, +1 tirage historique pur Livre VII, max 5). Ils sont fixés une seule fois à la création (aucune caractéristique n'en offre en jeu), coûtent 0 XP et restent hors de votre total. Maximum 3 entraînements par compétence au départ — 6 si votre dé a atteint 2d6 (3 déblocables : 2d6 ➔ 2d8 ➔ 2d10 ➔ 2d12). Ce sont les 6 cases de votre fiche. Chaque entraînement donne +1 niveau de dé."
   },
   "categories_action": [
    {
@@ -2508,41 +2508,41 @@
      "arbre": "CON"
     }
    ],
-   "INT/ERU": [
+   "INT": [
     {
      "competence": "Académie",
-     "attributs": "Érudition, Intelligence",
+     "attributs": "Intelligence",
      "type": "Utilitaire",
      "specialisations": "Histoire des mondes, Linguistique, Économie impériale",
-     "arbre": "INT/ERU"
+     "arbre": "INT"
     },
     {
      "competence": "Premiers Soins",
-     "attributs": "Érudition",
+     "attributs": "Instinct",
      "type": "Utilitaire",
      "specialisations": "Stabilisation d'urgence, Pose de garrot, Soins de terrain",
-     "arbre": "INT/ERU"
+     "arbre": "INT"
     },
     {
      "competence": "Médecine Avancée",
-     "attributs": "Érudition, Intelligence",
+     "attributs": "Intelligence, Instinct",
      "type": "Utilitaire",
      "specialisations": "Chirurgie → Diagnostic Vital → Suture Réflexe → Greffe d'Urgence Apothicaire de Guerre → Stimulant Neuro-Accélérateur → Sérum Antidote → Cocktail Panacée Traitement des infections, Pharmacologie",
-     "arbre": "INT/ERU"
+     "arbre": "INT"
     },
     {
      "competence": "Ingénierie & Arcanotech",
-     "attributs": "Intelligence, Érudition",
+     "attributs": "Intelligence, Agilité",
      "type": "Utilitaire",
      "specialisations": "Surfréquence Nytharite → Stabilisateur de Flux → Décharge Harmonique → Résonance Infinie Réparation de réacteurs, Cristallographie Nytharite, Piratage",
-     "arbre": "INT/ERU"
+     "arbre": "INT"
     },
     {
      "competence": "Penser / Stratégie",
      "attributs": "Intelligence",
      "type": "Utilitaire, Défensif",
      "specialisations": "Analyse de Faille → Tir Coordonné → Prédiction de Retraite → Échec et Mat Anticipation",
-     "arbre": "INT/ERU"
+     "arbre": "INT"
     }
    ],
    "CHA": [
@@ -2592,7 +2592,7 @@
     },
     {
      "competence": "Nature & Survie",
-     "attributs": "Instinct ou (Intelligence, Érudition)",
+     "attributs": "Instinct, Intelligence",
      "type": "Utilitaire",
      "specialisations": "Traque, Orientation, Botanique sauvage, Construction d'abris",
      "arbre": "INS/SAG"
@@ -2707,38 +2707,38 @@
    },
    "Académie": {
     "competence": "Académie",
-    "attributs": "Érudition, Intelligence",
+    "attributs": "Intelligence",
     "type": "Utilitaire",
     "specialisations": "Histoire des mondes, Linguistique, Économie impériale",
-    "arbre": "INT/ERU"
+    "arbre": "INT"
    },
    "Premiers Soins": {
     "competence": "Premiers Soins",
-    "attributs": "Érudition",
+    "attributs": "Instinct",
     "type": "Utilitaire",
     "specialisations": "Stabilisation d'urgence, Pose de garrot, Soins de terrain",
-    "arbre": "INT/ERU"
+    "arbre": "INT"
    },
    "Médecine Avancée": {
     "competence": "Médecine Avancée",
-    "attributs": "Érudition, Intelligence",
+    "attributs": "Intelligence, Instinct",
     "type": "Utilitaire",
     "specialisations": "Chirurgie → Diagnostic Vital → Suture Réflexe → Greffe d'Urgence Apothicaire de Guerre → Stimulant Neuro-Accélérateur → Sérum Antidote → Cocktail Panacée Traitement des infections, Pharmacologie",
-    "arbre": "INT/ERU"
+    "arbre": "INT"
    },
    "Ingénierie & Arcanotech": {
     "competence": "Ingénierie & Arcanotech",
-    "attributs": "Intelligence, Érudition",
+    "attributs": "Intelligence, Agilité",
     "type": "Utilitaire",
     "specialisations": "Surfréquence Nytharite → Stabilisateur de Flux → Décharge Harmonique → Résonance Infinie Réparation de réacteurs, Cristallographie Nytharite, Piratage",
-    "arbre": "INT/ERU"
+    "arbre": "INT"
    },
    "Penser / Stratégie": {
     "competence": "Penser / Stratégie",
     "attributs": "Intelligence",
     "type": "Utilitaire, Défensif",
     "specialisations": "Analyse de Faille → Tir Coordonné → Prédiction de Retraite → Échec et Mat Anticipation",
-    "arbre": "INT/ERU"
+    "arbre": "INT"
    },
    "Communication": {
     "competence": "Communication",
@@ -2784,7 +2784,7 @@
    },
    "Nature & Survie": {
     "competence": "Nature & Survie",
-    "attributs": "Instinct ou (Intelligence, Érudition)",
+    "attributs": "Instinct, Intelligence",
     "type": "Utilitaire",
     "specialisations": "Traque, Orientation, Botanique sauvage, Construction d'abris",
     "arbre": "INS/SAG"
@@ -3733,84 +3733,84 @@
    {
     "nom": "Chirurgie",
     "parente": null,
-    "source": "Médecine Avancée (ÉRU, INT)",
+    "source": "Médecine Avancée (INT, INS)",
     "type": "Utilitaire",
     "effets": "Referme les blessures critiques et lève l'état Souffrant. Soigne aussi les dégâts résiduels de saignement."
    },
    {
     "nom": "Diagnostic Vital",
     "parente": "Chirurgie",
-    "source": "Médecine Avancée (ÉRU, INT)",
+    "source": "Médecine Avancée (INT, INS)",
     "type": "Utilitaire",
     "effets": "Vous lisez dégâts subis, seuils et armure exacts d'une unité examinée."
    },
    {
     "nom": "Suture Réflexe",
     "parente": "Chirurgie",
-    "source": "Médecine Avancée (ÉRU, INT)",
+    "source": "Médecine Avancée (INT, INS)",
     "type": "Utilitaire",
     "effets": "Les premiers soins d'urgence passent de 3 à 2 PA."
    },
    {
     "nom": "Greffe d'Urgence",
     "parente": "Chirurgie",
-    "source": "Médecine Avancée (ÉRU, INT)",
+    "source": "Médecine Avancée (INT, INS)",
     "type": "Utilitaire",
     "effets": "Restaure un membre détruit ou amputé en plein combat."
    },
    {
     "nom": "Apothicaire de Guerre",
     "parente": null,
-    "source": "Médecine Avancée (ÉRU, INT)",
+    "source": "Médecine Avancée (INT, INS)",
     "type": "Utilitaire",
     "effets": "Vous composez des stimulants (Antidouleurs, Speed) sans laboratoire."
    },
    {
     "nom": "Stimulant Neuro-Accélérateur",
     "parente": "Apothicaire de Guerre",
-    "source": "Médecine Avancée (ÉRU, INT)",
+    "source": "Médecine Avancée (INT, INS)",
     "type": "Utilitaire",
     "effets": "Stimulant Rapide (+3 PA de mouvement) pendant 4 heures."
    },
    {
     "nom": "Sérum Antidote",
     "parente": "Apothicaire de Guerre",
-    "source": "Médecine Avancée (ÉRU, INT)",
+    "source": "Médecine Avancée (INT, INS)",
     "type": "Utilitaire",
     "effets": "Purge toutes les altérations biologiques d'un allié au contact."
    },
    {
     "nom": "Cocktail Panacée",
     "parente": "Apothicaire de Guerre",
-    "source": "Médecine Avancée (ÉRU, INT)",
+    "source": "Médecine Avancée (INT, INS)",
     "type": "Utilitaire",
     "effets": "Soigne 15 dégâts et immunise contre tous les états pendant 3 tours."
    },
    {
     "nom": "Surfréquence Nytharite",
     "parente": null,
-    "source": "Ingénierie & Arcanotech (INT, ÉRU)",
+    "source": "Ingénierie & Arcanotech (INT, AGI)",
     "type": "Utilitaire",
     "effets": "2 PA : double la puissance d'une arme laser ou d'un champ de force pendant 1 tour."
    },
    {
     "nom": "Stabilisateur de Flux",
     "parente": "Surfréquence Nytharite",
-    "source": "Ingénierie & Arcanotech (INT, ÉRU)",
+    "source": "Ingénierie & Arcanotech (INT, AGI)",
     "type": "Utilitaire",
     "effets": "Plus aucun risque d'endommager ou de jammer l'équipement."
    },
    {
     "nom": "Décharge Harmonique",
     "parente": "Surfréquence Nytharite",
-    "source": "Ingénierie & Arcanotech (INT, ÉRU)",
+    "source": "Ingénierie & Arcanotech (INT, AGI)",
     "type": "Utilitaire",
     "effets": "+3 dégâts d'énergie pure à toutes vos attaques du tour."
    },
    {
     "nom": "Résonance Infinie",
     "parente": "Surfréquence Nytharite",
-    "source": "Ingénierie & Arcanotech (INT, ÉRU)",
+    "source": "Ingénierie & Arcanotech (INT, AGI)",
     "type": "Utilitaire",
     "effets": "Surfréquence maintenue 3 tours sans recharge."
    },
@@ -4897,84 +4897,84 @@
    "Chirurgie": {
     "nom": "Chirurgie",
     "parente": null,
-    "source": "Médecine Avancée (ÉRU, INT)",
+    "source": "Médecine Avancée (INT, INS)",
     "type": "Utilitaire",
     "effets": "Referme les blessures critiques et lève l'état Souffrant. Soigne aussi les dégâts résiduels de saignement."
    },
    "Diagnostic Vital": {
     "nom": "Diagnostic Vital",
     "parente": "Chirurgie",
-    "source": "Médecine Avancée (ÉRU, INT)",
+    "source": "Médecine Avancée (INT, INS)",
     "type": "Utilitaire",
     "effets": "Vous lisez dégâts subis, seuils et armure exacts d'une unité examinée."
    },
    "Suture Réflexe": {
     "nom": "Suture Réflexe",
     "parente": "Chirurgie",
-    "source": "Médecine Avancée (ÉRU, INT)",
+    "source": "Médecine Avancée (INT, INS)",
     "type": "Utilitaire",
     "effets": "Les premiers soins d'urgence passent de 3 à 2 PA."
    },
    "Greffe d'Urgence": {
     "nom": "Greffe d'Urgence",
     "parente": "Chirurgie",
-    "source": "Médecine Avancée (ÉRU, INT)",
+    "source": "Médecine Avancée (INT, INS)",
     "type": "Utilitaire",
     "effets": "Restaure un membre détruit ou amputé en plein combat."
    },
    "Apothicaire de Guerre": {
     "nom": "Apothicaire de Guerre",
     "parente": null,
-    "source": "Médecine Avancée (ÉRU, INT)",
+    "source": "Médecine Avancée (INT, INS)",
     "type": "Utilitaire",
     "effets": "Vous composez des stimulants (Antidouleurs, Speed) sans laboratoire."
    },
    "Stimulant Neuro-Accélérateur": {
     "nom": "Stimulant Neuro-Accélérateur",
     "parente": "Apothicaire de Guerre",
-    "source": "Médecine Avancée (ÉRU, INT)",
+    "source": "Médecine Avancée (INT, INS)",
     "type": "Utilitaire",
     "effets": "Stimulant Rapide (+3 PA de mouvement) pendant 4 heures."
    },
    "Sérum Antidote": {
     "nom": "Sérum Antidote",
     "parente": "Apothicaire de Guerre",
-    "source": "Médecine Avancée (ÉRU, INT)",
+    "source": "Médecine Avancée (INT, INS)",
     "type": "Utilitaire",
     "effets": "Purge toutes les altérations biologiques d'un allié au contact."
    },
    "Cocktail Panacée": {
     "nom": "Cocktail Panacée",
     "parente": "Apothicaire de Guerre",
-    "source": "Médecine Avancée (ÉRU, INT)",
+    "source": "Médecine Avancée (INT, INS)",
     "type": "Utilitaire",
     "effets": "Soigne 15 dégâts et immunise contre tous les états pendant 3 tours."
    },
    "Surfréquence Nytharite": {
     "nom": "Surfréquence Nytharite",
     "parente": null,
-    "source": "Ingénierie & Arcanotech (INT, ÉRU)",
+    "source": "Ingénierie & Arcanotech (INT, AGI)",
     "type": "Utilitaire",
     "effets": "2 PA : double la puissance d'une arme laser ou d'un champ de force pendant 1 tour."
    },
    "Stabilisateur de Flux": {
     "nom": "Stabilisateur de Flux",
     "parente": "Surfréquence Nytharite",
-    "source": "Ingénierie & Arcanotech (INT, ÉRU)",
+    "source": "Ingénierie & Arcanotech (INT, AGI)",
     "type": "Utilitaire",
     "effets": "Plus aucun risque d'endommager ou de jammer l'équipement."
    },
    "Décharge Harmonique": {
     "nom": "Décharge Harmonique",
     "parente": "Surfréquence Nytharite",
-    "source": "Ingénierie & Arcanotech (INT, ÉRU)",
+    "source": "Ingénierie & Arcanotech (INT, AGI)",
     "type": "Utilitaire",
     "effets": "+3 dégâts d'énergie pure à toutes vos attaques du tour."
    },
    "Résonance Infinie": {
     "nom": "Résonance Infinie",
     "parente": "Surfréquence Nytharite",
-    "source": "Ingénierie & Arcanotech (INT, ÉRU)",
+    "source": "Ingénierie & Arcanotech (INT, AGI)",
     "type": "Utilitaire",
     "effets": "Surfréquence maintenue 3 tours sans recharge."
    },

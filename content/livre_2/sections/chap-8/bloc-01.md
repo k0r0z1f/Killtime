@@ -13,7 +13,7 @@ livre: 2
                     </p>
                     <h4 id="sec-8-3">8.3 Souterrain : la roche prévient qui sait l'écouter</h4>
                     <p>
-                        Galeries, mines, tunnels : le don <em>Sens de la Pierre</em> (Derek) donne +2 en <a class="rule-ref" href="livre_3.html#chap-13" data-tip="Nature & Survie : pistage, orientation, abris (INS/INT/ÉRU, §13.3).">Nature & Survie</a> en souterrain et sent le danger de la roche à ~30 m (épreuve d'<a class="rule-ref" href="livre_3.html#chap-13" data-tip="Observation : repérer un indice, un danger, un ennemi camouflé (Vision/Ouïe, §13.3).">Observation</a>) : gaz inflammables, plafond ou pilier qui menace de céder, poches de gaz, d'eau ou de minerai. Trois dangers types :
+                        Galeries, mines, tunnels : le don <em>Sens de la Pierre</em> (Derek) donne +2 en <a class="rule-ref" href="livre_3.html#chap-13" data-tip="Nature & Survie : pistage, orientation, abris (INS/INT, §13.3).">Nature & Survie</a> en souterrain et sent le danger de la roche à ~30 m (épreuve d'<a class="rule-ref" href="livre_3.html#chap-13" data-tip="Observation : repérer un indice, un danger, un ennemi camouflé (Vision/Ouïe, §13.3).">Observation</a>) : gaz inflammables, plafond ou pilier qui menace de céder, poches de gaz, d'eau ou de minerai. Trois dangers types :
                     </p>
                     <ul>
                         <li><strong>Gaz inflammables :</strong> la moindre étincelle met le feu : <strong>4 dégâts de zone</strong>, avec le risque de prendre <em>En Feu</em> (Livre VI §24). Retenir son souffle aide : <em>Gueule de Granit</em> (Derek) donne +2 Constitution contre les gaz et une apnée de 4 × CON tours.</li>

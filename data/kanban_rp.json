@@ -3692,7 +3692,7 @@
     },
     {
      "id": "RP-241",
-     "title": "Audit F2 — Faille Éveil gratuit (création 17 pts vs 15 pts)",
+     "title": "Audit F2 — Faille Éveil gratuit (création 14 pts vs 12 pts)",
      "epic": "P0 — Socle Mécanique",
      "status": "todo",
      "priority": "high",
@@ -3704,13 +3704,13 @@
      "scale": null,
      "suggestedAsset": "livre_1.html#chap-3",
      "updated": "2026-11-22",
-     "details": "Suite audit Livres I–VIII (file F2 → F5, après F1 RP-240) : corriger la faille d'Éveil gratuit à la création (budget secondaires 17 pts au lieu de 15 dès Magie ≥ 1)."
+     "details": "Suite audit Livres I–VIII (file F2 → F5, après F1 RP-240 et F3 RP-242) : corriger la faille d'Éveil gratuit à la création (budget secondaires 14 pts au lieu de 12 dès Magie ≥ 1 ; anciennement 17 vs 15 avant sortie d'ÉRU)."
     },
     {
      "id": "RP-242",
      "title": "Audit F3 — Faille ÉRU presse-XP (entraînements gratuits Érudition)",
      "epic": "P0 — Socle Mécanique",
-     "status": "todo",
+     "status": "done",
      "priority": "high",
      "order": 239,
      "scene": "",
@@ -3720,7 +3720,7 @@
      "scale": null,
      "suggestedAsset": "livre_1.html#sec-etape-6",
      "updated": "2026-11-22",
-     "details": "Suite audit Livres I–VIII (file F2 → F5, après F2 RP-241) : corriger la faille ÉRU presse-XP (ratio XP / entraînements gratuits offerts par chaque montée d'Érudition)."
+     "details": "FAIT 2026-11-22 — Audit Livres I–VIII (F3) : suppression d'Érudition (ÉRU) des caractéristiques majeures (8 → 7 caracs : FOR, AGI, CON, RAP, INT, CHA, INS + Magie à part). Remplacement des entraînements gratuits liés à ÉRU par la propriété de création Bagage (base 3, +1 don Humain Touche-à-tout, +1 tirage historique pur Livre VII, max 5 ; fixé une seule fois à la création, 0 XP, hors XP Total, jamais farmable en jeu). Budgets secondaires recalibrés (12 pts / 5 secondaires, 14 si éveillé ; Sbire 11 / 13) et formule PA précisée sur Min(7 attributs). Redistribution des 6 compétences ex-ÉRU : Académie (INT), Penser / Stratégie (INT), Premiers Soins (INS), Médecine Avancée (INT/INS), Ingénierie & Arcanotech (INT/AGI), Nature & Survie (INS/INT). Appliqué aux Livres I, II, III (Arbre 13.1 INT), IV, VI, VII, XII (bestiaire & rangs), Fiche PJ / Créateur (fiche_pj.html, livre_9.html, js/tools.js, js/fabrique.js), fiche Roger (7 caracs, 12 secondaires, 21 total, 7 PA, Bagage 3) et Appendices A & B (appendice_actions.json, appendice_glossaire.json : terme bagage-creation). Checks verts (build tous livres, check_liens, build_nav, node --check)."
     },
     {
      "id": "RP-243",

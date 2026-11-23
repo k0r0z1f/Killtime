@@ -7,7 +7,7 @@ livre: 6
 
                     <p>
                         Face aux traumatismes du champ de bataille, la médecine d'urgence repose sur la compétence
-                        <a class="rule-ref" href="livre_3.html#chap-13" data-tip="Premiers Soins (ÉRU) : stabilisation d'urgence, pose de garrot, soins de terrain (Livre III §13.1)."><strong>Premiers Soins</strong></a> (liée à l'Érudition ou à l'Intelligence).
+                        <a class="rule-ref" href="livre_3.html#chap-13" data-tip="Premiers Soins (INS) : stabilisation d'urgence, pose de garrot, soins de terrain (Livre III §13.1)."><strong>Premiers Soins</strong></a> (liée à l'Instinct).
                     </p>
 
                     <h3>25.1 Protocole de Premiers Soins d'Urgence</h3>
@@ -41,8 +41,8 @@ livre: 6
                             cette veille est automatique (aucun jet).
                             <br><strong>Qui compte comme soignant ?</strong> Tout personnage disposant d'au moins
                             <strong>1 <a class="rule-ref" href="livre_2.html#chap-6" data-tip="Entraînement : +1 palier chacun, plafond 3 (+3 déblocables à 2d6, max 6), 5 XP (10 si croisé) (§6.1).">entraînement</a></strong>
-                            en <a class="rule-ref" href="livre_3.html#chap-13" data-tip="Premiers Soins (ÉRU) : stabilisation d'urgence, pose de garrot, soins de terrain (Livre III §13.1).">Premiers Soins</a>
-                            ou en <a class="rule-ref" href="livre_3.html#chap-13" data-tip="Médecine Avancée (ÉRU, INT) : Chirurgie, Apothicaire de Guerre, traitement des infections (Livre III §13.1).">Médecine Avancée</a>,
+                            en <a class="rule-ref" href="livre_3.html#chap-13" data-tip="Premiers Soins (INS) : stabilisation d'urgence, pose de garrot, soins de terrain (Livre III §13.1).">Premiers Soins</a>
+                            ou en <a class="rule-ref" href="livre_3.html#chap-13" data-tip="Médecine Avancée (INT, INS) : Chirurgie, Apothicaire de Guerre, traitement des infections (Livre III §13.1).">Médecine Avancée</a>,
                             ou d'un <strong>sort ou pouvoir de soin</strong> (ex. <a class="rule-ref" href="livre_4.html#chap-18" data-tip="Magie Primale (MAG, INT) : Vie, Création, Destruction — soins, boosts et symbiose (Livre IV §18).">Magie Primale</a>).
                             <br><em>Exemple : Roger (CON 4) s'endort avec 10 dégâts. À la fin du repos (6 h sans garde, ou 8 h avec tours de garde) :
                             10 − 4 = 6 dégâts restants. Si Mina (soignante) veille sur lui pendant 2 h

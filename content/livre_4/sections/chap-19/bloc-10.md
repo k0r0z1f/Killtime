@@ -37,9 +37,9 @@ livre: 4
                         </div>
                         <div class="callout-body">
                             Dans le Livre III, cherche <a class="rule-ref" href="livre_3.html#chap-13"
-                                data-tip="Arbre Érudition : la compétence Ingénierie & Arcanotech (INT, ÉRU) (§13).">«
+                                data-tip="Arbre Intelligence : la compétence Ingénierie & Arcanotech (INT, AGI) (§13).">«
                                 Ingénierie &amp; Arcanotech »</a>
-                            (arbre Érudition, §13) et <a class="rule-ref" href="livre_3.html#chap-14"
+                            (arbre Intelligence, §13) et <a class="rule-ref" href="livre_3.html#chap-14"
                                 data-tip="Surfréquence Nytharite : double la puissance d'une arme laser ou d'un champ pendant 1 tour (§14).">«
                                 Surfréquence Nytharite »</a>
                             (compendium, §14) : c'est la partie atelier — tu répares et tu règles moteurs et

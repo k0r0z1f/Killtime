@@ -3451,8 +3451,8 @@
     "Médecine Avancée"
    ],
    "attributs": [
-    "ÉRU",
-    "INT"
+    "INT",
+    "INS"
    ],
    "limite": "Selon dose en inventaire",
    "ralenti_effet": "Coût ×2 PA sous Ralenti",
@@ -3687,7 +3687,7 @@
    ],
    "attributs": [
     "INT",
-    "ÉRU"
+    "AGI"
    ],
    "limite": "Selon besoin",
    "ralenti_effet": "Coût ×2 PA sous Ralenti",
@@ -3800,7 +3800,7 @@
     "Médecine Avancée"
    ],
    "attributs": [
-    "ÉRU",
+    "INS",
     "INT"
    ],
    "limite": "Selon PA et blessés",
@@ -4136,7 +4136,7 @@
    "contexte": "Combat & Hors-Combat",
    "timing": "À l'exposition, échéance de stade ou soin",
    "portee": "Contact ou laboratoire/rituel",
-   "jet": "Érudition / Premiers Soins / Médecine Avancée (Diff = Virulence, min 4)",
+   "jet": "Académie / Premiers Soins / Médecine Avancée (Diff = Virulence, min 4)",
    "requiert_jet": true,
    "consomme_reaction_libre": false,
    "silencieux": false,
@@ -4147,15 +4147,15 @@
     "Système Immunitaire"
    ],
    "attributs": [
-    "ÉRU",
     "INT",
+    "INS",
     "CON"
    ],
    "limite": "Selon stades de la maladie",
    "ralenti_effet": "Coût ×2 PA sous Ralenti",
    "resume": "Identifier la nature de l'agent, le stade actif (1 à 6) et la Classe de Gravité (I–V, Indice de Gravité) d'une pathologie puis appliquer le traitement adapté ou déclencher une rémission.",
    "procedure": [
-    "Diagnostic : épreuve d'Érudition / Académie, Premiers Soins ou Médecine Avancée contre Difficulté = Virulence (minimum 4 ; +2 si Symptômes masqués ; +2 sans matériel/rituel pour un agent Arcanique ou Nanotech ; +2 avec Diagnostic Vital). Échec = 1 stade de retard ou nature incertaine.",
+    "Diagnostic : épreuve d'Académie, Premiers Soins ou Médecine Avancée contre Difficulté = Virulence (minimum 4 ; +2 si Symptômes masqués ; +2 sans matériel/rituel pour un agent Arcanique ou Nanotech ; +2 avec Diagnostic Vital). Échec = 1 stade de retard ou nature incertaine.",
     "Traitement : Premiers Soins (3 PA en combat / 1 scène hors combat) ou moyen imposé par la nature de l'agent (Médecine Avancée, Magie Primale / curative, atelier d'Ingénierie & Arcanotech) contre Difficulté = Virulence (paliers 3 / 5 / 7 / 10 / 14 / 18+) avec kit ou remède adapté. Les seringues effacent des dégâts mais ne guérissent jamais une pathologie.",
     "Rémission & épreuve immunitaire : un soin adapté réussi confère +2 au prochain jet de transition (Système Immunitaire vs Virulence, épreuve gratuite 0 PA sans mise libre de PA hors combat ; Essoufflement volontaire autorisé). Une marge de 3+ (ou un remède spécifique) provoque une rémission immédiate (−1 stade), sauf Résistance au traitement."
    ],
@@ -4219,7 +4219,8 @@
    ],
    "attributs": [
     "MAG",
-    "ÉRU",
+    "INT",
+    "INS",
     "CON"
    ],
    "limite": "Conditions strictes de résurrection",
@@ -4594,7 +4595,6 @@
     "AGI",
     "CON",
     "INT",
-    "ÉRU",
     "CHA",
     "INS"
    ],
@@ -5556,7 +5556,7 @@
    ],
    "attributs": [
     "INT",
-    "ÉRU"
+    "AGI"
    ],
    "limite": "1 tour (3 tours Résonance Infinie)",
    "ralenti_effet": "Coût ×2 PA sous Ralenti",
@@ -5674,8 +5674,7 @@
    ],
    "attributs": [
     "INS",
-    "INT",
-    "ÉRU"
+    "INT"
    ],
    "limite": "Selon terrain / scène",
    "ralenti_effet": "Non applicable",
@@ -5791,7 +5790,6 @@
     "Intuition"
    ],
    "attributs": [
-    "ÉRU",
     "INT",
     "INS"
    ],
@@ -5799,7 +5797,7 @@
    "ralenti_effet": "Coût ×2 PA si fait en combat sous Ralenti",
    "resume": "Mobiliser ses connaissances (histoire, langues, économie impériale) ou sonder la sincérité et les intentions d'un interlocuteur.",
    "procedure": [
-    "Académie : épreuve d'Érudition/Intelligence pour déchiffrer une langue, identifier une relique, connaître les lois/économies d'une Élia ou d'une espèce.",
+    "Académie : épreuve d'Intelligence pour déchiffrer une langue, identifier une relique, connaître les lois/économies d'une Élia ou d'une espèce.",
     "Intuition : épreuve d'Intelligence/Instinct (souvent opposée à Communication/Tromper adverse) pour détecter un mensonge, un guet-apens ou une intention hostile."
    ],
    "conditions": "Don Nain Longue Mémoire : +2 en Académie (histoire, métallurgie, généalogies) et 1 contact érudit/artisan par cité naine.",

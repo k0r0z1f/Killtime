@@ -12,7 +12,7 @@ livre: 1
                             Exemple Concret : Le Calcul des PA de Roger
                         </div>
                         <div class="callout-body">
-                            Roger a 3 en Agilité, 2 en Intelligence, 3 en Rapidité, et son attribut le plus faible est le Charisme à 1.<br>
+                            Roger a 3 en Agilité, 2 en Intelligence, 3 en Rapidité, et le plus bas de ses 7 attributs majeurs (et de ses 5 secondaires) est le Charisme à 1.<br>
                             <strong>Son calcul :</strong> Max(3, 2) + 3 + 1 = <strong>7 Points d'Action</strong>.<br>
                             Roger démarre donc le combat avec 7 PA à l'<a class="rule-ref" href="#sec-4-3" data-tip="Initiative : meilleur score entre Rapidité, Agilité et Intelligence, converti en dé (§4.3).">initiative</a>, puis les récupère au début de chacun de ses tours (remise au max, sans cumul possible).
                         </div>

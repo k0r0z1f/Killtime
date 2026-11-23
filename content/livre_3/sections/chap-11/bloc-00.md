@@ -29,7 +29,7 @@ livre: 3
                                     niveaux de
                                     dé</a></strong> (dé associé sans entraînement : <strong>1d6</strong>).
                         </li>
-                        <li><em>Exemple 2 :</em> <strong>Premiers Soins (ÉRU)</strong>. Tu as Érudition
+                        <li><em>Exemple 2 :</em> <strong>Premiers Soins (INS)</strong>. Tu as Instinct
                             <strong>3</strong> → <strong>+1 niveau</strong> (dé associé :
                             <strong>1d4</strong>). Ta piste de progression compte <strong>3 cases</strong> (<a
                                 class="rule-ref" href="livre_1.html#chap-5"
@@ -57,16 +57,10 @@ livre: 3
                         <a class="rule-ref" href="livre_1.html#sec-5-3"
                             data-tip="Coût croisé ×2 : dépenser l'XP d'une autre compétence coûte double (§5.3).">croisé
                             <strong>×2</strong></a>.
-                        <br><strong>Tes <a class="rule-ref" href="livre_1.html#sec-etape-6"
-                                data-tip="Entraînements gratuits : ton rang d'Érudition = autant de compétences montées d'un palier de dé (Étape 6).">entraînements
-                                gratuits</a> :</strong> c'est ton <strong><a class="rule-ref"
-                                href="livre_1.html#sec-etape-6"
-                                data-tip="Érudition : ton score donne autant d'entraînements gratuits (ÉRU 3 → 3 gratuits) (Étape 6).">Érudition</a></strong>
-                        qui les
-                        donne
-                        (ÉRU 3 → 3 gratuits, +1 ÉRU = +1 gratuit). Ils coûtent 0 XP et restent
+                        <br><strong>Ton <a class="rule-ref" href="livre_1.html#sec-etape-6"
+                                data-tip="Bagage (Étape 6) : 3 entraînements de départ (+1 don Humain Touche-à-tout, +1 tirage historique pur, max 5), fixé à la création, jamais farmable en jeu.">Bagage de départ</a> :</strong> tout héros commence avec <strong>3 entraînements gratuits</strong> à la création (+1 don Humain <em>Touche-à-tout</em>, +1 tirage historique pur <a href="livre_7.html">Livre VII</a>, max 5). Ils sont fixés une seule fois à la création (aucune caractéristique n'en offre en jeu), coûtent 0 XP et restent
                         <strong><a class="rule-ref" href="livre_1.html#sec-5-4"
-                                data-tip="XP Total : tout l'XP investi depuis le début, hors réserves et hors entraînements gratuits (§5.4).">hors
+                                data-tip="XP Total : tout l'XP investi depuis le début, hors réserves et hors Bagage de création (§5.4).">hors
                                 de ton total</a></strong>.
                         <br><strong>Maximum 3 <a class="rule-ref" href="livre_2.html#chap-6"
                                 data-tip="Entraînement : +1 palier chacun, plafond 3 (+3 déblocables à 2d6, max 6), 5 XP (10 si croisé) (§6.1).">entraînements

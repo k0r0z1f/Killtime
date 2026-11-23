@@ -75,7 +75,7 @@ livre: 6
                             (<a class="rule-ref" href="#sec-24-1" data-tip="Affamé, Assoiffé &amp; Somnolent : −1 à −3 ec sur tous les jets (§24.1).">Affamé, Assoiffé, Somnolent</a>)
                             pèsent sur chaque jet immunitaire.</li>
                         <li><strong>Diagnostic, soins, convalescence &amp; issues :</strong> diagnostiquer une maladie demande une épreuve
-                            d'<a class="rule-ref" href="livre_3.html#chap-13" data-tip="Académie, Premiers Soins &amp; Médecine Avancée (ÉRU/INT) : diagnostic et traitement clinique (Livre III §13).">Érudition / Académie, Premiers Soins ou Médecine Avancée</a>
+                            d'<a class="rule-ref" href="livre_3.html#chap-13" data-tip="Académie (INT), Premiers Soins (INS) &amp; Médecine Avancée (INT, INS) : diagnostic et traitement clinique (Livre III §13).">Académie, Premiers Soins ou Médecine Avancée</a>
                             contre la Virulence (minimum <code>4</code> ; <code>+2</code> avec <em>Diagnostic Vital</em>).
                             Un traitement adapté (<a class="rule-ref" href="#chap-25" data-tip="Premiers Soins : 3 PA au chevet en combat ou 1 scène hors combat (§25.1).">3 PA en combat / 1 scène hors combat, §25.1</a>)
                             confère <strong><code>+2</code></strong> au prochain jet de transition, ou provoque une rémission immédiate sur marge de

@@ -282,7 +282,7 @@
    "domaine": "fondations",
    "alias": [
     "caracteristiques",
-    "8 attributs"
+    "7 attributs"
    ],
    "liens": [
     {
@@ -390,32 +390,6 @@
      "label": "Livre I §3",
      "livre": 1,
      "href": "livre_1.html#chap-3"
-    },
-    {
-     "label": "Livre III §13",
-     "livre": 3,
-     "href": "livre_3.html#chap-13"
-    }
-   ]
-  },
-  {
-   "id": "attribut-erudition",
-   "terme": "Érudition (ÉRU)",
-   "domaine": "fondations",
-   "alias": [
-    "ERU",
-    "erudition"
-   ],
-   "liens": [
-    {
-     "label": "Livre I §3",
-     "livre": 1,
-     "href": "livre_1.html#chap-3"
-    },
-    {
-     "label": "Livre I §3 (Étape 6)",
-     "livre": 1,
-     "href": "livre_1.html#sec-etape-6"
     },
     {
      "label": "Livre III §13",
@@ -533,12 +507,14 @@
    ]
   },
   {
-   "id": "entrainements-gratuits-erudition",
-   "terme": "Entraînements Gratuits (Bonus d'Érudition)",
+   "id": "bagage-creation",
+   "terme": "Bagage (Entraînements de Création)",
    "domaine": "fondations",
    "alias": [
+    "bagage",
     "etape 6",
-    "entrainements offerts"
+    "entrainements de depart",
+    "entrainements gratuits"
    ],
    "liens": [
     {
@@ -555,6 +531,11 @@
      "label": "Livre III §11.1",
      "livre": 3,
      "href": "livre_3.html#sec-11-1"
+    },
+    {
+     "label": "Livre VII §26",
+     "livre": 7,
+     "href": "livre_7.html#chap-26"
     }
    ]
   },
@@ -1559,8 +1540,8 @@
    ]
   },
   {
-   "id": "arbre-intelligence-erudition",
-   "terme": "Arbre Intelligence & Érudition (INT / ÉRU)",
+   "id": "arbre-intelligence",
+   "terme": "Arbre Intelligence (INT)",
    "domaine": "competences",
    "alias": [
     "Academie",

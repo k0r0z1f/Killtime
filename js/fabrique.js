@@ -676,12 +676,12 @@ var CONDITIONS = [
     { id: 'essouf', nom: 'Avec essoufflement', texte: 'Tu prends 1 essoufflement.' },
     { id: 'compet', nom: 'Compétence entraînée', texte: 'Tu as l\u2019entraînement requis.' }
 ];
-/* Compétences de base (Livre III, arbres FOR/AGI/CON/INT-ÉRU/CHA/INS-SAG). */
+/* Compétences de base (Livre III, arbres FOR/AGI/CON/INT/CHA/INS-SAG). */
 var SKILLS = [
     ['FOR', ['Mains Nues', "Maniement d'Arme", 'Athlétisme', 'Défense Corporelle']],
     ['AGI', ['Acrobatie', 'Discrétion', 'Esquive', 'Armes Perçantes & Fines', 'Ballistique / Tir', 'Conduite & Pilotage', 'Subterfuge Manuel']],
     ['CON', ['Endurance Physique', 'Cardio', 'Système Immunitaire']],
-    ['INT-ÉRU', ['Académie', 'Premiers Soins', 'Médecine Avancée', 'Ingénierie & Arcanotech', 'Penser / Stratégie']],
+    ['INT', ['Académie', 'Premiers Soins', 'Médecine Avancée', 'Ingénierie & Arcanotech', 'Penser / Stratégie']],
     ['CHA', ['Communication', 'Intimidation', 'Leadership']],
     ['INS-SAG', ['Observation', 'Écoute', 'Intuition', 'Nature & Survie', 'Artisanat / Connaissance']]
 ];

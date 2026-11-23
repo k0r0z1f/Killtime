@@ -89,6 +89,7 @@ function initCharacterSheet() {
     const ancrageInput = document.getElementById('csAncrage');
     const visionInput = document.getElementById('csVision');
     const ouieInput = document.getElementById('csOuie');
+    const pureHistoryRollCheck = document.getElementById('csPureHistoryRoll');
 
     const attrInputs = {
         for: document.getElementById('attrFor'),
@@ -96,7 +97,6 @@ function initCharacterSheet() {
         con: document.getElementById('attrCon'),
         rap: document.getElementById('attrRap'),
         int: document.getElementById('attrInt'),
-        eru: document.getElementById('attrEru'),
         cha: document.getElementById('attrCha'),
         ins: document.getElementById('attrIns'),
         mag: document.getElementById('attrMag')
@@ -119,7 +119,7 @@ function initCharacterSheet() {
     const RACE_DATA = {
         humain: { label: 'Humain', sensMin: 3, magie: 'Impossible à Limitée', note: 'Polyvalent, sens min 3',
             gifts: ['Endurance Coloniale', 'Touche-à-tout', 'Instinct de Survie', 'Réseau Colonial', 'Sang-Froid'],
-            giftNotes: ['+1 point de réserve d\u2019Essoufflement (au-delà de ta Constitution) ; ignore le climat léger (Livre II §8.1).', '+1 entraînement gratuit à la création (compétence non-magique).', '+2 Nature & Survie ; +1 Observation.', '+2 Communication (négocier, interroger) en zone civilisée ; 1 contact par station.', '1×/session : annule 1 Essoufflement ou ignore un échec de moral/peur.'] },
+            giftNotes: ['+1 point de réserve d\u2019Essoufflement (au-delà de ta Constitution) ; ignore le climat léger (Livre II §8.1).', '+1 Bagage à la création (compétence non-magique).', '+2 Nature & Survie ; +1 Observation.', '+2 Communication (négocier, interroger) en zone civilisée ; 1 contact par station.', '1×/session : annule 1 Essoufflement ou ignore un échec de moral/peur.'] },
         derek: { label: 'Derek', sensMin: 3, magie: 'Limitée', note: 'Robuste des profondeurs, sens min 3',
             gifts: ['Ossature Dense', 'Sang des Profondeurs', 'Maître-Fondeur', 'Sens de la Pierre', 'Gueule de Granit'],
             giftNotes: ['+2 Encaissement ; -1 dégâts contondants et chutes.', 'Vision nocturne ; +2 Constitution vs froid, -2 dégâts de froid ; ébloui 1 tour en entrant dans une lumière vive.', '+2 Forger (Artisanat) ; armure forgée par soi +1 protection.', 'Sent le danger de la roche à ~30 m (gaz, éboulement, poches) ; +2 Nature & Survie en souterrain.', '+2 Constitution vs gaz et poisons des mines ; apnée 4× CON tours.'] },
@@ -143,8 +143,8 @@ function initCharacterSheet() {
     const RACE_ALIASES = {};
     function resolveRace(r) { return RACE_DATA[r] ? r : (RACE_ALIASES[r] || 'humain'); }
 
-    const ATTR_LABELS = { for: 'Force (FOR)', agi: 'Agilité (AGI)', con: 'Constitution (CON)', rap: 'Rapidité (RAP)', int: 'Intelligence (INT)', eru: 'Érudition (ÉRU)', cha: 'Charisme (CHA)', ins: 'Instinct (INS)', mag: 'Magie' };
-    const CORE8 = ['for', 'agi', 'con', 'rap', 'int', 'eru', 'cha', 'ins'];
+    const ATTR_LABELS = { for: 'Force (FOR)', agi: 'Agilité (AGI)', con: 'Constitution (CON)', rap: 'Rapidité (RAP)', int: 'Intelligence (INT)', cha: 'Charisme (CHA)', ins: 'Instinct (INS)', mag: 'Magie' };
+    const CORE7 = ['for', 'agi', 'con', 'rap', 'int', 'cha', 'ins'];
 
     // Tables d'historique (Livre VII, chap. 26-29) — libellés courts pour le créateur.
     const EPOQUES_ENFANCE = ['E0', 'E1', 'E2', 'E3', 'E4', 'E5'];
@@ -495,11 +495,18 @@ function initCharacterSheet() {
         }
     }
 
-    // Bonus mécaniques directs de certains dons raciaux (le reste = rappel narratif).
+    // Bonus mécaniques directs de certains dons raciaux + calcul du Bagage (Livre I Étape 6).
     function giftMechanics(race, gi) {
-        if ((race === 'derek' && gi === 0) || (race === 'mikyai' && gi === 0)) return { cap: 2, ess: 0 };
-        if ((race === 'humain' && gi === 0) || (race === 'vardien' && gi === 0)) return { cap: 0, ess: 1 };
-        return { cap: 0, ess: 0 };
+        if ((race === 'derek' && gi === 0) || (race === 'mikyai' && gi === 0)) return { cap: 2, ess: 0, bagage: 0 };
+        if (race === 'humain' && gi === 0) return { cap: 0, ess: 1, bagage: 0 };
+        if (race === 'humain' && gi === 1) return { cap: 0, ess: 0, bagage: 1 };
+        if (race === 'vardien' && gi === 0) return { cap: 0, ess: 1, bagage: 0 };
+        return { cap: 0, ess: 0, bagage: 0 };
+    }
+    function computeBagage(race, giftIdx) {
+        const mech = giftMechanics(race, giftIdx);
+        const pureRoll = (pureHistoryRollCheck && pureHistoryRollCheck.checked) ? 1 : 0;
+        return Math.min(5, 3 + mech.bagage + pureRoll);
     }
 
     function currentRace() { return resolveRace(raceSelect.value); }
@@ -698,7 +705,7 @@ function initCharacterSheet() {
             profile: 'hero',
             pillarMajor: 'for',
             pillarMinor: 'con',
-            attributes: { for: '5', agi: '3', con: '4', rap: '3', int: '2', eru: '3', cha: '1', ins: '3', mag: '0' },
+            attributes: { for: '5', agi: '3', con: '4', rap: '3', int: '2', cha: '1', ins: '3', mag: '0' },
             vision: '4',
             ouie: '3',
             enfanceEpoque: 'E2',
@@ -706,6 +713,7 @@ function initCharacterSheet() {
             metierEpoque: 'E2',
             metier: '1',
             evenement: '2',
+            pureHistoryRoll: false,
             ancrage: '',
             skills: ['skMainsNues-1', 'skMainsNues-2', 'skEsquive-1']
         };
@@ -1157,7 +1165,7 @@ function initCharacterSheet() {
         if (!profileSelect) return;
         const profile = profileSelect.value;
         if (profile === 'sbire') {
-            for (const k of CORE8) {
+            for (const k of CORE7) {
                 const el = attrInputs[k];
                 if (!el) continue;
                 el.min = 1; el.max = 3;
@@ -1169,7 +1177,7 @@ function initCharacterSheet() {
         const isHero = (profile === 'hero');
         const maj = pillarMajorSelect ? pillarMajorSelect.value : null;
         const min = pillarMinorSelect ? pillarMinorSelect.value : null;
-        for (const k of CORE8) {
+        for (const k of CORE7) {
             const el = attrInputs[k];
             if (!el) continue;
             if (k === maj) {
@@ -1209,13 +1217,14 @@ function initCharacterSheet() {
         renderDescDropdowns();
 
         const eff = {};
-        for (const k of CORE8) eff[k] = vals[k];
+        for (const k of CORE7) eff[k] = vals[k];
         eff.mag = vals.mag;
 
-        const minCore = Math.min(...CORE8.map(k => eff[k]));
+        const minCore = Math.min(...CORE7.map(k => eff[k]));
 
-        // Dérivés (Livre I §4) + bonus mécaniques du don racial.
+        // Dérivés (Livre I §4) + bonus mécaniques du don racial + Bagage de création.
         const mech = giftMechanics(race, giftIdx);
+        const bagage = computeBagage(race, giftIdx);
         const paBase = Math.max(eff.agi, eff.int) + eff.rap + minCore;
         const capBase = eff.con * 2 + mech.cap;
         const maxBase = eff.con * 5;
@@ -1225,7 +1234,7 @@ function initCharacterSheet() {
         if (vitals.cap) vitals.cap.textContent = capBase;
         if (vitals.max) vitals.max.textContent = maxBase;
         if (vitals.ess) vitals.ess.textContent = essBase + ' tours';
-        if (vitals.trainedCount) vitals.trainedCount.textContent = eff.eru;
+        if (vitals.trainedCount) vitals.trainedCount.textContent = bagage;
 
         // Initiative (Livre I §4.3) : Max(RAP, AGI, INT) converti en dé.
         const initVals = [['RAP', eff.rap], ['AGI', eff.agi], ['INT', eff.int]];
@@ -1260,22 +1269,22 @@ function initCharacterSheet() {
         let budgetTotal = 0, ptsUsed = 0, expected = '';
 
         if (profile === 'sbire') {
-            budgetTotal = awakened ? 14 : 12; // Livre I §3 : 12 pts sur les 8 attributs (14 si éveillé), min 1 max 3, aucun à 0.
-            ptsUsed = CORE8.reduce((s, k) => s + eff[k], 0);
-            expected = 'Sbire : ' + budgetTotal + ' pts sur les 8 attributs (Magie hors budget).';
-            for (const k of CORE8) {
+            budgetTotal = awakened ? 13 : 11; // Livre I §3 : 11 pts sur les 7 attributs (13 si éveillé), min 1 max 3, aucun à 0.
+            ptsUsed = CORE7.reduce((s, k) => s + eff[k], 0);
+            expected = 'Sbire : ' + budgetTotal + ' pts sur les 7 attributs (Magie hors budget).';
+            for (const k of CORE7) {
                 if (eff[k] < 1 || eff[k] > 3) errors.push(ATTR_LABELS[k] + ' doit être entre 1 et 3 (sbire).');
             }
         } else {
             const isHero = (profile === 'hero');
             const pilMajVal = isHero ? 5 : 4, pilMinVal = isHero ? 4 : 4;
-            const secBudget = awakened ? 17 : 15;
+            const secBudget = awakened ? 14 : 12;
             budgetTotal = pilMajVal + pilMinVal + secBudget;
-            const others = CORE8.filter(k => k !== pillarMajor && k !== pillarMinor);
-            ptsUsed = CORE8.reduce((s, k) => s + eff[k], 0);
-            expected = (isHero ? 'Héros PJ : pilier ' + pillarMajor.toUpperCase() + ' = 5, pilier ' + pillarMinor.toUpperCase() + ' = 4, puis exactement ' + secBudget + ' pts dans les 6 autres (1-3 chacun).'
-                              : 'Élite : piliers ' + pillarMajor.toUpperCase() + ' = 4 et ' + pillarMinor.toUpperCase() + ' = 4, puis exactement ' + secBudget + ' pts dans les 6 autres (1-3 chacun).')
-                       + (awakened ? ' Éveil (Magie ≥ 1, hors budget) : budget secondaires 17 au lieu de 15.' : '');
+            const others = CORE7.filter(k => k !== pillarMajor && k !== pillarMinor);
+            ptsUsed = CORE7.reduce((s, k) => s + eff[k], 0);
+            expected = (isHero ? 'Héros PJ : pilier ' + pillarMajor.toUpperCase() + ' = 5, pilier ' + pillarMinor.toUpperCase() + ' = 4, puis exactement ' + secBudget + ' pts dans les 5 autres (1-3 chacun).'
+                              : 'Élite : piliers ' + pillarMajor.toUpperCase() + ' = 4 et ' + pillarMinor.toUpperCase() + ' = 4, puis exactement ' + secBudget + ' pts dans les 5 autres (1-3 chacun).')
+                       + (awakened ? ' Éveil (Magie ≥ 1, hors budget) : budget secondaires 14 au lieu de 12.' : '');
             if (pillarMajor === pillarMinor) errors.push('Les deux piliers doivent être deux attributs différents.');
             if (eff[pillarMajor] !== pilMajVal) errors.push('Pilier majeur ' + pillarMajor.toUpperCase() + ' : attendu ' + pilMajVal + ', actuel ' + eff[pillarMajor] + '.');
             if (eff[pillarMinor] !== pilMinVal) errors.push('Pilier mineur ' + pillarMinor.toUpperCase() + ' : attendu ' + pilMinVal + ', actuel ' + eff[pillarMinor] + '.');
@@ -1337,7 +1346,7 @@ function initCharacterSheet() {
             }
         }
 
-        updateSkillsLimit(eff.eru);
+        updateSkillsLimit(bagage);
         refreshStepperTitles();
         refreshFicheTechs();
         scheduleSync();
@@ -1371,7 +1380,7 @@ function initCharacterSheet() {
         }
         // Survol des cases non cochées : prévient quand le quota est plein.
         const fullMsg = checkboxes.length >= Math.max(1, maxTrained)
-            ? 'Entraînements gratuits pleins : ' + checkboxes.length + '/' + maxTrained + ' (Érudition). Décoche 1 case ailleurs pour en cocher ici. +1 ÉRU = +1 gratuit.'
+            ? 'Bagage de création plein : ' + checkboxes.length + '/' + maxTrained + ' (fixé à la création, jamais farmable en jeu). Décoche 1 case ailleurs pour en cocher ici.'
             : '';
         document.querySelectorAll('.skill-check:not(:checked)').forEach(cb => {
             if (fullMsg) cb.title = fullMsg;
@@ -1510,7 +1519,7 @@ function initCharacterSheet() {
         if (!sel) return;
         const cur = sel.value;
         sel.innerHTML = '';
-        for (const k of CORE8) {
+        for (const k of CORE7) {
             if (k === excludeVal) continue;
             const opt = document.createElement('option');
             opt.value = k;
@@ -1540,7 +1549,7 @@ function initCharacterSheet() {
         for (const sel of [pillarMajorSelect, pillarMinorSelect]) {
             const cur = sel.value;
             sel.innerHTML = '';
-            for (const k of CORE8) {
+            for (const k of CORE7) {
                 const opt = document.createElement('option');
                 opt.value = k;
                 opt.textContent = ATTR_LABELS[k];
@@ -1586,6 +1595,7 @@ function initCharacterSheet() {
     for (const el of [nameInput, ageInput, sexeSelect, mondeInput, ancrageInput, visionInput, ouieInput, enfanceSelect, metierSelect, evenementSelect]) {
         if (el) el.addEventListener('input', updateCharacterCalculations);
     }
+    if (pureHistoryRollCheck) pureHistoryRollCheck.addEventListener('change', updateCharacterCalculations);
 
     // Bulle d'avertissement sur clic bloqué (verrou pilier / plafond création).
     let stepTipEl = null;
@@ -1624,8 +1634,8 @@ function initCharacterSheet() {
         const profile = profileSelect ? profileSelect.value : 'hero';
         const valOf = (k) => parseInt(attrInputs[k] ? attrInputs[k].value : '0') || 0;
         if (profile === 'sbire') {
-            const total = CORE8.reduce((s, k) => s + valOf(k), 0);
-            const cap = valOf('mag') > 0 ? 14 : 12;
+            const total = CORE7.reduce((s, k) => s + valOf(k), 0);
+            const cap = valOf('mag') > 0 ? 13 : 11;
             if (total + step > cap) return 'Budget plein : ' + total + '/' + cap + ' (Sbire, Livre I §3). Retire 1 point ailleurs pour ajouter ici.';
             return null;
         }
@@ -1633,11 +1643,11 @@ function initCharacterSheet() {
         const min = pillarMinorSelect ? pillarMinorSelect.value : null;
         if (key === maj || key === min) return null;
         const magVal = valOf('mag');
-        const secBudget = magVal > 0 ? 17 : 15;
-        const othersSum = CORE8.filter(k => k !== maj && k !== min).reduce((s, k) => s + valOf(k), 0);
+        const secBudget = magVal > 0 ? 14 : 12;
+        const othersSum = CORE7.filter(k => k !== maj && k !== min).reduce((s, k) => s + valOf(k), 0);
         if (othersSum + step > secBudget) {
             return 'Budget plein : ' + othersSum + '/' + secBudget + ' en secondaires'
-                + (magVal > 0 ? ' (Éveil)' : ' (17 si Magie éveillée)')
+                + (magVal > 0 ? ' (Éveil)' : ' (14 si Magie éveillée)')
                 + '. Retire 1 point ailleurs pour ajouter ici.';
         }
         return null;
@@ -1722,7 +1732,7 @@ function initCharacterSheet() {
         return 0;
     }
 
-    // Skill checkboxes (plafond = ÉRU effective, Livre I Étape 6) : une case
+    // Skill checkboxes (plafond = Bagage de création, Livre I Étape 6) : une case
     // cochée au-delà du quota est refusée avec la bulle d'avertissement.
     document.querySelectorAll('.skill-check').forEach(cb => {
         cb.addEventListener('change', () => {
@@ -1744,13 +1754,12 @@ function initCharacterSheet() {
                     }
                 }
             }
-            const eru = parseInt(attrInputs.eru.value) || 1;
-            const max = Math.max(1, eru);
-            if (cb.checked && document.querySelectorAll('.skill-check:checked').length > max) {
+            const bagageMax = computeBagage(currentRace(), giftSelect ? (parseInt(giftSelect.value) || 0) : 0);
+            if (cb.checked && document.querySelectorAll('.skill-check:checked').length > bagageMax) {
                 cb.checked = false;
                 const n = document.querySelectorAll('.skill-check:checked').length;
-                showStepBlockTip(cb, 'Entraînements gratuits pleins : ' + n + '/' + max + ' (Érudition). Décoche 1 case ailleurs pour en cocher ici. +1 ÉRU = +1 gratuit.');
-                updateSkillsLimit(max);
+                showStepBlockTip(cb, 'Bagage de création plein : ' + n + '/' + bagageMax + ' (fixé à la création, jamais farmable en jeu). Décoche 1 case ailleurs pour en cocher ici.');
+                updateSkillsLimit(bagageMax);
                 return;
             }
             updateCharacterCalculations();
@@ -1759,7 +1768,7 @@ function initCharacterSheet() {
     // Sauvegarde quand la saisie est terminée (blur / Entrée / sélection),
     // jamais pendant la frappe : flush immédiat du debounce en attente.
     // Enregistré après les handlers ci-dessus pour purger leur timer.
-    for (const el of [nameInput, ageInput, sexeSelect, mondeInput, ancrageInput, visionInput, ouieInput, enfanceEpoqueSelect, enfanceSelect, metierEpoqueSelect, metierSelect, evenementSelect, giftSelect, raceSelect, profileSelect, pillarMajorSelect, pillarMinorSelect]) {
+    for (const el of [nameInput, ageInput, sexeSelect, mondeInput, ancrageInput, visionInput, ouieInput, enfanceEpoqueSelect, enfanceSelect, metierEpoqueSelect, metierSelect, evenementSelect, pureHistoryRollCheck, giftSelect, raceSelect, profileSelect, pillarMajorSelect, pillarMinorSelect]) {
         if (el) el.addEventListener('change', flushSync);
     }
     document.querySelectorAll('.skill-check').forEach(cb => cb.addEventListener('change', flushSync));
@@ -1849,7 +1858,7 @@ function initCharacterSheet() {
     function populateStaticSelects() {
         for (const sel of [pillarMajorSelect, pillarMinorSelect]) {
             if (!sel || sel.options.length > 0) continue;
-            for (const k of CORE8) {
+            for (const k of CORE7) {
                 const opt = document.createElement('option');
                 opt.value = k;
                 opt.textContent = ATTR_LABELS[k];
@@ -1900,6 +1909,7 @@ function initCharacterSheet() {
             metierEpoque: currentMetierEpoque(),
             metier: metierSelect ? metierSelect.value : '',
             evenement: evenementSelect ? evenementSelect.value : '',
+            pureHistoryRoll: !!(pureHistoryRollCheck && pureHistoryRollCheck.checked),
             ancrage: ancrageInput ? ancrageInput.value : ''
         };
         for (const [k, el] of Object.entries(attrInputs)) {
@@ -1920,8 +1930,13 @@ function initCharacterSheet() {
         if (data.monde !== undefined) setVal(mondeInput, data.monde);
         if (data.race) setVal(raceSelect, resolveRace(data.race));
         if (data.profile) setVal(profileSelect, data.profile);
-        if (data.pillarMajor) setVal(pillarMajorSelect, data.pillarMajor);
-        if (data.pillarMinor) setVal(pillarMinorSelect, data.pillarMinor);
+        const safePillar = (p, other) => (CORE7.includes(p) && p !== other) ? p : CORE7.find(k => k !== other);
+        let majP = data.pillarMajor;
+        let minP = data.pillarMinor;
+        if (majP && !CORE7.includes(majP)) majP = safePillar(majP, minP);
+        if (minP && !CORE7.includes(minP)) minP = safePillar(minP, majP);
+        if (majP) setVal(pillarMajorSelect, majP);
+        if (minP) setVal(pillarMinorSelect, minP);
         refreshPillarOptions();
         syncPillarPrev();
         if (data.attributes) {
@@ -1953,6 +1968,7 @@ function initCharacterSheet() {
             setVal(metierSelect, (!isNaN(mn) && mn >= 1 && mn <= 8) ? String(mn) : '1');
         }
         if (data.evenement === 0 || data.evenement) setVal(evenementSelect, String(data.evenement));
+        if (pureHistoryRollCheck && pureHistoryRollCheck !== focused) pureHistoryRollCheck.checked = !!data.pureHistoryRoll;
         if (data.ancrage !== undefined) setVal(ancrageInput, data.ancrage);
         document.querySelectorAll('.skill-check').forEach(cb => {
             if (cb === focused) return;
@@ -1995,16 +2011,16 @@ function initCharacterSheet() {
             `Piliers : ${d.pillarMajor.toUpperCase()} / ${d.pillarMinor.toUpperCase()}\n\n` +
             `-- ATTRIBUTS (dés sans entraînement, Livre II §6.1) --\n` +
             `FOR: ${d.attributes.for} (${dieForValue(+d.attributes.for)}) | AGI: ${d.attributes.agi} (${dieForValue(+d.attributes.agi)}) | CON: ${d.attributes.con} (${dieForValue(+d.attributes.con)}) | RAP: ${d.attributes.rap} (${dieForValue(+d.attributes.rap)})\n` +
-            `INT: ${d.attributes.int} (${dieForValue(+d.attributes.int)}) | ÉRU: ${d.attributes.eru} (${dieForValue(+d.attributes.eru)}) | CHA: ${d.attributes.cha} (${dieForValue(+d.attributes.cha)}) | INS: ${d.attributes.ins} (${dieForValue(+d.attributes.ins)})\n` +
-            `MAGIE: ${d.attributes.mag} | Vision: ${d.vision} | Ouïe: ${d.ouie}\n\n` +
+            `INT: ${d.attributes.int} (${dieForValue(+d.attributes.int)}) | CHA: ${d.attributes.cha} (${dieForValue(+d.attributes.cha)}) | INS: ${d.attributes.ins} (${dieForValue(+d.attributes.ins)})\n` +
+            `MAGIE: ${d.attributes.mag} | Vision: ${d.vision} | Ouïe: ${d.ouie} | Bagage: ${computeBagage(d.race, d.gift)}\n\n` +
             `-- JAUGES VITALES & TACTIQUES (Livre I §4) --\n` +
-            `PA/tour : ${vitals.pa.textContent} (= Max(AGI,INT) + RAP + Min)\n` +
+            `PA/tour : ${vitals.pa.textContent} (= Max(AGI,INT) + RAP + Min(7 attr.))\n` +
             `Encaissement : ${vitals.cap.textContent} (CON×2 + don) | Maximum Létal : ${vitals.max.textContent} (CON×5)\n` +
             `Essoufflement : ${vitals.ess.textContent} | Initiative : ${document.getElementById('vitalInit').textContent} | Miracle : ${document.getElementById('vitalMiracle').textContent}\n` +
             `Effort max / jet : ${vitals.effortMax ? vitals.effortMax.textContent : '+1'} (1 + entraînements, PA+PE+bonus inclus)\n\n` +
             `-- HISTORIQUE (Livre VII, Étape 2) --\n` +
             `Enfance : ${enfTxt}\nMétier : ${metTxt}\nÉvénement : ${eveTxt}\nAncrage : ${d.ancrage || '—'}\n\n` +
-            `Compétences Entraînées (gratuites = ÉRU, +1 palier) :\n${trainedSkills}\n` +
+            `Compétences Entraînées (Bagage de création = ${computeBagage(d.race, d.gift)}, +1 palier) :\n${trainedSkills}\n` +
             `==============================`;
     }
 
@@ -2138,7 +2154,6 @@ function initCharacterSheet() {
                 attrInputs.con.value = 4;
                 attrInputs.rap.value = 3;
                 attrInputs.int.value = 2;
-                attrInputs.eru.value = 3;
                 attrInputs.cha.value = 1;
                 attrInputs.ins.value = 3;
                 attrInputs.mag.value = 0;
@@ -2149,6 +2164,7 @@ function initCharacterSheet() {
                 if (metierEpoqueSelect) { metierEpoqueSelect.value = 'E2'; rebuildMetierOptions(false); }
                 if (metierSelect) metierSelect.value = '1';
                 if (evenementSelect) evenementSelect.value = '2';
+                if (pureHistoryRollCheck) pureHistoryRollCheck.checked = false;
                 if (ancrageInput) ancrageInput.value = '';
                 applyRogerDefaultSkills();
                 clampSenses();

@@ -35,7 +35,7 @@ livre: 4
                                 data-tip="Moteur Magique : un cristal au centre, des anneaux autour, ça vole des mois (§17).">§17</a>).
                             Le tailler, le régler : un métier technique
                             (<a class="rule-ref" href="livre_3.html#chap-13"
-                                data-tip="Arbre Érudition : la compétence Ingénierie & Arcanotech (INT, ÉRU) (§13).">Livre
+                                data-tip="Arbre Intelligence : la compétence Ingénierie & Arcanotech (INT, AGI) (§13).">Livre
                                 III §13</a>).</li>
                     </ul>
 
