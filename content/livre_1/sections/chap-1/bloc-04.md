@@ -21,7 +21,7 @@ livre: 1
                             Vos attributs ne servent qu'à poser votre base de départ.<br>
                             Concrètement : aucun modificateur de
                             caractéristique n'est additionné au dé. Votre résultat vaut :
-                            <strong>Tirage du dé de compétence + PA d'effort injectés ± modificateurs situationnels</strong>
-                            (visée, hauteur, obscurité, blessures).
+                            <strong>Dé de compétence + effort injecté (PA/PE, plafond 1 + entraînements) − malus cumulés</strong>
+                            (visée, hauteur, obscurité, blessures — <a class="rule-ref" href="livre_2.html#chap-6" data-tip="Effort plafonné : Total = dé + effort − malus, effort ≤ 1 + entraînements (PA, PE, Progression, Survolté et En transe inclus) (§6).">Livre II §6</a>).
                         </div>
                     </div>

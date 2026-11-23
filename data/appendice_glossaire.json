@@ -872,6 +872,44 @@
    ]
   },
   {
+   "id": "plafond-effort",
+   "terme": "Plafond d'Effort (1 + Entraînements)",
+   "domaine": "epreuves",
+   "alias": [
+    "effort max",
+    "1 + entrainements",
+    "plafond PA",
+    "plafond effort"
+   ],
+   "liens": [
+    {
+     "label": "Livre II §6",
+     "livre": 2,
+     "href": "livre_2.html#chap-6"
+    },
+    {
+     "label": "Livre II §7.3",
+     "livre": 2,
+     "href": "livre_2.html#chap-7"
+    },
+    {
+     "label": "Livre V §20.2",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-2"
+    },
+    {
+     "label": "Livre V §20.5",
+     "livre": 5,
+     "href": "livre_5.html#sec-20-5"
+    },
+    {
+     "label": "Livre VI §24.3",
+     "livre": 6,
+     "href": "livre_6.html#sec-24-3"
+    }
+   ]
+  },
+  {
    "id": "epreuve-caracteristique",
    "terme": "Épreuve de Caractéristique (EC)",
    "domaine": "epreuves",
@@ -2408,9 +2446,16 @@
    "alias": [
     "effort",
     "mises",
-    "jetons"
+    "jetons",
+    "plafond effort",
+    "1 + entrainements"
    ],
    "liens": [
+    {
+     "label": "Livre II §6",
+     "livre": 2,
+     "href": "livre_2.html#chap-6"
+    },
     {
      "label": "Livre V §20.2",
      "livre": 5,

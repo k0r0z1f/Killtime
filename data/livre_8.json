@@ -1,8 +1,8 @@
 {
  "livre": "VIII",
  "titre": "Arsenal",
- "version": 1,
- "updated": "2026-10-31",
+ "version": 2,
+ "updated": "2026-11-22",
  "source": "livre_8.html",
  "entete_html": "",
  "sections": [
@@ -13,18 +13,19 @@
    "blocs": [
     {
      "type": "html",
-     "html": "\n\n                    <div class=\"doc-badge-row\">\n                        <span class=\"doc-badge-pill\">\n                            <svg width=\"12\" height=\"12\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\"\n                                stroke-width=\"2\">\n                                <polygon points=\"12 2 2 7 12 12 22 7 12 2\" />\n                                <polyline points=\"2 17 12 22 22 17\" />\n                                <polyline points=\"2 12 12 17 22 12\" />\n                            </svg>\n                            Livre VIII — Armement & Équipement\n                        </span>\n                        <span class=\"doc-badge-pill accent\">Nomenclature DLPH & Arcanotech</span>\n                        <span class=\"doc-badge-pill live\">Système Validé</span>\n                    </div>\n\n                    <h1 class=\"doc-title\">Livre VIII : Arsenal&nbsp;& Arcanotech</h1>\n                    <p class=\"doc-lead\">\n                        Notre système transcende les frontières temporelles. Du duel à l'épée bâtarde en acier forgé\n                        jusqu'au combat en combinaison pressurisée sous le feu des lasers de confinement, chaque arme et\n                        armure obéit à la même <strong>métrologie universelle</strong>. Ce livre détaille la\n                        nomenclature standard (Dégâts, Poids, Portée, Mains), les épées laser 3D à 6D, les fusils laser\n                        à longue portée dont le dévastateur <em>Deglazer</em>, les champs de force personnels et la\n                        pharmacopée de combat impériale.\n                    </p>\n\n                    <hr class=\"doc-divider\">\n\n                    <!-- ================= CHAPITRE 28 ================= -->\n                    "
+     "html": "\n\n                    <div class=\"doc-badge-row\">\n                        <span class=\"doc-badge-pill\">\n                            <svg width=\"12\" height=\"12\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\"\n                                stroke-width=\"2\">\n                                <polygon points=\"12 2 2 7 12 12 22 7 12 2\" />\n                                <polyline points=\"2 17 12 22 22 17\" />\n                                <polyline points=\"2 12 12 17 22 12\" />\n                            </svg>\n                            Livre VIII — Armement &amp; Équipement\n                        </span>\n                        <span class=\"doc-badge-pill accent\">Standard DLPH &amp; Époques E0–E5</span>\n                        <span class=\"doc-badge-pill live\">Système Validé</span>\n                    </div>\n\n                    <h1 class=\"doc-title\">Livre VIII : Arsenal&nbsp;&amp; Arcanotech</h1>\n                    <p class=\"doc-lead\">\n                        Le Système RP traverse les âges, du silex taillé <strong>[E0]</strong> jusqu'aux lames à confinement\n                        plasma et dispositifs du continuum <strong>[E5]</strong>. Pour comparer d'un coup d'œil une hache de\n                        guerre, un fusil d'assaut, un bouclier de garnison ou un champ de force impérial, tout l'équipement\n                        obéit au même standard <strong>D-L-P-H en cases</strong> et aux mêmes propriétés tactiques.\n                        Tu trouveras ici ton budget de départ selon l'époque de campagne, les règles de portage et de\n                        réparation, l'arsenal complet de mêlée, de jet, balistique, laser et lourd, ainsi que les armures,\n                        boucliers, soins, remèdes et outils de terrain.\n                    </p>\n\n                    <hr class=\"doc-divider\">"
     }
    ]
   },
   {
    "id": "chap-30",
    "symbole": "Chapitre 30.",
-   "titre": "Nomenclature Universelle & Armement Traditionnel",
+   "titre": "Nomenclature, Propriétés &amp; Armes Conventionnelles [E0–E2]",
+   "nav": "Nomenclature & Armes [E0–E2]",
    "blocs": [
     {
      "type": "html",
-     "html": "\n\n                    <p>\n                        Pour assurer une lisibilité instantanée en jeu quel que soit l'époque ou le monde visité, tout\n                        équipement offensif est décrit selon le standard <strong>D-L-P-H</strong> :\n                    </p>\n\n                    "
+     "html": "\n\n                    <p>\n                        Avant de glisser une arme au fourreau ou d'acheter ta première cuirasse, tu dois savoir lire une\n                        ligne de catalogue et connaître ce que ton personnage peut vraiment porter. Tout matériel porte un\n                        marqueur d'époque <strong>[E0–E5]</strong> calé sur l'<a class=\"rule-ref\" href=\"livre_1.html#chap-2\" data-tip=\"Échelle Technologique [E0–E5] : Primitive, Médiévale, Moderne, Avancée, Très Avancée, Démiurgique (Livre I §2.1).\">Échelle Technologique</a>\n                        et sur l'époque fixée par ton MJ (<a class=\"rule-ref\" href=\"livre_7.html#chap-26\" data-tip=\"Époque de campagne [E0–E5] : cadre fixé par le MJ pour l'accès au matériel et aux historiques (Livre VII §26.2).\">Livre VII §26.2</a>).\n                    </p>\n\n                    <div style=\"display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 22px;\">\n                        <a href=\"#sec-30-1\" class=\"pill-badge amber\" style=\"text-decoration: none;\">30.1 Portage, Budget &amp; Réparation</a>\n                        <a href=\"#sec-30-2\" class=\"pill-badge cyan\" style=\"text-decoration: none;\">30.2 Propriétés Tactiques</a>\n                        <a href=\"#sec-30-3\" class=\"pill-badge amber\" style=\"text-decoration: none;\">30.3 Mêlée [E0–E2]</a>\n                        <a href=\"#sec-30-4\" class=\"pill-badge emerald\" style=\"text-decoration: none;\">30.4 Trait &amp; Jet [E0–E2]</a>\n                        <a href=\"#sec-30-5\" class=\"pill-badge cyan\" style=\"text-decoration: none;\">30.5 Balistique à Poudre [E2–E3]</a>\n                    </div>\n\n                    <p>\n                        Chaque arme offensive est décrite selon le code universel <strong>D-L-P-H</strong>, exprimé\n                        en <strong>cases tactiques</strong> (1 case = 1,5 mètre) :\n                    </p>"
     },
     {
      "type": "ref",
@@ -32,7 +33,31 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <h3>30.1 Épées & Armes de Poing en Métal</h3>\n                    "
+     "html": "\n\n                    <h3 id=\"sec-30-1\">30.1 Portage, Budget de Départ [E0–E5], Réparation &amp; Munitions</h3>\n                    <ul>\n                        <li><strong>Capacité de Portage ([L]) :</strong> additionne les livres (L) de tout ce que tu transportes\n                            (armes, armure, sac et consommables). Jusqu'à <strong><code>Force &times; 15 L</code></strong>, tu bouges\n                            librement. Entre <strong><code>Force &times; 15 + 1 L</code> et <code>Force &times; 25 L</code></strong>,\n                            tu es surchargé : ajoute <strong>+1 PA</strong> à chacune de tes actions et à chaque case de\n                            déplacement (cumulable avec l'<a class=\"rule-ref\" href=\"#sec-32-1\" data-tip=\"Encombrement d'armure : +0 / +1 / +2 PA par action selon la cuirasse (§32.1).\">encombrement d'armure</a>,\n                            hors mises aveugles). Au-delà de <strong><code>Force &times; 25 L</code></strong>, la charge te cloue\n                            sur place sans aide ou monture. <em>Exemple : avec FOR 3, tu portes jusqu'à 45 L sans gêne,\n                            46 à 75 L avec +1 PA par action, et rien au-dessus de 75 L.</em></li>\n                        <li><strong>Munitions &amp; Rechargement :</strong> chaque arme à distance indique sa capacité en\n                            coups (<em>Mun.</em>). <a class=\"rule-ref\" href=\"livre_5.html#sec-20-4\" data-tip=\"Micro-action (1 PA) : recharger une arme à feu, un arc ou une arbalète (Livre V §20.4).\">Recharger coûte 1 PA</a>,\n                            sauf mention <em>Rechargement lent X PA</em> (arbalètes, lance-roquettes, armes anti-matériel). En\n                            campagne souple, le MJ peut ignorer le décompte des munitions courantes hors fusillades\n                            prolongées, armes à faible chargeur (1 à 6 coups) et munitions spéciales.</li>\n                        <li><strong>Marché, Revente &amp; Réparation :</strong> un marchand reprend ton matériel en parfait\n                            état à <strong>50 % de sa valeur neuve</strong> (25 % s'il est <em>Endommagé</em>, 10 % s'il est\n                            <em>Détruit</em>). L'état du matériel suit les <a class=\"rule-ref\" href=\"livre_6.html#sec-24-5\" data-tip=\"États des Objets : Parfait État, Endommagé, Enrayé (2 PA), Détruit (atelier), Anéanti (Livre VI §24.5).\">5 États des Objets</a> :\n                            un objet <em>Enrayé</em> se débloque sur le terrain pour <strong>2 PA</strong> ; un objet\n                            <em>Endommagé</em> demande une scène calme et une trousse d'outils ; un objet <em>Détruit</em>\n                            exige un atelier, environ <strong>25 % du prix neuf en pièces</strong> et un jet d'<a class=\"rule-ref\" href=\"livre_3.html#chap-13\" data-tip=\"Artisanat &amp; Ingénierie : fabrication, entretien et réparation de matériel (Livre III §13).\">Artisanat ou d'Ingénierie</a>\n                            (Difficulté 5 pour E0–E2, 7 pour E3–E4, 9 pour E5 ; les Vardiens avec\n                            <a class=\"rule-ref\" href=\"livre_1.html#chap-2\" data-tip=\"Système Récup (Vardien) : +2 bricoler/récupérer et réparations à moitié prix (Livre I §2.2).\">Système Récup</a>\n                            paient moitié prix). Un objet <em>Anéanti</em> ne se répare pas.</li>\n                    </ul>"
+    },
+    {
+     "type": "ref",
+     "cible": "charge_portage"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <h4>Dotation &amp; Budget de Départ par Époque [E0–E5]</h4>\n                    <p>\n                        À la création du personnage, en plus de l'<a class=\"rule-ref\" href=\"livre_7.html#chap-28\" data-tip=\"Métier (Étape 2) : octroie 1 atout concret de métier en plus de l'équipement acheté (Livre VII chap. 28).\">Atout concret de ton Métier</a>\n                        (ou si tu joues sans métier), tu disposes d'un budget en <strong>Crédits Impériaux (CE)</strong> ou\n                        en valeur d'échange équivalente selon l'époque de la campagne pour acheter ton équipement initial.\n                        Ton MJ ajuste cette dotation si le scénario démarre en captivité ou en unité d'élite.\n                    </p>"
+    },
+    {
+     "type": "ref",
+     "cible": "budget_depart"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <h3 id=\"sec-30-2\">30.2 Propriétés Tactiques des Armes</h3>\n                    <p>\n                        Au-delà des dégâts bruts, chaque arme possède des propriétés qui dictent sa portée réelle, sa\n                        pénétration d'armure ou son usage discret. Si tu tiens <strong>deux armes à une main (1H)</strong>\n                        ou une arme 1H et un bouclier, tu peux utiliser l'une ou l'autre sans dépenser de PA pour dégainer,\n                        mais cela ne t'offre jamais d'attaque supplémentaire gratuite hors quota de maîtrise à <code>2d6</code>\n                        ou spécialisation dédiée telle que <a class=\"rule-ref\" href=\"livre_3.html#chap-14\" data-tip=\"Akimbo Assaut (Ballistique) : tirer avec deux pistolets sur une même cible pour 3 PA (Livre III §14).\">Akimbo Assaut</a>.\n                    </p>"
+    },
+    {
+     "type": "ref",
+     "cible": "proprietes_armes"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <h3 id=\"sec-30-3\">30.3 Armes de Mêlée : Lames, Fines, Choc &amp; Hast [E0–E2]</h3>\n                    <p>\n                        L'acier, le bronze et le bois dur restent efficaces à toute époque, surtout là où les cellules\n                        d'énergie manquent ou lorsque les détecteurs interdisent toute arme énergétique. Les armes\n                        tranchantes ou contondantes de guerre relèvent de <a class=\"rule-ref\" href=\"livre_3.html#chap-12\" data-tip=\"Maniement d'Arme (FOR/AGI) : épées, haches, masses, marteaux et parades armées (Livre III §12).\">Maniement d'Arme</a> ;\n                        les dagues, rapières, fleurets et armes d'hast relèvent d'<a class=\"rule-ref\" href=\"livre_3.html#chap-12\" data-tip=\"Armes Perçantes &amp; Fines (AGI) : dagues, rapières, fleurets, lances et hallebardes (Livre III §12).\">Armes Perçantes &amp; Fines</a>.\n                    </p>\n\n                    <div class=\"callout vital\">\n                        <div class=\"callout-header\">\n                            Combattre à Mains Nues (1D - 0L - 1P - 1H)\n                        </div>\n                        <div class=\"callout-body\">\n                            Sans arme en main, tes coups de poing, de pied ou prises relèvent de la compétence\n                            <a class=\"rule-ref\" href=\"livre_3.html#chap-12\" data-tip=\"Mains Nues (FOR/AGI) : boxe, lutte, Arts Martiaux et clés d'articulation (Livre III §12).\">Mains Nues</a>\n                            avec le profil de base <strong><code>1D - 0L - 1P - 1H</code></strong> et la propriété\n                            <strong>Non létale</strong> (tu peux toutefois porter un coup mortel sur une cible déjà\n                            inconsciente ou viser un point vital). Un <a class=\"rule-ref\" href=\"livre_1.html#chap-2\" data-tip=\"Armes Naturelles (Mikyai) : griffes et crocs (2D, jamais désarmé) (Livre I §2.2).\">Mikyai doté d'Armes Naturelles</a>\n                            inflige <strong><code>2D</code></strong> de base (tranchant/perforant) sans pouvoir être désarmé.\n                        </div>\n                    </div>\n\n                    <h4>Épées &amp; Lames de Guerre (Maniement d'Arme)</h4>\n"
     },
     {
      "type": "ref",
@@ -40,7 +65,15 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <h3>30.2 Armes Concasseuses, Haches & Armes d'Hast</h3>\n                    "
+     "html": "\n\n                    <h4>Armes Perçantes, Fines &amp; Armes d'Hast (Armes Perçantes &amp; Fines)</h4>\n                    <p>\n                        Privilégie ces armes si tu joues sur l'Agilité, l'estoc précis ou le maintien à distance avec\n                        l'allonge à deux cases.\n                    </p>\n"
+    },
+    {
+     "type": "ref",
+     "cible": "armes_fines"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <h4>Armes Contondantes, Haches &amp; Armes Non Létales (Maniement d'Arme)</h4>\n                    <p>\n                        Marteaux, haches et armes de capture servent autant à fendre les plaques d'armure qu'à capturer\n                        un suspect vivant.\n                    </p>\n"
     },
     {
      "type": "ref",
@@ -48,19 +81,31 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <!-- ================= CHAPITRE 29 ================= -->\n                    "
+     "html": "\n\n                    <h3 id=\"sec-30-4\">30.4 Armes de Trait &amp; Armes de Jet Dédiées [E0–E2]</h3>\n                    <p>\n                        Toutes ces armes utilisent la compétence <a class=\"rule-ref\" href=\"livre_3.html#chap-12\" data-tip=\"Ballistique / Tir (AGI/VUE) : arcs, arbalètes, armes de jet et armes à feu ou laser (Livre III §12).\">Ballistique / Tir</a>.\n                        Les armes lancées à la main suivent la propriété <strong>Arme de jet</strong> (<a href=\"#sec-30-2\">§30.2</a>) :\n                        tu ne peux pas tirer à l'arc en étant <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"À Terre : −1 ec mêlée/Athlétisme/Acrobatie, −2 ec armes de jet (arc impossible), −2 défense (Livre VI §24.1).\">À Terre</a>,\n                        et les armes de jet prennent <code>−1 ec</code> <em>Accroupi</em> ou <code>−2 ec</code> <em>À Terre</em>.\n                    </p>\n"
+    },
+    {
+     "type": "ref",
+     "cible": "armes_trait_jet"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <h3 id=\"sec-30-5\">30.5 Armes Balistiques à Poudre [E2–E3]</h3>\n                    <p>\n                        Propulsion chimique, douilles métalliques et rayures de canon : fiables sous la pluie et dans le\n                        vide, les armes à poudre forment l'ossature des conflits modernes et des mondes coloniaux\n                        périphériques. Chaque tir produit une détonation audible à grande distance sauf pose d'un modérateur\n                        de son (surcoût indicatif : <code>+500 CE</code>, confère <strong>Silencieuse</strong> sur pistolet\n                        ou carabine à munitions subsoniques).\n                    </p>\n"
+    },
+    {
+     "type": "ref",
+     "cible": "armes_balistiques"
     }
-   ],
-   "nav": "Nomenclature & Armes Métal"
+   ]
   },
   {
    "id": "chap-31",
    "symbole": "Chapitre 31.",
-   "titre": "Épées Laser & Fusils Arcanotech",
+   "titre": "Armes Laser, Armes Lourdes, Explosifs &amp; Arcanotech [E2–E5]",
+   "nav": "Laser, Lourdes, Explosifs & Arcanotech",
    "blocs": [
     {
      "type": "html",
-     "html": "\n\n                    <p>\n                        L'armement arcanotech et énergétique combine les principes de la Cinquième Force et la\n                        miniaturisation des circuits à résonance de nytharite.\n                    </p>\n\n                    <h3>31.1 Les Épées Laser de Confinement Plasma</h3>\n                    <p>\n                        Une épée laser projette un arc de plasma stabilisé par un champ magnétique compact. La lame\n                        tranche la matière solide en ignorant la résistance physique ordinaire et ne subit jamais\n                        d'usure ni d'émoussement.\n                    </p>\n\n                    "
+     "html": "\n\n                    <p>\n                        L'armement énergétique et arcanotech marie la physique des hautes énergies, la résonance de\n                        nytharite et les principes de la Cinquième Force. Rares et onéreuses, ces armes se paient\n                        au prix fort pour leur légèreté, leur portée ou leur capacité à percer les blindages lourds.\n                    </p>\n\n                    <div style=\"display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 22px;\">\n                        <a href=\"#sec-31-1\" class=\"pill-badge cyan\" style=\"text-decoration: none;\">31.1 Épées Laser [E3–E5]</a>\n                        <a href=\"#sec-31-2\" class=\"pill-badge ruby\" style=\"text-decoration: none;\">31.2 Fusils Laser &amp; Armes Lourdes</a>\n                        <a href=\"#sec-31-3\" class=\"pill-badge amber\" style=\"text-decoration: none;\">31.3 Grenades &amp; Explosifs</a>\n                        <a href=\"#sec-31-4\" class=\"pill-badge emerald\" style=\"text-decoration: none;\">31.4 Munitions &amp; Arcanotech</a>\n                    </div>\n\n                    <h3 id=\"sec-31-1\">31.1 Les Épées Laser de Confinement Plasma [E3–E5]</h3>\n                    <p>\n                        Une épée laser projette un arc de plasma stabilisé par un champ magnétique compact. Sa lame\n                        ne pèse presque rien, ne s'émousse jamais et possède la propriété <strong>Perforante 2 à 4</strong>\n                        (<a href=\"#sec-30-2\">§30.2</a>) : elle tranche les blindages physiques ordinaires tout en\n                        butant normalement contre un <a class=\"rule-ref\" href=\"#sec-32-2\" data-tip=\"Boucliers &amp; Champs de Force : les champs énergétiques ne sont jamais contournés par Perforante (§32.2).\">bouclier énergétique ou champ de force</a>.\n                        Une cellule de nytharite alimente des semaines d'escarmouches sans rechargement en combat.\n                    </p>"
     },
     {
      "type": "ref",
@@ -68,15 +113,27 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <h3>31.2 Fusils Laser & L'Arsenal à Distance</h3>\n                    "
+     "html": "\n\n                    <h3 id=\"sec-31-2\">31.2 Fusils Laser, Armes Énergétiques &amp; Armes Lourdes [E2–E5]</h3>\n                    <p>\n                        Les fusils et pistolets laser utilisent la compétence <a class=\"rule-ref\" href=\"livre_3.html#chap-12\" data-tip=\"Ballistique / Tir (AGI/VUE) : armes de trait, à poudre et laser (Livre III §12).\">Ballistique / Tir</a>.\n                        Chaque arme accepte une <a href=\"#sec-31-4\">Charge Laser Standard</a> ou Haute Densité et se\n                        recharge en <a class=\"rule-ref\" href=\"livre_5.html#sec-20-4\" data-tip=\"Micro-action (1 PA) : recharger une arme à feu, un fusil laser ou un arc (Livre V §20.4).\">1 PA</a>.\n                    </p>\n                    <div class=\"callout arcane\" style=\"margin-top: 10px; font-size: 0.92em;\">\n                        <div class=\"callout-header\">Balistique des Faisceaux Laser</div>\n                        <div class=\"callout-body\">\n                            Le tir produit un trait lumineux instantané et continu, sans dérive au vent. En cas de touche,\n                            l'énergie thermique est absorbée par la cible ; en cas d'échec, le faisceau s'écrase sur le\n                            sol ou les parois en gerbe d'étincelles. Au contact direct (Distance = 1 case), les fusils\n                            longs et armes à deux mains subissent la condition <a class=\"rule-ref\" href=\"livre_5.html#sec-22-2\" data-tip=\"Canon Entravé : malus de −2 ec au tir à l'arme longue avec un ennemi à 1 case, ou 3 PA pour Tir Visé de Rétention (Livre V §22.2).\">Canon Entravé</a>.\n                        </div>\n                    </div>"
     },
     {
      "type": "ref",
      "cible": "fusils_laser"
     },
     {
+     "type": "ref",
+     "cible": "deglazer_focus"
+    },
+    {
      "type": "html",
-     "html": "\n\n                    <h3>31.3 Grenades & Munitions Explosives</h3>\n                    "
+     "html": "\n\n                    <h4>Armes Lourdes &amp; Anti-Matériel [E2–E5]</h4>\n                    <p>\n                        Conçues pour percer les fortifications, véhicules et blindages de classe militaire\n                        (<a class=\"rule-ref\" href=\"livre_5.html#sec-22-3\" data-tip=\"Véhicules &amp; Calibres : seuils de résistance des engins et armes capables de les percer (Livre V §22.3).\">Échelle des Calibres, Livre V §22.3</a>).\n                        Elles se manient avec <a class=\"rule-ref\" href=\"livre_3.html#chap-12\" data-tip=\"Ballistique / Tir (AGI/VUE) : inclut les Armes Lourdes (Livre III §12).\">Ballistique / Tir</a>\n                        et débloquent leur plein potentiel destructeur avec la spécialisation\n                        <a class=\"rule-ref\" href=\"livre_3.html#chap-14\" data-tip=\"Armes Lourdes (Canons) : +100 dégâts de masse contre structures, fortifications et blindages de véhicules (Livre III §14).\">Armes Lourdes (Canons)</a>\n                        ou le don Mikyai <a class=\"rule-ref\" href=\"livre_1.html#chap-2\" data-tip=\"Technicien-Guerrier (Mikyai) : +2 Armes Lourdes, +2 Ingénierie impériale, −1 encombrement d'armure (Livre I §2.2).\">Technicien-Guerrier</a>.\n                    </p>\n"
+    },
+    {
+     "type": "ref",
+     "cible": "armes_lourdes"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <h3 id=\"sec-31-3\">31.3 Grenades &amp; Munitions Explosives [E1–E5]</h3>\n                    <p>\n                        Lancer une grenade coûte <strong>2 PA</strong> (<strong>1 PA</strong> avec la spécialisation\n                        <a class=\"rule-ref\" href=\"livre_3.html#chap-14\" data-tip=\"Grenadier d'Assaut (Ballistique) : +2 cases de portée et Dégoupillage Éclair à 1 PA (Livre III §14).\">Grenadier d'Assaut</a>)\n                        sur une épreuve de <a class=\"rule-ref\" href=\"livre_3.html#chap-12\" data-tip=\"Ballistique / Tir (AGI/VUE) : lancer de grenades (Livre III §12).\">Ballistique / Tir</a>\n                        à portée de base <strong><code>8P</code> (12 m)</strong> augmentée du bonus de Force d'<em>Arme de jet</em>\n                        (<a href=\"#sec-30-2\">§30.2</a>). Chaque grenade indique son rayon d'impact en cases (<strong>Zone R</strong>) :\n                        les dégâts et états s'appliquent à toute cible dans le rayon, réduits ou bloqués selon le\n                        <a class=\"rule-ref\" href=\"livre_5.html#sec-21-3\" data-tip=\"Couvert &amp; Zone : demi-couvert, trois-quarts ou couvert total réduisent l'effet des explosions (Livre V §21.3).\">couvert (Livre V §21.3)</a>.\n                    </p>\n"
     },
     {
      "type": "ref",
@@ -84,19 +141,39 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <!-- ================= CHAPITRE 30 ================= -->\n                    "
+     "html": "\n\n                    <h4>Grenades Tactiques, Non Létales &amp; Arcanotech [E1–E5]</h4>\n                    <p>\n                        Au-delà des explosifs à fragmentation, tu peux briser une ligne de mire, neutraliser sans tuer\n                        ou saturer un secteur avec des grenades spécialisées. Un <a href=\"#sec-32-4\">Masque Filtrant</a>\n                        protège contre la fumée, le gaz et l'éblouissement associé (<a class=\"rule-ref\" href=\"livre_2.html#sec-8-6\" data-tip=\"Visibilité &amp; Masque Filtrant : neutralise l'éblouissement par gaz ou flash (Livre II §8.6).\">Livre II §8.6</a>).\n                    </p>\n"
+    },
+    {
+     "type": "ref",
+     "cible": "grenades_tactiques"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <h3 id=\"sec-31-4\">31.4 Munitions, Cellules &amp; Équipement Arcanotech [E0–E5]</h3>\n                    <p>\n                        Retrouve ici le coût des recharges courantes et spécialisées pour tes armes de trait, armes à\n                        poudre et fusils énergétiques.\n                    </p>\n"
+    },
+    {
+     "type": "ref",
+     "cible": "munitions_charges"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <h4>Catalyseurs Arcanotech &amp; Implants Cybernétiques [E3–E5]</h4>\n                    <p>\n                        La technologie des cristaux de nytharite (<a class=\"rule-ref\" href=\"livre_4.html#chap-17\" data-tip=\"Moteur Magique &amp; Cristaux : un cristal de nytharite bien taillé lance un effet sans organe biologique (Livre IV §17).\">Livre IV §17</a>)\n                        permet d'alimenter des moteurs, de focaliser ou d'imiter la Cinquième Force sans modifier\n                        tes caractéristiques brutes. Les implants cybernétiques [E3–E4] remplacent un organe perdu ou\n                        ajoutent un outil intégré, mais exposent aux impulsions IEM et aux pathologies\n                        <a class=\"rule-ref\" href=\"livre_6.html#sec-25-4\" data-tip=\"Maladies Nanotech / Cyber : nature pathologique affectant implants et systèmes cybernétiques (Livre VI §25.4).\">nanotech / cyber</a>.\n                    </p>\n"
+    },
+    {
+     "type": "ref",
+     "cible": "equipement_arcanotech"
     }
-   ],
-   "nav": "Épées Laser & Fusils Arcanotech"
+   ]
   },
   {
    "id": "chap-32",
    "symbole": "Chapitre 32.",
-   "titre": "Blindages, Champs de Force & Pharmacopée Tactique",
+   "titre": "Blindages, Boucliers, Pharmacopée &amp; Matériel de Terrain [E0–E5]",
+   "nav": "Blindages, Boucliers, Soins & Terrain",
    "blocs": [
     {
      "type": "html",
-     "html": "\n\n                    <p>\n                        Pour survivre aux tirs laser et aux frappes énergétiques, la technologie offre trois lignes de\n                        protection complémentaires : armures légères flexibles, cuirasses lourdes motorisées et\n                        boucliers de diffraction arcanique.\n                    </p>\n\n                    <h3>32.1 Armures Corporelles : Légères vs Lourdes</h3>\n\n                    <h4>Encombrement : ce que ton armure te coûte</h4>\n                    <p>\n                        Chaque protection affiche son <strong>encombrement</strong> : 0, 1 ou 2. Tu ajoutes ce\n                        nombre au coût en PA de <strong>chacune de tes actions</strong> — frapper, tirer, te\n                        déplacer, lancer un sort. Une armure légère ne te ralentit pas. Une cuirasse lourde te\n                        protège, mais chacun de tes gestes coûte plus cher.\n                    </p>\n                    <ul>\n                        <li><strong>Encombrement 0 :</strong> armures légères, champs de force et boucliers.\n                            Aucun surcoût.</li>\n                        <li><strong>Encombrement 1 :</strong> armures lourdes Prot 3 à 5 (et Lourde 7 Optimisée).\n                            +1 PA par action.</li>\n                        <li><strong>Encombrement 2 :</strong> armures lourdes Prot 6 et 7. +2 PA par action.</li>\n                    </ul>\n                    <p>\n                        Exemple : tu portes une Armure Lourde 6 (encombrement 2). Un tir qui coûte 2 PA t'en\n                        coûte 4. Avancer d'une case (1 PA) t'en coûte 3.\n                    </p>\n                    <p>\n                        Deux précisions. Les mises aveugles (1 PA = +1 au jet) ignorent ce surcoût, et la\n                        réduction du Milkor (-1 PA par tir) ne s'y cumule pas : elle allège le tir lui-même,\n                        pas ton armure. Si tu es <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"Ralenti : actions hors déplacement ×2 PA ; déplacement +1 PA/case (§24.1).\">Ralenti</a>,\n                        tu doubles le total sur tes actions hors déplacement — (action + encombrement) &times; 2 — tandis\n                        que sur un déplacement tu ajoutes simplement +1 PA par case (soit Lourde 6 + Ralenti = 4 PA/case). Seuls les Mikyais formés aux\n                        blindages savent bouger dedans : leur don\n                        <a class=\"rule-ref\" href=\"livre_1.html#chap-2\" data-tip=\"Technicien-Guerrier : +2 Armes Lourdes et réparation impériale ; ignore 1 point d'encombrement d'armure.\">Technicien-Guerrier</a>\n                        ignore 1 point d'encombrement — ta Lourde 6 ne te coûte que +1 PA par action.\n                    </p>\n                    "
+     "html": "\n\n                    <p>\n                        Pour survivre aux lames d'acier, aux calibres modernes et aux faisceaux plasma, tu disposes de\n                        trois lignes de défense complémentaires : l'armure corporelle, le bouclier tenu en main et le\n                        champ de force personnel.\n                    </p>\n\n                    <div style=\"display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 22px;\">\n                        <a href=\"#sec-32-1\" class=\"pill-badge ruby\" style=\"text-decoration: none;\">32.1 Armures &amp; Encombrement</a>\n                        <a href=\"#sec-32-2\" class=\"pill-badge cyan\" style=\"text-decoration: none;\">32.2 Boucliers &amp; Champs de Force</a>\n                        <a href=\"#sec-32-3\" class=\"pill-badge emerald\" style=\"text-decoration: none;\">32.3 Pharmacopée &amp; Médical</a>\n                        <a href=\"#sec-32-4\" class=\"pill-badge amber\" style=\"text-decoration: none;\">32.4 Outillage &amp; Survie</a>\n                    </div>\n\n                    <h3 id=\"sec-32-1\">32.1 Armures Corporelles [E0–E5] &amp; Encombrement</h3>\n                    <p>\n                        Tu ne peux porter qu'<strong>une seule armure corporelle à la fois</strong>. Sa valeur de\n                        <strong>Protection</strong> est soustraite de chaque coup direct reçu après le différentiel\n                        (<a class=\"rule-ref\" href=\"livre_5.html#sec-22-1\" data-tip=\"Résolution d'attaque : dégâts de base + différentiel, puis on soustrait l'armure (Livre V §22.1).\">Livre V §22.1</a>),\n                        mais elle n'arrête jamais les <a class=\"rule-ref\" href=\"livre_6.html#chap-23\" data-tip=\"Dégâts résiduels &amp; absolus : ignorent l'armure physique (Livre VI §23.1).\">dégâts résiduels ni absolus</a>.\n                    </p>\n\n                    <h4>Encombrement : ce que ton armure te coûte</h4>\n                    <p>\n                        Chaque protection affiche son <strong>encombrement</strong> : <code>0</code>, <code>1</code> ou <code>2</code>.\n                        Tu ajoutes ce nombre au coût en PA de <strong>chacune de tes actions</strong> — frapper, tirer, te\n                        déplacer, lancer un sort, parer. Une armure légère ne te ralentit pas. Une cuirasse lourde te\n                        protège, mais chacun de tes gestes coûte plus cher.\n                    </p>\n                    <ul>\n                        <li><strong>Encombrement 0 :</strong> armures légères, champs de force et boucliers légers ou standards.\n                            Aucun surcoût.</li>\n                        <li><strong>Encombrement 1 :</strong> armures lourdes Prot 3 à 5 (et Lourde 7 Optimisée), pavois lourd.\n                            +1 PA par action.</li>\n                        <li><strong>Encombrement 2 :</strong> armures lourdes Prot 6 et 7. +2 PA par action.</li>\n                    </ul>\n                    <p>\n                        <em>Exemple :</em> tu portes une Armure Lourde 6 (encombrement 2). Un tir qui coûte 2 PA t'en\n                        coûte 4. Avancer d'une case (1 PA) t'en coûte 3.\n                    </p>\n                    <p>\n                        Deux précisions. Les mises aveugles (1 PA = +1 au jet) ignorent ce surcoût, et une réduction\n                        de coût propre à une arme ou à une spécialisation ne réduit jamais l'encombrement de ton armure :\n                        elle allège seulement le geste lui-même. Si tu es\n                        <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"Ralenti : actions hors déplacement ×2 PA ; déplacement +1 PA/case (§24.1).\">Ralenti</a>,\n                        tu doubles le total sur tes actions hors déplacement — <code>(action + encombrement) &times; 2</code> — tandis\n                        que sur un déplacement tu ajoutes simplement +1 PA par case (soit Lourde 6 + Ralenti = 4 PA/case).\n                        Seuls les Mikyais formés aux blindages savent bouger dedans : leur don\n                        <a class=\"rule-ref\" href=\"livre_1.html#chap-2\" data-tip=\"Technicien-Guerrier : +2 Armes Lourdes et réparation impériale ; ignore 1 point d'encombrement d'armure.\">Technicien-Guerrier</a>\n                        ignore 1 point d'encombrement — ta Lourde 6 ne te coûte que +1 PA par action.\n                    </p>"
     },
     {
      "type": "ref",
@@ -104,7 +181,15 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <h3>32.2 Champs de Force Personnels & Combinaisons Spatiales</h3>\n                    "
+     "html": "\n\n                    <h3 id=\"sec-32-2\">32.2 Boucliers Physiques, Champs de Force &amp; Combinaisons Spatiales</h3>\n\n                    <h4>Boucliers Physiques (Défense Active 1H) [E0–E4]</h4>\n                    <p>\n                        Un bouclier occupe <strong>1 main (1H)</strong> et reste incompatible avec les armes à deux mains.\n                        Il ne confère pas d'armure passive permanente : en défense active (<a class=\"rule-ref\" href=\"livre_3.html#chap-12\" data-tip=\"Défense Corporelle / Maniement d'Arme : bloquer au bouclier sans malus avec Bloquer (Livre III §12 &amp; §14).\">Maniement d'Arme ou Défense Corporelle</a>),\n                        il ajoute son <strong>bonus de parade (+1 ou +2)</strong> à ton jet et t'autorise à parer les\n                        <strong>projectiles physiques</strong> (flèches, carreaux, armes de jet — et balles ou lasers légers\n                        pour les modèles spécialisés), sans jamais arrêter les <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\" data-tip=\"En Feu : un bouclier physique tenu en main reste ignoré par les dégâts résiduels de feu (Livre VI §24.2).\">dégâts résiduels</a>.\n                        Avec la spécialisation <a class=\"rule-ref\" href=\"livre_3.html#chap-14\" data-tip=\"Bloquer : bouclier ou garde hermétique, parade sans malus (Livre III §14).\">Bloquer</a>,\n                        tu pares sans malus et débloques les ripostes de bouclier.\n                    </p>"
+    },
+    {
+     "type": "ref",
+     "cible": "boucliers_physiques"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <h4>Champs de Force Personnels &amp; Combinaisons Spatiales [E3–E5]</h4>\n                    <p>\n                        Un champ de force personnel [E4–E5] pèse <strong>1 L</strong>, n'impose <strong>aucun encombrement (0 PA)</strong>\n                        et <strong>se cumule avec ton armure corporelle</strong> (1 seul champ actif à la fois). Il crée une\n                        barrière énergétique ablatrice qui absorbe les dégâts <strong>en premier</strong> — avant ton armure\n                        et ta chair, y compris les dégâts résiduels <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\" data-tip=\"En Feu : un bouclier énergétique ou magique absorbe d'abord les dégâts (Livre VI §24.2).\">En Feu</a>.\n                        Tant que le champ absorbe tout le coup, tu ne risques aucun <a class=\"rule-ref\" href=\"livre_6.html#sec-23-encaissement\" data-tip=\"Choc Traumatique : se déclenche seulement sur dégâts réels subis au-delà de CON×2 (Livre VI §23).\">Choc Traumatique</a> ;\n                        le surplus qui le perce rencontre ensuite ton armure. Les propriétés d'un palier s'ajoutent à celles\n                        des paliers précédents (par exemple, un Champ 3 conserve la recharge en 1 minute du Champ 2). Une\n                        <a href=\"#sec-31-4\">Cellule de Nytharite</a> recharge un champ épuisé en <strong>2 PA</strong> au combat.\n                    </p>"
     },
     {
      "type": "ref",
@@ -112,7 +197,7 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <h3>32.3 Pharmacopée Tactique & Consommables Médicaux</h3>\n                    <p>\n                        Dans les situations d'urgence extrême, les stimulants chimiques et seringues arcaniques font la\n                        différence entre la survie et le trépas.\n                    </p>\n\n                    "
+     "html": "\n\n                    <h3 id=\"sec-32-3\">32.3 Pharmacopée Tactique, Matériel Médical &amp; Remèdes [E0–E5]</h3>\n                    <p>\n                        Dans les situations d'urgence extrême, seringues de soins, stimulants chimiques et remèdes font la\n                        différence entre le trépas et le retour au combat. Consommer un stimulant ou s'injecter une seringue\n                        coûte <a class=\"rule-ref\" href=\"livre_5.html#sec-20-4\" data-tip=\"Micro-action (1 PA) : utiliser un consommable ou une seringue (Livre V §20.4).\">1 PA</a>.\n                    </p>\n\n                    <div class=\"callout temporal\">\n                        <div class=\"callout-header\">\n                            Règle de Non-Cumul &amp; Contrecoup des Stimulants\n                        </div>\n                        <div class=\"callout-body\">\n                            Tu ne peux maintenir qu'<strong>un seul effet actif de chaque stimulant</strong> à la fois\n                            (aucun cumul d'<em>Antidouleurs</em> ni de <em>Stimulant « Vif »</em>). Prendre une deuxième dose\n                            avant la fin de la durée inflige aussitôt <strong>+2 Essoufflement</strong> et impose une épreuve\n                            de <a class=\"rule-ref\" href=\"livre_3.html#chap-12\" data-tip=\"Système Immunitaire (CON) : résister aux toxines et surdoses (Livre III §12).\">Système Immunitaire</a>\n                            (Difficulté 6) sous peine de subir <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\" data-tip=\"Empoisonné : −50 % aux soins reçus jusqu'à dissipation (Livre VI §24.2).\">Empoisonné 2</a>.\n                            À l'expiration normale du stimulant, tu subis <strong>+2 Essoufflement</strong> : si tes dégâts\n                            accumulés dépassent alors ton vrai <a class=\"rule-ref\" href=\"livre_6.html#sec-23-2\" data-tip=\"Seuil Létal (CON×5) : arbre de résolution dès que la tolérance retombe en dessous des dégâts (Livre VI §23.2).\">Seuil Létal (CON &times; 5)</a>\n                            à la fin d'<em>Antidouleurs</em>, l'arbre de résolution mortelle se déclenche aussitôt !\n                        </div>\n                    </div>"
     },
     {
      "type": "ref",
@@ -120,10 +205,25 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <div class=\"codex-signature\">\n                        <div class=\"sig-meta\">\n                            <strong>LIVRE VIII DU CODEX UNIVERSEL</strong><br>\n                            Arsenal Multiversel, Spécifications DLPH & Arcanotech Impériale<br>\n                            <em>Catalogue officiel d'équipement pour toutes les classes de combattants.</em>\n                        </div>\n                        <div class=\"sig-stamp\">\n                            <span class=\"stamp-title\">ARSENAL CERTIFIÉ</span>\n                            <span class=\"stamp-date\">CRÉDITS IMPÉRIAUX // HOMOLOGUÉ</span>\n                        </div>\n                    </div>\n\n                    <!-- PAGINATION ENTRE LIVRES -->\n                    <div class=\"chapter-pagination\">\n                        <a href=\"livre_7.html\" class=\"pagination-btn\">\n                            <div>\n                                <div class=\"pagination-label\">Livre Précédent</div>\n                                <div class=\"pagination-title\">← Livre VII : Historiques &amp; Passés</div>\n                            </div>\n                        </a>\n                        <a href=\"livre_9.html\" class=\"pagination-btn\">\n                            <div>\n                                <div class=\"pagination-label\">Livre Suivant</div>\n                                <div class=\"pagination-title\">Livre IX : Outils Web Interactifs →</div>\n                            </div>\n                        </a>\n                    </div>\n\n                "
+     "html": "\n\n                    <h4>Matériel Médical, Antidotes &amp; Remèdes contre Pathologies [E0–E4]</h4>\n                    <p>\n                        Les seringues effacent des dégâts et lèvent <a class=\"rule-ref\" href=\"livre_6.html#sec-24-4\" data-tip=\"Souffrant : levé immédiatement par tout soin actif (Livre VI §24.4).\">Souffrant</a>,\n                        mais elles ne guérissent jamais une infection ni un poison (<a class=\"rule-ref\" href=\"livre_6.html#sec-25-4\" data-tip=\"Maladies &amp; Pathologies : 6 natures dictant le remède efficace (Livre VI §25.4).\">Livre VI §25.4</a>).\n                        Pour soigner une blessure grave, traiter une souche bactérienne, virale ou arcanique\n                        (<a class=\"rule-ref\" href=\"livre_12.html#chap-53\" data-tip=\"Générateur de Pathologies : natures et traitements adaptés (Livre XII §53).\">Livre XII §53</a>)\n                        ou stabiliser un agonisant (<a class=\"rule-ref\" href=\"livre_6.html#chap-25\" data-tip=\"Premiers Soins (§25.1) : 3 PA d'immobilisation au chevet du blessé, Difficulté 6 pour stabiliser.\">Livre VI §25.1</a>),\n                        il te faut le matériel adapté.\n                    </p>\n"
+    },
+    {
+     "type": "ref",
+     "cible": "materiel_medical"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <h3 id=\"sec-32-4\">32.4 Outillage, Survie &amp; Matériel de Terrain [E0–E5]</h3>\n                    <p>\n                        On gagne plus d'expéditions avec une corde, un masque filtrant et une trousse d'outils qu'avec\n                        un gros fusil. Ce matériel utilitaire couvre la survie aux environnements hostiles\n                        (<a class=\"rule-ref\" href=\"livre_2.html#sec-8-1\" data-tip=\"Climat &amp; Environnements : froid, chaleur, nuit, chutes et milieux (Livre II chap. 8).\">Livre II chap. 8</a>),\n                        le sabotage, l'entretien et la logistique de campagne.\n                    </p>\n"
+    },
+    {
+     "type": "ref",
+     "cible": "materiel_terrain"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <div class=\"codex-signature\">\n                        <div class=\"sig-meta\">\n                            <strong>LIVRE VIII DU CODEX UNIVERSEL</strong><br>\n                            Arsenal Multiversel [E0–E5], Spécifications DLPH &amp; Arcanotech Impériale<br>\n                            <em>Catalogue officiel d'équipement pour toutes les classes de combattants.</em>\n                        </div>\n                        <div class=\"sig-stamp\">\n                            <span class=\"stamp-title\">ARSENAL CERTIFIÉ</span>\n                            <span class=\"stamp-date\">CRÉDITS IMPÉRIAUX // HOMOLOGUÉ</span>\n                        </div>\n                    </div>\n\n                    <!-- PAGINATION ENTRE LIVRES -->\n                    <div class=\"chapter-pagination\">\n                        <a href=\"livre_7.html\" class=\"pagination-btn\">\n                            <div>\n                                <div class=\"pagination-label\">Livre Précédent</div>\n                                <div class=\"pagination-title\">&larr; Livre VII : Historiques &amp; Passés</div>\n                            </div>\n                        </a>\n                        <a href=\"livre_9.html\" class=\"pagination-btn\">\n                            <div>\n                                <div class=\"pagination-label\">Livre Suivant</div>\n                                <div class=\"pagination-title\">Livre IX : Outils Web Interactifs &rarr;</div>\n                            </div>\n                        </a>\n                    </div>\n"
     }
-   ],
-   "nav": "Blindages, Écrans & Pharmacopée"
+   ]
   }
  ],
  "donnees": {
@@ -132,676 +232,3238 @@
    "etiquette_tag": "div",
    "etiquette_classe": "formula-label",
    "etiquette_html": "Code Universel d'Arme (DLPH)",
-   "math_html": "<span class=\"hl-ruby\">[D] Dégâts</span> &nbsp;—&nbsp; <span class=\"hl-gold\">[L] Livres\n                                (Poids)</span> &nbsp;—&nbsp; <span class=\"hl-cyan\">[P] Portée (m/cases)</span>\n                            &nbsp;—&nbsp; <span class=\"hl-emerald\">[H] Maniement (1H / 2H)</span>",
-   "desc_html": "<strong>D :</strong> Dégâts de base ajoutés au jet d'attaque. &bull;\n                            <strong>L :</strong> Poids en livres impériales (1 livre &asymp; 0.45 kg). &bull;\n                            <strong>P :</strong> Portée opérationnelle en mètres (1 case = 1,5 mètre). &bull;\n                            <strong>H :</strong> 1H (une main) ou 2H (deux mains obligatoires).",
-   "contenu": false
+   "math_html": "<span class=\"hl-ruby\">[D] Dégâts</span> &nbsp;—&nbsp; <span class=\"hl-gold\">[L] Livres (Poids)</span> &nbsp;—&nbsp; <span class=\"hl-cyan\">[P] Portée (cases)</span> &nbsp;—&nbsp; <span class=\"hl-emerald\">[H] Maniement (1H / 2H)</span>",
+   "desc_html": "<strong>D :</strong> Dégâts de base ajoutés au différentiel de touche. &bull; <strong>L :</strong> Poids en livres impériales (1 L &asymp; 0,45 kg). &bull; <strong>P :</strong> Portée tactique unifiée en <strong>cases de 1,5 mètre</strong> (<code>1P</code> = contact adjacent, <code>2P</code> = allonge, <code>8P+</code> = distance ; repère hors grille en mètres ou km entre parenthèses). &bull; <strong>H :</strong> <code>1H</code> (une main), <code>2H</code> (deux mains obligatoires) ou <code>1H/2H</code> (polyvalente).",
+   "contenu": false,
+   "wide": true
+  },
+  "charge_portage": {
+   "type": "formule",
+   "etiquette_tag": "div",
+   "etiquette_classe": "formula-label",
+   "etiquette_html": "Capacité de Portage ([L]) selon ta Force",
+   "math_html": "<span class=\"hl-emerald\">Normal : &le; FOR &times; 15 L</span> &nbsp;|&nbsp; <span class=\"hl-gold\">Surchargé (+1 PA) : jusqu'à FOR &times; 25 L</span> &nbsp;|&nbsp; <span class=\"hl-ruby\">&gt; FOR &times; 25 L : Bloqué</span>",
+   "desc_html": "Jusqu'à <strong>Force &times; 15 L</strong> : aucun malus. Entre <strong>Force &times; 15 + 1 L</strong> et <strong>Force &times; 25 L</strong> : <strong>+1 PA</strong> à toute action et chaque case de déplacement (cumulable avec l'encombrement d'armure). Au-delà : impossible de te déplacer sans aide.",
+   "contenu": false,
+   "wide": true
+  },
+  "budget_depart": {
+   "type": "table",
+   "classe": "data-table",
+   "colonnes": [
+    "Époque",
+    "Accès matériel autorisé",
+    "Budget de départ",
+    "Dotation type (avec atout de métier)"
+   ],
+   "lignes": [
+    [
+     "<span class=\"table-badge amber\">E0 · Primitive</span>",
+     "Pierre, os, bronze, bois, peaux",
+     "<strong>600 CE</strong>",
+     "Arme de chasse ou lance + bouclier de peau + trousse de simples et vivres"
+    ],
+    [
+     "<span class=\"table-badge amber\">E1 · Médiévale</span>",
+     "Acier forgé, mailles, plates, trait",
+     "<strong>1 500 CE</strong>",
+     "Épée ou hache + arc/arbalète ou écu + armure légère de cuir/mailles"
+    ],
+    [
+     "<span class=\"table-badge cyan\">E2 · Moderne</span>",
+     "Poudre, polymères, optique, radio",
+     "<strong>4 000 CE</strong>",
+     "Pistolet ou fusil à balles + armure légère 1 + masque filtrant + lampe"
+    ],
+    [
+     "<span class=\"table-badge cyan\">E3 · Avancée</span>",
+     "Laser standard, céramo-métal, cyber",
+     "<strong>12 000 CE</strong>",
+     "Fusil ou épée laser 3D + armure légère 2–3 + seringue −5 + trousse orbitale"
+    ],
+    [
+     "<span class=\"table-badge green\">E4 · Très Avancée</span>",
+     "Armes lourdes, nytharite, exosquelettes",
+     "<strong>30 000 CE</strong>",
+     "Arme laser 4D–5D + armure 4–5 ou combinaison + matériel arcanotech"
+    ],
+    [
+     "<span class=\"table-badge emerald\">E5 · Démiurgique</span>",
+     "Prototypes, stase, hauts catalyseurs",
+     "<strong>75 000 CE</strong>",
+     "Équipement d'élite, champ de force personnel 1 ou dispositif de concile"
+    ]
+   ]
+  },
+  "proprietes_armes": {
+   "type": "table",
+   "classe": "data-table",
+   "colonnes": [
+    "Propriété",
+    "Syntaxe / Portée",
+    "Effet tactique en jeu"
+   ],
+   "lignes": [
+    [
+     "<strong>Allonge</strong>",
+     "<code>2P</code>",
+     "Frappe jusqu'à 2 cases en mêlée (même par-dessus un allié) et menace 2 cases en opportunité."
+    ],
+    [
+     "<strong>Arme de jet</strong>",
+     "<code>XP</code> (ex. <code>6P</code>–<code>15P</code>)",
+     "Lancée à la main via <em>Ballistique / Tir</em> (sauf mention contraire). Bonus portée : <code>+1 case</code> par point de <strong>FOR &gt; 3</strong> (max <code>+4P</code>). Subit <code>−1 ec</code> <em>Accroupi</em> et <code>−2 ec</code> <em>À Terre</em>."
+    ],
+    [
+     "<strong>Perforante X</strong>",
+     "<code>Perf. X</code>",
+     "Ignore jusqu'à <code>X</code> points d'<strong>armure physique</strong> (jamais les champs de force ni boucliers énergétiques)."
+    ],
+    [
+     "<strong>Zone R</strong>",
+     "<code>Zone 1</code>–<code>3</code>",
+     "Agit sur toute cible dans un rayon de <code>R</code> cases autour du point d'impact (couvert <a class=\"rule-ref\" href=\"livre_5.html#sec-21-3\" data-tip=\"Couvert &amp; Zone : demi-couvert, trois-quarts ou couvert total réduisent les dégâts et effets de zone (Livre V §21.3).\">Livre V §21.3</a>)."
+    ],
+    [
+     "<strong>Silencieuse</strong>",
+     "Discrète",
+     "N'émet aucun bruit de détonation ; ne révèle pas automatiquement ta position au-delà de quelques mètres."
+    ],
+    [
+     "<strong>Dissimulable</strong>",
+     "+2 cache",
+     "Confère <code>+2</code> aux épreuves de <em>Discrétion</em> ou <em>Subterfuge</em> pour cacher l'arme sur soi."
+    ],
+    [
+     "<strong>Polyvalente</strong>",
+     "<code>1H/2H</code>",
+     "Utilisable à une main (bouclier possible) ou à deux mains pour infliger <strong>+1 Dégât</strong>."
+    ],
+    [
+     "<strong>Non létale</strong>",
+     "Neutralisation",
+     "L'attaquant peut arrêter sa victime à <em>Inconscient</em> (0 dégât létal) quand il atteint le Seuil Létal."
+    ],
+    [
+     "<strong>Rechargement lent X PA</strong>",
+     "<code>Rech. X PA</code>",
+     "Remplace le rechargement standard à <code>1 PA</code> par <code>X</code> PA (2 ou 3 PA)."
+    ],
+    [
+     "<strong>Cadence</strong>",
+     "+1 PA / 3 mun.",
+     "Dépense <code>+1 PA</code> et 3 munitions sur un tir pour gagner <strong>+1 Dégât</strong> (ou couvrir un cône de suppression selon le MJ)."
+    ],
+    [
+     "<strong>Canon Entravé</strong>",
+     "Contact 1 case",
+     "Subit <code>−2 ec</code> si un ennemi conscient te colle à 1 case (<a class=\"rule-ref\" href=\"livre_5.html#sec-22-2\" data-tip=\"Canon Entravé : −2 ec à l'arme longue au contact ou 3 PA pour Tir Visé de Rétention (Livre V §22.2).\">Livre V §22.2</a>)."
+    ],
+    [
+     "<strong>Brûlure / État</strong>",
+     "Effet",
+     "Pose un état officiel (<a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\" data-tip=\"Dégâts résiduels : En Feu, Saignement, Empoisonné, Asphyxie (Livre VI §24.2).\">Livre VI §24.2</a> ou <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"États préjudiciables : Étourdi, Aveuglé, Assourdi, Immobilisé, Ralenti, À Terre (Livre VI §24.1).\">§24.1</a>) dès qu'au moins 1 dégât passe ou sur seuil indiqué."
+    ],
+    [
+     "<strong>Anti-Matériel</strong>",
+     "Structure / Véhicule",
+     "Conçue pour percer les portes blindées, couverts et blindages de véhicules (<a class=\"rule-ref\" href=\"livre_5.html#sec-22-3\" data-tip=\"Échelle des Calibres &amp; Véhicules (Livre V §22.3).\">Livre V §22.3</a>)."
+    ]
+   ]
   },
   "armes_lames": {
    "type": "table",
+   "classe": "data-table",
    "colonnes": [
     "Désignation de l'Arme",
+    "Époque",
     "Code DLPH",
-    "Prix Moyen (Crédits CE)",
-    "Type Historique / Profil"
+    "Prix (CE)",
+    "Propriétés &amp; Profil"
    ],
    "lignes": [
     [
      "<strong>Épée Métal Courte</strong>",
+     "<span class=\"table-badge amber\">E0–E2</span>",
      "<span class=\"table-badge cyan\">3D - 3L - 1P - 1H</span>",
-     "~500 CE",
-     "Glaive, Arming Sword, Ulfberht"
+     "500 CE",
+     "Glaive, épée à une main, lame d'abordage. Fiable et maniable."
     ],
     [
      "<strong>Épée Métal Standard</strong>",
+     "<span class=\"table-badge amber\">E1–E2</span>",
      "<span class=\"table-badge cyan\">4D - 3L - 1P - 1H</span>",
-     "~750 CE",
-     "Épée bâtarde, Katana traditionnel"
+     "750 CE",
+     "Épée bâtarde, sabre de cavalerie, katana traditionnel."
     ],
     [
      "<strong>Épée Métal Supérieure</strong>",
+     "<span class=\"table-badge amber\">E1–E2</span>",
      "<span class=\"table-badge cyan\">5D - 3L - 1P - 1H</span>",
-     "~1 000 CE",
-     "Acier replié de maître, Katana affûté"
+     "1 000 CE",
+     "Acier feuilleté de maître, katana affûté."
     ],
     [
      "<strong>Épée Métal Longue (2H)</strong>",
+     "<span class=\"table-badge amber\">E1</span>",
      "<span class=\"table-badge green\">4D - 5L - 1P - 2H</span>",
-     "~1 000 CE",
-     "Longsword, Claymore d'assaut"
+     "1 000 CE",
+     "Épée longue à deux mains, claymore. <em>Canon Entravé</em> au contact en mode tir non applicable ; +0 allonge."
     ],
     [
      "<strong>Épée Métal de Guerre (2H)</strong>",
+     "<span class=\"table-badge amber\">E1</span>",
      "<span class=\"table-badge green\">5D - 5L - 1P - 2H</span>",
-     "~1 250 CE",
-     "Zweihänder de ligne, Flamberge"
+     "1 250 CE",
+     "Grande épée de ligne, flamberge. Frappe lourde de formation."
     ],
     [
      "<strong>Épée Lourde de Brèche (2H)</strong>",
+     "<span class=\"table-badge amber\">E1</span>",
      "<span class=\"table-badge green\">6D - 5L - 1P - 2H</span>",
-     "~1 500 CE",
-     "Espadon géant, acier lourd renforcé"
+     "1 500 CE",
+     "Espadon d'acier lourd renforcé. <em>Perforante 1</em> sur armure légère."
     ],
     [
      "<strong>Grand Espadon Maître</strong>",
+     "<span class=\"table-badge ruby\">E1</span>",
      "<span class=\"table-badge amber\">7D - 6L - 2P - 2H</span>",
-     "~3 000 CE",
-     "Allonge 2 cases, frappe dévastatrice"
+     "3 000 CE",
+     "<strong>Allonge 2P</strong>, <strong>Perforante 1</strong>. Frappe dévastatrice sur deux cases."
     ]
+   ]
+  },
+  "armes_fines": {
+   "type": "table",
+   "classe": "data-table",
+   "colonnes": [
+    "Désignation de l'Arme",
+    "Époque",
+    "Code DLPH",
+    "Prix (CE)",
+    "Propriétés &amp; Profil"
    ],
-   "classe": "data-table"
+   "lignes": [
+    [
+     "<strong>Couteau / Dague</strong>",
+     "<span class=\"table-badge amber\">E0–E5</span>",
+     "<span class=\"table-badge cyan\">2D - 1L - 1P - 1H</span>",
+     "150 CE",
+     "<strong>Dissimulable</strong>, <strong>Silencieuse</strong>, <strong>Arme de jet 6P</strong>."
+    ],
+    [
+     "<strong>Dague de Maître / Stylet</strong>",
+     "<span class=\"table-badge amber\">E1–E3</span>",
+     "<span class=\"table-badge cyan\">3D - 1L - 1P - 1H</span>",
+     "450 CE",
+     "<strong>Dissimulable</strong>, <strong>Perforante 1</strong>, <strong>Arme de jet 6P</strong>."
+    ],
+    [
+     "<strong>Fleuret de Duel</strong>",
+     "<span class=\"table-badge amber\">E1–E2</span>",
+     "<span class=\"table-badge cyan\">3D - 2L - 1P - 1H</span>",
+     "600 CE",
+     "Lame souple de précision ; <code>+1</code> en parade contre lames 1H."
+    ],
+    [
+     "<strong>Rapière d'Acier</strong>",
+     "<span class=\"table-badge amber\">E1–E2</span>",
+     "<span class=\"table-badge cyan\">4D - 2L - 1P - 1H</span>",
+     "900 CE",
+     "<strong>Perforante 1</strong>. Optimisée pour l'estoc et la visée chirurgicale."
+    ],
+    [
+     "<strong>Lance / Sagaie</strong>",
+     "<span class=\"table-badge amber\">E0–E1</span>",
+     "<span class=\"table-badge cyan\">3D - 3L - 2P - 1H/2H</span>",
+     "300 CE",
+     "<strong>Allonge 2P</strong>, <strong>Polyvalente</strong> (4D à 2H), <strong>Arme de jet 10P</strong>."
+    ],
+    [
+     "<strong>Pique &amp; Hallebarde</strong>",
+     "<span class=\"table-badge amber\">E1</span>",
+     "<span class=\"table-badge green\">4D - 6L - 2P - 2H</span>",
+     "800 CE",
+     "<strong>Allonge 2P</strong>. Arrêt de charge (<code>+1D</code> contre un adversaire qui charge)."
+    ],
+    [
+     "<strong>Hallebarde Lourde</strong>",
+     "<span class=\"table-badge amber\">E1</span>",
+     "<span class=\"table-badge green\">5D - 6L - 2P - 2H</span>",
+     "1 500 CE",
+     "<strong>Allonge 2P</strong>, <strong>Perforante 1</strong>. Bec d'estoc et crochet de désarmement."
+    ]
+   ]
   },
   "armes_choc_hast": {
    "type": "table",
+   "classe": "data-table",
    "colonnes": [
     "Arme",
+    "Époque",
     "Code DLPH",
-    "Prix Moyen",
-    "Effet & Remarques"
+    "Prix (CE)",
+    "Propriétés &amp; Remarques"
    ],
    "lignes": [
     [
      "<strong>Gourdin / Matraque</strong>",
+     "<span class=\"table-badge amber\">E0–E3</span>",
      "2D - 3L - 1P - 1H",
-     "~50 CE",
-     "Arme improvisée contondante."
+     "50 CE",
+     "<strong>Non létale</strong>. Arme contondante rustique ou de maintien de l'ordre."
+    ],
+    [
+     "<strong>Bâton de Combat</strong>",
+     "<span class=\"table-badge amber\">E0–E2</span>",
+     "2D - 3L - 2P - 2H",
+     "80 CE",
+     "<strong>Allonge 2P</strong>, <strong>Non létale</strong>, <code>+1</code> en parade de mêlée."
+    ],
+    [
+     "<strong>Masse d'Armes / Fléau</strong>",
+     "<span class=\"table-badge amber\">E1</span>",
+     "4D - 4L - 1P - 1H",
+     "650 CE",
+     "<strong>Perforante 1</strong>. Écrase les mailles et casques sans rebondir."
+    ],
+    [
+     "<strong>Hachette de Jet</strong>",
+     "<span class=\"table-badge amber\">E0–E2</span>",
+     "3D - 2L - 1P - 1H",
+     "350 CE",
+     "<strong>Arme de jet 6P</strong>. Équilibrée pour le lancer court ou le contact."
     ],
     [
      "<strong>Hache de Bataille</strong>",
-     "3-4D - 4L - 1P - 1H",
-     "~600 CE",
-     "Pénétration osseuse supérieure."
+     "<span class=\"table-badge amber\">E0–E1</span>",
+     "4D - 4L - 1P - 1H/2H",
+     "600 CE",
+     "<strong>Polyvalente</strong> (5D à 2H). Pénétration osseuse et bris de bois."
     ],
     [
-     "<strong>Marteau Métal Lourd</strong>",
+     "<strong>Hache de Guerre Lourde</strong>",
+     "<span class=\"table-badge amber\">E1</span>",
      "6D - 5L - 1P - 2H",
-     "~5 000 CE",
-     "Broyeur de blindages métalliques."
+     "3 500 CE",
+     "<strong>Perforante 1</strong>. Tranche boucliers et plaques légères."
     ],
     [
-     "<strong>Pique & Hallebarde</strong>",
-     "4D - 6L - 2P - 2H",
-     "~800 CE",
-     "Allonge tactique de 2 mètres, arrêt de charge."
+     "<strong>Marteau de Guerre Lourd</strong>",
+     "<span class=\"table-badge amber\">E1</span>",
+     "6D - 5L - 1P - 2H",
+     "5 000 CE",
+     "<strong>Perforante 2</strong>. Broyeur de blindages métalliques."
+    ],
+    [
+     "<strong>Matraque Paralysante</strong>",
+     "<span class=\"table-badge cyan\">E2–E4</span>",
+     "2D - 2L - 1P - 1H",
+     "1 200 CE",
+     "<strong>Non létale</strong>. Applique <em>Étourdi</em> sur différentiel &ge; 2."
+    ],
+    [
+     "<strong>Filet / Bolas de Capture</strong>",
+     "<span class=\"table-badge amber\">E0–E2</span>",
+     "0D - 2L - 6P - 1H",
+     "200 CE",
+     "<strong>Arme de jet 6P</strong>, <strong>Non létale</strong>. Pose <em>Immobilisé</em> sur touche franche (&Delta; &gt; 0)."
+    ]
+   ]
+  },
+  "armes_trait_jet": {
+   "type": "table",
+   "classe": "data-table",
+   "colonnes": [
+    "Arme",
+    "Époque",
+    "Code DLPH",
+    "Mun.",
+    "Prix (CE)",
+    "Propriétés &amp; Remarques"
+   ],
+   "lignes": [
+    [
+     "<strong>Fronde</strong>",
+     "<span class=\"table-badge amber\">E0–E1</span>",
+     "2D - 0.5L - 15P - 1H",
+     "1",
+     "40 CE",
+     "<strong>Silencieuse</strong>, <strong>Dissimulable</strong>, <strong>Non létale</strong> possible (bille de plomb/pierre)."
+    ],
+    [
+     "<strong>Javelot de Chasse</strong>",
+     "<span class=\"table-badge amber\">E0–E1</span>",
+     "3D - 2L - 10P - 1H",
+     "1",
+     "150 CE",
+     "<strong>Arme de jet 10P</strong>. Utilisable en lance courte au contact (1P)."
+    ],
+    [
+     "<strong>Couteaux de Lancer (&times;3)</strong>",
+     "<span class=\"table-badge amber\">E0–E2</span>",
+     "2D - 1.5L - 6P - 1H",
+     "3",
+     "300 CE",
+     "<strong>Arme de jet 6P</strong>, <strong>Silencieuse</strong>, <strong>Dissimulable</strong> (étui de 3 lames)."
+    ],
+    [
+     "<strong>Arc Court / de Chasse</strong>",
+     "<span class=\"table-badge amber\">E0–E1</span>",
+     "3D - 1.5L - 25P - 2H",
+     "1",
+     "350 CE",
+     "<strong>Silencieuse</strong>. Utilisable en forêt dense ou à cheval sans gêne."
+    ],
+    [
+     "<strong>Arc Long de Guerre</strong>",
+     "<span class=\"table-badge amber\">E1</span>",
+     "4D - 2L - 40P - 2H",
+     "1",
+     "700 CE",
+     "<strong>Silencieuse</strong>, <strong>Perforante 1</strong>, <strong>Canon Entravé</strong>. Exige FOR 3+."
     ],
     [
      "<strong>Arc Composite Renforcé</strong>",
-     "5D - 2L - 500P - 2H",
-     "~1 000 CE",
-     "Portée 500m, perforation à longue distance."
+     "<span class=\"table-badge amber\">E1–E2</span>",
+     "5D - 2L - 45P (70 m) - 2H",
+     "1",
+     "1 000 CE",
+     "<strong>Silencieuse</strong>, <strong>Perforante 1</strong>, <strong>Canon Entravé</strong>."
+    ],
+    [
+     "<strong>Arbalète Légère</strong>",
+     "<span class=\"table-badge amber\">E1–E2</span>",
+     "4D - 3L - 30P - 2H",
+     "1",
+     "900 CE",
+     "<strong>Silencieuse</strong>, <strong>Perforante 1</strong>, <strong>Rechargement lent 2 PA</strong>. Utilisable <em>À Terre</em>."
+    ],
+    [
+     "<strong>Arbalète Lourde à Moufle</strong>",
+     "<span class=\"table-badge amber\">E1–E2</span>",
+     "6D - 5L - 40P - 2H",
+     "1",
+     "2 500 CE",
+     "<strong>Silencieuse</strong>, <strong>Perforante 2</strong>, <strong>Rechargement lent 3 PA</strong>, <strong>Canon Entravé</strong>."
     ]
+   ]
+  },
+  "armes_balistiques": {
+   "type": "table",
+   "classe": "data-table",
+   "colonnes": [
+    "Arme",
+    "Époque",
+    "Code DLPH",
+    "Mun.",
+    "Prix (CE)",
+    "Propriétés &amp; Remarques"
    ],
-   "classe": "data-table"
+   "lignes": [
+    [
+     "<strong>Pistolet Léger / Revolver</strong>",
+     "<span class=\"table-badge cyan\">E2–E3</span>",
+     "3D - 1.5L - 15P - 1H",
+     "10",
+     "800 CE",
+     "<strong>Dissimulable</strong>. Arme de poing standard de ville et de patrouille."
+    ],
+    [
+     "<strong>Pistolet Lourd</strong>",
+     "<span class=\"table-badge cyan\">E2–E3</span>",
+     "4D - 2L - 20P - 1H",
+     "8",
+     "1 500 CE",
+     "<strong>Perforante 1</strong>. Fort recul, pouvoir d'arrêt élevé."
+    ],
+    [
+     "<strong>Pistolet Tranquillisant</strong>",
+     "<span class=\"table-badge cyan\">E2–E4</span>",
+     "1D - 1.5L - 12P - 1H",
+     "4",
+     "2 200 CE",
+     "<strong>Non létale</strong>, <strong>Silencieuse</strong>. Pose <em>Étourdi</em> 1 tour (puis <em>Inconscient</em> si 2e touche ou échec CON Diff 6)."
+    ],
+    [
+     "<strong>Pistolet-Mitrailleur</strong>",
+     "<span class=\"table-badge cyan\">E2–E3</span>",
+     "3D - 3L - 25P - 2H",
+     "30",
+     "2 400 CE",
+     "<strong>Cadence</strong>, <strong>Canon Entravé</strong>. Compact, prisé en combat urbain."
+    ],
+    [
+     "<strong>Fusil à Pompe Tactique</strong>",
+     "<span class=\"table-badge cyan\">E2–E3</span>",
+     "5D - 4L - 12P - 2H",
+     "6",
+     "2 000 CE",
+     "<strong>Canon Entravé</strong>. <strong>+1 Dégât</strong> à courte portée (&le; 4 cases), réduit au-delà."
+    ],
+    [
+     "<strong>Carabine à Verrou</strong>",
+     "<span class=\"table-badge cyan\">E2</span>",
+     "4D - 4L - 50P (250 m) - 2H",
+     "5",
+     "1 800 CE",
+     "<strong>Perforante 1</strong>, <strong>Canon Entravé</strong>. Précise et rustique sous tout climat."
+    ],
+    [
+     "<strong>Fusil d'Assaut Balistique</strong>",
+     "<span class=\"table-badge cyan\">E2–E3</span>",
+     "4D - 4L - 40P (200 m) - 2H",
+     "30",
+     "3 500 CE",
+     "<strong>Cadence</strong>, <strong>Perforante 1</strong>, <strong>Canon Entravé</strong>. Polyvalent d'escouade."
+    ],
+    [
+     "<strong>Fusil de Précision Balistique</strong>",
+     "<span class=\"table-badge cyan\">E2–E3</span>",
+     "5D - 6L - 80P (600 m) - 2H",
+     "5",
+     "6 500 CE",
+     "<strong>Perforante 2</strong>, <strong>Canon Entravé</strong>. Lunette intégrée (+1 portée utile hors grille)."
+    ],
+    [
+     "<strong>Fusil Anti-Matériel</strong>",
+     "<span class=\"table-badge ruby\">E2–E3</span>",
+     "7D - 14L - 90P (1 km) - 2H",
+     "5",
+     "18 000 CE",
+     "<strong>Perforante 3</strong>, <strong>Anti-Matériel</strong>, <strong>Rechargement lent 2 PA</strong>, <strong>Canon Entravé</strong>."
+    ]
+   ]
   },
   "epees_laser": {
    "type": "table",
+   "classe": "data-table",
    "colonnes": [
     "Modèle d'Épée Laser",
+    "Époque",
     "Code DLPH",
-    "Prix Impérial (CE)",
+    "Prix (CE)",
     "Propriétés Tactiques"
    ],
    "lignes": [
     [
      "<strong>Épée Laser Standard 3D</strong>",
+     "<span class=\"table-badge cyan\">E3</span>",
      "<span class=\"table-badge cyan\">3D - 1L - 1P - 1H</span>",
-     "~6 000 CE",
-     "Ultra-légère (1 livre), dégainement quasi instantané."
+     "6 000 CE",
+     "<strong>Perforante 2</strong>. Ultra-légère (1 L), dégainement fluide."
     ],
     [
      "<strong>Épée Laser Militaire 4D</strong>",
+     "<span class=\"table-badge cyan\">E3</span>",
      "<span class=\"table-badge cyan\">4D - 1L - 1P - 1H</span>",
-     "~20 000 CE",
-     "Équipement d'officier de la garde impériale."
+     "20 000 CE",
+     "<strong>Perforante 2</strong>. Dotation d'officier de la garde impériale."
     ],
     [
      "<strong>Épée Laser Commando 5D</strong>",
+     "<span class=\"table-badge green\">E4</span>",
      "<span class=\"table-badge amber\">5D - 1L - 1P - 1H</span>",
-     "~40 000 CE",
-     "Puissance chirurgicale à une main, coupe l'acier."
+     "40 000 CE",
+     "<strong>Perforante 3</strong>. Puissance chirurgicale à une main."
     ],
     [
      "<strong>Épée Laser Deux Mains 4D</strong>",
+     "<span class=\"table-badge cyan\">E3</span>",
      "<span class=\"table-badge cyan\">4D - 2L - 1P - 2H</span>",
-     "~18 000 CE",
-     "Faisceau large, excellente assise de parade (+1)."
+     "18 000 CE",
+     "<strong>Perforante 2</strong>. Faisceau large, <code>+1</code> en parade."
     ],
     [
      "<strong>Épée Laser Lourde 5D</strong>",
+     "<span class=\"table-badge green\">E4</span>",
      "<span class=\"table-badge amber\">5D - 2L - 1P - 2H</span>",
-     "~35 000 CE",
-     "Générateur double chambre, perforation lourde."
+     "35 000 CE",
+     "<strong>Perforante 3</strong>. Générateur double chambre anti-blindage."
     ],
     [
      "<strong>Épée Laser Suprême 6D</strong>",
+     "<span class=\"table-badge green\">E4</span>",
      "<span class=\"table-badge ruby\">6D - 2L - 1P - 2H</span>",
-     "~60 000 CE",
-     "Arc plasmique dense, inflige des brûlures résiduelles."
+     "60 000 CE",
+     "<strong>Perforante 4</strong>, <strong>Brûlure</strong> (pose <em>En Feu 2</em> sur critique)."
     ],
     [
      "<strong>Sabre Long à Allonge 4D</strong>",
+     "<span class=\"table-badge green\">E4</span>",
      "<span class=\"table-badge cyan\">4D - 3L - 2P - 1H</span>",
-     "~75 000 CE",
-     "Portée 2 mètres à une main, régulateur cinétique."
+     "75 000 CE",
+     "<strong>Allonge 2P</strong>, <strong>Perforante 2</strong> à une main."
     ],
     [
      "<strong>Grand Sabre de Brèche 5D</strong>",
+     "<span class=\"table-badge green\">E4</span>",
      "<span class=\"table-badge amber\">5D - 4L - 2P - 2H</span>",
-     "~80 000 CE",
-     "Conçu pour découper les portes de sas de vaisseaux."
+     "80 000 CE",
+     "<strong>Allonge 2P</strong>, <strong>Perforante 3</strong>, <strong>Anti-Matériel</strong> (portes et sas)."
     ],
     [
      "<strong>Espadon Laser Titan 6D</strong>",
+     "<span class=\"table-badge emerald\">E5</span>",
      "<span class=\"table-badge ruby\">6D - 4L - 2P - 2H</span>",
-     "~100 000 CE",
-     "Le summum du corps-à-corps énergétique impérial."
+     "100 000 CE",
+     "<strong>Allonge 2P</strong>, <strong>Perforante 4</strong>, <strong>Brûlure</strong> (pose <em>En Feu 2</em> sur critique)."
     ]
-   ],
-   "classe": "data-table"
+   ]
   },
   "fusils_laser": {
-   "type": "cartes",
-   "grille": 2,
-   "cartes": [
-    {
-     "titre": "<span>Gamme des Fusils Laser Standard</span>\n                                <span class=\"pill-badge cyan\">Tir Précis</span>",
-     "top": false,
-     "corps_brut": "\n                            <ul style=\"padding-left: 15px; margin: 10px 0; font-size: 0.9em;\">\n                                <li><strong>Fusil Laser Léger :</strong> <code>3D - 2L - 500P - 1H</code> (10 000 CE).\n                                    Pistolet lourd compact.</li>\n                                <li><strong>Fusil Laser de Précision :</strong> <code>4D - 2L - 750P - 1H</code> (25 000\n                                    CE). Visée optique intégrée.</li>\n                                <li><strong>Fusil d'Assaut Laser :</strong> <code>4D - 3L - 500P - 2H</code> (20 000\n                                    CE). Cadence soutenue.</li>\n                                <li><strong>Fusil de Sniper Lourd :</strong> <code>5D - 4L - 1000P - 2H</code> (50 000\n                                    CE). Portée 1 kilomètre.</li>\n                            </ul>\n                            <div class=\"callout arcane\" style=\"margin-top: 10px; font-size: 0.85em;\">\n                                <strong>Balistique des Faisceaux Laser :</strong> Le tir produit un trait lumineux instantané et continu. En cas de touche, l'énergie thermique est absorbée par la cible ; en cas d'échec, le faisceau s'écrase sur le sol ou les parois en gerbe d'étincelles thermiques. Au contact direct (Distance = 1 case), les fusils laser sont assujettis à la condition <em>Canon Entravé</em> (Livre V, §22.2).\n                            </div>\n                        ",
-     "pieds": []
-    },
-    {
-     "titre": "<span>Le Fusil « Deglazer »</span>\n                                <span class=\"pill-badge ruby\">+1 ec // 7D Létal</span>",
-     "top": false,
-     "monde": "Arcanotech de Guerre // 200 000 CE",
-     "corps_brut": "\n                            <div class=\"formula-math\" style=\"font-size: 1.1em; margin: 10px 0;\">\n                                <span class=\"hl-cyan\">+1 ec</span> &nbsp;—&nbsp; <span class=\"hl-gold\">7D - 4L - 1000P -\n                                    2H</span>\n                            </div>\n                            <p style=\"font-size: 0.9em;\">\n                                Arme d'élite légendaire. Le <em>Deglazer</em> tire un rayon focalisé à travers un prisme\n                                de nytharite pure. Il confère un <strong>bonus matériel situationnel de +1 au total du jet (+1\n                                    ec)</strong> — ce n'est pas un modificateur de caractéristique (les mods carac restent interdits) — et inflige <strong>7 Dégâts de base</strong> jusqu'à 1 kilomètre de\n                                distance !\n                            </p>\n                        ",
-     "pieds": []
-    }
+   "type": "table",
+   "classe": "data-table",
+   "colonnes": [
+    "Modèle d'Arme Laser",
+    "Époque",
+    "Code DLPH",
+    "Mun.",
+    "Prix (CE)",
+    "Propriétés Tactiques"
+   ],
+   "lignes": [
+    [
+     "<strong>Fusil Laser Léger</strong>",
+     "<span class=\"table-badge cyan\">E3</span>",
+     "<span class=\"table-badge cyan\">3D - 2L - 30P (500 m) - 1H</span>",
+     "10",
+     "10 000 CE",
+     "<strong>Perforante 1</strong>. Pistolet laser lourd compact, <strong>Dissimulable</strong> en manteau."
+    ],
+    [
+     "<strong>Fusil Laser de Précision</strong>",
+     "<span class=\"table-badge cyan\">E3</span>",
+     "<span class=\"table-badge cyan\">4D - 2L - 50P (750 m) - 1H</span>",
+     "10",
+     "25 000 CE",
+     "<strong>Perforante 2</strong>. Visée optique intégrée à une main."
+    ],
+    [
+     "<strong>Fusil d'Assaut Laser</strong>",
+     "<span class=\"table-badge cyan\">E3</span>",
+     "<span class=\"table-badge green\">4D - 3L - 35P (500 m) - 2H</span>",
+     "20",
+     "20 000 CE",
+     "<strong>Perforante 2</strong>, <strong>Cadence</strong>, <strong>Canon Entravé</strong>."
+    ],
+    [
+     "<strong>Fusil Laser à Longue Portée</strong>",
+     "<span class=\"table-badge green\">E4</span>",
+     "<span class=\"table-badge amber\">5D - 4L - 100P (1 km) - 2H</span>",
+     "10",
+     "50 000 CE",
+     "<strong>Perforante 2</strong>, <strong>Canon Entravé</strong>. Accepte la Charge Haute Densité (+1D)."
+    ],
+    [
+     "<strong>Fusil « Deglazer »</strong>",
+     "<span class=\"table-badge emerald\">E4–E5</span>",
+     "<span class=\"table-badge ruby\">+1 ec · 7D - 4L - 100P (1 km) - 2H</span>",
+     "10",
+     "200 000 CE",
+     "<strong>Perforante 3</strong>, <strong>Canon Entravé</strong>, prisme de nytharite pure (+1 ec matériel)."
+    ]
+   ]
+  },
+  "deglazer_focus": {
+   "type": "formule",
+   "etiquette_tag": "div",
+   "etiquette_classe": "formula-label",
+   "etiquette_html": "Focus Arcanotech : Le Fusil « Deglazer » (200 000 CE)",
+   "math_html": "<span class=\"hl-cyan\">+1 ec (matériel)</span> &nbsp;—&nbsp; <span class=\"hl-ruby\">7D</span> - <span class=\"hl-gold\">4L</span> - <span class=\"hl-cyan\">100P (1 km)</span> - <span class=\"hl-emerald\">2H</span>",
+   "desc_html": "Arme d'élite légendaire à prisme de nytharite pure. Il confère un <strong>bonus matériel situationnel de +1 au total du jet (+1 ec)</strong> — jamais un modificateur de caractéristique —, possède <strong>Perforante 3</strong>, accepte les charges Haute Densité (+1D) et frappe jusqu'à <strong>100 cases (1 km hors grille)</strong>.",
+   "contenu": false,
+   "wide": true
+  },
+  "armes_lourdes": {
+   "type": "table",
+   "classe": "data-table",
+   "colonnes": [
+    "Arme Lourde",
+    "Époque",
+    "Code DLPH",
+    "Mun.",
+    "Prix (CE)",
+    "Propriétés &amp; Usage"
+   ],
+   "lignes": [
+    [
+     "<strong>Mitrailleuse Lourde de Soutien</strong>",
+     "<span class=\"table-badge cyan\">E2–E3</span>",
+     "5D - 14L - 50P (300 m) - 2H",
+     "60",
+     "12 000 CE",
+     "<strong>Cadence</strong>, <strong>Perforante 1</strong>, <strong>Anti-Matériel</strong>, <strong>Canon Entravé</strong>. Trépied ou FOR 4+."
+    ],
+    [
+     "<strong>Lance-Grenades Tactique (Coup / Barillet)</strong>",
+     "<span class=\"table-badge cyan\">E2–E3</span>",
+     "Selon grenade - 8L - 18P - 2H",
+     "1 / 6",
+     "12 000 CE",
+     "Projette toute grenade à <strong>18P</strong> (+10 cases vs lancer main). Modèle à barillet : 6 coups ; rechargement 2 PA."
+    ],
+    [
+     "<strong>Lance-Roquettes Antichar</strong>",
+     "<span class=\"table-badge cyan\">E2–E3</span>",
+     "10D+2d10 - 12L - 60P - 2H",
+     "1",
+     "18 000 CE",
+     "<strong>Zone 2</strong>, <strong>Perforante 4</strong>, <strong>Anti-Matériel</strong>, <strong>Rechargement lent 3 PA</strong>, <strong>Canon Entravé</strong>."
+    ],
+    [
+     "<strong>Canon Plasma Portable</strong>",
+     "<span class=\"table-badge green\">E4</span>",
+     "8D - 16L - 50P - 2H",
+     "6",
+     "95 000 CE",
+     "<strong>Perforante 4</strong>, <strong>Anti-Matériel</strong>, <strong>Brûlure</strong> (<em>En Feu 3</em> sur critique), <strong>Canon Entravé</strong>."
+    ],
+    [
+     "<strong>Canon Rail / Lance Arcanique</strong>",
+     "<span class=\"table-badge emerald\">E4–E5</span>",
+     "9D - 12L - 100P (1 km) - 2H",
+     "5",
+     "160 000 CE",
+     "<strong>Perforante 5</strong>, <strong>Anti-Matériel</strong> (blindages lourds &amp; véhicules), <strong>Rechargement lent 2 PA</strong>."
+    ]
    ]
   },
   "grenades": {
    "type": "table",
+   "classe": "data-table",
    "colonnes": [
     "Type de Grenade",
-    "Puissance d'Impact",
+    "Époque",
+    "Impact &amp; Rayon",
     "Code DLPH",
-    "Prix Unitaire (CE)"
+    "Prix (CE)",
+    "Effets"
    ],
    "lignes": [
     [
      "<strong>Grenade Légère 1d10</strong>",
-     "10 + 1d10 dégâts de zone",
-     "10D - 0.5L - 30P - 1H",
-     "2 000 CE"
+     "<span class=\"table-badge cyan\">E2–E3</span>",
+     "10 + 1d10 · <strong>Zone 1</strong>",
+     "10D - 0.5L - 8P - 1H",
+     "2 000 CE",
+     "<strong>Arme de jet 8P</strong>, <strong>Zone 1 case</strong>. Souffle réduit pour couloir."
     ],
     [
      "<strong>Grenade Tactique 2d10</strong>",
-     "10 + 2d10 dégâts de zone",
-     "10D - 0.5L - 30P - 1H",
-     "3 500 CE"
+     "<span class=\"table-badge cyan\">E2–E3</span>",
+     "10 + 2d10 · <strong>Zone 2</strong>",
+     "10D - 0.5L - 8P - 1H",
+     "3 500 CE",
+     "<strong>Arme de jet 8P</strong>, <strong>Zone 2 cases</strong>. Pose <em>Déstabilisé</em>."
     ],
     [
      "<strong>Grenade à Fragmentation 3d10</strong>",
-     "10 + 3d10 dégâts de zone",
-     "10D - 0.5L - 30P - 1H",
-     "5 000 CE"
+     "<span class=\"table-badge cyan\">E2–E3</span>",
+     "10 + 3d10 · <strong>Zone 2</strong>",
+     "10D - 0.5L - 8P - 1H",
+     "5 000 CE",
+     "<strong>Arme de jet 8P</strong>, <strong>Zone 2 cases</strong>. Pose <em>Déstabilisé</em> + <em>Saignement 2</em>."
     ],
     [
      "<strong>Grenade de Brèche 4d10</strong>",
-     "10 + 4d10 dégâts de zone",
-     "10D - 1.0L - 30P - 1H",
-     "6 500 CE"
+     "<span class=\"table-badge green\">E3–E4</span>",
+     "10 + 4d10 · <strong>Zone 2</strong>",
+     "10D - 1.0L - 8P - 1H",
+     "6 500 CE",
+     "<strong>Arme de jet 8P</strong>, <strong>Anti-Matériel</strong> (perce portes), pose <em>À Terre</em>."
     ],
     [
-     "<strong>Grenade Thermobarrique 5d10</strong>",
-     "10 + 5d10 dégâts de zone",
-     "10D - 1.0L - 30P - 1H",
-     "7 500 CE"
+     "<strong>Grenade Thermobarique 5d10</strong>",
+     "<span class=\"table-badge ruby\">E3–E4</span>",
+     "10 + 5d10 · <strong>Zone 3</strong>",
+     "10D - 1.0L - 8P - 1H",
+     "7 500 CE",
+     "<strong>Arme de jet 8P</strong>, <strong>Zone 3 cases</strong>. Pose <em>En Feu 3</em>, <em>Asphyxie 2</em> et <em>Déstabilisé</em>."
     ]
+   ]
+  },
+  "grenades_tactiques": {
+   "type": "table",
+   "classe": "data-table",
+   "colonnes": [
+    "Modèle Tactique",
+    "Époque",
+    "Impact &amp; Rayon",
+    "Code DLPH",
+    "Prix (CE)",
+    "Effets &amp; États Posés"
    ],
-   "classe": "data-table"
+   "lignes": [
+    [
+     "<strong>Pot Incendiaire</strong>",
+     "<span class=\"table-badge amber\">E1–E2</span>",
+     "4D + 1d10 · <strong>Zone 1</strong>",
+     "4D - 1.5L - 8P - 1H",
+     "350 CE",
+     "Poix ou thermite légère : pose <em>En Feu 2</em> sur la zone pendant 2 tours."
+    ],
+    [
+     "<strong>Grenade Fumigène</strong>",
+     "<span class=\"table-badge cyan\">E2–E4</span>",
+     "0D · <strong>Zone 2</strong>",
+     "0D - 1.0L - 8P - 1H",
+     "600 CE",
+     "Rideau opaque 2 tours : bloque la ligne de mire, impose <em>Aveuglé</em> sans masque."
+    ],
+    [
+     "<strong>Grenade Étourdissante (Flash)</strong>",
+     "<span class=\"table-badge cyan\">E2–E4</span>",
+     "2D · <strong>Zone 2</strong>",
+     "2D - 0.6L - 8P - 1H",
+     "1 800 CE",
+     "<strong>Non létale</strong> : pose <em>Aveuglé</em>, <em>Assourdi</em> et <em>Étourdi</em> 1 tour (neutralisé par Masque Filtrant)."
+    ],
+    [
+     "<strong>Grenade Lacrymogène / Gaz</strong>",
+     "<span class=\"table-badge cyan\">E2–E4</span>",
+     "2D · <strong>Zone 2</strong>",
+     "2D - 0.7L - 8P - 1H",
+     "1 200 CE",
+     "Nuage 2 tours : pose <em>Aveuglé</em> et <em>Asphyxie 2</em> (bloqué par Masque Filtrant)."
+    ],
+    [
+     "<strong>Grenade IEM (Impulsion)</strong>",
+     "<span class=\"table-badge green\">E3–E4</span>",
+     "4D · <strong>Zone 2</strong>",
+     "4D - 0.8L - 8P - 1H",
+     "4 500 CE",
+     "Surcharge capteurs, drones, implants et champs de force (−15 absorption champ, <em>Paralysé</em> sur automates)."
+    ],
+    [
+     "<strong>Grenade Cryogénique</strong>",
+     "<span class=\"table-badge green\">E3–E4</span>",
+     "6D + 1d10 · <strong>Zone 2</strong>",
+     "6D - 0.8L - 8P - 1H",
+     "9 000 CE",
+     "Gel instantané : pose <em>Ralenti</em> et <em>Immobilisé</em> 1 tour."
+    ],
+    [
+     "<strong>Grenade Graviton</strong>",
+     "<span class=\"table-badge emerald\">E4–E5</span>",
+     "8D + 2d10 · <strong>Zone 2</strong>",
+     "8D - 1.2L - 8P - 1H",
+     "25 000 CE",
+     "Puits gravifique bref : attire d'1 case vers le centre et pose <em>À Terre</em> + <em>Immobilisé</em> 1 tour."
+    ],
+    [
+     "<strong>Grenade de Stase Chronale</strong>",
+     "<span class=\"table-badge emerald\">E5</span>",
+     "0D · <strong>Zone 2</strong>",
+     "0D - 0.8L - 8P - 1H",
+     "35 000 CE",
+     "Bulle de Fleuve figé 2 tours (<a class=\"rule-ref\" href=\"livre_10.html#chap-39\" data-tip=\"Fleuve du Temps &amp; Stase (Livre X chap. 39 &amp; 42).\">Livre X</a>) : <em>Paralysé</em> sur échec d'épreuve."
+    ]
+   ]
+  },
+  "munitions_charges": {
+   "type": "table",
+   "classe": "data-table",
+   "colonnes": [
+    "Munition / Charge",
+    "Époque",
+    "Poids",
+    "Prix (CE)",
+    "Usage &amp; Effet"
+   ],
+   "lignes": [
+    [
+     "<strong>Carquois de Flèches / Carreaux (&times;20)</strong>",
+     "<span class=\"table-badge amber\">E0–E2</span>",
+     "2.0 L",
+     "150 CE",
+     "20 traits pour arc ou arbalète (environ 50 % récupérables après combat)."
+    ],
+    [
+     "<strong>Munitions Balistiques Standard (&times;30)</strong>",
+     "<span class=\"table-badge cyan\">E2–E3</span>",
+     "1.0 L",
+     "120 CE",
+     "30 cartouches pour pistolet, pistolet-mitrailleur, carabine ou fusil d'assaut."
+    ],
+    [
+     "<strong>Munitions Perforantes / Calibre Lourd (&times;10)</strong>",
+     "<span class=\"table-badge cyan\">E2–E3</span>",
+     "0.8 L",
+     "450 CE",
+     "Confère <strong>+1 Perforante</strong> sur 10 tirs balistiques (ou alimente fusil anti-matériel)."
+    ],
+    [
+     "<strong>Charge Laser Standard (&times;10)</strong>",
+     "<span class=\"table-badge cyan\">E3–E4</span>",
+     "1.0 L",
+     "300 CE",
+     "10 tirs pour pistolet ou fusil laser standard."
+    ],
+    [
+     "<strong>Charge Laser Haute Densité (&times;10)</strong>",
+     "<span class=\"table-badge green\">E3–E5</span>",
+     "1.2 L",
+     "900 CE",
+     "10 tirs avec <strong>+1 Dégât</strong> pour fusils longue portée et <em>Deglazer</em>."
+    ],
+    [
+     "<strong>Batterie Universelle</strong>",
+     "<span class=\"table-badge cyan\">E2–E4</span>",
+     "0.8 L",
+     "250 CE",
+     "Alimente lampes tactiques, optiques thermiques, radios et outils de terrain."
+    ],
+    [
+     "<strong>Cellule Nytharite Standard</strong>",
+     "<span class=\"table-badge green\">E4–E5</span>",
+     "0.5 L",
+     "1 500 CE",
+     "Recharge une épée laser, un outil arcanotech ou un champ de force (niv. 1–2 en 2 PA)."
+    ],
+    [
+     "<strong>Cellule Nytharite Pure</strong>",
+     "<span class=\"table-badge emerald\">E4–E5</span>",
+     "0.5 L",
+     "8 000 CE",
+     "Alimente <em>Deglazer</em>, canon plasma, <em>Espadon Titan</em> ou recharge un champ niv. 3–5 en 2 PA."
+    ]
+   ]
+  },
+  "equipement_arcanotech": {
+   "type": "table",
+   "classe": "data-table",
+   "colonnes": [
+    "Dispositif / Implant",
+    "Époque",
+    "Poids",
+    "Prix (CE)",
+    "Effet &amp; Limites"
+   ],
+   "lignes": [
+    [
+     "<strong>Éclat de Nytharite Brut</strong>",
+     "<span class=\"table-badge green\">E4–E5</span>",
+     "0.5 L",
+     "3 000 CE",
+     "Composant de base pour tailler un cristal, réparer une arme énergétique ou forger en atelier."
+    ],
+    [
+     "<strong>Résonateur / Focaliseur Nytharite</strong>",
+     "<span class=\"table-badge green\">E4–E5</span>",
+     "0.5 L",
+     "12 000 CE",
+     "Catalyseur de 5e Force : +1 portée en cases sur sorts canalisés ou entretien sans perte de résonance."
+    ],
+    [
+     "<strong>Module Arcanotech Pré-Gravé (3 charges)</strong>",
+     "<span class=\"table-badge green\">E4–E5</span>",
+     "1.5 L",
+     "18 000 CE",
+     "Cristal taillé à usage limité (Livre IV §17) : permet à tout porteur de déclencher 1 sort pré-gravé de coût &le; 3 PA (3 charges)."
+    ],
+    [
+     "<strong>Moteur Arcanique de Poche</strong>",
+     "<span class=\"table-badge emerald\">E4–E5</span>",
+     "4.0 L",
+     "25 000 CE",
+     "Générateur portable alimentant un atelier de campagne, un relais ou une station isolée."
+    ],
+    [
+     "<strong>Brouilleur de Signature / Voile</strong>",
+     "<span class=\"table-badge emerald\">E4–E5</span>",
+     "1.0 L",
+     "14 000 CE",
+     "<code>+2</code> en <em>Discrétion</em> face aux capteurs électroniques, drones et caméras thermiques."
+    ],
+    [
+     "<strong>Prothèse de Remplacement</strong>",
+     "<span class=\"table-badge cyan\">E3–E4</span>",
+     "—",
+     "5 000 CE",
+     "Restaure intégralement l'usage d'un membre perdu sans bonus de caractéristique."
+    ],
+    [
+     "<strong>Optique Cybernétique</strong>",
+     "<span class=\"table-badge cyan\">E3–E4</span>",
+     "—",
+     "8 000 CE",
+     "Vision nocturne et zoom thermique (<code>+1</code> Observation de nuit ou à longue distance). Sensible aux effets IEM."
+    ],
+    [
+     "<strong>Interface Neurale de Visée</strong>",
+     "<span class=\"table-badge green\">E3–E4</span>",
+     "—",
+     "15 000 CE",
+     "Connectée à une arme compatible : annule le coût de visée d'une micro-analyse et réduit de 1 le malus de couvert léger."
+    ],
+    [
+     "<strong>Plaque Sous-Dermique Légère</strong>",
+     "<span class=\"table-badge green\">E3–E4</span>",
+     "—",
+     "18 000 CE",
+     "Confère <strong>Protection 1</strong> (0 PA d'encombrement), non cumulable avec une armure lourde &ge; 5."
+    ]
+   ]
   },
   "armures": {
-   "type": "cartes",
-   "grille": 2,
-   "cartes": [
-    {
-     "titre": "<span>Armures Légères (0 PA Malus)</span>\n                                <span class=\"pill-badge green\">Mobilité Totale</span>",
-     "top": false,
-     "corps_brut": "\n                            <p style=\"font-size: 0.9em;\">\n                                Conçues en fibres balistiques et polymères souples. Elles n'imposent <strong>aucun malus\n                                    en PA</strong> sur les actions ou déplacements.\n                            </p>\n                            <ul style=\"padding-left: 15px; font-size: 0.9em;\">\n                                <li><strong>Armure Légère 1 :</strong> Protection 1 point &bull; 2 000 CE</li>\n                                <li><strong>Armure Légère 2 :</strong> Protection 2 points &bull; 5 000 CE</li>\n                                <li><strong>Armure Légère 3 :</strong> Protection 3 points &bull; 12 000 CE</li>\n                                <li><strong>Armure Légère 4 :</strong> Protection 4 points &bull; 20 000 CE</li>\n                            </ul>\n                        ",
-     "pieds": []
-    },
-    {
-     "titre": "<span>Armures Lourdes (Malus PA)</span>\n                                <span class=\"pill-badge ruby\">Blindage Renforcé</span>",
-     "top": false,
-     "corps_brut": "\n                            <p style=\"font-size: 0.9em;\">\n                                Plaques de céramo-métal et exosquelettes. Elles absorbent des chocs extrêmes mais leur\n                                inertie impose un <strong>surcoût permanent en PA</strong> !\n                            </p>\n                            <ul style=\"padding-left: 15px; font-size: 0.9em;\">\n                                <li><strong>Armure Lourde 3 (1 PA) :</strong> Prot 3 &bull; 8 000 CE</li>\n                                <li><strong>Armure Lourde 4 (1 PA) :</strong> Prot 4 &bull; 12 000 CE</li>\n                                <li><strong>Armure Lourde 5 (1 PA) :</strong> Prot 5 &bull; 20 000 CE</li>\n                                <li><strong>Armure Lourde 6 (2 PA) :</strong> Prot 6 &bull; 50 000 CE</li>\n                                <li><strong>Armure Lourde 7 (2 PA) :</strong> Prot 7 &bull; 90 000 CE</li>\n                                <li><strong>Armure Lourde 7 Optimisée (1 PA) :</strong> Prot 7 &bull; ~125 000 CE</li>\n                            </ul>\n                        ",
-     "pieds": []
-    }
+   "type": "table",
+   "classe": "data-table",
+   "colonnes": [
+    "Armure",
+    "Époque",
+    "Prot. / Encombr.",
+    "Poids",
+    "Prix (CE)",
+    "Équivalents [E0–E5]"
+   ],
+   "lignes": [
+    [
+     "<strong>Armure Légère 1</strong>",
+     "<span class=\"table-badge amber\">E0–E5</span>",
+     "<strong>Prot 1</strong> &bull; 0 PA",
+     "4 L",
+     "2 000 CE",
+     "Cuir bouilli épais, gambison [E0–E1] ; gilet pare-éclats souple [E2–E3]."
+    ],
+    [
+     "<strong>Armure Légère 2</strong>",
+     "<span class=\"table-badge amber\">E1–E5</span>",
+     "<strong>Prot 2</strong> &bull; 0 PA",
+     "5 L",
+     "5 000 CE",
+     "Cotte de mailles légère [E1] ; veste balistique en polymères [E2–E3]."
+    ],
+    [
+     "<strong>Armure Légère 3</strong>",
+     "<span class=\"table-badge cyan\">E2–E5</span>",
+     "<strong>Prot 3</strong> &bull; 0 PA",
+     "6 L",
+     "12 000 CE",
+     "Brigandine renforcée [E1] ; tissage aramide haute densité [E2–E3]."
+    ],
+    [
+     "<strong>Armure Légère 4</strong>",
+     "<span class=\"table-badge green\">E3–E5</span>",
+     "<strong>Prot 4</strong> &bull; 0 PA",
+     "7 L",
+     "20 000 CE",
+     "Armure souple en fibres arcaniques et maille composite [E3–E5]."
+    ],
+    [
+     "<strong>Armure Lourde 3</strong>",
+     "<span class=\"table-badge amber\">E1–E4</span>",
+     "<strong>Prot 3</strong> &bull; <span class=\"table-badge amber\">+1 PA</span>",
+     "22 L",
+     "8 000 CE",
+     "Demi-plate d'acier [E1] ; gilet lourd de plaques céramo-métal [E2–E3]."
+    ],
+    [
+     "<strong>Armure Lourde 4</strong>",
+     "<span class=\"table-badge cyan\">E1–E4</span>",
+     "<strong>Prot 4</strong> &bull; <span class=\"table-badge amber\">+1 PA</span>",
+     "26 L",
+     "12 000 CE",
+     "Harnois complet de plates [E1] ; exosquelette léger d'assaut [E3–E4]."
+    ],
+    [
+     "<strong>Armure Lourde 5</strong>",
+     "<span class=\"table-badge green\">E3–E5</span>",
+     "<strong>Prot 5</strong> &bull; <span class=\"table-badge amber\">+1 PA</span>",
+     "30 L",
+     "20 000 CE",
+     "Cuirasse de ligne céramo-métal motorisée [E3–E4]."
+    ],
+    [
+     "<strong>Armure Lourde 6</strong>",
+     "<span class=\"table-badge ruby\">E3–E5</span>",
+     "<strong>Prot 6</strong> &bull; <span class=\"table-badge ruby\">+2 PA</span>",
+     "35 L",
+     "50 000 CE",
+     "Blindage d'assaut lourd de brèche [E3–E4]."
+    ],
+    [
+     "<strong>Armure Lourde 7</strong>",
+     "<span class=\"table-badge ruby\">E3–E5</span>",
+     "<strong>Prot 7</strong> &bull; <span class=\"table-badge ruby\">+2 PA</span>",
+     "40 L",
+     "90 000 CE",
+     "Forteresse portable de choc impérial [E3–E5]."
+    ],
+    [
+     "<strong>Armure Lourde 7 Optimisée</strong>",
+     "<span class=\"table-badge emerald\">E4–E5</span>",
+     "<strong>Prot 7</strong> &bull; <span class=\"table-badge amber\">+1 PA</span>",
+     "30 L",
+     "125 000 CE",
+     "Alliage nytharite allégé : Prot 7 pour seulement <code>+1 PA</code> d'encombrement."
+    ]
+   ]
+  },
+  "boucliers_physiques": {
+   "type": "table",
+   "classe": "data-table",
+   "colonnes": [
+    "Bouclier",
+    "Époque",
+    "Parade / Encombr.",
+    "Poids / Mains",
+    "Prix (CE)",
+    "Particularités"
+   ],
+   "lignes": [
+    [
+     "<strong>Targe / Bouclier de Peau</strong>",
+     "<span class=\"table-badge amber\">E0–E2</span>",
+     "<strong>+1 parade</strong> &bull; 0 PA",
+     "3 L &bull; 1H",
+     "250 CE",
+     "Permet de parer les flèches et armes de jet ; léger et maniable."
+    ],
+    [
+     "<strong>Écu / Bouclier de Garnison</strong>",
+     "<span class=\"table-badge amber\">E1–E2</span>",
+     "<strong>+2 parade</strong> &bull; 0 PA",
+     "6 L &bull; 1H",
+     "600 CE",
+     "Permet de parer flèches, carreaux et projectiles légers."
+    ],
+    [
+     "<strong>Pavois / Bouclier Balistique Lourd</strong>",
+     "<span class=\"table-badge cyan\">E1–E4</span>",
+     "<strong>+2 parade</strong> &bull; <span class=\"table-badge amber\">+1 PA</span>",
+     "12 L &bull; 1H",
+     "2 500 CE",
+     "Pare les balles légères et offre un demi-couvert frontal tant que tu le tiens dressé."
+    ],
+    [
+     "<strong>Bouclier Énergétique de Bras</strong>",
+     "<span class=\"table-badge green\">E3–E5</span>",
+     "<strong>+2 parade</strong> &bull; 0 PA",
+     "2 L &bull; 1H",
+     "18 000 CE",
+     "Disque à champ focalisé : pare aussi les tirs laser légers et absorbe jusqu'à 5 dégâts d'<em>En Feu</em> de face."
+    ]
    ]
   },
   "champs_force": {
    "type": "table",
+   "classe": "data-table",
    "colonnes": [
     "Équipement Énergétique",
-    "Niveau & Protection",
-    "Prix Impérial (CE)",
+    "Époque",
+    "Protection / Poids",
+    "Prix (CE)",
     "Particularités Opérationnelles"
    ],
    "lignes": [
     [
      "<strong>Champ de Force Personnel 1</strong>",
-     "Barrière absorbant 10 dégâts",
+     "<span class=\"table-badge green\">E4–E5</span>",
+     "Absorbe <strong>10 dégâts</strong> &bull; 0 PA &bull; 1 L",
      "75 000 CE",
-     "Absorbe les dégâts avant la chair ; zéro encombrement en PA."
+     "Absorbe les dégâts avant armure et chair (y compris <em>En Feu</em>)."
     ],
     [
      "<strong>Champ de Force Personnel 2</strong>",
-     "Barrière absorbant 20 dégâts",
+     "<span class=\"table-badge green\">E4–E5</span>",
+     "Absorbe <strong>20 dégâts</strong> &bull; 0 PA &bull; 1 L",
      "125 000 CE",
-     "Recharge automatique hors combat après 1 minute."
+     "Inclut Niv. 1 + recharge automatique hors combat après 1 minute."
     ],
     [
      "<strong>Champ de Force Personnel 3</strong>",
-     "Barrière absorbant 30 dégâts",
+     "<span class=\"table-badge emerald\">E4–E5</span>",
+     "Absorbe <strong>30 dégâts</strong> &bull; 0 PA &bull; 1 L",
      "150 000 CE",
-     "Protection contre les radiations et le vide spatial."
+     "Inclut Niv. 1–2 + protection contre les radiations et le vide spatial."
     ],
     [
      "<strong>Champ de Force Personnel 4</strong>",
-     "Barrière absorbant 40 dégâts",
+     "<span class=\"table-badge emerald\">E4–E5</span>",
+     "Absorbe <strong>40 dégâts</strong> &bull; 0 PA &bull; 1 L",
      "200 000 CE",
-     "Modèle d'élite de la flotte impériale."
+     "Inclut Niv. 1–3. Modèle d'élite de la flotte impériale."
     ],
     [
      "<strong>Champ de Force Personnel 5</strong>",
-     "Barrière absorbant 50 dégâts",
+     "<span class=\"table-badge ruby\">E5</span>",
+     "Absorbe <strong>50 dégâts</strong> &bull; 0 PA &bull; 1 L",
      "250 000 CE",
-     "Forteresse cinétique portable impénétrable."
+     "Inclut Niv. 1–4. Forteresse cinétique portable."
     ],
     [
-     "<strong>Spacesuit Léger 2-3</strong>",
-     "Blindage 2 à 3 &bull; 0 PA",
+     "<strong>Combinaison Spatiale Légère 2–3</strong>",
+     "<span class=\"table-badge cyan\">E3–E4</span>",
+     "Blindage <strong>2 à 3</strong> &bull; 0 PA &bull; 15 L",
      "50 000 à 90 000 CE",
-     "Survie en environnement hostile et gravité zéro."
+     "Hermétique : survie en vide spatial, atmosphère toxique et gravité zéro (48 h d'air)."
     ],
     [
-     "<strong>Spacesuit Lourd 3-6</strong>",
-     "Blindage 3 à 6 &bull; 1 à 2 PA",
+     "<strong>Combinaison Spatiale Lourde 3–6</strong>",
+     "<span class=\"table-badge ruby\">E3–E5</span>",
+     "Blindage <strong>3 à 6</strong> &bull; 1 à 2 PA &bull; 40 L",
      "75 000 à 750 000 CE",
-     "Blindage mécha lourd pour opérations planétaires extrêmes."
+     "Exosquelette blindé hermétique pour opérations planétaires et orbitales extrêmes."
     ]
-   ],
-   "classe": "data-table"
+   ]
   },
   "pharmacie": {
    "type": "cartes",
    "grille": 2,
    "cartes": [
     {
-     "titre": "<span>Stimulants & Régulateurs</span>\n                                <span class=\"pill-badge amber\">Dopage Tactique</span>",
+     "titre": "<span>Stimulants &amp; Régulateurs [E2–E4]</span>\n                                <span class=\"pill-badge amber\">Dopage Tactique</span>",
      "top": false,
      "corps_tag": "ul",
      "corps_attrs": " style=\"padding-left: 15px; margin: 10px 0; font-size: 0.9em;\"",
-     "corps_html": "<li>\n                                    <strong>Antidouleurs (8 tabs &bull; 500 CE) :</strong><br>\n                                    Durée 2 heures. Confère <strong>+5 au seuil de Dégâts Maximum (Létal)</strong> et\n                                    <strong>+2 à la Capacité d'Encaissement</strong> ! Permet de continuer à combattre\n                                    au-delà de ses limites physiologiques normales.\n                                </li>\n                                <li style=\"margin-top: 10px;\">\n                                    <strong>Speed (4 tabs &bull; 500 CE) :</strong><br>\n                                    Durée 4 heures. Place immédiatement le sujet sous l'état bénéfique <strong>Rapide\n                                        (+3 PA pour les déplacements à chaque tour)</strong> !\n                                </li>",
+     "corps_html": "<li>\n                                    <strong>Antidouleurs (8 comprimés &bull; 0.2 L &bull; 500 CE) :</strong><br>\n                                    Durée 2 heures. Confère <strong>+5 au Seuil Létal (Maximum Létal)</strong> et\n                                    <strong>+2 à la Capacité d'Encaissement</strong> ! Non cumulable ; +2 Essoufflement en fin d'effet.\n                                </li>\n                                <li style=\"margin-top: 10px;\">\n                                    <strong>Stimulant « Vif » (4 comprimés &bull; 0.2 L &bull; 500 CE) :</strong><br>\n                                    Durée 4 heures. Place immédiatement le sujet sous l'état bénéfique <strong>Rapide\n                                        (+3 PA pour les déplacements à chaque tour)</strong>. Non cumulable ; +2 Essoufflement en fin d'effet.\n                                </li>",
      "pieds": []
     },
     {
-     "titre": "<span>Seringues d'Urgence & Rations</span>\n                                <span class=\"pill-badge cyan\">Restauration</span>",
+     "titre": "<span>Seringues d'Urgence &amp; Rations [E0–E5]</span>\n                                <span class=\"pill-badge cyan\">Restauration</span>",
      "top": false,
      "corps_tag": "ul",
      "corps_attrs": " style=\"padding-left: 15px; margin: 10px 0; font-size: 0.9em;\"",
-     "corps_html": "<li><strong>Seringue de soins (−5 dégâts) :</strong> 900 CE &bull; Injection 1 PA.</li>\n                                <li><strong>Seringue de soins (−10 dégâts) :</strong> 2 000 CE &bull; Injection 1 PA.</li>\n                                <li><strong>Seringue de soins (−20 dégâts) :</strong> 5 000 CE &bull; Injection 1 PA.</li>\n                                <li><strong>Seringue de soins généralisée (−10 dégâts) :</strong> 2 500 CE &bull; Soigne\n                                    l'ensemble des membres blessés.</li>\n                                <li><strong>Rations & Hydratation :</strong> Meal Pack (10 CE), Meal Pack + Water (15\n                                    CE), Water Blob 1L (5 CE).</li>",
+     "corps_html": "<li><strong>Seringue de soins (&minus;5 dégâts) [E3–E5] :</strong> 900 CE &bull; 0.2 L &bull; 1 PA. Lève <em>Souffrant</em> et stoppe <em>Saignement</em>.</li>\n                                <li><strong>Seringue de soins (&minus;10 dégâts) [E3–E5] :</strong> 2 000 CE &bull; 0.2 L &bull; 1 PA. Lève <em>Souffrant</em> et stoppe <em>Saignement</em>.</li>\n                                <li><strong>Seringue de soins (&minus;20 dégâts) [E4–E5] :</strong> 5 000 CE &bull; 0.3 L &bull; 1 PA. Soin d'élite intensif.</li>\n                                <li><strong>Seringue généralisée (&minus;10 dégâts) [E3–E5] :</strong> 2 500 CE &bull; 0.3 L &bull; 1 PA. Soigne l'ensemble des membres blessés.</li>\n                                <li><strong>Rations &amp; Hydratation [E0–E5] :</strong> Ration de Campagne (10 CE &bull; 1 L), Ration + Eau (15 CE &bull; 2 L), Poche d'Eau 1 L (5 CE &bull; 2.2 L).</li>",
      "pieds": []
     }
+   ]
+  },
+  "materiel_medical": {
+   "type": "table",
+   "classe": "data-table",
+   "colonnes": [
+    "Équipement / Remède",
+    "Époque",
+    "Poids",
+    "Prix (CE)",
+    "Effet Mécanique"
+   ],
+   "lignes": [
+    [
+     "<strong>Bandage Compressif &amp; Garrot</strong>",
+     "<span class=\"table-badge amber\">E0–E5</span>",
+     "0.3 L",
+     "80 CE",
+     "<strong>1 PA</strong> : stoppe un <em>Saignement</em>, efface <code>−2 dégâts</code> et lève <em>Souffrant</em>."
+    ],
+    [
+     "<strong>Attelle Rigide</strong>",
+     "<span class=\"table-badge amber\">E0–E5</span>",
+     "0.8 L",
+     "150 CE",
+     "Stabilise un membre blessé : retire <em>Ralenti</em> d'une jambe traumatisée (hors combat, 1 scène)."
+    ],
+    [
+     "<strong>Trousse de Premiers Soins (5 usages)</strong>",
+     "<span class=\"table-badge cyan\">E1–E4</span>",
+     "2.0 L",
+     "400 CE",
+     "Requis pour opérer hors fortune : confère <code>+1</code> aux épreuves de <em>Premiers Soins</em> (5 utilisations)."
+    ],
+    [
+     "<strong>Coffret d'Apothicaire / Kit de Chirurgie</strong>",
+     "<span class=\"table-badge cyan\">E1–E4</span>",
+     "6.0 L",
+     "4 500 CE",
+     "Permet la spécialisation <em>Chirurgie</em>, le soin des poisons et les interventions lourdes hors hôpital."
+    ],
+    [
+     "<strong>Antidote Universel / Dose ciblée</strong>",
+     "<span class=\"table-badge amber\">E0–E4</span>",
+     "0.2 L",
+     "600 CE",
+     "<strong>1 PA</strong> : dissipe immédiatement l'état résiduel <em>Empoisonné</em> (<a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\" data-tip=\"Empoisonné : soigné par Antidote, Médecine Avancée ou magie de purge (Livre VI §24.2).\">Livre VI §24.2</a>)."
+    ],
+    [
+     "<strong>Antibiotiques &amp; Antiseptiques</strong>",
+     "<span class=\"table-badge cyan\">E2–E4</span>",
+     "0.3 L",
+     "300 CE",
+     "<strong>+2</strong> aux jets de <em>Système Immunitaire</em> / traitement contre une pathologie <strong>bactérienne</strong>."
+    ],
+    [
+     "<strong>Antiviraux &amp; Antiparasitaires</strong>",
+     "<span class=\"table-badge cyan\">E2–E4</span>",
+     "0.3 L",
+     "600 CE",
+     "<strong>+2</strong> au traitement d'une souche <strong>virale</strong> ou <strong>parasitaire</strong> (inefficace hors nature ciblée)."
+    ],
+    [
+     "<strong>Purge Arcanique / Correctif Cyber</strong>",
+     "<span class=\"table-badge green\">E3–E5</span>",
+     "0.5 L",
+     "3 000 CE",
+     "Traite une pathologie de nature <strong>arcanique</strong> ou <strong>nanotech / cyber</strong> (sinon +2 Difficulté sans matériel adapté)."
+    ]
+   ]
+  },
+  "materiel_terrain": {
+   "type": "table",
+   "classe": "data-table",
+   "colonnes": [
+    "Équipement de Terrain",
+    "Époque",
+    "Poids",
+    "Prix (CE)",
+    "Effet &amp; Usage"
+   ],
+   "lignes": [
+    [
+     "<strong>Masque Filtrant</strong>",
+     "<span class=\"table-badge cyan\">E2–E5</span>",
+     "0.6 L",
+     "350 CE",
+     "Protège contre fumées, gaz et <em>Asphyxie</em> ; neutralise l'éblouissement par gaz ou flash (<a class=\"rule-ref\" href=\"livre_2.html#sec-8-6\" data-tip=\"Masque Filtrant : neutralise l'éblouissement par gaz ou flash (Livre II §8.6).\">Livre II §8.6</a>)."
+    ],
+    [
+     "<strong>Trousse de Crochetage</strong>",
+     "<span class=\"table-badge amber\">E1–E4</span>",
+     "0.5 L",
+     "400 CE",
+     "Indispensable pour crocheter les serrures mécaniques ; confère <code>+1</code> en <em>Subterfuge Manuel</em>."
+    ],
+    [
+     "<strong>Caisse à Outils / Kit d'Entretien</strong>",
+     "<span class=\"table-badge amber\">E1–E4</span>",
+     "5.0 L",
+     "1 200 CE",
+     "Permet de réparer l'équipement <em>Endommagé</em> sur le terrain (<em>Artisanat</em> / <em>Ingénierie</em>)."
+    ],
+    [
+     "<strong>Valise Arcanotech / Scanner</strong>",
+     "<span class=\"table-badge green\">E3–E5</span>",
+     "6.0 L",
+     "3 500 CE",
+     "Diagnostic de systèmes énergétiques, champs, implants et anomalies de nytharite."
+    ],
+    [
+     "<strong>Pièges &amp; Collets de Campagne</strong>",
+     "<span class=\"table-badge amber\">E0–E3</span>",
+     "3.0 L",
+     "250 CE",
+     "Permet de poser des pièges immobilisants ou d'alarme (<code>3D</code> ou <em>Immobilisé</em> selon montage)."
+    ],
+    [
+     "<strong>Corde 20 m / Grappin</strong>",
+     "<span class=\"table-badge amber\">E0–E4</span>",
+     "3.0 L",
+     "60 CE",
+     "Escalade et ligotage ; version grappin magnétique motorisé [E3–E4] : <code>2.5 L</code>, <code>900 CE</code>, treuil 15 cases."
+    ],
+    [
+     "<strong>Torche / Lampe Tactique</strong>",
+     "<span class=\"table-badge amber\">E0–E4</span>",
+     "0.5 L",
+     "120 CE",
+     "Dissipe l'obscurité locale jusqu'à 10 cases (torche [E0–E1] : <code>20 CE</code>, 1 h)."
+    ],
+    [
+     "<strong>Jumelles / Optiques Thermiques</strong>",
+     "<span class=\"table-badge cyan\">E2–E4</span>",
+     "1.5 L",
+     "2 500 CE",
+     "<strong>+1</strong> en <em>Observation</em> à longue distance et perception nocturne/thermique (jumelles optiques simples : <code>400 CE</code>)."
+    ],
+    [
+     "<strong>Tenue Thermique / Tente Pressurisée</strong>",
+     "<span class=\"table-badge amber\">E0–E4</span>",
+     "4–12 L",
+     "150 / 1 500 CE",
+     "Tenue isolante (<code>150 CE</code>, 4 L) annule un palier de climat ; tente pressurisée 2 places (<code>1 500 CE</code>, 12 L) abrite en milieu hostile."
+    ],
+    [
+     "<strong>Radio Tactique (5 km)</strong>",
+     "<span class=\"table-badge cyan\">E2–E4</span>",
+     "0.8 L",
+     "800 CE",
+     "Communication chiffrée d'escouade hors ligne de vue directe."
+    ],
+    [
+     "<strong>Menottes (Acier / Magnétiques)</strong>",
+     "<span class=\"table-badge amber\">E1–E4</span>",
+     "0.6 L",
+     "150 / 600 CE",
+     "Maintiennent les mains liées (évasion : épreuve <em>Force</em> ou <em>Subterfuge</em> Diff 6 acier / 9 magnétique)."
+    ],
+    [
+     "<strong>Sac à Dos Renforcé</strong>",
+     "<span class=\"table-badge amber\">E0–E5</span>",
+     "2.0 L",
+     "200 CE",
+     "Contenant robuste pour organiser tes charges sans encombrer tes mains."
+    ]
    ]
   }
  },
  "tableaux": {
+  "budget_depart": {
+   "colonnes": [
+    "Époque",
+    "Accès matériel autorisé",
+    "Budget de départ",
+    "Dotation type (avec atout de métier)"
+   ]
+  },
+  "proprietes_armes": {
+   "colonnes": [
+    "Propriété",
+    "Syntaxe / Portée",
+    "Effet tactique en jeu"
+   ]
+  },
   "armes_lames": {
    "colonnes": [
     "Désignation de l'Arme",
+    "Époque",
     "Code DLPH",
-    "Prix Moyen (Crédits CE)",
-    "Type Historique / Profil"
+    "Prix (CE)",
+    "Propriétés &amp; Profil"
+   ]
+  },
+  "armes_fines": {
+   "colonnes": [
+    "Désignation de l'Arme",
+    "Époque",
+    "Code DLPH",
+    "Prix (CE)",
+    "Propriétés &amp; Profil"
    ]
   },
   "armes_choc_hast": {
    "colonnes": [
     "Arme",
+    "Époque",
     "Code DLPH",
-    "Prix Moyen",
-    "Effet & Remarques"
+    "Prix (CE)",
+    "Propriétés &amp; Remarques"
+   ]
+  },
+  "armes_trait_jet": {
+   "colonnes": [
+    "Arme",
+    "Époque",
+    "Code DLPH",
+    "Mun.",
+    "Prix (CE)",
+    "Propriétés &amp; Remarques"
+   ]
+  },
+  "armes_balistiques": {
+   "colonnes": [
+    "Arme",
+    "Époque",
+    "Code DLPH",
+    "Mun.",
+    "Prix (CE)",
+    "Propriétés &amp; Remarques"
    ]
   },
   "epees_laser": {
    "colonnes": [
     "Modèle d'Épée Laser",
+    "Époque",
     "Code DLPH",
-    "Prix Impérial (CE)",
+    "Prix (CE)",
     "Propriétés Tactiques"
+   ]
+  },
+  "fusils_laser": {
+   "colonnes": [
+    "Modèle d'Arme Laser",
+    "Époque",
+    "Code DLPH",
+    "Mun.",
+    "Prix (CE)",
+    "Propriétés Tactiques"
+   ]
+  },
+  "armes_lourdes": {
+   "colonnes": [
+    "Arme Lourde",
+    "Époque",
+    "Code DLPH",
+    "Mun.",
+    "Prix (CE)",
+    "Propriétés &amp; Usage"
    ]
   },
   "grenades": {
    "colonnes": [
     "Type de Grenade",
-    "Puissance d'Impact",
+    "Époque",
+    "Impact &amp; Rayon",
     "Code DLPH",
-    "Prix Unitaire (CE)"
+    "Prix (CE)",
+    "Effets"
+   ]
+  },
+  "grenades_tactiques": {
+   "colonnes": [
+    "Modèle Tactique",
+    "Époque",
+    "Impact &amp; Rayon",
+    "Code DLPH",
+    "Prix (CE)",
+    "Effets &amp; États Posés"
+   ]
+  },
+  "munitions_charges": {
+   "colonnes": [
+    "Munition / Charge",
+    "Époque",
+    "Poids",
+    "Prix (CE)",
+    "Usage &amp; Effet"
+   ]
+  },
+  "equipement_arcanotech": {
+   "colonnes": [
+    "Dispositif / Implant",
+    "Époque",
+    "Poids",
+    "Prix (CE)",
+    "Effet &amp; Limites"
+   ]
+  },
+  "armures": {
+   "colonnes": [
+    "Armure",
+    "Époque",
+    "Prot. / Encombr.",
+    "Poids",
+    "Prix (CE)",
+    "Équivalents [E0–E5]"
+   ]
+  },
+  "boucliers_physiques": {
+   "colonnes": [
+    "Bouclier",
+    "Époque",
+    "Parade / Encombr.",
+    "Poids / Mains",
+    "Prix (CE)",
+    "Particularités"
    ]
   },
   "champs_force": {
    "colonnes": [
     "Équipement Énergétique",
-    "Niveau & Protection",
-    "Prix Impérial (CE)",
+    "Époque",
+    "Protection / Poids",
+    "Prix (CE)",
     "Particularités Opérationnelles"
+   ]
+  },
+  "materiel_medical": {
+   "colonnes": [
+    "Équipement / Remède",
+    "Époque",
+    "Poids",
+    "Prix (CE)",
+    "Effet Mécanique"
+   ]
+  },
+  "materiel_terrain": {
+   "colonnes": [
+    "Équipement de Terrain",
+    "Époque",
+    "Poids",
+    "Prix (CE)",
+    "Effet &amp; Usage"
    ]
   }
  },
  "mecaniques": {
-  "note": "Genere depuis livre_8.html (motif RP-075/Livre II). Source unique : regenerer.",
+  "note": "Livre VIII v2 — source structuree complete (DLPH unifie en cases, E0-E5, proprietes d'armes, munitions, portage, boucliers, pharmacopee et terrain).",
   "code_dlph": {
    "etiquette": "Code Universel d'Arme (DLPH)",
+   "unite_portee": "cases (1 case = 1,5 m)",
    "segments": [
     {
      "lettre": "D",
-     "signification": "Dégâts"
+     "signification": "Dégâts de base"
     },
     {
      "lettre": "L",
-     "signification": "Livres (Poids)"
+     "signification": "Livres impériales (1 L ≈ 0,45 kg)"
     },
     {
      "lettre": "P",
-     "signification": "Portée (m/cases)"
+     "signification": "Portée tactique en cases (1 case = 1,5 m)"
     },
     {
      "lettre": "H",
-     "signification": "Maniement (1H / 2H)"
+     "signification": "Maniement (1H, 2H ou 1H/2H)"
     }
-   ],
-   "texte": "D : Dégâts de base ajoutés au jet d'attaque. • L : Poids en livres impériales (1 livre ≈ 0.45 kg). • P : Portée opérationnelle en mètres (1 case = 1,5 mètre). • H : 1H (une main) ou 2H (deux mains obligatoires)."
+   ]
   },
+  "charge_portage": {
+   "normal_mult_for": 15,
+   "surcharge_mult_for": 25,
+   "surcharge_malus_pa": 1
+  },
+  "budget_depart": [
+   {
+    "epoque": "E0",
+    "nom": "Primitive",
+    "budget_ce": 600
+   },
+   {
+    "epoque": "E1",
+    "nom": "Médiévale",
+    "budget_ce": 1500
+   },
+   {
+    "epoque": "E2",
+    "nom": "Moderne",
+    "budget_ce": 4000
+   },
+   {
+    "epoque": "E3",
+    "nom": "Avancée",
+    "budget_ce": 12000
+   },
+   {
+    "epoque": "E4",
+    "nom": "Très Avancée",
+    "budget_ce": 30000
+   },
+   {
+    "epoque": "E5",
+    "nom": "Démiurgique",
+    "budget_ce": 75000
+   }
+  ],
+  "proprietes_armes": [
+   {
+    "id": "allonge",
+    "nom": "Allonge",
+    "valeur": "2P",
+    "effet": "Frappe et opportunité à 2 cases"
+   },
+   {
+    "id": "arme_de_jet",
+    "nom": "Arme de jet",
+    "valeur": "XP",
+    "effet": "Ballistique/Tir, +1 case par FOR > 3 (max +4), -1 Accroupi / -2 À Terre"
+   },
+   {
+    "id": "perforante",
+    "nom": "Perforante",
+    "valeur": "X",
+    "effet": "Ignore X d'armure physique (jamais les champs énergétiques)"
+   },
+   {
+    "id": "zone",
+    "nom": "Zone",
+    "valeur": "R cases",
+    "effet": "Touche dans un rayon de R cases (couvert Livre V)"
+   },
+   {
+    "id": "silencieuse",
+    "nom": "Silencieuse",
+    "valeur": true,
+    "effet": "Aucune détonation"
+   },
+   {
+    "id": "dissimulable",
+    "nom": "Dissimulable",
+    "valeur": "+2",
+    "effet": "+2 pour cacher sur soi"
+   },
+   {
+    "id": "polyvalente",
+    "nom": "Polyvalente",
+    "valeur": "1H/2H",
+    "effet": "+1 Dégât à deux mains"
+   },
+   {
+    "id": "non_letale",
+    "nom": "Non létale",
+    "valeur": true,
+    "effet": "Peut stopper la cible à Inconscient"
+   },
+   {
+    "id": "rechargement_lent",
+    "nom": "Rechargement lent",
+    "valeur": "X PA",
+    "effet": "Remplace le rechargement à 1 PA"
+   },
+   {
+    "id": "cadence",
+    "nom": "Cadence",
+    "valeur": "+1 PA / 3 mun.",
+    "effet": "+1 Dégât en dépensant +1 PA et 3 munitions"
+   },
+   {
+    "id": "canon_entrave",
+    "nom": "Canon Entravé",
+    "valeur": "-2 ec",
+    "effet": "-2 ec au tir avec ennemi adjacent (Livre V)"
+   },
+   {
+    "id": "brulure_etat",
+    "nom": "Brûlure / État",
+    "valeur": "variable",
+    "effet": "Pose l'état officiel indiqué"
+   },
+   {
+    "id": "anti_materiel",
+    "nom": "Anti-Matériel",
+    "valeur": true,
+    "effet": "Efficace contre structures et véhicules"
+   }
+  ],
   "armes_lames": [
    {
     "designation": "Épée Métal Courte",
+    "epoque": "E0-E2",
     "dlph": "3D - 3L - 1P - 1H",
+    "degats": 3,
+    "poids_livres": 3,
+    "portee_cases": 1,
+    "mains": "1H",
     "prix_ce": 500,
-    "prix_texte": "~500 CE",
-    "profil": "Glaive, Arming Sword, Ulfberht"
+    "competence": "Maniement d'Arme",
+    "proprietes": []
    },
    {
     "designation": "Épée Métal Standard",
+    "epoque": "E1-E2",
     "dlph": "4D - 3L - 1P - 1H",
+    "degats": 4,
+    "poids_livres": 3,
+    "portee_cases": 1,
+    "mains": "1H",
     "prix_ce": 750,
-    "prix_texte": "~750 CE",
-    "profil": "Épée bâtarde, Katana traditionnel"
+    "competence": "Maniement d'Arme",
+    "proprietes": []
    },
    {
     "designation": "Épée Métal Supérieure",
+    "epoque": "E1-E2",
     "dlph": "5D - 3L - 1P - 1H",
+    "degats": 5,
+    "poids_livres": 3,
+    "portee_cases": 1,
+    "mains": "1H",
     "prix_ce": 1000,
-    "prix_texte": "~1 000 CE",
-    "profil": "Acier replié de maître, Katana affûté"
+    "competence": "Maniement d'Arme",
+    "proprietes": []
    },
    {
     "designation": "Épée Métal Longue (2H)",
+    "epoque": "E1",
     "dlph": "4D - 5L - 1P - 2H",
+    "degats": 4,
+    "poids_livres": 5,
+    "portee_cases": 1,
+    "mains": "2H",
     "prix_ce": 1000,
-    "prix_texte": "~1 000 CE",
-    "profil": "Longsword, Claymore d'assaut"
+    "competence": "Maniement d'Arme",
+    "proprietes": []
    },
    {
     "designation": "Épée Métal de Guerre (2H)",
+    "epoque": "E1",
     "dlph": "5D - 5L - 1P - 2H",
+    "degats": 5,
+    "poids_livres": 5,
+    "portee_cases": 1,
+    "mains": "2H",
     "prix_ce": 1250,
-    "prix_texte": "~1 250 CE",
-    "profil": "Zweihänder de ligne, Flamberge"
+    "competence": "Maniement d'Arme",
+    "proprietes": []
    },
    {
     "designation": "Épée Lourde de Brèche (2H)",
+    "epoque": "E1",
     "dlph": "6D - 5L - 1P - 2H",
+    "degats": 6,
+    "poids_livres": 5,
+    "portee_cases": 1,
+    "mains": "2H",
     "prix_ce": 1500,
-    "prix_texte": "~1 500 CE",
-    "profil": "Espadon géant, acier lourd renforcé"
+    "competence": "Maniement d'Arme",
+    "proprietes": [
+     "Perforante 1"
+    ]
    },
    {
     "designation": "Grand Espadon Maître",
+    "epoque": "E1",
     "dlph": "7D - 6L - 2P - 2H",
+    "degats": 7,
+    "poids_livres": 6,
+    "portee_cases": 2,
+    "mains": "2H",
     "prix_ce": 3000,
-    "prix_texte": "~3 000 CE",
-    "profil": "Allonge 2 cases, frappe dévastatrice"
+    "competence": "Maniement d'Arme",
+    "proprietes": [
+     "Allonge 2P",
+     "Perforante 1"
+    ]
+   }
+  ],
+  "armes_fines": [
+   {
+    "designation": "Couteau / Dague",
+    "epoque": "E0-E5",
+    "dlph": "2D - 1L - 1P - 1H",
+    "degats": 2,
+    "poids_livres": 1,
+    "portee_cases": 1,
+    "mains": "1H",
+    "prix_ce": 150,
+    "competence": "Armes Perçantes & Fines",
+    "proprietes": [
+     "Dissimulable",
+     "Silencieuse",
+     "Arme de jet 6P"
+    ]
+   },
+   {
+    "designation": "Dague de Maître / Stylet",
+    "epoque": "E1-E3",
+    "dlph": "3D - 1L - 1P - 1H",
+    "degats": 3,
+    "poids_livres": 1,
+    "portee_cases": 1,
+    "mains": "1H",
+    "prix_ce": 450,
+    "competence": "Armes Perçantes & Fines",
+    "proprietes": [
+     "Dissimulable",
+     "Perforante 1",
+     "Arme de jet 6P"
+    ]
+   },
+   {
+    "designation": "Fleuret de Duel",
+    "epoque": "E1-E2",
+    "dlph": "3D - 2L - 1P - 1H",
+    "degats": 3,
+    "poids_livres": 2,
+    "portee_cases": 1,
+    "mains": "1H",
+    "prix_ce": 600,
+    "competence": "Armes Perçantes & Fines",
+    "proprietes": [
+     "+1 parade vs lames 1H"
+    ]
+   },
+   {
+    "designation": "Rapière d'Acier",
+    "epoque": "E1-E2",
+    "dlph": "4D - 2L - 1P - 1H",
+    "degats": 4,
+    "poids_livres": 2,
+    "portee_cases": 1,
+    "mains": "1H",
+    "prix_ce": 900,
+    "competence": "Armes Perçantes & Fines",
+    "proprietes": [
+     "Perforante 1"
+    ]
+   },
+   {
+    "designation": "Lance / Sagaie",
+    "epoque": "E0-E1",
+    "dlph": "3D - 3L - 2P - 1H/2H",
+    "degats": 3,
+    "poids_livres": 3,
+    "portee_cases": 2,
+    "mains": "1H/2H",
+    "prix_ce": 300,
+    "competence": "Armes Perçantes & Fines",
+    "proprietes": [
+     "Allonge 2P",
+     "Polyvalente",
+     "Arme de jet 10P"
+    ]
+   },
+   {
+    "designation": "Pique & Hallebarde",
+    "epoque": "E1",
+    "dlph": "4D - 6L - 2P - 2H",
+    "degats": 4,
+    "poids_livres": 6,
+    "portee_cases": 2,
+    "mains": "2H",
+    "prix_ce": 800,
+    "competence": "Armes Perçantes & Fines",
+    "proprietes": [
+     "Allonge 2P",
+     "Arrêt de charge +1D"
+    ]
+   },
+   {
+    "designation": "Hallebarde Lourde",
+    "epoque": "E1",
+    "dlph": "5D - 6L - 2P - 2H",
+    "degats": 5,
+    "poids_livres": 6,
+    "portee_cases": 2,
+    "mains": "2H",
+    "prix_ce": 1500,
+    "competence": "Armes Perçantes & Fines",
+    "proprietes": [
+     "Allonge 2P",
+     "Perforante 1"
+    ]
    }
   ],
   "armes_choc_hast": [
    {
     "designation": "Gourdin / Matraque",
+    "epoque": "E0-E3",
     "dlph": "2D - 3L - 1P - 1H",
+    "degats": 2,
+    "poids_livres": 3,
+    "portee_cases": 1,
+    "mains": "1H",
     "prix_ce": 50,
-    "prix_texte": "~50 CE",
-    "profil": "Arme improvisée contondante."
+    "competence": "Maniement d'Arme",
+    "proprietes": [
+     "Non létale"
+    ]
+   },
+   {
+    "designation": "Bâton de Combat",
+    "epoque": "E0-E2",
+    "dlph": "2D - 3L - 2P - 2H",
+    "degats": 2,
+    "poids_livres": 3,
+    "portee_cases": 2,
+    "mains": "2H",
+    "prix_ce": 80,
+    "competence": "Maniement d'Arme",
+    "proprietes": [
+     "Allonge 2P",
+     "Non létale",
+     "+1 parade"
+    ]
+   },
+   {
+    "designation": "Masse d'Armes / Fléau",
+    "epoque": "E1",
+    "dlph": "4D - 4L - 1P - 1H",
+    "degats": 4,
+    "poids_livres": 4,
+    "portee_cases": 1,
+    "mains": "1H",
+    "prix_ce": 650,
+    "competence": "Maniement d'Arme",
+    "proprietes": [
+     "Perforante 1"
+    ]
+   },
+   {
+    "designation": "Hachette de Jet",
+    "epoque": "E0-E2",
+    "dlph": "3D - 2L - 1P - 1H",
+    "degats": 3,
+    "poids_livres": 2,
+    "portee_cases": 1,
+    "mains": "1H",
+    "prix_ce": 350,
+    "competence": "Maniement d'Arme",
+    "proprietes": [
+     "Arme de jet 6P"
+    ]
    },
    {
     "designation": "Hache de Bataille",
-    "dlph": "3-4D - 4L - 1P - 1H",
+    "epoque": "E0-E1",
+    "dlph": "4D - 4L - 1P - 1H/2H",
+    "degats": 4,
+    "poids_livres": 4,
+    "portee_cases": 1,
+    "mains": "1H/2H",
     "prix_ce": 600,
-    "prix_texte": "~600 CE",
-    "profil": "Pénétration osseuse supérieure."
+    "competence": "Maniement d'Arme",
+    "proprietes": [
+     "Polyvalente"
+    ]
    },
    {
-    "designation": "Marteau Métal Lourd",
+    "designation": "Hache de Guerre Lourde",
+    "epoque": "E1",
     "dlph": "6D - 5L - 1P - 2H",
-    "prix_ce": 5000,
-    "prix_texte": "~5 000 CE",
-    "profil": "Broyeur de blindages métalliques."
+    "degats": 6,
+    "poids_livres": 5,
+    "portee_cases": 1,
+    "mains": "2H",
+    "prix_ce": 3500,
+    "competence": "Maniement d'Arme",
+    "proprietes": [
+     "Perforante 1"
+    ]
    },
    {
-    "designation": "Pique & Hallebarde",
-    "dlph": "4D - 6L - 2P - 2H",
-    "prix_ce": 800,
-    "prix_texte": "~800 CE",
-    "profil": "Allonge tactique de 2 mètres, arrêt de charge."
+    "designation": "Marteau de Guerre Lourd",
+    "epoque": "E1",
+    "dlph": "6D - 5L - 1P - 2H",
+    "degats": 6,
+    "poids_livres": 5,
+    "portee_cases": 1,
+    "mains": "2H",
+    "prix_ce": 5000,
+    "competence": "Maniement d'Arme",
+    "proprietes": [
+     "Perforante 2"
+    ]
+   },
+   {
+    "designation": "Matraque Paralysante",
+    "epoque": "E2-E4",
+    "dlph": "2D - 2L - 1P - 1H",
+    "degats": 2,
+    "poids_livres": 2,
+    "portee_cases": 1,
+    "mains": "1H",
+    "prix_ce": 1200,
+    "competence": "Maniement d'Arme",
+    "proprietes": [
+     "Non létale",
+     "Étourdi sur Δ >= 2"
+    ]
+   },
+   {
+    "designation": "Filet / Bolas de Capture",
+    "epoque": "E0-E2",
+    "dlph": "0D - 2L - 6P - 1H",
+    "degats": 0,
+    "poids_livres": 2,
+    "portee_cases": 6,
+    "mains": "1H",
+    "prix_ce": 200,
+    "competence": "Ballistique / Tir",
+    "proprietes": [
+     "Arme de jet 6P",
+     "Non létale",
+     "Immobilisé"
+    ]
+   }
+  ],
+  "armes_trait_jet": [
+   {
+    "designation": "Fronde",
+    "epoque": "E0-E1",
+    "dlph": "2D - 0.5L - 15P - 1H",
+    "degats": 2,
+    "poids_livres": 0.5,
+    "portee_cases": 15,
+    "mains": "1H",
+    "munitions": 1,
+    "prix_ce": 40,
+    "proprietes": [
+     "Silencieuse",
+     "Dissimulable"
+    ]
+   },
+   {
+    "designation": "Javelot de Chasse",
+    "epoque": "E0-E1",
+    "dlph": "3D - 2L - 10P - 1H",
+    "degats": 3,
+    "poids_livres": 2,
+    "portee_cases": 10,
+    "mains": "1H",
+    "munitions": 1,
+    "prix_ce": 150,
+    "proprietes": [
+     "Arme de jet 10P"
+    ]
+   },
+   {
+    "designation": "Couteaux de Lancer (x3)",
+    "epoque": "E0-E2",
+    "dlph": "2D - 1.5L - 6P - 1H",
+    "degats": 2,
+    "poids_livres": 1.5,
+    "portee_cases": 6,
+    "mains": "1H",
+    "munitions": 3,
+    "prix_ce": 300,
+    "proprietes": [
+     "Arme de jet 6P",
+     "Silencieuse",
+     "Dissimulable"
+    ]
+   },
+   {
+    "designation": "Arc Court / de Chasse",
+    "epoque": "E0-E1",
+    "dlph": "3D - 1.5L - 25P - 2H",
+    "degats": 3,
+    "poids_livres": 1.5,
+    "portee_cases": 25,
+    "mains": "2H",
+    "munitions": 1,
+    "prix_ce": 350,
+    "proprietes": [
+     "Silencieuse"
+    ]
+   },
+   {
+    "designation": "Arc Long de Guerre",
+    "epoque": "E1",
+    "dlph": "4D - 2L - 40P - 2H",
+    "degats": 4,
+    "poids_livres": 2,
+    "portee_cases": 40,
+    "mains": "2H",
+    "munitions": 1,
+    "prix_ce": 700,
+    "proprietes": [
+     "Silencieuse",
+     "Perforante 1",
+     "Canon Entravé"
+    ]
    },
    {
     "designation": "Arc Composite Renforcé",
-    "dlph": "5D - 2L - 500P - 2H",
+    "epoque": "E1-E2",
+    "dlph": "5D - 2L - 45P - 2H",
+    "degats": 5,
+    "poids_livres": 2,
+    "portee_cases": 45,
+    "mains": "2H",
+    "munitions": 1,
     "prix_ce": 1000,
-    "prix_texte": "~1 000 CE",
-    "profil": "Portée 500m, perforation à longue distance."
+    "proprietes": [
+     "Silencieuse",
+     "Perforante 1",
+     "Canon Entravé"
+    ]
+   },
+   {
+    "designation": "Arbalète Légère",
+    "epoque": "E1-E2",
+    "dlph": "4D - 3L - 30P - 2H",
+    "degats": 4,
+    "poids_livres": 3,
+    "portee_cases": 30,
+    "mains": "2H",
+    "munitions": 1,
+    "prix_ce": 900,
+    "proprietes": [
+     "Silencieuse",
+     "Perforante 1",
+     "Rechargement lent 2 PA"
+    ]
+   },
+   {
+    "designation": "Arbalète Lourde à Moufle",
+    "epoque": "E1-E2",
+    "dlph": "6D - 5L - 40P - 2H",
+    "degats": 6,
+    "poids_livres": 5,
+    "portee_cases": 40,
+    "mains": "2H",
+    "munitions": 1,
+    "prix_ce": 2500,
+    "proprietes": [
+     "Silencieuse",
+     "Perforante 2",
+     "Rechargement lent 3 PA",
+     "Canon Entravé"
+    ]
+   }
+  ],
+  "armes_balistiques": [
+   {
+    "designation": "Pistolet Léger / Revolver",
+    "epoque": "E2-E3",
+    "dlph": "3D - 1.5L - 15P - 1H",
+    "degats": 3,
+    "poids_livres": 1.5,
+    "portee_cases": 15,
+    "mains": "1H",
+    "munitions": 10,
+    "prix_ce": 800,
+    "proprietes": [
+     "Dissimulable"
+    ]
+   },
+   {
+    "designation": "Pistolet Lourd",
+    "epoque": "E2-E3",
+    "dlph": "4D - 2L - 20P - 1H",
+    "degats": 4,
+    "poids_livres": 2,
+    "portee_cases": 20,
+    "mains": "1H",
+    "munitions": 8,
+    "prix_ce": 1500,
+    "proprietes": [
+     "Perforante 1"
+    ]
+   },
+   {
+    "designation": "Pistolet Tranquillisant",
+    "epoque": "E2-E4",
+    "dlph": "1D - 1.5L - 12P - 1H",
+    "degats": 1,
+    "poids_livres": 1.5,
+    "portee_cases": 12,
+    "mains": "1H",
+    "munitions": 4,
+    "prix_ce": 2200,
+    "proprietes": [
+     "Non létale",
+     "Silencieuse",
+     "Étourdi / Inconscient"
+    ]
+   },
+   {
+    "designation": "Pistolet-Mitrailleur",
+    "epoque": "E2-E3",
+    "dlph": "3D - 3L - 25P - 2H",
+    "degats": 3,
+    "poids_livres": 3,
+    "portee_cases": 25,
+    "mains": "2H",
+    "munitions": 30,
+    "prix_ce": 2400,
+    "proprietes": [
+     "Cadence",
+     "Canon Entravé"
+    ]
+   },
+   {
+    "designation": "Fusil à Pompe Tactique",
+    "epoque": "E2-E3",
+    "dlph": "5D - 4L - 12P - 2H",
+    "degats": 5,
+    "poids_livres": 4,
+    "portee_cases": 12,
+    "mains": "2H",
+    "munitions": 6,
+    "prix_ce": 2000,
+    "proprietes": [
+     "Canon Entravé",
+     "+1D à <= 4 cases"
+    ]
+   },
+   {
+    "designation": "Carabine à Verrou",
+    "epoque": "E2",
+    "dlph": "4D - 4L - 50P - 2H",
+    "degats": 4,
+    "poids_livres": 4,
+    "portee_cases": 50,
+    "mains": "2H",
+    "munitions": 5,
+    "prix_ce": 1800,
+    "proprietes": [
+     "Perforante 1",
+     "Canon Entravé"
+    ]
+   },
+   {
+    "designation": "Fusil d'Assaut Balistique",
+    "epoque": "E2-E3",
+    "dlph": "4D - 4L - 40P - 2H",
+    "degats": 4,
+    "poids_livres": 4,
+    "portee_cases": 40,
+    "mains": "2H",
+    "munitions": 30,
+    "prix_ce": 3500,
+    "proprietes": [
+     "Cadence",
+     "Perforante 1",
+     "Canon Entravé"
+    ]
+   },
+   {
+    "designation": "Fusil de Précision Balistique",
+    "epoque": "E2-E3",
+    "dlph": "5D - 6L - 80P - 2H",
+    "degats": 5,
+    "poids_livres": 6,
+    "portee_cases": 80,
+    "mains": "2H",
+    "munitions": 5,
+    "prix_ce": 6500,
+    "proprietes": [
+     "Perforante 2",
+     "Canon Entravé"
+    ]
+   },
+   {
+    "designation": "Fusil Anti-Matériel",
+    "epoque": "E2-E3",
+    "dlph": "7D - 14L - 90P - 2H",
+    "degats": 7,
+    "poids_livres": 14,
+    "portee_cases": 90,
+    "mains": "2H",
+    "munitions": 5,
+    "prix_ce": 18000,
+    "proprietes": [
+     "Perforante 3",
+     "Anti-Matériel",
+     "Rechargement lent 2 PA",
+     "Canon Entravé"
+    ]
    }
   ],
   "epees_laser": [
    {
     "designation": "Épée Laser Standard 3D",
+    "epoque": "E3",
     "dlph": "3D - 1L - 1P - 1H",
+    "degats": 3,
+    "poids_livres": 1,
+    "portee_cases": 1,
+    "mains": "1H",
     "prix_ce": 6000,
-    "prix_texte": "~6 000 CE",
-    "profil": "Ultra-légère (1 livre), dégainement quasi instantané."
+    "proprietes": [
+     "Perforante 2"
+    ]
    },
    {
     "designation": "Épée Laser Militaire 4D",
+    "epoque": "E3",
     "dlph": "4D - 1L - 1P - 1H",
+    "degats": 4,
+    "poids_livres": 1,
+    "portee_cases": 1,
+    "mains": "1H",
     "prix_ce": 20000,
-    "prix_texte": "~20 000 CE",
-    "profil": "Équipement d'officier de la garde impériale."
+    "proprietes": [
+     "Perforante 2"
+    ]
    },
    {
     "designation": "Épée Laser Commando 5D",
+    "epoque": "E4",
     "dlph": "5D - 1L - 1P - 1H",
+    "degats": 5,
+    "poids_livres": 1,
+    "portee_cases": 1,
+    "mains": "1H",
     "prix_ce": 40000,
-    "prix_texte": "~40 000 CE",
-    "profil": "Puissance chirurgicale à une main, coupe l'acier."
+    "proprietes": [
+     "Perforante 3"
+    ]
    },
    {
     "designation": "Épée Laser Deux Mains 4D",
+    "epoque": "E3",
     "dlph": "4D - 2L - 1P - 2H",
+    "degats": 4,
+    "poids_livres": 2,
+    "portee_cases": 1,
+    "mains": "2H",
     "prix_ce": 18000,
-    "prix_texte": "~18 000 CE",
-    "profil": "Faisceau large, excellente assise de parade (+1)."
+    "proprietes": [
+     "Perforante 2",
+     "+1 parade"
+    ]
    },
    {
     "designation": "Épée Laser Lourde 5D",
+    "epoque": "E4",
     "dlph": "5D - 2L - 1P - 2H",
+    "degats": 5,
+    "poids_livres": 2,
+    "portee_cases": 1,
+    "mains": "2H",
     "prix_ce": 35000,
-    "prix_texte": "~35 000 CE",
-    "profil": "Générateur double chambre, perforation lourde."
+    "proprietes": [
+     "Perforante 3"
+    ]
    },
    {
     "designation": "Épée Laser Suprême 6D",
+    "epoque": "E4",
     "dlph": "6D - 2L - 1P - 2H",
+    "degats": 6,
+    "poids_livres": 2,
+    "portee_cases": 1,
+    "mains": "2H",
     "prix_ce": 60000,
-    "prix_texte": "~60 000 CE",
-    "profil": "Arc plasmique dense, inflige des brûlures résiduelles."
+    "proprietes": [
+     "Perforante 4",
+     "En Feu 2 sur critique"
+    ]
    },
    {
     "designation": "Sabre Long à Allonge 4D",
+    "epoque": "E4",
     "dlph": "4D - 3L - 2P - 1H",
+    "degats": 4,
+    "poids_livres": 3,
+    "portee_cases": 2,
+    "mains": "1H",
     "prix_ce": 75000,
-    "prix_texte": "~75 000 CE",
-    "profil": "Portée 2 mètres à une main, régulateur cinétique."
+    "proprietes": [
+     "Allonge 2P",
+     "Perforante 2"
+    ]
    },
    {
     "designation": "Grand Sabre de Brèche 5D",
+    "epoque": "E4",
     "dlph": "5D - 4L - 2P - 2H",
+    "degats": 5,
+    "poids_livres": 4,
+    "portee_cases": 2,
+    "mains": "2H",
     "prix_ce": 80000,
-    "prix_texte": "~80 000 CE",
-    "profil": "Conçu pour découper les portes de sas de vaisseaux."
+    "proprietes": [
+     "Allonge 2P",
+     "Perforante 3",
+     "Anti-Matériel"
+    ]
    },
    {
     "designation": "Espadon Laser Titan 6D",
+    "epoque": "E5",
     "dlph": "6D - 4L - 2P - 2H",
+    "degats": 6,
+    "poids_livres": 4,
+    "portee_cases": 2,
+    "mains": "2H",
     "prix_ce": 100000,
-    "prix_texte": "~100 000 CE",
-    "profil": "Le summum du corps-à-corps énergétique impérial."
+    "proprietes": [
+     "Allonge 2P",
+     "Perforante 4",
+     "En Feu 2 sur critique"
+    ]
+   }
+  ],
+  "fusils_laser": [
+   {
+    "modele": "Fusil Laser Léger",
+    "epoque": "E3",
+    "dlph": "3D - 2L - 30P - 1H",
+    "degats": 3,
+    "poids_livres": 2,
+    "portee_cases": 30,
+    "portee_max_m": 500,
+    "mains": "1H",
+    "munitions": 10,
+    "prix_ce": 10000,
+    "proprietes": [
+     "Perforante 1",
+     "Dissimulable en manteau"
+    ]
+   },
+   {
+    "modele": "Fusil Laser de Précision",
+    "epoque": "E3",
+    "dlph": "4D - 2L - 50P - 1H",
+    "degats": 4,
+    "poids_livres": 2,
+    "portee_cases": 50,
+    "portee_max_m": 750,
+    "mains": "1H",
+    "munitions": 10,
+    "prix_ce": 25000,
+    "proprietes": [
+     "Perforante 2"
+    ]
+   },
+   {
+    "modele": "Fusil d'Assaut Laser",
+    "epoque": "E3",
+    "dlph": "4D - 3L - 35P - 2H",
+    "degats": 4,
+    "poids_livres": 3,
+    "portee_cases": 35,
+    "portee_max_m": 500,
+    "mains": "2H",
+    "munitions": 20,
+    "prix_ce": 20000,
+    "proprietes": [
+     "Perforante 2",
+     "Cadence",
+     "Canon Entravé"
+    ]
+   },
+   {
+    "modele": "Fusil Laser à Longue Portée",
+    "epoque": "E4",
+    "dlph": "5D - 4L - 100P - 2H",
+    "degats": 5,
+    "poids_livres": 4,
+    "portee_cases": 100,
+    "portee_max_m": 1000,
+    "mains": "2H",
+    "munitions": 10,
+    "prix_ce": 50000,
+    "proprietes": [
+     "Perforante 2",
+     "Canon Entravé"
+    ]
+   },
+   {
+    "modele": "Fusil « Deglazer »",
+    "epoque": "E4-E5",
+    "dlph": "+1 ec · 7D - 4L - 100P - 2H",
+    "degats": 7,
+    "bonus_ec": 1,
+    "poids_livres": 4,
+    "portee_cases": 100,
+    "portee_max_m": 1000,
+    "mains": "2H",
+    "munitions": 10,
+    "prix_ce": 200000,
+    "proprietes": [
+     "Perforante 3",
+     "Canon Entravé",
+     "Haute Densité"
+    ]
+   }
+  ],
+  "deglazer_focus": {
+   "modele": "Fusil « Deglazer »",
+   "bonus_ec_materiel": 1,
+   "degats_base": 7,
+   "poids_livres": 4,
+   "portee_cases": 100,
+   "portee_max_m": 1000,
+   "mains": "2H",
+   "prix_ce": 200000
+  },
+  "armes_lourdes": [
+   {
+    "designation": "Mitrailleuse Lourde de Soutien",
+    "epoque": "E2-E3",
+    "dlph": "5D - 14L - 50P - 2H",
+    "degats": 5,
+    "poids_livres": 14,
+    "portee_cases": 50,
+    "mains": "2H",
+    "munitions": 60,
+    "prix_ce": 12000,
+    "proprietes": [
+     "Cadence",
+     "Perforante 1",
+     "Anti-Matériel",
+     "Canon Entravé"
+    ]
+   },
+   {
+    "designation": "Lance-Grenades Tactique",
+    "epoque": "E2-E3",
+    "dlph": "Selon grenade - 8L - 18P - 2H",
+    "degats": 0,
+    "poids_livres": 8,
+    "portee_cases": 18,
+    "mains": "2H",
+    "munitions": 6,
+    "prix_ce": 12000,
+    "proprietes": [
+     "Rechargement 2 PA",
+     "Projette grenade à 18P"
+    ]
+   },
+   {
+    "designation": "Lance-Roquettes Antichar",
+    "epoque": "E2-E3",
+    "dlph": "10D+2d10 - 12L - 60P - 2H",
+    "degats": 10,
+    "poids_livres": 12,
+    "portee_cases": 60,
+    "mains": "2H",
+    "munitions": 1,
+    "prix_ce": 18000,
+    "proprietes": [
+     "Zone 2",
+     "Perforante 4",
+     "Anti-Matériel",
+     "Rechargement lent 3 PA",
+     "Canon Entravé"
+    ]
+   },
+   {
+    "designation": "Canon Plasma Portable",
+    "epoque": "E4",
+    "dlph": "8D - 16L - 50P - 2H",
+    "degats": 8,
+    "poids_livres": 16,
+    "portee_cases": 50,
+    "mains": "2H",
+    "munitions": 6,
+    "prix_ce": 95000,
+    "proprietes": [
+     "Perforante 4",
+     "Anti-Matériel",
+     "En Feu 3 sur critique",
+     "Canon Entravé"
+    ]
+   },
+   {
+    "designation": "Canon Rail / Lance Arcanique",
+    "epoque": "E4-E5",
+    "dlph": "9D - 12L - 100P - 2H",
+    "degats": 9,
+    "poids_livres": 12,
+    "portee_cases": 100,
+    "mains": "2H",
+    "munitions": 5,
+    "prix_ce": 160000,
+    "proprietes": [
+     "Perforante 5",
+     "Anti-Matériel",
+     "Rechargement lent 2 PA"
+    ]
    }
   ],
   "grenades": [
    {
     "type": "Grenade Légère 1d10",
-    "puissance": "10 + 1d10 dégâts de zone",
-    "dlph": "10D - 0.5L - 30P - 1H",
+    "epoque": "E2-E3",
+    "puissance": "10 + 1d10",
+    "rayon_cases": 1,
+    "dlph": "10D - 0.5L - 8P - 1H",
     "prix_ce": 2000,
-    "prix_texte": "2 000 CE"
+    "etats": []
    },
    {
     "type": "Grenade Tactique 2d10",
-    "puissance": "10 + 2d10 dégâts de zone",
-    "dlph": "10D - 0.5L - 30P - 1H",
+    "epoque": "E2-E3",
+    "puissance": "10 + 2d10",
+    "rayon_cases": 2,
+    "dlph": "10D - 0.5L - 8P - 1H",
     "prix_ce": 3500,
-    "prix_texte": "3 500 CE"
+    "etats": [
+     "Déstabilisé"
+    ]
    },
    {
     "type": "Grenade à Fragmentation 3d10",
-    "puissance": "10 + 3d10 dégâts de zone",
-    "dlph": "10D - 0.5L - 30P - 1H",
+    "epoque": "E2-E3",
+    "puissance": "10 + 3d10",
+    "rayon_cases": 2,
+    "dlph": "10D - 0.5L - 8P - 1H",
     "prix_ce": 5000,
-    "prix_texte": "5 000 CE"
+    "etats": [
+     "Déstabilisé",
+     "Saignement 2"
+    ]
    },
    {
     "type": "Grenade de Brèche 4d10",
-    "puissance": "10 + 4d10 dégâts de zone",
-    "dlph": "10D - 1.0L - 30P - 1H",
+    "epoque": "E3-E4",
+    "puissance": "10 + 4d10",
+    "rayon_cases": 2,
+    "dlph": "10D - 1.0L - 8P - 1H",
     "prix_ce": 6500,
-    "prix_texte": "6 500 CE"
+    "etats": [
+     "À Terre"
+    ]
    },
    {
-    "type": "Grenade Thermobarrique 5d10",
-    "puissance": "10 + 5d10 dégâts de zone",
-    "dlph": "10D - 1.0L - 30P - 1H",
+    "type": "Grenade Thermobarique 5d10",
+    "epoque": "E3-E4",
+    "puissance": "10 + 5d10",
+    "rayon_cases": 3,
+    "dlph": "10D - 1.0L - 8P - 1H",
     "prix_ce": 7500,
-    "prix_texte": "7 500 CE"
+    "etats": [
+     "En Feu 3",
+     "Asphyxie 2",
+     "Déstabilisé"
+    ]
    }
   ],
-  "fusils_laser": [
+  "grenades_tactiques": [
    {
-    "modele": "Gamme des Fusils Laser Standard Tir Précis",
-    "monde": "",
-    "prix_ce": null,
-    "texte": ""
+    "type": "Pot Incendiaire",
+    "epoque": "E1-E2",
+    "degats": "4D + 1d10",
+    "rayon_cases": 1,
+    "prix_ce": 350,
+    "etats": [
+     "En Feu 2"
+    ]
    },
    {
-    "modele": "Le Fusil « Deglazer » +1 ec // 7D Létal",
-    "monde": "Arcanotech de Guerre // 200 000 CE",
-    "prix_ce": 200000,
-    "texte": ""
+    "type": "Grenade Fumigène",
+    "epoque": "E2-E4",
+    "degats": "0D",
+    "rayon_cases": 2,
+    "prix_ce": 600,
+    "etats": [
+     "Aveuglé"
+    ]
+   },
+   {
+    "type": "Grenade Étourdissante (Flash)",
+    "epoque": "E2-E4",
+    "degats": "2D",
+    "rayon_cases": 2,
+    "prix_ce": 1800,
+    "etats": [
+     "Aveuglé",
+     "Assourdi",
+     "Étourdi"
+    ]
+   },
+   {
+    "type": "Grenade Lacrymogène / Gaz",
+    "epoque": "E2-E4",
+    "degats": "2D",
+    "rayon_cases": 2,
+    "prix_ce": 1200,
+    "etats": [
+     "Aveuglé",
+     "Asphyxie 2"
+    ]
+   },
+   {
+    "type": "Grenade IEM",
+    "epoque": "E3-E4",
+    "degats": "4D",
+    "rayon_cases": 2,
+    "prix_ce": 4500,
+    "etats": [
+     "Paralysé (automates)",
+     "-15 champ"
+    ]
+   },
+   {
+    "type": "Grenade Cryogénique",
+    "epoque": "E3-E4",
+    "degats": "6D + 1d10",
+    "rayon_cases": 2,
+    "prix_ce": 9000,
+    "etats": [
+     "Ralenti",
+     "Immobilisé"
+    ]
+   },
+   {
+    "type": "Grenade Graviton",
+    "epoque": "E4-E5",
+    "degats": "8D + 2d10",
+    "rayon_cases": 2,
+    "prix_ce": 25000,
+    "etats": [
+     "À Terre",
+     "Immobilisé"
+    ]
+   },
+   {
+    "type": "Grenade de Stase Chronale",
+    "epoque": "E5",
+    "degats": "0D",
+    "rayon_cases": 2,
+    "prix_ce": 35000,
+    "etats": [
+     "Paralysé"
+    ]
+   }
+  ],
+  "munitions_charges": [
+   {
+    "designation": "Carquois de Flèches / Carreaux (x20)",
+    "epoque": "E0-E2",
+    "poids_livres": 2.0,
+    "prix_ce": 150
+   },
+   {
+    "designation": "Munitions Balistiques Standard (x30)",
+    "epoque": "E2-E3",
+    "poids_livres": 1.0,
+    "prix_ce": 120
+   },
+   {
+    "designation": "Munitions Perforantes / Calibre Lourd (x10)",
+    "epoque": "E2-E3",
+    "poids_livres": 0.8,
+    "prix_ce": 450
+   },
+   {
+    "designation": "Charge Laser Standard (x10)",
+    "epoque": "E3-E4",
+    "poids_livres": 1.0,
+    "prix_ce": 300
+   },
+   {
+    "designation": "Charge Laser Haute Densité (x10)",
+    "epoque": "E3-E5",
+    "poids_livres": 1.2,
+    "prix_ce": 900
+   },
+   {
+    "designation": "Batterie Universelle",
+    "epoque": "E2-E4",
+    "poids_livres": 0.8,
+    "prix_ce": 250
+   },
+   {
+    "designation": "Cellule Nytharite Standard",
+    "epoque": "E4-E5",
+    "poids_livres": 0.5,
+    "prix_ce": 1500
+   },
+   {
+    "designation": "Cellule Nytharite Pure",
+    "epoque": "E4-E5",
+    "poids_livres": 0.5,
+    "prix_ce": 8000
+   }
+  ],
+  "equipement_arcanotech": [
+   {
+    "designation": "Éclat de Nytharite Brut",
+    "epoque": "E4-E5",
+    "poids_livres": 0.5,
+    "prix_ce": 3000
+   },
+   {
+    "designation": "Résonateur / Focaliseur Nytharite",
+    "epoque": "E4-E5",
+    "poids_livres": 0.5,
+    "prix_ce": 12000
+   },
+   {
+    "designation": "Module Arcanotech Pré-Gravé (3 charges)",
+    "epoque": "E4-E5",
+    "poids_livres": 1.5,
+    "prix_ce": 18000
+   },
+   {
+    "designation": "Moteur Arcanique de Poche",
+    "epoque": "E4-E5",
+    "poids_livres": 4.0,
+    "prix_ce": 25000
+   },
+   {
+    "designation": "Brouilleur de Signature / Voile",
+    "epoque": "E4-E5",
+    "poids_livres": 1.0,
+    "prix_ce": 14000
+   },
+   {
+    "designation": "Prothèse de Remplacement",
+    "epoque": "E3-E4",
+    "poids_livres": 0,
+    "prix_ce": 5000
+   },
+   {
+    "designation": "Optique Cybernétique",
+    "epoque": "E3-E4",
+    "poids_livres": 0,
+    "prix_ce": 8000
+   },
+   {
+    "designation": "Interface Neurale de Visée",
+    "epoque": "E3-E4",
+    "poids_livres": 0,
+    "prix_ce": 15000
+   },
+   {
+    "designation": "Plaque Sous-Dermique Légère",
+    "epoque": "E3-E4",
+    "poids_livres": 0,
+    "prix_ce": 18000,
+    "protection": 1,
+    "malus_pa": 0
    }
   ],
   "armures": [
    {
-    "categorie": "Armures Légères (0 PA Malus) Mobilité Totale",
-    "malus_pa": 0,
-    "texte": ""
+    "designation": "Armure Légère 1",
+    "categorie": "Légère",
+    "epoque": "E0-E5",
+    "protection": 1,
+    "encombrement_pa": 0,
+    "poids_livres": 4,
+    "prix_ce": 2000
    },
    {
-    "categorie": "Armures Lourdes (Malus PA) Blindage Renforcé",
-    "malus_pa": null,
-    "texte": ""
+    "designation": "Armure Légère 2",
+    "categorie": "Légère",
+    "epoque": "E1-E5",
+    "protection": 2,
+    "encombrement_pa": 0,
+    "poids_livres": 5,
+    "prix_ce": 5000
+   },
+   {
+    "designation": "Armure Légère 3",
+    "categorie": "Légère",
+    "epoque": "E2-E5",
+    "protection": 3,
+    "encombrement_pa": 0,
+    "poids_livres": 6,
+    "prix_ce": 12000
+   },
+   {
+    "designation": "Armure Légère 4",
+    "categorie": "Légère",
+    "epoque": "E3-E5",
+    "protection": 4,
+    "encombrement_pa": 0,
+    "poids_livres": 7,
+    "prix_ce": 20000
+   },
+   {
+    "designation": "Armure Lourde 3",
+    "categorie": "Lourde",
+    "epoque": "E1-E4",
+    "protection": 3,
+    "encombrement_pa": 1,
+    "poids_livres": 22,
+    "prix_ce": 8000
+   },
+   {
+    "designation": "Armure Lourde 4",
+    "categorie": "Lourde",
+    "epoque": "E1-E4",
+    "protection": 4,
+    "encombrement_pa": 1,
+    "poids_livres": 26,
+    "prix_ce": 12000
+   },
+   {
+    "designation": "Armure Lourde 5",
+    "categorie": "Lourde",
+    "epoque": "E3-E5",
+    "protection": 5,
+    "encombrement_pa": 1,
+    "poids_livres": 30,
+    "prix_ce": 20000
+   },
+   {
+    "designation": "Armure Lourde 6",
+    "categorie": "Lourde",
+    "epoque": "E3-E5",
+    "protection": 6,
+    "encombrement_pa": 2,
+    "poids_livres": 35,
+    "prix_ce": 50000
+   },
+   {
+    "designation": "Armure Lourde 7",
+    "categorie": "Lourde",
+    "epoque": "E3-E5",
+    "protection": 7,
+    "encombrement_pa": 2,
+    "poids_livres": 40,
+    "prix_ce": 90000
+   },
+   {
+    "designation": "Armure Lourde 7 Optimisée",
+    "categorie": "Lourde",
+    "epoque": "E4-E5",
+    "protection": 7,
+    "encombrement_pa": 1,
+    "poids_livres": 30,
+    "prix_ce": 125000
+   }
+  ],
+  "boucliers_physiques": [
+   {
+    "designation": "Targe / Bouclier de Peau",
+    "epoque": "E0-E2",
+    "bonus_parade": 1,
+    "encombrement_pa": 0,
+    "poids_livres": 3,
+    "mains": "1H",
+    "prix_ce": 250
+   },
+   {
+    "designation": "Écu / Bouclier de Garnison",
+    "epoque": "E1-E2",
+    "bonus_parade": 2,
+    "encombrement_pa": 0,
+    "poids_livres": 6,
+    "mains": "1H",
+    "prix_ce": 600
+   },
+   {
+    "designation": "Pavois / Bouclier Balistique Lourd",
+    "epoque": "E1-E4",
+    "bonus_parade": 2,
+    "encombrement_pa": 1,
+    "poids_livres": 12,
+    "mains": "1H",
+    "prix_ce": 2500
+   },
+   {
+    "designation": "Bouclier Énergétique de Bras",
+    "epoque": "E3-E5",
+    "bonus_parade": 2,
+    "encombrement_pa": 0,
+    "poids_livres": 2,
+    "mains": "1H",
+    "prix_ce": 18000
    }
   ],
   "champs_force": [
    {
     "equipement": "Champ de Force Personnel 1",
-    "protection_pv": 10,
-    "protection": "Barrière absorbant 10 dégâts",
-    "prix_ce": 75000,
-    "prix_texte": "75 000 CE",
-    "particularites": "Absorbe les dégâts avant la chair ; zéro encombrement en PA."
+    "epoque": "E4-E5",
+    "absorption_degats": 10,
+    "poids_livres": 1,
+    "malus_pa": 0,
+    "prix_ce": 75000
    },
    {
     "equipement": "Champ de Force Personnel 2",
-    "protection_pv": 20,
-    "protection": "Barrière absorbant 20 dégâts",
-    "prix_ce": 125000,
-    "prix_texte": "125 000 CE",
-    "particularites": "Recharge automatique hors combat après 1 minute."
+    "epoque": "E4-E5",
+    "absorption_degats": 20,
+    "poids_livres": 1,
+    "malus_pa": 0,
+    "prix_ce": 125000
    },
    {
     "equipement": "Champ de Force Personnel 3",
-    "protection_pv": 30,
-    "protection": "Barrière absorbant 30 dégâts",
-    "prix_ce": 150000,
-    "prix_texte": "150 000 CE",
-    "particularites": "Protection contre les radiations et le vide spatial."
+    "epoque": "E4-E5",
+    "absorption_degats": 30,
+    "poids_livres": 1,
+    "malus_pa": 0,
+    "prix_ce": 150000
    },
    {
     "equipement": "Champ de Force Personnel 4",
-    "protection_pv": 40,
-    "protection": "Barrière absorbant 40 dégâts",
-    "prix_ce": 200000,
-    "prix_texte": "200 000 CE",
-    "particularites": "Modèle d'élite de la flotte impériale."
+    "epoque": "E4-E5",
+    "absorption_degats": 40,
+    "poids_livres": 1,
+    "malus_pa": 0,
+    "prix_ce": 200000
    },
    {
     "equipement": "Champ de Force Personnel 5",
-    "protection_pv": 50,
-    "protection": "Barrière absorbant 50 dégâts",
-    "prix_ce": 250000,
-    "prix_texte": "250 000 CE",
-    "particularites": "Forteresse cinétique portable impénétrable."
+    "epoque": "E5",
+    "absorption_degats": 50,
+    "poids_livres": 1,
+    "malus_pa": 0,
+    "prix_ce": 250000
    },
    {
-    "equipement": "Spacesuit Léger 2-3",
-    "protection_pv": null,
-    "protection": "Blindage 2 à 3 • 0 PA",
-    "prix_ce": 90000,
-    "prix_texte": "50 000 à 90 000 CE",
-    "particularites": "Survie en environnement hostile et gravité zéro."
+    "equipement": "Combinaison Spatiale Légère 2–3",
+    "epoque": "E3-E4",
+    "blindage_min": 2,
+    "blindage_max": 3,
+    "poids_livres": 15,
+    "malus_pa": 0,
+    "prix_ce": 90000
    },
    {
-    "equipement": "Spacesuit Lourd 3-6",
-    "protection_pv": null,
-    "protection": "Blindage 3 à 6 • 1 à 2 PA",
-    "prix_ce": 750000,
-    "prix_texte": "75 000 à 750 000 CE",
-    "particularites": "Blindage mécha lourd pour opérations planétaires extrêmes."
+    "equipement": "Combinaison Spatiale Lourde 3–6",
+    "epoque": "E3-E5",
+    "blindage_min": 3,
+    "blindage_max": 6,
+    "poids_livres": 40,
+    "malus_pa": 2,
+    "prix_ce": 750000
    }
   ],
-  "pharmacie": [
+  "pharmacie": {
+   "stimulants": [
+    {
+     "nom": "Antidouleurs (8 comprimés)",
+     "epoque": "E2-E4",
+     "poids_livres": 0.2,
+     "prix_ce": 500,
+     "duree": "2 heures",
+     "effet": "+5 Seuil Létal, +2 Encaissement, +2 Essoufflement en fin d'effet"
+    },
+    {
+     "nom": "Stimulant « Vif » (4 comprimés)",
+     "epoque": "E2-E4",
+     "poids_livres": 0.2,
+     "prix_ce": 500,
+     "duree": "4 heures",
+     "effet": "État Rapide (+3 PA déplacement par tour), +2 Essoufflement en fin d'effet"
+    }
+   ],
+   "seringues_rations": [
+    {
+     "nom": "Seringue de soins (-5 dégâts)",
+     "epoque": "E3-E5",
+     "poids_livres": 0.2,
+     "prix_ce": 900,
+     "cout_pa": 1,
+     "soin_degats": 5
+    },
+    {
+     "nom": "Seringue de soins (-10 dégâts)",
+     "epoque": "E3-E5",
+     "poids_livres": 0.2,
+     "prix_ce": 2000,
+     "cout_pa": 1,
+     "soin_degats": 10
+    },
+    {
+     "nom": "Seringue de soins (-20 dégâts)",
+     "epoque": "E4-E5",
+     "poids_livres": 0.3,
+     "prix_ce": 5000,
+     "cout_pa": 1,
+     "soin_degats": 20
+    },
+    {
+     "nom": "Seringue généralisée (-10 dégâts)",
+     "epoque": "E3-E5",
+     "poids_livres": 0.3,
+     "prix_ce": 2500,
+     "cout_pa": 1,
+     "soin_degats": 10
+    },
+    {
+     "nom": "Ration de Campagne",
+     "epoque": "E0-E5",
+     "poids_livres": 1.0,
+     "prix_ce": 10
+    },
+    {
+     "nom": "Ration + Eau",
+     "epoque": "E0-E5",
+     "poids_livres": 2.0,
+     "prix_ce": 15
+    },
+    {
+     "nom": "Poche d'Eau 1 L",
+     "epoque": "E0-E5",
+     "poids_livres": 2.2,
+     "prix_ce": 5
+    }
+   ]
+  },
+  "materiel_medical": [
    {
-    "categorie": "Stimulants & Régulateurs Dopage Tactique",
-    "texte": "Antidouleurs (8 tabs • 500 CE) : Durée 2 heures. Confère +5 au seuil de Dégâts Maximum (Létal) et +2 à la Capacité d'Encaissement ! Permet de continuer à combattre au-delà de ses limites physiologiques normales. Speed (4 tabs • 500 CE) : Durée 4 heures. Place immédiatement le sujet sous l'état bénéfique Rapide (+3 PA pour les déplacements à chaque tour) !"
+    "nom": "Bandage Compressif & Garrot",
+    "epoque": "E0-E5",
+    "poids_livres": 0.3,
+    "prix_ce": 80,
+    "effet": "1 PA : stoppe Saignement, -2 dégâts, lève Souffrant"
    },
    {
-    "categorie": "Seringues d'Urgence & Rations Restauration",
-    "texte": "Seringue de soins (−5 dégâts) : 900 CE • Injection 1 PA. Seringue de soins (−10 dégâts) : 2 000 CE • Injection 1 PA. Seringue de soins (−20 dégâts) : 5 000 CE • Injection 1 PA. Seringue de soins généralisée (−10 dégâts) : 2 500 CE • Soigne l'ensemble des membres blessés. Rations & Hydratation : Meal Pack (10 CE), Meal Pack + Water (15 CE), Water Blob 1L (5 CE)."
+    "nom": "Attelle Rigide",
+    "epoque": "E0-E5",
+    "poids_livres": 0.8,
+    "prix_ce": 150,
+    "effet": "Retire Ralenti d'une jambe traumatisée (hors combat)"
+   },
+   {
+    "nom": "Trousse de Premiers Soins (5 usages)",
+    "epoque": "E1-E4",
+    "poids_livres": 2.0,
+    "prix_ce": 400,
+    "effet": "+1 Premiers Soins"
+   },
+   {
+    "nom": "Coffret d'Apothicaire / Kit de Chirurgie",
+    "epoque": "E1-E4",
+    "poids_livres": 6.0,
+    "prix_ce": 4500,
+    "effet": "Autorise Chirurgie et traitement des poisons hors hôpital"
+   },
+   {
+    "nom": "Antidote Universel / Dose ciblée",
+    "epoque": "E0-E4",
+    "poids_livres": 0.2,
+    "prix_ce": 600,
+    "effet": "1 PA : dissipe Empoisonné"
+   },
+   {
+    "nom": "Antibiotiques & Antiseptiques",
+    "epoque": "E2-E4",
+    "poids_livres": 0.3,
+    "prix_ce": 300,
+    "effet": "+2 contre souche bactérienne"
+   },
+   {
+    "nom": "Antiviraux & Antiparasitaires",
+    "epoque": "E2-E4",
+    "poids_livres": 0.3,
+    "prix_ce": 600,
+    "effet": "+2 contre souche virale ou parasitaire"
+   },
+   {
+    "nom": "Purge Arcanique / Correctif Cyber",
+    "epoque": "E3-E5",
+    "poids_livres": 0.5,
+    "prix_ce": 3000,
+    "effet": "Traite une souche arcanique ou nanotech/cyber"
+   }
+  ],
+  "materiel_terrain": [
+   {
+    "nom": "Masque Filtrant",
+    "epoque": "E2-E5",
+    "poids_livres": 0.6,
+    "prix_ce": 350
+   },
+   {
+    "nom": "Trousse de Crochetage",
+    "epoque": "E1-E4",
+    "poids_livres": 0.5,
+    "prix_ce": 400
+   },
+   {
+    "nom": "Caisse à Outils / Kit d'Entretien",
+    "epoque": "E1-E4",
+    "poids_livres": 5.0,
+    "prix_ce": 1200
+   },
+   {
+    "nom": "Valise Arcanotech / Scanner",
+    "epoque": "E3-E5",
+    "poids_livres": 6.0,
+    "prix_ce": 3500
+   },
+   {
+    "nom": "Pièges & Collets de Campagne",
+    "epoque": "E0-E3",
+    "poids_livres": 3.0,
+    "prix_ce": 250
+   },
+   {
+    "nom": "Corde 20 m / Grappin",
+    "epoque": "E0-E4",
+    "poids_livres": 3.0,
+    "prix_ce": 60
+   },
+   {
+    "nom": "Torche / Lampe Tactique",
+    "epoque": "E0-E4",
+    "poids_livres": 0.5,
+    "prix_ce": 120
+   },
+   {
+    "nom": "Jumelles / Optiques Thermiques",
+    "epoque": "E2-E4",
+    "poids_livres": 1.5,
+    "prix_ce": 2500
+   },
+   {
+    "nom": "Tenue Thermique / Tente Pressurisée",
+    "epoque": "E0-E4",
+    "poids_livres": 4.0,
+    "prix_ce": 150
+   },
+   {
+    "nom": "Radio Tactique (5 km)",
+    "epoque": "E2-E4",
+    "poids_livres": 0.8,
+    "prix_ce": 800
+   },
+   {
+    "nom": "Menottes (Acier / Magnétiques)",
+    "epoque": "E1-E4",
+    "poids_livres": 0.6,
+    "prix_ce": 150
+   },
+   {
+    "nom": "Sac à Dos Renforcé",
+    "epoque": "E0-E5",
+    "poids_livres": 2.0,
+    "prix_ce": 200
    }
   ]
  }

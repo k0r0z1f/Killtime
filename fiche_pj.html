@@ -347,7 +347,7 @@
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
                     <span
                         style="font-family: var(--font-mono); font-size: 0.8rem; font-weight: 700; color: var(--text-primary);">
-                        Compétences de Base Entraînées (+1 niveau de dé permanent, 27 bases Livre III)
+                        Compétences de Base Entraînées (+1 niveau de dé &amp; +1 Effort max, 27 bases Livre III)
                     </span>
                     <span class="pill-badge cyan" id="trainedSkillsChecked">0 / 3</span>
                 </div>
@@ -356,6 +356,7 @@
                     d'<strong>entraînements
                         gratuits = votre Érudition</strong> (<span id="vitalTrainedCount">3</span>) : 1 case = +1
                     palier, plafond 3 (+3 déblocables à 2d6, max 6). <strong>+1 ÉRU = +1 gratuit</strong>.
+                    <br><strong>Effort max par jet (Livre II §6) :</strong> <code>1 + entraînements</code> de la compétence (0 entr. = +1, 1 = +2, 3 = +4, 6 élite 2d6+ = +7 ; PA, PE, Action en Progression, Survolté et En transe inclus).
                     <br><strong>Progression organique (Livre I §5) :</strong> en jeu, chaque
                     <strong>réussite</strong> coche 1 case dans la compétence utilisée (piste = base :
                     3 → 3 cases, 5 → 5 cases). Piste pleine = <strong>+1 XP lié</strong>. Entraînement
@@ -484,6 +485,11 @@
                     <div class="vital-metric-title">Miracle</div>
                     <div class="vital-metric-num" id="vitalMiracle">1 (PJ)</div>
                     <div class="vital-metric-sub">Réserve de destin (0 pour un Sbire)</div>
+                </div>
+                <div class="vital-metric-card amber">
+                    <div class="vital-metric-title">Effort max / jet</div>
+                    <div class="vital-metric-num" id="vitalEffortMax">+1 à +3</div>
+                    <div class="vital-metric-sub">1 + entraînements de la compétence (PA+PE+bonus, Livre II §6)</div>
                 </div>
             </div>
 
@@ -668,7 +674,7 @@
     <!-- Scripts partagés : le créateur réutilise le même moteur (mêmes IDs) -->
     <script src="js/codex.js"></script>
     <script src="js/fabrique.js?v=24"></script>
-    <script src="js/tools.js?v=11"></script>
+    <script src="js/tools.js?v=12"></script>
 
     <!-- Scripts Authentification -->
     <script src="users/user_store.js"></script>

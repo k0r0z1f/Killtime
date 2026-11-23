@@ -93,7 +93,7 @@
    "ralenti_effet": "Coût total ×2 PA (inclut l'encombrement : (2 + enc.) × 2)",
    "resume": "Porter une frappe armée ou à mains nues contre une cible à portée de mêlée en Face-à-Face simultané.",
    "procedure": [
-    "Phase 1 (Attaquant) : désigner la cible, choisir la compétence et la zone visée (Niveau 1 : 6 zones larges sans malus ; Niveau 2 : point vital −1/−2), puis cacher la mise (PA + PE, 1 jeton = +1 au résultat).",
+    "Phase 1 (Attaquant) : désigner la cible, choisir la compétence et la zone visée (Niveau 1 : 6 zones larges sans malus ; Niveau 2 : point vital −1/−2), puis cacher la mise (PA + PE, 1 jeton = +1 au résultat, plafond 1 + entraînements).",
     "Phase 2 (Défenseur) : choisit en secret Défense Active (1 PA + mises, ou dé à −2 si 0 PA) ou Défense Passive (0 PA, score 0).",
     "Phase 3 (Révélation) : ouverture simultanée et jet simultané. Différentiel < 0 = esquivé/paré ; Δ = 0 = touche superficielle (0 dégât, effets spéciaux actifs) ; Δ > 0 = Dégâts Arme + Δ − Armure.",
     "Mains Nues : 0 dégât de base (0 + Δ), mais inflige +1 point d'Essoufflement à la cible sur touche franche."
@@ -157,7 +157,7 @@
    "resume": "Effectuer un tir balistique, à l'arc ou au fusil laser sur une cible en ligne de mire.",
    "procedure": [
     "Vérifier la ligne de mire depuis le meilleur coin de case (Livre V §21.3) : si couvert total, le tir est refusé avant tout jet et sans coût en PA.",
-    "En Phase 1, déclarer la zone visée (Niveau 1 ou 2) et engager 2 PA de base (+ encombrement + annulation éventuelle du malus de visée) plus les mises masquées PA/PE.",
+    "En Phase 1, déclarer la zone visée (Niveau 1 ou 2) et engager 2 PA de base (+ encombrement + annulation éventuelle du malus de visée) plus les mises masquées PA/PE (plafond 1 + entraînements).",
     "En Phase 3, calculer Δ = Attaque − Défense ; sur Δ > 0, infliger (Dégâts Arme + Δ) − Armure (sauf mention spéciale comme Lame Miroir à l'épée laser)."
    ],
    "conditions": "Arme chargée et ligne de mire non barrée par un couvert total. Cible non visible ou Dissimulée / Cachée impossible à cibler directement. À distance 1 case avec une arme longue : condition Canon Entravé (−2 au tir, voir Tir en Rétention).",
@@ -345,12 +345,12 @@
    "ralenti_effet": "Coûts multipliés par 2 sous Ralenti",
    "resume": "Préparer et charger son coup pendant son tour afin d'obtenir un bonus doublé (+2 au jet par PA misé) lors du tour suivant.",
    "procedure": [
-    "Tour N : déclarer l'attaque préparée et miser dessus un nombre de PA inférieur ou égal au coût de base de l'attaque (plafond = prix de base en PA). Chaque PA misé vaut +2 au jet final.",
+    "Tour N : déclarer l'attaque préparée et miser dessus un nombre de PA inférieur ou égal au coût de base de l'attaque (plafond de mise = prix de base en PA). Chaque PA misé vaut +2 au jet final, compté dans le plafond d'effort de la compétence (1 + entraînements — Livre II §6).",
     "Entre les deux tours : le personnage défend avec un malus de −1 sur toutes ses réactions.",
     "Tour N+1 (au plus tard) : payer le coût normal de l'attaque et lancer le Face-à-Face avec le bonus accumulé. Jamais exécutable le même tour."
    ],
    "conditions": "Si le personnage ne peut pas déclencher l'attaque au tour N+1 ou subit des dégâts dépassant son Encaissement (> CON × 2) avant de frapper, toute la mise est perdue.",
-   "modificateurs": "−1 en défense entre l'armement et le déclenchement. L'attaque finale peut recevoir des mises additionnelles au tour N+1 selon la procédure normale.",
+   "modificateurs": "−1 en défense entre l'armement et le déclenchement. Le bonus accumulé et toute mise additionnelle au tour N+1 (PA, PE, Survolté, En transe) partagent le même plafond d'effort total par jet : 1 + entraînements de la compétence (Livre II §6).",
    "source": {
     "label": "Livre V §20.5",
     "livre": 5,
@@ -361,6 +361,11 @@
      "label": "Face-à-Face §20.2",
      "livre": 5,
      "href": "livre_5.html#sec-20-2"
+    },
+    {
+     "label": "Plafond d'effort L.II §6",
+     "livre": 2,
+     "href": "livre_2.html#chap-6"
     }
    ],
    "tags": [
@@ -2942,18 +2947,18 @@
    "contexte": "Combat & Hors-Combat",
    "timing": "Lors de toute épreuve ou Face-à-Face",
    "portee": "Soi",
-   "jet": "Modifie le résultat (+1 par PA ou PE engagé)",
+   "jet": "Modifie le résultat (+1 par PA ou PE engagé, plafond 1 + entraînements)",
    "requiert_jet": false,
    "consomme_reaction_libre": false,
    "silencieux": true,
    "competences": [],
    "attributs": [],
-   "limite": "Jusqu'aux PA disponibles + plafond PE (CON)",
+   "limite": "Plafond d'effort par jet = 1 + entraînements de la compétence (0 entr. = +1, 1 = +2, 3 = +4, 6 élite 2d6+ = +7 ; PA, PE, Action en Progression, Survolté et En transe inclus — Livre II §6)",
    "ralenti_effet": "Les mises aveugles (1 PA = +1) ignorent l'encombrement d'armure",
-   "resume": "Dépenser directement des Points d'Action ou d'Essoufflement pour ajouter +1 par point au résultat d'un dé.",
+   "resume": "Dépenser directement des Points d'Action ou d'Essoufflement pour ajouter +1 par point au résultat d'un dé, dans la limite de 1 + entraînements de la compétence (PA, PE, Action en Progression, Survolté et En transe inclus).",
    "procedure": [
-    "En Face-à-Face (§20.2) : cacher sa mise en jetons (1 couleur = PA, 1 autre = PE) dans le poing fermé avant de révéler simultanément avec l'adversaire. Les jetons montrés sont immédiatement payés.",
-    "En Épreuve solo ou Défi Hors-Combat (§10) : annoncer et soustraire les PA/PE injectés de sa réserve pour garantir le seuil.",
+    "En Face-à-Face (§20.2) : cacher sa mise en jetons (1 couleur = PA, 1 autre = PE, total ≤ 1 + entraînements) dans le poing fermé avant de révéler simultanément avec l'adversaire. Les jetons montrés sont immédiatement payés.",
+    "En Épreuve solo ou Défi Hors-Combat (§10) : annoncer et soustraire les PA/PE injectés de sa réserve pour garantir le seuil (≤ 1 + entraînements).",
     "Hors de tout surcoût d'encombrement : les PA misés pour +1 au jet ne paient pas le malus d'armure lourde (Livre VIII §32)."
    ],
    "conditions": "Les PA injectés s'ajoutent après le coût de base de l'action ou de la réaction. Variante ouverte sans jetons : l'attaquant annonce d'abord sa mise à voix haute, puis le défenseur.",
@@ -2964,6 +2969,11 @@
     "href": "livre_5.html#sec-20-2"
    },
    "refs": [
+    {
+     "label": "Plafond d'effort L.II §6",
+     "livre": 2,
+     "href": "livre_2.html#chap-6"
+    },
     {
      "label": "Essoufflement §20.3",
      "livre": 5,
@@ -3016,7 +3026,7 @@
    "resume": "Convertir sa réserve vitale de souffle (Points d'Essoufflement) en PA d'urgence au tarif 1 PE = 1 PA lorsque la réserve de PA est vide.",
    "procedure": [
     "Quand les PA sont à 0, prendre 1 ou plusieurs points d'Essoufflement (PE) jusqu'au plafond maximal égal à Constitution.",
-    "Chaque PE agit aussitôt comme +1 PA d'urgence sur l'action ou la réaction en cours (y compris en mise cachée).",
+    "Chaque PE agit aussitôt comme +1 PA d'urgence sur l'action ou la réaction en cours (en mise cachée, soumis au plafond d'effort par jet de 1 + entraînements, PA + PE confondus — Livre II §6).",
     "Effort forcé au-delà du plafond CON : le point est pris mais le corps lâche aussitôt — le personnage tombe À Terre et Inconscient jusqu'à la fin de son prochain tour, puis tout son Essoufflement retombe à 0."
    ],
    "conditions": "L'Essoufflement ne disparaît jamais automatiquement au tour suivant (il faut Reprendre son Souffle ou dormir). En Dernier Souffle (§23.2), dépasser CON provoque la mort par arrêt cardiaque.",

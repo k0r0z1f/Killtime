@@ -393,13 +393,13 @@
     [
      "<span class=\"table-badge cyan\">Survolté</span>",
      "Afflux massif d'adrénaline, d'élan vital ou de stimulation magique.",
-     "<strong>+1 ec</strong> sur tous les jets, <strong>+3 PA</strong>\n                                        supplémentaires par tour.",
+     "<strong>+1 ec</strong> sur tous les jets (compte dans le plafond d'effort <code>1 + entraînements</code>, <a class=\"rule-ref\" href=\"livre_2.html#chap-6\" data-tip=\"Effort plafonné : Total = dé + effort − malus, effort ≤ 1 + entraînements (§6).\">Livre II §6</a>), <strong>+3 PA</strong>\n                                        supplémentaires par tour (soumis au même plafond d'effort par jet).",
      "Variable selon les circonstances."
     ],
     [
      "<span class=\"table-badge green\">En transe</span>",
      "Concentration absolue, esprit lucide et perception comme au ralenti.",
-     "<strong>+2 ec</strong> sur tous les jets, <strong>+5 PA</strong> supplémentaires par tour.",
+     "<strong>+2 ec</strong> sur tous les jets (compte dans le plafond d'effort <code>1 + entraînements</code>, <a class=\"rule-ref\" href=\"livre_2.html#chap-6\" data-tip=\"Effort plafonné : Total = dé + effort − malus, effort ≤ 1 + entraînements (§6).\">Livre II §6</a>), <strong>+5 PA</strong> supplémentaires par tour (soumis au même plafond d'effort par jet).",
      "Variable selon les circonstances."
     ],
     [
@@ -781,13 +781,13 @@
    "Survolté": {
     "etat": "Survolté",
     "description": "Afflux massif d'adrénaline, d'élan vital ou de stimulation magique.",
-    "bonus": "+1 ec sur tous les jets, +3 PA supplémentaires par tour.",
+    "bonus": "+1 ec sur tous les jets (compte dans le plafond d'effort 1 + entraînements, Livre II §6), +3 PA supplémentaires par tour (soumis au même plafond d'effort par jet).",
     "duree": "Variable selon les circonstances."
    },
    "En transe": {
     "etat": "En transe",
     "description": "Concentration absolue, esprit lucide et perception comme au ralenti.",
-    "bonus": "+2 ec sur tous les jets, +5 PA supplémentaires par tour.",
+    "bonus": "+2 ec sur tous les jets (compte dans le plafond d'effort 1 + entraînements, Livre II §6), +5 PA supplémentaires par tour (soumis au même plafond d'effort par jet).",
     "duree": "Variable selon les circonstances."
    },
    "Accéléré": {
@@ -895,13 +895,13 @@
    {
     "etat": "Survolté",
     "description": "Afflux massif d'adrénaline, d'élan vital ou de stimulation magique.",
-    "bonus": "+1 ec sur tous les jets, +3 PA supplémentaires par tour.",
+    "bonus": "+1 ec sur tous les jets (compte dans le plafond d'effort 1 + entraînements, Livre II §6), +3 PA supplémentaires par tour (soumis au même plafond d'effort par jet).",
     "duree": "Variable selon les circonstances."
    },
    {
     "etat": "En transe",
     "description": "Concentration absolue, esprit lucide et perception comme au ralenti.",
-    "bonus": "+2 ec sur tous les jets, +5 PA supplémentaires par tour.",
+    "bonus": "+2 ec sur tous les jets (compte dans le plafond d'effort 1 + entraînements, Livre II §6), +5 PA supplémentaires par tour (soumis au même plafond d'effort par jet).",
     "duree": "Variable selon les circonstances."
    },
    {

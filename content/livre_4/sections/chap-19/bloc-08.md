@@ -17,7 +17,7 @@ livre: 4
                         <div class="callout-body">
                             Tu peux mélanger les catégories. Exemple : un blast qui frappe et te met en
                             <a class="rule-ref" href="livre_6.html#chap-24"
-                                data-tip="Survolté : +1 ec sur tous les tests, +3 PA par tour (§24)."><em>Survolté</em></a>
+                                data-tip="Survolté : +1 ec (inclus dans le plafond d'effort 1+entr.), +3 PA par tour (§24)."><em>Survolté</em></a>
                             en même temps.<br>
                             <strong>Surcoût :</strong> <strong>+1 XP par catégorie en plus</strong>. Bonne nouvelle :
                             cet XP-là ne compte pas dans le coût en PA en combat.

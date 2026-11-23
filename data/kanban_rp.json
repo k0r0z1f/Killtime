@@ -419,9 +419,9 @@
     },
     {
      "id": "RP-028",
-     "title": "Relire chap. 30. Nomenclature & Armes Métal",
+     "title": "Relire chap. 30. Nomenclature, Propriétés & Armes [E0–E2]",
      "epic": "Livre VII — Arsenal",
-     "status": "todo",
+     "status": "in_progress",
      "priority": "medium",
      "order": 12,
      "scene": "",
@@ -430,13 +430,14 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_8.html#chap-30",
-     "details": "Vérification humaine — livre_8.html#chap-29. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
+     "details": "Vérification humaine — livre_8.html#chap-30. Checklist : [ ] orthographe/typo FR ; [x] cohérence mécaniques avec les autres chapitres (DLPH unifié en cases, portage FOR×15/×25 L, budget E0–E5, réparation 5 États L.VI §24.5, 13 propriétés d'armes, Mains Nues 1D/2D, armes fines, choc, trait/jet et balistique) ; [ ] exemples chiffrés rejoués ; [x] liens internes + ancres OK ; [x] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici. MAJ 2026-11-22 : 1er check mécanique & refonte FAITS (RP-191/RP-209) — reste QA humain final.",
+     "updated": "2026-11-22"
     },
     {
      "id": "RP-029",
-     "title": "Relire chap. 31. Épées Laser & Fusils Arcanotech",
+     "title": "Relire chap. 31. Armes Laser, Lourdes, Explosifs & Arcanotech",
      "epic": "Livre VII — Arsenal",
-     "status": "todo",
+     "status": "in_progress",
      "priority": "medium",
      "order": 13,
      "scene": "",
@@ -445,13 +446,14 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_8.html#chap-31",
-     "details": "Vérification humaine — livre_8.html#chap-30. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
+     "details": "Vérification humaine — livre_8.html#chap-31. Checklist : [ ] orthographe/typo FR ; [x] cohérence mécaniques avec les autres chapitres (épées laser Perforante 2–4, fusils laser en cases + Deglazer, armes lourdes L.V §22.3, grenades explosives/tactiques avec rayon en cases, munitions/recharges 1 PA, catalyseurs & implants) ; [ ] exemples chiffrés rejoués ; [x] liens internes + ancres OK ; [x] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici. MAJ 2026-11-22 : 1er check mécanique & refonte FAITS (RP-191/RP-209) — reste QA humain final.",
+     "updated": "2026-11-22"
     },
     {
      "id": "RP-030",
-     "title": "Relire chap. 32. Blindages, Écrans & Pharmacopée",
+     "title": "Relire chap. 32. Blindages, Boucliers, Pharmacopée & Terrain",
      "epic": "Livre VII — Arsenal",
-     "status": "todo",
+     "status": "in_progress",
      "priority": "medium",
      "order": 14,
      "scene": "",
@@ -460,7 +462,8 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_8.html#chap-32",
-     "details": "Vérification humaine — livre_8.html#chap-31. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (formules PA, paliers de dés, seuils) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
+     "details": "Vérification humaine — livre_8.html#chap-32. Checklist : [ ] orthographe/typo FR ; [x] cohérence mécaniques avec les autres chapitres (armures E0–E5 & encombrement sans Milkor, boucliers physiques actifs 1H, champs de force cumulatifs & ordre d'absorption, non-cumul/contrecoup stimulants, matériel médical L.VI §25.1/§25.4 & terrain) ; [ ] exemples chiffrés rejoués ; [x] liens internes + ancres OK ; [x] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici. MAJ 2026-11-22 : 1er check mécanique & refonte FAITS (RP-191) — reste QA humain final.",
+     "updated": "2026-11-22"
     },
     {
      "id": "RP-031",
@@ -2891,7 +2894,7 @@
      "id": "RP-191",
      "title": "P4-2 Livre VIII (mecaniques vides, [P], tables manquantes, anglicismes)",
      "epic": "P4 — Livres VII/VIII/X/XI/XII",
-     "status": "todo",
+     "status": "done",
      "priority": "medium",
      "order": 188,
      "scene": "",
@@ -2899,9 +2902,9 @@
      "primitive": "",
      "pos": null,
      "scale": null,
-     "suggestedAsset": "",
-     "updated": "2026-11-10",
-     "details": "Réparer mecaniques.fusils_laser et armures (corps_brut non parsé); unifier [P] Portée (mètres vs cases: Espadon 2P=2 cases vs Hallebarde 2P=2 m); ajouter Armes Perçantes/Fines (dagues, rapières), Balistiques (pistolets/fusils à balles), Boucliers physiques, Matériel médical L.VI (Bandage, Kit chirurgie, Résine Mina, Coagulation Flash, Antibiotiques, Masque Filtrant); purger anglicismes. (Audit sysRP 2026-11-10.)"
+     "suggestedAsset": "livre_8.html",
+     "updated": "2026-11-22",
+     "details": "FAIT 2026-11-22 — Refonte complète du Livre VIII : (1) mecaniques.* entièrement peuplé sans aucun texte vide (22 tables/formules structurées) ; (2) portée [P] unifiée en cases (1 case = 1,5 m, repère mètres/km hors grille entre parenthèses) ; (3) ajout Armes Perçantes & Fines, Balistiques à poudre [E2-E3], Armes de Trait & de Jet [E0-E2], Armes Lourdes [E2-E5], Grenades tactiques [E1-E5], Boucliers physiques actifs 1H [E0-E4], Munitions/Cellules, Arcanotech & Implants [E3-E5], Matériel médical L.VI (bandage, attelle, trousse, kit chirurgie/apothicaire, antidote, remèdes par nature) et Matériel de terrain (Masque Filtrant, crochetage, outils, survie) ; (4) purge complète des anglicismes (Arming Sword, Longsword, Spacesuit, Meal Pack, Water Blob, tabs, Sniper, Speed), des mentions PV et de la référence fantôme au Milkor."
     },
     {
      "id": "RP-192",
@@ -3179,7 +3182,7 @@
      "id": "RP-209",
      "title": "Propriétés d'armes : Arme de jet et traits tactiques (Livre VIII)",
      "epic": "Livre VIII — Arsenal",
-     "status": "todo",
+     "status": "done",
      "priority": "medium",
      "order": 206,
      "scene": "",
@@ -3188,8 +3191,8 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_8.html#chap-30",
-     "updated": "2026-11-20",
-     "details": "Définir un système de propriétés d'armes dans le Livre VIII (§30–§31, en lien avec le code DLPH et les compétences Livre III) : ajouter la propriété « Arme de jet » (grenades, dagues/couteaux de lancer, javelots, hachettes, projectiles lancés à la main — portée de lancer, compétence associée, lien avec les malus d'Accroupi et À terre en Livre VI §24.1) ainsi que les autres propriétés tactiques nécessaires à l'arsenal (ex. Allonge, Silencieuse, Perforante, Zone, Dissimulable, Rechargement, Polyvalente, Non létale, etc.), puis catégoriser les armes existantes et ajouter d'éventuelles armes de jet dédiées."
+     "updated": "2026-11-22",
+     "details": "FAIT 2026-11-22 — Système de 13 propriétés tactiques d'armes formalisé en §30.2 (Allonge, Arme de jet +FOR > 3 max +4P avec malus Accroupi −1 / À Terre −2 L.VI §24.1, Perforante X appliquée aux épées laser 2–4 & perce-armures, Zone R cases, Silencieuse, Dissimulable, Polyvalente 1H/2H, Non létale, Rechargement lent X PA, Cadence, Canon Entravé, Brûlure/État, Anti-Matériel). Toutes les armes du Livre VIII sont catégorisées et les armes de jet dédiées ajoutées (§30.4)."
     },
     {
      "id": "RP-210",
@@ -3654,6 +3657,102 @@
      "suggestedAsset": "livre_7.html",
      "updated": "2026-11-22",
      "details": "Pendant la phase Beta Test : recueillir les retours de table et équilibrer les divers bonus, portées de contexte, atouts, attaches et séquelles des 36 Enfances (chap. 27, 6 tables d6 E0–E5), 48 Métiers (chap. 28, 6 tables d8 E0–E5) et 12 Événements marquants (chap. 29)."
+    },
+    {
+     "id": "RP-239",
+     "title": "Beta Test — Équilibrage des prix, dégâts, perforations et stimulants du Livre VIII",
+     "epic": "Beta Test & Mobile / UX",
+     "status": "todo",
+     "priority": "medium",
+     "order": 236,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "livre_8.html",
+     "updated": "2026-11-22",
+     "details": "Pendant la phase Beta Test : recueillir les retours de table et équilibrer les budgets de départ E0–E5, les dégâts et valeurs de Perforante (métal vs laser vs balistique), les bonus des boucliers physiques, le coût des munitions/implants et l'impact tactique des stimulants (Antidouleurs et Stimulant « Vif »)."
+    },
+    {
+     "id": "RP-240",
+     "title": "Audit F1 — Plafond d'effort par jet (1 + entraînements, fix PA > dés)",
+     "epic": "P0 — Socle Mécanique",
+     "status": "done",
+     "priority": "high",
+     "order": 237,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "livre_2.html#chap-6",
+     "updated": "2026-11-22",
+     "details": "FAIT 2026-11-22 — Audit Livres I–VIII : Total = dé + effort − malus avec effort ≤ 1 + entraînements de la compétence (0 entr. = +1, 1 = +2, 2 = +3, 3 = +4, 6 élite 2d6+ = +7 ; PA, PE, Action en Progression, Survolté et En transe inclus dans le plafond ; reste des PA = volume d'actions/réactions). Appliqué en Livre II (§6 bloc-00 + mecaniques.formule_resolution + seuils/defi, §7.3 Face-à-Face jetons, §10 Défis), Livre V (§20.2 Économie PA / Face-à-Face, §20.3 Essoufflement, §20.5 Action en Progression), Livre VI (§24.3 Survolté & En transe), Livre IV (§19 infobulle Survolté), Livre I (§1 Règle d'Or & lexique EC, fiche Roger), Fiche PJ interactive & Lanceur Polyédrique (fiche_pj.html, livre_9.html, js/tools.js : champ Effort max / jet #vitalEffortMax + badges skill-effort + slider max 7) et Appendices A & B (appendice_actions.json, appendice_glossaire.json + terme plafond-effort). Checks verts (build 1/2/4/5/6/8, liens, nav, JS)."
+    },
+    {
+     "id": "RP-241",
+     "title": "Audit F2 — Faille Éveil gratuit (création 17 pts vs 15 pts)",
+     "epic": "P0 — Socle Mécanique",
+     "status": "todo",
+     "priority": "high",
+     "order": 238,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "livre_1.html#chap-3",
+     "updated": "2026-11-22",
+     "details": "Suite audit Livres I–VIII (file F2 → F5, après F1 RP-240) : corriger la faille d'Éveil gratuit à la création (budget secondaires 17 pts au lieu de 15 dès Magie ≥ 1)."
+    },
+    {
+     "id": "RP-242",
+     "title": "Audit F3 — Faille ÉRU presse-XP (entraînements gratuits Érudition)",
+     "epic": "P0 — Socle Mécanique",
+     "status": "todo",
+     "priority": "high",
+     "order": 239,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "livre_1.html#sec-etape-6",
+     "updated": "2026-11-22",
+     "details": "Suite audit Livres I–VIII (file F2 → F5, après F2 RP-241) : corriger la faille ÉRU presse-XP (ratio XP / entraînements gratuits offerts par chaque montée d'Érudition)."
+    },
+    {
+     "id": "RP-243",
+     "title": "Audit F4 — Faille drills (entraînement entre compagnons 4 h)",
+     "epic": "P0 — Socle Mécanique",
+     "status": "todo",
+     "priority": "medium",
+     "order": 240,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "livre_1.html#chap-5",
+     "updated": "2026-11-22",
+     "details": "Suite audit Livres I–VIII (file F2 → F5, après F3 RP-242) : encadrer/corriger la faille des drills d'entraînement entre compagnons (jets de 4 h en temps calme)."
+    },
+    {
+     "id": "RP-244",
+     "title": "Audit F5 — Faille anti-farm +0/+2 (conversion XP lié → XP libre)",
+     "epic": "P0 — Socle Mécanique",
+     "status": "todo",
+     "priority": "medium",
+     "order": 241,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "livre_1.html#sec-5-2",
+     "updated": "2026-11-22",
+     "details": "Suite audit Livres I–VIII (file F2 → F5, après F4 RP-243) : corriger la faille anti-farm +0/+2 (conversion 2:1 du surplus d'XP lié en XP libre)."
     }
    ]
   }

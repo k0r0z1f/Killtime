@@ -107,6 +107,7 @@ function initCharacterSheet() {
         cap: document.getElementById('vitalCap'),
         max: document.getElementById('vitalMax'),
         ess: document.getElementById('vitalEss'),
+        effortMax: document.getElementById('vitalEffortMax'),
         trainedCount: document.getElementById('vitalTrainedCount'),
         ptsLeft: document.getElementById('csPointsLeft')
     };
@@ -476,8 +477,21 @@ function initCharacterSheet() {
             if (g.mag && ext.mag > 0) score = Math.max(score, ext.mag);
             const baseDie = dieForValue(score);
             const lvl = g.boxes.length;
+            const effortMax = 1 + lvl;
             el.textContent = stepDie(baseDie, lvl);
             el.className = 'pill-badge skill-die ' + (lvl > 0 ? 'amber' : 'cyan');
+            if (el.parentElement) {
+                el.parentElement.style.flexWrap = 'wrap';
+                let effEl = el.parentElement.querySelector('.skill-effort[data-effortref="' + base + '"]');
+                if (!effEl) {
+                    effEl = document.createElement('span');
+                    effEl.setAttribute('data-effortref', base);
+                    el.after(effEl);
+                }
+                effEl.textContent = 'max +' + effortMax;
+                effEl.className = 'pill-badge skill-effort ' + (lvl > 0 ? 'emerald' : 'cyan');
+                effEl.title = 'Effort max par jet : +' + effortMax + ' (1 + ' + lvl + ' entr. ; PA, PE, Progression, Survolté, En transe inclus — Livre II §6)';
+            }
         }
     }
 
@@ -1227,6 +1241,17 @@ function initCharacterSheet() {
         // Badges de dés par compétence (avec paliers d'entraînement).
         refreshSkillDice(eff);
 
+        // Effort max par jet (1 + entraînements de la compétence — Livre II §6).
+        const skillLvls = getSkillLevels();
+        const maxLvl = Object.values(skillLvls).reduce((m, v) => Math.max(m, v), 0);
+        if (vitals.effortMax) {
+            vitals.effortMax.textContent = maxLvl > 0 ? ('+1 à +' + (1 + maxLvl)) : '+1 (0 entr.)';
+            const parts = ['Non entraînée : +1'].concat(
+                Object.entries(skillLvls).map(([n, v]) => `${n} : +${1 + v}`)
+            );
+            vitals.effortMax.title = 'Plafond PA+PE+bonus par jet (1 + entraînements, Livre II §6) — ' + parts.join(' | ');
+        }
+
         // ---- Validation du budget (Livre I §3) ----
         const errors = [];
         const awakened = eff.mag > 0;
@@ -1954,7 +1979,7 @@ function initCharacterSheet() {
             ext.ouie = +d.ouie || 3;
             let score = skillBaseScore(info.attrs, ext);
             if (info.mag && ext.mag > 0) score = Math.max(score, ext.mag);
-            return `${name} +${lvl} (${stepDie(dieForValue(score), lvl)})`;
+            return `${name} +${lvl} (${stepDie(dieForValue(score), lvl)}, effort max +${1 + lvl})`;
         }).join(', ') || 'Aucune';
         const enfEp = d.enfanceEpoque || 'E2';
         const enfList = ENFANCES_PAR_EPOQUE[enfEp] || ENFANCES;
@@ -1975,7 +2000,8 @@ function initCharacterSheet() {
             `-- JAUGES VITALES & TACTIQUES (Livre I §4) --\n` +
             `PA/tour : ${vitals.pa.textContent} (= Max(AGI,INT) + RAP + Min)\n` +
             `Encaissement : ${vitals.cap.textContent} (CON×2 + don) | Maximum Létal : ${vitals.max.textContent} (CON×5)\n` +
-            `Essoufflement : ${vitals.ess.textContent} | Initiative : ${document.getElementById('vitalInit').textContent} | Miracle : ${document.getElementById('vitalMiracle').textContent}\n\n` +
+            `Essoufflement : ${vitals.ess.textContent} | Initiative : ${document.getElementById('vitalInit').textContent} | Miracle : ${document.getElementById('vitalMiracle').textContent}\n` +
+            `Effort max / jet : ${vitals.effortMax ? vitals.effortMax.textContent : '+1'} (1 + entraînements, PA+PE+bonus inclus)\n\n` +
             `-- HISTORIQUE (Livre VII, Étape 2) --\n` +
             `Enfance : ${enfTxt}\nMétier : ${metTxt}\nÉvénement : ${eveTxt}\nAncrage : ${d.ancrage || '—'}\n\n` +
             `Compétences Entraînées (gratuites = ÉRU, +1 palier) :\n${trainedSkills}\n` +
@@ -2398,7 +2424,7 @@ function initDiceRoller() {
 
     // Update PA display
     paSlider.addEventListener('input', () => {
-        paValDisplay.textContent = `+${paSlider.value} PA`;
+        paValDisplay.textContent = `+${paSlider.value} effort`;
     });
 
     const opposedContainer = document.getElementById('opposedContainer');
@@ -2520,7 +2546,7 @@ function initDiceRoller() {
             const diff = totalScore - defScore;
 
             dieFaceVal.textContent = totalScore;
-            dieSubText.textContent = `Dés [${rolls.join(', ')}] ${cfg.mod !== 0 ? (cfg.mod > 0 ? '+' + cfg.mod : cfg.mod) : ''} + ${paBonus} PA + ${otherMod} situationnel (jamais mod carac)`;
+            dieSubText.textContent = `Dés [${rolls.join(', ')}] ${cfg.mod !== 0 ? (cfg.mod > 0 ? '+' + cfg.mod : cfg.mod) : ''} + ${paBonus} effort (≤ 1+entr.) + ${otherMod} situationnel (jamais mod carac)`;
 
             // Reset banner classes
             bannerTotal.className = 'dice-total-banner';
