@@ -28,11 +28,11 @@ livre: 7
                     <p>
                         L'Ancrage ne donne aucun bonus. Il vous donne mieux : de quoi jouer.
                         Répondez en une ligne ou deux par question, avec votre époque et
-                        votre monde ([E0–E5] + lieu, §26.4 — par défaut ceux de la campagne) :
+                        votre monde ([E0–E5] + lieu, §26.2 — par défaut ceux de la campagne) :
                     </p>
                     <ul>
                         <li><strong>Votre époque + votre monde ?</strong> Notez [E0–E5] + lieu
-                            (§26.4 — par défaut ceux de la campagne).</li>
+                            (§26.2 — par défaut ceux de la campagne).</li>
                         <li><strong>D'où venez-vous vraiment ?</strong> Un lieu, un milieu, une langue,
                             ce qui vous manque.</li>
                         <li><strong>Qui vous a marqué ?</strong> 1 allié, 1 rival, 1 disparu —

@@ -24,7 +24,7 @@
    "blocs": [
     {
      "type": "html",
-     "html": "\n\n                    <p>\n                        Vous venez de poser l'identité, l'espèce et le concept (Étape 1,\n                        Livre I §3). Prenez deux minutes pour le passé, avant de répartir\n                        vos points (Étape 3). Tant que votre fiche n'est pas validée,\n                        vous pouvez encore tout changer : enfance, métier, même espèce\n                        ou concept si l'histoire vous emmène ailleurs.\n                    </p>\n\n                    <p>\n                        Vous avez <strong>4 cases</strong>, dont <strong>1 seule obligatoire</strong>\n                        (l'Enfance). Vous pouvez <strong>choisir</strong> ou <strong>lancer\n                        les dés</strong> (d6 enfance, d12 métier, d12 événement). Sur chaque\n                        case que vous prenez, notez une <strong>époque [E0–E5]</strong>\n                        (Échelle Technologique, Livre I §2.1, voir §26.4) : votre contexte\n                        sélectionne la <strong>table d6 d'Enfance</strong> correspondante\n                        (chap. 27) et habille le décor du Métier et de l'Événement sans\n                        jamais changer votre budget de bonus.\n                    </p>\n\n                    "
+     "html": "\n\n                    <p>\n                        Vous venez de poser l'identité, l'espèce et le concept (Étape 1,\n                        Livre I §3). Prenez deux minutes pour le passé, avant de répartir\n                        vos points (Étape 3). Tant que votre fiche n'est pas validée,\n                        vous pouvez encore tout changer : enfance, métier, même espèce\n                        ou concept si l'histoire vous emmène ailleurs.\n                    </p>\n\n                    <p>\n                        L'historique comprend <strong>4 types d'entrées</strong> — <strong>un seul choix par type</strong>,\n                        dont <strong>1 seul obligatoire</strong> (l'Enfance). Pour chacun, vous pouvez <strong>choisir\n                        librement</strong> ou <strong>lancer les dés</strong> (d6 enfance, d8 métier, d12 événement).\n                        C'est <strong>votre MJ ou le cadre de campagne</strong> qui fixe l'époque <strong>[E0–E5]</strong>\n                        (Échelle Technologique, Livre I §2.1, voir §26.2) : elle détermine votre <strong>table d6 d'Enfance</strong>\n                        (chap. 27) et votre <strong>table d8 de Métier</strong> (chap. 28), et habille le décor de l'Événement\n                        (chap. 29).\n                    </p>\n\n                    "
     },
     {
      "type": "ref",
@@ -32,15 +32,11 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <h3>26.1 Ce que les bonus modifient — et ne modifient pas</h3>\n                    <p>\n                        Concret : vos bonus d'historique s'ajoutent au <strong>total de votre jet</strong>\n                        (Tirage + PA + modificateurs, Livre II). C'est tout.\n                        Ils ne vous donnent <strong>jamais</strong> : un dé plus gros, un point\n                        d'attribut, des PA, des dégâts, de l'armure, un entraînement gratuit\n                        ou des points de Magie. Votre Érudition et ses entraînements gratuits\n                        (Étape 6) ne bougent pas.\n                    </p>\n\n                    <div class=\"callout arcane\">\n                        <div class=\"callout-header\">\n                            Pour vous repérer\n                        </div>\n                        <div class=\"callout-body\">\n                            Une <strong>enfance vaut environ la moitié d'un don racial</strong>.\n                            Un <strong>métier vaut à peu près un don racial</strong> quand vous\n                            jouez son attache. Pour comparer : un don racial\n                            (Livre I, §2.2), c'est à peu près +2 dans 2–3 compétences ou\n                            1 capacité 1×/session. Votre enfance (+2 dans 1 compétence\n                            bien précise) reste en dessous. Votre métier (+2/+2 + atout\n                            pratique + attache si vous la prenez) joue dans la même cour.\n                        </div>\n                    </div>\n\n                    <h3>26.2 Les 5 règles à garder autour de la table</h3>\n                    <ul>\n                        <li><strong>Une de chaque, pas plus.</strong> Vous prenez une enfance,\n                            et au plus un métier, même avec un passé chargé. Le reste,\n                            racontez-le dans l'Ancrage (récit pur, sans bonus).</li>\n                        <li><strong>On ne cumule pas, on élargit.</strong> Si votre enfance ou\n                            votre métier donne +2 là où votre don racial ou l'autre entrée\n                            donne déjà +2, vous ne les additionnez pas. Le second +2 se déplace\n                            vers la compétence voisine la plus proche. Exemple : votre Milicien\n                            donne +2 <em>Observation (vigilance)</em> mais votre espèce couvre\n                            déjà la vigilance ? Vous passez ce +2 en <em>Écoute</em>. Votre MJ valide.</li>\n                        <li><strong>L'attache, c'est d'accord avec votre MJ.</strong> Si vous prenez\n                            un métier, vous pouvez prendre son attache (dette, hiérarchie, ennemi,\n                            commande) ou la laisser de côté. Ce n'est pas un malus chiffré :\n                            c'est une prise que votre MJ <strong>peut</strong> activer quand ça\n                            sert l'histoire.</li>\n                        <li><strong>L'événement, c'est un contrat.</strong> Son effet 1×/session\n                            ne marche que si vous jouez vraiment sa séquelle. Si vous la refusez\n                            ou la contournez tout le temps, vous perdez l'effet. C'est votre MJ\n                            qui tranche, et c'est définitif.</li>\n                        <li><strong>Restez crédible.</strong> Un Cléien ne grandit pas forgeron\n                            médiéval sur Cléia sans bonne raison. Un Derek ne grandit pas en\n                            station orbitale sans explication. Chaque entrée se décline selon\n                            le niveau tech de votre monde d'origine (voir §26.4 et §28.2).</li>\n                    </ul>\n\n                    <h3>26.3 Où noter sur la fiche</h3>\n                    <p>\n                        Ouvrez le bloc <strong>Historique</strong> de votre fiche (Livre I,\n                        fiche prototype) et remplissez ce que vous avez pris, ligne par ligne :\n                        <em>Ancrage</em> ([Ex] + monde + 3 lignes), <em>Enfance</em> (nom + [Ex] + bonus),\n                        <em>Métier</em> (nom + [Ex] + bonus + atout + attache si vous la prenez),\n                        <em>Événement</em> (nom + [Ex] + effet + séquelle). Laissez vide ce que\n                        vous ne prenez pas. Ce qui n'est pas noté n'existe pas en jeu.\n                        Exemple : <em>Milicien [E2] — Hybris, cité de Ferron</em>.\n                    </p>\n\n                    <h3>26.4 Marqueur d'époque [E0–E5] (à noter à chaque fois)</h3>\n                    <p>\n                        Votre MJ fixe <strong>l'époque de campagne</strong> (une valeur E0–E5\n                        par défaut). Chaque case que vous prenez porte son propre marqueur.\n                        Par défaut, vous prenez celui de la campagne. Envie d'une époque\n                        différente (exil, voyage, monde d'origine décalé) ? Dites-le à votre\n                        MJ et ajoutez une ligne d'explication dans votre historique.\n                    </p>\n\n                    "
+     "html": "\n\n                    <h3>26.1 Les 4 règles à garder autour de la table</h3>\n                    <ul>\n                        <li><strong>On ne cumule pas, on élargit.</strong> Si votre enfance ou\n                            votre métier donne +2 là où votre don racial ou l'autre entrée\n                            donne déjà +2, vous ne les additionnez pas. Le second +2 se déplace\n                            vers la compétence voisine la plus proche. Exemple : votre Milicien\n                            donne +2 <em>Observation (vigilance)</em> mais votre espèce couvre\n                            déjà la vigilance ? Vous passez ce +2 en <em>Écoute</em>. Votre MJ valide.</li>\n                        <li><strong>L'attache, c'est d'accord avec votre MJ.</strong> Si vous prenez\n                            un métier, vous pouvez prendre son attache (dette, hiérarchie, ennemi,\n                            commande) ou la laisser de côté. C'est une prise narrative que votre MJ\n                            <strong>peut</strong> activer quand ça sert l'histoire.</li>\n                        <li><strong>L'événement, c'est un contrat.</strong> Son effet 1×/session\n                            ne marche que si vous jouez vraiment sa séquelle. Si vous la refusez\n                            ou la contournez tout le temps, vous perdez l'effet. C'est votre MJ\n                            qui tranche, et c'est définitif.</li>\n                        <li><strong>Restez crédible.</strong> On ne passe pas d'une enfance primitive\n                            [E0] à un métier d'ingénieur de coque [E3], ni d'une époque très avancée [E4]\n                            à une campagne médiévale [E1], sans raison solide. Vos choix suivent l'époque\n                            fixée pour la campagne ; tout écart d'époque demande une explication validée\n                            par votre MJ (voir §26.2).</li>\n                    </ul>\n\n                    <h3>26.2 Époque de campagne [E0–E5] (fixée par le MJ)</h3>\n                    <p>\n                        Votre MJ ou le cadre de campagne fixe <strong>l'époque jouée</strong>\n                        (une valeur E0–E5, Livre I §2.1) : tous vos choix d'historique s'y\n                        rattachent automatiquement. Vous ne prenez une autre époque pour\n                        l'un d'eux (exil, voyage, monde d'origine décalé) qu'<strong>avec\n                        l'accord de votre MJ</strong> et une ligne d'explication — dans ce cas,\n                        notez le marqueur [Ex] correspondant sur votre fiche.\n                    </p>\n\n                    "
     },
     {
      "type": "ref",
      "cible": "marqueurs_epoque"
-    },
-    {
-     "type": "html",
-     "html": "\n\n                    <div class=\"callout temporal\">\n                        <div class=\"callout-header\">\n                            Ce que le marqueur change — et ne change pas\n                        </div>\n                        <div class=\"callout-body\">\n                            Le marqueur ne change <strong>jamais</strong> la valeur de vos bonus :\n                            toutes les tables d'Enfance (E0 à E5, chap. 27) restent calibrées\n                            à <strong>+2 dans 1 compétence en contexte précis</strong>, et un\n                            Mécano forgeron [E1] comme un Mécano orbital [E3] donnent le même\n                            +2/+2. Sur le Métier et l'Événement, seuls le décor, l'atout\n                            (caisse à outils → forge → atelier orbital) et l'attache\n                            (dette, guilde, commanditaire) changent de nom. Si votre atout\n                            ne sert à rien dans l'époque jouée (une licence d'astroport en\n                            campagne E1), votre MJ le convertit en contact ou droit équivalent.\n                        </div>\n                    </div>\n\n                    <!-- ================= CHAPITRE 26 ================= -->\n                    "
     }
    ],
    "nav": "Principes & Procédure"
@@ -52,7 +48,7 @@
    "blocs": [
     {
      "type": "html",
-     "html": "\n\n                    <p>\n                        Repérez d'abord votre contexte technologique <strong>[E0–E5]</strong> (§26.4 —\n                        par défaut celui de la campagne), ouvrez la table correspondante ci-dessous,\n                        puis lancez <strong>1d6</strong> ou choisissez. Chaque enfance vous donne\n                        <strong>1 petit bonus</strong> : <strong>+2</strong> à une compétence bien\n                        précise <strong>dans son contexte</strong> (environ la moitié d'un don racial,\n                        §26.1). Hors contexte, pas de bonus. Notez <strong>Nom [Ex]</strong> sur\n                        votre fiche (§26.3).\n                    </p>\n\n                    <div style=\"display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 22px;\">\n                        <a href=\"#sec-27-1\" class=\"pill-badge amber\" style=\"text-decoration: none;\">27.1 [E0] Primitive</a>\n                        <a href=\"#sec-27-2\" class=\"pill-badge amber\" style=\"text-decoration: none;\">27.2 [E1] Médiévale</a>\n                        <a href=\"#sec-27-3\" class=\"pill-badge cyan\" style=\"text-decoration: none;\">27.3 [E2] Moderne</a>\n                        <a href=\"#sec-27-4\" class=\"pill-badge cyan\" style=\"text-decoration: none;\">27.4 [E3] Avancée</a>\n                        <a href=\"#sec-27-5\" class=\"pill-badge emerald\" style=\"text-decoration: none;\">27.5 [E4] Très Avancée</a>\n                        <a href=\"#sec-27-6\" class=\"pill-badge emerald\" style=\"text-decoration: none;\">27.6 [E5] Démiurgique</a>\n                    </div>\n\n                    <h3 id=\"sec-27-1\">27.1 Contexte [E0] — Primitive (d6)</h3>\n                    <p>\n                        <em>Pierre, os, bronze, chasse et tribus.</em> Vous avez grandi dans un monde\n                        sans fer forgé ni cités de pierre, au rythme du clan, du gibier et des saisons.\n                    </p>\n\n                    "
+     "html": "\n\n                    <p>\n                        Ouvrez la table correspondant à <strong>l'époque [E0–E5] fixée par votre MJ</strong>\n                        (§26.2), puis lancez <strong>1d6</strong> ou choisissez. Chaque enfance vous donne\n                        <strong>1 petit bonus</strong> : <strong>+2</strong> à une compétence bien\n                        précise <strong>dans son contexte</strong>. Hors contexte, pas de bonus.\n                    </p>\n\n                    <div style=\"display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 22px;\">\n                        <a href=\"#sec-27-1\" class=\"pill-badge amber\" style=\"text-decoration: none;\">27.1 [E0] Primitive</a>\n                        <a href=\"#sec-27-2\" class=\"pill-badge amber\" style=\"text-decoration: none;\">27.2 [E1] Médiévale</a>\n                        <a href=\"#sec-27-3\" class=\"pill-badge cyan\" style=\"text-decoration: none;\">27.3 [E2] Moderne</a>\n                        <a href=\"#sec-27-4\" class=\"pill-badge cyan\" style=\"text-decoration: none;\">27.4 [E3] Avancée</a>\n                        <a href=\"#sec-27-5\" class=\"pill-badge emerald\" style=\"text-decoration: none;\">27.5 [E4] Très Avancée</a>\n                        <a href=\"#sec-27-6\" class=\"pill-badge emerald\" style=\"text-decoration: none;\">27.6 [E5] Démiurgique</a>\n                    </div>\n\n                    <h3 id=\"sec-27-1\">27.1 Contexte [E0] — Primitive (d6)</h3>\n                    <p>\n                        <em>Pierre, os, bronze, chasse et tribus.</em> Vous avez grandi dans un monde\n                        sans fer forgé ni cités de pierre, au rythme du clan, du gibier et des saisons.\n                    </p>\n\n                    "
     },
     {
      "type": "ref",
@@ -68,7 +64,7 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <h3 id=\"sec-27-3\">27.3 Contexte [E2] — Moderne (d6)</h3>\n                    <p>\n                        <em>Métropoles, balistique, silicium et États-nations.</em> Vous avez grandi\n                        entre quais industriels, rues bétonnées, écoles publiques et casernes.\n                    </p>\n\n                    "
+     "html": "\n\n                    <h3 id=\"sec-27-3\">27.3 Contexte [E2] — Moderne (d6)</h3>\n                    <p>\n                        <em>Métropoles, balistique, silicium et États-nations.</em> Vous avez grandi\n                        entre quais industriels, rues bétonnées, écoles publiques et casernes.\n                    </p>\n\n                    \n"
     },
     {
      "type": "ref",
@@ -76,7 +72,7 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <h3 id=\"sec-27-4\">27.4 Contexte [E3] — Avancée (d6)</h3>\n                    <p>\n                        <em>Orbital, terraformation, cybernétique et interstellaire.</em> Vous avez grandi\n                        sous dôme, entre sas de station, ponts de navettes et néons de mégacité.\n                    </p>\n\n                    "
+     "html": "\n\n                    <h3 id=\"sec-27-4\">27.4 Contexte [E3] — Avancée (d6)</h3>\n                    <p>\n                        <em>Orbital, terraformation, cybernétique et interstellaire.</em> Vous avez grandi\n                        sous dôme, entre sas de station, ponts de navettes et néons de mégacité.\n                    </p>\n\n                    \n"
     },
     {
      "type": "ref",
@@ -84,7 +80,7 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <h3 id=\"sec-27-5\">27.5 Contexte [E4] — Très Avancée (d6)</h3>\n                    <p>\n                        <em>Sphères de Dyson, téléportation, nytharite et cuves arcaniques.</em> Vous avez\n                        grandi à l'échelle des mégastructures, des portails et des ateliers d'énergie.\n                    </p>\n\n                    "
+     "html": "\n\n                    <h3 id=\"sec-27-5\">27.5 Contexte [E4] — Très Avancée (d6)</h3>\n                    <p>\n                        <em>Sphères de Dyson, téléportation, nytharite et cuves arcaniques.</em> Vous avez\n                        grandi à l'échelle des mégastructures, des portails et des ateliers d'énergie.\n                    </p>\n\n                    \n"
     },
     {
      "type": "ref",
@@ -92,7 +88,7 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <h3 id=\"sec-27-6\">27.6 Contexte [E5] — Démiurgique (d6)</h3>\n                    <p>\n                        <em>Continuum manipulé et post-matière.</em> Vous avez grandi là où les lois\n                        physiques se plient et où l'on cartographie les embranchements du réel.\n                    </p>\n\n                    "
+     "html": "\n\n                    <h3 id=\"sec-27-6\">27.6 Contexte [E5] — Démiurgique (d6)</h3>\n                    <p>\n                        <em>Continuum manipulé et post-matière.</em> Vous avez grandi là où les lois\n                        physiques se plient et où l'on cartographie les embranchements du réel.\n                    </p>\n\n                    \n"
     },
     {
      "type": "ref",
@@ -100,7 +96,7 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <div class=\"callout arcane\" style=\"margin-top: 22px;\">\n                        <div class=\"callout-header\">\n                            Jouer une enfance hors de son époque de campagne (§26.4)\n                        </div>\n                        <div class=\"callout-body\">\n                            Vous venez d'un autre monde ou d'un autre âge que celui de la table ?\n                            Tirez ou choisissez dans la <strong>table d6 de votre époque d'origine</strong>,\n                            puis adaptez la portée du contexte avec votre MJ par simple analogie\n                            (ex. <em>Piste &amp; Gibier [E0]</em> garde son +2 <em>Discrétion</em> en\n                            forêt même dans une campagne [E3], et <em>Atelier de Nytharite [E4]</em>\n                            transpose son +2 <em>Ingénierie &amp; Arcanotech</em> sur les mécanismes\n                            du décor joué). Rappel : aucune enfance — même en [E4] ou [E5] — ne vous\n                            donne accès à la Cinquième Force (§29.3) ni à la clairsentience (Livre X §41).\n                        </div>\n                    </div>\n\n                    <!-- ================= CHAPITRE 28 ================= -->\n                    "
+     "html": "\n\n                    <div class=\"callout arcane\" style=\"margin-top: 22px;\">\n                        <div class=\"callout-header\">\n                            Jouer une enfance hors de son époque de campagne (§26.2)\n                        </div>\n                        <div class=\"callout-body\">\n                            Vous venez d'un autre monde ou d'un autre âge que celui de la table ?\n                            Tirez ou choisissez dans la <strong>table d6 de votre époque d'origine</strong>,\n                            puis adaptez la portée du contexte avec votre MJ par simple analogie\n                            (ex. <em>Piste &amp; Gibier [E0]</em> garde son +2 <em>Discrétion</em> en\n                            forêt même dans une campagne [E3], et <em>Atelier de Nytharite [E4]</em>\n                            transpose son +2 <em>Ingénierie &amp; Arcanotech</em> sur les mécanismes\n                            du décor joué). Rappel : aucune enfance — même en [E4] ou [E5] — ne vous\n                            donne accès à la Cinquième Force (§29.3) ni à la clairsentience (Livre X §41).\n                        </div>\n                    </div>\n\n                    <!-- ================= CHAPITRE 28 ================= -->\n                    \n"
     }
    ],
    "nav": "Enfances E0–E5 (d6)"
@@ -108,22 +104,62 @@
   {
    "id": "chap-28",
    "symbole": "28.",
-   "titre": "Métiers : 12 Parcours (d12)",
+   "titre": "Métiers : 1 Table d8 par Contexte E0–E5",
    "blocs": [
     {
      "type": "html",
-     "html": "\n\n                    <p>\n                        Lancez <strong>1d12</strong> ou choisissez. Chaque métier vous donne :\n                        <strong>+2 à 2 compétences</strong> de son champ, <strong>1 atout</strong>\n                        concret (outil, contact, permis — jamais un bonus chiffré en plus)\n                        et <strong>1 attache si vous la voulez</strong> (voir §26.2).\n                        Notez votre <strong>[E0–E5]</strong> (§26.4) : le bonus ne change pas,\n                        seul le décor change (voir §28.2). Exemple : forgeron [E1] ou\n                        mécano orbital [E3], c'est le même +2.\n                    </p>\n\n                    "
+     "html": "\n\n                    <p>\n                        Ouvrez la table correspondant à <strong>l'époque [E0–E5] fixée par votre MJ</strong>\n                        (§26.2), puis lancez <strong>1d8</strong> ou choisissez. Chaque métier vous donne :\n                        <strong>+2 à 2 compétences</strong> de son champ, <strong>1 atout</strong>\n                        concret (outil, contact, permis — jamais un bonus chiffré en plus)\n                        et <strong>1 attache si vous la voulez</strong> (voir §26.1).\n                    </p>\n\n                    <div style=\"display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 22px;\">\n                        <a href=\"#sec-28-1\" class=\"pill-badge amber\" style=\"text-decoration: none;\">28.1 [E0] Primitive</a>\n                        <a href=\"#sec-28-2\" class=\"pill-badge amber\" style=\"text-decoration: none;\">28.2 [E1] Médiévale</a>\n                        <a href=\"#sec-28-3\" class=\"pill-badge cyan\" style=\"text-decoration: none;\">28.3 [E2] Moderne</a>\n                        <a href=\"#sec-28-4\" class=\"pill-badge cyan\" style=\"text-decoration: none;\">28.4 [E3] Avancée</a>\n                        <a href=\"#sec-28-5\" class=\"pill-badge emerald\" style=\"text-decoration: none;\">28.5 [E4] Très Avancée</a>\n                        <a href=\"#sec-28-6\" class=\"pill-badge emerald\" style=\"text-decoration: none;\">28.6 [E5] Démiurgique</a>\n                    </div>\n\n                    <h3 id=\"sec-28-1\">28.1 Contexte [E0] — Primitive (d8)</h3>\n                    <p>\n                        <em>Pierre, os, bronze, chasse et tribus.</em> Des rôles forgés par la survie,\n                        la parole des anciens et l'équilibre fragile entre les clans.\n                    </p>\n\n                    "
     },
     {
      "type": "ref",
-     "cible": "metiers"
+     "cible": "metiers_e0"
     },
     {
      "type": "html",
-     "html": "\n\n                    <h3>28.1 Exemple autour de la table</h3>\n                    <p>\n                        Prenons Mara, Taurienne. Enfance Rues [E2], métier Milicienne [E2].\n                        Son don racial <em>Pas Feuillu</em>, son enfance +2 <em>Observation</em>\n                        en ville, son métier +2 Ballistique/Tir (fusil réglementaire) et +2\n                        <em>Observation (vigilance)</em>. En ville, sa vigilance ne prend\n                        <strong>+2 qu'une seule fois</strong> (on ne cumule pas, §26.2).\n                        Le second +2 se déplace en +2 <em>Écoute</em>, avec l'accord du MJ.\n                        Sur un jet de vigilance en ville, Mara lance donc :\n                        Tirage + PA + 2. Simple.\n                    </p>\n\n                    <h3>28.2 Le même métier, à toutes les époques [E0–E5]</h3>\n                    <p>\n                        Chaque métier existe à toutes les époques (Livre I, §2.1). Garde armé\n                        de lance [E0], forgeron [E1], chauffeur [E2], indexeur de trames [E5] :\n                        le bonus reste le même. Seuls le nom, l'outil et l'attache changent.\n                        La « caisse à outils » d'un forgeron vaut celle d'un mécano orbital\n                        en jeu. Notez <strong>Nom [Ex]</strong> sur votre fiche (§26.3).\n                        Si vous jouez une autre époque que celle de la campagne,\n                        prévoyez une ligne d'explication pour votre MJ (§26.4).\n                    </p>\n\n                    <!-- ================= CHAPITRE 27 ================= -->\n                    "
+     "html": "\n\n                    <h3 id=\"sec-28-2\">28.2 Contexte [E1] — Médiévale (d8)</h3>\n                    <p>\n                        <em>Forges d'acier, bourgs, châteaux, abbayes et guildes.</em> Entre service\n                        armé, métiers de guilde, scriptoriums et routes marchandes.\n                    </p>\n\n                    "
+    },
+    {
+     "type": "ref",
+     "cible": "metiers_e1"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <h3 id=\"sec-28-3\">28.3 Contexte [E2] — Moderne (d8)</h3>\n                    <p>\n                        <em>Métropoles, balistique, silicium et États-nations.</em> Forces de sécurité,\n                        techniciens, conducteurs, courtiers et services de renseignement.\n                    </p>\n\n                    \n"
+    },
+    {
+     "type": "ref",
+     "cible": "metiers_e2"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <h3 id=\"sec-28-4\">28.4 Contexte [E3] — Avancée (d8)</h3>\n                    <p>\n                        <em>Orbital, terraformation, cybernétique et interstellaire.</em> Équipages\n                        de vaisseaux, colons, ingénieurs de coque et opérateurs des mégacités.\n                    </p>\n\n                    \n"
+    },
+    {
+     "type": "ref",
+     "cible": "metiers_e3"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <h3 id=\"sec-28-5\">28.5 Contexte [E4] — Très Avancée (d8)</h3>\n                    <p>\n                        <em>Sphères de Dyson, téléportation, nytharite et cuves arcaniques.</em>\n                        Gardiens de portails, bio-régénérateurs, ingénieurs de résonance et stratèges.\n                    </p>\n\n                    \n"
+    },
+    {
+     "type": "ref",
+     "cible": "metiers_e4"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <h3 id=\"sec-28-6\">28.6 Contexte [E5] — Démiurgique (d8)</h3>\n                    <p>\n                        <em>Continuum manipulé et post-matière.</em> Indexeurs de trames, modeleurs\n                        d'architectures, gardiens de seuils et émissaires des Élianes.\n                    </p>\n\n                    \n"
+    },
+    {
+     "type": "ref",
+     "cible": "metiers_e5"
+    },
+    {
+     "type": "html",
+     "html": "\n\n                    <h3 id=\"sec-28-7\">28.7 Exemple autour de la table &amp; métier hors époque</h3>\n                    <p>\n                        Prenons Mara, Taurienne. Enfance <em>Rues &amp; Bas-fonds</em> [E2], métier\n                        <em>Milicienne</em> [E2]. Son don racial <em>Pas Feuillu</em>, son enfance\n                        +2 <em>Observation</em> en ville, son métier +2 <em>Ballistique / Tir</em>\n                        (fusil réglementaire) et +2 <em>Observation</em> (vigilance). En ville, sa\n                        vigilance ne prend <strong>+2 qu'une seule fois</strong> (on ne cumule pas,\n                        §26.1). Le second +2 se déplace en +2 <em>Écoute</em>, avec l'accord du MJ.\n                        Sur un jet de vigilance en ville, Mara lance donc : Tirage + PA + 2. Simple.\n                    </p>\n\n                    <div class=\"callout arcane\" style=\"margin-top: 18px;\">\n                        <div class=\"callout-header\">\n                            Jouer un métier hors de son époque de campagne (§26.2)\n                        </div>\n                        <div class=\"callout-body\">\n                            Vous venez d'un autre monde ou d'un autre âge que celui de la table ?\n                            Tirez ou choisissez dans la <strong>table d8 de votre époque d'origine</strong>,\n                            puis adaptez l'atout et l'attache avec votre MJ par simple analogie\n                            (un permis d'astroport [E3] en campagne [E1] devient une lettre de marque\n                            ou un contact portuaire ; un arc de chasse [E0] en campagne [E3] devient\n                            un équipement sportif ou de survie). Rappel : aucun métier — même en [E4]\n                            ou [E5] — ne vous donne accès à la Cinquième Force (§29.3) ni à la\n                            clairsentience (Livre X §41).\n                        </div>\n                    </div>\n\n                    <!-- ================= CHAPITRE 29 ================= -->\n                    \n"
     }
    ],
-   "nav": "Métiers (d12)"
+   "nav": "Métiers E0–E5 (d8)"
   },
   {
    "id": "chap-29",
@@ -132,7 +168,7 @@
    "blocs": [
     {
      "type": "html",
-     "html": "\n\n                    <h3>29.1 Table des événements (d12)</h3>\n                    <p>\n                        C'est optionnel, et vous pouvez le refuser. Chacun vous donne\n                        <strong>1 effet à jouer 1×/session</strong> contre <strong>1 séquelle</strong>\n                        que votre MJ activera vraiment (§26.2). Lancez 1d12 ou choisissez.\n                        Notez votre <strong>[E0–E5]</strong> (§26.4, par défaut celle\n                        de la campagne).\n                    </p>\n\n                    "
+     "html": "\n\n                    <h3>29.1 Table des événements (d12)</h3>\n                    <p>\n                        C'est optionnel, et vous pouvez le refuser. Chacun vous donne\n                        <strong>1 effet à jouer 1×/session</strong> contre <strong>1 séquelle</strong>\n                        que votre MJ activera vraiment (§26.1). Lancez 1d12 ou choisissez.\n                        L'événement s'habille selon <strong>l'époque [E0–E5] fixée par votre MJ</strong>\n                        (§26.2).\n                    </p>\n\n                    "
     },
     {
      "type": "ref",
@@ -140,7 +176,7 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <h3>29.2 Note temporelle (Écho n°10)</h3>\n                    <p>\n                        L'Écho temporel, ce n'est pas de la clairsentience (Livre X, §41).\n                        C'est un déjà-vu brut, que vous ne contrôlez pas, et qui fait mal :\n                        votre MJ répond par oui / non / peut-être, jamais par des détails.\n                        C'est la seule entrée d'historique qui touche au Fleuve du Temps —\n                        d'où son coût : +1 Essoufflement à chaque usage.\n                    </p>\n\n                    <h3>29.3 Et la magie, là-dedans ?</h3>\n                    <p>\n                        Aucune entrée d'historique ne vous donne — ni ne vous retire —\n                        l'accès à la Cinquième Force. Si vous jouez un Éveillé\n                        (Magie &gt; 0), vous payez toujours votre éveil au prix fort\n                        (17 points secondaires, Livre I, §3). Votre historique dit juste\n                        <em>comment</em> ça s'est passé. Le n°5 (contact avec la 5e Force)\n                        est tout indiqué pour ça.\n                    </p>\n\n                    <h3>29.4 Ancrage : 3 questions + époque (récit pur, 0 mécanique)</h3>\n                    <p>\n                        L'Ancrage ne donne aucun bonus. Il vous donne mieux : de quoi jouer.\n                        Répondez en une ligne ou deux par question, avec votre époque et\n                        votre monde ([E0–E5] + lieu, §26.4 — par défaut ceux de la campagne) :\n                    </p>\n                    <ul>\n                        <li><strong>Votre époque + votre monde ?</strong> Notez [E0–E5] + lieu\n                            (§26.4 — par défaut ceux de la campagne).</li>\n                        <li><strong>D'où venez-vous vraiment ?</strong> Un lieu, un milieu, une langue,\n                            ce qui vous manque.</li>\n                        <li><strong>Qui vous a marqué ?</strong> 1 allié, 1 rival, 1 disparu —\n                            un nom et une ligne chacun.</li>\n                        <li><strong>Que fuyez-vous, que cherchez-vous ?</strong> Une peur qui vous\n                            pousse et un désir qui vous tire — une ligne chacun.</li>\n                    </ul>\n                    <div class=\"callout temporal\">\n                        <div class=\"callout-header\">\n                            Pour votre MJ — des prises pour la suite\n                        </div>\n                        <div class=\"callout-body\">\n                            Chaque réponse d'Ancrage vous prépare un levier : un lieu à menacer,\n                            un allié à compromettre, un désir à bousculer. Notez-les à part :\n                            ce sont vos idées d'arcs (Livre X, §42), pas des bonus.\n                        </div>\n                    </div>\n\n                    <!-- PAGINATION ENTRE LIVRES -->\n                    <div class=\"chapter-pagination\">\n                        <a href=\"livre_6.html\" class=\"pagination-btn\">\n                            <div>\n                                <div class=\"pagination-label\">Livre Précédent</div>\n                                <div class=\"pagination-title\">← Livre VI : Santé, États &amp; Blessures</div>\n                            </div>\n                        </a>\n                        <a href=\"livre_8.html\" class=\"pagination-btn\">\n                            <div>\n                                <div class=\"pagination-label\">Livre Suivant</div>\n                                <div class=\"pagination-title\">Livre VIII : Arsenal &amp; Arcanotech →</div>\n                            </div>\n                        </a>\n                    </div>\n\n                "
+     "html": "\n\n                    <h3>29.2 Note temporelle (Écho n°10)</h3>\n                    <p>\n                        L'Écho temporel, ce n'est pas de la clairsentience (Livre X, §41).\n                        C'est un déjà-vu brut, que vous ne contrôlez pas, et qui fait mal :\n                        votre MJ répond par oui / non / peut-être, jamais par des détails.\n                        C'est la seule entrée d'historique qui touche au Fleuve du Temps —\n                        d'où son coût : +1 Essoufflement à chaque usage.\n                    </p>\n\n                    <h3>29.3 Et la magie, là-dedans ?</h3>\n                    <p>\n                        Aucune entrée d'historique ne vous donne — ni ne vous retire —\n                        l'accès à la Cinquième Force. Si vous jouez un Éveillé\n                        (Magie &gt; 0), vous payez toujours votre éveil au prix fort\n                        (17 points secondaires, Livre I, §3). Votre historique dit juste\n                        <em>comment</em> ça s'est passé. Le n°5 (contact avec la 5e Force)\n                        est tout indiqué pour ça.\n                    </p>\n\n                    <h3>29.4 Ancrage : 3 questions + époque (récit pur, 0 mécanique)</h3>\n                    <p>\n                        L'Ancrage ne donne aucun bonus. Il vous donne mieux : de quoi jouer.\n                        Répondez en une ligne ou deux par question, avec votre époque et\n                        votre monde ([E0–E5] + lieu, §26.2 — par défaut ceux de la campagne) :\n                    </p>\n                    <ul>\n                        <li><strong>Votre époque + votre monde ?</strong> Notez [E0–E5] + lieu\n                            (§26.2 — par défaut ceux de la campagne).</li>\n                        <li><strong>D'où venez-vous vraiment ?</strong> Un lieu, un milieu, une langue,\n                            ce qui vous manque.</li>\n                        <li><strong>Qui vous a marqué ?</strong> 1 allié, 1 rival, 1 disparu —\n                            un nom et une ligne chacun.</li>\n                        <li><strong>Que fuyez-vous, que cherchez-vous ?</strong> Une peur qui vous\n                            pousse et un désir qui vous tire — une ligne chacun.</li>\n                    </ul>\n                    <div class=\"callout temporal\">\n                        <div class=\"callout-header\">\n                            Pour votre MJ — des prises pour la suite\n                        </div>\n                        <div class=\"callout-body\">\n                            Chaque réponse d'Ancrage vous prépare un levier : un lieu à menacer,\n                            un allié à compromettre, un désir à bousculer. Notez-les à part :\n                            ce sont vos idées d'arcs (Livre X, §42), pas des bonus.\n                        </div>\n                    </div>\n\n                    <!-- PAGINATION ENTRE LIVRES -->\n                    <div class=\"chapter-pagination\">\n                        <a href=\"livre_6.html\" class=\"pagination-btn\">\n                            <div>\n                                <div class=\"pagination-label\">Livre Précédent</div>\n                                <div class=\"pagination-title\">← Livre VI : Santé, États &amp; Blessures</div>\n                            </div>\n                        </a>\n                        <a href=\"livre_8.html\" class=\"pagination-btn\">\n                            <div>\n                                <div class=\"pagination-label\">Livre Suivant</div>\n                                <div class=\"pagination-title\">Livre VIII : Arsenal &amp; Arcanotech →</div>\n                            </div>\n                        </a>\n                    </div>\n\n                "
     }
    ],
    "nav": "Événement & Ancrage"
@@ -153,36 +189,31 @@
     "Entrée",
     "Statut",
     "Effet mécanique",
-    "Cumul",
     "Époque"
    ],
    "lignes": [
     [
      "<strong>A. Ancrage</strong> (§29.4)",
      "Optionnel",
-     "<strong>Aucun</strong> — 3 réponses de récit pur",
-     "—",
-     "<strong>[E0–E5]</strong> + monde"
+     "<strong>Aucun</strong> — habillage narratif et récit pur",
+     "<strong>[E0–E5]</strong>"
     ],
     [
      "<strong>B. Enfance</strong> (chap. 27)",
      "Obligatoire",
      "<strong>1 aptitude mineure</strong> : +2 à 1 compétence étroite, ou trait situatif",
-     "1 seule",
      "<strong>[E0–E5]</strong>"
     ],
     [
      "<strong>C. Métier</strong> (chap. 28)",
      "Optionnel",
      "<strong>1 aptitude majeure</strong> : +2 à 2 compétences + 1 atout + 1 attache optionnelle",
-     "1 seul",
      "<strong>[E0–E5]</strong>"
     ],
     [
      "<strong>D. Événement marquant</strong> (§29.1)",
      "Optionnel",
      "<strong>1 effet 1×/session</strong> + 1 séquelle narrative réelle",
-     "1 seul, refusable",
      "<strong>[E0–E5]</strong>"
     ]
    ]
@@ -509,10 +540,146 @@
     ]
    ]
   },
-  "metiers": {
+  "metiers_e0": {
    "type": "table",
    "colonnes": [
-    "d12",
+    "d8",
+    "Métier",
+    "Bonus (+2 / +2)",
+    "Atout",
+    "Attache"
+   ],
+   "lignes": [
+    [
+     "<strong>1</strong>",
+     "<strong>Chasseur de Traque</strong>",
+     "Nature &amp; Survie (traque de gibier) &amp; Ballistique / Tir (arc, fronde ou javelot)",
+     "Pièges, collets, sagaies ou arc de chasse personnel",
+     "Territoire disputé : clan rival ou proie taboue"
+    ],
+    [
+     "<strong>2</strong>",
+     "<strong>Guerrier Tribal</strong>",
+     "Maniement d'Arme (lance, hache ou massue) &amp; Intimidation (posture de guerre)",
+     "Arme de bronze ou d'obsidienne + bouclier de peau",
+     "Serment de sang : appelé à défendre le clan au premier signal"
+    ],
+    [
+     "<strong>3</strong>",
+     "<strong>Guérisseur des Herbes</strong>",
+     "Premiers Soins (plaies, fractures) &amp; Nature &amp; Survie (plantes médicinales)",
+     "Bourse de simples, onguents et remèdes courants",
+     "Tabou du soin : ne jamais refuser d'aider un blessé qui demande refuge"
+    ],
+    [
+     "<strong>4</strong>",
+     "<strong>Tailleur &amp; Fondeur</strong>",
+     "Artisanat / Connaissance (pierre, os, cuir ou bronze) &amp; Endurance Physique (travaux de forge/taille)",
+     "Trousse d'outils bruts (percuteurs, moules, lames)",
+     "Commande du chef : arme rituelle ou outils promis avant la saison"
+    ],
+    [
+     "<strong>5</strong>",
+     "<strong>Éclaireur des Confins</strong>",
+     "Observation (repérer pistes et embuscades) &amp; Discrétion (milieu naturel)",
+     "Manteau de camouflage, gourdes et matériel de bivouac",
+     "Route secrète : vous connaissez un passage que d'autres veulent arracher"
+    ],
+    [
+     "<strong>6</strong>",
+     "<strong>Conteur &amp; Gardien</strong>",
+     "Intuition (lire les intentions) &amp; Communication (récit, arbitrage, palabre)",
+     "Bâton ou parure de mémoire + accueil dans les clans amis",
+     "Mémoire sacrée : un secret tribal vous est confié sous peine de bannissement"
+    ],
+    [
+     "<strong>7</strong>",
+     "<strong>Troc &amp; Caravane</strong>",
+     "Communication (troc et échange) &amp; Endurance Physique (marches de portage)",
+     "Lot de marchandises rares (sel, ambre, silex) + 1 contact de troc",
+     "Dette d'échange : un clan attend sa contrepartie avant l'hiver"
+    ],
+    [
+     "<strong>8</strong>",
+     "<strong>Chef de Meute</strong>",
+     "Leadership (mener chasse ou défense) &amp; Athlétisme (franchissement, course en terrain brut)",
+     "Totem ou insigne de rang + respect des guerriers de son groupe",
+     "Responsabilité du clan : vies perdues ou rival qui conteste votre autorité"
+    ]
+   ]
+  },
+  "metiers_e1": {
+   "type": "table",
+   "colonnes": [
+    "d8",
+    "Métier",
+    "Bonus (+2 / +2)",
+    "Atout",
+    "Attache"
+   ],
+   "lignes": [
+    [
+     "<strong>1</strong>",
+     "<strong>Homme d'Armes</strong>",
+     "Maniement d'Arme (1 arme réglementaire) &amp; Observation (guet et garde)",
+     "Armure légère de garnison (Livre VIII) ou accès à l'armurerie du seigneur",
+     "Service de ban : rappelable par votre suzerain ou capitaine en cas de guerre"
+    ],
+    [
+     "<strong>2</strong>",
+     "<strong>Apothicaire</strong>",
+     "Premiers Soins (chirurgie de terrain) &amp; Artisanat / Connaissance (pharmacopée et onguents)",
+     "Coffret d'apothicaire et stock de remèdes courants",
+     "Clientèle trouble : on paie en silence pour des remèdes ou antidotes discrets"
+    ],
+    [
+     "<strong>3</strong>",
+     "<strong>Forgeron &amp; Maître-Artisan</strong>",
+     "Artisanat / Connaissance (1 métier de guilde : forge, charpente, armurerie) &amp; Endurance Physique (effort prolongé)",
+     "Établi et outils de maître de guilde",
+     "Commande seigneuriale : délai strict ou cotisation de guilde en retard"
+    ],
+    [
+     "<strong>4</strong>",
+     "<strong>Veneur &amp; Pisteur</strong>",
+     "Nature &amp; Survie (traque) &amp; Ballistique / Tir (arc ou arbalète)",
+     "Arc ou arbalète de chasse, pièges et droit de passage forestier",
+     "Droit de chasse : garde-chasse hostile, quota ou braconnage passé"
+    ],
+    [
+     "<strong>5</strong>",
+     "<strong>Marchand de Guilde</strong>",
+     "Communication (négocier) &amp; Intuition (évaluer une offre ou un faux)",
+     "Patente de commerce + 1 contact marchand en ville",
+     "Dette de comptoir ou concurrent de guilde acharné"
+    ],
+    [
+     "<strong>6</strong>",
+     "<strong>Scribe &amp; Érudit</strong>",
+     "Académie (1 domaine : droit, histoire, héraldique, théologie) &amp; Observation (repérer un détail ou un faux)",
+     "Accès à un scriptorium ou une bibliothèque seigneuriale",
+     "Censure : textes interdits ou protecteur exigeant une enquête discrète"
+    ],
+    [
+     "<strong>7</strong>",
+     "<strong>Espion &amp; Coupe-Bourse</strong>",
+     "Discrétion (filature, intrusion) &amp; Subterfuge Manuel (crochetage, escamotage)",
+     "Faux sceaux ou sauf-conduits + 1 planque sûre en faubourg",
+     "Ancien commanditaire : connaît votre vrai visage et peut exiger 1 service"
+    ],
+    [
+     "<strong>8</strong>",
+     "<strong>Capitaine &amp; Héraut</strong>",
+     "Leadership (commander en ligne) &amp; Intimidation (imposer l'ordre)",
+     "Bannière ou chevalière de grade + 1 contact noble ou militaire",
+     "Honneur entaché : siège perdu, duel en suspens ou disgrâce possible"
+    ]
+   ]
+  },
+  "metiers_e2": {
+   "type": "table",
+   "colonnes": [
+    "d8",
     "Métier",
     "Bonus (+2 / +2)",
     "Atout",
@@ -522,86 +689,262 @@
     [
      "<strong>1</strong>",
      "<strong>Milicien</strong>",
-     "Ballistique/Tir (1 arme réglementaire) &amp; Observation (vigilance)",
+     "Ballistique / Tir (1 arme réglementaire) &amp; Observation (vigilance)",
      "Armure légère réglementaire (Livre VIII) ou accès armurerie",
      "Autorité de réserve : rappelable en cas de crise"
     ],
     [
      "<strong>2</strong>",
      "<strong>Médic</strong>",
-     "Premiers Soins &amp; Observation (triage)",
-     "Kit de soin complet personnel",
+     "Premiers Soins (urgence) &amp; Observation (triage)",
+     "Trousse de soin complète personnelle",
      "Serment : ne jamais abandonner un blessé conscient"
     ],
     [
      "<strong>3</strong>",
      "<strong>Mécano</strong>",
-     "Ingénierie &amp; Arcanotech (réparation) &amp; Subterfuge Manuel (dépannage)",
+     "Ingénierie &amp; Arcanotech (réparation mécanique/électrique) &amp; Subterfuge Manuel (dépannage)",
      "Caisse à outils personnelle",
      "Dette d'atelier (loyer ou emprunt en cours)"
     ],
     [
      "<strong>4</strong>",
-     "<strong>Pilote</strong>",
-     "Conduite &amp; Pilotage (1 catégorie) &amp; Observation (navigation)",
-     "Licence + 1 contact astroport / écurie",
-     "Crédit sur un engin, ou ancien employeur exigeant"
+     "<strong>Pilote &amp; Chauffeur</strong>",
+     "Conduite &amp; Pilotage (1 catégorie : routier, aérien, naval) &amp; Observation (navigation)",
+     "Permis + 1 contact garage, port ou aérodrome",
+     "Crédit sur un véhicule, ou ancien employeur exigeant"
     ],
     [
      "<strong>5</strong>",
-     "<strong>Prospecteur</strong>",
-     "Nature &amp; Survie (1 milieu extrême) &amp; Endurance Physique (efforts prolongés)",
-     "Équipement d'exploration complet",
-     "Contrat d'exclusivité (part fixe à un commanditaire)"
-    ],
-    [
-     "<strong>6</strong>",
      "<strong>Négociant</strong>",
      "Communication (négocier) &amp; Intuition (évaluer une offre)",
      "1 contact commercial + licence de commerce",
      "Dette en cours ou concurrent hostile nommé"
     ],
     [
-     "<strong>7</strong>",
-     "<strong>Archiviste</strong>",
-     "Académie (1 domaine) &amp; Observation (repérer détails)",
-     "Accès à un fonds d'archives",
-     "Censure : sujets interdits, lectures surveillées"
-    ],
-    [
-     "<strong>8</strong>",
-     "<strong>Artisan</strong>",
-     "Artisanat/Connaissance (1 artisanat) &amp; Ingénierie (entretien courant)",
-     "Établi et outils de maître",
-     "Commande en cours (délai, client puissant)"
-    ],
-    [
-     "<strong>9</strong>",
-     "<strong>Chasseur</strong>",
-     "Nature &amp; Survie (traque) &amp; Discrétion (milieu naturel uniquement)",
-     "Pièges, appelants, camouflage",
-     "Territoire et quota (permis, garde-chasse, rival)"
-    ],
-    [
-     "<strong>10</strong>",
+     "<strong>6</strong>",
      "<strong>Infiltré</strong>",
-     "Discrétion &amp; Communication (tromper)",
+     "Discrétion (intrusion, filature) &amp; Communication (couverture et mensonge)",
      "Faux papiers + 1 planque sûre",
      "Ancien commanditaire : peut exiger 1 service"
     ],
     [
-     "<strong>11</strong>",
-     "<strong>Herboriste</strong>",
-     "Nature &amp; Survie (botanique) &amp; Artisanat (pharmacopée)",
-     "Stock de remèdes courants",
-     "Clientèle dangereuse (on paie en silence)"
+     "<strong>7</strong>",
+     "<strong>Archiviste</strong>",
+     "Académie (1 domaine) &amp; Observation (repérer détails et incohérences)",
+     "Accès à un fonds d'archives ou bases de données",
+     "Censure : dossiers classifiés, recherches surveillées"
     ],
     [
-     "<strong>12</strong>",
+     "<strong>8</strong>",
      "<strong>Officier</strong>",
-     "Leadership &amp; Intimidation",
+     "Leadership (commandement) &amp; Intimidation (discipline et autorité)",
      "Insigne + 1 contact hiérarchique",
-     "Responsabilité : hommes perdus, procès ou disgrâce possible"
+     "Responsabilité : unité perdue, enquête interne ou disgrâce possible"
+    ]
+   ]
+  },
+  "metiers_e3": {
+   "type": "table",
+   "colonnes": [
+    "d8",
+    "Métier",
+    "Bonus (+2 / +2)",
+    "Atout",
+    "Attache"
+   ],
+   "lignes": [
+    [
+     "<strong>1</strong>",
+     "<strong>Fusilier Orbital</strong>",
+     "Ballistique / Tir (1 arme réglementaire ou embarquée) &amp; Endurance Physique (combinaison lourde, gravité variable)",
+     "Armure légère réglementaire (Livre VIII) ou accès armurerie de bord",
+     "Contrat de sécurité : rappelable par la flotte ou la corporation"
+    ],
+    [
+     "<strong>2</strong>",
+     "<strong>Médecin de Bord</strong>",
+     "Médecine Avancée (soins de bord, implants courants) &amp; Premiers Soins (urgence en milieu confiné)",
+     "Mallette médicale de bord et diagnostics portables",
+     "Protocole sanitaire : quarantaine ou serment de prise en charge"
+    ],
+    [
+     "<strong>3</strong>",
+     "<strong>Ingénieur de Coque</strong>",
+     "Ingénierie &amp; Arcanotech (réacteurs, systèmes embarqués) &amp; Subterfuge Manuel (dépannage d’urgence)",
+     "Trousse d'outillage orbital et scanner de diagnostic",
+     "Dette de chantier naval ou panne majeure encore sur votre dossier"
+    ],
+    [
+     "<strong>4</strong>",
+     "<strong>Pilote Stellaire</strong>",
+     "Conduite &amp; Pilotage (navette ou vaisseau) &amp; Observation (navigation et capteurs)",
+     "Licence de vol + 1 contact astroport",
+     "Crédit sur un vaisseau ou armateur exigeant"
+    ],
+    [
+     "<strong>5</strong>",
+     "<strong>Prospecteur Planétaire</strong>",
+     "Nature &amp; Survie (1 milieu extrême) &amp; Endurance Physique (efforts prolongés sous combinaison)",
+     "Équipement d'exploration et survie complet",
+     "Contrat d'exclusivité : part fixe due à un commanditaire"
+    ],
+    [
+     "<strong>6</strong>",
+     "<strong>Courtier de Fret</strong>",
+     "Communication (négocier cargaisons et douanes) &amp; Intuition (déceler une fraude)",
+     "Licence de transit + 1 contact commercial en astroport",
+     "Dettes portuaires ou cartel concurrent nommé"
+    ],
+    [
+     "<strong>7</strong>",
+     "<strong>Opérateur Fantôme</strong>",
+     "Discrétion (échapper aux caméras et rondes) &amp; Ingénierie &amp; Arcanotech (contournement électronique/cyber)",
+     "Identifiants falsifiés + 1 planque en bas-niveau",
+     "Ancien client corporatiste : détient un levier et peut exiger 1 service"
+    ],
+    [
+     "<strong>8</strong>",
+     "<strong>Commandant de Quart</strong>",
+     "Leadership (équipage sous crise) &amp; Penser / Stratégie (manœuvres et gestion d'urgence)",
+     "Insigne de passerelle + 1 contact dans la flotte",
+     "Responsabilité de bord : perte d'équipage ou commission d'enquête"
+    ]
+   ]
+  },
+  "metiers_e4": {
+   "type": "table",
+   "colonnes": [
+    "d8",
+    "Métier",
+    "Bonus (+2 / +2)",
+    "Atout",
+    "Attache"
+   ],
+   "lignes": [
+    [
+     "<strong>1</strong>",
+     "<strong>Sentinelle de Portail</strong>",
+     "Ballistique / Tir (1 arme arcanotech ou à faisceau) &amp; Observation (contrôle de transit et menaces)",
+     "Armure légère réglementaire (Livre VIII) ou accréditation d'armurerie de secteur",
+     "Autorité de secteur : mobilisable en cas de brèche de portail"
+    ],
+    [
+     "<strong>2</strong>",
+     "<strong>Bio-Régénérateur</strong>",
+     "Médecine Avancée (cuves arcaniques, traumatismes lourds) &amp; Système Immunitaire (protocoles de prophylaxie)",
+     "Accès à un module de soin avancé et mallette de terrain",
+     "Charte médicale : interdit de laisser mourir un sujet récupérable"
+    ],
+    [
+     "<strong>3</strong>",
+     "<strong>Ingénieur Nytharite</strong>",
+     "Ingénierie &amp; Arcanotech (réglage, stabilisation de cristaux) &amp; Observation (détecter une surcharge)",
+     "Valise de calibration arcanotech (aucun accès à la 5e Force)",
+     "Brevet ou cargaison de nytharite perdue sous votre responsabilité"
+    ],
+    [
+     "<strong>4</strong>",
+     "<strong>Navigateur de Transit</strong>",
+     "Conduite &amp; Pilotage (vecteurs rapides ou appareils de transit) &amp; Penser / Stratégie (calcul de trajectoires)",
+     "Licence de relais + 1 contact d'anneau de portail",
+     "Concession de ligne : dette de transit ou syndicat de pilotes"
+    ],
+    [
+     "<strong>5</strong>",
+     "<strong>Émissaire de Secteur</strong>",
+     "Communication (diplomatie et traités) &amp; Intuition (lire les enjeux cachés)",
+     "Laissez-passer diplomatique + 1 contact de maison stellaire",
+     "Compromis politique : faction rivale ou faveur due à un conseil"
+    ],
+    [
+     "<strong>6</strong>",
+     "<strong>Archiviste Cristallin</strong>",
+     "Académie (1 domaine savant : astrophysique, xénobiologie, théorie arcanotech) &amp; Observation (recouper les données)",
+     "Accès à une banque de mémoire ou archive de sphère",
+     "Index interdit : recherches surveillées par une autorité de secteur"
+    ],
+    [
+     "<strong>7</strong>",
+     "<strong>Saboteur de Sphère</strong>",
+     "Discrétion (contourner capteurs et grilles) &amp; Subterfuge Manuel (dérivation et sabotage discret)",
+     "Brouilleur de signature courant + 1 refuge dans les anneaux techniques",
+     "Commanditaire anonyme : garde la preuve de votre dernier coup"
+    ],
+    [
+     "<strong>8</strong>",
+     "<strong>Stratège de Flotte</strong>",
+     "Leadership (coordination multi-unités) &amp; Penser / Stratégie (planification tactique)",
+     "Sceau d'état-major + 1 contact de cité-flotte",
+     "Commandement contesté : opération ratée ou rival ambitieux"
+    ]
+   ]
+  },
+  "metiers_e5": {
+   "type": "table",
+   "colonnes": [
+    "d8",
+    "Métier",
+    "Bonus (+2 / +2)",
+    "Atout",
+    "Attache"
+   ],
+   "lignes": [
+    [
+     "<strong>1</strong>",
+     "<strong>Gardien de Seuil</strong>",
+     "Maniement d'Arme (1 arme de garde ou de champ) &amp; Défense Corporelle (tenir un passage)",
+     "Harnais de garde léger (Livre VIII) ou droit d'armement du bastion",
+     "Serment de veille : rappelable dès qu'une frontière de réalité vacille"
+    ],
+    [
+     "<strong>2</strong>",
+     "<strong>Modeleur de Post-Matière</strong>",
+     "Artisanat / Connaissance (façonner et stabiliser des structures) &amp; Ingénierie &amp; Arcanotech (stabilisateurs de lois)",
+     "Outil de modelage personnel (aucun accès à la 5e Force)",
+     "Œuvre inachevée : instabilité liée à une de vos anciennes créations"
+    ],
+    [
+     "<strong>3</strong>",
+     "<strong>Indexeur de Trames</strong>",
+     "Penser / Stratégie (modéliser un embranchement) &amp; Académie (1 domaine : cosmologie, chronologie, lois physiques)",
+     "Accès à un observatoire d'archives de trames (aucune clairsentience, Livre X §41)",
+     "Protocole de non-ingérence : surveillé par un collège d'indexeurs"
+    ],
+    [
+     "<strong>4</strong>",
+     "<strong>Restaurateur Vital</strong>",
+     "Médecine Avancée (restauration cellulaire et traumatismes complexes) &amp; Premiers Soins (stabilisation immédiate)",
+     "Trousse de stabilisation vitale personnelle",
+     "Code d'intégrité : interdit d'altérer un corps sans consentement"
+    ],
+    [
+     "<strong>5</strong>",
+     "<strong>Éclaireur des Plis</strong>",
+     "Acrobatie (gravité anormale, géométrie mouvante) &amp; Intuition (sentir les anomalies et paradoxes locaux)",
+     "Balises d'ancrage spatial et équipement de traversée",
+     "Pli instable : un lieu ou un compagnon reste coincé par votre faute"
+    ],
+    [
+     "<strong>6</strong>",
+     "<strong>Voix du Concile</strong>",
+     "Communication (arbitrage inter-mondes) &amp; Intuition (déceler les arrière-pensées)",
+     "Sceau d'émissaire + 1 contact au sein d'un concile ou d'une Éliane",
+     "Pacte contraignant : une faction exige que vous honoriez une médiation"
+    ],
+    [
+     "<strong>7</strong>",
+     "<strong>Effaceur d'Échos</strong>",
+     "Discrétion (ne laisser aucune trace ni signature) &amp; Subterfuge Manuel (infiltration et neutralisation de sécurités)",
+     "Voile de dissimulation courant + 1 refuge hors-flux",
+     "Dossier scellé : un témoin ou une entité connaît votre passé d'effaceur"
+    ],
+    [
+     "<strong>8</strong>",
+     "<strong>Arbitre des Lois</strong>",
+     "Leadership (trancher en crise) &amp; Intimidation (imposer un arrêt ou un verdict)",
+     "Marque d'autorité + 1 contact auprès d'une juridiction de secteur",
+     "Verdict contesté : un condamné ou une maison cherche réparation"
     ]
    ]
   },
@@ -743,7 +1086,6 @@
     "Entrée",
     "Statut",
     "Effet mécanique",
-    "Cumul",
     "Époque"
    ]
   },
@@ -754,9 +1096,54 @@
     "Habillage type"
    ]
   },
-  "metiers": {
+  "metiers_e0": {
    "colonnes": [
-    "d12",
+    "d8",
+    "Métier",
+    "Bonus (+2 / +2)",
+    "Atout",
+    "Attache"
+   ]
+  },
+  "metiers_e1": {
+   "colonnes": [
+    "d8",
+    "Métier",
+    "Bonus (+2 / +2)",
+    "Atout",
+    "Attache"
+   ]
+  },
+  "metiers_e2": {
+   "colonnes": [
+    "d8",
+    "Métier",
+    "Bonus (+2 / +2)",
+    "Atout",
+    "Attache"
+   ]
+  },
+  "metiers_e3": {
+   "colonnes": [
+    "d8",
+    "Métier",
+    "Bonus (+2 / +2)",
+    "Atout",
+    "Attache"
+   ]
+  },
+  "metiers_e4": {
+   "colonnes": [
+    "d8",
+    "Métier",
+    "Bonus (+2 / +2)",
+    "Atout",
+    "Attache"
+   ]
+  },
+  "metiers_e5": {
+   "colonnes": [
+    "d8",
     "Métier",
     "Bonus (+2 / +2)",
     "Atout",
@@ -779,16 +1166,14 @@
     "etape": "A. Ancrage (§29.4)",
     "statut": "Optionnel",
     "obligatoire": false,
-    "effet": "Aucun — 3 réponses de récit pur",
-    "cumul": "—",
-    "epoque": "[E0–E5] + monde"
+    "effet": "Aucun — habillage narratif et récit pur",
+    "epoque": "[E0–E5]"
    },
    {
     "etape": "B. Enfance (chap. 27)",
     "statut": "Obligatoire",
     "obligatoire": true,
     "effet": "1 aptitude mineure : +2 à 1 compétence étroite, ou trait situatif",
-    "cumul": "1 seule",
     "epoque": "[E0–E5]"
    },
    {
@@ -796,7 +1181,6 @@
     "statut": "Optionnel",
     "obligatoire": false,
     "effet": "1 aptitude majeure : +2 à 2 compétences + 1 atout + 1 attache optionnelle",
-    "cumul": "1 seul",
     "epoque": "[E0–E5]"
    },
    {
@@ -804,7 +1188,6 @@
     "statut": "Optionnel",
     "obligatoire": false,
     "effet": "1 effet 1×/session + 1 séquelle narrative réelle",
-    "cumul": "1 seul, refusable",
     "epoque": "[E0–E5]"
    }
   ],
@@ -1206,176 +1589,518 @@
     "texte": "Vous avez grandi au son du clairon, entre dortoirs et terrains de manœuvre. Marcher, porter, tenir : vous savez faire. Vous gagnez : +2 Athlétisme (franchissement, marches forcées, portage) + habitudes de discipline (aucun bonus social)."
    }
   },
+  "metiers_par_epoque": {
+   "E0": [
+    {
+     "d8": 1,
+     "epoque": "E0",
+     "metier": "Chasseur de Traque",
+     "bonus": "Nature & Survie (traque de gibier) & Ballistique / Tir (arc, fronde ou javelot)",
+     "atout": "Pièges, collets, sagaies ou arc de chasse personnel",
+     "attache": "Territoire disputé : clan rival ou proie taboue"
+    },
+    {
+     "d8": 2,
+     "epoque": "E0",
+     "metier": "Guerrier Tribal",
+     "bonus": "Maniement d'Arme (lance, hache ou massue) & Intimidation (posture de guerre)",
+     "atout": "Arme de bronze ou d'obsidienne + bouclier de peau",
+     "attache": "Serment de sang : appelé à défendre le clan au premier signal"
+    },
+    {
+     "d8": 3,
+     "epoque": "E0",
+     "metier": "Guérisseur des Herbes",
+     "bonus": "Premiers Soins (plaies, fractures) & Nature & Survie (plantes médicinales)",
+     "atout": "Bourse de simples, onguents et remèdes courants",
+     "attache": "Tabou du soin : ne jamais refuser d'aider un blessé qui demande refuge"
+    },
+    {
+     "d8": 4,
+     "epoque": "E0",
+     "metier": "Tailleur & Fondeur",
+     "bonus": "Artisanat / Connaissance (pierre, os, cuir ou bronze) & Endurance Physique (travaux de forge/taille)",
+     "atout": "Trousse d'outils bruts (percuteurs, moules, lames)",
+     "attache": "Commande du chef : arme rituelle ou outils promis avant la saison"
+    },
+    {
+     "d8": 5,
+     "epoque": "E0",
+     "metier": "Éclaireur des Confins",
+     "bonus": "Observation (repérer pistes et embuscades) & Discrétion (milieu naturel)",
+     "atout": "Manteau de camouflage, gourdes et matériel de bivouac",
+     "attache": "Route secrète : vous connaissez un passage que d'autres veulent arracher"
+    },
+    {
+     "d8": 6,
+     "epoque": "E0",
+     "metier": "Conteur & Gardien",
+     "bonus": "Intuition (lire les intentions) & Communication (récit, arbitrage, palabre)",
+     "atout": "Bâton ou parure de mémoire + accueil dans les clans amis",
+     "attache": "Mémoire sacrée : un secret tribal vous est confié sous peine de bannissement"
+    },
+    {
+     "d8": 7,
+     "epoque": "E0",
+     "metier": "Troc & Caravane",
+     "bonus": "Communication (troc et échange) & Endurance Physique (marches de portage)",
+     "atout": "Lot de marchandises rares (sel, ambre, silex) + 1 contact de troc",
+     "attache": "Dette d'échange : un clan attend sa contrepartie avant l'hiver"
+    },
+    {
+     "d8": 8,
+     "epoque": "E0",
+     "metier": "Chef de Meute",
+     "bonus": "Leadership (mener chasse ou défense) & Athlétisme (franchissement, course en terrain brut)",
+     "atout": "Totem ou insigne de rang + respect des guerriers de son groupe",
+     "attache": "Responsabilité du clan : vies perdues ou rival qui conteste votre autorité"
+    }
+   ],
+   "E1": [
+    {
+     "d8": 1,
+     "epoque": "E1",
+     "metier": "Homme d'Armes",
+     "bonus": "Maniement d'Arme (1 arme réglementaire) & Observation (guet et garde)",
+     "atout": "Armure légère de garnison (Livre VIII) ou accès à l'armurerie du seigneur",
+     "attache": "Service de ban : rappelable par votre suzerain ou capitaine en cas de guerre"
+    },
+    {
+     "d8": 2,
+     "epoque": "E1",
+     "metier": "Apothicaire",
+     "bonus": "Premiers Soins (chirurgie de terrain) & Artisanat / Connaissance (pharmacopée et onguents)",
+     "atout": "Coffret d'apothicaire et stock de remèdes courants",
+     "attache": "Clientèle trouble : on paie en silence pour des remèdes ou antidotes discrets"
+    },
+    {
+     "d8": 3,
+     "epoque": "E1",
+     "metier": "Forgeron & Maître-Artisan",
+     "bonus": "Artisanat / Connaissance (1 métier de guilde : forge, charpente, armurerie) & Endurance Physique (effort prolongé)",
+     "atout": "Établi et outils de maître de guilde",
+     "attache": "Commande seigneuriale : délai strict ou cotisation de guilde en retard"
+    },
+    {
+     "d8": 4,
+     "epoque": "E1",
+     "metier": "Veneur & Pisteur",
+     "bonus": "Nature & Survie (traque) & Ballistique / Tir (arc ou arbalète)",
+     "atout": "Arc ou arbalète de chasse, pièges et droit de passage forestier",
+     "attache": "Droit de chasse : garde-chasse hostile, quota ou braconnage passé"
+    },
+    {
+     "d8": 5,
+     "epoque": "E1",
+     "metier": "Marchand de Guilde",
+     "bonus": "Communication (négocier) & Intuition (évaluer une offre ou un faux)",
+     "atout": "Patente de commerce + 1 contact marchand en ville",
+     "attache": "Dette de comptoir ou concurrent de guilde acharné"
+    },
+    {
+     "d8": 6,
+     "epoque": "E1",
+     "metier": "Scribe & Érudit",
+     "bonus": "Académie (1 domaine : droit, histoire, héraldique, théologie) & Observation (repérer un détail ou un faux)",
+     "atout": "Accès à un scriptorium ou une bibliothèque seigneuriale",
+     "attache": "Censure : textes interdits ou protecteur exigeant une enquête discrète"
+    },
+    {
+     "d8": 7,
+     "epoque": "E1",
+     "metier": "Espion & Coupe-Bourse",
+     "bonus": "Discrétion (filature, intrusion) & Subterfuge Manuel (crochetage, escamotage)",
+     "atout": "Faux sceaux ou sauf-conduits + 1 planque sûre en faubourg",
+     "attache": "Ancien commanditaire : connaît votre vrai visage et peut exiger 1 service"
+    },
+    {
+     "d8": 8,
+     "epoque": "E1",
+     "metier": "Capitaine & Héraut",
+     "bonus": "Leadership (commander en ligne) & Intimidation (imposer l'ordre)",
+     "atout": "Bannière ou chevalière de grade + 1 contact noble ou militaire",
+     "attache": "Honneur entaché : siège perdu, duel en suspens ou disgrâce possible"
+    }
+   ],
+   "E2": [
+    {
+     "d8": 1,
+     "epoque": "E2",
+     "metier": "Milicien",
+     "bonus": "Ballistique / Tir (1 arme réglementaire) & Observation (vigilance)",
+     "atout": "Armure légère réglementaire (Livre VIII) ou accès armurerie",
+     "attache": "Autorité de réserve : rappelable en cas de crise"
+    },
+    {
+     "d8": 2,
+     "epoque": "E2",
+     "metier": "Médic",
+     "bonus": "Premiers Soins (urgence) & Observation (triage)",
+     "atout": "Trousse de soin complète personnelle",
+     "attache": "Serment : ne jamais abandonner un blessé conscient"
+    },
+    {
+     "d8": 3,
+     "epoque": "E2",
+     "metier": "Mécano",
+     "bonus": "Ingénierie & Arcanotech (réparation mécanique/électrique) & Subterfuge Manuel (dépannage)",
+     "atout": "Caisse à outils personnelle",
+     "attache": "Dette d'atelier (loyer ou emprunt en cours)"
+    },
+    {
+     "d8": 4,
+     "epoque": "E2",
+     "metier": "Pilote & Chauffeur",
+     "bonus": "Conduite & Pilotage (1 catégorie : routier, aérien, naval) & Observation (navigation)",
+     "atout": "Permis + 1 contact garage, port ou aérodrome",
+     "attache": "Crédit sur un véhicule, ou ancien employeur exigeant"
+    },
+    {
+     "d8": 5,
+     "epoque": "E2",
+     "metier": "Négociant",
+     "bonus": "Communication (négocier) & Intuition (évaluer une offre)",
+     "atout": "1 contact commercial + licence de commerce",
+     "attache": "Dette en cours ou concurrent hostile nommé"
+    },
+    {
+     "d8": 6,
+     "epoque": "E2",
+     "metier": "Infiltré",
+     "bonus": "Discrétion (intrusion, filature) & Communication (couverture et mensonge)",
+     "atout": "Faux papiers + 1 planque sûre",
+     "attache": "Ancien commanditaire : peut exiger 1 service"
+    },
+    {
+     "d8": 7,
+     "epoque": "E2",
+     "metier": "Archiviste",
+     "bonus": "Académie (1 domaine) & Observation (repérer détails et incohérences)",
+     "atout": "Accès à un fonds d'archives ou bases de données",
+     "attache": "Censure : dossiers classifiés, recherches surveillées"
+    },
+    {
+     "d8": 8,
+     "epoque": "E2",
+     "metier": "Officier",
+     "bonus": "Leadership (commandement) & Intimidation (discipline et autorité)",
+     "atout": "Insigne + 1 contact hiérarchique",
+     "attache": "Responsabilité : unité perdue, enquête interne ou disgrâce possible"
+    }
+   ],
+   "E3": [
+    {
+     "d8": 1,
+     "epoque": "E3",
+     "metier": "Fusilier Orbital",
+     "bonus": "Ballistique / Tir (1 arme réglementaire ou embarquée) & Endurance Physique (combinaison lourde, gravité variable)",
+     "atout": "Armure légère réglementaire (Livre VIII) ou accès armurerie de bord",
+     "attache": "Contrat de sécurité : rappelable par la flotte ou la corporation"
+    },
+    {
+     "d8": 2,
+     "epoque": "E3",
+     "metier": "Médecin de Bord",
+     "bonus": "Médecine Avancée (soins de bord, implants courants) & Premiers Soins (urgence en milieu confiné)",
+     "atout": "Mallette médicale de bord et diagnostics portables",
+     "attache": "Protocole sanitaire : quarantaine ou serment de prise en charge"
+    },
+    {
+     "d8": 3,
+     "epoque": "E3",
+     "metier": "Ingénieur de Coque",
+     "bonus": "Ingénierie & Arcanotech (réacteurs, systèmes embarqués) & Subterfuge Manuel (dépannage d’urgence)",
+     "atout": "Trousse d'outillage orbital et scanner de diagnostic",
+     "attache": "Dette de chantier naval ou panne majeure encore sur votre dossier"
+    },
+    {
+     "d8": 4,
+     "epoque": "E3",
+     "metier": "Pilote Stellaire",
+     "bonus": "Conduite & Pilotage (navette ou vaisseau) & Observation (navigation et capteurs)",
+     "atout": "Licence de vol + 1 contact astroport",
+     "attache": "Crédit sur un vaisseau ou armateur exigeant"
+    },
+    {
+     "d8": 5,
+     "epoque": "E3",
+     "metier": "Prospecteur Planétaire",
+     "bonus": "Nature & Survie (1 milieu extrême) & Endurance Physique (efforts prolongés sous combinaison)",
+     "atout": "Équipement d'exploration et survie complet",
+     "attache": "Contrat d'exclusivité : part fixe due à un commanditaire"
+    },
+    {
+     "d8": 6,
+     "epoque": "E3",
+     "metier": "Courtier de Fret",
+     "bonus": "Communication (négocier cargaisons et douanes) & Intuition (déceler une fraude)",
+     "atout": "Licence de transit + 1 contact commercial en astroport",
+     "attache": "Dettes portuaires ou cartel concurrent nommé"
+    },
+    {
+     "d8": 7,
+     "epoque": "E3",
+     "metier": "Opérateur Fantôme",
+     "bonus": "Discrétion (échapper aux caméras et rondes) & Ingénierie & Arcanotech (contournement électronique/cyber)",
+     "atout": "Identifiants falsifiés + 1 planque en bas-niveau",
+     "attache": "Ancien client corporatiste : détient un levier et peut exiger 1 service"
+    },
+    {
+     "d8": 8,
+     "epoque": "E3",
+     "metier": "Commandant de Quart",
+     "bonus": "Leadership (équipage sous crise) & Penser / Stratégie (manœuvres et gestion d'urgence)",
+     "atout": "Insigne de passerelle + 1 contact dans la flotte",
+     "attache": "Responsabilité de bord : perte d'équipage ou commission d'enquête"
+    }
+   ],
+   "E4": [
+    {
+     "d8": 1,
+     "epoque": "E4",
+     "metier": "Sentinelle de Portail",
+     "bonus": "Ballistique / Tir (1 arme arcanotech ou à faisceau) & Observation (contrôle de transit et menaces)",
+     "atout": "Armure légère réglementaire (Livre VIII) ou accréditation d'armurerie de secteur",
+     "attache": "Autorité de secteur : mobilisable en cas de brèche de portail"
+    },
+    {
+     "d8": 2,
+     "epoque": "E4",
+     "metier": "Bio-Régénérateur",
+     "bonus": "Médecine Avancée (cuves arcaniques, traumatismes lourds) & Système Immunitaire (protocoles de prophylaxie)",
+     "atout": "Accès à un module de soin avancé et mallette de terrain",
+     "attache": "Charte médicale : interdit de laisser mourir un sujet récupérable"
+    },
+    {
+     "d8": 3,
+     "epoque": "E4",
+     "metier": "Ingénieur Nytharite",
+     "bonus": "Ingénierie & Arcanotech (réglage, stabilisation de cristaux) & Observation (détecter une surcharge)",
+     "atout": "Valise de calibration arcanotech (aucun accès à la 5e Force)",
+     "attache": "Brevet ou cargaison de nytharite perdue sous votre responsabilité"
+    },
+    {
+     "d8": 4,
+     "epoque": "E4",
+     "metier": "Navigateur de Transit",
+     "bonus": "Conduite & Pilotage (vecteurs rapides ou appareils de transit) & Penser / Stratégie (calcul de trajectoires)",
+     "atout": "Licence de relais + 1 contact d'anneau de portail",
+     "attache": "Concession de ligne : dette de transit ou syndicat de pilotes"
+    },
+    {
+     "d8": 5,
+     "epoque": "E4",
+     "metier": "Émissaire de Secteur",
+     "bonus": "Communication (diplomatie et traités) & Intuition (lire les enjeux cachés)",
+     "atout": "Laissez-passer diplomatique + 1 contact de maison stellaire",
+     "attache": "Compromis politique : faction rivale ou faveur due à un conseil"
+    },
+    {
+     "d8": 6,
+     "epoque": "E4",
+     "metier": "Archiviste Cristallin",
+     "bonus": "Académie (1 domaine savant : astrophysique, xénobiologie, théorie arcanotech) & Observation (recouper les données)",
+     "atout": "Accès à une banque de mémoire ou archive de sphère",
+     "attache": "Index interdit : recherches surveillées par une autorité de secteur"
+    },
+    {
+     "d8": 7,
+     "epoque": "E4",
+     "metier": "Saboteur de Sphère",
+     "bonus": "Discrétion (contourner capteurs et grilles) & Subterfuge Manuel (dérivation et sabotage discret)",
+     "atout": "Brouilleur de signature courant + 1 refuge dans les anneaux techniques",
+     "attache": "Commanditaire anonyme : garde la preuve de votre dernier coup"
+    },
+    {
+     "d8": 8,
+     "epoque": "E4",
+     "metier": "Stratège de Flotte",
+     "bonus": "Leadership (coordination multi-unités) & Penser / Stratégie (planification tactique)",
+     "atout": "Sceau d'état-major + 1 contact de cité-flotte",
+     "attache": "Commandement contesté : opération ratée ou rival ambitieux"
+    }
+   ],
+   "E5": [
+    {
+     "d8": 1,
+     "epoque": "E5",
+     "metier": "Gardien de Seuil",
+     "bonus": "Maniement d'Arme (1 arme de garde ou de champ) & Défense Corporelle (tenir un passage)",
+     "atout": "Harnais de garde léger (Livre VIII) ou droit d'armement du bastion",
+     "attache": "Serment de veille : rappelable dès qu'une frontière de réalité vacille"
+    },
+    {
+     "d8": 2,
+     "epoque": "E5",
+     "metier": "Modeleur de Post-Matière",
+     "bonus": "Artisanat / Connaissance (façonner et stabiliser des structures) & Ingénierie & Arcanotech (stabilisateurs de lois)",
+     "atout": "Outil de modelage personnel (aucun accès à la 5e Force)",
+     "attache": "Œuvre inachevée : instabilité liée à une de vos anciennes créations"
+    },
+    {
+     "d8": 3,
+     "epoque": "E5",
+     "metier": "Indexeur de Trames",
+     "bonus": "Penser / Stratégie (modéliser un embranchement) & Académie (1 domaine : cosmologie, chronologie, lois physiques)",
+     "atout": "Accès à un observatoire d'archives de trames (aucune clairsentience, Livre X §41)",
+     "attache": "Protocole de non-ingérence : surveillé par un collège d'indexeurs"
+    },
+    {
+     "d8": 4,
+     "epoque": "E5",
+     "metier": "Restaurateur Vital",
+     "bonus": "Médecine Avancée (restauration cellulaire et traumatismes complexes) & Premiers Soins (stabilisation immédiate)",
+     "atout": "Trousse de stabilisation vitale personnelle",
+     "attache": "Code d'intégrité : interdit d'altérer un corps sans consentement"
+    },
+    {
+     "d8": 5,
+     "epoque": "E5",
+     "metier": "Éclaireur des Plis",
+     "bonus": "Acrobatie (gravité anormale, géométrie mouvante) & Intuition (sentir les anomalies et paradoxes locaux)",
+     "atout": "Balises d'ancrage spatial et équipement de traversée",
+     "attache": "Pli instable : un lieu ou un compagnon reste coincé par votre faute"
+    },
+    {
+     "d8": 6,
+     "epoque": "E5",
+     "metier": "Voix du Concile",
+     "bonus": "Communication (arbitrage inter-mondes) & Intuition (déceler les arrière-pensées)",
+     "atout": "Sceau d'émissaire + 1 contact au sein d'un concile ou d'une Éliane",
+     "attache": "Pacte contraignant : une faction exige que vous honoriez une médiation"
+    },
+    {
+     "d8": 7,
+     "epoque": "E5",
+     "metier": "Effaceur d'Échos",
+     "bonus": "Discrétion (ne laisser aucune trace ni signature) & Subterfuge Manuel (infiltration et neutralisation de sécurités)",
+     "atout": "Voile de dissimulation courant + 1 refuge hors-flux",
+     "attache": "Dossier scellé : un témoin ou une entité connaît votre passé d'effaceur"
+    },
+    {
+     "d8": 8,
+     "epoque": "E5",
+     "metier": "Arbitre des Lois",
+     "bonus": "Leadership (trancher en crise) & Intimidation (imposer un arrêt ou un verdict)",
+     "atout": "Marque d'autorité + 1 contact auprès d'une juridiction de secteur",
+     "attache": "Verdict contesté : un condamné ou une maison cherche réparation"
+    }
+   ]
+  },
   "metiers": [
    {
-    "d12": 1,
+    "d8": 1,
     "metier": "Milicien",
-    "bonus": "Ballistique/Tir (1 arme réglementaire) & Observation (vigilance)",
+    "bonus": "Ballistique / Tir (1 arme réglementaire) & Observation (vigilance)",
     "atout": "Armure légère réglementaire (Livre VIII) ou accès armurerie",
     "attache": "Autorité de réserve : rappelable en cas de crise"
    },
    {
-    "d12": 2,
+    "d8": 2,
     "metier": "Médic",
-    "bonus": "Premiers Soins & Observation (triage)",
-    "atout": "Kit de soin complet personnel",
+    "bonus": "Premiers Soins (urgence) & Observation (triage)",
+    "atout": "Trousse de soin complète personnelle",
     "attache": "Serment : ne jamais abandonner un blessé conscient"
    },
    {
-    "d12": 3,
+    "d8": 3,
     "metier": "Mécano",
-    "bonus": "Ingénierie & Arcanotech (réparation) & Subterfuge Manuel (dépannage)",
+    "bonus": "Ingénierie & Arcanotech (réparation mécanique/électrique) & Subterfuge Manuel (dépannage)",
     "atout": "Caisse à outils personnelle",
     "attache": "Dette d'atelier (loyer ou emprunt en cours)"
    },
    {
-    "d12": 4,
-    "metier": "Pilote",
-    "bonus": "Conduite & Pilotage (1 catégorie) & Observation (navigation)",
-    "atout": "Licence + 1 contact astroport / écurie",
-    "attache": "Crédit sur un engin, ou ancien employeur exigeant"
+    "d8": 4,
+    "metier": "Pilote & Chauffeur",
+    "bonus": "Conduite & Pilotage (1 catégorie : routier, aérien, naval) & Observation (navigation)",
+    "atout": "Permis + 1 contact garage, port ou aérodrome",
+    "attache": "Crédit sur un véhicule, ou ancien employeur exigeant"
    },
    {
-    "d12": 5,
-    "metier": "Prospecteur",
-    "bonus": "Nature & Survie (1 milieu extrême) & Endurance Physique (efforts prolongés)",
-    "atout": "Équipement d'exploration complet",
-    "attache": "Contrat d'exclusivité (part fixe à un commanditaire)"
-   },
-   {
-    "d12": 6,
+    "d8": 5,
     "metier": "Négociant",
     "bonus": "Communication (négocier) & Intuition (évaluer une offre)",
     "atout": "1 contact commercial + licence de commerce",
     "attache": "Dette en cours ou concurrent hostile nommé"
    },
    {
-    "d12": 7,
-    "metier": "Archiviste",
-    "bonus": "Académie (1 domaine) & Observation (repérer détails)",
-    "atout": "Accès à un fonds d'archives",
-    "attache": "Censure : sujets interdits, lectures surveillées"
-   },
-   {
-    "d12": 8,
-    "metier": "Artisan",
-    "bonus": "Artisanat/Connaissance (1 artisanat) & Ingénierie (entretien courant)",
-    "atout": "Établi et outils de maître",
-    "attache": "Commande en cours (délai, client puissant)"
-   },
-   {
-    "d12": 9,
-    "metier": "Chasseur",
-    "bonus": "Nature & Survie (traque) & Discrétion (milieu naturel uniquement)",
-    "atout": "Pièges, appelants, camouflage",
-    "attache": "Territoire et quota (permis, garde-chasse, rival)"
-   },
-   {
-    "d12": 10,
+    "d8": 6,
     "metier": "Infiltré",
-    "bonus": "Discrétion & Communication (tromper)",
+    "bonus": "Discrétion (intrusion, filature) & Communication (couverture et mensonge)",
     "atout": "Faux papiers + 1 planque sûre",
     "attache": "Ancien commanditaire : peut exiger 1 service"
    },
    {
-    "d12": 11,
-    "metier": "Herboriste",
-    "bonus": "Nature & Survie (botanique) & Artisanat (pharmacopée)",
-    "atout": "Stock de remèdes courants",
-    "attache": "Clientèle dangereuse (on paie en silence)"
+    "d8": 7,
+    "metier": "Archiviste",
+    "bonus": "Académie (1 domaine) & Observation (repérer détails et incohérences)",
+    "atout": "Accès à un fonds d'archives ou bases de données",
+    "attache": "Censure : dossiers classifiés, recherches surveillées"
    },
    {
-    "d12": 12,
+    "d8": 8,
     "metier": "Officier",
-    "bonus": "Leadership & Intimidation",
+    "bonus": "Leadership (commandement) & Intimidation (discipline et autorité)",
     "atout": "Insigne + 1 contact hiérarchique",
-    "attache": "Responsabilité : hommes perdus, procès ou disgrâce possible"
+    "attache": "Responsabilité : unité perdue, enquête interne ou disgrâce possible"
    }
   ],
-  "metiers_par_d12": {
+  "metiers_par_d8": {
    "1": {
-    "d12": 1,
+    "d8": 1,
     "metier": "Milicien",
-    "bonus": "Ballistique/Tir (1 arme réglementaire) & Observation (vigilance)",
+    "bonus": "Ballistique / Tir (1 arme réglementaire) & Observation (vigilance)",
     "atout": "Armure légère réglementaire (Livre VIII) ou accès armurerie",
     "attache": "Autorité de réserve : rappelable en cas de crise"
    },
    "2": {
-    "d12": 2,
+    "d8": 2,
     "metier": "Médic",
-    "bonus": "Premiers Soins & Observation (triage)",
-    "atout": "Kit de soin complet personnel",
+    "bonus": "Premiers Soins (urgence) & Observation (triage)",
+    "atout": "Trousse de soin complète personnelle",
     "attache": "Serment : ne jamais abandonner un blessé conscient"
    },
    "3": {
-    "d12": 3,
+    "d8": 3,
     "metier": "Mécano",
-    "bonus": "Ingénierie & Arcanotech (réparation) & Subterfuge Manuel (dépannage)",
+    "bonus": "Ingénierie & Arcanotech (réparation mécanique/électrique) & Subterfuge Manuel (dépannage)",
     "atout": "Caisse à outils personnelle",
     "attache": "Dette d'atelier (loyer ou emprunt en cours)"
    },
    "4": {
-    "d12": 4,
-    "metier": "Pilote",
-    "bonus": "Conduite & Pilotage (1 catégorie) & Observation (navigation)",
-    "atout": "Licence + 1 contact astroport / écurie",
-    "attache": "Crédit sur un engin, ou ancien employeur exigeant"
+    "d8": 4,
+    "metier": "Pilote & Chauffeur",
+    "bonus": "Conduite & Pilotage (1 catégorie : routier, aérien, naval) & Observation (navigation)",
+    "atout": "Permis + 1 contact garage, port ou aérodrome",
+    "attache": "Crédit sur un véhicule, ou ancien employeur exigeant"
    },
    "5": {
-    "d12": 5,
-    "metier": "Prospecteur",
-    "bonus": "Nature & Survie (1 milieu extrême) & Endurance Physique (efforts prolongés)",
-    "atout": "Équipement d'exploration complet",
-    "attache": "Contrat d'exclusivité (part fixe à un commanditaire)"
-   },
-   "6": {
-    "d12": 6,
+    "d8": 5,
     "metier": "Négociant",
     "bonus": "Communication (négocier) & Intuition (évaluer une offre)",
     "atout": "1 contact commercial + licence de commerce",
     "attache": "Dette en cours ou concurrent hostile nommé"
    },
-   "7": {
-    "d12": 7,
-    "metier": "Archiviste",
-    "bonus": "Académie (1 domaine) & Observation (repérer détails)",
-    "atout": "Accès à un fonds d'archives",
-    "attache": "Censure : sujets interdits, lectures surveillées"
-   },
-   "8": {
-    "d12": 8,
-    "metier": "Artisan",
-    "bonus": "Artisanat/Connaissance (1 artisanat) & Ingénierie (entretien courant)",
-    "atout": "Établi et outils de maître",
-    "attache": "Commande en cours (délai, client puissant)"
-   },
-   "9": {
-    "d12": 9,
-    "metier": "Chasseur",
-    "bonus": "Nature & Survie (traque) & Discrétion (milieu naturel uniquement)",
-    "atout": "Pièges, appelants, camouflage",
-    "attache": "Territoire et quota (permis, garde-chasse, rival)"
-   },
-   "10": {
-    "d12": 10,
+   "6": {
+    "d8": 6,
     "metier": "Infiltré",
-    "bonus": "Discrétion & Communication (tromper)",
+    "bonus": "Discrétion (intrusion, filature) & Communication (couverture et mensonge)",
     "atout": "Faux papiers + 1 planque sûre",
     "attache": "Ancien commanditaire : peut exiger 1 service"
    },
-   "11": {
-    "d12": 11,
-    "metier": "Herboriste",
-    "bonus": "Nature & Survie (botanique) & Artisanat (pharmacopée)",
-    "atout": "Stock de remèdes courants",
-    "attache": "Clientèle dangereuse (on paie en silence)"
+   "7": {
+    "d8": 7,
+    "metier": "Archiviste",
+    "bonus": "Académie (1 domaine) & Observation (repérer détails et incohérences)",
+    "atout": "Accès à un fonds d'archives ou bases de données",
+    "attache": "Censure : dossiers classifiés, recherches surveillées"
    },
-   "12": {
-    "d12": 12,
+   "8": {
+    "d8": 8,
     "metier": "Officier",
-    "bonus": "Leadership & Intimidation",
+    "bonus": "Leadership (commandement) & Intimidation (discipline et autorité)",
     "atout": "Insigne + 1 contact hiérarchique",
-    "attache": "Responsabilité : hommes perdus, procès ou disgrâce possible"
+    "attache": "Responsabilité : unité perdue, enquête interne ou disgrâce possible"
    }
   },
   "evenements": [

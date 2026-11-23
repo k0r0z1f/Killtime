@@ -14,14 +14,13 @@ format: raw
                     </p>
 
                     <p>
-                        Vous avez <strong>4 cases</strong>, dont <strong>1 seule obligatoire</strong>
-                        (l'Enfance). Vous pouvez <strong>choisir</strong> ou <strong>lancer
-                        les dés</strong> (d6 enfance, d12 métier, d12 événement). Sur chaque
-                        case que vous prenez, notez une <strong>époque [E0–E5]</strong>
-                        (Échelle Technologique, Livre I §2.1, voir §26.4) : votre contexte
-                        sélectionne la <strong>table d6 d'Enfance</strong> correspondante
-                        (chap. 27) et habille le décor du Métier et de l'Événement sans
-                        jamais changer votre budget de bonus.
+                        L'historique comprend <strong>4 types d'entrées</strong> — <strong>un seul choix par type</strong>,
+                        dont <strong>1 seul obligatoire</strong> (l'Enfance). Pour chacun, vous pouvez <strong>choisir
+                        librement</strong> ou <strong>lancer les dés</strong> (d6 enfance, d8 métier, d12 événement).
+                        C'est <strong>votre MJ ou le cadre de campagne</strong> qui fixe l'époque <strong>[E0–E5]</strong>
+                        (Échelle Technologique, Livre I §2.1, voir §26.2) : elle détermine votre <strong>table d6 d'Enfance</strong>
+                        (chap. 27) et votre <strong>table d8 de Métier</strong> (chap. 28), et habille le décor de l'Événement
+                        (chap. 29).
                     </p>
 
                     

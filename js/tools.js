@@ -83,6 +83,7 @@ function initCharacterSheet() {
     const pillarsRow = document.getElementById('csPillarsRow');
     const enfanceEpoqueSelect = document.getElementById('csEnfanceEpoque');
     const enfanceSelect = document.getElementById('csEnfance');
+    const metierEpoqueSelect = document.getElementById('csMetierEpoque');
     const metierSelect = document.getElementById('csMetier');
     const evenementSelect = document.getElementById('csEvenement');
     const ancrageInput = document.getElementById('csAncrage');
@@ -204,7 +205,76 @@ function initCharacterSheet() {
     function currentEnfances() {
         return ENFANCES_PAR_EPOQUE[currentEnfanceEpoque()] || ENFANCES;
     }
-    const METIERS = [{n:'Milicien',d:'+2 Tir (1 arme) & Observation ; armure légère ; rappelable.'},{n:'Médic',d:'+2 Premiers Soins & triage ; kit de soin ; serment du blessé.'},{n:'Mécano',d:'+2 Ingénierie & dépannage ; caisse à outils ; dette atelier.'},{n:'Pilote',d:'+2 Pilotage & navigation ; licence + contact ; crédit nef.'},{n:'Prospecteur',d:'+2 Survie extrême & endurance ; équipement ; exclusivité.'},{n:'Négociant',d:'+2 Négocier & évaluer ; contact + licence ; dette.'},{n:'Archiviste',d:'+2 Académie & détails ; archives ; censure.'},{n:'Artisan',d:'+2 Artisanat & entretien ; établi ; commande en cours.'},{n:'Chasseur',d:'+2 Traque & discrétion (nature) ; pièges ; quota.'},{n:'Infiltré',d:'+2 Discrétion & tromper ; faux papiers + planque ; service dû.'},{n:'Herboriste',d:'+2 Botanique & pharmacopée ; remèdes ; clientèle dangereuse.'},{n:'Officier',d:'+2 Leadership & intimidation ; insigne ; responsabilité.'}];
+    const METIERS_PAR_EPOQUE = {
+        E0: [
+            { n: 'Chasseur de Traque', d: 'Nature & Survie (traque de gibier) & Ballistique / Tir (arc, fronde ou javelot) ; Pièges, collets, sagaies ou arc de chasse personnel ; Territoire disputé : clan rival ou proie taboue' },
+            { n: 'Guerrier Tribal', d: "Maniement d'Arme (lance, hache ou massue) & Intimidation (posture de guerre) ; Arme de bronze ou d'obsidienne + bouclier de peau ; Serment de sang : appelé à défendre le clan au premier signal" },
+            { n: 'Guérisseur des Herbes', d: "Premiers Soins (plaies, fractures) & Nature & Survie (plantes médicinales) ; Bourse de simples, onguents et remèdes courants ; Tabou du soin : ne jamais refuser d'aider un blessé qui demande refuge" },
+            { n: 'Tailleur & Fondeur', d: "Artisanat / Connaissance (pierre, os, cuir ou bronze) & Endurance Physique (travaux de forge/taille) ; Trousse d'outils bruts (percuteurs, moules, lames) ; Commande du chef : arme rituelle ou outils promis avant la saison" },
+            { n: 'Éclaireur des Confins', d: "Observation (repérer pistes et embuscades) & Discrétion (milieu naturel) ; Manteau de camouflage, gourdes et matériel de bivouac ; Route secrète : vous connaissez un passage que d'autres veulent arracher" },
+            { n: 'Conteur & Gardien', d: 'Intuition (lire les intentions) & Communication (récit, arbitrage, palabre) ; Bâton ou parure de mémoire + accueil dans les clans amis ; Mémoire sacrée : un secret tribal vous est confié sous peine de bannissement' },
+            { n: 'Troc & Caravane', d: "Communication (troc et échange) & Endurance Physique (marches de portage) ; Lot de marchandises rares (sel, ambre, silex) + 1 contact de troc ; Dette d'échange : un clan attend sa contrepartie avant l'hiver" },
+            { n: 'Chef de Meute', d: 'Leadership (mener chasse ou défense) & Athlétisme (franchissement, course en terrain brut) ; Totem ou insigne de rang + respect des guerriers de son groupe ; Responsabilité du clan : vies perdues ou rival qui conteste votre autorité' }
+        ],
+        E1: [
+            { n: "Homme d'Armes", d: "Maniement d'Arme (1 arme réglementaire) & Observation (guet et garde) ; Armure légère de garnison (Livre VIII) ou accès à l'armurerie du seigneur ; Service de ban : rappelable par votre suzerain ou capitaine en cas de guerre" },
+            { n: 'Apothicaire', d: "Premiers Soins (chirurgie de terrain) & Artisanat / Connaissance (pharmacopée et onguents) ; Coffret d'apothicaire et stock de remèdes courants ; Clientèle trouble : on paie en silence pour des remèdes ou antidotes discrets" },
+            { n: 'Forgeron & Maître-Artisan', d: 'Artisanat / Connaissance (1 métier de guilde : forge, charpente, armurerie) & Endurance Physique (effort prolongé) ; Établi et outils de maître de guilde ; Commande seigneuriale : délai strict ou cotisation de guilde en retard' },
+            { n: 'Veneur & Pisteur', d: 'Nature & Survie (traque) & Ballistique / Tir (arc ou arbalète) ; Arc ou arbalète de chasse, pièges et droit de passage forestier ; Droit de chasse : garde-chasse hostile, quota ou braconnage passé' },
+            { n: 'Marchand de Guilde', d: 'Communication (négocier) & Intuition (évaluer une offre ou un faux) ; Patente de commerce + 1 contact marchand en ville ; Dette de comptoir ou concurrent de guilde acharné' },
+            { n: 'Scribe & Érudit', d: 'Académie (1 domaine : droit, histoire, héraldique, théologie) & Observation (repérer un détail ou un faux) ; Accès à un scriptorium ou une bibliothèque seigneuriale ; Censure : textes interdits ou protecteur exigeant une enquête discrète' },
+            { n: 'Espion & Coupe-Bourse', d: 'Discrétion (filature, intrusion) & Subterfuge Manuel (crochetage, escamotage) ; Faux sceaux ou sauf-conduits + 1 planque sûre en faubourg ; Ancien commanditaire : connaît votre vrai visage et peut exiger 1 service' },
+            { n: 'Capitaine & Héraut', d: "Leadership (commander en ligne) & Intimidation (imposer l'ordre) ; Bannière ou chevalière de grade + 1 contact noble ou militaire ; Honneur entaché : siège perdu, duel en suspens ou disgrâce possible" }
+        ],
+        E2: [
+            { n: 'Milicien', d: 'Ballistique / Tir (1 arme réglementaire) & Observation (vigilance) ; Armure légère réglementaire (Livre VIII) ou accès armurerie ; Autorité de réserve : rappelable en cas de crise' },
+            { n: 'Médic', d: 'Premiers Soins (urgence) & Observation (triage) ; Trousse de soin complète personnelle ; Serment : ne jamais abandonner un blessé conscient' },
+            { n: 'Mécano', d: "Ingénierie & Arcanotech (réparation mécanique/électrique) & Subterfuge Manuel (dépannage) ; Caisse à outils personnelle ; Dette d'atelier (loyer ou emprunt en cours)" },
+            { n: 'Pilote & Chauffeur', d: 'Conduite & Pilotage (1 catégorie : routier, aérien, naval) & Observation (navigation) ; Permis + 1 contact garage, port ou aérodrome ; Crédit sur un véhicule, ou ancien employeur exigeant' },
+            { n: 'Négociant', d: 'Communication (négocier) & Intuition (évaluer une offre) ; 1 contact commercial + licence de commerce ; Dette en cours ou concurrent hostile nommé' },
+            { n: 'Infiltré', d: 'Discrétion (intrusion, filature) & Communication (couverture et mensonge) ; Faux papiers + 1 planque sûre ; Ancien commanditaire : peut exiger 1 service' },
+            { n: 'Archiviste', d: "Académie (1 domaine) & Observation (repérer détails et incohérences) ; Accès à un fonds d'archives ou bases de données ; Censure : dossiers classifiés, recherches surveillées" },
+            { n: 'Officier', d: 'Leadership (commandement) & Intimidation (discipline et autorité) ; Insigne + 1 contact hiérarchique ; Responsabilité : unité perdue, enquête interne ou disgrâce possible' }
+        ],
+        E3: [
+            { n: 'Fusilier Orbital', d: 'Ballistique / Tir (1 arme réglementaire ou embarquée) & Endurance Physique (combinaison lourde, gravité variable) ; Armure légère réglementaire (Livre VIII) ou accès armurerie de bord ; Contrat de sécurité : rappelable par la flotte ou la corporation' },
+            { n: 'Médecin de Bord', d: 'Médecine Avancée (soins de bord, implants courants) & Premiers Soins (urgence en milieu confiné) ; Mallette médicale de bord et diagnostics portables ; Protocole sanitaire : quarantaine ou serment de prise en charge' },
+            { n: 'Ingénieur de Coque', d: "Ingénierie & Arcanotech (réacteurs, systèmes embarqués) & Subterfuge Manuel (dépannage d’urgence) ; Trousse d'outillage orbital et scanner de diagnostic ; Dette de chantier naval ou panne majeure encore sur votre dossier" },
+            { n: 'Pilote Stellaire', d: 'Conduite & Pilotage (navette ou vaisseau) & Observation (navigation et capteurs) ; Licence de vol + 1 contact astroport ; Crédit sur un vaisseau ou armateur exigeant' },
+            { n: 'Prospecteur Planétaire', d: "Nature & Survie (1 milieu extrême) & Endurance Physique (efforts prolongés sous combinaison) ; Équipement d'exploration et survie complet ; Contrat d'exclusivité : part fixe due à un commanditaire" },
+            { n: 'Courtier de Fret', d: 'Communication (négocier cargaisons et douanes) & Intuition (déceler une fraude) ; Licence de transit + 1 contact commercial en astroport ; Dettes portuaires ou cartel concurrent nommé' },
+            { n: 'Opérateur Fantôme', d: 'Discrétion (échapper aux caméras et rondes) & Ingénierie & Arcanotech (contournement électronique/cyber) ; Identifiants falsifiés + 1 planque en bas-niveau ; Ancien client corporatiste : détient un levier et peut exiger 1 service' },
+            { n: 'Commandant de Quart', d: "Leadership (équipage sous crise) & Penser / Stratégie (manœuvres et gestion d'urgence) ; Insigne de passerelle + 1 contact dans la flotte ; Responsabilité de bord : perte d'équipage ou commission d'enquête" }
+        ],
+        E4: [
+            { n: 'Sentinelle de Portail', d: "Ballistique / Tir (1 arme arcanotech ou à faisceau) & Observation (contrôle de transit et menaces) ; Armure légère réglementaire (Livre VIII) ou accréditation d'armurerie de secteur ; Autorité de secteur : mobilisable en cas de brèche de portail" },
+            { n: 'Bio-Régénérateur', d: 'Médecine Avancée (cuves arcaniques, traumatismes lourds) & Système Immunitaire (protocoles de prophylaxie) ; Accès à un module de soin avancé et mallette de terrain ; Charte médicale : interdit de laisser mourir un sujet récupérable' },
+            { n: 'Ingénieur Nytharite', d: 'Ingénierie & Arcanotech (réglage, stabilisation de cristaux) & Observation (détecter une surcharge) ; Valise de calibration arcanotech (aucun accès à la 5e Force) ; Brevet ou cargaison de nytharite perdue sous votre responsabilité' },
+            { n: 'Navigateur de Transit', d: "Conduite & Pilotage (vecteurs rapides ou appareils de transit) & Penser / Stratégie (calcul de trajectoires) ; Licence de relais + 1 contact d'anneau de portail ; Concession de ligne : dette de transit ou syndicat de pilotes" },
+            { n: 'Émissaire de Secteur', d: 'Communication (diplomatie et traités) & Intuition (lire les enjeux cachés) ; Laissez-passer diplomatique + 1 contact de maison stellaire ; Compromis politique : faction rivale ou faveur due à un conseil' },
+            { n: 'Archiviste Cristallin', d: 'Académie (1 domaine savant : astrophysique, xénobiologie, théorie arcanotech) & Observation (recouper les données) ; Accès à une banque de mémoire ou archive de sphère ; Index interdit : recherches surveillées par une autorité de secteur' },
+            { n: 'Saboteur de Sphère', d: 'Discrétion (contourner capteurs et grilles) & Subterfuge Manuel (dérivation et sabotage discret) ; Brouilleur de signature courant + 1 refuge dans les anneaux techniques ; Commanditaire anonyme : garde la preuve de votre dernier coup' },
+            { n: 'Stratège de Flotte', d: "Leadership (coordination multi-unités) & Penser / Stratégie (planification tactique) ; Sceau d'état-major + 1 contact de cité-flotte ; Commandement contesté : opération ratée ou rival ambitieux" }
+        ],
+        E5: [
+            { n: 'Gardien de Seuil', d: "Maniement d'Arme (1 arme de garde ou de champ) & Défense Corporelle (tenir un passage) ; Harnais de garde léger (Livre VIII) ou droit d'armement du bastion ; Serment de veille : rappelable dès qu'une frontière de réalité vacille" },
+            { n: 'Modeleur de Post-Matière', d: 'Artisanat / Connaissance (façonner et stabiliser des structures) & Ingénierie & Arcanotech (stabilisateurs de lois) ; Outil de modelage personnel (aucun accès à la 5e Force) ; Œuvre inachevée : instabilité liée à une de vos anciennes créations' },
+            { n: 'Indexeur de Trames', d: "Penser / Stratégie (modéliser un embranchement) & Académie (1 domaine : cosmologie, chronologie, lois physiques) ; Accès à un observatoire d'archives de trames (aucune clairsentience, Livre X §41) ; Protocole de non-ingérence : surveillé par un collège d'indexeurs" },
+            { n: 'Restaurateur Vital', d: "Médecine Avancée (restauration cellulaire et traumatismes complexes) & Premiers Soins (stabilisation immédiate) ; Trousse de stabilisation vitale personnelle ; Code d'intégrité : interdit d'altérer un corps sans consentement" },
+            { n: 'Éclaireur des Plis', d: 'Acrobatie (gravité anormale, géométrie mouvante) & Intuition (sentir les anomalies et paradoxes locaux) ; Balises d’ancrage spatial et équipement de traversée ; Pli instable : un lieu ou un compagnon reste coincé par votre faute' },
+            { n: 'Voix du Concile', d: "Communication (arbitrage inter-mondes) & Intuition (déceler les arrière-pensées) ; Sceau d'émissaire + 1 contact au sein d'un concile ou d'une Éliane ; Pacte contraignant : une faction exige que vous honoriez une médiation" },
+            { n: "Effaceur d'Échos", d: "Discrétion (ne laisser aucune trace ni signature) & Subterfuge Manuel (infiltration et neutralisation de sécurités) ; Voile de dissimulation courant + 1 refuge hors-flux ; Dossier scellé : un témoin ou une entité connaît votre passé d'effaceur" },
+            { n: 'Arbitre des Lois', d: "Leadership (trancher en crise) & Intimidation (imposer un arrêt ou un verdict) ; Marque d'autorité + 1 contact auprès d'une juridiction de secteur ; Verdict contesté : un condamné ou une maison cherche réparation" }
+        ]
+    };
+    const METIERS = METIERS_PAR_EPOQUE.E2.map(m => ({ ...m }));
+    function currentMetierEpoque() {
+        const v = metierEpoqueSelect ? metierEpoqueSelect.value : 'E2';
+        return METIERS_PAR_EPOQUE[v] ? v : 'E2';
+    }
+    function currentMetiers() {
+        return METIERS_PAR_EPOQUE[currentMetierEpoque()] || METIERS;
+    }
     const EVENEMENTS = [{n:'Frôlé la mort',d:'1×/session : ignore 1 échec de Choc Traumatique (Encaissement) ou annule 1 Essoufflement ; cauchemars.'},{n:'Dette de vie',d:'+2 pour protéger un allié ; créancier rappelable.'},{n:'Trahison subie',d:'Relance un jet intuition ; traître actif.'},{n:'Long exil',d:'+2 Survie en terrain inconnu ; −2 premier contact.'},{n:'Contact 5e Force',d:'1 question fermée au MJ ; repérable par sens magiques.'},{n:'Miracle inexpliqué',d:'Ignore 1 échec moral/peur ; un culte s’intéresse à toi.'},{n:'Guerre intérieure',d:'+2 sang-froid (violence) ; fracas = test INS ou +1 Essoufflement.'},{n:'Crime impuni',d:'+2 couvrir ses traces ; un témoin existe.'},{n:'Mentor perdu',d:'+2 domaine du mentor ; promesse à honorer.'},{n:'Écho temporel',d:'1 question fermée (danger) ; +1 Essoufflement/usage.'},{n:'Ruine & misère',d:'+2 improviser avec rien ; −2 contact huppé.'},{n:'Gloire locale',d:'+2 Communication (zone exploit) ; rival jaloux.'}];
 
     // Échelle Livre II §6.1 : valeur d'attribut -> dé sans entraînement.
@@ -262,10 +332,18 @@ function initCharacterSheet() {
             }
             ENFANCES.length = 0;
             ENFANCES_PAR_EPOQUE.E2.forEach(e => ENFANCES.push({ ...e }));
-            if (M7.metiers && M7.metiers.length === 12) {
-                METIERS.length = 0;
-                M7.metiers.forEach(m => METIERS.push({ n: m.metier, d: m.bonus + ' ; ' + m.atout + (m.attache ? ' ; ' + m.attache : '') }));
+            if (M7.metiers_par_epoque) {
+                for (const ep of EPOQUES_ENFANCE) {
+                    const list = M7.metiers_par_epoque[ep];
+                    if (Array.isArray(list) && list.length === 8) {
+                        METIERS_PAR_EPOQUE[ep] = list.map(m => ({ n: m.metier, d: m.bonus + ' ; ' + m.atout + (m.attache ? ' ; ' + m.attache : '') }));
+                    }
+                }
+            } else if (M7.metiers && M7.metiers.length === 8) {
+                METIERS_PAR_EPOQUE.E2 = M7.metiers.map(m => ({ n: m.metier, d: m.bonus + ' ; ' + m.atout + (m.attache ? ' ; ' + m.attache : '') }));
             }
+            METIERS.length = 0;
+            METIERS_PAR_EPOQUE.E2.forEach(m => METIERS.push({ ...m }));
             if (M7.evenements && M7.evenements.length === 12) {
                 EVENEMENTS.length = 0;
                 M7.evenements.forEach(e => EVENEMENTS.push({ n: e.evenement, d: e.effet + ' ; ' + e.sequelle }));
@@ -531,7 +609,7 @@ function initCharacterSheet() {
         attachDescDropdown(enfanceSelect, 'csDdEnfance', () =>
             currentEnfances().map((e, i) => ({ value: String(i + 1), label: (i + 1) + '. ' + e.n, desc: e.d })));
         attachDescDropdown(metierSelect, 'csDdMetier', () =>
-            METIERS.map((m, i) => ({ value: String(i + 1), label: (i + 1) + '. ' + m.n, desc: m.d })));
+            currentMetiers().map((m, i) => ({ value: String(i + 1), label: (i + 1) + '. ' + m.n, desc: m.d })));
         attachDescDropdown(evenementSelect, 'csDdEvenement', () =>
             [{ value: '0', label: 'Aucun (optionnel)', desc: 'Pas d\u2019événement marquant.' }]
                 .concat(EVENEMENTS.map((e, i) => ({ value: String(i + 1), label: (i + 1) + '. ' + e.n, desc: e.d }))));
@@ -611,6 +689,7 @@ function initCharacterSheet() {
             ouie: '3',
             enfanceEpoque: 'E2',
             enfance: '2',
+            metierEpoque: 'E2',
             metier: '1',
             evenement: '2',
             ancrage: '',
@@ -1216,8 +1295,10 @@ function initCharacterSheet() {
             const rows = [];
             const ep = currentEnfanceEpoque();
             const enfList = currentEnfances();
+            const metEp = currentMetierEpoque();
+            const metList = currentMetiers();
             if (enfanceSelect && enfList[parseInt(enfanceSelect.value) - 1]) rows.push(['Enfance [' + ep + ']', enfList[parseInt(enfanceSelect.value) - 1]]);
-            if (metierSelect && METIERS[parseInt(metierSelect.value) - 1]) rows.push(['Métier', METIERS[parseInt(metierSelect.value) - 1]]);
+            if (metierSelect && metList[parseInt(metierSelect.value) - 1]) rows.push(['Métier [' + metEp + ']', metList[parseInt(metierSelect.value) - 1]]);
             if (evenementSelect && evenementSelect.value !== '0' && EVENEMENTS[parseInt(evenementSelect.value) - 1]) rows.push(['Événement', EVENEMENTS[parseInt(evenementSelect.value) - 1]]);
             for (const [label, entry] of rows) {
                 const div = document.createElement('div');
@@ -1653,7 +1734,7 @@ function initCharacterSheet() {
     // Sauvegarde quand la saisie est terminée (blur / Entrée / sélection),
     // jamais pendant la frappe : flush immédiat du debounce en attente.
     // Enregistré après les handlers ci-dessus pour purger leur timer.
-    for (const el of [nameInput, ageInput, sexeSelect, mondeInput, ancrageInput, visionInput, ouieInput, enfanceEpoqueSelect, enfanceSelect, metierSelect, evenementSelect, giftSelect, raceSelect, profileSelect, pillarMajorSelect, pillarMinorSelect]) {
+    for (const el of [nameInput, ageInput, sexeSelect, mondeInput, ancrageInput, visionInput, ouieInput, enfanceEpoqueSelect, enfanceSelect, metierEpoqueSelect, metierSelect, evenementSelect, giftSelect, raceSelect, profileSelect, pillarMajorSelect, pillarMinorSelect]) {
         if (el) el.addEventListener('change', flushSync);
     }
     document.querySelectorAll('.skill-check').forEach(cb => cb.addEventListener('change', flushSync));
@@ -1690,7 +1771,7 @@ function initCharacterSheet() {
         });
     }
     bindHistoryRoll('csBtnEnfance', enfanceSelect, 6);
-    bindHistoryRoll('csBtnMetier', metierSelect, 12);
+    bindHistoryRoll('csBtnMetier', metierSelect, 8);
     bindHistoryRoll('csBtnEvenement', evenementSelect, 12);
 
     function rebuildEnfanceOptions(preserveVal) {
@@ -1716,6 +1797,29 @@ function initCharacterSheet() {
         });
     }
 
+    function rebuildMetierOptions(preserveVal) {
+        if (!metierSelect) return;
+        const prev = preserveVal ? (metierSelect.value || '1') : null;
+        metierSelect.innerHTML = '';
+        currentMetiers().forEach((m, i) => {
+            const opt = document.createElement('option');
+            opt.value = String(i + 1);
+            opt.textContent = (i + 1) + '. ' + m.n;
+            metierSelect.appendChild(opt);
+        });
+        if (prev && metierSelect.querySelector('option[value="' + prev + '"]')) {
+            metierSelect.value = prev;
+        }
+        renderDescDropdowns();
+    }
+    if (metierEpoqueSelect) {
+        metierEpoqueSelect.addEventListener('change', () => {
+            rebuildMetierOptions(true);
+            updateCharacterCalculations();
+            flushSync();
+        });
+    }
+
     // Peuple les selects statiques (piliers, historique).
     function populateStaticSelects() {
         for (const sel of [pillarMajorSelect, pillarMinorSelect]) {
@@ -1735,12 +1839,7 @@ function initCharacterSheet() {
             rebuildEnfanceOptions(false);
         }
         if (metierSelect && metierSelect.options.length === 0) {
-            METIERS.forEach((m, i) => {
-                const opt = document.createElement('option');
-                opt.value = String(i + 1);
-                opt.textContent = (i + 1) + '. ' + m.n;
-                metierSelect.appendChild(opt);
-            });
+            rebuildMetierOptions(false);
         }
         if (evenementSelect && evenementSelect.options.length === 0) {
             const none = document.createElement('option');
@@ -1773,6 +1872,7 @@ function initCharacterSheet() {
             ouie: ouieInput ? ouieInput.value : '',
             enfanceEpoque: currentEnfanceEpoque(),
             enfance: enfanceSelect ? enfanceSelect.value : '',
+            metierEpoque: currentMetierEpoque(),
             metier: metierSelect ? metierSelect.value : '',
             evenement: evenementSelect ? evenementSelect.value : '',
             ancrage: ancrageInput ? ancrageInput.value : ''
@@ -1816,7 +1916,17 @@ function initCharacterSheet() {
             }
         }
         if (data.enfance) setVal(enfanceSelect, String(data.enfance));
-        if (data.metier) setVal(metierSelect, String(data.metier));
+        if (metierEpoqueSelect && focused !== metierEpoqueSelect) {
+            const mep = (data.metierEpoque && METIERS_PAR_EPOQUE[data.metierEpoque]) ? data.metierEpoque : 'E2';
+            if (metierEpoqueSelect.value !== mep) {
+                metierEpoqueSelect.value = mep;
+                rebuildMetierOptions(false);
+            }
+        }
+        if (data.metier) {
+            const mn = parseInt(data.metier, 10);
+            setVal(metierSelect, (!isNaN(mn) && mn >= 1 && mn <= 8) ? String(mn) : '1');
+        }
         if (data.evenement === 0 || data.evenement) setVal(evenementSelect, String(data.evenement));
         if (data.ancrage !== undefined) setVal(ancrageInput, data.ancrage);
         document.querySelectorAll('.skill-check').forEach(cb => {
@@ -1849,7 +1959,9 @@ function initCharacterSheet() {
         const enfEp = d.enfanceEpoque || 'E2';
         const enfList = ENFANCES_PAR_EPOQUE[enfEp] || ENFANCES;
         const enfTxt = d.enfance ? ('[' + enfEp + '] ' + histTxt(enfList, d.enfance)) : '—';
-        const metTxt = d.metier ? histTxt(METIERS, d.metier) : '—';
+        const metEp = d.metierEpoque || 'E2';
+        const metList = METIERS_PAR_EPOQUE[metEp] || METIERS;
+        const metTxt = d.metier ? ('[' + metEp + '] ' + histTxt(metList, d.metier)) : '—';
         const eveTxt = (d.evenement && d.evenement !== '0') ? histTxt(EVENEMENTS, d.evenement) : 'Aucun';
         return `=== FICHE DE PERSONNAGE RP (Codex v2.4) ===\n` +
             `Nom : ${d.name || 'Héros sans nom'}${d.age ? ' | Âge : ' + d.age : ''}${d.sexe ? ' | Sexe : ' + d.sexe : ''}\n` +
@@ -2008,6 +2120,7 @@ function initCharacterSheet() {
                 if (ouieInput) ouieInput.value = '3';
                 if (enfanceEpoqueSelect) { enfanceEpoqueSelect.value = 'E2'; rebuildEnfanceOptions(false); }
                 if (enfanceSelect) enfanceSelect.value = '2';
+                if (metierEpoqueSelect) { metierEpoqueSelect.value = 'E2'; rebuildMetierOptions(false); }
                 if (metierSelect) metierSelect.value = '1';
                 if (evenementSelect) evenementSelect.value = '2';
                 if (ancrageInput) ancrageInput.value = '';

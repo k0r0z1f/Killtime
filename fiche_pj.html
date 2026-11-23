@@ -174,11 +174,20 @@
                     </div>
                 </div>
                 <div class="tool-form-group">
-                    <label class="tool-label" for="csMetier">Métier (d12)</label>
+                    <label class="tool-label" for="csMetier">Métier (d8 — [E0–E5])</label>
                     <div style="display: flex; gap: 6px;">
+                        <select id="csMetierEpoque" class="tool-select" title="Contexte d'époque (Livre VII §28)"
+                            style="flex: 0 0 auto; width: auto; min-width: 66px;">
+                            <option value="E0">E0</option>
+                            <option value="E1">E1</option>
+                            <option value="E2" selected>E2</option>
+                            <option value="E3">E3</option>
+                            <option value="E4">E4</option>
+                            <option value="E5">E5</option>
+                        </select>
                         <select id="csMetier" class="tool-select" style="flex: 1;"></select>
-                        <button class="tool-btn secondary" id="csBtnMetier" type="button" title="Tirer 1d12"
-                            style="flex: 0 0 auto;">d12</button>
+                        <button class="tool-btn secondary" id="csBtnMetier" type="button" title="Tirer 1d8"
+                            style="flex: 0 0 auto;">d8</button>
                     </div>
                 </div>
                 <div class="tool-form-group">

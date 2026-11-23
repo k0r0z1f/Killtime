@@ -5036,7 +5036,9 @@
    "terme": "Métier",
    "domaine": "equipement",
    "alias": [
-    "d12",
+    "d8",
+    "E0-E5",
+    "table d8",
     "parcours"
    ],
    "liens": [

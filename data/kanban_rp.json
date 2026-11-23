@@ -751,7 +751,7 @@
      "id": "RP-050",
      "title": "Relire chap. 26. Principes & Procédure (Étape 2)",
      "epic": "Livre VII — Historiques",
-     "status": "todo",
+     "status": "in_progress",
      "priority": "high",
      "order": 8,
      "scene": "",
@@ -761,7 +761,7 @@
      "scale": null,
      "suggestedAsset": "livre_7.html#chap-26",
      "updated": "2026-11-22",
-     "details": "Vérification humaine — livre_7.html#chap-26. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (modificateurs +2 au total, anti-cumul, attaches, pas de palier/PA/dégâts) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici. MAJ 2026-11-07 — titre corrigé (chap. 28→27 après renumérotation ; le chap. 28 actuel = Métiers, couvert par RP-052). | MAJ 2026-11-22 (RP-234) : §26 intro et encadré §26.4 synchronisés avec les 6 tables d6 d'Enfance E0–E5 (chap. 27)."
+     "details": "Vérification humaine — livre_7.html#chap-26. Checklist : [ ] orthographe/typo FR ; [x] cohérence mécaniques avec les autres chapitres (modificateurs +2 au total, anti-cumul, attaches, pas de palier/PA/dégâts) ; [ ] exemples chiffrés rejoués ; [x] liens internes + ancres OK ; [x] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici. MAJ 2026-11-07 — titre corrigé (chap. 28→27 après renumérotation ; le chap. 28 actuel = Métiers, couvert par RP-052). | MAJ 2026-11-22 (RP-234) : §26 intro et encadré synchronisés avec les 6 tables d6 d'Enfance E0–E5 (chap. 27). | MAJ 2026-11-22 (RP-236) : 1er check & mécanique chap. 26 OK — 4 types d'entrées (1 choix par type, sans « cases »), époque E0–E5 fixée par le MJ/cadre de campagne, table etapes_historique simplifiée (sans colonne Cumul, sans « + monde », Ancrage = habillage narratif et récit pur), retrait des blocs inutiles (ex-§26.1 calibrage, ex-§26.2 où noter, encadré « Ce que le marqueur change »), §26.1 ramené à 4 règles (Attache sans négation, Restez crédible recentré sur les époques) et §26.2 Époque de campagne + resynchro de tous les renvois §26.1/§26.2 dans Livre VII et livre_7.html. Reste uniquement le QA final (orthographe/typo FR, ton lecteur) pour clore RP-050."
     },
     {
      "id": "RP-051",
@@ -781,9 +781,9 @@
     },
     {
      "id": "RP-052",
-     "title": "Relire chap. 28. Métiers : 12 Parcours (d12)",
+     "title": "Relire chap. 28. Métiers : 1 Table d8 par Contexte E0–E5",
      "epic": "Livre VII — Historiques",
-     "status": "todo",
+     "status": "in_progress",
      "priority": "high",
      "order": 10,
      "scene": "",
@@ -792,7 +792,8 @@
      "pos": null,
      "scale": null,
      "suggestedAsset": "livre_7.html#chap-28",
-     "details": "Vérification humaine — livre_7.html#chap-27. Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques avec les autres chapitres (modificateurs +2 au total, anti-cumul, attaches, pas de palier/PA/dégâts) ; [ ] exemples chiffrés rejoués ; [ ] liens internes + ancres OK ; [ ] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
+     "updated": "2026-11-22",
+     "details": "Vérification humaine — livre_7.html#chap-28. Checklist : [ ] orthographe/typo FR ; [x] cohérence mécaniques avec les autres chapitres (modificateurs +2 au total, anti-cumul, attaches, pas de palier/PA/dégâts) ; [ ] exemples chiffrés rejoués ; [x] liens internes + ancres OK ; [x] aucun TODO/placeholder restant. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici. MAJ 2026-11-22 (RP-235) : 1er check & mécanique chap. 28 OK — refonte en 6 tables d8 dédiées (E0–E5, 48 métiers, compétences canoniques Livre III, créateur PJ Livre IX / fiche_pj, fiche prototype Livre I, Appendice B et nav 19 pages synchronisés). Reste uniquement le QA final (orthographe/typo FR, ton lecteur) pour clore RP-052."
     },
     {
      "id": "RP-053",
@@ -2175,7 +2176,7 @@
      "scale": null,
      "suggestedAsset": "livre_7.html",
      "updated": "2026-11-22",
-     "details": "Comme RP-063/064, pour le Livre VII Historiques (chap. 26-29 ; RP-050..053). Checklist : [ ] ton MJ accueillant (phrases courtes, 2e personne, exemples concrets, modele = preface index.html) ; [ ] aucun jargon sans explication ; [ ] mecaniques strictement intactes ; [ ] orthographe/typo FR ; [ ] liens + ancres OK. DONE = relu + reformule — ajouter date + initiales ici. MAJ 2026-11-07 — plage corrigée (chap. 26-32→chap. 26-29 après renumérotation). | MAJ 2026-11-22 — début 1er check & mécanique Livre VII : chap. 27 Enfances refondu en 6 tables d6 E0–E5 (RP-051 in_progress, RP-234 done) ; restent chap. 26 (RP-050), chap. 28 (RP-052), chap. 29 (RP-053) et RP-190."
+     "details": "Comme RP-063/064, pour le Livre VII Historiques (chap. 26-29 ; RP-050..053). Checklist : [ ] ton MJ accueillant (phrases courtes, 2e personne, exemples concrets, modele = preface index.html) ; [ ] aucun jargon sans explication ; [ ] mecaniques strictement intactes ; [ ] orthographe/typo FR ; [ ] liens + ancres OK. DONE = relu + reformule — ajouter date + initiales ici. MAJ 2026-11-07 — plage corrigée (chap. 26-32→chap. 26-29 après renumérotation). | MAJ 2026-11-22 — 1er check & mécanique Livre VII : chap. 26 (RP-050 in_progress, RP-236 done), chap. 27 Enfances 6 tables d6 E0–E5 (RP-051 in_progress, RP-234 done) et chap. 28 Métiers 6 tables d8 E0–E5 (RP-052 in_progress, RP-235 done) faits ; restent chap. 29 (RP-053) et reliquat RP-190 (Événement 7 / note 17 pts)."
     },
     {
      "id": "RP-145",
@@ -3588,6 +3589,38 @@
      "suggestedAsset": "livre_7.html#chap-27",
      "updated": "2026-11-22",
      "details": "FAIT 2026-11-22 (1er check & mécanique Livre VII chap. 27) — (1) Refonte du chap. 27 en 6 tables d6 dédiées par contexte technologique E0–E5 (27.1 Primitive, 27.2 Médiévale, 27.3 Moderne, 27.4 Avancée, 27.5 Très Avancée, 27.6 Démiurgique) : 36 enfances calibrées à +2 dans 1 compétence canonique Livre III distincte par table (≈ ½ don racial, aucun accès Magie/Clairsentience/entraînement gratuit), barre d'accès rapide #sec-27-1..6 et encadré hors-époque ; mise à jour cohérente de §26 intro et §26.4. (2) Schéma data/livre_7.json enrichi (donnees.enfances_e0..e5, tableaux, mecaniques.enfances_par_epoque + rétrocompatibilité mecaniques.enfances sur E2, préservant Roger et Mara). (3) Synchronisation du créateur PJ (sélecteur #csEnfanceEpoque dans livre_9.html, fiche_pj.html et js/tools.js avec repli E2), fiche prototype Livre I, Appendice B (enfance-d6) et menus latéraux des 19 pages (build_nav.py)."
+    },
+    {
+     "id": "RP-235",
+     "title": "Livre VII chap. 28 (1er check mécanique : Métiers — 1 table d8 par contexte E0–E5, créateur PJ & nav)",
+     "epic": "Livre VII — Historiques",
+     "status": "done",
+     "priority": "high",
+     "order": 232,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "livre_7.html#chap-28",
+     "updated": "2026-11-22",
+     "details": "FAIT 2026-11-22 (1er check & mécanique Livre VII chap. 28) — (1) Refonte du chap. 28 en 6 tables d8 dédiées par contexte technologique E0–E5 (28.1 Primitive à 28.6 Démiurgique) : 48 métiers calibrés à +2/+2 sur 2 compétences canoniques distinctes du Livre III (noms complets) + 1 atout concret non chiffré + 1 attache optionnelle (aucun accès Magie/Clairsentience), barre d'accès rapide #sec-28-1..6, §28.7 exemple Mara & encadré hors-époque ; mise à jour de §26, index.html et livre_6.html. (2) Schéma data/livre_7.json enrichi (donnees.metiers_e0..e5, tableaux, mecaniques.metiers_par_epoque + mecaniques.metiers & metiers_par_d8 sur E2, préservant Roger et Mara). (3) Synchronisation du créateur PJ (sélecteur #csMetierEpoque, tirage 1d8, clamp sauvegardes 1..8 et repli E2 dans livre_9.html, fiche_pj.html et js/tools.js), fiche prototype Livre I, Appendice B (metier-d12) et menus latéraux des 19 pages (build_nav.py)."
+    },
+    {
+     "id": "RP-236",
+     "title": "Livre VII chap. 26 (1er check mécanique : 4 types d'entrées, époque fixée par MJ, épuration §26.1–§26.2)",
+     "epic": "Livre VII — Historiques",
+     "status": "done",
+     "priority": "high",
+     "order": 233,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "livre_7.html#chap-26",
+     "updated": "2026-11-22",
+     "details": "FAIT 2026-11-22 (1er check & mécanique Livre VII chap. 26) — (1) Intro chap. 26 reformulée : 4 types d'entrées (un seul choix par type, sans mention de « cases »), époque [E0–E5] fixée par le MJ ou le cadre de campagne (retrait de la mention superflue sur le budget de bonus). (2) Tableau etapes_historique simplifié dans data/livre_7.json : suppression de la colonne Cumul, retrait de « + monde » sur A. Ancrage, libellé « Aucun — habillage narratif et récit pur ». (3) Épuration de bloc-02 et suppression de bloc-04 : retrait de l'ex-§26.1 (calibrage), de l'ex-§26.2 (où noter) et de l'encadré « Ce que le marqueur change » ; §26.1 ramené à 4 règles (Attache reformulée sans négation, Restez crédible recentré sur la cohérence d'époques) et §26.2 Époque de campagne [E0–E5] (fixée par le MJ). (4) Resynchronisation complète de tous les renvois §26.1/§26.2 dans Livre VII (chap. 26–29) et télémétrie livre_7.html."
     }
    ]
   }

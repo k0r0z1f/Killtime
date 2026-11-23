@@ -9,9 +9,9 @@ livre: 7
                     <p>
                         C'est optionnel, et vous pouvez le refuser. Chacun vous donne
                         <strong>1 effet à jouer 1×/session</strong> contre <strong>1 séquelle</strong>
-                        que votre MJ activera vraiment (§26.2). Lancez 1d12 ou choisissez.
-                        Notez votre <strong>[E0–E5]</strong> (§26.4, par défaut celle
-                        de la campagne).
+                        que votre MJ activera vraiment (§26.1). Lancez 1d12 ou choisissez.
+                        L'événement s'habille selon <strong>l'époque [E0–E5] fixée par votre MJ</strong>
+                        (§26.2).
                     </p>
 
                     

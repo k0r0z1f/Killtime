@@ -7,7 +7,7 @@ livre: 7
 
                     <div class="callout arcane" style="margin-top: 22px;">
                         <div class="callout-header">
-                            Jouer une enfance hors de son époque de campagne (§26.4)
+                            Jouer une enfance hors de son époque de campagne (§26.2)
                         </div>
                         <div class="callout-body">
                             Vous venez d'un autre monde ou d'un autre âge que celui de la table ?

@@ -65,8 +65,8 @@ livre: 1
                                 <div class="field-value">[E2] 2. Rues &amp; Bas-fonds <span class="tool-label-hint">Gamin des toits : +2 <a class="rule-ref" href="livre_3.html#chap-13" data-tip="Observation : repérer un indice, un danger, un ennemi camouflé (Vision/Ouïe, §13.3).">Observation</a> en urbain.</span></div>
                             </div>
                             <div class="tool-form-group">
-                                <label class="tool-label">Métier (d12)</label>
-                                <div class="field-value">1. Milicien <span class="tool-label-hint">+2 <a class="rule-ref" href="livre_3.html#chap-12" data-tip="Ballistique / Tir : tirer à distance (AGI/Vision, §12.2).">Tir</a> (1 arme) & <a class="rule-ref" href="livre_3.html#chap-13" data-tip="Observation : repérer un indice, un danger, un ennemi camouflé (Vision/Ouïe, §13.3).">Observation</a> ; armure légère ; rappelable.</span></div>
+                                <label class="tool-label">Métier (d8 — [E0–E5])</label>
+                                <div class="field-value">[E2] 1. Milicien <span class="tool-label-hint">+2 <a class="rule-ref" href="livre_3.html#chap-12" data-tip="Ballistique / Tir : tirer à distance (AGI/Vision, §12.2).">Ballistique / Tir</a> (1 arme) & <a class="rule-ref" href="livre_3.html#chap-13" data-tip="Observation : repérer un indice, un danger, un ennemi camouflé (Vision/Ouïe, §13.3).">Observation</a> ; armure légère ; rappelable.</span></div>
                             </div>
                             <div class="tool-form-group">
                                 <label class="tool-label">Événement Marquant (d12, optionnel)</label>

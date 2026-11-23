@@ -6,13 +6,10 @@ livre: 7
 
 
                     <p>
-                        Repérez d'abord votre contexte technologique <strong>[E0–E5]</strong> (§26.4 —
-                        par défaut celui de la campagne), ouvrez la table correspondante ci-dessous,
-                        puis lancez <strong>1d6</strong> ou choisissez. Chaque enfance vous donne
+                        Ouvrez la table correspondant à <strong>l'époque [E0–E5] fixée par votre MJ</strong>
+                        (§26.2), puis lancez <strong>1d6</strong> ou choisissez. Chaque enfance vous donne
                         <strong>1 petit bonus</strong> : <strong>+2</strong> à une compétence bien
-                        précise <strong>dans son contexte</strong> (environ la moitié d'un don racial,
-                        §26.1). Hors contexte, pas de bonus. Notez <strong>Nom [Ex]</strong> sur
-                        votre fiche (§26.3).
+                        précise <strong>dans son contexte</strong>. Hors contexte, pas de bonus.
                     </p>
 
                     <div style="display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 22px;">
