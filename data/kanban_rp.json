@@ -1,6 +1,6 @@
 {
  "version": 3,
- "updated": "2026-11-22",
+ "updated": "2026-11-23",
  "activeId": "board-revue-rp",
  "boards": [
   {
@@ -3753,6 +3753,86 @@
      "suggestedAsset": "livre_1.html#sec-5-2",
      "updated": "2026-11-22",
      "details": "Suite audit Livres I–VIII (file F2 → F5, après F4 RP-243) : corriger la faille anti-farm +0/+2 (conversion 2:1 du surplus d'XP lié en XP libre)."
+    },
+    {
+     "id": "RP-245",
+     "title": "Audit Défis — Fix double comptage (gel des ticks, récompense finale seule, échec = 0)",
+     "epic": "P0 — Socle Mécanique",
+     "status": "done",
+     "priority": "medium",
+     "order": 242,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "livre_2.html#chap-10",
+     "updated": "2026-11-23",
+     "details": "FAIT 2026-11-23 — Audit Livres I–VIII (fix défis double comptage) : gel des ticks pendant le défi (« Les jets d'étapes ne cochent pas individuellement (exception à Livre I §5.1). » ajouté en Livre II §10.1 bloc-00), formule conservée (Étapes × 2 − Rattrapages, min 2 si validé ; exemple 4 étapes / 2 rattrapages = 6 cases au total, sans +4 ticks d'étapes en bloc-02), desc_html mis à jour (« Seule la récompense finale est répartie. Échec total = 0, cases d'étapes perdues. ») dans data/livre_2.json (defis & mecaniques.defi). Miroirs synchronisés : Appendice A (data/appendice_actions.json : defi-hors-combat), Livre IX (§36 livre_9.html) et Résolveur de Challenges (js/tools.js calculateReward : reward = 0 sur échec total). Checks verts (build_livres --check 2, check_liens, node --check)."
+    },
+    {
+     "id": "RP-246",
+     "title": "2e 1er check & mécanique — Audit F1 (plafond d'effort 1 + entraînements, RP-240)",
+     "epic": "P0 — Socle Mécanique",
+     "status": "todo",
+     "priority": "high",
+     "order": 243,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "livre_2.html#chap-6",
+     "updated": "2026-11-23",
+     "details": "Repasse humaine (2e 1er check & mécanique) des changements de l'Audit F1 (RP-240, commit 7a9abac) : plafond d'effort 1 + entraînements (PA, PE, Action en Progression, Survolté, En transe) en Livre I (§1, fiche Roger), Livre II (§6, §7.3, §10), Livre IV (§19), Livre V (§20.2/§20.3/§20.5), Livre VI (§24.3), fiche_pj.html, livre_9.html, js/tools.js et Appendices A & B. Checklist : [ ] formulation/ton joueur ; [ ] cohérence mécanique & cas limites ; [ ] exemples rejoués ; [ ] fiche PJ / outils."
+    },
+    {
+     "id": "RP-247",
+     "title": "2e 1er check & mécanique — Audit F3 (sortie ÉRU 8→7 caracs, Bagage 3–5, RP-242)",
+     "epic": "P0 — Socle Mécanique",
+     "status": "todo",
+     "priority": "high",
+     "order": 244,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "livre_1.html#chap-3",
+     "updated": "2026-11-23",
+     "details": "Repasse humaine (2e 1er check & mécanique) des changements de l'Audit F3 (RP-242, commit 593325f) : suppression d'Érudition (7 caracs + Magie), Bagage création (base 3, +1 Touche-à-tout, +1 tirage pur L.VII, max 5), budgets secondaires (12/14, Sbire 11/13), formule PA Min(7), redistribution des 6 compétences ex-ÉRU (Livres I–IV, VI, VII, XII), fiche Roger, fiche_pj.html, livre_9.html, js/tools.js, js/fabrique.js et Appendices A & B. Checklist : [ ] formulation/ton joueur ; [ ] cohérence mécanique & équilibrage ; [ ] exemples rejoués ; [ ] fiche PJ / créateur."
+    },
+    {
+     "id": "RP-248",
+     "title": "2e 1er check & mécanique — Audit F4 (ferme à XP, jets à enjeu, drills quotaés, RP-243)",
+     "epic": "P0 — Socle Mécanique",
+     "status": "todo",
+     "priority": "medium",
+     "order": 245,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "livre_1.html#chap-5",
+     "updated": "2026-11-23",
+     "details": "Repasse humaine (2e 1er check & mécanique) des changements de l'Audit F4 (RP-243, commit 51f26e0) : jets à enjeu (adversaire actif ou seuil ≥ base + conséquence réelle, 2e jet même scène = 0 case, zéro fiat MJ), exclusions cible passive (Défense 0 / consentant / Paralysé / Inconscient) et défense à 0 PA sans mise, quotas drills compagnons (1 jet = 4 h, max 1 case/j/binôme, max 1 XP lié/sem., formateur ≥ élève) en Livre I (§5), data/livre_1.json et Appendice A (entrainer-compagnons). Checklist : [ ] formulation/ton joueur ; [ ] cohérence mécanique & cas limites ; [ ] exemples rejoués."
+    },
+    {
+     "id": "RP-249",
+     "title": "2e 1er check & mécanique — Audit Défis (fix double comptage, gel des ticks, RP-245)",
+     "epic": "P0 — Socle Mécanique",
+     "status": "todo",
+     "priority": "medium",
+     "order": 246,
+     "scene": "",
+     "placeholderId": "",
+     "primitive": "",
+     "pos": null,
+     "scale": null,
+     "suggestedAsset": "livre_2.html#chap-10",
+     "updated": "2026-11-23",
+     "details": "Repasse humaine (2e 1er check & mécanique) des changements de l'Audit Défis (RP-245) : gel des ticks d'étapes pendant le défi (exception à Livre I §5.1), seule la récompense finale (Étapes × 2 − Rattrapages, min 2) est répartie, échec total = 0 et cases d'étapes perdues, exemple 4 étapes / 2 rattrapages = 6 au total. Appliqué en Livre II (§10 bloc-00/bloc-02, data/livre_2.json defis & mecaniques.defi), Appendice A (defi-hors-combat), Livre IX (§36) et js/tools.js (calculateReward). Checklist : [ ] formulation/ton joueur ; [ ] cohérence mécanique & cas limites ; [ ] exemple & résolveur web."
     }
    ]
   }

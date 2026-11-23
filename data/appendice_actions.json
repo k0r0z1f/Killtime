@@ -5851,7 +5851,7 @@
    "procedure": [
     "Le défi enchaîne 3 à 7 étapes successives (compétences imposées par le MJ ou solutions proposées par les joueurs).",
     "Économie spéciale (§10) : les PA ne reviennent pas entre les étapes ! Chaque PA dépensé pour assurer un jet diminue la réserve globale pour tout le défi. L'Essoufflement volontaire pris (max CON) vous suit aussi jusqu'au bout.",
-    "En cas d'échec, le MJ peut accorder 0 à 3 rattrapages ; récompense finale d'équipe en progression = (Étapes × 2) − Rattrapages (à répartir sur les compétences utilisées)."
+    "Les jets d'étapes ne cochent pas individuellement (exception à Livre I §5.1). En cas d'échec sur une étape, le MJ peut accorder 0 à 3 rattrapages ; récompense finale d'équipe en progression = (Étapes × 2) − Rattrapages (min 2 si validé ; seule la récompense finale est répartie ; échec total = 0, cases d'étapes perdues)."
    ],
    "conditions": "Les PA et PE ne se rechargent qu'à la fin du défi (ou repos adapté).",
    "modificateurs": "Favorise la répartition des rôles entre spécialistes du groupe pour préserver les PA collectifs.",

@@ -17,7 +17,7 @@ livre: 2
                         <div class="callout-body">
                             L'équipe doit saboter la chaufferie d'un croiseur (4 étapes successives).<br>
                             Ils valident les 4 étapes mais ont dû s'y reprendre à deux fois (<strong>2 rattrapages</strong>) lors du piratage du terminal.<br>
-                            <strong>Le calcul est limpide :</strong> (4 × 2) − 2 = <strong>6 cases de progression</strong> gagnées par l'équipe ! Les joueurs se les répartissent sur les compétences utilisées (Discrétion, Subterfuge, Informatique).
+                            <strong>Le calcul est limpide :</strong> (4 × 2) − 2 = <strong>6 cases de progression au total</strong> gagnées par l'équipe (les 4 étapes réussies ne cochent pas en plus) ! Les joueurs se les répartissent sur les compétences utilisées (Discrétion, Subterfuge, Informatique).
                         </div>
                     </div>
 
