@@ -180,6 +180,8 @@ const MIME_TYPES = {
     '.css': 'text/css; charset=utf-8',
     '.js': 'application/javascript; charset=utf-8',
     '.json': 'application/json; charset=utf-8',
+    '.txt': 'text/plain; charset=utf-8',
+    '.xml': 'application/xml; charset=utf-8',
     '.png': 'image/png',
     '.jpg': 'image/jpeg',
     '.jpeg': 'image/jpeg',
@@ -322,7 +324,7 @@ function parseReturnPath(state) {
 
 function staticCacheHeaders(ext, stats) {
     const h = {};
-    if (['.html', '.js', '.json', '.css'].includes(ext)) {
+    if (['.html', '.js', '.json', '.css', '.xml', '.txt'].includes(ext)) {
         // Pages + kanban + JSON : toujours revalidés, jamais de version périmée.
         h['Cache-Control'] = 'no-cache, must-revalidate';
     } else {
@@ -2588,6 +2590,27 @@ async function handleRequest(req, res, isAdminListener) {
                 return res.end('Accès réservé à la machine locale.');
             }
             return serveStatic(req, res, '/admin.html');
+        }
+        const ADMIN_STATIC_ASSETS = ['/css/themes.css', '/js/theme-init.js', '/js/theme.js', '/favicon.ico'];
+        if (ADMIN_STATIC_ASSETS.includes(cleanPath) && (req.method === 'GET' || req.method === 'HEAD')) {
+            if (!isLoopbackHost(req)) {
+                res.writeHead(403, { 'Content-Type': 'text/plain; charset=utf-8' });
+                return res.end('Accès réservé à la machine locale.');
+            }
+            return serveStatic(req, res, cleanPath);
+        }
+        if (cleanPath.startsWith('/data/archives/') && (req.method === 'GET' || req.method === 'HEAD')) {
+            if (!isLoopbackHost(req)) {
+                res.writeHead(403, { 'Content-Type': 'text/plain; charset=utf-8' });
+                return res.end('Accès réservé à la machine locale.');
+            }
+            const adm = requirePerm(req, 'users.manage');
+            if (adm.status) return sendJson(res, adm.status, { error: adm.error });
+            if (!/^\/data\/archives\/[a-z0-9_-]+\.json$/i.test(parsedUrl.pathname)) {
+                res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
+                return res.end('Fichier introuvable.');
+            }
+            return serveStatic(req, res, parsedUrl.pathname);
         }
         if (cleanPath === '/api/admin/status' && req.method === 'GET') {
             const adm = requirePerm(req, 'admin.access');

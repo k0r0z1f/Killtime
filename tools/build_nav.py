@@ -35,6 +35,9 @@ RE_APPENDICE = re.compile(
 RE_APPENDICE_B = re.compile(
     r'(group-tag">A\.II</span>.*?<ul class="nav-items-list">)(.*?)(</ul>)',
     re.S)
+RE_APPENDICE_C = re.compile(
+    r'(group-tag">A\.III</span>.*?<ul class="nav-items-list">)(.*?)(</ul>)',
+    re.S)
 
 
 def charger_livre(n):
@@ -140,6 +143,28 @@ def entrees_appendice_glossaire(page):
     return '\n'.join(lignes) + '\n                        '
 
 
+def entrees_appendice_objets(page):
+    """Rendu des <li> du groupe Appendice C (A.III) depuis data/appendice_objets.json."""
+    p = os.path.join(RACINE, 'data', 'appendice_objets.json')
+    if not os.path.exists(p):
+        return ''
+    with open(p, encoding='utf-8') as f:
+        d = json.load(f)
+    propre = (page == 'appendice_objets.html')
+    lignes = [
+        '                            <li><a href="%s" class="nav-item-link">'
+        '<span>Tous les Objets (Filtres)</span></a></li>' % (
+            '#compendium-objets' if propre else 'appendice_objets.html'
+        )
+    ]
+    for c in d.get('categories', []):
+        href = ('#cat-%s' % c['id']) if propre else ('appendice_objets.html#cat-%s' % c['id'])
+        lignes.append(
+            '                            <li><a href="%s" class="nav-item-link">'
+            '<span>%s</span></a></li>' % (href, c['nav']))
+    return '\n'.join(lignes) + '\n                        '
+
+
 def pages_cibles():
     out = []
     for fn in sorted(os.listdir(RACINE)):
@@ -168,6 +193,11 @@ def regenere(page):
     if RE_APPENDICE_B.search(out):
         out = RE_APPENDICE_B.sub(
             lambda m: m.group(1) + '\n' + entrees_appendice_glossaire(page) + m.group(3),
+            out
+        )
+    if RE_APPENDICE_C.search(out):
+        out = RE_APPENDICE_C.sub(
+            lambda m: m.group(1) + '\n' + entrees_appendice_objets(page) + m.group(3),
             out
         )
     return out

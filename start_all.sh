@@ -3,15 +3,15 @@
 # start_all.sh — Lance tous les services Killtime
 #   1. cycleServer.sh  (serveur Ruby HTTP, port 8000)
 #   2. node users/server.js
-#   3. ngrok
+#   3. cloudflared (https://killtime.studio)
 # Ctrl+C pour tout arrêter proprement.
 # ============================================
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 cd "$SCRIPT_DIR"
 
-NGROK_URL="unsaddle-computer-profile.ngrok-free.dev"
-NGROK_PORT=3000
+TUNNEL_NAME="killtime"
+CLOUDFLARED_BIN="$(command -v cloudflared || echo "$HOME/.local/bin/cloudflared")"
 
 # Couleurs
 RED='\033[0;31m'
@@ -33,10 +33,10 @@ cleanup() {
     for pgid in "${PGIDS[@]}"; do
         kill -9 -- -"$pgid" 2>/dev/null
     done
-    # Filet de sécurité : libérer les ports et tuer ngrok
+    # Filet de sécurité : libérer les ports et tuer cloudflared
     fuser -k 8000/tcp 2>/dev/null
     fuser -k 3000/tcp 2>/dev/null
-    pkill -f ngrok 2>/dev/null
+    pkill -f "cloudflared tunnel run $TUNNEL_NAME" 2>/dev/null
     echo -e "${RED}✔  Tous les services sont arrêtés.${NC}"
     exit 0
 }
@@ -58,9 +58,9 @@ echo -e "${GREEN}▶ [2/3] node users/server.js${NC}"
 setsid node "$SCRIPT_DIR/users/server.js" 2>&1 | sed -u "s/^/[node-users]  /" &
 PGIDS+=($!)
 
-# --- 3. ngrok ---
-echo -e "${GREEN}▶ [3/3] ngrok${NC}"
-setsid ngrok http --url="$NGROK_URL" "$NGROK_PORT" 2>&1 | sed -u "s/^/[ngrok]       /" &
+# --- 3. cloudflared (killtime.studio) ---
+echo -e "${GREEN}▶ [3/3] cloudflared (https://killtime.studio)${NC}"
+setsid "$CLOUDFLARED_BIN" tunnel run "$TUNNEL_NAME" 2>&1 | sed -u "s/^/[cloudflared] /" &
 PGIDS+=($!)
 
 echo ""

@@ -1,0 +1,18 @@
+User-agent: *
+Allow: /
+Disallow: /admin.html
+Disallow: /api/
+Disallow: /users/
+Disallow: /tools/
+Disallow: /kanban_rp.html
+Disallow: /kanban_narratif.html
+Disallow: /financement.html
+Disallow: /roadmap.html
+Disallow: /tables.html
+Disallow: /project_evolution.html
+Disallow: /tactics_index.html
+Disallow: /tactics_evolution.html
+Disallow: /tactics_files.html
+Disallow: /tactics_fleur_fichiers.html
+
+Sitemap: https://killtime.studio/sitemap.xml

@@ -110,9 +110,9 @@ for n in [3, 4, 5, 6, 7, 8, 10, 11, 12]:
 
 
 # ---------- 2. balayage des textes ----------
-HREF = re.compile(r'href="((?:livre_\d+|appendice_actions|appendice_glossaire)\.html|#[^"]*?)"')
+HREF = re.compile(r'href="((?:livre_\d+|appendice_actions|appendice_glossaire|appendice_objets)\.html|#[^"]*?)"')
 HREF_LIVRE = re.compile(r'href="(livre_(\d+)\.html)#([\w-]+)"')
-HREF_APPENDICE = re.compile(r'href="((?:appendice_actions|appendice_glossaire)\.html)#([\w-]+)"')
+HREF_APPENDICE = re.compile(r'href="((?:appendice_actions|appendice_glossaire|appendice_objets)\.html)#([\w-]+)"')
 HREF_PAGE = re.compile(r'href="(index|tables|fiche_pj|roadmap|financement|admin|kanban_[a-z]+|atlas_[a-z0-9]+|tactics_[a-z_]+|project_evolution)\.html(#[^"]*)?"')
 SECT = re.compile(r'§(\d+)')
 
@@ -138,6 +138,16 @@ if os.path.exists(os.path.join(RACINE, 'appendice_glossaire.html')):
             anc_gloss.add('term-' + tm['id'])
     ancres['appendice_glossaire'] = anc_gloss
 
+if os.path.exists(os.path.join(RACINE, 'appendice_objets.html')):
+    anc_obj = set(re.findall(r'id="([\w-]+)"', lire('appendice_objets.html')))
+    if os.path.exists(os.path.join(RACINE, 'data', 'appendice_objets.json')):
+        d_obj = json.loads(lire('data/appendice_objets.json'))
+        for c in d_obj.get('categories', []):
+            anc_obj.add('cat-' + c['id'])
+        for o in d_obj.get('objets', []):
+            anc_obj.add('obj-' + o['id'])
+    ancres['appendice_objets'] = anc_obj
+
 CONTEXTE = []  # (nom, cle_livre_ou_None, texte)
 
 
@@ -151,6 +161,8 @@ if os.path.exists(os.path.join(RACINE, 'data', 'appendice_actions.json')):
     ajouter('data/appendice_actions.json', None, lire('data/appendice_actions.json').replace('\\"', '"'))
 if os.path.exists(os.path.join(RACINE, 'data', 'appendice_glossaire.json')):
     ajouter('data/appendice_glossaire.json', None, lire('data/appendice_glossaire.json').replace('\\"', '"'))
+if os.path.exists(os.path.join(RACINE, 'data', 'appendice_objets.json')):
+    ajouter('data/appendice_objets.json', None, lire('data/appendice_objets.json').replace('\\"', '"'))
 for p in sorted(glob.glob('content/**/*.md', root_dir=RACINE, recursive=True)):
     if os.path.basename(p) == 'README.md':
         continue
@@ -258,6 +270,62 @@ if os.path.exists(os.path.join(RACINE, 'data', 'appendice_glossaire.json')):
                         err('appendice_glossaire.json %s: ancre morte %s' % (tid, lk['href']))
     except Exception as e:  # noqa: BLE001
         err('appendice_glossaire.json illisible (%s)' % e)
+
+# ---------- 2f. liens JSON de l'Appendice C (Objets) ----------
+if os.path.exists(os.path.join(RACINE, 'data', 'appendice_objets.json')):
+    try:
+        d_obj = json.loads(lire('data/appendice_objets.json'))
+        cats_obj = {c['id'] for c in d_obj.get('categories', [])}
+        props_obj = {p['id'] for p in d_obj.get('proprietes', [])}
+        valid_epochs = {'E0', 'E1', 'E2', 'E3', 'E4', 'E5'}
+        seen_obj_ids = set()
+        seen_obj_names = set()
+        obj_by_id = {}
+        for o in d_obj.get('objets', []):
+            oid = o.get('id')
+            oname = o.get('nom')
+            if not oid or oid in seen_obj_ids:
+                err('appendice_objets.json: id invalide ou duplique %r' % oid)
+            seen_obj_ids.add(oid)
+            obj_by_id[oid] = o
+            if not oname or oname in seen_obj_names:
+                err('appendice_objets.json: nom manquant ou duplique %r' % oname)
+            seen_obj_names.add(oname)
+            if o.get('categorie') not in cats_obj:
+                err('appendice_objets.json: categorie inconnue %r pour %s' % (o.get('categorie'), oid))
+            eps = set(o.get('epoques') or [])
+            if not eps or not eps.issubset(valid_epochs):
+                err('appendice_objets.json %s: epoques invalides %r' % (oid, o.get('epoques')))
+            for pr in (o.get('proprietes') or []):
+                if pr.get('id') not in props_obj:
+                    err('appendice_objets.json %s: propriete inconnue %r' % (oid, pr.get('id')))
+            liens = [o.get('source')] + list(o.get('refs') or [])
+            for lk in liens:
+                if not lk or not lk.get('href'):
+                    continue
+                mm = re.fullmatch(r'livre_(\d+)\.html#([\w-]+)', lk['href'])
+                if not mm:
+                    err('appendice_objets.json %s: href invalide %r' % (oid, lk['href']))
+                else:
+                    cle_l = 'livre_%d' % int(mm.group(1))
+                    if mm.group(2) not in ancres.get(cle_l, set()):
+                        err('appendice_objets.json %s: ancre morte %s' % (oid, lk['href']))
+        budgets_ep = {b['epoque']: b['budget_ce'] for b in (d_obj.get('regles_ref', {}).get('budgets_depart') or [])}
+        for pk in (d_obj.get('presets_kit') or []):
+            ep_pk = pk.get('epoque')
+            tot_pk = 0
+            for it in (pk.get('items') or []):
+                target_o = obj_by_id.get(it.get('id'))
+                if not target_o:
+                    err('appendice_objets.json preset %s: objet inconnu %r' % (ep_pk, it.get('id')))
+                    continue
+                if ep_pk not in (target_o.get('epoques') or []):
+                    err('appendice_objets.json preset %s: objet %s hors epoque' % (ep_pk, it.get('id')))
+                tot_pk += (target_o.get('prix_ce') or 0) * (it.get('qty') or 1)
+            if ep_pk in budgets_ep and tot_pk > budgets_ep[ep_pk]:
+                err('appendice_objets.json preset %s: budget depasse (%d > %d)' % (ep_pk, tot_pk, budgets_ep[ep_pk]))
+    except Exception as e:  # noqa: BLE001
+        err('appendice_objets.json illisible (%s)' % e)
 
 # ---------- 2b. solution durable §2 : le numero doit coller a son ancre --
 # Regle : un §N "nu" (hors <a>) est accepte seul ou en reference multiple,
