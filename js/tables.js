@@ -39,6 +39,37 @@
   let friends = { friends: [], incoming: [], outgoing: [] };
   let online = [];
   let onlineTimer = null;
+  let chatFilter = 'all';
+
+  function msgMatchesFilter(m) {
+    if (chatFilter === 'all') return true;
+    const kind = m && m.meta && m.meta.kind;
+    if (chatFilter === 'mp') return !!(m && m.private);
+    if (chatFilter === 'dice') return kind === 'dice' || kind === 'check_request';
+    if (chatFilter === 'combat') return kind === 'combat';
+    if (chatFilter === 'rp') return !kind && !(m && m.private);
+    return true;
+  }
+
+  function exportTableMarkdown() {
+    if (!activeDoc) return;
+    const lines = ['# ' + activeDoc.name, '', '_Exporté le ' + new Date().toLocaleString('fr-FR') + '_', ''];
+    (activeDoc.messages || []).filter(msgVisible).forEach((m) => {
+      const dt = new Date(m.createdAt).toLocaleString('fr-FR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+      const tag = m.private ? ' [MP → ' + (m.toName || '?') + ']' : '';
+      lines.push('### ' + m.fromName + tag + ' — ' + dt);
+      if (m.text) lines.push(m.text);
+      if (m.meta && m.meta.kind === 'dice') {
+        lines.push('> 🎲 `' + (m.meta.formula || '') + '` : ' + (m.meta.detail || m.meta.total));
+      }
+      lines.push('');
+    });
+    const blob = new Blob([lines.join('\n')], { type: 'text/markdown;charset=utf-8' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = (activeDoc.name || 'table').replace(/[^a-z0-9_-]+/gi, '_') + '.md';
+    a.click();
+  }
 
   function status(el, msg, cls) {
     const e = $(el);
@@ -145,6 +176,7 @@
     try { window.KT_ACTIVE_TABLE = null; } catch (e) {}
     try { localStorage.removeItem('kt-tables-active'); } catch (e) {}
     loadTables(); renderChat(); renderManage();
+    try { window.dispatchEvent(new CustomEvent('codex:table-closed', { detail: { tableId: was } })); } catch (e) {}
     status('tbChatStatus',
       statusCode === 404 ? 'Cette table a été supprimée.' : 'Vous ne faites plus partie de cette table.',
       'err');
@@ -172,6 +204,7 @@
       renderChat(true); // chargement frais : on descend au dernier message
       renderManage();
       fetchUploads();
+      try { window.dispatchEvent(new CustomEvent('codex:table-opened', { detail: { tableId: activeId, doc: activeDoc, me } })); } catch (e) {}
       status('tbChatStatus', 'À jour ✓', 'ok');
     } catch (e) {
       status('tbChatStatus', e.message, 'err');
@@ -221,6 +254,40 @@
       ava = '<button class="tb-avbtn" data-xt="' + esc(m.fromId) + '" type="button" title="Ne plus échanger : tes futurs messages ne lui seront plus envoyés (et réciproquement). Cliquer à nouveau pour rétablir.">' + (ava || '👤') + '</button>';
     }
     let body = m.text ? '<div>' + esc(m.text).replace(/\n/g, '<br>') + '</div>' : '';
+    if (m.meta && m.meta.kind === 'dice') {
+      const mt = m.meta;
+      const cls = 'vtt-roll-card' + (mt.isCritical ? ' crit' : '') + (mt.isFumble ? ' fumble' : '') + (mt.secret ? ' secret' : '');
+      let tags = '';
+      if (mt.secret) tags += '<span class="vtt-tag sec">🔒 Secret MJ</span> ';
+      if (mt.isCritical) tags += '<span class="vtt-tag crit">⚡ CRITIQUE</span> ';
+      if (mt.isFumble) tags += '<span class="vtt-tag ko">💀 ÉCHEC CRITIQUE</span> ';
+      if (mt.autoSuccess) tags += '<span class="vtt-tag ok">✓ Réussite auto</span> ';
+      else if (mt.success === true) tags += '<span class="vtt-tag ok">✓ Réussi (Δ +' + (mt.delta || 0) + ')</span> ';
+      else if (mt.success === false) tags += '<span class="vtt-tag ko">✕ Échec (Δ ' + (mt.delta || 0) + ')</span> ';
+      const critBtn = mt.isCritical ? '<button class="vtt-mini-btn" data-crit-roll="' + esc(mt.total || mt.roll) + '" type="button" style="margin-top:4px;">⚡ Table Critiques chap. 9</button>' : '';
+      body += '<div class="' + cls + '">' +
+        '<div class="vtt-roll-head"><span><strong>' + esc(mt.formula || '') + '</strong>' + (mt.reason ? ' — ' + esc(mt.reason) : '') + '</span>' +
+        '<span class="vtt-roll-total">' + esc(mt.total ?? mt.roll) + '</span></div>' +
+        '<div class="vtt-roll-detail">' + esc(mt.detail || '') + (mt.target != null ? ' · Seuil ' + esc(mt.target) : '') + '</div>' +
+        (tags ? '<div style="margin-top:4px;">' + tags + '</div>' : '') + critBtn + '</div>';
+    } else if (m.meta && m.meta.kind === 'check_request' && m.meta.check) {
+      const ck = m.meta.check;
+      body += '<div class="vtt-check-card"><div><strong>📋 Épreuve : ' + esc(ck.skill) + '</strong> · Diff <code>' + esc(ck.target) + '</code>' +
+        (ck.toName ? ' → <em>' + esc(ck.toName) + '</em>' : '') + '</div>' +
+        '<button class="vtt-btn on" data-do-check="' + esc(ck.skill) + '" data-chk-target="' + esc(ck.target) + '" type="button" style="margin-top:6px;">🎲 Lancer l’épreuve</button></div>';
+    } else if (m.meta && m.meta.kind === 'combat' && m.meta.combat) {
+      const cb = m.meta.combat;
+      body += '<div class="vtt-roll-card' + (cb.hit ? '' : ' fumble') + '">' +
+        '<div class="vtt-roll-head"><span>⚔️ <strong>' + esc(cb.attacker) + '</strong> → <strong>' + esc(cb.defender) + '</strong></span>' +
+        '<span class="vtt-roll-total">Δ ' + (cb.delta >= 0 ? '+' + cb.delta : cb.delta) + '</span></div>' +
+        '<div class="vtt-roll-detail">' + (cb.hit ? ('Dégâts finaux : ' + esc(cb.finalDamage) + ' (' + esc(cb.zone || 'torso') + ')') : 'Attaque esquivée / parée') + '</div>' +
+        (cb.xpEligible ? '<div style="margin-top:4px;"><span class="vtt-tag ok">✨ Enjeu valide (Audit F4)</span></div>' : '') +
+        '</div>';
+    } else if (m.meta && m.meta.kind === 'action' && m.meta.action) {
+      const ac = m.meta.action;
+      body += '<div class="vtt-roll-card"><div><strong>⚡ ' + esc(ac.nom) + '</strong> <span class="vtt-tag">' + esc(ac.cout_pa || '') + '</span></div>' +
+        (ac.resume ? '<div class="vtt-roll-detail">' + esc(ac.resume) + '</div>' : '') + '</div>';
+    }
     if (m.image && m.image.kind === 'url') body += '<img src="' + esc(m.image.url) + '" loading="lazy" alt="image partagée">';
     // Pièces jointes : déjà chargée (cache) = média direct, sinon bouton
     // « charger » (les octets ne voyagent qu'à la demande).
@@ -247,13 +314,34 @@
     box.innerHTML = '';
     // Filtre personnel : seuls les messages POSTÉRIEURS au masquage sont
     // cachés — l'historique déjà loggé reste visible.
-    const shown = (activeDoc.messages || []).filter(msgVisible);
+    const shown = (activeDoc.messages || []).filter((m) => msgVisible(m) && msgMatchesFilter(m));
     if (!shown.length) box.innerHTML = '<p class="tb-status">Aucun message. Lance la discussion !</p>';
     shown.forEach((m) => {
       const d = document.createElement('div');
       d.className = 'tb-msg' + (m.private ? ' priv' : '');
       d.innerHTML = msgHtml(m);
       box.appendChild(d);
+    });
+    box.querySelectorAll('[data-crit-roll]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        if (window.CodexVTTUI && window.CodexVTTUI.openCritModal) {
+          window.CodexVTTUI.openCritModal(parseInt(btn.getAttribute('data-crit-roll'), 10));
+        }
+      });
+    });
+    box.querySelectorAll('[data-do-check]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const skill = btn.getAttribute('data-do-check') || 'Épreuve';
+        const target = parseInt(btn.getAttribute('data-chk-target'), 10) || 4;
+        if (window.CodexVTTRules) {
+          const die = prompt('Ton palier de dé pour ' + skill + ' (d2..2d12+10) :', 'd6');
+          if (!die) return;
+          const spec = window.CodexVTTRules.parseDieSpec(die);
+          if (!spec) { alert('Formule invalide.'); return; }
+          const res = window.CodexVTTRules.executeRoll({ spec, target, reason: skill });
+          sendRichMessage('🎲 ' + skill + ' (' + res.formula + ') → ' + res.total, Object.assign({ kind: 'dice' }, res));
+        }
+      });
     });
     box.querySelectorAll('[data-del]').forEach((btn) => {
       btn.addEventListener('click', () => deleteMessage(btn.getAttribute('data-del')));
@@ -399,11 +487,38 @@
     renderOnline();
   }
 
+  async function sendRichMessage(text, meta, toUserId) {
+    if (!activeId) return null;
+    const r = await api('/api/tables/' + encodeURIComponent(activeId) + '/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text: text || '', meta: meta || null, toUserId: toUserId || null, toExcept: effectiveExcept() })
+    });
+    const d = await r.json().catch(() => ({}));
+    if (r.ok && d.message) {
+      activeDoc.messages.push(d.message);
+      if (d.message.createdAt > lastTs) lastTs = d.message.createdAt;
+      renderChat(true);
+    }
+    return d;
+  }
+
   async function sendMessage() {
-    const text = $('tbText').value.trim();
+    let text = $('tbText').value.trim();
     const imageUrl = $('tbImageUrl').value.trim();
     const toUserId = $('tbTo').value || null;
     if (!text && !imageUrl && !pendingImageData && !pendingFileData) { status('tbChatStatus', 'Message vide.', 'err'); return; }
+    let meta = null;
+    if (text && window.CodexVTTRules && /^\/(r|roll|jet|secret)\b/i.test(text)) {
+      const parsed = window.CodexVTTRules.parseRollCommand(text);
+      if (parsed && parsed.error) { status('tbChatStatus', parsed.error, 'err'); return; }
+      if (parsed) {
+        const res = window.CodexVTTRules.executeRoll(parsed);
+        if (res.error) { status('tbChatStatus', res.error, 'err'); return; }
+        meta = Object.assign({ kind: 'dice' }, res);
+        text = (res.secret ? '🔒 [Secret MJ] ' : '') + '🎲 ' + res.formula + (res.reason ? ' (' + res.reason + ')' : '') + ' → ' + res.total;
+      }
+    }
     // Ma liste d'envoi : mes futurs messages ne sont livrés qu'aux non-masqués.
     // (MP nominatif : livré à son destinataire quoi qu'il arrive.)
     let toExcept = effectiveExcept();
@@ -419,7 +534,7 @@
       const r = await api('/api/tables/' + encodeURIComponent(activeId) + '/messages', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text, imageUrl, imageData: pendingImageData, fileData: pendingFileData, fileName: pendingFileName, toUserId, toExcept })
+        body: JSON.stringify({ text, meta, imageUrl, imageData: pendingImageData, fileData: pendingFileData, fileName: pendingFileName, toUserId, toExcept })
       });
       const d = await r.json().catch(() => ({}));
       if (!r.ok) throw new Error(d.error || ('Erreur ' + r.status));
@@ -1399,7 +1514,16 @@
     const ok = await refreshMe();
     $('tbWall').style.display = ok ? 'none' : '';
     $('tbApp').style.display = ok ? '' : 'none';
+    if ($('tbModeBar')) $('tbModeBar').style.display = ok ? 'flex' : 'none';
     if (!ok) return;
+    document.querySelectorAll('[data-tb-flt]').forEach((b) => {
+      b.addEventListener('click', () => {
+        chatFilter = b.getAttribute('data-tb-flt') || 'all';
+        document.querySelectorAll('[data-tb-flt]').forEach((x) => x.classList.toggle('on', x === b));
+        renderChat(false);
+      });
+    });
+    if ($('tbExportMd')) $('tbExportMd').addEventListener('click', exportTableMarkdown);
     $('tbCreate').addEventListener('click', async () => {
       const name = $('tbNewName').value.trim();
       const desc = $('tbNewDesc').value.trim();
@@ -1474,6 +1598,13 @@
       if (window.CodexAuth) window.CodexAuth.openModal();
     });
   });
+  window.CodexTables = {
+    getActiveId: () => activeId,
+    getActiveDoc: () => activeDoc,
+    getMe: () => me,
+    sendRichMessage,
+    refresh: fetchTableQuiet
+  };
   window.addEventListener('codex:auth:login', () => location.reload());
   window.addEventListener('codex:auth:logout', () => location.reload());
 })();

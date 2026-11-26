@@ -1,6 +1,6 @@
 {
   "version": 3,
-  "updated": "2026-11-25",
+  "updated": "2026-11-26",
   "activeId": "board-revue-rp",
   "boards": [
     {
@@ -3915,6 +3915,22 @@
           "suggestedAsset": "doc_viewer.html",
           "updated": "2026-11-25",
           "details": "DONE 2026-11-25 — Copie versionnée docs/mecaniques_systeme_rp_6f497f7.md (+ mise à jour du lien dans WHATS_NEW.md), création du lecteur Markdown Codex (doc_viewer.html, js/doc_viewer.js, styles .doc-viewer-* dans css/style.css, MIME/cache .md dans users/server.js), extension de tools/build_nav.py (RE_PILOTAGE / PILOTAGE_LIENS / entrees_pilotage) et tools/check_liens.py (HREF_PAGE) pour synchroniser les 3 liens (What's New, Mécaniques de Base 6f497f7, README Projet) dans le groupe Pilotage sur les 21 pages HTML."
+        },
+        {
+          "id": "RP-255",
+          "title": "VTT Web SysRP complet (VTT-006..045) & mise à jour README",
+          "epic": "Site Codex",
+          "status": "done",
+          "priority": "high",
+          "order": 252,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "tables.html",
+          "updated": "2026-11-26",
+          "details": "DONE 2026-11-26 — Implémentation complète du VTT Web SysRP en 3 itérations (board-vtt-web VTT-006..VTT-045 100% done) : moteur de règles js/vtt-rules.js, état serveur persistant anti-maphack users/vtt_state.js + policy users/vtt_hub_policy.js + routes WS/REST users/server.js, canvas HiDPI 7 couches js/vtt-canvas.js, client WS js/vtt-client.js, compendiums js/vtt-compendium.js, duels Face-à-Face/réactions/handouts js/vtt-combat.js, horloge/défis/sorts/audio js/vtt-extras.js, interface Chat↔VTT/blessures/DLPH/véhicules/mobile js/vtt-ui.js + css/vtt.css, intégration tables.html, js/tables.js et dock global js/table-dock.js, 60/60 tests node --test verts, et actualisation de README.md."
         }
       ]
     },
@@ -4007,7 +4023,7 @@
           "id": "VTT-006",
           "title": "Unifier Table (tables.html) et Room VTT (/ws/vtt)",
           "epic": "01 — Architecture Salle ↔ VTT",
-          "status": "todo",
+          "status": "done",
           "priority": "high",
           "order": 0,
           "scene": "",
@@ -4016,14 +4032,14 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "users/server.js",
-          "updated": "2026-11-23",
-          "details": "Authentifier automatiquement la connexion WebSocket /ws/vtt avec le cookie de session srv_ et hériter les rôles (MJ, helper, joueur) et membres de la table sans code room séparé."
+          "updated": "2026-11-26",
+          "details": "DONE 2026-11-26 — Authentifier automatiquement la connexion WebSocket /ws/vtt avec le cookie de session srv_ et hériter les rôles (MJ, helper, joueur) et membres de la table sans code room séparé."
         },
         {
           "id": "VTT-007",
           "title": "Schéma d'état VTT & persistance disque séparée (vtt_<tableId>.json)",
           "epic": "01 — Architecture Salle ↔ VTT",
-          "status": "todo",
+          "status": "done",
           "priority": "high",
           "order": 1,
           "scene": "",
@@ -4032,14 +4048,14 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "users/server.js",
-          "updated": "2026-11-23",
-          "details": "Stocker scènes, calques, pions, murs, brouillard et tour actif dans data/tables/vtt_<tableId>.json avec sauvegarde atomique et .bak, séparé du log chat pour garder les lectures rapides."
+          "updated": "2026-11-26",
+          "details": "DONE 2026-11-26 — Stocker scènes, calques, pions, murs, brouillard et tour actif dans data/tables/vtt_<tableId>.json avec sauvegarde atomique et .bak, séparé du log chat pour garder les lectures rapides."
         },
         {
           "id": "VTT-008",
           "title": "Vue Salle Mixte dans tables.html (plateau + Chat/MPs/Voix/Fiches)",
           "epic": "01 — Architecture Salle ↔ VTT",
-          "status": "todo",
+          "status": "done",
           "priority": "high",
           "order": 2,
           "scene": "",
@@ -4048,14 +4064,14 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "tables.html",
-          "updated": "2026-11-23",
-          "details": "Intégrer le plateau VTT au centre de tables.html avec panneau latéral escamotable (Chat, MPs, Journal de dés, Voix, Fiches PJ) et bascule fluide entre mode Chat seul et mode VTT complet."
+          "updated": "2026-11-26",
+          "details": "DONE 2026-11-26 — Intégrer le plateau VTT au centre de tables.html avec panneau latéral escamotable (Chat, MPs, Journal de dés, Voix, Fiches PJ) et bascule fluide entre mode Chat seul et mode VTT complet."
         },
         {
           "id": "VTT-009",
           "title": "Protocole temps réel WS : snapshot, diffs légers & reconnexion",
           "epic": "01 — Architecture Salle ↔ VTT",
-          "status": "todo",
+          "status": "done",
           "priority": "high",
           "order": 3,
           "scene": "",
@@ -4064,14 +4080,14 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "users/server.js",
-          "updated": "2026-11-23",
-          "details": "Envoyer un état initial complet à la connexion puis uniquement des deltas typés (move, token_update, fog, turn), avec heartbeat ping/pong, détection de dérive et resynchronisation auto après veille."
+          "updated": "2026-11-26",
+          "details": "DONE 2026-11-26 — Envoyer un état initial complet à la connexion puis uniquement des deltas typés (move, token_update, fog, turn), avec heartbeat ping/pong, détection de dérive et resynchronisation auto après veille."
         },
         {
           "id": "VTT-010",
           "title": "Présence plateau, revendication de pions (unit_claim) & pause MJ",
           "epic": "01 — Architecture Salle ↔ VTT",
-          "status": "todo",
+          "status": "done",
           "priority": "medium",
           "order": 4,
           "scene": "",
@@ -4080,14 +4096,14 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "tables.html",
-          "updated": "2026-11-23",
-          "details": "Afficher les joueurs connectés en salle, permettre la revendication des pions contrôlés, ajouter un verrouillage MJ hors-tour et un mode pause/spectateur."
+          "updated": "2026-11-26",
+          "details": "DONE 2026-11-26 — Afficher les joueurs connectés en salle, permettre la revendication des pions contrôlés, ajouter un verrouillage MJ hors-tour et un mode pause/spectateur."
         },
         {
           "id": "VTT-011",
           "title": "Pont Dock Global ↔ Chat/VTT depuis tout le site Codex",
           "epic": "01 — Architecture Salle ↔ VTT",
-          "status": "todo",
+          "status": "done",
           "priority": "medium",
           "order": 5,
           "scene": "",
@@ -4096,14 +4112,14 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "js/table-dock.js",
-          "updated": "2026-11-23",
-          "details": "Depuis n'importe quel Livre ou Appendice (Actions, Glossaire, Objets) ou la Fiche PJ, envoyer en 1 clic un jet, une fiche d'action, un objet ou un extrait de règle dans la table active."
+          "updated": "2026-11-26",
+          "details": "DONE 2026-11-26 — Depuis n'importe quel Livre ou Appendice (Actions, Glossaire, Objets) ou la Fiche PJ, envoyer en 1 clic un jet, une fiche d'action, un objet ou un extrait de règle dans la table active."
         },
         {
           "id": "VTT-012",
           "title": "Commandes dés Système RP dans le chat (/r, /jet, /secret)",
           "epic": "02 — Chat Augmenté & Dés Système RP",
-          "status": "todo",
+          "status": "done",
           "priority": "high",
           "order": 6,
           "scene": "",
@@ -4112,14 +4128,14 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "js/tables.js",
-          "updated": "2026-11-23",
-          "details": "Supporter l'échelle canonique d2–d12+ / 2d6+ (Livre II §6), l'effort PA/PE (plafonné à 1 + entraînements), les malus et le différentiel contre seuil, avec validation et affichage détaillé dans le flux."
+          "updated": "2026-11-26",
+          "details": "DONE 2026-11-26 — Supporter l'échelle canonique d2–d12+ / 2d6+ (Livre II §6), l'effort PA/PE (plafonné à 1 + entraînements), les malus et le différentiel contre seuil, avec validation et affichage détaillé dans le flux."
         },
         {
           "id": "VTT-013",
           "title": "Détection Critiques & Fumbles + lien direct Tables chap. 9",
           "epic": "02 — Chat Augmenté & Dés Système RP",
-          "status": "todo",
+          "status": "done",
           "priority": "high",
           "order": 7,
           "scene": "",
@@ -4128,14 +4144,14 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "livre_2.html#chap-9",
-          "updated": "2026-11-23",
-          "details": "Surligner automatiquement les résultats maximaux/critiques et échecs critiques dans le chat et ouvrir un tiroir direct vers les tables du Livre II chap. 9 (d2–d24) pour tirer l'effet."
+          "updated": "2026-11-26",
+          "details": "DONE 2026-11-26 — Surligner automatiquement les résultats maximaux/critiques et échecs critiques dans le chat et ouvrir un tiroir direct vers les tables du Livre II chap. 9 (d2–d24) pour tirer l'effet."
         },
         {
           "id": "VTT-014",
           "title": "Jets secrets MJ (paravent) & demandes d'épreuves interactives",
           "epic": "02 — Chat Augmenté & Dés Système RP",
-          "status": "todo",
+          "status": "done",
           "priority": "high",
           "order": 8,
           "scene": "",
@@ -4144,14 +4160,14 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "tables.html",
-          "updated": "2026-11-23",
-          "details": "Permettre au MJ de lancer des jets masqués (/secret) et d'envoyer aux joueurs ciblés une carte d'épreuve cliquable (compétence + seuil ou opposition) directement dans le chat."
+          "updated": "2026-11-26",
+          "details": "DONE 2026-11-26 — Permettre au MJ de lancer des jets masqués (/secret) et d'envoyer aux joueurs ciblés une carte d'épreuve cliquable (compétence + seuil ou opposition) directement dans le chat."
         },
         {
           "id": "VTT-015",
           "title": "Tracker de Défis Hors-Combat partagé dans la salle",
           "epic": "02 — Chat Augmenté & Dés Système RP",
-          "status": "todo",
+          "status": "done",
           "priority": "medium",
           "order": 9,
           "scene": "",
@@ -4160,14 +4176,14 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "livre_2.html#chap-10",
-          "updated": "2026-11-23",
-          "details": "Afficher en direct les étapes, rattrapages et participants d'un Défi (Livre II chap. 10), appliquer le gel des ticks d'étapes et répartir la récompense finale (ou 0 sur échec total)."
+          "updated": "2026-11-26",
+          "details": "DONE 2026-11-26 — Afficher en direct les étapes, rattrapages et participants d'un Défi (Livre II chap. 10), appliquer le gel des ticks d'étapes et répartir la récompense finale (ou 0 sur échec total)."
         },
         {
           "id": "VTT-016",
           "title": "Barre de macros & raccourcis rapides au-dessus du chat",
           "epic": "02 — Chat Augmenté & Dés Système RP",
-          "status": "todo",
+          "status": "done",
           "priority": "medium",
           "order": 10,
           "scene": "",
@@ -4176,14 +4192,14 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "tables.html",
-          "updated": "2026-11-23",
-          "details": "Boutons configurables liés à la Fiche PJ active (attaques d'armes DLPH, compétences favorites, sorts, micro-actions) pour lancer un jet ou publier une action en 1 clic."
+          "updated": "2026-11-26",
+          "details": "DONE 2026-11-26 — Boutons configurables liés à la Fiche PJ active (attaques d'armes DLPH, compétences favorites, sorts, micro-actions) pour lancer un jet ou publier une action en 1 clic."
         },
         {
           "id": "VTT-017",
           "title": "Filtres du journal (RP / Combat / Dés / MPs) & export Markdown",
           "epic": "02 — Chat Augmenté & Dés Système RP",
-          "status": "todo",
+          "status": "done",
           "priority": "low",
           "order": 11,
           "scene": "",
@@ -4192,14 +4208,14 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "js/tables.js",
-          "updated": "2026-11-23",
-          "details": "Filtrer l'historique de la table par type d'événement et exporter un compte-rendu de séance propre au format Markdown (hors logs techniques bruts)."
+          "updated": "2026-11-26",
+          "details": "DONE 2026-11-26 — Filtrer l'historique de la table par type d'événement et exporter un compte-rendu de séance propre au format Markdown (hors logs techniques bruts)."
         },
         {
           "id": "VTT-018",
           "title": "Moteur Canvas 2D multi-calques (pan/zoom 60 fps & 6 thèmes)",
           "epic": "03 — Plateau Tactique, Grille & Outils",
-          "status": "todo",
+          "status": "done",
           "priority": "high",
           "order": 12,
           "scene": "",
@@ -4208,14 +4224,14 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "tables.html",
-          "updated": "2026-11-23",
-          "details": "Rendu Canvas haute densité (HiDPI) structuré en calques (carte, grille, zones persistantes, objets au sol, pions, murs/brouillard, pings/mesures), fluide et harmonisé avec les 6 thèmes Codex."
+          "updated": "2026-11-26",
+          "details": "DONE 2026-11-26 — Rendu Canvas haute densité (HiDPI) structuré en calques (carte, grille, zones persistantes, objets au sol, pions, murs/brouillard, pings/mesures), fluide et harmonisé avec les 6 thèmes Codex."
         },
         {
           "id": "VTT-019",
           "title": "Import battlemaps & calibrage grille (carrée/hex, 1 case = 1,5 m)",
           "epic": "03 — Plateau Tactique, Grille & Outils",
-          "status": "todo",
+          "status": "done",
           "priority": "high",
           "order": 13,
           "scene": "",
@@ -4224,14 +4240,14 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "tables.html",
-          "updated": "2026-11-23",
-          "details": "Téléverser ou lier une image de carte, choisir grille carrée ou hexagonale, ajuster taille de cellule, offset X/Y et opacité sur l'échelle canonique 1 case = 1,5 m."
+          "updated": "2026-11-26",
+          "details": "DONE 2026-11-26 — Téléverser ou lier une image de carte, choisir grille carrée ou hexagonale, ajuster taille de cellule, offset X/Y et opacité sur l'échelle canonique 1 case = 1,5 m."
         },
         {
           "id": "VTT-020",
           "title": "Gestion des pions : drag-snap, multi-waypoints & coût PA temps réel",
           "epic": "03 — Plateau Tactique, Grille & Outils",
-          "status": "todo",
+          "status": "done",
           "priority": "high",
           "order": 14,
           "scene": "",
@@ -4240,14 +4256,14 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "tables.html",
-          "updated": "2026-11-23",
-          "details": "Déplacer les pions avec aperçu du chemin, calcul automatique du coût en PA selon encombrement d'armure, surcharge, terrain difficile et état Ralenti, tailles 1×1 à 3×3+ et auras."
+          "updated": "2026-11-26",
+          "details": "DONE 2026-11-26 — Déplacer les pions avec aperçu du chemin, calcul automatique du coût en PA selon encombrement d'armure, surcharge, terrain difficile et état Ralenti, tailles 1×1 à 3×3+ et auras."
         },
         {
           "id": "VTT-021",
           "title": "Règle de mesure en cases P/mètres & gabarits tactiques",
           "epic": "03 — Plateau Tactique, Grille & Outils",
-          "status": "todo",
+          "status": "done",
           "priority": "high",
           "order": 15,
           "scene": "",
@@ -4256,14 +4272,14 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "livre_5.html#sec-21-3",
-          "updated": "2026-11-23",
-          "details": "Outil règle affichant cases P et mètres, plus gabarits d'Allonge 2P, portée Arme de jet ajustée selon FOR, rayons Zone 1–3 des grenades (couvert Livre V §21.3), cônes et lignes."
+          "updated": "2026-11-26",
+          "details": "DONE 2026-11-26 — Outil règle affichant cases P et mètres, plus gabarits d'Allonge 2P, portée Arme de jet ajustée selon FOR, rayons Zone 1–3 des grenades (couvert Livre V §21.3), cônes et lignes."
         },
         {
           "id": "VTT-022",
           "title": "Dessin libre, marqueurs éphémères, pings & centrage caméra MJ",
           "epic": "03 — Plateau Tactique, Grille & Outils",
-          "status": "todo",
+          "status": "done",
           "priority": "medium",
           "order": 16,
           "scene": "",
@@ -4272,14 +4288,14 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "tables.html",
-          "updated": "2026-11-23",
-          "details": "Crayon/formes temporaires sur le plateau, pings animés colorés par joueur, et bouton MJ « Amener le groupe ici » pour recentrer la vue de tous les joueurs."
+          "updated": "2026-11-26",
+          "details": "DONE 2026-11-26 — Crayon/formes temporaires sur le plateau, pings animés colorés par joueur, et bouton MJ « Amener le groupe ici » pour recentrer la vue de tous les joueurs."
         },
         {
           "id": "VTT-023",
           "title": "Zones persistantes (feu, fumée, gaz, stase) & objets/loot au sol",
           "epic": "03 — Plateau Tactique, Grille & Outils",
-          "status": "todo",
+          "status": "done",
           "priority": "medium",
           "order": 17,
           "scene": "",
@@ -4288,14 +4304,14 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "livre_8.html#sec-31-3",
-          "updated": "2026-11-23",
-          "details": "Poser des zones avec durée en tours (décrément automatique) et gérer les objets déposés/ramassés au sol (drop_weapon / pickup_weapon à 1 PA, Livre V §20.4)."
+          "updated": "2026-11-26",
+          "details": "DONE 2026-11-26 — Poser des zones avec durée en tours (décrément automatique) et gérer les objets déposés/ramassés au sol (drop_weapon / pickup_weapon à 1 PA, Livre V §20.4)."
         },
         {
           "id": "VTT-024",
           "title": "Projection des cartes Atlas des Mondes comme scène d'exploration",
           "epic": "03 — Plateau Tactique, Grille & Outils",
-          "status": "todo",
+          "status": "done",
           "priority": "low",
           "order": 18,
           "scene": "",
@@ -4304,14 +4320,14 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "atlas_mondes.html",
-          "updated": "2026-11-23",
-          "details": "Charger directement une carte de data/atlas_mondes.json dans la salle pour suivre le voyage du groupe et placer des repères géographiques."
+          "updated": "2026-11-26",
+          "details": "DONE 2026-11-26 — Charger directement une carte de data/atlas_mondes.json dans la salle pour suivre le voyage du groupe et placer des repères géographiques."
         },
         {
           "id": "VTT-025",
           "title": "Éditeur MJ de murs, portes ouvrables/verrouillables & couverts",
           "epic": "04 — Brouillard, Couverts & Vision 360°",
-          "status": "todo",
+          "status": "done",
           "priority": "high",
           "order": 19,
           "scene": "",
@@ -4320,14 +4336,14 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "livre_5.html#sec-21-3",
-          "updated": "2026-11-23",
-          "details": "Tracer segments de murs, portes (ouvertes/fermées/verrouillées), fenêtres et obstacles de couvert (Demi, Trois-Quarts, Total) pris en compte par la visibilité et les gabarits."
+          "updated": "2026-11-26",
+          "details": "DONE 2026-11-26 — Tracer segments de murs, portes (ouvertes/fermées/verrouillées), fenêtres et obstacles de couvert (Demi, Trois-Quarts, Total) pris en compte par la visibilité et les gabarits."
         },
         {
           "id": "VTT-026",
           "title": "Brouillard de guerre 360° asymétrique côté serveur (anti-maphack)",
           "epic": "04 — Brouillard, Couverts & Vision 360°",
-          "status": "todo",
+          "status": "done",
           "priority": "high",
           "order": 20,
           "scene": "",
@@ -4336,14 +4352,14 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "users/vtt_visibility.js",
-          "updated": "2026-11-23",
-          "details": "Connecter users/vtt_visibility.js au plateau pour filtrer côté serveur les pions et zones invisibles (portée courte 6 / longue 12, thermique Portée/2) et mémoriser l'exploré."
+          "updated": "2026-11-26",
+          "details": "DONE 2026-11-26 — Connecter users/vtt_visibility.js au plateau pour filtrer côté serveur les pions et zones invisibles (portée courte 6 / longue 12, thermique Portée/2) et mémoriser l'exploré."
         },
         {
           "id": "VTT-027",
           "title": "Brouillard manuel MJ & éclairage dynamique (Torche/Lampe 10P)",
           "epic": "04 — Brouillard, Couverts & Vision 360°",
-          "status": "todo",
+          "status": "done",
           "priority": "medium",
           "order": 21,
           "scene": "",
@@ -4352,14 +4368,14 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "livre_2.html#sec-8-6",
-          "updated": "2026-11-23",
-          "details": "Pinceau MJ pour révéler/masquer des zones à la main et gestion des sources de lumière (Torche/Lampe Tactique 10P, pénombre, obscurité Livre II §8.6)."
+          "updated": "2026-11-26",
+          "details": "DONE 2026-11-26 — Pinceau MJ pour révéler/masquer des zones à la main et gestion des sources de lumière (Torche/Lampe Tactique 10P, pénombre, obscurité Livre II §8.6)."
         },
         {
           "id": "VTT-028",
           "title": "Calque MJ secret, pions cachés (Dissimulé) & Tour d'Embuscade",
           "epic": "04 — Brouillard, Couverts & Vision 360°",
-          "status": "todo",
+          "status": "done",
           "priority": "medium",
           "order": 22,
           "scene": "",
@@ -4368,14 +4384,14 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "livre_5.html#sec-21-4",
-          "updated": "2026-11-23",
-          "details": "Placer des pions invisibles sur le calque MJ, suivre l'état Dissimulé / Caché (Livre V §21.4) et déclencher un Tour d'Embuscade avec pose automatique de Surpris."
+          "updated": "2026-11-26",
+          "details": "DONE 2026-11-26 — Placer des pions invisibles sur le calque MJ, suivre l'état Dissimulé / Caché (Livre V §21.4) et déclencher un Tour d'Embuscade avec pose automatique de Surpris."
         },
         {
           "id": "VTT-029",
           "title": "Tracker d'Initiative & Cycles de 10 s (PA + Réaction Libre)",
           "epic": "05 — Moteur Combat Système RP (Tour 10 s)",
-          "status": "todo",
+          "status": "done",
           "priority": "high",
           "order": 23,
           "scene": "",
@@ -4384,14 +4400,14 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "livre_5.html#chap-20",
-          "updated": "2026-11-23",
-          "details": "Ordre d'initiative géré par le MJ, passage de tour avec recharge automatique des PA et de la Réaction Libre du cycle, compteur de tours et rappel des limites d'action."
+          "updated": "2026-11-26",
+          "details": "DONE 2026-11-26 — Ordre d'initiative géré par le MJ, passage de tour avec recharge automatique des PA et de la Réaction Libre du cycle, compteur de tours et rappel des limites d'action."
         },
         {
           "id": "VTT-030",
           "title": "Assistant Face-à-Face Masqué (mises PA+PE, Défense, Δ & dégâts)",
           "epic": "05 — Moteur Combat Système RP (Tour 10 s)",
-          "status": "todo",
+          "status": "done",
           "priority": "high",
           "order": 24,
           "scene": "",
@@ -4400,14 +4416,14 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "livre_5.html#sec-20-2",
-          "updated": "2026-11-23",
-          "details": "Interface simultanée secrète : choix de la compétence, zone visée (Niv. 1 / Niv. 2 point vital), mise PA+PE plafonnée à 1 + entraînements, Défense Active/Passive, révélation simultanée, calcul du Δ et application dégâts/Perforante/Champ."
+          "updated": "2026-11-26",
+          "details": "DONE 2026-11-26 — Interface simultanée secrète : choix de la compétence, zone visée (Niv. 1 / Niv. 2 point vital), mise PA+PE plafonnée à 1 + entraînements, Défense Active/Passive, révélation simultanée, calcul du Δ et application dégâts/Perforante/Champ."
         },
         {
           "id": "VTT-031",
           "title": "Suivi 6 zones de dégâts, Choc Traumatique (> CON×2) & Seuil Létal",
           "epic": "05 — Moteur Combat Système RP (Tour 10 s)",
-          "status": "todo",
+          "status": "done",
           "priority": "high",
           "order": 25,
           "scene": "",
@@ -4416,14 +4432,14 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "livre_6.html#chap-23",
-          "updated": "2026-11-23",
-          "details": "Afficher les 6 zones corporelles par pion avec alertes automatiques à CON×2 (Choc Traumatique), CON×5 (Seuil Létal) et jauge d'Essoufflement."
+          "updated": "2026-11-26",
+          "details": "DONE 2026-11-26 — Afficher les 6 zones corporelles par pion avec alertes automatiques à CON×2 (Choc Traumatique), CON×5 (Seuil Létal) et jauge d'Essoufflement."
         },
         {
           "id": "VTT-032",
           "title": "Gestionnaire des 19 états préjudiciables, 7 bénéfiques & 4 résiduels",
           "epic": "05 — Moteur Combat Système RP (Tour 10 s)",
-          "status": "todo",
+          "status": "done",
           "priority": "high",
           "order": 26,
           "scene": "",
@@ -4432,14 +4448,14 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "livre_6.html#chap-24",
-          "updated": "2026-11-23",
-          "details": "Badges d'états sur les pions avec infobulles Livre VI §24, décrément automatique −1/tour des dégâts résiduels avant recharge PA, alertes Ralenti/Canon Entravé et annulation mutuelle Accéléré ↔ Ralenti."
+          "updated": "2026-11-26",
+          "details": "DONE 2026-11-26 — Badges d'états sur les pions avec infobulles Livre VI §24, décrément automatique −1/tour des dégâts résiduels avant recharge PA, alertes Ralenti/Canon Entravé et annulation mutuelle Accéléré ↔ Ralenti."
         },
         {
           "id": "VTT-033",
           "title": "Déclencheur rapide de Réactions hors tour (Guet, Opportunité, Contre)",
           "epic": "05 — Moteur Combat Système RP (Tour 10 s)",
-          "status": "todo",
+          "status": "done",
           "priority": "medium",
           "order": 27,
           "scene": "",
@@ -4448,14 +4464,14 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "appendice_actions.html",
-          "updated": "2026-11-23",
-          "details": "Boutons d'interruption pour Guet, Attaque d'Opportunité, Prise de coup ou Contre-sort avec décompte immédiat du PA ou de la Réaction Libre du cycle."
+          "updated": "2026-11-26",
+          "details": "DONE 2026-11-26 — Boutons d'interruption pour Guet, Attaque d'Opportunité, Prise de coup ou Contre-sort avec décompte immédiat du PA ou de la Réaction Libre du cycle."
         },
         {
           "id": "VTT-034",
           "title": "Coche XP assistée sur jets à enjeu valides (Audit F4)",
           "epic": "05 — Moteur Combat Système RP (Tour 10 s)",
-          "status": "todo",
+          "status": "done",
           "priority": "medium",
           "order": 28,
           "scene": "",
@@ -4464,14 +4480,14 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "livre_1.html#chap-5",
-          "updated": "2026-11-23",
-          "details": "Proposer la coche d'expérience uniquement sur jet réussi face à un enjeu réel, en excluant automatiquement les cibles passives (Défense 0 / Paralysé / Inconscient) et défenses à 0 PA sans mise."
+          "updated": "2026-11-26",
+          "details": "DONE 2026-11-26 — Proposer la coche d'expérience uniquement sur jet réussi face à un enjeu réel, en excluant automatiquement les cibles passives (Défense 0 / Paralysé / Inconscient) et défenses à 0 PA sans mise."
         },
         {
           "id": "VTT-035",
           "title": "Pions Véhicules (zones Essentielles/Superficielles & calibres)",
           "epic": "05 — Moteur Combat Système RP (Tour 10 s)",
-          "status": "todo",
+          "status": "done",
           "priority": "low",
           "order": 29,
           "scene": "",
@@ -4480,14 +4496,14 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "livre_5.html#sec-22-3",
-          "updated": "2026-11-23",
-          "details": "Support des véhicules multi-cases avec séparation zones Essentielles/Superficielles, passagers embarqués, évacuation (Déstabilisé + À Terre) et échelle des calibres Anti-Matériel."
+          "updated": "2026-11-26",
+          "details": "DONE 2026-11-26 — Support des véhicules multi-cases avec séparation zones Essentielles/Superficielles, passagers embarqués, évacuation (Déstabilisé + À Terre) et échelle des calibres Anti-Matériel."
         },
         {
           "id": "VTT-036",
           "title": "Persistance serveur des Fiches PJ par table & synchro temps réel",
           "epic": "06 — Fiches PJ, Arsenal, Magie & Bestiaire",
-          "status": "todo",
+          "status": "done",
           "priority": "high",
           "order": 30,
           "scene": "",
@@ -4496,14 +4512,14 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "fiche_pj.html",
-          "updated": "2026-11-23",
-          "details": "Lier les fiches de fiche_pj.html aux comptes joueurs de la table côté serveur et synchroniser en direct PA, PE, 6 zones, états, équipement et XP avec le pion sur la carte."
+          "updated": "2026-11-26",
+          "details": "DONE 2026-11-26 — Lier les fiches de fiche_pj.html aux comptes joueurs de la table côté serveur et synchroniser en direct PA, PE, 6 zones, états, équipement et XP avec le pion sur la carte."
         },
         {
           "id": "VTT-037",
           "title": "Intégration Compendium des Objets (Kits, DLPH, munitions, portage)",
           "epic": "06 — Fiches PJ, Arsenal, Magie & Bestiaire",
-          "status": "todo",
+          "status": "done",
           "priority": "high",
           "order": 31,
           "scene": "",
@@ -4512,14 +4528,14 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "appendice_objets.html",
-          "updated": "2026-11-23",
-          "details": "Importer un Kit ou des objets de data/appendice_objets.json sur un pion, décompter munitions/charges/seringues, vérifier le portage FOR×15/×25 L et les 5 États des Objets."
+          "updated": "2026-11-26",
+          "details": "DONE 2026-11-26 — Importer un Kit ou des objets de data/appendice_objets.json sur un pion, décompter munitions/charges/seringues, vérifier le portage FOR×15/×25 L et les 5 États des Objets."
         },
         {
           "id": "VTT-038",
           "title": "Spawner Bestiaire Livre XII en glisser-déposer",
           "epic": "06 — Fiches PJ, Arsenal, Magie & Bestiaire",
-          "status": "todo",
+          "status": "done",
           "priority": "high",
           "order": 32,
           "scene": "",
@@ -4528,14 +4544,14 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "livre_12.html#chap-48",
-          "updated": "2026-11-23",
-          "details": "Glisser-déposer des créatures, factions et automates depuis data/livre_12.json sur le plateau avec numérotation auto, fiche MJ complète et barre de santé masquée/qualitative côté joueurs."
+          "updated": "2026-11-26",
+          "details": "DONE 2026-11-26 — Glisser-déposer des créatures, factions et automates depuis data/livre_12.json sur le plateau avec numérotation auto, fiche MJ complète et barre de santé masquée/qualitative côté joueurs."
         },
         {
           "id": "VTT-039",
           "title": "Exécution de Sorts (XP=PA) & Techniques sur le plateau",
           "epic": "06 — Fiches PJ, Arsenal, Magie & Bestiaire",
-          "status": "todo",
+          "status": "done",
           "priority": "medium",
           "order": 33,
           "scene": "",
@@ -4544,14 +4560,14 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "livre_9.html#chap-34",
-          "updated": "2026-11-23",
-          "details": "Lancer les sorts créés dans l'Atelier (Livre IX §34) et les Techniques (Fabrique §38) avec vérification de portée MAG + MAG×E, coût PA, gabarit de zone et pose d'états."
+          "updated": "2026-11-26",
+          "details": "DONE 2026-11-26 — Lancer les sorts créés dans l'Atelier (Livre IX §34) et les Techniques (Fabrique §38) avec vérification de portée MAG + MAG×E, coût PA, gabarit de zone et pose d'états."
         },
         {
           "id": "VTT-040",
           "title": "Tiroir rapide Appendice A dans la barre tactique VTT",
           "epic": "06 — Fiches PJ, Arsenal, Magie & Bestiaire",
-          "status": "todo",
+          "status": "done",
           "priority": "medium",
           "order": 34,
           "scene": "",
@@ -4560,14 +4576,14 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "appendice_actions.html",
-          "updated": "2026-11-23",
-          "details": "Accès filtré aux 101 fiches d'actions (data/appendice_actions.json) directement depuis l'interface VTT pour consulter procédure, coût PA et déclencher l'action."
+          "updated": "2026-11-26",
+          "details": "DONE 2026-11-26 — Accès filtré aux 101 fiches d'actions (data/appendice_actions.json) directement depuis l'interface VTT pour consulter procédure, coût PA et déclencher l'action."
         },
         {
           "id": "VTT-041",
           "title": "Gestionnaire de scènes multiples par table & Handouts plein écran",
           "epic": "07 — Outils MJ, Scènes & Ambiance",
-          "status": "todo",
+          "status": "done",
           "priority": "high",
           "order": 35,
           "scene": "",
@@ -4576,14 +4592,14 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "tables.html",
-          "updated": "2026-11-23",
-          "details": "Préparer plusieurs scènes par table (taverne, couloir orbital, carte régionale), déplacer le groupe ou un joueur isolé (scission) et projeter des illustrations/indices en modal."
+          "updated": "2026-11-26",
+          "details": "DONE 2026-11-26 — Préparer plusieurs scènes par table (taverne, couloir orbital, carte régionale), déplacer le groupe ou un joueur isolé (scission) et projeter des illustrations/indices en modal."
         },
         {
           "id": "VTT-042",
           "title": "Horloge de campagne, assistant Repos sûr & Pathologies",
           "epic": "07 — Outils MJ, Scènes & Ambiance",
-          "status": "todo",
+          "status": "done",
           "priority": "medium",
           "order": 36,
           "scene": "",
@@ -4592,14 +4608,14 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "livre_6.html#chap-25",
-          "updated": "2026-11-23",
-          "details": "Suivre l'heure et la fatigue (Somnolent 24/48/72 h+), automatiser le Repos sûr (6/8/10 h, veille de soignant, tours de garde Livre VI §25) et suivre les stades de Pathologies (§53)."
+          "updated": "2026-11-26",
+          "details": "DONE 2026-11-26 — Suivre l'heure et la fatigue (Somnolent 24/48/72 h+), automatiser le Repos sûr (6/8/10 h, veille de soignant, tours de garde Livre VI §25) et suivre les stades de Pathologies (§53)."
         },
         {
           "id": "VTT-043",
           "title": "Lecteur audio d'ambiance & SFX synchronisés par scène",
           "epic": "07 — Outils MJ, Scènes & Ambiance",
-          "status": "todo",
+          "status": "done",
           "priority": "low",
           "order": 37,
           "scene": "",
@@ -4608,14 +4624,14 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "tables.html",
-          "updated": "2026-11-23",
-          "details": "Pistes d'ambiance et bruitages déclenchés par le MJ avec contrôle de volume local joueur, sans interférer avec le flux vocal WebRTC (tables-voice.js)."
+          "updated": "2026-11-26",
+          "details": "DONE 2026-11-26 — Pistes d'ambiance et bruitages déclenchés par le MJ avec contrôle de volume local joueur, sans interférer avec le flux vocal WebRTC (tables-voice.js)."
         },
         {
           "id": "VTT-044",
           "title": "Ergonomie tactile (pinch-zoom) & mode Compagnon Smartphone",
           "epic": "08 — Mobile, Sécurité & QA",
-          "status": "todo",
+          "status": "done",
           "priority": "medium",
           "order": 38,
           "scene": "",
@@ -4624,14 +4640,14 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "tables.html",
-          "updated": "2026-11-23",
-          "details": "Support tactile fluide sur le canvas (pinch-zoom, pan à 2 doigts) et affichage compagnon compact sur mobile (chat + fiche combat + dés + mini-carte) utilisable en séance autour d'une table physique."
+          "updated": "2026-11-26",
+          "details": "DONE 2026-11-26 — Support tactile fluide sur le canvas (pinch-zoom, pan à 2 doigts) et affichage compagnon compact sur mobile (chat + fiche combat + dés + mini-carte) utilisable en séance autour d'une table physique."
         },
         {
           "id": "VTT-045",
           "title": "Suite de tests automatisés node --test (WS, MJ, anti-maphack, Face-à-Face)",
           "epic": "08 — Mobile, Sécurité & QA",
-          "status": "todo",
+          "status": "done",
           "priority": "high",
           "order": 39,
           "scene": "",
@@ -4640,8 +4656,8 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "users/tests/",
-          "updated": "2026-11-23",
-          "details": "Couvrir la liaison Table ↔ Room WS via cookie srv_, les permissions MJ/joueur, le filtrage brouillard anti-maphack, la confidentialité des mises Face-à-Face, la persistance disque et la reconnexion."
+          "updated": "2026-11-26",
+          "details": "DONE 2026-11-26 — Couvrir la liaison Table ↔ Room WS via cookie srv_, les permissions MJ/joueur, le filtrage brouillard anti-maphack, la confidentialité des mises Face-à-Face, la persistance disque et la reconnexion."
         }
       ]
     }

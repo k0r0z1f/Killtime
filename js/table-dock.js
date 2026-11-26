@@ -532,6 +532,15 @@
     const priv = m.private ? ' <span class="pb">privé</span>' : '';
     const dt = new Date(m.createdAt).toLocaleString('fr-FR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
     let body = m.text ? '<div>' + esc(m.text).replace(/\n/g, '<br>') + '</div>' : '';
+    if (m.meta && m.meta.kind === 'dice') {
+      body += '<div class="kd-empty" style="text-align:left;padding:4px 6px;border:1px solid var(--border-glow);border-radius:6px;margin-top:4px;">🎲 <strong>' +
+        esc(m.meta.formula || '') + '</strong> → <strong>' + esc(m.meta.total ?? m.meta.roll) + '</strong>' +
+        (m.meta.isCritical ? ' ⚡CRIT' : '') + (m.meta.isFumble ? ' 💀ÉCHEC CRIT' : '') + '</div>';
+    } else if (m.meta && m.meta.kind === 'combat' && m.meta.combat) {
+      body += '<div class="kd-empty" style="text-align:left;padding:4px 6px;">⚔️ ' + esc(m.meta.combat.attacker) + ' → ' + esc(m.meta.combat.defender) + ' (Δ ' + esc(m.meta.combat.delta) + ')</div>';
+    } else if (m.meta && m.meta.kind === 'action' && m.meta.action) {
+      body += '<div class="kd-empty" style="text-align:left;padding:4px 6px;">⚡ ' + esc(m.meta.action.nom) + ' (' + esc(m.meta.action.cout_pa || '') + ')</div>';
+    }
     if (m.image && m.image.kind === 'url' && /^https?:\/\//.test(m.image.url || '')) {
       body += '<img src="' + esc(m.image.url) + '" loading="lazy" alt="image partagée">';
     } else if (m.image && m.image.kind === 'upload' && /^data:image\//.test(m.image.dataUrl || '')) {
@@ -750,11 +759,38 @@
     } catch (e) {}
   }
 
+  function dockParseRoll(text) {
+    if (window.CodexVTTRules) {
+      const p = window.CodexVTTRules.parseRollCommand(text);
+      if (p && !p.error) return window.CodexVTTRules.executeRoll(p);
+      return p;
+    }
+    const m = /^\/(?:r|roll|jet|secret)\s+(\d*)d(\d+)([+-]\d+)?(.*)$/i.exec(String(text || '').trim());
+    if (!m) return null;
+    const count = Math.max(1, Math.min(20, parseInt(m[1] || '1', 10)));
+    const faces = Math.max(2, Math.min(1000, parseInt(m[2], 10)));
+    const mod = m[3] ? parseInt(m[3], 10) : 0;
+    const rolls = [];
+    let sum = 0;
+    for (let i = 0; i < count; i++) { const r = Math.floor(Math.random() * faces) + 1; rolls.push(r); sum += r; }
+    const total = sum + mod;
+    return { formula: count + 'd' + faces + (mod ? (mod > 0 ? '+' + mod : mod) : ''), rolls, total, roll: total, isCritical: rolls.some((x) => x === faces), isFumble: count === 1 && rolls[0] === 1, secret: /^\/secret\b/i.test(text), reason: (m[4] || '').trim().slice(0, 80), detail: '[' + rolls.join('+') + ']' + (mod ? (mod > 0 ? '+' + mod : mod) : '') + ' = ' + total };
+  }
+
   async function send() {
     const ta = $('kdText');
     if (!ta || !activeId) return;
-    const text = ta.value.trim();
+    let text = ta.value.trim();
     if (!text && !pendingDockImage && !pendingDockFile) { setStatus('Message vide (texte, image, PDF ou audio déposé).', 'err'); return; }
+    let meta = null;
+    if (text && /^\/(r|roll|jet|secret)\b/i.test(text)) {
+      const rr = dockParseRoll(text);
+      if (rr && rr.error) { setStatus(rr.error, 'err'); return; }
+      if (rr) {
+        meta = Object.assign({ kind: 'dice' }, rr);
+        text = (rr.secret ? '🔒 [Secret MJ] ' : '') + '🎲 ' + rr.formula + (rr.reason ? ' (' + rr.reason + ')' : '') + ' → ' + rr.total;
+      }
+    }
     const btn = $('kdSend');
     if (btn) btn.disabled = true;
     // Fichier joint : on signale le début du transfert (visible par tous
@@ -768,7 +804,7 @@
       const r = await api('/api/tables/' + encodeURIComponent(activeId) + '/messages', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text, imageData: pendingDockImage, fileData: pendingDockFile, fileName: pendingDockFileName, toExcept: effectiveExcept() })
+        body: JSON.stringify({ text, meta, imageData: pendingDockImage, fileData: pendingDockFile, fileName: pendingDockFileName, toExcept: effectiveExcept() })
       });
       const d = await r.json().catch(() => ({}));
       if (!r.ok) throw new Error(d.error || ('Erreur ' + r.status));
@@ -998,6 +1034,7 @@
     p.setAttribute('aria-label', 'Chat de la table en cours');
     p.innerHTML =
       '<div class="kd-head"><span class="kd-title" id="kdTitle">Table en cours</span>' +
+      '<button id="kdVtt" type="button" title="Ouvrir le plateau VTT de la table">🗺️</button>' +
       '<button id="kdFull" type="button" title="Ouvrir la page Tables complète">⧉</button>' +
       '<button id="kdHide" type="button" title="Masquer le panneau">✕</button></div>' +
       '<div class="kd-pick"><select id="kdPick" aria-label="Choisir la table"></select></div>' +
@@ -1026,7 +1063,9 @@
     kdBox.addEventListener('loadedmetadata', kdKeepBottom, true);
 
     const fullUrl = () => tablesPrefix() + 'tables.html' + (activeId ? '?table=' + encodeURIComponent(activeId) : '');
+    const vttUrl = () => tablesPrefix() + 'tables.html?mode=vtt' + (activeId ? '&table=' + encodeURIComponent(activeId) : '');
     $('kdHide').addEventListener('click', () => setOpen(false));
+    if ($('kdVtt')) $('kdVtt').addEventListener('click', () => { window.location.href = vttUrl(); });
     $('kdFull').addEventListener('click', () => { window.location.href = fullUrl(); });
     $('kdFootLink').addEventListener('click', (e) => { e.preventDefault(); window.location.href = fullUrl(); });
     $('kdPick').addEventListener('change', (e) => openTable(e.target.value));
@@ -1111,5 +1150,18 @@
     });
   }
 
+  window.CodexTableDock = {
+    getActiveTableId: () => activeId,
+    openVtt: () => { window.location.href = tablesPrefix() + 'tables.html?mode=vtt' + (activeId ? '&table=' + encodeURIComponent(activeId) : ''); },
+    sendCard: async (text, meta) => {
+      if (!activeId) return false;
+      const r = await api('/api/tables/' + encodeURIComponent(activeId) + '/messages', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text, meta, toExcept: effectiveExcept() })
+      });
+      if (r.ok) { await fetchTable(); setOpen(true); }
+      return r.ok;
+    }
+  };
   init();
 })();

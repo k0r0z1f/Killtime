@@ -30,6 +30,19 @@ const GM_OPS = new Set([
   'drop_weapon',
   'pickup_weapon',
   'kick_weapon',
+  // Web VTT SysRP (GM/helper uniquement)
+  'vtt_scene',
+  'vtt_wall',
+  'vtt_fog',
+  'vtt_turn',
+  'vtt_settings',
+  'vtt_focus_camera',
+  'vtt_handout',
+  'vtt_clock',
+  'vtt_audio',
+  'vtt_challenge',
+  'vtt_zone',
+  'vtt_light',
 ]);
 
 const OPEN_OPS = new Set([
@@ -41,6 +54,13 @@ const OPEN_OPS = new Set([
   'map_request',
   'action_request',
   'unit_claim',
+  // Web VTT SysRP (ouverts avec contrôle d'appartenance dans vtt_state.js)
+  'vtt_token',
+  'vtt_drop',
+  'vtt_draw',
+  'vtt_ping',
+  'vtt_duel',
+  'vtt_reaction',
 ]);
 
 // Limites de payload JSON sérialisé par op (octets). Au-delà : rejet 413.
@@ -63,6 +83,25 @@ const OP_PAYLOAD_LIMITS = {
   kick_weapon: 4 * 1024,
   voice: 512 * 1024,
   video: 512 * 1024,
+  // Web VTT SysRP
+  vtt_scene: 128 * 1024,
+  vtt_wall: 16 * 1024,
+  vtt_fog: 64 * 1024,
+  vtt_turn: 32 * 1024,
+  vtt_settings: 8 * 1024,
+  vtt_focus_camera: 2 * 1024,
+  vtt_handout: 64 * 1024,
+  vtt_clock: 4 * 1024,
+  vtt_audio: 8 * 1024,
+  vtt_challenge: 16 * 1024,
+  vtt_zone: 8 * 1024,
+  vtt_light: 8 * 1024,
+  vtt_token: 32 * 1024,
+  vtt_drop: 8 * 1024,
+  vtt_draw: 64 * 1024,
+  vtt_ping: 2 * 1024,
+  vtt_duel: 16 * 1024,
+  vtt_reaction: 8 * 1024,
 };
 const DEFAULT_OP_LIMIT = 64 * 1024;
 

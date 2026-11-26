@@ -19,6 +19,7 @@
         rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="users/auth.css">
+    <link rel="stylesheet" href="css/vtt.css">
     <style>
         /* ============ TABLES DE GROUPE ============ */
         /* Pleine largeur : cette page n'a ni sidebar ni inspector,
@@ -139,6 +140,14 @@
                     <button class="tb-btn primary" id="tbLoginBtn" type="button">Connexion</button>
                 </div>
 
+                <div id="tbModeBar" class="vtt-mode-bar" style="display:none;">
+                    <div class="vtt-mode-tabs">
+                        <button class="vtt-mode-btn on" id="btnModeChat" type="button">💬 Mode Tables &amp; Chat</button>
+                        <button class="vtt-mode-btn" id="btnModeVtt" type="button">🗺️ Mode Plateau VTT</button>
+                    </div>
+                    <span id="vttWsStatus" class="vtt-ws-pill">WS Hors ligne</span>
+                </div>
+
                 <div id="tbApp" class="tb-layout" style="display:none;">
                     <section class="tb-panel">
                         <h3>Mes tables</h3>
@@ -172,9 +181,18 @@
                         <div id="tbVoice"><p class="tb-status">Chargement…</p></div>
                         <hr style="border:none;border-top:1px solid var(--border-subtle);margin:12px 0;">
                         <h3 id="tbChatTitle">Choisis une table</h3>
+                        <div id="tbFilterBar" class="vtt-chat-tools">
+                            <button class="vtt-flt-btn on" data-tb-flt="all" type="button">Tous</button>
+                            <button class="vtt-flt-btn" data-tb-flt="rp" type="button">RP</button>
+                            <button class="vtt-flt-btn" data-tb-flt="dice" type="button">Dés</button>
+                            <button class="vtt-flt-btn" data-tb-flt="combat" type="button">Combat</button>
+                            <button class="vtt-flt-btn" data-tb-flt="mp" type="button">MPs</button>
+                            <button class="vtt-flt-btn" id="tbExportMd" type="button" style="margin-left:auto;" title="Exporter la séance en Markdown">⬇ .md</button>
+                        </div>
                         <div id="tbUploadState" style="display:none"></div>
                         <div id="tbMessages"></div>
                         <div id="tbComposer" style="display:none;margin-top:10px;">
+                            <div id="vttMacroBar" class="vtt-chat-tools" style="margin-bottom:6px;"></div>
                             <div class="tb-field"><label>Destinataire (vide = public)</label><select id="tbTo"></select></div>
                             <div id="tbSendScope"></div>
                             <div class="tb-field"><label>Message</label><textarea id="tbText" maxlength="2000" placeholder="Écris ici... (Entrée = envoyer)"></textarea></div>
@@ -194,11 +212,116 @@
         </div>
     </div>
 
+    <div id="vttWorkspace" aria-label="Plateau Tactique VTT">
+        <header id="vttTopBar">
+            <div class="vtt-tb-group">
+                <button class="vtt-btn" id="vttBtnBackTables" type="button">← Tables</button>
+                <select class="vtt-select" id="vttSceneSelect" aria-label="Scène active"></select>
+                <button class="vtt-btn" id="vttBtnSceneNew" type="button">+ Scène</button>
+                <button class="vtt-btn" id="vttBtnSceneCfg" type="button">⚙ Scène</button>
+            </div>
+            <div class="vtt-tb-group">
+                <button class="vtt-btn emerald" id="vttBtnStartCombat" type="button">⚔️ Combat</button>
+                <button class="vtt-btn" id="vttBtnPrevTurn" type="button" title="Tour précédent">◀</button>
+                <button class="vtt-btn on" id="vttBtnNextTurn" type="button" title="Tour suivant (recharge PA + tick résiduels)">▶ Tour suivant</button>
+                <button class="vtt-btn" id="vttBtnResetPa" type="button" title="Recharger tous les PA">↺ PA</button>
+            </div>
+            <div class="vtt-tb-group">
+                <button class="vtt-btn" id="vttBtnPause" type="button" title="Pause plateau MJ">⏸ Pause</button>
+                <button class="vtt-btn" id="vttBtnTurnLock" type="button" title="Verrouiller déplacement hors tour">🔒 Tour</button>
+                <button class="vtt-btn" id="vttBtnAmbush" type="button" title="Déclencher Tour d'Embuscade (Surpris)">🥷 Embuscade</button>
+                <button class="vtt-btn amber" id="vttBtnDuel" type="button" title="Face-à-Face Masqué">⚔️ Duel</button>
+                <button class="vtt-btn" id="vttBtnHandouts" type="button" title="Handouts &amp; Indices">🖼️ Handouts</button>
+                <button class="vtt-btn" id="vttBtnClock" type="button" title="Horloge, Repos sûr &amp; Pathologies">🕒 Horloge</button>
+                <button class="vtt-btn" id="vttBtnChallenge" type="button" title="Défis Hors-Combat (§10)">🏆 Défi</button>
+                <button class="vtt-btn" id="vttBtnSpell" type="button" title="Lancer Sort (XP=PA) / Technique">✨ Sort</button>
+                <button class="vtt-btn" id="vttBtnAudio" type="button" title="Ambiance &amp; SFX">🔊 Audio</button>
+                <button class="vtt-btn" id="vttBtnFocusAll" type="button" title="Amener la caméra de tous les joueurs ici">🎯 Groupe ici</button>
+            </div>
+            <div class="vtt-tb-group">
+                <button class="vtt-btn" id="vttBtnToggleSide" type="button">◫ Panneau</button>
+            </div>
+        </header>
+
+        <div id="vttInitStrip"></div>
+
+        <div id="vttMain">
+            <nav id="vttToolbar" aria-label="Outils plateau">
+                <button class="vtt-tool-btn on" data-vtt-tool="select" type="button" title="Sélection & Déplacement (W / Clic droit = waypoint)">🖱️</button>
+                <button class="vtt-tool-btn" data-vtt-tool="measure" type="button" title="Règle (P / mètres) & Gabarits">📏</button>
+                <button class="vtt-tool-btn" data-vtt-tool="ping" type="button" title="Ping animé">📍</button>
+                <button class="vtt-tool-btn" data-vtt-tool="draw" type="button" title="Dessin libre & formes">✏️</button>
+                <div class="vtt-tool-sep"></div>
+                <button class="vtt-tool-btn" data-vtt-tool="zone" type="button" title="Zones persistantes (Feu, Fumée, Gaz, Stase)">🔥</button>
+                <button class="vtt-tool-btn" data-vtt-tool="drop" type="button" title="Objets / Loot au sol">🎒</button>
+                <button class="vtt-tool-btn" data-vtt-tool="wall" type="button" title="Murs, Portes & Couverts (MJ)">🧱</button>
+                <button class="vtt-tool-btn" data-vtt-tool="fog" type="button" title="Pinceau Brouillard manuel (MJ)">🌫️</button>
+                <button class="vtt-tool-btn" data-vtt-tool="light" type="button" title="Source de lumière / Torche 10P (MJ)">🔦</button>
+                <button class="vtt-tool-btn" data-vtt-tool="erase" type="button" title="Gomme sélective (clic sur objet/mur/zone)">🧹</button>
+            </nav>
+
+            <section id="vttStage">
+                <canvas id="vttCanvas"></canvas>
+                <div id="vttEmptyBoard" class="vtt-empty-board" style="display:none;">
+                    <div style="font-weight:800;margin-bottom:6px;">Plateau vierge</div>
+                    <p class="tb-status" style="margin-bottom:10px;">Place un pion ou importe ta fiche PJ pour commencer la scène.</p>
+                    <div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;">
+                        <button class="vtt-btn on" id="vttEmptyPjBtn" type="button">👤 Ma Fiche PJ</button>
+                        <button class="vtt-btn" id="vttEmptyTokBtn" type="button">➕ Pion rapide</button>
+                    </div>
+                </div>
+                <div id="vttPauseBanner" class="vtt-pause-banner" style="display:none;">⏸ PLATEAU EN PAUSE PAR LE MJ</div>
+                <div class="vtt-hud-tl">
+                    <div id="vttToolSubbar" class="vtt-subbar" style="display:none;"></div>
+                </div>
+                <div class="vtt-hud-bl">
+                    <span id="vttHudCoords" class="vtt-hud-pill">Case (0, 0) · 1P = 1,5 m</span>
+                    <button class="vtt-btn" id="vttBtnZoomOut" type="button">−</button>
+                    <button class="vtt-btn" id="vttBtnFit" type="button">Ajuster</button>
+                    <button class="vtt-btn" id="vttBtnZoomIn" type="button">+</button>
+                </div>
+            </section>
+
+            <aside id="vttSidebar">
+                <div class="vtt-side-tabs">
+                    <button class="vtt-side-tab on" data-vtt-tab="Chat" type="button">💬 Chat</button>
+                    <button class="vtt-side-tab" data-vtt-tab="Tokens" type="button">⚔️ Pion</button>
+                    <button class="vtt-side-tab" data-vtt-tab="Comp" type="button">📚 Comp.</button>
+                    <button class="vtt-side-tab" data-vtt-tab="Dice" type="button">🎲 Dés</button>
+                    <button class="vtt-side-tab" data-vtt-tab="Table" type="button">👥 Table</button>
+                </div>
+                <div id="vttPaneChat" class="vtt-side-pane on">
+                    <div id="vttChatMount"></div>
+                </div>
+                <div id="vttPaneTokens" class="vtt-side-pane"></div>
+                <div id="vttPaneComp" class="vtt-side-pane"></div>
+                <div id="vttPaneDice" class="vtt-side-pane"></div>
+                <div id="vttPaneTable" class="vtt-side-pane">
+                    <div class="vtt-card"><h4>🎙️ Voix live</h4><div id="vttVoiceMount"></div></div>
+                    <div class="vtt-card"><h4>⚙ Gestion table</h4><div id="vttManageMount"></div></div>
+                </div>
+            </aside>
+        </div>
+        <div id="vttMobileBar" class="vtt-mobile-bar">
+            <button class="vtt-btn on" data-mob-view="map" type="button">🗺️ Plateau</button>
+            <button class="vtt-btn" data-mob-view="Chat" type="button">💬 Chat</button>
+            <button class="vtt-btn" data-mob-view="Tokens" type="button">⚔️ Pion</button>
+            <button class="vtt-btn" data-mob-view="Dice" type="button">🎲 Dés</button>
+        </div>
+    </div>
+
     <script src="js/codex.js"></script>
     <script src="users/user_store.js"></script>
     <script src="users/auth.js"></script>
-    <script src="js/tables.js?v=1.0"></script>
+    <script src="js/vtt-rules.js"></script>
+    <script src="js/tables.js?v=1.1"></script>
     <script src="js/tables-voice.js?v=1.1"></script>
+    <script src="js/vtt-client.js"></script>
+    <script src="js/vtt-canvas.js"></script>
+    <script src="js/vtt-compendium.js"></script>
+    <script src="js/vtt-combat.js"></script>
+    <script src="js/vtt-extras.js"></script>
+    <script src="js/vtt-ui.js"></script>
     <script src="js/theme.js"></script>
 </body>
 

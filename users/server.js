@@ -40,7 +40,7 @@ const OAUTH_CALLBACK_BASE   = (process.env.OAUTH_CALLBACK_BASE || '').replace(/\
    rôle : le serveur recalcule role/isAdmin à chaque réponse.
    La page admin tourne sur un 2e écouteur lié à 127.0.0.1 uniquement
    (jamais exposé par ngrok qui ne relaie que le port public). */
-const ADMIN_PORT = parseInt(process.env.ADMIN_PORT || '3100', 10);
+const ADMIN_PORT = process.env.ADMIN_PORT !== undefined ? parseInt(process.env.ADMIN_PORT, 10) : 3100;
 const ADMIN_BIND = process.env.ADMIN_BIND || '127.0.0.1';
 function getAdminEmails() {
     return String(process.env.ADMIN_EMAILS || '').split(',')
@@ -113,7 +113,7 @@ const PERMISSIONS = [
     { id: 'roles.manage', label: 'Gérer rôles (créer, permissions, assignation)' }
 ];
 const ALL_PERMS = PERMISSIONS.map(p => p.id);
-const ROLES_PATH = path.join(__dirname, 'roles.json');
+const ROLES_PATH = process.env.ROLES_PATH || path.join(__dirname, 'roles.json');
 function defaultRolesDoc() {
     return {
         roles: [
@@ -171,9 +171,84 @@ function roleNameFor(user) {
     return r ? r.name : 'Joueur';
 }
 
-const PORT = process.env.PORT || 3000;
-const DB_PATH = path.join(__dirname, 'users.json');
+const PORT = process.env.PORT !== undefined ? parseInt(process.env.PORT, 10) : 3000;
+const DB_PATH = process.env.USERS_DB_PATH || path.join(__dirname, 'users.json');
 const PUBLIC_DIR = path.join(__dirname, '..');
+const TABLES_DIR = process.env.TABLES_DIR || path.join(PUBLIC_DIR, 'data', 'tables');
+const TABLE_ID_RE = /^[a-z0-9_-]{1,32}$/i;
+const TABLE_MAX_MESSAGES = 5000;
+const TABLE_MAX_TEXT = 2000;
+const TABLE_MAX_UPLOAD_CHARS = 14000000; // ~10 Mo binaires en base64
+
+let vttStateMod = null;
+try {
+    vttStateMod = require('./vtt_state.js');
+} catch (e) {
+    console.warn('[VTT] vtt_state.js introuvable :', e.message);
+}
+
+function tablesEnsureDir() {
+    try { fs.mkdirSync(TABLES_DIR, { recursive: true }); } catch (e) {}
+}
+function tableFilePath(id) {
+    return path.join(TABLES_DIR, 'table_' + String(id).toLowerCase() + '.json');
+}
+function tableCleanStr(s, max) {
+    return String(s || '').replace(/[\u0000-\u001f\u007f]/g, '').trim().slice(0, max);
+}
+function loadTableDoc(id) {
+    tablesEnsureDir();
+    const file = tableFilePath(id);
+    if (!fs.existsSync(file)) return null;
+    try {
+        const doc = JSON.parse(fs.readFileSync(file, 'utf-8'));
+        if (!doc || doc.id !== String(id).toLowerCase()) return null;
+        if (!Array.isArray(doc.members)) doc.members = [];
+        if (!Array.isArray(doc.messages)) doc.messages = [];
+        return doc;
+    } catch (e) { return null; }
+}
+function saveTableDoc(doc) {
+    tablesEnsureDir();
+    doc.updatedAt = Date.now();
+    const file = tableFilePath(doc.id);
+    try { if (fs.existsSync(file)) fs.copyFileSync(file, file + '.bak'); } catch (e) {}
+    const json = JSON.stringify(doc, null, 2);
+    if (json.length > 64 * 1024 * 1024) return false;
+    fs.writeFileSync(file, json);
+    return true;
+}
+function tableRoleOf(doc, userId) {
+    if (!doc || !userId) return null;
+    const m = doc.members.find(m => m.userId === userId);
+    return m ? m.role : null;
+}
+function tableCanManage(doc, user) {
+    if (!doc || !user) return false;
+    if (isAdminEmail(user.email)) return true;
+    const r = tableRoleOf(doc, user.id);
+    return r === 'mj' || r === 'helper';
+}
+function tableCanSeeMsg(doc, msg, user) {
+    if (msg.meta && msg.meta.secret === true) {
+        if (!user) return false;
+        if (msg.fromId === user.id || isAdminEmail(user.email)) return true;
+        const r = tableRoleOf(doc, user.id);
+        return r === 'mj' || r === 'helper';
+    }
+    if (!msg.toUserId) {
+        if (msg.toExcept && msg.toExcept.includes(user.id) && user.id !== msg.fromId) {
+            if (isAdminEmail(user.email)) return true;
+            return false;
+        }
+        return true;
+    }
+    if (!user) return false;
+    if (isAdminEmail(user.email)) return true;
+    if (msg.fromId === user.id || msg.toUserId === user.id) return true;
+    const r = tableRoleOf(doc, user.id);
+    return r === 'mj' || r === 'helper';
+}
 
 const MIME_TYPES = {
     '.html': 'text/html; charset=utf-8',
@@ -1553,70 +1628,45 @@ async function handleRequest(req, res, isAdminListener) {
        tout), joueur (défaut : public + ses propres MPs).
        Toutes les routes exigent une session (cookie srv_).
        ================================================================ */
-    const TABLES_DIR = path.join(PUBLIC_DIR, 'data', 'tables');
-    const TABLE_ID_RE = /^[a-z0-9_-]{1,32}$/i;
-    const TABLE_MAX_MESSAGES = 5000;
-    const TABLE_MAX_TEXT = 2000;
-    const TABLE_MAX_UPLOAD_CHARS = 14000000; // ~10 Mo binaires en base64
-    function tablesEnsureDir() {
-        try { fs.mkdirSync(TABLES_DIR, { recursive: true }); } catch (e) {}
-    }
-    function tableFilePath(id) {
-        return path.join(TABLES_DIR, 'table_' + String(id).toLowerCase() + '.json');
-    }
-    function tableCleanStr(s, max) {
-        return String(s || '').replace(/[\u0000-\u001f\u007f]/g, '').trim().slice(0, max);
-    }
-    function loadTableDoc(id) {
-        tablesEnsureDir();
-        const file = tableFilePath(id);
-        if (!fs.existsSync(file)) return null;
+    function sanitizeTableMsgMeta(raw) {
+        if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return null;
         try {
-            const doc = JSON.parse(fs.readFileSync(file, 'utf-8'));
-            if (!doc || doc.id !== String(id).toLowerCase()) return null;
-            if (!Array.isArray(doc.members)) doc.members = [];
-            if (!Array.isArray(doc.messages)) doc.messages = [];
-            return doc;
+            const s = JSON.stringify(raw);
+            if (s.length > 8192) return null;
         } catch (e) { return null; }
-    }
-    function saveTableDoc(doc) {
-        tablesEnsureDir();
-        doc.updatedAt = Date.now();
-        const file = tableFilePath(doc.id);
-        try { if (fs.existsSync(file)) fs.copyFileSync(file, file + '.bak'); } catch (e) {}
-        const json = JSON.stringify(doc, null, 2);
-        if (json.length > 64 * 1024 * 1024) return false; // garde-fou fichier (pièces jointes jusqu'à ~10 Mo)
-        fs.writeFileSync(file, json);
-        return true;
-    }
-    function tableRoleOf(doc, userId) {
-        if (!doc || !userId) return null;
-        const m = doc.members.find(m => m.userId === userId);
-        return m ? m.role : null;
-    }
-    function tableCanManage(doc, user) {
-        if (!doc || !user) return false;
-        if (isAdminEmail(user.email)) return true;
-        const r = tableRoleOf(doc, user.id);
-        return r === 'mj' || r === 'helper';
-    }
-    function tableCanSeeMsg(doc, msg, user) {
-        // Messages publics restreints par l'envoyeur (snapshot toExcept) :
-        // chacun choisit à qui SES futurs messages sont envoyés (y compris
-        // le MJ : aucune exception de rôle). L'auteur voit toujours les siens.
-        // Les MPs (toUserId) sont nominatifs : toujours livrés au destinataire.
-        if (!msg.toUserId) {
-            if (msg.toExcept && msg.toExcept.includes(user.id) && user.id !== msg.fromId) {
-                if (isAdminEmail(user.email)) return true;
-                return false;
-            }
-            return true; // public
+        const kind = tableCleanStr(raw.kind || '', 24);
+        if (!kind) return null;
+        const out = { kind };
+        if (raw.secret !== undefined) out.secret = !!raw.secret;
+        if (raw.formula !== undefined) out.formula = tableCleanStr(raw.formula, 32);
+        if (raw.detail !== undefined) out.detail = tableCleanStr(raw.detail, 300);
+        if (raw.reason !== undefined) out.reason = tableCleanStr(raw.reason, 120);
+        if (raw.roll !== undefined && Number.isFinite(Number(raw.roll))) out.roll = Math.trunc(Number(raw.roll));
+        if (raw.total !== undefined && Number.isFinite(Number(raw.total))) out.total = Math.trunc(Number(raw.total));
+        if (Array.isArray(raw.rolls)) out.rolls = raw.rolls.slice(0, 20).map(n => Math.trunc(Number(n) || 0));
+        if (raw.effort !== undefined && Number.isFinite(Number(raw.effort))) out.effort = Math.trunc(Number(raw.effort));
+        if (raw.maxEffort !== undefined && Number.isFinite(Number(raw.maxEffort))) out.maxEffort = Math.trunc(Number(raw.maxEffort));
+        if (raw.effortClamped !== undefined) out.effortClamped = !!raw.effortClamped;
+        if (raw.malus !== undefined && Number.isFinite(Number(raw.malus))) out.malus = Math.trunc(Number(raw.malus));
+        if (raw.target !== undefined && raw.target !== null && Number.isFinite(Number(raw.target))) out.target = Math.trunc(Number(raw.target));
+        if (raw.delta !== undefined && raw.delta !== null && Number.isFinite(Number(raw.delta))) out.delta = Math.trunc(Number(raw.delta));
+        if (raw.success !== undefined && raw.success !== null) out.success = !!raw.success;
+        if (raw.autoSuccess !== undefined) out.autoSuccess = !!raw.autoSuccess;
+        if (raw.isCritical !== undefined) out.isCritical = !!raw.isCritical;
+        if (raw.isFumble !== undefined) out.isFumble = !!raw.isFumble;
+        if (raw.xpEligible !== undefined) out.xpEligible = !!raw.xpEligible;
+        if (raw.check && typeof raw.check === 'object') {
+            out.check = {
+                skill: tableCleanStr(raw.check.skill || '', 64),
+                die: tableCleanStr(raw.check.die || 'd6', 24),
+                target: Number.isFinite(Number(raw.check.target)) ? Math.trunc(Number(raw.check.target)) : 4,
+                toUserId: raw.check.toUserId ? tableCleanStr(raw.check.toUserId, 64) : null,
+                toName: raw.check.toName ? tableCleanStr(raw.check.toName, 40) : null
+            };
         }
-        if (!user) return false;
-        if (isAdminEmail(user.email)) return true;
-        if (msg.fromId === user.id || msg.toUserId === user.id) return true;
-        const r = tableRoleOf(doc, user.id);
-        return r === 'mj' || r === 'helper';
+        if (raw.combat && typeof raw.combat === 'object') out.combat = raw.combat;
+        if (raw.item && typeof raw.item === 'object') out.item = raw.item;
+        return out;
     }
     // Métadonnées de pièce jointe sans les octets (dataUrl) : le contenu
     // se charge à la demande (GET .../messages/:mid/attachment).
@@ -1633,6 +1683,7 @@ async function handleRequest(req, res, isAdminListener) {
             fromAvatar: (avatars && avatars[msg.fromId]) || null,
             text: msg.text || '', image: msg.image && msg.image.kind === 'upload' ? tablePublicFile(msg.image) : (msg.image || null),
             file: tablePublicFile(msg.file),
+            meta: msg.meta || null,
             toUserId: msg.toUserId || null, toName: msg.toName || null,
             private: !!msg.toUserId, createdAt: msg.createdAt,
             // IDs exclus à l'envoi (pour l'héritage côté client : répondre
@@ -1953,6 +2004,11 @@ async function handleRequest(req, res, isAdminListener) {
                 }
                 try { fs.unlinkSync(tableFilePath(doc.id)); } catch (e) {}
                 try { fs.unlinkSync(tableFilePath(doc.id) + '.bak'); } catch (e) {}
+                if (vttStateMod) {
+                    try { fs.unlinkSync(vttStateMod.vttFilePath(TABLES_DIR, doc.id)); } catch (e) {}
+                    try { fs.unlinkSync(vttStateMod.vttFilePath(TABLES_DIR, doc.id) + '.bak'); } catch (e) {}
+                }
+                vttRooms.delete('TBL:' + doc.id);
                 console.log(`[Tables] table supprimée : ${doc.id} par ${me.username}.`);
                 return sendJson(res, 200, { success: true });
             }
@@ -2016,7 +2072,8 @@ async function handleRequest(req, res, isAdminListener) {
                         const fbytes = Math.floor((fileData.length - fileData.indexOf(',') - 1) * 3 / 4);
                         file = { kind: 'upload', mime: fm[1], name: fileName || 'document', dataUrl: fileData, bytes: fbytes };
                     }
-                    if (!text && !image && !file) return sendJson(res, 400, { error: 'Message vide (texte, image, PDF, audio ou vidéo requis).' });
+                    const meta = sanitizeTableMsgMeta(body && body.meta);
+                    if (!text && !image && !file && !meta) return sendJson(res, 400, { error: 'Message vide (texte, image, PDF, audio ou vidéo requis).' });
                     let toUserId = null, toName = null;
                     const rawTo = String((body && body.toUserId) || '').trim();
                     if (rawTo) {
@@ -2059,7 +2116,7 @@ async function handleRequest(req, res, isAdminListener) {
                     const msg = {
                         id: 'm_' + Date.now().toString(36) + Math.floor(Math.random() * 1296).toString(36),
                         fromId: myId, fromName: me.username, fromRole: senderRole,
-                        text, image, file, toUserId, toName, toExcept, createdAt: Date.now()
+                        text, image, file, meta, toUserId, toName, toExcept, createdAt: Date.now()
                     };
                     doc.messages.push(msg);
                     // Upload terminé (message arrivé) : on efface la présence.
@@ -2416,6 +2473,127 @@ async function handleRequest(req, res, isAdminListener) {
             sseNotifyVoice(doc, 'voice-reset', { by: myId, peers: tableVoicePeersPayload(doc, st) });
             console.log(`[Tables] voix ${doc.id} : reset pour tout le monde (par ${me.username}).`);
             return sendJson(res, 200, { success: true, peers: tableVoicePeersPayload(doc, st) });
+        }
+
+        /* ------------------------------------------------------------
+           VTT SYSRP PAR TABLE — état persisté, ops, battlemaps & Fiches PJ
+           ------------------------------------------------------------ */
+        if (parts.length >= 2 && parts[1] === 'vtt') {
+            if (!isMember) return sendJson(res, 403, { error: 'Table réservée à ses membres.' });
+            if (!vttStateMod) return sendJson(res, 500, { error: 'Module vtt_state.js indisponible.' });
+            const viewer = { userId: myId, isGM: (myRole === 'admin' || tableCanManage(doc, me)), tableRole: myRole };
+            const roomKey = 'TBL:' + doc.id;
+            const liveRoom = vttRooms.get(roomKey);
+            const state = (liveRoom && liveRoom.vttState) ? liveRoom.vttState : vttStateMod.loadVttState(TABLES_DIR, doc.id);
+            if (liveRoom && !liveRoom.vttState) liveRoom.vttState = state;
+
+            if (parts.length === 2 && req.method === 'GET') {
+                return sendJson(res, 200, {
+                    success: true,
+                    tableRole: myRole,
+                    isGM: viewer.isGM,
+                    state: vttStateMod.filterStateForViewer(state, viewer)
+                });
+            }
+            if (parts.length === 3 && parts[2] === 'op' && req.method === 'POST') {
+                try {
+                    const body = await parseBody(req);
+                    const op = String((body && body.op) || '');
+                    const payload = (body && body.payload) || {};
+                    const resMut = vttStateMod.applyVttMutation(state, op, payload, { userId: myId, username: me.username, isGM: viewer.isGM, tableRole: myRole });
+                    if (!resMut.ok) {
+                        const code = resMut.code === 'forbidden' ? 403 : (resMut.code === 'not_found' ? 404 : 400);
+                        return sendJson(res, code, { error: resMut.error, code: resMut.code });
+                    }
+                    if (resMut.changed) vttStateMod.saveVttState(TABLES_DIR, state);
+                    if (resMut.ephemeral) {
+                        vttBroadcastTableEvent(doc.id, op, resMut.delta, myId, me.username, resMut.targetUserIds);
+                    } else {
+                        vttBroadcastTableState(doc.id, op, myId, me.username);
+                    }
+                    return sendJson(res, 200, {
+                        success: true,
+                        state: vttStateMod.filterStateForViewer(state, viewer)
+                    });
+                } catch (e) {
+                    return sendJson(res, 400, { error: e.message });
+                }
+            }
+            if (parts.length === 3 && parts[2] === 'map' && req.method === 'POST') {
+                if (!viewer.isGM) return sendJson(res, 403, { error: 'Import de carte réservé au MJ / helper.' });
+                try {
+                    const body = await parseBody(req);
+                    const sc = vttStateMod.getActiveScene(state, body && body.sceneId);
+                    if (body && body.clear) {
+                        sc.mapUrl = '';
+                        sc.mapDataUrl = '';
+                    } else if (body && body.imageData) {
+                        const durl = String(body.imageData);
+                        if (!/^data:image\/(png|jpe?g|gif|webp);base64,[A-Za-z0-9+/=]+$/.test(durl)) {
+                            return sendJson(res, 400, { error: 'Image carte invalide.' });
+                        }
+                        if (durl.length > 5000000) return sendJson(res, 413, { error: 'Carte trop lourde (max ~3,5 Mo).' });
+                        sc.mapDataUrl = durl;
+                        sc.mapUrl = '';
+                    } else if (body && body.imageUrl) {
+                        const u = new NodeURL(String(body.imageUrl).trim());
+                        if (u.protocol !== 'http:' && u.protocol !== 'https:') return sendJson(res, 400, { error: 'URL http/https requise.' });
+                        sc.mapUrl = u.toString().slice(0, 2048);
+                        sc.mapDataUrl = '';
+                    } else {
+                        return sendJson(res, 400, { error: 'imageData, imageUrl ou clear requis.' });
+                    }
+                    vttStateMod.saveVttState(TABLES_DIR, state);
+                    vttBroadcastTableState(doc.id, 'vtt_scene', myId, me.username);
+                    return sendJson(res, 200, { success: true, state: vttStateMod.filterStateForViewer(state, viewer) });
+                } catch (e) {
+                    return sendJson(res, 400, { error: e.message });
+                }
+            }
+            return sendJson(res, 405, { error: 'Méthode non autorisée.' });
+        }
+
+        if (parts.length >= 2 && parts[1] === 'characters') {
+            if (!isMember) return sendJson(res, 403, { error: 'Table réservée à ses membres.' });
+            if (!vttStateMod) return sendJson(res, 500, { error: 'Module vtt_state.js indisponible.' });
+            const isGM = (myRole === 'admin' || tableCanManage(doc, me));
+            const roomKey = 'TBL:' + doc.id;
+            const liveRoom = vttRooms.get(roomKey);
+            const state = (liveRoom && liveRoom.vttState) ? liveRoom.vttState : vttStateMod.loadVttState(TABLES_DIR, doc.id);
+
+            if (parts.length === 2 && req.method === 'GET') {
+                const users = loadUsers();
+                const mine = Array.isArray(me.characters) ? me.characters : [];
+                const linked = [];
+                for (const [uid, link] of Object.entries(state.linkedCharacters || {})) {
+                    if (!link || !link.pjId) continue;
+                    if (!isGM && uid !== myId) continue;
+                    const u = users.find(x => x.id === uid);
+                    const pj = u && Array.isArray(u.characters) ? u.characters.find(c => c.id === link.pjId) : null;
+                    if (pj) linked.push({ userId: uid, username: u.username, tokenId: link.tokenId || null, pj });
+                }
+                return sendJson(res, 200, { success: true, myCharacters: mine, linked });
+            }
+            if (parts.length === 3 && parts[2] === 'link' && (req.method === 'PUT' || req.method === 'POST')) {
+                try {
+                    const body = await parseBody(req);
+                    const pjId = tableCleanStr(body && body.pjId, 64);
+                    const tokenId = body && body.tokenId ? tableCleanStr(body.tokenId, 48) : null;
+                    if (!pjId) {
+                        delete state.linkedCharacters[myId];
+                    } else {
+                        const mine = (me.characters || []).find(c => c.id === pjId);
+                        if (!mine) return sendJson(res, 404, { error: 'Fiche PJ introuvable sur votre compte.' });
+                        state.linkedCharacters[myId] = { pjId, tokenId, updatedAt: Date.now() };
+                    }
+                    vttStateMod.saveVttState(TABLES_DIR, state);
+                    vttBroadcastTableState(doc.id, 'vtt_characters', myId, me.username);
+                    return sendJson(res, 200, { success: true, linkedCharacters: state.linkedCharacters });
+                } catch (e) {
+                    return sendJson(res, 400, { error: e.message });
+                }
+            }
+            return sendJson(res, 405, { error: 'Méthode non autorisée.' });
         }
 
         return sendJson(res, 404, { error: 'Route tables inconnue.' });
@@ -3309,20 +3487,149 @@ function vttBroadcastPresence(room) {
     });
 }
 
+function vttBroadcastTableState(tableId, op, fromId, fromName) {
+    if (!vttStateMod) return;
+    const room = vttRooms.get('TBL:' + String(tableId || '').toLowerCase());
+    if (!room || !room.vttState) return;
+    const at = Date.now();
+    for (const clientId of room.members.keys()) {
+        const c = vttClients.get(clientId);
+        if (!c) continue;
+        const viewer = { userId: c.userId, isGM: c.role === 'gm', tableRole: c.tableRole || (c.role === 'gm' ? 'mj' : 'joueur') };
+        vttSendJson(c, {
+            type: 'vtt_state',
+            tableId: room.tableId,
+            op: op || 'sync',
+            from: fromId || 'server',
+            fromName: fromName || 'Serveur',
+            at,
+            state: vttStateMod.filterStateForViewer(room.vttState, viewer)
+        });
+    }
+}
+
+function vttBroadcastTableEvent(tableId, op, payload, fromId, fromName, targetUserIds) {
+    const room = vttRooms.get('TBL:' + String(tableId || '').toLowerCase());
+    if (!room) return;
+    const allow = Array.isArray(targetUserIds) && targetUserIds.length > 0 ? new Set(targetUserIds) : null;
+    const obj = {
+        type: 'vtt_event',
+        tableId: room.tableId,
+        op,
+        payload,
+        from: fromId || 'server',
+        fromName: fromName || 'Serveur',
+        at: Date.now()
+    };
+    for (const clientId of room.members.keys()) {
+        const c = vttClients.get(clientId);
+        if (!c) continue;
+        if (allow && c.role !== 'gm' && !allow.has(c.userId)) continue;
+        vttSendJson(c, obj);
+    }
+}
+
+function vttJoinTableRoom(conn, tableId) {
+    const tid = String(tableId || '').trim().toLowerCase();
+    if (!TABLE_ID_RE.test(tid)) {
+        vttSendError(conn, 'Identifiant de table invalide.', 'bad_request');
+        return;
+    }
+    if (!conn.userId) {
+        vttSendError(conn, 'Authentification requise pour rejoindre le VTT d’une table.', 'unauthorized');
+        return;
+    }
+    const doc = loadTableDoc(tid);
+    if (!doc) {
+        vttSendError(conn, 'Table introuvable.', 'room_not_found');
+        return;
+    }
+    const user = loadUsers().find(u => u.id === conn.userId);
+    if (!user) {
+        vttSendError(conn, 'Session utilisateur invalide.', 'unauthorized');
+        return;
+    }
+    const tableRole = isAdminEmail(user.email) ? 'admin' : tableRoleOf(doc, user.id);
+    if (!tableRole) {
+        vttSendError(conn, 'Vous n’êtes pas membre de cette table.', 'forbidden');
+        return;
+    }
+    const roomKey = 'TBL:' + tid;
+    if (conn.roomCode && conn.roomCode !== roomKey) vttLeaveRoom(conn, 'switch_table');
+
+    let room = vttRooms.get(roomKey);
+    if (!room) {
+        room = {
+            code: roomKey,
+            tableId: tid,
+            tableName: doc.name,
+            visibility: 'private',
+            maxPlayers: doc.maxMembers || 12,
+            buildVersion: 'web-vtt-1',
+            createdAt: Date.now(),
+            lastActive: Date.now(),
+            gmId: null,
+            members: new Map(),
+            units: new Map(),
+            clientUnits: new Map(),
+            covers: new Map(),
+            vttState: vttStateMod ? vttStateMod.loadVttState(TABLES_DIR, tid) : null
+        };
+        vttRooms.set(roomKey, room);
+    }
+    const isGM = (tableRole === 'admin' || tableRole === 'mj' || tableRole === 'helper');
+    conn.username = vttSanitizeUsername(user.username, conn.id);
+    conn.email = user.email;
+    conn.roomCode = roomKey;
+    conn.role = isGM ? 'gm' : 'player';
+    conn.tableRole = tableRole;
+    if (isGM && !room.gmId) room.gmId = conn.id;
+    room.members.set(conn.id, { username: conn.username, role: conn.role, tableRole, userId: user.id });
+    room.lastActive = Date.now();
+
+    const viewer = { userId: user.id, isGM, tableRole };
+    vttSendJson(conn, {
+        type: 'table_joined',
+        tableId: tid,
+        tableName: doc.name,
+        role: conn.role,
+        tableRole,
+        isGM,
+        members: vttRoomMembersPayload(room),
+        state: (vttStateMod && room.vttState) ? vttStateMod.filterStateForViewer(room.vttState, viewer) : null
+    });
+    vttBroadcastPresence(room);
+}
+
 function vttLeaveRoom(conn, reason = 'leave') {
     const code = conn.roomCode;
     if (!code) return;
     const room = vttRooms.get(code);
     conn.roomCode = null;
     conn.role = null;
+    conn.tableRole = null;
     if (!room) return;
     const wasGM = (room.gmId === conn.id);
     room.members.delete(conn.id);
     if (room.clientUnits) room.clientUnits.delete(conn.id);
     room.lastActive = Date.now();
     if (room.members.size === 0) {
+        if (room.tableId && room.vttState && vttStateMod) {
+            try { vttStateMod.saveVttState(TABLES_DIR, room.vttState); } catch (e) {}
+        }
         vttRooms.delete(code);
         console.log(`[VTT] Room ${code} fermée (${reason}, vide).`);
+        return;
+    }
+    if (room.tableId) {
+        if (wasGM) {
+            let nextGmId = null;
+            for (const [cid, m] of room.members) {
+                if (m.role === 'gm') { nextGmId = cid; break; }
+            }
+            room.gmId = nextGmId;
+        }
+        vttBroadcastPresence(room);
         return;
     }
     if (wasGM) {
@@ -3538,6 +3845,62 @@ function vttHandleMessage(conn, msg) {
         console.log(`[VTT] Room ${room.code} : visibilité -> ${visibility} (par ${conn.id}).`);
         vttBroadcast(room, { type: 'visibility_updated', code: room.code, visibility });
         vttBroadcastPresence(room);
+        return;
+    }
+
+    if (t === 'join_table') {
+        if (msg.authToken && !conn.userId) {
+            const linked = vttResolveUserFromToken(msg.authToken);
+            if (linked) {
+                conn.userId = linked.id;
+                conn.email = linked.email;
+                conn.username = vttSanitizeUsername(linked.username, conn.id);
+            }
+        }
+        vttJoinTableRoom(conn, msg.tableId);
+        return;
+    }
+
+    if (t === 'vtt_op') {
+        const room = vttRooms.get(conn.roomCode || '');
+        if (!room || !room.tableId || !room.vttState || !vttStateMod) {
+            vttSendError(conn, 'Rejoignez une table VTT avant d’envoyer vtt_op.', 'not_in_room');
+            return;
+        }
+        const op = String(msg.op || '');
+        if (vttPolicy) {
+            const verdict = vttPolicy.shouldRejectOp(room, conn, op);
+            if (verdict.reject) { vttSendError(conn, verdict.message, verdict.code); return; }
+        }
+        const payload = (msg.payload !== undefined && msg.payload !== null) ? msg.payload : {};
+        if (vttPolicy) {
+            try {
+                const size = Buffer.byteLength(JSON.stringify(payload), 'utf8');
+                if (size > vttPolicy.opPayloadLimit(op)) {
+                    vttSendError(conn, `Payload "${op}" trop volumineux.`, 'payload_too_large');
+                    return;
+                }
+            } catch (e) { vttSendError(conn, 'Payload illisible.'); return; }
+        }
+        const resMut = vttStateMod.applyVttMutation(room.vttState, op, payload, {
+            userId: conn.userId,
+            username: conn.username,
+            isGM: conn.role === 'gm',
+            tableRole: conn.tableRole || (conn.role === 'gm' ? 'mj' : 'joueur')
+        });
+        if (!resMut.ok) {
+            vttSendError(conn, resMut.error, resMut.code || 'bad_request');
+            return;
+        }
+        room.lastActive = Date.now();
+        if (resMut.changed) {
+            vttStateMod.saveVttState(TABLES_DIR, room.vttState);
+        }
+        if (resMut.ephemeral) {
+            vttBroadcastTableEvent(room.tableId, op, resMut.delta, conn.id, conn.username, resMut.targetUserIds);
+        } else {
+            vttBroadcastTableState(room.tableId, op, conn.id, conn.username);
+        }
         return;
     }
 
@@ -3879,6 +4242,7 @@ function vttParseFrames(conn) {
 
 function vttAttachConnection(socket, req) {
     const id = vttGenClientId();
+    const sessionUser = getSessionUser(req);
     const conn = {
         id,
         socket,
@@ -3886,10 +4250,13 @@ function vttAttachConnection(socket, req) {
         fragParts: [],
         fragOpcode: 0,
         fragIsText: true,
-        username: 'Invité-' + id.slice(-4),
-        userId: null,
+        username: sessionUser ? vttSanitizeUsername(sessionUser.username, id) : ('Invité-' + id.slice(-4)),
+        userId: sessionUser ? sessionUser.id : null,
+        email: sessionUser ? sessionUser.email : null,
+        authenticatedByCookie: !!sessionUser,
         buildVersion: 'unknown',
         role: null,
+        tableRole: null,
         roomCode: null
     };
     vttClients.set(id, conn);
@@ -3966,6 +4333,8 @@ setInterval(() => {
 server.listen(PORT, () => {
     console.log(`[Codex Auth Engine] Serveur actif sur http://localhost:${PORT}`);
 });
-adminServer.listen(ADMIN_PORT, ADMIN_BIND, () => {
-    console.log(`[Codex Admin] Interface locale sur http://${ADMIN_BIND}:${ADMIN_PORT}/admin.html (non exposée)`);
-});
+if (process.env.DISABLE_ADMIN_SERVER !== '1') {
+    adminServer.listen(ADMIN_PORT, ADMIN_BIND, () => {
+        console.log(`[Codex Admin] Interface locale sur http://${ADMIN_BIND}:${ADMIN_PORT}/admin.html (non exposée)`);
+    });
+}
