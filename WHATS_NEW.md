@@ -1,20 +1,53 @@
-# What's New — Évolutions du Système RP (`6f497f7` ➔ `6fd7604`)
+# What's New — Changelog Système RP & Plateforme Codex (`v0.8.0`)
 
-> **Plage couverte :** Tout ce qui s'est ajouté ou modifié **après** le commit [`6f497f7`](https://github.com/k0r0z1f/Killtime/commit/6f497f72c92b6d89dc7840fa7dbb92c28a947cdf) (inclus dans [docs/mecaniques_systeme_rp_6f497f7.md](docs/mecaniques_systeme_rp_6f497f7.md)) jusqu'à `HEAD` = [`6fd7604`](https://github.com/k0r0z1f/Killtime/commit/6fd760482aa3c20e5a616f1ce39b24bc11cdb67e).  
-> **Périmètre exact (3 + 1 commits) :** Depuis `6f497f7`, le dépôt compte **3 commits d'audit mécanique `sysrp`** (`6fd7604`, `5146306`, `2a867a6` du 2026-11-25 soir) précédés d'**1 commit plateforme & compendium objets** (`76e6dcf` du 2026-11-25 03:56). Tous sont détaillés ci-dessous par ordre antéchronologique.
+> **Version actuelle : [`v0.8.0`](VERSION)** *(2026-11-26)* · **Baseline mécanique archivée :** commit [`6f497f7`](https://github.com/k0r0z1f/Killtime/commit/6f497f72c92b6d89dc7840fa7dbb92c28a947cdf) ([docs/mecaniques_systeme_rp_6f497f7.md](docs/mecaniques_systeme_rp_6f497f7.md)).  
+> Depuis le `2026-11-26`, le Codex et la plateforme `killtime.studio` suivent un **numéro de version unifié `MAJEUR.MINEUR.PATCH`** piloté depuis la source unique [`VERSION`](VERSION) (synchronisé automatiquement sur les `21` pages par [`tools/build_nav.py`](tools/build_nav.py) et tagué en Git).
+
+## Convention de versionnage (`MAJEUR.MINEUR.PATCH`)
+
+| Composant | Règle d'incrément | Portée |
+| :--- | :--- | :--- |
+| **`MAJEUR`** (`X.0.0`) | Changement d'édition ou rupture de compatibilité des fiches PJ | `0.x.y` = Bêta publique · `1.0.0` = 1re édition officielle figée · `2.0.0` = future refonte |
+| **`MINEUR`** (`0.Y.0`) | Nouveau module majeur ou passe d'audit mécanique modifiant règles/stats | Ex. VTT Web complet, Appendice C, passe d'audit d'un Livre |
+| **`PATCH`** (`0.8.Z`) | Correctifs ciblés, typos, ajustements UI/VTT/SEO/infra sans changement de règles | Ex. fix CSS/VTT, balises SEO, liens/ancres, reformulations |
 
 ## Sommaire
 
-- [Vue d'ensemble — Avant (`6f497f7`) ➔ Maintenant (`6fd7604`)](#vue-densemble--avant-6f497f7--maintenant-6fd7604)
-- [1. Commit `6fd7604` — Livre IV Passe P2 & Livre V `§20.4` (`RP-185`, `RP-186`, `RP-218`)](#1-commit-6fd7604--livre-iv-passe-p2--livre-v-204-rp-185-rp-186-rp-218)
-- [2. Commit `5146306` — Livre III Passe P1 (`RP-181`, `RP-182`, `RP-136`, `RP-183`, `RP-015`)](#2-commit-5146306--livre-iii-passe-p1-rp-181-rp-182-rp-136-rp-183-rp-015)
-- [3. Commit `2a867a6` — Audits F2 & F5, Livre II `§8` & Livre III `§12.1` (`RP-241`, `RP-244`, `RP-131`, `RP-180`)](#3-commit-2a867a6--audits-f2--f5-livre-ii-8--livre-iii-121-rp-241-rp-244-rp-131-rp-180)
-- [4. Commit `76e6dcf` — Appendice C Objets, Board VTT Web & Infra (`RP-250`, `RP-251`, `RP-252`, `VTT-001..045`)](#4-commit-76e6dcf--appendice-c-objets-board-vtt-web--infra-rp-250-rp-251-rp-252-vtt-001045)
-- [5. État des écarts résiduels depuis `6f497f7`](#5-état-des-écarts-résiduels-depuis-6f497f7)
+- [`v0.8.0` (2026-11-26) — VTT Web complet, Pilotage Markdown, SEO/SSR & Versionnage SemVer](#v080--2026-11-26--vtt-web-complet-pilotage-markdown-seossr--versionnage-semver)
+- [`v0.7.0` (2026-11-25) — Audits F2/F5, Livres III–V, Appendice C Objets & Infra (`6f497f7` ➔ `6fd7604`)](#v070--2026-11-25--audits-f2f5-livres-iiiv-appendice-c-objets--infra-6f497f7--6fd7604)
+  - [Vue d'ensemble (`6f497f7` ➔ `6fd7604`)](#vue-densemble--avant-6f497f7--maintenant-6fd7604)
+  - [1. Commit `6fd7604` — Livre IV Passe P2 & Livre V `§20.4` (`RP-185`, `RP-186`, `RP-218`)](#1-commit-6fd7604--livre-iv-passe-p2--livre-v-204-rp-185-rp-186-rp-218)
+  - [2. Commit `5146306` — Livre III Passe P1 (`RP-181`, `RP-182`, `RP-136`, `RP-183`, `RP-015`)](#2-commit-5146306--livre-iii-passe-p1-rp-181-rp-182-rp-136-rp-183-rp-015)
+  - [3. Commit `2a867a6` — Audits F2 & F5, Livre II `§8` & Livre III `§12.1` (`RP-241`, `RP-244`, `RP-131`, `RP-180`)](#3-commit-2a867a6--audits-f2--f5-livre-ii-8--livre-iii-121-rp-241-rp-244-rp-131-rp-180)
+  - [4. Commit `76e6dcf` — Appendice C Objets, Board VTT Web & Infra (`RP-250`, `RP-251`, `RP-252`, `VTT-001..045`)](#4-commit-76e6dcf--appendice-c-objets-board-vtt-web--infra-rp-250-rp-251-rp-252-vtt-001045)
+  - [5. État des écarts résiduels depuis `6f497f7`](#5-état-des-écarts-résiduels-depuis-6f497f7)
 
 ---
 
-## Vue d'ensemble — Avant (`6f497f7`) ➔ Maintenant (`6fd7604`)
+## `v0.8.0` — 2026-11-26 : VTT Web complet, Pilotage Markdown, SEO/SSR & Versionnage SemVer
+
+*Plage : commits `6f7f63e` ➔ `HEAD` · Tickets clôturés : `RP-253`, `RP-254`, `RP-255`, `RP-256`, `RP-257` et `VTT-006..045` (`45/45` sur `board-vtt-web`).*
+
+- **Versionnage SemVer unifié (`v0.8.0`, `RP-257`)** :
+  - Création du fichier racine [`VERSION`](VERSION) (`0.8.0`) comme source unique de vérité et pose du tag Git annoté `v0.8.0`.
+  - Extension de [`tools/build_nav.py`](tools/build_nav.py) et [`tools/build_appendice_objets.py`](tools/build_appendice_objets.py) pour synchroniser automatiquement les badges `Codex v0.8.0`, les tampons d'appendices et les versions JSON (remplacement de l'ancien libellé figé `v2.4` sur les pages HTML, [`js/tools.js`](js/tools.js), [`tactics_index.html`](tactics_index.html), [`js/doc_viewer.js`](js/doc_viewer.js), [`README.md`](README.md) et Appendices A/B/C).
+- **SEO Search Console & Pré-rendu Serveur SSR (`755c8aa`, `RP-256`)** :
+  - Ajout de `<link rel="canonical">` sur les `19` pages du Codex listées au sitemap et correction du canonical cassé dans [`Killtime/index.html`](Killtime/index.html) ; normalisation des liens internes `index.html` ➔ `/` sur `20` pages (dont [`doc_viewer.html`](doc_viewer.html) et [`atlas_3d.html`](atlas_3d.html)).
+  - Redirections HTTP `301` dans [`users/server.js`](users/server.js) (`/index.html` ➔ `/`, `www.killtime.studio` ➔ `https://killtime.studio`), resserrage de [`robots.txt`](robots.txt) (exclusion `doc_viewer.html`, `*.docx`, `chatgpt/`, `lore/`, `manuscripts/` tout en gardant `/data/` ouvert) et mise à jour de [`sitemap.xml`](sitemap.xml) (`20` URLs).
+  - Création de [`users/ssr_codex.js`](users/ssr_codex.js) : pré-rendu serveur sans duplication avec cache invalidé par `mtime` pour les `11` Livres JSON et les `3` Appendices, plus `8` nouveaux tests ([`canonical_redirect.test.js`](users/tests/canonical_redirect.test.js), [`ssr_codex.test.js`](users/tests/ssr_codex.test.js) — `68/68` tests `node --test` verts).
+- **VTT Web SysRP complet (`e477e4d`, `VTT-006..045` & `RP-255`)** :
+  - Moteur de règles partagé [`js/vtt-rules.js`](js/vtt-rules.js), persistance anti-maphack [`users/vtt_state.js`](users/vtt_state.js), politique d'autorité MJ [`users/vtt_hub_policy.js`](users/vtt_hub_policy.js) et routes WebSocket/REST dans [`users/server.js`](users/server.js).
+  - Interface VTT complète intégrée à [`tables.html`](tables.html), [`js/tables.js`](js/tables.js) et au dock global [`js/table-dock.js`](js/table-dock.js) : canvas 2D HiDPI 7 couches ([`js/vtt-canvas.js`](js/vtt-canvas.js)), client WS ([`js/vtt-client.js`](js/vtt-client.js)), compendiums ([`js/vtt-compendium.js`](js/vtt-compendium.js)), duels Face-à-Face / réactions / handouts ([`js/vtt-combat.js`](js/vtt-combat.js)), horloge / défis / sorts / audio ([`js/vtt-extras.js`](js/vtt-extras.js)), panneau Chat↔VTT / 6 zones corporelles / DLPH / véhicules / mobile ([`js/vtt-ui.js`](js/vtt-ui.js), [`css/vtt.css`](css/vtt.css)), et mise à jour de [`README.md`](README.md).
+- **Lecteur Markdown Pilotage (`bb7f208` & `6f7f63e`, `RP-253`, `RP-254`)** :
+  - Création de [`doc_viewer.html`](doc_viewer.html) + [`js/doc_viewer.js`](js/doc_viewer.js), copie versionnée [`docs/mecaniques_systeme_rp_6f497f7.md`](docs/mecaniques_systeme_rp_6f497f7.md), et synchronisation des 3 liens *What's New*, *Mécaniques de Base (6f497f7)* et *README Projet* dans le groupe Pilotage sur les `21` pages.
+
+---
+
+## `v0.7.0` — 2026-11-25 : Audits F2/F5, Livres III–V, Appendice C Objets & Infra (`6f497f7` ➔ `6fd7604`)
+
+> **Plage couverte :** Tout ce qui s'est ajouté ou modifié **après** le commit [`6f497f7`](https://github.com/k0r0z1f/Killtime/commit/6f497f72c92b6d89dc7840fa7dbb92c28a947cdf) jusqu'au commit [`6fd7604`](https://github.com/k0r0z1f/Killtime/commit/6fd760482aa3c20e5a616f1ce39b24bc11cdb67e) (**3 commits d'audit mécanique `sysrp`** `6fd7604`, `5146306`, `2a867a6` précédés du **commit plateforme & compendium objets** `76e6dcf`).
+
+### Vue d'ensemble — Avant (`6f497f7`) ➔ Maintenant (`6fd7604`)
 
 | Domaine / Règle | Baseline (`6f497f7`) | État actuel (`6fd7604`) | Commit |
 | :--- | :--- | :--- | :---: |

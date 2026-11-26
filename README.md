@@ -3,13 +3,13 @@
 > **Moteur de Jeu de Rôle Tactique, Chrono-Physique & Cosmologie Vivante**  
 > *Le cadre de règles, de physique arcanique et de mécanique universelle qui englobe la saga narrative Killtime.*
 
-[![Statut](https://img.shields.io/badge/Version-2.5_Codex_Complet-38bdf8.svg)](#)
+[![Statut](https://img.shields.io/badge/Version-0.8.0_B%C3%AAta_Codex-38bdf8.svg)](WHATS_NEW.md)
 [![Livres](https://img.shields.io/badge/Livres-I_%C3%A0_XII-f59e0b.svg)](#)
 [![Appendices](https://img.shields.io/badge/Appendices-A_%C2%B7_B_%C2%B7_C-0ea5e9.svg)](appendice_actions.html)
 [![Univers](https://img.shields.io/badge/Lore-Killtime_Universe-10b981.svg)](Killtime/index.html)
 [![Web_App](https://img.shields.io/badge/Plateforme-Web_Autonome-8b5cf6.svg)](index.html)
 [![Licence](https://img.shields.io/badge/Licence-GPLv3-blue.svg)](Killtime/LICENSE)
-[![What's New](https://img.shields.io/badge/What%27s_New-6f497f7_%E2%86%92_6fd7604-ef4444.svg)](WHATS_NEW.md)
+[![What's New](https://img.shields.io/badge/What%27s_New-v0.8.0-ef4444.svg)](WHATS_NEW.md)
 [![Baseline](https://img.shields.io/badge/Baseline-6f497f7-6366f1.svg)](docs/mecaniques_systeme_rp_6f497f7.md)
 
 ---

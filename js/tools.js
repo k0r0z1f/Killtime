@@ -2011,7 +2011,7 @@ function initCharacterSheet() {
         const metList = METIERS_PAR_EPOQUE[metEp] || METIERS;
         const metTxt = d.metier ? ('[' + metEp + '] ' + histTxt(metList, d.metier)) : '—';
         const eveTxt = (d.evenement && d.evenement !== '0') ? histTxt(EVENEMENTS, d.evenement) : 'Aucun';
-        return `=== FICHE DE PERSONNAGE RP (Codex v2.4) ===\n` +
+        return `=== FICHE DE PERSONNAGE RP (Codex v0.8.0) ===\n` +
             `Nom : ${d.name || 'Héros sans nom'}${d.age ? ' | Âge : ' + d.age : ''}${d.sexe ? ' | Sexe : ' + d.sexe : ''}\n` +
             `Espèce : ${rdata.label} | Don racial : ${rdata.gifts[d.gift]} (${rdata.giftNotes[d.gift]})\n` +
             `Monde d'origine : ${d.monde || '—'} | Profil : ${profileSelect.options[profileSelect.selectedIndex].text}\n` +

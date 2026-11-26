@@ -12,9 +12,9 @@
             file: 'WHATS_NEW.md',
             navLabel: "What's New (Système RP)",
             badgeTag: 'Pilotage — Nouveautés',
-            badgeStatus: '6f497f7 ➔ 6fd7604',
-            title: "What's New — Évolutions du Système RP",
-            lead: 'Journal détaillé des évolutions mécaniques et plateforme depuis la baseline 6f497f7 jusqu’au dernier commit.'
+            badgeStatus: 'v0.8.0',
+            title: "What's New — Changelog Système RP & Codex",
+            lead: 'Journal versionné (SemVer) des évolutions mécaniques et plateforme depuis la baseline 6f497f7 jusqu’à la version courante.'
         },
         baseline: {
             key: 'baseline',

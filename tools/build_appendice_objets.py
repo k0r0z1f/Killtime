@@ -1793,9 +1793,12 @@ def build_data():
         if eo['nom'] not in l6_blob:
             raise ValueError(f"Etat objet manquant dans livre_6.json: {eo['nom']}")
 
+    ver_path = os.path.join(RACINE, 'VERSION')
+    ver = open(ver_path, encoding='utf-8').read().strip() if os.path.exists(ver_path) else '0.8.0'
+
     return {
         'titre': 'Appendice C : Compendium des Objets',
-        'version': '2.4',
+        'version': ver,
         'updated': '2026-11-23',
         'source_canon': 'data/livre_8.json',
         'regles_ref': {

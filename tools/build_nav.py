@@ -41,6 +41,16 @@ RE_APPENDICE_C = re.compile(
 RE_PILOTAGE = re.compile(
     r'(group-tag">◆</span>.*?<span>Pilotage</span>.*?<ul class="nav-items-list">)(.*?)(</ul>)',
     re.S)
+RE_BRAND_BADGE = re.compile(r'(<span class="brand-badge">Codex v)[^<]+(</span>)')
+RE_STAMP_CODEX = re.compile(r'(<span class="stamp-date">APPENDICE [A-Z]+ // CODEX v)[^<]+(</span>)')
+RE_DOC_BADGE = re.compile(r'(<span class="doc-badge-pill live" id="docBadgeStatus">Codex v)[^<]+(</span>)')
+
+
+def lire_version():
+    p = os.path.join(RACINE, 'VERSION')
+    if not os.path.exists(p):
+        return '0.8.0'
+    return open(p, encoding='utf-8').read().strip()
 
 
 def charger_livre(n):
@@ -233,6 +243,10 @@ def regenere(page):
             lambda m: m.group(1) + '\n' + entrees_appendice_objets(page) + m.group(3),
             out
         )
+    ver = lire_version()
+    out = RE_BRAND_BADGE.sub(r'\g<1>%s\g<2>' % ver, out)
+    out = RE_STAMP_CODEX.sub(r'\g<1>%s\g<2>' % ver, out)
+    out = RE_DOC_BADGE.sub(r'\g<1>%s\g<2>' % ver, out)
     return out
 
 

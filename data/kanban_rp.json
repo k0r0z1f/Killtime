@@ -3947,6 +3947,22 @@
           "suggestedAsset": "users/ssr_codex.js",
           "updated": "2026-11-26",
           "details": "DONE 2026-11-26 — Correction complète Search Console (Duplicate without user-selected canonical & Crawled - currently not indexed) : ajout <link rel=\"canonical\"> sur les 19 pages Codex + correction canonical Killtime/index.html, normalisation des liens internes index.html -> / (20 pages dont doc_viewer.html & atlas_3d.html), redirections 301 (/index.html -> /, www.killtime.studio -> https://killtime.studio) dans users/server.js, resserrage robots.txt (exclusion doc_viewer.html, *.docx, chatgpt/, lore/, manuscripts/ en gardant /data/ ouvert) & mise à jour sitemap.xml (20 URLs), pré-rendu serveur SSR caché par mtime (users/ssr_codex.js) pour les 11 Livres JSON et 3 Appendices, plus 8 nouveaux tests (users/tests/canonical_redirect.test.js & ssr_codex.test.js, 68/68 verts)."
+        },
+        {
+          "id": "RP-257",
+          "title": "Versionnage SemVer (v0.8.0) — fichier VERSION, sync build_nav & mise à jour What's New",
+          "epic": "Site Codex",
+          "status": "done",
+          "priority": "medium",
+          "order": 254,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "WHATS_NEW.md",
+          "updated": "2026-11-26",
+          "details": "DONE 2026-11-26 — Mise en place du versionnage SemVer unifié à partir de v0.8.0 : création du fichier racine VERSION comme source unique de vérité, synchronisation automatique des badges/tampons Codex dans tools/build_nav.py et tools/build_appendice_objets.py (remplacement de l'ancien libellé figé v2.4 sur les pages HTML, js/tools.js, tactics_index.html, js/doc_viewer.js, README.md et Appendices A/B/C), refonte de WHATS_NEW.md en changelog versionné (v0.8.0 + archive v0.7.0 6f497f7→6fd7604) et pose du tag Git annoté v0.8.0."
         }
       ]
     },
