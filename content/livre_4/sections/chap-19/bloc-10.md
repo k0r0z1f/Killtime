@@ -24,6 +24,11 @@ livre: 4
                         <br>Chaque ligne ci-dessous est une spécialisation à part entière : tu les achètes une par
                         une, chacune au même tarif. Lis l'indentation : une spécialisation indentée (↳)
                         a pour prérequis celle qu'elle pointe — sa mère, juste au-dessus dans sa branche.
+                        <br><strong>Coût en PA :</strong> sauf mention contraire sur la ligne, activer une spécialisation
+                        arcanique en combat coûte <strong>2 <a class="rule-ref" href="livre_1.html#chap-4"
+                                data-tip="PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).">PA</a></strong>
+                        (action principale standard ; <strong>0 PA</strong> pour un effet passif pur ; les coûts réduits ou
+                        renforcés comme 1 PA ou 3 PA sont indiqués explicitement).
                     </p>
 
                     <div class="callout arcane">

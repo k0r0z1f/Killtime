@@ -2756,10 +2756,12 @@
   },
   {
    "id": "effets-speciaux-epreuve",
-   "terme": "Effets Spéciaux sur Épreuve",
+   "terme": "Manœuvres de Déplacement Forcé (§20.4)",
    "domaine": "combat",
    "alias": [
-    "effets declenches"
+    "bousculer",
+    "repousser",
+    "attirer"
    ],
    "liens": [
     {
@@ -2771,11 +2773,12 @@
   },
   {
    "id": "effet-repousser",
-   "terme": "Repousser",
+   "terme": "Bousculer / Repousser",
    "domaine": "combat",
    "alias": [
     "push",
-    "projection"
+    "repousser",
+    "bousculer"
    ],
    "liens": [
     {
@@ -2794,14 +2797,9 @@
    ],
    "liens": [
     {
-     "label": "Livre V §20.4",
+     "label": "Livre V §22.2",
      "livre": 5,
-     "href": "livre_5.html#sec-20-4"
-    },
-    {
-     "label": "Livre V §22.3",
-     "livre": 5,
-     "href": "livre_5.html#sec-22-3"
+     "href": "livre_5.html#sec-22-2"
     }
    ]
   },
@@ -2811,6 +2809,7 @@
    "domaine": "combat",
    "alias": [
     "grappin",
+    "chaine",
     "telekinesie"
    ],
    "liens": [
@@ -2818,48 +2817,6 @@
      "label": "Livre V §20.4",
      "livre": 5,
      "href": "livre_5.html#sec-20-4"
-    }
-   ]
-  },
-  {
-   "id": "effet-saigner",
-   "terme": "Saigner (Effet sur Épreuve)",
-   "domaine": "combat",
-   "alias": [
-    "tranchant",
-    "percant"
-   ],
-   "liens": [
-    {
-     "label": "Livre V §20.4",
-     "livre": 5,
-     "href": "livre_5.html#sec-20-4"
-    },
-    {
-     "label": "Livre VI §24.2",
-     "livre": 6,
-     "href": "livre_6.html#sec-24-2"
-    }
-   ]
-  },
-  {
-   "id": "effet-bruler",
-   "terme": "Brûler (Effet sur Épreuve)",
-   "domaine": "combat",
-   "alias": [
-    "feu",
-    "flamme"
-   ],
-   "liens": [
-    {
-     "label": "Livre V §20.4",
-     "livre": 5,
-     "href": "livre_5.html#sec-20-4"
-    },
-    {
-     "label": "Livre VI §24.2",
-     "livre": 6,
-     "href": "livre_6.html#sec-24-2"
     }
    ]
   },
@@ -2872,9 +2829,14 @@
    ],
    "liens": [
     {
-     "label": "Livre V §20.4",
+     "label": "Livre V §22.1",
      "livre": 5,
-     "href": "livre_5.html#sec-20-4"
+     "href": "livre_5.html#sec-22-1"
+    },
+    {
+     "label": "Spécialisations L.III §14",
+     "livre": 3,
+     "href": "livre_3.html#chap-14"
     }
    ]
   },
@@ -2888,40 +2850,9 @@
    ],
    "liens": [
     {
-     "label": "Livre V §20.4",
+     "label": "Livre V §22.1",
      "livre": 5,
-     "href": "livre_5.html#sec-20-4"
-    }
-   ]
-  },
-  {
-   "id": "effet-posseder",
-   "terme": "Posséder",
-   "domaine": "combat",
-   "alias": [
-    "controle mental",
-    "possession"
-   ],
-   "liens": [
-    {
-     "label": "Livre V §20.4",
-     "livre": 5,
-     "href": "livre_5.html#sec-20-4"
-    }
-   ]
-  },
-  {
-   "id": "effet-desintegrer",
-   "terme": "Désintégrer",
-   "domaine": "combat",
-   "alias": [
-    "destruction matiere"
-   ],
-   "liens": [
-    {
-     "label": "Livre V §20.4",
-     "livre": 5,
-     "href": "livre_5.html#sec-20-4"
+     "href": "livre_5.html#sec-22-1"
     }
    ]
   },

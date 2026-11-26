@@ -33,6 +33,7 @@ livre: 5
                         Pas besoin d'être spécialiste pour attraper quelqu'un. Au contact —
                         <strong>1 case ou moins</strong> — tu peux ceinturer, clouer sur place,
                         traîner ou étrangler.
+                        Pour simplement repousser ou attirer sans engager une prise, utilise les manœuvres de <a class="rule-ref" href="#sec-20-4" data-tip="Manœuvres de déplacement forcé : Bousculer / Repousser ou Attirer (2 PA, Face-à-Face Athlétisme, §20.4).">§20.4</a> (2 PA).
                     </p>
 
                     

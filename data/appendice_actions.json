@@ -975,21 +975,21 @@
   },
   {
    "id": "effet-repousser-refoulement",
-   "nom": "Repousser & Refoulement (Sur Épreuve)",
+   "nom": "Bousculer / Repousser & Refoulement",
    "categorie": "offensif",
    "types": [
     "Offensif"
    ],
-   "cadence": "Réaction / Déclenchée",
-   "cadence_cle": "reaction_autre",
-   "cout_pa": "0 PA (intégré à l'attaque)",
-   "cout_pa_groupe": "0",
-   "cout_pa_tri": 0,
+   "cadence": "Manœuvre / Action",
+   "cadence_cle": "manoeuvre",
+   "cout_pa": "2 PA (Bousculer §20.4) / 0 PA (Refoulement §22.2)",
+   "cout_pa_groupe": "2",
+   "cout_pa_tri": 2,
    "contexte": "Combat",
    "timing": "À la résolution d'une touche",
    "portee": "Contact ou magie",
-   "jet": "Déclenché par Δ ≥ 1, Choc (> CON×2) ou Critique",
-   "requiert_jet": false,
+   "jet": "Face-à-Face Athlétisme (Bousculer §20.4) ou Arts Martiaux sur Choc/Crit/Δ ≥ 4 (Refoulement §22.2)",
+   "requiert_jet": true,
    "consomme_reaction_libre": false,
    "silencieux": false,
    "competences": [
@@ -1005,7 +1005,7 @@
    "ralenti_effet": "Aucun surcoût PA propre",
    "resume": "Projeter un adversaire en arrière sous la puissance de l'impact, rompant le contact et Canon Entravé.",
    "procedure": [
-    "Repousser (§20.4) : sur différentiel Δ ≥ 1 en corps-à-corps ou magie, repousse la cible d'autant de cases que Δ (plafonné à 1 case par niveau d'entraînement).",
+    "Bousculer / Repousser (§20.4) : manœuvre dédiée à 2 PA au contact, Face-à-Face Athlétisme vs Athlétisme (ou Défense Corporelle). Sur réussite (Δ ≥ 0), repousse la cible d'1 case (+1 case si Δ ≥ 3) ; obstacle infranchissable = Déstabilisé.",
     "Refoulement (§22.2) : avec la spécialisation Arts Martiaux à mains nues, sur choc (> CON × 2), coup critique ou Δ ≥ 4, repousse la cible d'1 case (Distance = 2) et brise Canon Entravé.",
     "Si la case arrière du Refoulement est occupée ou bloquée par un obstacle infranchissable, la cible heurte la paroi et subit l'état Déstabilisé."
    ],
@@ -1039,16 +1039,16 @@
     "Offensif",
     "Utilitaire"
    ],
-   "cadence": "Réaction / Déclenchée",
-   "cadence_cle": "reaction_autre",
-   "cout_pa": "0 PA (intégré à l'attaque)",
-   "cout_pa_groupe": "0",
-   "cout_pa_tri": 0,
+   "cadence": "Manœuvre / Action",
+   "cadence_cle": "manoeuvre",
+   "cout_pa": "2 PA",
+   "cout_pa_groupe": "2",
+   "cout_pa_tri": 2,
    "contexte": "Combat",
    "timing": "À la résolution de l'épreuve",
    "portee": "Portée du grappin ou du sort",
-   "jet": "Déclenché par Δ ≥ 1",
-   "requiert_jet": false,
+   "jet": "Face-à-Face Athlétisme (ou Magie de l'Esprit) vs Athlétisme (ou Esquive)",
+   "requiert_jet": true,
    "consomme_reaction_libre": false,
    "silencieux": false,
    "competences": [
@@ -1063,8 +1063,8 @@
    "ralenti_effet": "Aucun surcoût PA propre",
    "resume": "Haler un adversaire ou un objet vers l'origine grâce à un grappin, un câble ou une traction télékinésique.",
    "procedure": [
-    "Réussir une attaque ou épreuve avec un grappin ou une télékinésie avec différentiel Δ ≥ 1.",
-    "Tirer la cible vers l'origine d'un nombre de cases égal au différentiel ou au rang d'entraînement (selon le dispositif ou pouvoir)."
+    "Dépenser 2 PA avec un grappin, une chaîne ou une traction télékinésique.",
+    "Réussir le Face-à-Face (Δ ≥ 0) pour attirer la cible d'1 case vers toi (+1 case si Δ ≥ 3)."
    ],
    "conditions": "Exige un outil adapté (grappin) ou un pouvoir/sort de traction (Télékinésie / Fissure Gravifique).",
    "modificateurs": "Une cible attirée ne provoque pas de réaction d'opportunité à son insu mais peut briser ses couverts.",
@@ -1102,7 +1102,7 @@
    "contexte": "Combat",
    "timing": "À la résolution d'une touche",
    "portee": "Contact ou tir chirurgical",
-   "jet": "Δ ≥ 5 + 3 entr. martiaux (ou Visée Niv. 2 Poignet)",
+   "jet": "Visée Niv. 2 Poignet (−1 ou +1 PA) ou Spécialisation L.III §14",
    "requiert_jet": false,
    "consomme_reaction_libre": false,
    "silencieux": false,
@@ -1119,16 +1119,15 @@
    "ralenti_effet": "Aucun surcoût PA propre",
    "resume": "Faire lâcher ou voler l'arme ou l'objet tenu par l'adversaire par maîtrise martiale ou tir chirurgical au poignet.",
    "procedure": [
-    "Voie Effet d'Épreuve (§20.4) : obtenir un différentiel Δ ≥ 5 avec au moins 3 entraînements martiaux — l'arme tenue vole à 2 cases au sol.",
     "Voie Visée Niveau 2 (§22.1) : viser Poignet / Main / Tendons (−1 ou +1 PA) et infliger ≥ 1 dégât après armure — l'arme ou objet tombe au sol à 1–2 cases et empêche la prise à deux mains.",
     "Voie Spécialisation (§14) : Tir de Neutralisation (Δ ≥ 1 sur Bras Droit), Désarmement Fleuret (Δ ≥ 2), Crochet de Hallebarde (Δ ≥ 2), Croc de Désarmement (Δ ≥ 3)."
    ],
    "conditions": "L'adversaire doit tenir une arme ou un objet en main. Récupérer son arme au sol coûtera 1 PA à son tour.",
    "modificateurs": "Plus facile et rapide via les spécialisations de désarmement (Δ ≥ 1 à 3) ou la visée Niveau 2 au poignet (−1).",
    "source": {
-    "label": "Livre V §20.4 & §22.1",
+    "label": "Livre V §22.1 & Livre III §14",
     "livre": 5,
-    "href": "livre_5.html#sec-20-4"
+    "href": "livre_5.html#sec-22-1"
    },
    "refs": [
     {
@@ -1188,9 +1187,9 @@
    "conditions": "Exige la visée Niveau 2 sur le crâne et au moins 1 dégât franchissant l'armure.",
    "modificateurs": "Une fois Inconsciente, la cible peut être réveillée par un allié pour 1 PA (secousse), ou frappée automatiquement aux dégâts maximum (§20.2).",
    "source": {
-    "label": "Livre V §20.4 & §22.1",
+    "label": "Livre V §22.1",
     "livre": 5,
-    "href": "livre_5.html#sec-20-4"
+    "href": "livre_5.html#sec-22-1"
    },
    "refs": [
     {
@@ -1214,7 +1213,7 @@
   },
   {
    "id": "effet-saigner-bruler",
-   "nom": "Déclencher Saigner / Brûler sur Épreuve",
+   "nom": "Saignement & Brûlure (Dégâts Résiduels)",
    "categorie": "offensif",
    "types": [
     "Offensif"
@@ -1227,7 +1226,7 @@
    "contexte": "Combat",
    "timing": "À la résolution d'une touche",
    "portee": "Portée de l'attaque",
-   "jet": "Δ ≥ 5 avec arme tranchante/perforante ou feu/plasma",
+   "jet": "Visée Niv. 2 (§22.1), arme/munition, sort ou spécialisation",
    "requiert_jet": false,
    "consomme_reaction_libre": false,
    "silencieux": false,
@@ -1243,20 +1242,25 @@
    ],
    "limite": "Selon attaques réussies",
    "ralenti_effet": "Aucun surcoût PA propre",
-   "resume": "Poser un état à dégâts résiduels continus (Saignement ou En Feu) grâce à un différentiel d'attaque exceptionnel.",
+   "resume": "Poser un état à dégâts résiduels décroissants (Saignement ou En Feu, −1/tour) via Visée Niveau 2, arme dédiée, sort ou spécialisation.",
    "procedure": [
-    "Saigner (§20.4) : sur Δ ≥ 5 avec une arme tranchante ou perforante, inflige des dégâts résiduels continus (Saignement) égaux au niveau d'entraînement.",
-    "Brûler (§20.4) : sur Δ ≥ 5 avec feu ou plasma (ex. Épée Laser Suprême 6D, sort de feu), pose En Feu (dégâts de brûlure continus sur 1 à 3 tours).",
-    "Les résiduels frappent au début de chaque tour de la victime en ignorant l'armure physique puis décroissent de 1 par tour (§24.2)."
+    "Saignement (§22.1 / §24.2) : déclenché par Visée Niveau 2 (Carotide/Jugulaire, Abdomen, Artère brachiale ou fémorale) ou une spécialisation dédiée (ex. Frappe Jugulaire, Pointe/Épine).",
+    "En Feu (§24.2) : déclenché par une arme incendiaire/feu/plasma, un sort (ex. Incinération Pyrocinétique, Souffle Ardent) ou un environnement inflammable.",
+    "Les résiduels frappent au début de chaque tour de la victime en ignorant l'armure physique puis décroissent de 1 par tour (Livre VI §24.2)."
    ],
-   "conditions": "Requiert Δ ≥ 5 et l'arme ou l'élément approprié (ou une visée carotide/jugulaire/artère, ou spécialisation dédiée comme Frappe Jugulaire).",
+   "conditions": "Exige une source dédiée (Visée Niveau 2 avec ≥ 1 dégât après armure, arme/munition, sort ou spécialisation).",
    "modificateurs": "Saignement ne décroît pas si la victime court, charge ou dépense de l'Essoufflement ; En Feu frappe d'abord les boucliers énergétiques/magiques.",
    "source": {
-    "label": "Livre V §20.4",
-    "livre": 5,
-    "href": "livre_5.html#sec-20-4"
+    "label": "Livre V §22.1 & Livre VI §24.2",
+    "livre": 6,
+    "href": "livre_6.html#sec-24-2"
    },
    "refs": [
+    {
+     "label": "Localisation §22.1",
+     "livre": 5,
+     "href": "livre_5.html#sec-22-1"
+    },
     {
      "label": "Dégâts Résiduels L.VI §24.2",
      "livre": 6,

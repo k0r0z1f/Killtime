@@ -2800,7 +2800,7 @@
           "id": "RP-185",
           "title": "P2-2 Compendium §19.4 + mecaniques (↳, 33e Feu, hex→case, PA, 329 entrées)",
           "epic": "P2 — Livre IV",
-          "status": "todo",
+          "status": "done",
           "priority": "high",
           "order": 182,
           "scene": "",
@@ -2809,14 +2809,14 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "",
-          "updated": "2026-11-10",
-          "details": "Corriger 5 indentations ↳ (#35/#270 manquants, #231/#242/#253 en trop); 33e spé Feu (Incinération 10→11); 41 hex→case (dont #9/#248 '2 hex (4 cases)'); coûts PA d'activation manquants; #298/#299 Aveugle 1 tour; #98/#99 résurrection non définie; #321/#323 Delta≥2 sans adversaire; 3 doublons noms (Sens de la Pierre, Pistage, Anticipation); régénérer mecaniques.specialisations_par_nom (46→329, nb_specialisations=329). (Audit sysRP 2026-11-10.)"
+          "updated": "2026-11-25",
+          "details": "Corriger 5 indentations ↳ (#35/#270 manquants, #231/#242/#253 en trop); 33e spé Feu (Incinération 10→11); 41 hex→case (dont #9/#248 '2 hex (4 cases)'); coûts PA d'activation manquants; #298/#299 Aveugle 1 tour; #98/#99 résurrection non définie; #321/#323 Delta≥2 sans adversaire; 3 doublons noms (Sens de la Pierre, Pistage, Anticipation); régénérer mecaniques.specialisations_par_nom (46→329, nb_specialisations=329). (Audit sysRP 2026-11-10.) | FAIT 2026-11-25 — Coût PA par défaut (2 PA, 0 PA si passif pur) ajouté en tête de §19.4 ; indentation #270 Injonction Impérieuse corrigée (↳ 2em) ; 33e spé Feu ajoutée (Souffle Ardent, Feu 32→33, total 330) ; #299 Cécité Partielle → Aveugle 1 tour ; #98/#99 liés à Résurrection Livre VI §25.3 ; #321/#323 clause Delta ≥ 2 retirée ; 3 doublons renommés (Pistage → Pistage Tellurique, Sens de la Pierre → Écho Lithique, Anticipation → Prescience Tactique) ; mecaniques régénérées à 330 entrées avec parente directe et noms sans ↳ ; mini-arbres §18.1 (donnees.magies + mecaniques.magies) resynchronisés (0 hex résiduel)."
         },
         {
           "id": "RP-186",
           "title": "P2-3 Atelier XP=PA §19.2-19.3 (Débalancée, Résiduelle, Écrasement)",
           "epic": "P2 — Livre IV",
-          "status": "todo",
+          "status": "done",
           "priority": "medium",
           "order": 183,
           "scene": "",
@@ -2825,8 +2825,8 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "",
-          "updated": "2026-11-10",
-          "details": "Remplacer Débalancée (état inexistant L.VI) module 1 pt; clarifier +2 Résistance Résiduelle (terme non défini) module 3 pts; corriger Écrasement de Matière. Fichiers: content/livre_4/sections/chap-19/, data/livre_4.json. (Audit sysRP 2026-11-10.)"
+          "updated": "2026-11-25",
+          "details": "Remplacer Débalancée (état inexistant L.VI) module 1 pt; clarifier +2 Résistance Résiduelle (terme non défini) module 3 pts; corriger Écrasement de Matière. Fichiers: content/livre_4/sections/chap-19/, data/livre_4.json. (Audit sysRP 2026-11-10.) | FAIT 2026-11-25 — Débalancée (1 pt) → −1 à sa prochaine défense (parade/esquive avant ton prochain tour) ; +2 Résistance Résiduelle (3 pts) → Réduction Résiduelle (−2 dégâts résiduels §24.2 pendant 1 tour) ; Écrasement de Matière (3 XP/3 PA) → +2 Dégâts directs (1 pt) + À Terre (2 pts) ; libellés miroirs mis à jour dans livre_9.html."
         },
         {
           "id": "RP-187",
@@ -3328,7 +3328,7 @@
           "id": "RP-218",
           "title": "Réviser Livre V §20.4 Effets Spéciaux Déclenchés sur Épreuve (ex-Livre VI §24.5 : doublons & conflits §24.2 / §22.1 / L.IV)",
           "epic": "Livre V — Combat Tactique",
-          "status": "todo",
+          "status": "done",
           "priority": "medium",
           "order": 215,
           "scene": "",
@@ -3337,8 +3337,8 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "livre_5.html#sec-20-4",
-          "updated": "2026-11-21",
-          "details": "Issu de RP-217 (2026-11-21) — Passer en revue les 9 lignes de effets_epreuve transférées en Livre V §20.4 : doublons (Refoulement §22.2, Assommer & Désarmer §22.1 / L.III §14), contradictions avec §24.2 (Saigner/Brûler hors score décroissant), reliquats arcanes obsolètes (Posséder vs Marionnette/Domination L.IV, Désintégrer Destruction 6 inexistant en L.IV), et trancher si Repousser / Attirer doivent devenir des manœuvres génériques en Livre V (ex. à côté de Lutte §20.8)."
+          "updated": "2026-11-25",
+          "details": "Issu de RP-217 (2026-11-21) — Passer en revue les 9 lignes de effets_epreuve transférées en Livre V §20.4 : doublons (Refoulement §22.2, Assommer & Désarmer §22.1 / L.III §14), contradictions avec §24.2 (Saigner/Brûler hors score décroissant), reliquats arcanes obsolètes (Posséder vs Marionnette/Domination L.IV, Désintégrer Destruction 6 inexistant en L.IV), et trancher si Repousser / Attirer doivent devenir des manœuvres génériques en Livre V (ex. à côté de Lutte §20.8). | FAIT 2026-11-25 — Ancre #sec-20-4 conservée (pour préserver §20.5–§20.9) et transformée en Manœuvres de Déplacement Forcé & Renvois d'Effets : anciennes 9 lignes obsolètes remplacées par Bousculer / Repousser et Attirer (manœuvres dédiées à 2 PA, Face-à-Face Athlétisme, 1 case ou 2 si Δ ≥ 3) ; pointeurs vers §22.2 (Refoulement), §22.1 (Assommer/Désarmer/Saignement), L.VI §24.2 (résiduels −1/tour), L.IV §19.4 (Télépathie) et §20.8 (Lutte) ; §20.5 (couts_pa) et §20.8 croisés ; Appendices A & B synchronisés (entrées effet-posseder/desintegrer/saigner/bruler retirées du glossaire)."
         },
         {
           "id": "RP-219",
