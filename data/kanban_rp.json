@@ -3899,6 +3899,22 @@
           "suggestedAsset": "WHATS_NEW.md",
           "updated": "2026-11-25",
           "details": "DONE 2026-11-25 — Création de WHATS_NEW.md à la racine du dépôt pour accès rapide sur GitHub (plage 6f497f7 → 6fd7604 : tableau comparatif, 3 commits d'audit mécanique sysrp 6fd7604/5146306/2a867a6 + commit intermédiaire Appendice C / Board VTT / Infra 76e6dcf, suivi des écarts depuis la baseline locale summaries/mecaniques_systeme_rp_6f497f7.md) et ajout du badge What's New dans README.md."
+        },
+        {
+          "id": "RP-254",
+          "title": "Pilotage Codex — Lecteur Markdown (doc_viewer) + liens What's New, Baseline 6f497f7 & README",
+          "epic": "Site Codex",
+          "status": "done",
+          "priority": "medium",
+          "order": 251,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "doc_viewer.html",
+          "updated": "2026-11-25",
+          "details": "DONE 2026-11-25 — Copie versionnée docs/mecaniques_systeme_rp_6f497f7.md (+ mise à jour du lien dans WHATS_NEW.md), création du lecteur Markdown Codex (doc_viewer.html, js/doc_viewer.js, styles .doc-viewer-* dans css/style.css, MIME/cache .md dans users/server.js), extension de tools/build_nav.py (RE_PILOTAGE / PILOTAGE_LIENS / entrees_pilotage) et tools/check_liens.py (HREF_PAGE) pour synchroniser les 3 liens (What's New, Mécaniques de Base 6f497f7, README Projet) dans le groupe Pilotage sur les 21 pages HTML."
         }
       ]
     },

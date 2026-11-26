@@ -1,6 +1,6 @@
 # What's New — Évolutions du Système RP (`6f497f7` ➔ `6fd7604`)
 
-> **Plage couverte :** Tout ce qui s'est ajouté ou modifié **après** le commit [`6f497f7`](https://github.com/k0r0z1f/Killtime/commit/6f497f72c92b6d89dc7840fa7dbb92c28a947cdf) (inclus dans la baseline locale `summaries/mecaniques_systeme_rp_6f497f7.md`) jusqu'à `HEAD` = [`6fd7604`](https://github.com/k0r0z1f/Killtime/commit/6fd760482aa3c20e5a616f1ce39b24bc11cdb67e).  
+> **Plage couverte :** Tout ce qui s'est ajouté ou modifié **après** le commit [`6f497f7`](https://github.com/k0r0z1f/Killtime/commit/6f497f72c92b6d89dc7840fa7dbb92c28a947cdf) (inclus dans [docs/mecaniques_systeme_rp_6f497f7.md](docs/mecaniques_systeme_rp_6f497f7.md)) jusqu'à `HEAD` = [`6fd7604`](https://github.com/k0r0z1f/Killtime/commit/6fd760482aa3c20e5a616f1ce39b24bc11cdb67e).  
 > **Périmètre exact (3 + 1 commits) :** Depuis `6f497f7`, le dépôt compte **3 commits d'audit mécanique `sysrp`** (`6fd7604`, `5146306`, `2a867a6` du 2026-11-25 soir) précédés d'**1 commit plateforme & compendium objets** (`76e6dcf` du 2026-11-25 03:56). Tous sont détaillés ci-dessous par ordre antéchronologique.
 
 ## Sommaire

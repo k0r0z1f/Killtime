@@ -38,6 +38,9 @@ RE_APPENDICE_B = re.compile(
 RE_APPENDICE_C = re.compile(
     r'(group-tag">A\.III</span>.*?<ul class="nav-items-list">)(.*?)(</ul>)',
     re.S)
+RE_PILOTAGE = re.compile(
+    r'(group-tag">◆</span>.*?<span>Pilotage</span>.*?<ul class="nav-items-list">)(.*?)(</ul>)',
+    re.S)
 
 
 def charger_livre(n):
@@ -165,6 +168,31 @@ def entrees_appendice_objets(page):
     return '\n'.join(lignes) + '\n                        '
 
 
+PILOTAGE_LIENS = [
+    ('roadmap.html', 'Roadmap Projet (Kanban)'),
+    ('financement.html', 'Financement Kickstarter'),
+    ('kanban_rp.html', 'Revue Système RP (Kanban)'),
+    ('kanban_narratif.html', 'Projet Narratif (Kanban)'),
+    ('tables.html', 'Tables de groupe (Chat + MPs)'),
+    ('tactics_index.html', 'Killtime Tactics (Base)'),
+    ('tactics_evolution.html', 'Évolution Tactique (Fleur Git)'),
+    ('project_evolution.html', 'Évolution Projet (6 Sphères)'),
+    ('doc_viewer.html?doc=whats-new', "What's New (Système RP)"),
+    ('doc_viewer.html?doc=baseline', 'Mécaniques de Base (6f497f7)'),
+    ('doc_viewer.html?doc=readme', 'README Projet'),
+]
+
+
+def entrees_pilotage(page):
+    lignes = []
+    for href, titre in PILOTAGE_LIENS:
+        cls = 'nav-item-link active' if href == page else 'nav-item-link'
+        lignes.append(
+            '                            <li><a href="%s" class="%s">'
+            '<span>%s</span></a></li>' % (href, cls, titre))
+    return '\n'.join(lignes) + '\n                        '
+
+
 def pages_cibles():
     out = []
     for fn in sorted(os.listdir(RACINE)):
@@ -185,6 +213,11 @@ def regenere(page):
         return m.group(1) + '\n' + entrees(n, page) + m.group(4)
 
     out = RE_GROUPE.sub(_sub, t)
+    if RE_PILOTAGE.search(out):
+        out = RE_PILOTAGE.sub(
+            lambda m: m.group(1) + '\n' + entrees_pilotage(page) + m.group(3),
+            out
+        )
     if RE_APPENDICE.search(out):
         out = RE_APPENDICE.sub(
             lambda m: m.group(1) + '\n' + entrees_appendice(page) + m.group(3),

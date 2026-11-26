@@ -113,7 +113,7 @@ for n in [3, 4, 5, 6, 7, 8, 10, 11, 12]:
 HREF = re.compile(r'href="((?:livre_\d+|appendice_actions|appendice_glossaire|appendice_objets)\.html|#[^"]*?)"')
 HREF_LIVRE = re.compile(r'href="(livre_(\d+)\.html)#([\w-]+)"')
 HREF_APPENDICE = re.compile(r'href="((?:appendice_actions|appendice_glossaire|appendice_objets)\.html)#([\w-]+)"')
-HREF_PAGE = re.compile(r'href="(index|tables|fiche_pj|roadmap|financement|admin|kanban_[a-z]+|atlas_[a-z0-9]+|tactics_[a-z_]+|project_evolution)\.html(#[^"]*)?"')
+HREF_PAGE = re.compile(r'href="(index|tables|fiche_pj|roadmap|financement|admin|kanban_[a-z]+|atlas_[a-z0-9]+|tactics_[a-z_]+|project_evolution|doc_viewer)\.html(\?[^#"]*)?(#[^"]*)?"')
 SECT = re.compile(r'§(\d+)')
 
 if os.path.exists(os.path.join(RACINE, 'appendice_actions.html')):

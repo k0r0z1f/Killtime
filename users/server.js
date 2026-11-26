@@ -182,6 +182,7 @@ const MIME_TYPES = {
     '.json': 'application/json; charset=utf-8',
     '.txt': 'text/plain; charset=utf-8',
     '.xml': 'application/xml; charset=utf-8',
+    '.md': 'text/markdown; charset=utf-8',
     '.png': 'image/png',
     '.jpg': 'image/jpeg',
     '.jpeg': 'image/jpeg',
@@ -324,7 +325,7 @@ function parseReturnPath(state) {
 
 function staticCacheHeaders(ext, stats) {
     const h = {};
-    if (['.html', '.js', '.json', '.css', '.xml', '.txt'].includes(ext)) {
+    if (['.html', '.js', '.json', '.css', '.xml', '.txt', '.md'].includes(ext)) {
         // Pages + kanban + JSON : toujours revalidés, jamais de version périmée.
         h['Cache-Control'] = 'no-cache, must-revalidate';
     } else {

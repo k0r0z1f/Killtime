@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <!-- Thème : application précoce (anti-flash) -->
+    <script src="js/theme-init.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation Pilotage | Codex Universel Système RP</title>
+    <meta name="description"
+        content="Lecteur intégré du Système RP Codex Universel : What's New, document mécanique de base (6f497f7) et README projet.">
+
+    <!-- Polices Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;900&family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Feuille de styles unifiée -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Feuille de styles partagée de l'authentification -->
+    <link rel="stylesheet" href="users/auth.css">
+    <link rel="stylesheet" href="css/themes.css">
+</head>
+
+<body>
+
+    <div class="app-container">
+        <!-- ================= TOP BAR ================= -->
+        <header class="topbar">
+            <div class="topbar-left">
+                <button class="mobile-toggle-btn" id="mobileToggle" aria-label="Ouvrir le menu">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+                <a href="index.html" class="brand">
+                    <div class="brand-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <polygon points="12 2 2 7 12 12 22 7 12 2" />
+                            <polyline points="2 17 12 22 22 17" />
+                            <polyline points="2 12 12 17 22 12" />
+                        </svg>
+                    </div>
+                    <div class="brand-info">
+                        <h1>Système RP <span class="brand-badge">Codex v2.4</span></h1>
+                    </div>
+                </a>
+                <nav class="breadcrumbs">
+                    <a href="index.html">Codex</a>
+                    <span>/</span>
+                    <span class="current" id="docViewerBreadcrumb">Documentation Pilotage</span>
+                </nav>
+            </div>
+
+            <div class="topbar-right">
+                <a href="Killtime/index.html" class="topbar-site-link"
+                    title="Accéder au site officiel Killtime Universe">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10" />
+                        <polyline points="12 6 12 12 14 14" />
+                    </svg>
+                    <span>Site Killtime</span>
+                </a>
+                <div class="search-trigger" id="searchTrigger">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8" />
+                        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                    </svg>
+                    <span>Rechercher...</span>
+                    <kbd class="search-kbd">Ctrl+K</kbd>
+                </div>
+
+                <!-- Emplacement Authentification & Profil -->
+                <div id="authTopbarSlot">
+                    <button class="auth-trigger-btn" id="authModalTrigger" type="button" title="Connexion au Codex">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
+                            <polyline points="10 17 15 12 10 7" />
+                            <line x1="15" y1="12" x2="3" y2="12" />
+                        </svg>
+                        <span>Connexion</span>
+                    </button>
+                </div>
+
+                <button class="theme-btn" id="themeToggle" title="Basculer le thème">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="5" />
+                        <path
+                            d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- ================= WRAPPER ================= -->
+        <div class="content-wrapper">
+
+            <!-- ================= SIDEBAR NAVIGATION ================= -->
+            <aside class="sidebar" id="sidebar">
+                <div class="sidebar-header">
+                    <div class="sidebar-title">
+                        <span>Table des Matières</span>
+                        <span>12 Livres</span>
+                    </div>
+                    <div class="sidebar-search-box">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <circle cx="11" cy="11" r="8" />
+                            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                        </svg>
+                        <input type="text" id="filterInput" placeholder="Filtrer une règle ou un livre..."
+                            autocomplete="off">
+                    </div>
+                </div>
+
+                <nav class="sidebar-nav" id="sidebarNav">
+                    <!-- LIEN VERS L'UNIVERS KILLTIME -->
+                    <div class="external-site-group">
+                        <a href="Killtime/index.html" class="nav-external-link" title="Aller vers l'Univers Killtime">
+                            <span class="nav-external-label">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <polyline points="12 6 12 12 14 14" />
+                                </svg>
+                                <span>Site Killtime</span>
+                            </span>
+                            <span class="nav-item-badge badge-live">Univers ↗</span>
+                        </a>
+                    </div>
+                    <!-- PILOTAGE (ACTIF) -->
+                    <div class="nav-group">
+                        <button class="nav-group-header active">
+                            <div class="group-meta">
+                                <span class="group-tag">◆</span>
+                                <span>Pilotage</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="roadmap.html" class="nav-item-link"><span>Roadmap Projet (Kanban)</span></a></li>
+                            <li><a href="financement.html" class="nav-item-link"><span>Financement Kickstarter</span></a></li>
+                            <li><a href="kanban_rp.html" class="nav-item-link"><span>Revue Système RP (Kanban)</span></a></li>
+                            <li><a href="kanban_narratif.html" class="nav-item-link"><span>Projet Narratif (Kanban)</span></a></li>
+                            <li><a href="tables.html" class="nav-item-link"><span>Tables de groupe (Chat + MPs)</span></a></li>
+                            <li><a href="tactics_index.html" class="nav-item-link"><span>Killtime Tactics (Base)</span></a></li>
+                            <li><a href="tactics_evolution.html" class="nav-item-link"><span>Évolution Tactique (Fleur Git)</span></a></li>
+                            <li><a href="project_evolution.html" class="nav-item-link"><span>Évolution Projet (6 Sphères)</span></a></li>
+                            <li><a href="doc_viewer.html?doc=whats-new" class="nav-item-link"><span>What's New (Système RP)</span></a></li>
+                            <li><a href="doc_viewer.html?doc=baseline" class="nav-item-link"><span>Mécaniques de Base (6f497f7)</span></a></li>
+                            <li><a href="doc_viewer.html?doc=readme" class="nav-item-link"><span>README Projet</span></a></li>
+                        </ul>
+                    </div>
+
+                    <!-- PRÉFACE -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta">
+                                <span class="group-tag">00</span>
+                                <span>Prologue &amp; Vision</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="index.html#preface" class="nav-item-link"><span>Préface : Le Souffle &amp; Le Temps</span></a></li>
+                        </ul>
+                    </div>
+
+                    <!-- CATÉGORIE : MANUEL DU JOUEUR -->
+                    <div class="nav-section-label joueur">
+                        <span class="nav-section-title">Manuel du Joueur</span>
+                        <span class="nav-section-count">L.I - L.IX</span>
+                    </div>
+                    <!-- LIVRE I -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta"><span class="group-tag">L.I</span><span>Bases &amp; Création PJ</span></div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6" /></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_1.html" class="nav-item-link"><span>1. Principes & Lexique</span></a></li>
+                            <li><a href="livre_1.html#chap-2" class="nav-item-link"><span>2. Cosmologie & Espèces</span></a></li>
+                            <li><a href="livre_1.html#chap-3" class="nav-item-link"><span>3. Création pas-à-pas</span></a></li>
+                            <li><a href="livre_1.html#chap-4" class="nav-item-link"><span>4. Points d'Action & Dégâts</span></a></li>
+                            <li><a href="livre_1.html#chap-5" class="nav-item-link"><span>5. Progression & XP</span></a></li>
+                            <li><a href="livre_1.html#chap-fiche" class="nav-item-link"><span>Fiche de PJ Prototype</span></a></li>
+                        </ul>
+                    </div>
+                    <!-- LIVRE II -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta"><span class="group-tag">L.II</span><span>Paliers de Dés &amp; Épreuves</span></div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6" /></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_2.html" class="nav-item-link"><span>6. L'Échelle des Dés (d2-d12+)</span></a></li>
+                            <li><a href="livre_2.html#chap-7" class="nav-item-link"><span>7. Difficultés & Seuils (0-34)</span></a></li>
+                            <li><a href="livre_2.html#chap-8" class="nav-item-link"><span>8. Environnements & Terrains</span></a></li>
+                            <li><a href="livre_2.html#chap-9" class="nav-item-link"><span>9. Tables des Critiques (d2-d24)</span></a></li>
+                            <li><a href="livre_2.html#chap-10" class="nav-item-link"><span>10. Défis Hors-Combat</span></a></li>
+                        </ul>
+                    </div>
+                    <!-- LIVRE III -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta"><span class="group-tag">L.III</span><span>Arbres de Compétences</span></div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6" /></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_3.html" class="nav-item-link"><span>11. Architecture & Typologie</span></a></li>
+                            <li><a href="livre_3.html#chap-12" class="nav-item-link"><span>12. Arbres Physiques (FOR, AGI, CON)</span></a></li>
+                            <li><a href="livre_3.html#chap-13" class="nav-item-link"><span>13. Arbres Mentaux & Sociaux</span></a></li>
+                            <li><a href="livre_3.html#chap-14" class="nav-item-link"><span>14. Compendium Spécialisations</span></a></li>
+                            <li><a href="livre_3.html#chap-15" class="nav-item-link"><span>15. Fabrique de Techniques</span></a></li>
+                        </ul>
+                    </div>
+                    <!-- LIVRE IV -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta"><span class="group-tag">L.IV</span><span>5e Force &amp; Magie</span></div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6" /></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_4.html" class="nav-item-link"><span>16. Physique de la 5e Force</span></a></li>
+                            <li><a href="livre_4.html#chap-17" class="nav-item-link"><span>17. Moteurs Magiques & Nytharite</span></a></li>
+                            <li><a href="livre_4.html#chap-18" class="nav-item-link"><span>18. Voies Arcaniques & Portée</span></a></li>
+                            <li><a href="livre_4.html#chap-19" class="nav-item-link"><span>19. Atelier de Création (XP=PA)</span></a></li>
+                        </ul>
+                    </div>
+                    <!-- LIVRE V -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta"><span class="group-tag">L.V</span><span>Combat Tactique</span></div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6" /></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_5.html" class="nav-item-link"><span>20. Le Tour de 10s & Économie des PA</span></a></li>
+                            <li><a href="livre_5.html#chap-21" class="nav-item-link"><span>21. Déplacements & Poursuites</span></a></li>
+                            <li><a href="livre_5.html#chap-22" class="nav-item-link"><span>22. Localisation & Véhicules</span></a></li>
+                        </ul>
+                    </div>
+                    <!-- LIVRE VI -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta"><span class="group-tag">L.VI</span><span>Santé, États &amp; Blessures</span></div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6" /></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_6.html" class="nav-item-link"><span>23. Seuils, Encaissement & Séquelles</span></a></li>
+                            <li><a href="livre_6.html#chap-24" class="nav-item-link"><span>24. Compendium des 19 États & Effets</span></a></li>
+                            <li><a href="livre_6.html#chap-25" class="nav-item-link"><span>25. Premiers Soins, Mort & Maladies</span></a></li>
+                        </ul>
+                    </div>
+                    <!-- LIVRE VII -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta"><span class="group-tag">L.VII</span><span>Historiques &amp; Passés</span></div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6" /></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_7.html" class="nav-item-link"><span>26. Principes & Procédure</span></a></li>
+                            <li><a href="livre_7.html#chap-27" class="nav-item-link"><span>27. Enfances E0–E5 (d6)</span></a></li>
+                            <li><a href="livre_7.html#chap-28" class="nav-item-link"><span>28. Métiers E0–E5 (d8)</span></a></li>
+                            <li><a href="livre_7.html#chap-29" class="nav-item-link"><span>29. Événement & Ancrage</span></a></li>
+                        </ul>
+                    </div>
+                    <!-- LIVRE VIII -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta"><span class="group-tag">L.VIII</span><span>Arsenal &amp; Arcanotech</span></div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6" /></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_8.html" class="nav-item-link"><span>30. Nomenclature & Armes [E0–E2]</span></a></li>
+                            <li><a href="livre_8.html#chap-31" class="nav-item-link"><span>31. Laser, Lourdes, Explosifs & Arcanotech</span></a></li>
+                            <li><a href="livre_8.html#chap-32" class="nav-item-link"><span>32. Blindages, Boucliers, Soins & Terrain</span></a></li>
+                        </ul>
+                    </div>
+                    <!-- LIVRE IX -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta"><span class="group-tag">L.IX</span><span>Outils Web Interactifs</span></div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6" /></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_9.html#chap-33" class="nav-item-link"><span>33. Créateur de Fiche PJ</span></a></li>
+                            <li><a href="livre_9.html#chap-34" class="nav-item-link"><span>34. Atelier de Sorts (XP=PA)</span></a></li>
+                            <li><a href="livre_9.html#chap-35" class="nav-item-link"><span>35. Lanceur Polyédrique & Critiques</span></a></li>
+                            <li><a href="livre_9.html#chap-36" class="nav-item-link"><span>36. Résolveur de Challenges</span></a></li>
+                            <li><a href="livre_9.html#chap-37" class="nav-item-link"><span>37. Simulateur de Chronotrames</span></a></li>
+                            <li><a href="livre_9.html#chap-38" class="nav-item-link"><span>38. Fabrique de Techniques</span></a></li>
+                        </ul>
+                    </div>
+
+                    <!-- CATÉGORIE : GUIDE DU MJ -->
+                    <div class="nav-section-label mj">
+                        <span class="nav-section-title">Guide du MJ</span>
+                        <span class="nav-section-count">L.X - L.XII</span>
+                    </div>
+                    <!-- LIVRE X -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta"><span class="group-tag">L.X</span><span>Temps &amp; Causalité</span></div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6" /></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_10.html" class="nav-item-link"><span>39. Fleuve du Temps & Causalité</span></a></li>
+                            <li><a href="livre_10.html#chap-40" class="nav-item-link"><span>40. Topologie des Chronotrames</span></a></li>
+                            <li><a href="livre_10.html#chap-41" class="nav-item-link"><span>41. Clairsentience (8 Échelons)</span></a></li>
+                            <li><a href="livre_10.html#chap-42" class="nav-item-link"><span>42. Mécaniques Chronales en Jeu</span></a></li>
+                        </ul>
+                    </div>
+                    <!-- LIVRE XI -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta"><span class="group-tag">L.XI</span><span>Atlas des Mondes</span></div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6" /></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_11.html" class="nav-item-link"><span>43. Univers & 36 Élianes</span></a></li>
+                            <li><a href="livre_11.html#chap-44" class="nav-item-link"><span>44. Galaxies & Systèmes</span></a></li>
+                            <li><a href="livre_11.html#chap-45" class="nav-item-link"><span>45. Planètes & Vaisseaux</span></a></li>
+                            <li><a href="livre_11.html#chap-46" class="nav-item-link"><span>46. Atlas des Continents</span></a></li>
+                            <li><a href="livre_11.html#chap-47" class="nav-item-link"><span>47. Cités & Points d'Intérêt</span></a></li>
+                        </ul>
+                    </div>
+                    <!-- LIVRE XII -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta"><span class="group-tag">L.XII</span><span>Bestiaire &amp; Menaces</span></div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6" /></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_12.html" class="nav-item-link"><span>48. Typologie & Calibrage</span></a></li>
+                            <li><a href="livre_12.html#chap-49" class="nav-item-link"><span>49. Humanoïdes & Factions</span></a></li>
+                            <li><a href="livre_12.html#chap-50" class="nav-item-link"><span>50. Faune & Monstres d'Hybris</span></a></li>
+                            <li><a href="livre_12.html#chap-51" class="nav-item-link"><span>51. Entités & Disciples</span></a></li>
+                            <li><a href="livre_12.html#chap-52" class="nav-item-link"><span>52. Automates & Cybernétique</span></a></li>
+                            <li><a href="livre_12.html#chap-53" class="nav-item-link"><span>53. Générateur de Pathologies</span></a></li>
+                        </ul>
+                    </div>
+
+                    <!-- CATÉGORIE : APPENDICES -->
+                    <div class="nav-section-label appendice">
+                        <span class="nav-section-title">Appendices</span>
+                        <span class="nav-section-count">A.I - A.III</span>
+                    </div>
+                    <!-- APPENDICE A -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta"><span class="group-tag">A.I</span><span>Compendium des Actions</span></div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6" /></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="appendice_actions.html" class="nav-item-link"><span>Toutes les Actions (Filtres)</span></a></li>
+                            <li><a href="appendice_actions.html#cat-offensif" class="nav-item-link"><span>A.1 Actions Offensives</span></a></li>
+                            <li><a href="appendice_actions.html#cat-defensif" class="nav-item-link"><span>A.2 Défenses & Réactions</span></a></li>
+                            <li><a href="appendice_actions.html#cat-mouvement" class="nav-item-link"><span>A.3 Mouvement & Furtivité</span></a></li>
+                            <li><a href="appendice_actions.html#cat-micro" class="nav-item-link"><span>A.4 Micro-Actions & Effort</span></a></li>
+                            <li><a href="appendice_actions.html#cat-soins" class="nav-item-link"><span>A.5 Soins, Survie & États</span></a></li>
+                            <li><a href="appendice_actions.html#cat-arcanes" class="nav-item-link"><span>A.6 5e Force & Chrono</span></a></li>
+                            <li><a href="appendice_actions.html#cat-collectif" class="nav-item-link"><span>A.7 Collectif & Hors-Combat</span></a></li>
+                        </ul>
+                    </div>
+                    <!-- APPENDICE B -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta"><span class="group-tag">A.II</span><span>Glossaire des Mécaniques</span></div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6" /></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="appendice_glossaire.html" class="nav-item-link"><span>Tous les Termes (A–Z)</span></a></li>
+                            <li><a href="appendice_glossaire.html#dom-fondations" class="nav-item-link"><span>B.1 Fondations & XP</span></a></li>
+                            <li><a href="appendice_glossaire.html#dom-epreuves" class="nav-item-link"><span>B.2 Dés, Épreuves & Terrain</span></a></li>
+                            <li><a href="appendice_glossaire.html#dom-competences" class="nav-item-link"><span>B.3 Compétences & Fabrique</span></a></li>
+                            <li><a href="appendice_glossaire.html#dom-magie" class="nav-item-link"><span>B.4 5e Force & Magie</span></a></li>
+                            <li><a href="appendice_glossaire.html#dom-combat" class="nav-item-link"><span>B.5 Combat & Véhicules</span></a></li>
+                            <li><a href="appendice_glossaire.html#dom-sante" class="nav-item-link"><span>B.6 Santé & Pathologies</span></a></li>
+                            <li><a href="appendice_glossaire.html#dom-etats" class="nav-item-link"><span>B.7 États & Statuts</span></a></li>
+                            <li><a href="appendice_glossaire.html#dom-equipement" class="nav-item-link"><span>B.8 Historiques & Arsenal</span></a></li>
+                            <li><a href="appendice_glossaire.html#dom-causalite" class="nav-item-link"><span>B.9 Causalité, Outils & MJ</span></a></li>
+                        </ul>
+                    </div>
+                    <!-- APPENDICE C -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta"><span class="group-tag">A.III</span><span>Compendium des Objets</span></div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6" /></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="appendice_objets.html" class="nav-item-link"><span>Tous les Objets (Filtres)</span></a></li>
+                            <li><a href="appendice_objets.html#cat-melee-lames" class="nav-item-link"><span>C.1 Mêlée : Lames & Fines</span></a></li>
+                            <li><a href="appendice_objets.html#cat-melee-choc" class="nav-item-link"><span>C.2 Mêlée : Choc & Haches</span></a></li>
+                            <li><a href="appendice_objets.html#cat-trait-jet" class="nav-item-link"><span>C.3 Trait & Armes de Jet</span></a></li>
+                            <li><a href="appendice_objets.html#cat-balistique" class="nav-item-link"><span>C.4 Balistique à Poudre</span></a></li>
+                            <li><a href="appendice_objets.html#cat-laser-energie" class="nav-item-link"><span>C.5 Armes Laser & Plasma</span></a></li>
+                            <li><a href="appendice_objets.html#cat-armes-lourdes" class="nav-item-link"><span>C.6 Lourdes & Explosifs</span></a></li>
+                            <li><a href="appendice_objets.html#cat-munitions-arcanotech" class="nav-item-link"><span>C.7 Munitions & Arcanotech</span></a></li>
+                            <li><a href="appendice_objets.html#cat-armures-boucliers" class="nav-item-link"><span>C.8 Armures, Boucliers & Champs</span></a></li>
+                            <li><a href="appendice_objets.html#cat-pharmacie-medical" class="nav-item-link"><span>C.9 Pharmacopée & Médical</span></a></li>
+                            <li><a href="appendice_objets.html#cat-terrain-survie" class="nav-item-link"><span>C.10 Outillage & Terrain</span></a></li>
+                        </ul>
+                    </div>
+                </nav>
+            </aside>
+
+            <!-- ================= CONTENU PRINCIPAL ================= -->
+            <main class="main-content" id="doc-viewer-root">
+                <article class="doc-page prose">
+                    <header class="doc-header">
+                        <div class="doc-badge-row">
+                            <span class="doc-badge-pill">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                    <polyline points="14 2 14 8 20 8" />
+                                </svg>
+                                <span id="docBadgeTag">Pilotage — Documentation</span>
+                            </span>
+                            <span class="doc-badge-pill accent" id="docBadgeFile">WHATS_NEW.md</span>
+                            <span class="doc-badge-pill live" id="docBadgeStatus">Codex v2.4</span>
+                        </div>
+
+                        <h1 class="doc-title" id="docViewerTitle">Documentation du Système RP</h1>
+                        <p class="doc-lead" id="docViewerLead">
+                            Consultation directe des documents de pilotage, changelog et baseline mécanique du Système RP.
+                        </p>
+                    </header>
+
+                    <!-- BARRE DE SÉLECTION & OUTILS -->
+                    <section class="doc-viewer-toolbar" aria-label="Sélecteur de document">
+                        <div class="doc-viewer-tabs actions-segmented" role="navigation" aria-label="Documents disponibles">
+                            <a href="doc_viewer.html?doc=whats-new" class="actions-seg-btn" data-doc-tab="whats-new" style="text-decoration:none;">What's New</a>
+                            <a href="doc_viewer.html?doc=baseline" class="actions-seg-btn" data-doc-tab="baseline" style="text-decoration:none;">Mécaniques de Base (6f497f7)</a>
+                            <a href="doc_viewer.html?doc=readme" class="actions-seg-btn" data-doc-tab="readme" style="text-decoration:none;">README Projet</a>
+                        </div>
+                        <div class="doc-viewer-actions">
+                            <a id="docRawLink" href="WHATS_NEW.md" target="_blank" rel="noopener noreferrer"
+                                class="action-reset-btn" style="text-decoration:none;">Fichier .md brut ↗</a>
+                            <button type="button" class="action-reset-btn" id="docCopyBtn">Copier Markdown</button>
+                        </div>
+                    </section>
+
+                    <!-- RENDU MARKDOWN -->
+                    <div id="docViewerBody" class="doc-md-body" aria-live="polite">Chargement du document…</div>
+
+                    <div class="codex-signature">
+                        <div class="sig-meta">
+                            <strong>PILOTAGE DU CODEX UNIVERSEL</strong><br>
+                            Documentation Racine, Baseline &amp; Journal des Évolutions<br>
+                            <em>Rendu en direct depuis les fichiers Markdown du dépôt.</em>
+                        </div>
+                        <div class="sig-stamp">
+                            <span class="stamp-title">PILOTAGE HOMOLOGUÉ</span>
+                            <span class="stamp-date">SYSTÈME RP // CODEX</span>
+                        </div>
+                    </div>
+                </article>
+            </main>
+
+            <!-- ================= RIGHT INSPECTOR ================= -->
+            <aside class="inspector">
+                <div class="inspector-section">
+                    <div class="inspector-title">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <line x1="8" y1="6" x2="21" y2="6" />
+                            <line x1="8" y1="12" x2="21" y2="12" />
+                            <line x1="8" y1="18" x2="21" y2="18" />
+                            <line x1="3" y1="6" x2="3.01" y2="6" />
+                            <line x1="3" y1="12" x2="3.01" y2="12" />
+                            <line x1="3" y1="18" x2="3.01" y2="18" />
+                        </svg>
+                        Sur cette page
+                    </div>
+                    <ul class="toc-on-page" id="docViewerToc">
+                        <li><a href="#doc-viewer-root">Haut de page</a></li>
+                    </ul>
+                </div>
+
+                <div class="inspector-section">
+                    <div class="inspector-title">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+                            <line x1="8" y1="21" x2="16" y2="21" />
+                            <line x1="12" y1="17" x2="12" y2="21" />
+                        </svg>
+                        Télémétrie Document
+                    </div>
+                    <div class="telemetry-card">
+                        <div class="telemetry-row">
+                            <span class="telemetry-label">Fichier :</span>
+                            <span class="telemetry-val" id="telDocFile">—</span>
+                        </div>
+                        <div class="telemetry-row">
+                            <span class="telemetry-label">Lignes :</span>
+                            <span class="telemetry-val" id="telDocLines">—</span>
+                        </div>
+                        <div class="telemetry-row">
+                            <span class="telemetry-label">Sections (H2) :</span>
+                            <span class="telemetry-val" id="telDocSections">—</span>
+                        </div>
+                        <div class="telemetry-row">
+                            <span class="telemetry-label">Tableaux :</span>
+                            <span class="telemetry-val" id="telDocTables">—</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="next-stage-card">
+                    <h5>Revue Système RP</h5>
+                    <p>Consultez l’avancement des tickets d’audit et les chantiers du Codex dans le Kanban RP.</p>
+                    <a href="kanban_rp.html" class="btn-step"
+                        style="text-decoration: none; display: flex; align-items: center; justify-content: space-between;">
+                        <span>Ouvrir Kanban RP</span>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <polyline points="9 18 15 12 9 6" />
+                        </svg>
+                    </a>
+                </div>
+            </aside>
+
+        </div>
+    </div>
+
+    <!-- Scripts partagés & Authentification -->
+    <script src="js/codex.js"></script>
+    <script src="js/doc_viewer.js"></script>
+    <script src="users/user_store.js"></script>
+    <script src="users/auth.js"></script>
+    <script src="js/theme.js"></script>
+</body>
+
+</html>
