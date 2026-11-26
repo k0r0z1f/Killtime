@@ -4,9 +4,10 @@ format: raw
 livre: 1
 ---
                     <p>
-                        <strong>Anti-farm :</strong> ta réserve d'XP lié ne peut pas dépasser le niveau de sa compétence de plus de 2.
-                        Dès qu'elle le dépasse de 2 (réserve à 5 pour un niveau 3), les 2 points en trop se transforment
-                        en <strong>1 XP libre</strong>, et ta réserve retombe au niveau de la compétence (3). Exemple : tu
-                        répètes le même crochetage facile toute la soirée — arrivé à 5 en réserve pour un niveau 3, le MJ
-                        convertit : +1 XP libre pour toi, réserve revenue à 3. Le surplus part en libre au taux de 2 pour 1.
+                        <strong>Anti-farm :</strong> ta réserve d'XP lié est plafonnée à <strong>5 + niveau</strong> de base de sa compétence
+                        (aucune conversion forcée en XP libre). Exemple : avec une base de <strong>3</strong>, tu peux stocker jusqu'à
+                        <strong>5 + 3 = 8 XP liés</strong> dans cette compétence — largement de quoi financer un entraînement ou une spécialisation à 5 XP
+                        (<a class="rule-ref" href="#sec-5-3" data-tip="Dépenser son Expérience : entraînement à 5 XP liés/libre, 10 XP en croisé (§5.3).">§5.3</a>)
+                        ou économiser pour une montée d'attribut. Arrivé au plafond (8), la réserve est pleine et aucun XP lié supplémentaire ne s'accumule
+                        tant que tu n'en dépenses pas (à 1:1 dans la compétence ou son attribut lié, ou à ×2 ailleurs selon §5.3).
                     </p>

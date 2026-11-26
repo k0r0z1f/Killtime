@@ -1974,7 +1974,7 @@
           "id": "RP-131",
           "title": "Relire chap. 8. Environnements & Terrains",
           "epic": "Livre II — Dés & Épreuves",
-          "status": "todo",
+          "status": "done",
           "priority": "high",
           "order": 130,
           "scene": "",
@@ -1983,7 +1983,8 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "livre_2.html#chap-8",
-          "details": "Vérification humaine — livre_2.html#chap-8 (source content/livre_2/sections/chap-8 + data/livre_2.json, incl. §8.6 nuit & lumière RP-070). Seul chapitre du Livre II sans tâche (constat 2026-11-05). Checklist : [ ] orthographe/typo FR ; [ ] cohérence mécaniques (paliers, seuils, malus météo cumulés, vision) ; [ ] exemples chiffrés rejoués ; [ ] liens + ancres OK ; [ ] aucun TODO/placeholder. DONE = relu + corrigé (ou RAS) — ajouter date + initiales ici."
+          "updated": "2026-11-25",
+          "details": "FAIT 2026-11-25 (1er check & mécanique chap. 8) — §8.1 : ajout Sang des Forges (Nain, climat chaud léger). §8.2 : exemple chute humain précisé Ralenti + Souffrant. §8.3 : gaz inflammables → 4 dégâts de zone + En Feu 2 (Esquive seuil 4 si abri) ; éboulement → 3 dégâts (−2 Mémoire des Cages Nain) et seuil variable selon la gravité à la discrétion du MJ (4 Moyen à 7 Difficile, voire 10 Très Difficile, §7.1) ; suppression de « seuil de 4 (Difficile) ». §8.4 : ajout Accroupi au cumul, « Ni sprint » → « Ni course », ajout Pas des Crêtes (Nain), « Épreuve de Force » → « Épreuve d'Athlétisme » (Règle d'Or). §8.6 : nuit noire −1 étendu à tous les jets impliquant la vision (tirs, Observation, visée, conduite sans phares...), lampe alignée à 10 cases (Livre VIII §32.4), suppression de « , RP-071 ». Synchronisé dans data/livre_2.json (mecaniques.environnement + nuit_lumiere). Checks verts (build_livres 2, check_liens)."
         },
         {
           "id": "RP-132",
@@ -2718,7 +2719,7 @@
           "id": "RP-180",
           "title": "P1-1 §12.1 remplacer jets Force brute + renvois Lutte/Encombrement",
           "epic": "P1 — Livre III",
-          "status": "todo",
+          "status": "done",
           "priority": "high",
           "order": 177,
           "scene": "",
@@ -2726,9 +2727,9 @@
           "primitive": "",
           "pos": null,
           "scale": null,
-          "suggestedAsset": "",
-          "updated": "2026-11-10",
-          "details": "Remplacer 4 jets de Force brute par Athlétisme/Endurance; renvoyer Agripper à Lutte (§20.7) et Armure Lourde à Encombrement (§32.1). Fichiers: content/livre_3/sections/chap-12/, data/livre_3.json. (Audit sysRP 2026-11-10.)"
+          "suggestedAsset": "livre_3.html#chap-12",
+          "updated": "2026-11-25",
+          "details": "FAIT 2026-11-25 — P1-1 Livre III §12.1 (content/livre_3/sections/chap-12/bloc-02.md → data/livre_3.json) : remplacement des 4 jets de Force brute (Règle d'Or : aucune caractéristique brute testée) par Athlétisme (courir/nager/escalader, pousser/soulever explosif, duel Athlétisme vs Athlétisme) et Endurance Physique (effort prolongé, marche sous charge lourde). Renvoi d'Agripper vers la Lutte (Livre V §20.8, 2 PA, Face-à-Face Athlétisme/Mains Nues vs Athlétisme/Défense Corporelle → Immobilisé) et de Porter une Armure Lourde vers l'Encombrement (Livre VIII §32.1, +1/+2 PA sans seuil de Force minimal, réduit de 1 via don Mikyai Technicien-Guerrier). Miroirs resynchronisés dans data/livre_5.json (couts_pa §20.5) et data/appendice_actions.json (nager-escalader, ouvrir-fermer-porte, pousser-soulever). Checks verts (build_livres 3/5, check_liens)."
         },
         {
           "id": "RP-181",
@@ -3694,7 +3695,7 @@
           "id": "RP-241",
           "title": "Audit F2 — Faille Éveil gratuit (création 14 pts vs 12 pts)",
           "epic": "P0 — Socle Mécanique",
-          "status": "todo",
+          "status": "done",
           "priority": "high",
           "order": 238,
           "scene": "",
@@ -3703,8 +3704,8 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "livre_1.html#chap-3",
-          "updated": "2026-11-22",
-          "details": "Suite audit Livres I–VIII (file F2 → F5, après F1 RP-240 et F3 RP-242) : corriger la faille d'Éveil gratuit à la création (budget secondaires 14 pts au lieu de 12 dès Magie ≥ 1 ; anciennement 17 vs 15 avant sortie d'ÉRU)."
+          "updated": "2026-11-25",
+          "details": "FAIT 2026-11-25 — Audit Livres I–VIII (F2) : suppression du bonus gratuit d'Éveil (+2 pts / 14 vs 12 et 13 vs 11) et intégration de Magie (MAG) parmi les 8 caractéristiques de base dans le même budget unique (Héros 5+4+12=21, Élite 4+4+12=20, Sbire 11). Seule Magie peut être laissée à 0 (non éveillé ; min 1 sur les 7 autres ; max 3 en secondaire ; Magie autorisée en Pilier 4/5). Formule des PA : Max(AGI, INT) + RAP + Min(attributs > 0) — Magie exclue si elle vaut 0. Suppression de la 5e colonne « Option Éveillé (Magie) » du tableau des profils. Appliqué dans content/livre_1/ (chap-3/bloc-06/07, chap-4/bloc-02, chap-5/bloc-11/12, chap-fiche/bloc-01), data/livre_1.json, js/livre_1.js, fiche_pj.html, livre_9.html, js/tools.js (CORE8, steppers/piliers, validation budget unique incl. sbire, résumé) et data/appendice_glossaire.json. Checks verts (build_livres 1, build_nav, check_liens, node --check, tests Node outils & VTT)."
         },
         {
           "id": "RP-242",
@@ -3742,7 +3743,7 @@
           "id": "RP-244",
           "title": "Audit F5 — Faille anti-farm +0/+2 (conversion XP lié → XP libre)",
           "epic": "P0 — Socle Mécanique",
-          "status": "todo",
+          "status": "done",
           "priority": "medium",
           "order": 241,
           "scene": "",
@@ -3751,8 +3752,8 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "livre_1.html#sec-5-2",
-          "updated": "2026-11-22",
-          "details": "Suite audit Livres I–VIII (file F2 → F5, après F4 RP-243) : corriger la faille anti-farm +0/+2 (conversion 2:1 du surplus d'XP lié en XP libre)."
+          "updated": "2026-11-25",
+          "details": "FAIT 2026-11-25 — Audit Livres I–VIII (F5) : suppression de la conversion forcée 2:1 de l'XP lié en XP libre et remplacement du plafond contradictoire (+0 vs +2) par un plafond unique de réserve d'XP lié à 5 + niveau de base de la compétence (ex. base 3 → max 8 XP liés ; au plafond, aucun cumul supplémentaire tant que le joueur ne dépense pas en 1:1 ou ×2 selon §5.3). Retrait de l'exemple obsolète (« crochetage facile ») incohérent avec Audit F4. Appliqué dans content/livre_1/sections/chap-5/bloc-08.md, data/livre_1.json (progression & mecaniques.progression.anti_farm), Appendice A (data/appendice_actions.json : entrainer-compagnons) et Appendice B (data/appendice_glossaire.json : plafond-anti-farm & xp-libre). Checks verts (build_livres 1, check_liens)."
         },
         {
           "id": "RP-245",

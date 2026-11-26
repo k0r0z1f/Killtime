@@ -2395,7 +2395,7 @@
    "contexte": "Combat & Hors-Combat",
    "timing": "Pendant son tour",
    "portee": "1 case par déplacement",
-   "jet": "Épreuve de Force (si eau agitée ou paroi raide)",
+   "jet": "Épreuve d'Athlétisme (si eau agitée ou paroi raide)",
    "requiert_jet": true,
    "consomme_reaction_libre": false,
    "silencieux": false,
@@ -2409,10 +2409,10 @@
    ],
    "limite": "Selon PA restants",
    "ralenti_effet": "+1 PA / case sous Ralenti",
-   "resume": "Progresser à la nage ou à l'escalade à double coût de déplacement, avec épreuve de Force si le milieu est périlleux.",
+   "resume": "Progresser à la nage ou à l'escalade à double coût de déplacement, avec épreuve d'Athlétisme si le milieu est périlleux.",
    "procedure": [
     "Sans spécialisation Franchissement : chaque case nagée ou escaladée coûte 2 PA (+1 PA sous Ralenti + encombrement).",
-    "Si l'eau est agitée ou la paroi raide : effectuer une épreuve de Force / Athlétisme — en cas d'échec, le personnage reste sur place et les PA sont perdus.",
+    "Si l'eau est agitée ou la paroi raide : effectuer une épreuve d'Athlétisme — en cas d'échec, le personnage reste sur place et les PA sont perdus.",
     "Avec Franchissement (Escalade Assurée / Nage de Combat) : ignore le surcoût de terrain difficile, franchit murets/tranchées sans surcoût, aucune épreuve en eau agitée et apnée de 2 × CON tours."
    ],
    "conditions": "Impossible si Immobilisé ou Ligoté.",
@@ -3251,7 +3251,7 @@
     "Dépenser 1 PA (+ encombrement ; ×2 sous Ralenti) au contact de la porte.",
     "Ouvrir ou refermer l'accès ; met immédiatement à jour la ligne de mire et le couvert total (§21.3 / §21.4)."
    ],
-   "conditions": "Si la porte est verrouillée ou bloquée, requiert Subterfuge Manuel (crochetage), Ingénierie, Sève Dissolvante ou Force brute.",
+   "conditions": "Si la porte est verrouillée ou bloquée, requiert Subterfuge Manuel (crochetage), Ingénierie, Sève Dissolvante ou Athlétisme.",
    "modificateurs": "Une porte qui grince ou claque peut alerter ou rompre la discrétion si bruyante (§21.4).",
    "source": {
     "label": "Livre V §20.5",
@@ -3735,7 +3735,7 @@
    "contexte": "Combat & Hors-Combat",
    "timing": "Pendant son tour ou hors combat",
    "portee": "Contact (1 case)",
-   "jet": "Épreuve Force/Athlétisme (seuil MJ) ou Face-à-Face Force vs Force",
+   "jet": "Épreuve d'Athlétisme / Endurance Physique (seuil MJ) ou Face-à-Face Athlétisme vs Athlétisme",
    "requiert_jet": true,
    "consomme_reaction_libre": false,
    "silencieux": false,
@@ -3749,13 +3749,13 @@
    ],
    "limite": "Selon situation",
    "ralenti_effet": "Coût ×2 PA sous Ralenti",
-   "resume": "Soulever une poutre, pousser une herse ou disputer un duel de force brute contre un adversaire qui bloque le passage.",
+   "resume": "Soulever une poutre, pousser une herse ou disputer un duel d'athlétisme contre un adversaire qui bloque le passage.",
    "procedure": [
-    "Obstacle inerte : lancer une épreuve de Force / Athlétisme contre le seuil fixé par le MJ (1–3 facile, 5+ ardu).",
-    "Opposition directe : résoudre un Face-à-Face Force contre Force (mises PA/PE autorisées)."
+    "Obstacle inerte : lancer une épreuve d'Athlétisme (ou d'Endurance Physique pour un effort prolongé) contre le seuil fixé par le MJ (1–3 facile, 5+ ardu).",
+    "Opposition directe : résoudre un Face-à-Face Athlétisme contre Athlétisme (mises PA/PE autorisées)."
    ],
    "conditions": "Requiert un contact direct avec l'objet ou l'adversaire et des mains libres si nécessaire.",
-   "modificateurs": "En Armure Lourde dépassant la Force requise : épreuve de Force toutes les 10 minutes sous peine d'épuisement (Livre III §12).",
+   "modificateurs": "Marche prolongée sous charge lourde : test d'Endurance Physique ; les armures lourdes imposent un encombrement de +1/+2 PA par action sans seuil de Force minimal (Livre VIII §32.1).",
    "source": {
     "label": "Livre III §12",
     "livre": 3,
@@ -5903,7 +5903,7 @@
    "procedure": [
     "1 jet = 4 heures d'exercices intensifs (hors combat, temps calme). Le formateur doit avoir un niveau supérieur ou égal à celui de l'élève dans la compétence travaillée.",
     "Chaque réussite (seuil ≥ base) coche 1 case sur la piste de l'élève (max 1 case/jour/binôme, max 1 XP lié/semaine via drills toutes compétences confondues). Piste pleine ➔ +1 XP lié et remise à zéro.",
-    "Garde-fou anti-farm (§5.1 & §5.2) : hors drills, seuls les jets à enjeu cochent (adversaire actif ou seuil ≥ base + conséquence réelle à l'échec ; 0 case vs Défense 0/consentant/Paralysé/Inconscient, défense 0 PA sans mise ou 2e jet même action même scène) ; si la réserve d'XP lié dépasse le niveau de compétence de +2, les 2 points en trop deviennent automatiquement +1 XP libre."
+    "Garde-fou anti-farm (§5.1 & §5.2) : hors drills, seuls les jets à enjeu cochent (adversaire actif ou seuil ≥ base + conséquence réelle à l'échec ; 0 case vs Défense 0/consentant/Paralysé/Inconscient, défense 0 PA sans mise ou 2e jet même action même scène) ; la réserve d'XP lié d'une compétence est plafonnée à 5 + niveau de base (aucune conversion forcée en XP libre : au plafond, pas de cumul supplémentaire tant que vous ne dépensez pas)."
    ],
    "conditions": "Impossible en combat ou en temps de crise. Formateur de niveau ≥ élève dans la compétence travaillée.",
    "modificateurs": "Nécessite également 4 heures d'entraînement en groupe pour préparer le tissage d'un Lien Télépathique (Livre IV §18.2).",

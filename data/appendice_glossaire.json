@@ -282,6 +282,7 @@
    "domaine": "fondations",
    "alias": [
     "caracteristiques",
+    "8 attributs",
     "7 attributs"
    ],
    "liens": [
@@ -667,8 +668,8 @@
    "domaine": "fondations",
    "alias": [
     "anti-farm",
-    "niveau + 2",
-    "conversion"
+    "5 + niveau",
+    "plafond reserve"
    ],
    "liens": [
     {
@@ -687,11 +688,6 @@
     "recompense MJ"
    ],
    "liens": [
-    {
-     "label": "Livre I §5.2",
-     "livre": 1,
-     "href": "livre_1.html#sec-5-2"
-    },
     {
      "label": "Livre I §5.3",
      "livre": 1,

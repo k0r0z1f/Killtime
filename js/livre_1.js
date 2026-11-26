@@ -66,8 +66,7 @@
             return '<tr><td><strong>' + p.nom + '</strong></td>' +
                 '<td>' + piliers + '</td>' +
                 '<td>' + p.secondaires_html + '</td>' +
-                '<td>' + p.limites_html + '</td>' +
-                '<td>' + p.eveille_html + '</td></tr>';
+                '<td>' + p.limites_html + '</td></tr>';
         }).join('');
     }
 
@@ -76,7 +75,7 @@
         attributs.forEach(function (a) {
             (groupes[a.groupe] = groupes[a.groupe] || []).push(a);
         });
-        var titres = { physiques: 'Attributs Physiques', mentaux: 'Attributs Mentaux & Sociaux' };
+        var titres = { physiques: 'Attributs Physiques', mentaux: 'Attributs Mentaux, Sociaux & Magie' };
         return Object.keys(groupes).map(function (g) {
             var body = groupes[g].map(function (a) {
                 return '<strong>' + a.nom + ' (' + a.id + ')</strong> : ' + a.role;

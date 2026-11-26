@@ -9,7 +9,7 @@ livre: 2
                     </p>
                     <h4 id="sec-8-1">8.1 Climat et météo : 4 paliers d'intensité</h4>
                     <p>
-                        Le vent modéré, le froid mordant, la chaleur lourde : c'est le palier <strong>léger (−1)</strong>. Il frappe tous les jets que le décor contrarie : tes tirs, ton <a class="rule-ref" href="livre_3.html#chap-13" data-tip="Observation : repérer un indice, un danger, un ennemi camouflé (Vision/Ouïe, §13.3).">Observation</a>, tes pistes de <a class="rule-ref" href="livre_3.html#chap-13" data-tip="Nature & Survie : pistage, orientation, abris (INS/INT, §13.3).">Nature & Survie</a>, ton pilotage. Si tu joues humain, bonne nouvelle : le don <em>Endurance Coloniale</em> ignore ce palier. Canicule et vent violent : −2 aux jets, sans bridage de vue.
+                        Le vent modéré, le froid mordant, la chaleur lourde : c'est le palier <strong>léger (−1)</strong>. Il frappe tous les jets que le décor contrarie : tes tirs, ton <a class="rule-ref" href="livre_3.html#chap-13" data-tip="Observation : repérer un indice, un danger, un ennemi camouflé (Vision/Ouïe, §13.3).">Observation</a>, tes pistes de <a class="rule-ref" href="livre_3.html#chap-13" data-tip="Nature & Survie : pistage, orientation, abris (INS/INT, §13.3).">Nature & Survie</a>, ton pilotage. Si tu joues humain, bonne nouvelle : le don <em>Endurance Coloniale</em> ignore ce palier (et le don Nain <em>Sang des Forges</em> ignore le climat chaud léger). Canicule et vent violent : −2 aux jets, sans bridage de vue.
                     </p>
                     <p>
                         Pluie, neige, brouillard, sable : eux suivent 4 paliers. Jour ouvert, pas de plafond : tu vois loin. Ensuite ça se resserre :

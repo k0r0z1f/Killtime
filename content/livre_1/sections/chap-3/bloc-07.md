@@ -4,6 +4,8 @@ format: raw
 livre: 1
 ---
                     <p>
-                        Ces sept caractéristiques définissent le potentiel brut de votre héros : son capital physique d'un
-                        côté, ses facultés intellectuelles et sociales de l'autre.
+                        Ces huit caractéristiques définissent le potentiel brut de votre héros : son capital physique (4 attributs),
+                        ses facultés intellectuelles et sociales (3 attributs), et sa connexion à la Cinquième Force (<strong>Magie</strong>).
+                        Toutes se répartissent dans le même budget de départ : seule la <strong>Magie</strong> peut être laissée à <strong>0</strong>
+                        si votre personnage n'est pas éveillé.
                     </p>

@@ -143,8 +143,9 @@ function initCharacterSheet() {
     const RACE_ALIASES = {};
     function resolveRace(r) { return RACE_DATA[r] ? r : (RACE_ALIASES[r] || 'humain'); }
 
-    const ATTR_LABELS = { for: 'Force (FOR)', agi: 'Agilité (AGI)', con: 'Constitution (CON)', rap: 'Rapidité (RAP)', int: 'Intelligence (INT)', cha: 'Charisme (CHA)', ins: 'Instinct (INS)', mag: 'Magie' };
+    const ATTR_LABELS = { for: 'Force (FOR)', agi: 'Agilité (AGI)', con: 'Constitution (CON)', rap: 'Rapidité (RAP)', int: 'Intelligence (INT)', cha: 'Charisme (CHA)', ins: 'Instinct (INS)', mag: 'Magie (MAG)' };
     const CORE7 = ['for', 'agi', 'con', 'rap', 'int', 'cha', 'ins'];
+    const CORE8 = ['for', 'agi', 'con', 'rap', 'int', 'cha', 'ins', 'mag'];
 
     // Tables d'historique (Livre VII, chap. 26-29) — libellés courts pour le créateur.
     const EPOQUES_ENFANCE = ['E0', 'E1', 'E2', 'E3', 'E4', 'E5'];
@@ -1160,7 +1161,8 @@ function initCharacterSheet() {
 
     // Garde-fous création (Livre I §3) : les steppers ne peuvent pas sortir
     // des fourchettes légales — piliers verrouillés sur leur cible
-    // (majeur 5 Héros / 4 Élite, mineur 4), secondaires 1-3, sbire 1-3 partout.
+    // (majeur 5 Héros / 4 Élite, mineur 4), secondaires 1-3 (Magie 0-3),
+    // sbire 1-3 (Magie 0-3).
     function clampCreationRanges() {
         if (!profileSelect) return;
         const profile = profileSelect.value;
@@ -1172,12 +1174,17 @@ function initCharacterSheet() {
                 if (+el.value > 3) el.value = 3;
                 if (+el.value < 1) el.value = 1;
             }
+            if (attrInputs.mag) {
+                attrInputs.mag.min = 0; attrInputs.mag.max = 3;
+                if (+attrInputs.mag.value > 3) attrInputs.mag.value = 3;
+                if (+attrInputs.mag.value < 0) attrInputs.mag.value = 0;
+            }
             return;
         }
         const isHero = (profile === 'hero');
         const maj = pillarMajorSelect ? pillarMajorSelect.value : null;
         const min = pillarMinorSelect ? pillarMinorSelect.value : null;
-        for (const k of CORE7) {
+        for (const k of CORE8) {
             const el = attrInputs[k];
             if (!el) continue;
             if (k === maj) {
@@ -1186,9 +1193,10 @@ function initCharacterSheet() {
             } else if (k === min) {
                 el.min = 4; el.max = 4; el.value = 4;
             } else {
-                el.min = 1; el.max = 3;
+                const lo = (k === 'mag') ? 0 : 1;
+                el.min = lo; el.max = 3;
                 if (+el.value > 3) el.value = 3;
-                if (+el.value < 1) el.value = 1;
+                if (+el.value < lo) el.value = lo;
             }
         }
     }
@@ -1204,7 +1212,7 @@ function initCharacterSheet() {
         const vals = {};
         for (const [k, el] of Object.entries(attrInputs)) {
             let base = parseInt(el.value) || 0;
-            if (k === 'mag') { base = Math.min(5, Math.max(0, base)); }
+            if (k === 'mag') { base = Math.min(10, Math.max(0, base)); }
             else { base = Math.min(10, Math.max(1, base)); }
             el.value = base;
             vals[k] = base;
@@ -1217,10 +1225,11 @@ function initCharacterSheet() {
         renderDescDropdowns();
 
         const eff = {};
-        for (const k of CORE7) eff[k] = vals[k];
-        eff.mag = vals.mag;
+        for (const k of CORE8) eff[k] = vals[k];
 
-        const minCore = Math.min(...CORE7.map(k => eff[k]));
+        // PA : Min sur les caractéristiques actives (Magie exclue si elle vaut 0).
+        const paAttrs = eff.mag > 0 ? CORE8 : CORE7;
+        const minCore = Math.min(...paAttrs.map(k => eff[k]));
 
         // Dérivés (Livre I §4) + bonus mécaniques du don racial + Bagage de création.
         const mech = giftMechanics(race, giftIdx);
@@ -1261,35 +1270,36 @@ function initCharacterSheet() {
             vitals.effortMax.title = 'Plafond PA+PE+bonus par jet (1 + entraînements, Livre II §6) — ' + parts.join(' | ');
         }
 
-        // ---- Validation du budget (Livre I §3) ----
+        // ---- Validation du budget (Livre I §3 — budget unique, Magie incluse) ----
         const errors = [];
-        const awakened = eff.mag > 0;
         const pillarMajor = pillarMajorSelect ? pillarMajorSelect.value : 'for';
         const pillarMinor = pillarMinorSelect ? pillarMinorSelect.value : 'con';
         let budgetTotal = 0, ptsUsed = 0, expected = '';
 
         if (profile === 'sbire') {
-            budgetTotal = awakened ? 13 : 11; // Livre I §3 : 11 pts sur les 7 attributs (13 si éveillé), min 1 max 3, aucun à 0.
-            ptsUsed = CORE7.reduce((s, k) => s + eff[k], 0);
-            expected = 'Sbire : ' + budgetTotal + ' pts sur les 7 attributs (Magie hors budget).';
+            budgetTotal = 11; // Livre I §3 : 11 pts sur les 8 caractéristiques (Magie 0–3, autres 1–3).
+            ptsUsed = CORE8.reduce((s, k) => s + eff[k], 0);
+            expected = 'Sbire : 11 pts sur les 8 caractéristiques (Magie 0–3, autres 1–3).';
             for (const k of CORE7) {
                 if (eff[k] < 1 || eff[k] > 3) errors.push(ATTR_LABELS[k] + ' doit être entre 1 et 3 (sbire).');
             }
+            if (eff.mag < 0 || eff.mag > 3) errors.push('Magie (MAG) doit être entre 0 et 3 (sbire).');
+            if (ptsUsed !== budgetTotal) errors.push('Total : ' + ptsUsed + '/' + budgetTotal + ' pts (écart ' + (ptsUsed - budgetTotal > 0 ? '+' : '') + (ptsUsed - budgetTotal) + ').');
         } else {
             const isHero = (profile === 'hero');
-            const pilMajVal = isHero ? 5 : 4, pilMinVal = isHero ? 4 : 4;
-            const secBudget = awakened ? 14 : 12;
+            const pilMajVal = isHero ? 5 : 4, pilMinVal = 4;
+            const secBudget = 12;
             budgetTotal = pilMajVal + pilMinVal + secBudget;
-            const others = CORE7.filter(k => k !== pillarMajor && k !== pillarMinor);
-            ptsUsed = CORE7.reduce((s, k) => s + eff[k], 0);
-            expected = (isHero ? 'Héros PJ : pilier ' + pillarMajor.toUpperCase() + ' = 5, pilier ' + pillarMinor.toUpperCase() + ' = 4, puis exactement ' + secBudget + ' pts dans les 5 autres (1-3 chacun).'
-                              : 'Élite : piliers ' + pillarMajor.toUpperCase() + ' = 4 et ' + pillarMinor.toUpperCase() + ' = 4, puis exactement ' + secBudget + ' pts dans les 5 autres (1-3 chacun).')
-                       + (awakened ? ' Éveil (Magie ≥ 1, hors budget) : budget secondaires 14 au lieu de 12.' : '');
+            const others = CORE8.filter(k => k !== pillarMajor && k !== pillarMinor);
+            ptsUsed = CORE8.reduce((s, k) => s + eff[k], 0);
+            expected = (isHero ? 'Héros PJ : pilier ' + pillarMajor.toUpperCase() + ' = 5, pilier ' + pillarMinor.toUpperCase() + ' = 4, puis exactement 12 pts dans les 6 autres (1–3 chacun, Magie 0–3).'
+                              : 'Élite : piliers ' + pillarMajor.toUpperCase() + ' = 4 et ' + pillarMinor.toUpperCase() + ' = 4, puis exactement 12 pts dans les 6 autres (1–3 chacun, Magie 0–3).');
             if (pillarMajor === pillarMinor) errors.push('Les deux piliers doivent être deux attributs différents.');
             if (eff[pillarMajor] !== pilMajVal) errors.push('Pilier majeur ' + pillarMajor.toUpperCase() + ' : attendu ' + pilMajVal + ', actuel ' + eff[pillarMajor] + '.');
             if (eff[pillarMinor] !== pilMinVal) errors.push('Pilier mineur ' + pillarMinor.toUpperCase() + ' : attendu ' + pilMinVal + ', actuel ' + eff[pillarMinor] + '.');
             for (const k of others) {
-                if (eff[k] < 1 || eff[k] > 3) errors.push(ATTR_LABELS[k] + ' (secondaire) doit être entre 1 et 3 à la création, actuel ' + eff[k] + '.');
+                const lo = (k === 'mag') ? 0 : 1;
+                if (eff[k] < lo || eff[k] > 3) errors.push(ATTR_LABELS[k] + ' (secondaire) doit être entre ' + lo + ' et 3 à la création, actuel ' + eff[k] + '.');
             }
             const othersSum = others.reduce((s, k) => s + eff[k], 0);
             if (othersSum !== secBudget) errors.push('Secondaires : ' + othersSum + '/' + secBudget + ' pts (écart ' + (othersSum - secBudget > 0 ? '+' : '') + (othersSum - secBudget) + ').');
@@ -1519,7 +1529,7 @@ function initCharacterSheet() {
         if (!sel) return;
         const cur = sel.value;
         sel.innerHTML = '';
-        for (const k of CORE7) {
+        for (const k of CORE8) {
             if (k === excludeVal) continue;
             const opt = document.createElement('option');
             opt.value = k;
@@ -1549,7 +1559,7 @@ function initCharacterSheet() {
         for (const sel of [pillarMajorSelect, pillarMinorSelect]) {
             const cur = sel.value;
             sel.innerHTML = '';
-            for (const k of CORE7) {
+            for (const k of CORE8) {
                 const opt = document.createElement('option');
                 opt.value = k;
                 opt.textContent = ATTR_LABELS[k];
@@ -1623,32 +1633,29 @@ function initCharacterSheet() {
             if (budgetMsg) return budgetMsg;
             return 'Plafond de création : 3 (Livre I §3).';
         }
-        return 'Minimum 1.';
+        return key === 'mag' ? 'Minimum 0.' : 'Minimum 1.';
     }
 
     // Budget total (Livre I §3) : un + qui ferait dépasser le total permis
     // est bloqué avec la même bulle d'avertissement (retire 1 pt ailleurs).
-    // Magie hors budget : jamais bloquée ici (plafond 5 seul).
+    // Magie incluse dans le budget unique (0 possible).
     function budgetBlockReason(key, step) {
-        if (step <= 0 || !key || key === 'mag') return null;
+        if (step <= 0 || !key) return null;
         const profile = profileSelect ? profileSelect.value : 'hero';
         const valOf = (k) => parseInt(attrInputs[k] ? attrInputs[k].value : '0') || 0;
         if (profile === 'sbire') {
-            const total = CORE7.reduce((s, k) => s + valOf(k), 0);
-            const cap = valOf('mag') > 0 ? 13 : 11;
+            const total = CORE8.reduce((s, k) => s + valOf(k), 0);
+            const cap = 11;
             if (total + step > cap) return 'Budget plein : ' + total + '/' + cap + ' (Sbire, Livre I §3). Retire 1 point ailleurs pour ajouter ici.';
             return null;
         }
         const maj = pillarMajorSelect ? pillarMajorSelect.value : null;
         const min = pillarMinorSelect ? pillarMinorSelect.value : null;
         if (key === maj || key === min) return null;
-        const magVal = valOf('mag');
-        const secBudget = magVal > 0 ? 14 : 12;
-        const othersSum = CORE7.filter(k => k !== maj && k !== min).reduce((s, k) => s + valOf(k), 0);
+        const secBudget = 12;
+        const othersSum = CORE8.filter(k => k !== maj && k !== min).reduce((s, k) => s + valOf(k), 0);
         if (othersSum + step > secBudget) {
-            return 'Budget plein : ' + othersSum + '/' + secBudget + ' en secondaires'
-                + (magVal > 0 ? ' (Éveil)' : ' (14 si Magie éveillée)')
-                + '. Retire 1 point ailleurs pour ajouter ici.';
+            return 'Budget plein : ' + othersSum + '/' + secBudget + ' en secondaires. Retire 1 point ailleurs pour ajouter ici.';
         }
         return null;
     }
@@ -1858,7 +1865,7 @@ function initCharacterSheet() {
     function populateStaticSelects() {
         for (const sel of [pillarMajorSelect, pillarMinorSelect]) {
             if (!sel || sel.options.length > 0) continue;
-            for (const k of CORE7) {
+            for (const k of CORE8) {
                 const opt = document.createElement('option');
                 opt.value = k;
                 opt.textContent = ATTR_LABELS[k];
@@ -1930,11 +1937,11 @@ function initCharacterSheet() {
         if (data.monde !== undefined) setVal(mondeInput, data.monde);
         if (data.race) setVal(raceSelect, resolveRace(data.race));
         if (data.profile) setVal(profileSelect, data.profile);
-        const safePillar = (p, other) => (CORE7.includes(p) && p !== other) ? p : CORE7.find(k => k !== other);
+        const safePillar = (p, other) => (CORE8.includes(p) && p !== other) ? p : CORE8.find(k => k !== other);
         let majP = data.pillarMajor;
         let minP = data.pillarMinor;
-        if (majP && !CORE7.includes(majP)) majP = safePillar(majP, minP);
-        if (minP && !CORE7.includes(minP)) minP = safePillar(minP, majP);
+        if (majP && !CORE8.includes(majP)) majP = safePillar(majP, minP);
+        if (minP && !CORE8.includes(minP)) minP = safePillar(minP, majP);
         if (majP) setVal(pillarMajorSelect, majP);
         if (minP) setVal(pillarMinorSelect, minP);
         refreshPillarOptions();
@@ -2012,9 +2019,9 @@ function initCharacterSheet() {
             `-- ATTRIBUTS (dés sans entraînement, Livre II §6.1) --\n` +
             `FOR: ${d.attributes.for} (${dieForValue(+d.attributes.for)}) | AGI: ${d.attributes.agi} (${dieForValue(+d.attributes.agi)}) | CON: ${d.attributes.con} (${dieForValue(+d.attributes.con)}) | RAP: ${d.attributes.rap} (${dieForValue(+d.attributes.rap)})\n` +
             `INT: ${d.attributes.int} (${dieForValue(+d.attributes.int)}) | CHA: ${d.attributes.cha} (${dieForValue(+d.attributes.cha)}) | INS: ${d.attributes.ins} (${dieForValue(+d.attributes.ins)})\n` +
-            `MAGIE: ${d.attributes.mag} | Vision: ${d.vision} | Ouïe: ${d.ouie} | Bagage: ${computeBagage(d.race, d.gift)}\n\n` +
+            `MAGIE: ${d.attributes.mag} (${+d.attributes.mag > 0 ? dieForValue(+d.attributes.mag) : 'non éveillée'}) | Vision: ${d.vision} | Ouïe: ${d.ouie} | Bagage: ${computeBagage(d.race, d.gift)}\n\n` +
             `-- JAUGES VITALES & TACTIQUES (Livre I §4) --\n` +
-            `PA/tour : ${vitals.pa.textContent} (= Max(AGI,INT) + RAP + Min(7 attr.))\n` +
+            `PA/tour : ${vitals.pa.textContent} (= Max(AGI,INT) + RAP + Min(attr. > 0))\n` +
             `Encaissement : ${vitals.cap.textContent} (CON×2 + don) | Maximum Létal : ${vitals.max.textContent} (CON×5)\n` +
             `Essoufflement : ${vitals.ess.textContent} | Initiative : ${document.getElementById('vitalInit').textContent} | Miracle : ${document.getElementById('vitalMiracle').textContent}\n` +
             `Effort max / jet : ${vitals.effortMax ? vitals.effortMax.textContent : '+1'} (1 + entraînements, PA+PE+bonus inclus)\n\n` +

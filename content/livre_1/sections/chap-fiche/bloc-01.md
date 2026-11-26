@@ -79,7 +79,7 @@ livre: 1
                         </div>
 
                         <h4 style="margin: 20px 0 10px; font-family: var(--font-mono); font-size: 0.85rem; color: var(--arcane-cyan); text-transform: uppercase;">
-                            1. Les 7 Attributs Majeurs + Magie (dés Livre II §6.1, sans entraînement)
+                            1. Les 8 Attributs Majeurs (Magie 0 = non éveillé ; dés Livre II §6.1, sans entraînement)
                         </h4>
                         <div class="sheet-stats-grid">
                             <div class="stat-badge-box highlight">
@@ -128,7 +128,7 @@ livre: 1
                             <div class="vital-metric-card cyan">
                                 <div class="vital-metric-title">Points d'Action (PA)</div>
                                 <div class="vital-metric-num">7</div>
-                                <div class="vital-metric-sub">Max(Agi, Int) + Rap + Min(7 attr.)</div>
+                                <div class="vital-metric-sub">Max(Agi, Int) + Rap + Min(attr. &gt; 0)</div>
                             </div>
                             <div class="vital-metric-card emerald">
                                 <div class="vital-metric-title">Encaissement (CAP)</div>
