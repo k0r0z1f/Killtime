@@ -27,6 +27,6 @@ format: raw
                         <li><strong>Chaque effet a son seuil, écrit sur sa carte.</strong> Sur touche, Δ≥0, Δ≥3, succès net, parade réussie, critique ou condition. Raté ? Rien ne part — ni dégâts, ni effet.</li>
                         <li><strong>Paliers = variantes au menu, pas des achats à empiler.</strong> Soin U7 (−5, −10 ou −15 dégâts), Saignement O28 (2, 3 ou 4 résiduels), Souffle U11 (cases à cocher). D8 exige D1 ou D3. O18 exige 3 pièces de la même arme.</li>
                         <li><strong>Incompatibilités.</strong> O7 ⊕ O15 : l'Absolu ne frappe jamais en zone ni sur deux cibles. D6 ⊕ D1, D2, D3, D4 : la garde totale joue seule. Le reste se combine.</li>
-                        <li><strong>Réaction C3 = +2 PA, 1/round.</strong> Opportunité C4 = 0 PA, 1/round, déclencheur étroit obligatoire (Δ≥2, critique, esquive…). Passif C0 = au moins 1 prérequis. Comme les sorts.</li>
+                        <li><strong>Réaction C3 = +2 PA, 1/cycle.</strong> Opportunité C4 = 0 PA, 1/cycle, déclencheur étroit obligatoire (Δ≥2, critique, esquive…). Passif C0 = au moins 1 prérequis. Comme les sorts.</li>
                     </ol>
 

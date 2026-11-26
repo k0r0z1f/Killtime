@@ -8,8 +8,8 @@ livre: 3
                     <!-- ARBRE DU CHARISME -->
                     <h3>13.2 Arbre du Charisme (CHA)</h3>
                     <p>
-                        Ici, c'est votre voix qui fait le travail. Vous persuadez, vous intimidez,
-                        et vous menez votre escouade.
+                        Ici, c'est ta voix qui fait le travail. Tu persuades, tu intimides,
+                        et tu mènes ton escouade.
                     </p>
 
                     

@@ -8,8 +8,8 @@ format: raw
                     <!-- ARBRE DE LA CONSTITUTION -->
                     <h3>12.3 Arbre de la Constitution (CON)</h3>
                     <p>
-                        Ici, c'est votre corps qui tient. Vous encaissez, vous courez longtemps,
-                        et vous résistez aux maladies comme aux poisons.
+                        Ici, c'est ton corps qui tient. Tu encaisses, tu cours longtemps,
+                        et tu résistes aux maladies comme aux poisons.
                     </p>
 
                     

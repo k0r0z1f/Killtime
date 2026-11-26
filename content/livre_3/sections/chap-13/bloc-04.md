@@ -5,11 +5,11 @@ livre: 3
 ---
 
 
-                    <!-- ARBRE DE LA SAGESSE & INSTINCT -->
-                    <h3>13.3 Arbre de la Sagesse & Instinct (INS / SAG)</h3>
+                    <!-- ARBRE DE L'INSTINCT & SAGESSE -->
+                    <h3>13.3 Arbre de l'Instinct & Sagesse (INS)</h3>
                     <p>
-                        Ici, ce sont vos sens en alerte. Vous repérez, vous sentez le danger venir,
-                        et vous survivez dehors.
+                        Ici, ce sont tes sens en alerte. Tu repères, tu sens le danger venir,
+                        et tu survis dehors.
                     </p>
 
                     

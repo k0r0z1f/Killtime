@@ -231,7 +231,7 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "livre_3.html#chap-14",
-          "details": "Passe 2026-10-30 (1er check) — FAIT : compendium repensé = 1 ligne par spé (achat à part entière), indentée sous sa mère, note prérequis avant tableau ; lignes Épée/Marteau/Hache/Éclaireurs alignées Unity. Conflits noms à trancher : Paume de Brum'korath, Acier de Maître d'Hybris. RESTE : QA final + ton lecteur + vérif rude mécaniques spés."
+          "details": "Passe 2026-10-30 (1er check) — FAIT : compendium repensé = 1 ligne par spé (achat à part entière), indentée sous sa mère, note prérequis avant tableau ; lignes Épée/Marteau/Hache/Éclaireurs alignées Unity. Conflits noms à trancher : Paume de Brum'korath, Acier de Maître d'Hybris. RESTE : QA final + ton lecteur + vérif rude mécaniques spés. | MAJ 2026-11-25 (RP-136 / RP-182) : conflits de noms tranchés (Paume de Brum'korath → Paume Brise-Roc, Acier de Maître d'Hybris → Acier de Maître) et 15 spés obsolètes révisées."
         },
         {
           "id": "RP-016",
@@ -2050,7 +2050,7 @@
           "id": "RP-136",
           "title": "Trancher noms Paume de Brum'korath / Acier de Maître d'Hybris (suite RP-015)",
           "epic": "Livre III — Compétences",
-          "status": "todo",
+          "status": "done",
           "priority": "low",
           "order": 135,
           "scene": "",
@@ -2059,7 +2059,8 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "livre_3.html#chap-14",
-          "details": "Suite point ouvert RP-015 : 2 conflits de noms de spés à trancher (décision MJ). Renommer partout (content/livre_3 + data/livre_3.json + tools.js si référencés), vérifier check_liens. DONE = noms uniques + RP-015 annoté."
+          "updated": "2026-11-25",
+          "details": "Suite point ouvert RP-015 : 2 conflits de noms de spés à trancher (décision MJ). Renommer partout (content/livre_3 + data/livre_3.json + tools.js si référencés), vérifier check_liens. DONE = noms uniques + RP-015 annoté. | FAIT 2026-11-25 — Noms canoniques choisis et propagés (§12-14 Livre III + Appendice A + RP-015 annoté) : Paume de Brum'korath → Paume Brise-Roc, Acier de Maître d'Hybris → Acier de Maître."
         },
         {
           "id": "RP-137",
@@ -2735,7 +2736,7 @@
           "id": "RP-181",
           "title": "P1-2 Sync Arbres §12-13 ↔ Compendium §14 (attrs, parente, #55/#56, 28+Forger)",
           "epic": "P1 — Livre III",
-          "status": "todo",
+          "status": "done",
           "priority": "high",
           "order": 178,
           "scene": "",
@@ -2744,14 +2745,14 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "",
-          "updated": "2026-11-10",
-          "details": "Harmoniser attributs liés (Observation Vision/Ouïe vs VUE/INS vs Vision+Instinct; Artisanat SAG/INT vs INS; Esquive; Communication); corriger parente dans mecaniques.specialisations (mère directe, pas racine); découper 2 chaînes Athlétisme (#55 Course/Second Souffle/Cœur, #56 Franchissement/Escalade/Nage); ajouter au §14 les 28 spés manquantes des 9 compétences de base (Acrobatie, Discrétion, Conduite & Pilotage, Subterfuge Manuel, Académie, Premiers Soins, Écoute, Nature & Survie) + Forger (Artisanat, cf. don Derek Maître de Forge). (Audit sysRP 2026-11-10.)"
+          "updated": "2026-11-25",
+          "details": "Harmoniser attributs liés (Observation Vision/Ouïe vs VUE/INS vs Vision+Instinct; Artisanat SAG/INT vs INS; Esquive; Communication); corriger parente dans mecaniques.specialisations (mère directe, pas racine); découper 2 chaînes Athlétisme (#55 Course/Second Souffle/Cœur, #56 Franchissement/Escalade/Nage); ajouter au §14 les 28 spés manquantes des 9 compétences de base (Acrobatie, Discrétion, Conduite & Pilotage, Subterfuge Manuel, Académie, Premiers Soins, Écoute, Nature & Survie) + Forger (Artisanat, cf. don Derek Maître de Forge). (Audit sysRP 2026-11-10.) | FAIT 2026-11-25 — §13.3 + donnees.arbre_ins_sag + §14 harmonisés sur attributs canoniques (Observation Vision, Ouïe ; Artisanat INS, INT sans SAG/VUE ; Esquive AGI, RAP ou INS ; Communication CHA, INT ; Ballistique AGI / Vision) ; mecaniques.arbres INS/SAG → INS ; Athlétisme #55/#56 éclatées en 6 lignes ; 28 spés ajoutées (Acrobatie 4, Conduite 4, Subterfuge 3, Académie 3, Premiers Soins 3, Écoute 3, Nature & Survie 4, Artisanat libre 4 dont Forger) ; mecaniques.specialisations régénérées à 198 entrées avec parente directe sur toute la pile."
         },
         {
           "id": "RP-182",
           "title": "P1-3 Réviser 14 spés obsolètes §14 (#29/#30, #67, #68, dos, seuils, RP-136)",
           "epic": "P1 — Livre III",
-          "status": "todo",
+          "status": "done",
           "priority": "high",
           "order": 179,
           "scene": "",
@@ -2760,14 +2761,14 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "",
-          "updated": "2026-11-10",
-          "details": "Réviser: #29/#30 doublon Prise de coup 1 PA (§20.6); #67/U12 forcer 1 PA = règle base Essoufflement; #68 Redline (plafond sans Ralenti obsolète); #76/#80/#91/#148/D7 attaques de dos (pas de dos, §21.4 vision 360°); #87/#92 seuils fixes 11-12/5-6 vs polyédrique + noms lore RP-136; #24 Chrono-Fracture inexistant; #55 Souffle d'Urgence +3 PA non défini; #143 encaissement→armure; #158 Volonté inexistante. Fichiers: content/livre_3/sections/chap-14/, data/livre_3.json. (Audit sysRP 2026-11-10.)"
+          "updated": "2026-11-25",
+          "details": "Réviser: #29/#30 doublon Prise de coup 1 PA (§20.6); #67/U12 forcer 1 PA = règle base Essoufflement; #68 Redline (plafond sans Ralenti obsolète); #76/#80/#91/#148/D7 attaques de dos (pas de dos, §21.4 vision 360°); #87/#92 seuils fixes 11-12/5-6 vs polyédrique + noms lore RP-136; #24 Chrono-Fracture inexistant; #55 Souffle d'Urgence +3 PA non défini; #143 encaissement→armure; #158 Volonté inexistante. Fichiers: content/livre_3/sections/chap-14/, data/livre_3.json. (Audit sysRP 2026-11-10.) | FAIT 2026-11-25 — 15 spés §14 + pièces Fabrique D7/U12 + Appendice A révisés : Bouclier Vivant (2 cases, posture 0 malus) & Interposition Réflexe (0 PA, +1 parade) ; Poussée Cardiovasculaire (+1 plafond, 1×/combat +1 PA sans ESS), Redline Stabilisé (1×/combat tient +1 ESS au-delà du plafond), U12 Réserve d'urgence (+2 PA pour 1 ESS 1×/combat), Cœur de Marathon (1×/combat +3 PA pour 1 ESS) ; suppression attaques de dos (Clairvoyance du Vétéran, Sphère de Résonance auto 3 cases, Perception Panoramique 360° +2 Obs/ignore encerclement, Feinte Oratoire −2 prochaine défense, D7 Immunité embuscade) ; seuils polyédriques (Acier de Maître max−1, Pistolet & Tir Rapide Δ≥1/Δ≥3) ; Fissure Causale (Déstabilisé + draine 2 PA) ; Analyse de Faille (ignore armure) ; Paralysie Psychologique (Δ≥3 ou INS < CHA) ; RP-136 (Paume Brise-Roc, Acier de Maître)."
         },
         {
           "id": "RP-183",
           "title": "P1-4 Nettoyer §15 Fabrique (1/cycle, §19, ch.39) + tutoiement ch.12-15",
           "epic": "P1 — Livre III",
-          "status": "todo",
+          "status": "done",
           "priority": "medium",
           "order": 180,
           "scene": "",
@@ -2776,8 +2777,8 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "",
-          "updated": "2026-11-10",
-          "details": "Nettoyer §15: 8× 1/round→1/cycle, renvois L.IV §20→§19, lien ch.41→ch.39; passer chap.12-15 au tutoiement. Fichiers: content/livre_3/sections/chap-15/, data/livre_3.json. (Audit sysRP 2026-11-10.)"
+          "updated": "2026-11-25",
+          "details": "Nettoyer §15: 8× 1/round→1/cycle, renvois L.IV §20→§19, lien ch.41→ch.39; passer chap.12-15 au tutoiement. Fichiers: content/livre_3/sections/chap-15/, data/livre_3.json. (Audit sysRP 2026-11-10.) | FAIT 2026-11-25 — 1/round → 1/cycle (chap-15 + data/livre_3.json + js/fabrique.js + Appendice A activer-specialisation-technique) ; Livre IV §20 → Livre IV §19 (chap-15 C3/M6) ; ancre outil Fabrique déjà à jour sur livre_9.html#chap-38 ; tutoiement généralisé sur tout le Livre III (chap. 11–15, catégories d'action §11, 36 spés Compendium §14)."
         },
         {
           "id": "RP-184",

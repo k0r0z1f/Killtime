@@ -8,12 +8,12 @@ format: raw
                     <div class="codex-signature">
                         <div class="sig-meta">
                             <strong>LIVRE III DU CODEX UNIVERSEL</strong><br>
-                            Vos compétences, vos spécialités.<br>
-                            <em>Servez-vous, testez autour de la table — et bon jeu.</em>
+                            Tes compétences, tes spécialités.<br>
+                            <em>Sers-toi, teste autour de la table — et bon jeu.</em>
                         </div>
                         <div class="sig-stamp">
                             <span class="stamp-title">COMPÉTENCES HOMOLOGUÉES</span>
-                            <span class="stamp-date">PRÊT POUR VOS FICHES PJ ET PNJ</span>
+                            <span class="stamp-date">PRÊT POUR TES FICHES PJ ET PNJ</span>
                         </div>
                     </div>
 

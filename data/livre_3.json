@@ -13,7 +13,7 @@
    "blocs": [
     {
      "type": "html",
-     "html": "\n\n                    <p class=\"lead\">\n                        Chaque compétence part d'un ou plusieurs attributs. Elle fonctionne sur deux niveaux :\n                        la <strong>compétence de base</strong>, ta fondation large, celle que tout le monde partage.\n                        Et la <strong>spécialisation</strong>, ta botte en plus — celle qui\n                        te donne des effets que les autres n'ont pas.\n                    </p>\n\n                    <h3 id=\"sec-11-1\">11.1 Calcul du Rang de Base</h3>\n                    <p>\n                        Pour trouver ton score de base, prends la\n                        <strong><a class=\"rule-ref\" href=\"livre_2.html#chap-6\"\n                                data-tip=\"Base = moyenne des attributs liés : 1-2 +0 (d2), 3-4 +1 (d4), 5-6 +2 (d6), 7-8 +3 (d8), 9-10 +4 (d10) (Livre II §6.1).\">moyenne\n                                de tes attributs liés</a></strong>, arrondie au supérieur.\n                        Un seul attribut lié ? Garde sa valeur telle quelle.\n                    </p>\n                    <ul>\n                        <li><em>Exemple 1 :</em> <strong>Maniement d'Arme (FOR, AGI)</strong>. Tu as\n                            Force\n                            5 et Agilité 4 : la moyenne fait (5 + 4) / 2 = 4,5, arrondi à <strong>5</strong> → <strong><a\n                                    class=\"rule-ref\" href=\"livre_2.html#chap-6\"\n                                    data-tip=\"Niveau de dé : chaque cran monte le dé — d2 ➔ d4 ➔ d6 ➔ d8 ➔ d10 ➔ d12 (§6.1).\">+2\n                                    niveaux de\n                                    dé</a></strong> (dé associé sans entraînement : <strong>1d6</strong>).\n                        </li>\n                        <li><em>Exemple 2 :</em> <strong>Premiers Soins (INS)</strong>. Tu as Instinct\n                            <strong>3</strong> → <strong>+1 niveau</strong> (dé associé :\n                            <strong>1d4</strong>). Ta piste de progression compte <strong>3 cases</strong> (<a\n                                class=\"rule-ref\" href=\"livre_1.html#chap-5\"\n                                data-tip=\"Progression : 1 réussite = 1 case. Piste pleine = +1 XP lié, piste à zéro (§5.1-5.2).\">Livre\n                                I §5</a>).\n                        </li>\n                        <li><em>Exemple 3 :</em> <strong>Athlétisme (CON, FOR, AGI)</strong>. Tu as CON 4, FOR 5,\n                            AGI 3 :\n                            la moyenne fait (4 + 5 + 3) / 3 = <strong>4</strong> → <strong>+1 niveau</strong> (dé\n                            associé\n                            : <strong>1d4</strong>).\n                        </li>\n                    </ul>\n                    <p>\n                        <strong>Ta progression (<a class=\"rule-ref\" href=\"livre_1.html#chap-5\"\n                                data-tip=\"Progression : 1 réussite = 1 case. Piste pleine = +1 XP lié, piste à zéro (§5.1-5.2).\">Livre\n                                I §5</a>) :</strong> ton rang de base fixe aussi la\n                        <strong>taille de ta <a class=\"rule-ref\" href=\"livre_1.html#chap-5\"\n                                data-tip=\"Piste de progression : autant de cases que votre base — base 3 → 3 cases, base 5 → 5 cases (§5.1).\">piste</a></strong>\n                        : base 3 → 3 cases, base 5 → 5 cases. Chaque\n                        <strong>réussite</strong> avec la compétence coche 1 case. Piste pleine ? Tu gagnes +1 <a\n                            class=\"rule-ref\" href=\"livre_1.html#sec-5-2\"\n                            data-tip=\"XP lié : une piste remplie = 1 XP réservé à sa compétence (§5.2).\">XP lié</a>,\n                        puis la piste repart à zéro. Tu le dépenses au coût normal, ou en\n                        <a class=\"rule-ref\" href=\"livre_1.html#sec-5-3\"\n                            data-tip=\"Coût croisé ×2 : dépenser l'XP d'une autre compétence coûte double (§5.3).\">croisé\n                            <strong>×2</strong></a>.\n                        <br><strong>Ton <a class=\"rule-ref\" href=\"livre_1.html#sec-etape-6\"\n                                data-tip=\"Bagage (Étape 6) : 3 entraînements de départ (+1 don Humain Touche-à-tout, +1 tirage historique pur, max 5), fixé à la création, jamais farmable en jeu.\">Bagage de départ</a> :</strong> tout héros commence avec <strong>3 entraînements gratuits</strong> à la création (+1 don Humain <em>Touche-à-tout</em>, +1 tirage historique pur <a href=\"livre_7.html\">Livre VII</a>, max 5). Ils sont fixés une seule fois à la création (aucune caractéristique n'en offre en jeu), coûtent 0 XP et restent\n                        <strong><a class=\"rule-ref\" href=\"livre_1.html#sec-5-4\"\n                                data-tip=\"XP Total : tout l'XP investi depuis le début, hors réserves et hors Bagage de création (§5.4).\">hors\n                                de ton total</a></strong>.\n                        <br><strong>Maximum 3 <a class=\"rule-ref\" href=\"livre_2.html#chap-6\"\n                                data-tip=\"Entraînement : +1 palier chacun, plafond 3 (+3 déblocables à 2d6, max 6), 5 XP (10 si croisé) (§6.1).\">entraînements\n                                par compétence</a> :</strong> tu ne peux jamais dépasser 3 au départ,\n                        gratuits et achetés confondus — <strong>6 si ton dé a atteint 2d6</strong> (3 déblocables : 2d6 ➔ 2d8 ➔ 2d10 ➔ 2d12). Ce sont les 6 cases de ta fiche. Chaque entraînement donne\n                        <strong>+1 niveau de dé</strong>.\n                    </p>\n\n                    <h3>11.2 Les 5 Catégories Fonctionnelles d'Action</h3>\n                    "
+     "html": "\n\n                    <p class=\"lead\">\n                        Chaque compétence part d'un ou plusieurs attributs. Elle fonctionne sur deux niveaux :\n                        la <strong>compétence de base</strong>, ta fondation large, celle que tout le monde partage.\n                        Et la <strong>spécialisation</strong>, ta botte en plus — celle qui\n                        te donne des effets que les autres n'ont pas.\n                    </p>\n\n                    <h3 id=\"sec-11-1\">11.1 Calcul du Rang de Base</h3>\n                    <p>\n                        Pour trouver ton score de base, prends la\n                        <strong><a class=\"rule-ref\" href=\"livre_2.html#chap-6\"\n                                data-tip=\"Base = moyenne des attributs liés : 1-2 +0 (d2), 3-4 +1 (d4), 5-6 +2 (d6), 7-8 +3 (d8), 9-10 +4 (d10) (Livre II §6.1).\">moyenne\n                                de tes attributs liés</a></strong>, arrondie au supérieur.\n                        Un seul attribut lié ? Garde sa valeur telle quelle.\n                    </p>\n                    <ul>\n                        <li><em>Exemple 1 :</em> <strong>Maniement d'Arme (FOR, AGI)</strong>. Tu as\n                            Force\n                            5 et Agilité 4 : la moyenne fait (5 + 4) / 2 = 4,5, arrondi à <strong>5</strong> → <strong><a\n                                    class=\"rule-ref\" href=\"livre_2.html#chap-6\"\n                                    data-tip=\"Niveau de dé : chaque cran monte le dé — d2 ➔ d4 ➔ d6 ➔ d8 ➔ d10 ➔ d12 (§6.1).\">+2\n                                    niveaux de\n                                    dé</a></strong> (dé associé sans entraînement : <strong>1d6</strong>).\n                        </li>\n                        <li><em>Exemple 2 :</em> <strong>Premiers Soins (INS)</strong>. Tu as Instinct\n                            <strong>3</strong> → <strong>+1 niveau</strong> (dé associé :\n                            <strong>1d4</strong>). Ta piste de progression compte <strong>3 cases</strong> (<a\n                                class=\"rule-ref\" href=\"livre_1.html#chap-5\"\n                                data-tip=\"Progression : 1 réussite = 1 case. Piste pleine = +1 XP lié, piste à zéro (§5.1-5.2).\">Livre\n                                I §5</a>).\n                        </li>\n                        <li><em>Exemple 3 :</em> <strong>Athlétisme (CON, FOR, AGI)</strong>. Tu as CON 4, FOR 5,\n                            AGI 3 :\n                            la moyenne fait (4 + 5 + 3) / 3 = <strong>4</strong> → <strong>+1 niveau</strong> (dé\n                            associé\n                            : <strong>1d4</strong>).\n                        </li>\n                    </ul>\n                    <p>\n                        <strong>Ta progression (<a class=\"rule-ref\" href=\"livre_1.html#chap-5\"\n                                data-tip=\"Progression : 1 réussite = 1 case. Piste pleine = +1 XP lié, piste à zéro (§5.1-5.2).\">Livre\n                                I §5</a>) :</strong> ton rang de base fixe aussi la\n                        <strong>taille de ta <a class=\"rule-ref\" href=\"livre_1.html#chap-5\"\n                                data-tip=\"Piste de progression : autant de cases que ta base — base 3 → 3 cases, base 5 → 5 cases (§5.1).\">piste</a></strong>\n                        : base 3 → 3 cases, base 5 → 5 cases. Chaque\n                        <strong>réussite</strong> avec la compétence coche 1 case. Piste pleine ? Tu gagnes +1 <a\n                            class=\"rule-ref\" href=\"livre_1.html#sec-5-2\"\n                            data-tip=\"XP lié : une piste remplie = 1 XP réservé à sa compétence (§5.2).\">XP lié</a>,\n                        puis la piste repart à zéro. Tu le dépenses au coût normal, ou en\n                        <a class=\"rule-ref\" href=\"livre_1.html#sec-5-3\"\n                            data-tip=\"Coût croisé ×2 : dépenser l'XP d'une autre compétence coûte double (§5.3).\">croisé\n                            <strong>×2</strong></a>.\n                        <br><strong>Ton <a class=\"rule-ref\" href=\"livre_1.html#sec-etape-6\"\n                                data-tip=\"Bagage (Étape 6) : 3 entraînements de départ (+1 don Humain Touche-à-tout, +1 tirage historique pur, max 5), fixé à la création, jamais farmable en jeu.\">Bagage de départ</a> :</strong> tout héros commence avec <strong>3 entraînements gratuits</strong> à la création (+1 don Humain <em>Touche-à-tout</em>, +1 tirage historique pur <a href=\"livre_7.html\">Livre VII</a>, max 5). Ils sont fixés une seule fois à la création (aucune caractéristique n'en offre en jeu), coûtent 0 XP et restent\n                        <strong><a class=\"rule-ref\" href=\"livre_1.html#sec-5-4\"\n                                data-tip=\"XP Total : tout l'XP investi depuis le début, hors réserves et hors Bagage de création (§5.4).\">hors\n                                de ton total</a></strong>.\n                        <br><strong>Maximum 3 <a class=\"rule-ref\" href=\"livre_2.html#chap-6\"\n                                data-tip=\"Entraînement : +1 palier chacun, plafond 3 (+3 déblocables à 2d6, max 6), 5 XP (10 si croisé) (§6.1).\">entraînements\n                                par compétence</a> :</strong> tu ne peux jamais dépasser 3 au départ,\n                        gratuits et achetés confondus — <strong>6 si ton dé a atteint 2d6</strong> (3 déblocables : 2d6 ➔ 2d8 ➔ 2d10 ➔ 2d12). Ce sont les 6 cases de ta fiche. Chaque entraînement donne\n                        <strong>+1 niveau de dé</strong>.\n                    </p>\n\n                    <h3>11.2 Les 5 Catégories Fonctionnelles d'Action</h3>\n                    "
     },
     {
      "type": "ref",
@@ -33,7 +33,7 @@
    "blocs": [
     {
      "type": "html",
-     "html": "\n\n                    <!-- ARBRE DE LA FORCE -->\n                    <h3>12.1 Arbre de la Force (FOR)</h3>\n                    <p>\n                        Ici, ce sont vos muscles qui parlent. Vous frappez fort, vous portez lourd,\n                        et vous tenez debout en armure lourde.\n                    </p>\n\n                    "
+     "html": "\n\n                    <!-- ARBRE DE LA FORCE -->\n                    <h3>12.1 Arbre de la Force (FOR)</h3>\n                    <p>\n                        Ici, ce sont tes muscles qui parlent. Tu frappes fort, tu portes lourd,\n                        et tu tiens debout en armure lourde.\n                    </p>\n\n                    "
     },
     {
      "type": "ref",
@@ -41,7 +41,7 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <h4>Actions Physiques de Force & Difficultés Associées</h4>\n                    <ul>\n                        <li><strong>Courir / Nager / Escalader</strong> : vous courez, vous nagez, vous grimpez — facile (1–3) la plupart du\n                            temps.\n                            Si ça devient dur (<a class=\"rule-ref\" href=\"livre_2.html#chap-7\"\n                                data-tip=\"Difficulté : 1-3 facile, 5+ exige un jet, 12+ héroïque, 18+ cosmique (§7.1).\">difficulté\n                                5+</a>, courant, bourbier, paroi raide), lancez votre <strong>Athlétisme</strong>. En combat, sans <em>Franchissement</em> : <strong>2 PA par case</strong> nagée ou grimpée (<a class=\"rule-ref\" href=\"livre_5.html#sec-20-5\" data-tip=\"Nager / escalader sans Franchissement : 2 PA par case, épreuve d'Athlétisme si eau agitée ou paroi raide (Livre V §20.5).\">Livre V §20.5</a>).</li>\n                        <li><strong>Pousser / Soulever</strong> : vous poussez une herse ou soulevez une poutre via une épreuve d'<strong>Athlétisme</strong> (effort explosif) ou d'<strong>Endurance Physique</strong> (effort prolongé). Si quelqu'un s'oppose, faites un <a class=\"rule-ref\" href=\"livre_2.html#chap-7\"\n                                data-tip=\"Face-à-Face : chacun lance son dé + PA, le meilleur gagne. Seul le vainqueur coche (§7.3).\">Face-à-Face</a> <strong>Athlétisme contre Athlétisme</strong>.</li>\n                        <li><strong>Agripper (Lutte)</strong> : pour ceinturer, clouer sur place, traîner ou étrangler au contact, utilisez la <a class=\"rule-ref\"\n                                href=\"livre_5.html#sec-20-8\"\n                                data-tip=\"Lutte : 2 PA au contact, Face-à-Face Athlétisme (ou Mains Nues) vs Athlétisme (ou Défense Corporelle). Succès = Immobilisé, puis traînée ou étranglement (Livre V §20.8).\">Lutte (Livre V §20.8)</a> : <strong>2 PA</strong>, Face-à-Face <strong>Athlétisme</strong> (ou <em>Mains Nues</em>) contre <strong>Athlétisme</strong> (ou <em>Défense Corporelle</em>). Réussi ? La cible est <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                data-tip=\"Immobilisé : impossible de faire la moindre action de mouvement (§24.1).\">immobilisée</a>.</li>\n                        <li><strong>Porter une Armure Lourde</strong> : aucun seuil de Force minimal n'est exigé, mais les cuirasses lourdes imposent un <a class=\"rule-ref\" href=\"livre_8.html#sec-32-1\"\n                                data-tip=\"Encombrement : +0 PA (légère), +1 PA (lourde Prot 3–5), +2 PA (lourde Prot 6–7) par action ; réduit de 1 via don Mikyai Technicien-Guerrier (Livre VIII §32.1).\">Encombrement (Livre VIII §32.1)</a> de <strong>+1 PA</strong> (Prot 3–5) ou <strong>+2 PA</strong> (Prot 6–7) sur chaque action (réduit de 1 par le don Mikyai <em>Technicien-Guerrier</em>). Pour tenir une marche prolongée sous charge lourde, lancez <strong>Endurance Physique</strong>.</li>\n                    </ul>\n\n                    <!-- ARBRE DE L'AGILITÉ -->\n                    <h3>12.2 Arbre de l'Agilité (AGI)</h3>\n                    <p>\n                        Ici, c'est votre souplesse et votre précision. Vous esquivez, vous visez,\n                        vous crochetez, vous pilotez.\n                        Pour se cacher en combat (2 PA), se déplacer furtivement ou approcher dans un angle mort hors combat, voir <a class=\"rule-ref\" href=\"livre_5.html#sec-21-4\" data-tip=\"Se cacher (2 PA), déplacement furtif (+1 PA/case), Observation active vs Discrétion et approche hors combat (§21.4).\">Livre V §21.4</a>.\n                    </p>\n\n                    "
+     "html": "\n\n                    <h4>Actions Physiques de Force & Difficultés Associées</h4>\n                    <ul>\n                        <li><strong>Courir / Nager / Escalader</strong> : tu cours, tu nages, tu grimpes — facile (1–3) la plupart du\n                            temps.\n                            Si ça devient dur (<a class=\"rule-ref\" href=\"livre_2.html#chap-7\"\n                                data-tip=\"Difficulté : 1-3 facile, 5+ exige un jet, 12+ héroïque, 18+ cosmique (§7.1).\">difficulté\n                                5+</a>, courant, bourbier, paroi raide), lance ton <strong>Athlétisme</strong>. En combat, sans <em>Franchissement</em> : <strong>2 PA par case</strong> nagée ou grimpée (<a class=\"rule-ref\" href=\"livre_5.html#sec-20-5\" data-tip=\"Nager / escalader sans Franchissement : 2 PA par case, épreuve d'Athlétisme si eau agitée ou paroi raide (Livre V §20.5).\">Livre V §20.5</a>).</li>\n                        <li><strong>Pousser / Soulever</strong> : tu pousses une herse ou soulèves une poutre via une épreuve d'<strong>Athlétisme</strong> (effort explosif) ou d'<strong>Endurance Physique</strong> (effort prolongé). Si quelqu'un s'oppose, fais un <a class=\"rule-ref\" href=\"livre_2.html#chap-7\"\n                                data-tip=\"Face-à-Face : chacun lance son dé + PA, le meilleur gagne. Seul le vainqueur coche (§7.3).\">Face-à-Face</a> <strong>Athlétisme contre Athlétisme</strong>.</li>\n                        <li><strong>Agripper (Lutte)</strong> : pour ceinturer, clouer sur place, traîner ou étrangler au contact, utilise la <a class=\"rule-ref\"\n                                href=\"livre_5.html#sec-20-8\"\n                                data-tip=\"Lutte : 2 PA au contact, Face-à-Face Athlétisme (ou Mains Nues) vs Athlétisme (ou Défense Corporelle). Succès = Immobilisé, puis traînée ou étranglement (Livre V §20.8).\">Lutte (Livre V §20.8)</a> : <strong>2 PA</strong>, Face-à-Face <strong>Athlétisme</strong> (ou <em>Mains Nues</em>) contre <strong>Athlétisme</strong> (ou <em>Défense Corporelle</em>). Réussi ? La cible est <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                data-tip=\"Immobilisé : impossible de faire la moindre action de mouvement (§24.1).\">immobilisée</a>.</li>\n                        <li><strong>Porter une Armure Lourde</strong> : aucun seuil de Force minimal n'est exigé, mais les cuirasses lourdes imposent un <a class=\"rule-ref\" href=\"livre_8.html#sec-32-1\"\n                                data-tip=\"Encombrement : +0 PA (légère), +1 PA (lourde Prot 3–5), +2 PA (lourde Prot 6–7) par action ; réduit de 1 via don Mikyai Technicien-Guerrier (Livre VIII §32.1).\">Encombrement (Livre VIII §32.1)</a> de <strong>+1 PA</strong> (Prot 3–5) ou <strong>+2 PA</strong> (Prot 6–7) sur chaque action (réduit de 1 par le don Mikyai <em>Technicien-Guerrier</em>). Pour tenir une marche prolongée sous charge lourde, lance <strong>Endurance Physique</strong>.</li>\n                    </ul>\n\n                    <!-- ARBRE DE L'AGILITÉ -->\n                    <h3>12.2 Arbre de l'Agilité (AGI)</h3>\n                    <p>\n                        Ici, c'est ta souplesse et ta précision. Tu esquives, tu vises,\n                        tu crochètes, tu pilotes.\n                        Pour se cacher en combat (2 PA), se déplacer furtivement ou approcher dans un angle mort hors combat, voir <a class=\"rule-ref\" href=\"livre_5.html#sec-21-4\" data-tip=\"Se cacher (2 PA), déplacement furtif (+1 PA/case), Observation active vs Discrétion et approche hors combat (§21.4).\">Livre V §21.4</a>.\n                    </p>\n\n                    "
     },
     {
      "type": "ref",
@@ -49,7 +49,7 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <!-- ARBRE DE LA CONSTITUTION -->\n                    <h3>12.3 Arbre de la Constitution (CON)</h3>\n                    <p>\n                        Ici, c'est votre corps qui tient. Vous encaissez, vous courez longtemps,\n                        et vous résistez aux maladies comme aux poisons.\n                    </p>\n\n                    "
+     "html": "\n\n                    <!-- ARBRE DE LA CONSTITUTION -->\n                    <h3>12.3 Arbre de la Constitution (CON)</h3>\n                    <p>\n                        Ici, c'est ton corps qui tient. Tu encaisses, tu cours longtemps,\n                        et tu résistes aux maladies comme aux poisons.\n                    </p>\n\n                    "
     },
     {
      "type": "ref",
@@ -69,7 +69,7 @@
    "blocs": [
     {
      "type": "html",
-     "html": "\n\n                    <!-- ARBRE INTELLIGENCE -->\n                    <h3>13.1 Arbre de l'Intelligence (INT)</h3>\n                    <p>\n                        Ici, c'est votre tête qui travaille. Vous réfléchissez, vous soignez,\n                        vous réparez, et vous comprenez comment marchent les machines.\n                    </p>\n\n                    "
+     "html": "\n\n                    <!-- ARBRE INTELLIGENCE -->\n                    <h3>13.1 Arbre de l'Intelligence (INT)</h3>\n                    <p>\n                        Ici, c'est ta tête qui travaille. Tu réfléchis, tu soignes,\n                        tu répares, et tu comprends comment marchent les machines.\n                    </p>\n\n                    "
     },
     {
      "type": "ref",
@@ -77,7 +77,7 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <!-- ARBRE DU CHARISME -->\n                    <h3>13.2 Arbre du Charisme (CHA)</h3>\n                    <p>\n                        Ici, c'est votre voix qui fait le travail. Vous persuadez, vous intimidez,\n                        et vous menez votre escouade.\n                    </p>\n\n                    "
+     "html": "\n\n                    <!-- ARBRE DU CHARISME -->\n                    <h3>13.2 Arbre du Charisme (CHA)</h3>\n                    <p>\n                        Ici, c'est ta voix qui fait le travail. Tu persuades, tu intimides,\n                        et tu mènes ton escouade.\n                    </p>\n\n                    "
     },
     {
      "type": "ref",
@@ -85,7 +85,7 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <!-- ARBRE DE LA SAGESSE & INSTINCT -->\n                    <h3>13.3 Arbre de la Sagesse & Instinct (INS / SAG)</h3>\n                    <p>\n                        Ici, ce sont vos sens en alerte. Vous repérez, vous sentez le danger venir,\n                        et vous survivez dehors.\n                    </p>\n\n                    "
+     "html": "\n\n                    <!-- ARBRE DE L'INSTINCT & SAGESSE -->\n                    <h3>13.3 Arbre de l'Instinct & Sagesse (INS)</h3>\n                    <p>\n                        Ici, ce sont tes sens en alerte. Tu repères, tu sens le danger venir,\n                        et tu survis dehors.\n                    </p>\n\n                    "
     },
     {
      "type": "ref",
@@ -105,7 +105,7 @@
    "blocs": [
     {
      "type": "html",
-     "html": "\n\n                    <p class=\"lead\">\n                        Vous voulez une spécialisation ? Ça coûte <strong><a class=\"rule-ref\"\n                                href=\"livre_1.html#sec-5-3\"\n                                data-tip=\"Spécialisation : 5 XP de la bonne banque ou du libre, au tarif normal (§5.3).\">5\n                                XP de la bonne banque (ou du\n                                libre)</a></strong>,\n                        <strong><a class=\"rule-ref\" href=\"livre_1.html#sec-5-3\"\n                                data-tip=\"Coût croisé ×2 : dépenser l'XP d'une autre compétence coûte double (§5.3).\">10\n                                XP depuis une autre banque</a></strong> (<a class=\"rule-ref\" href=\"livre_1.html#sec-5-3\"\n                            data-tip=\"Dépenser son XP : dans sa compétence au tarif normal, ×2 en croisé, libre partout (§5.3).\">Livre\n                            I §5.3</a>). En échange, vous gagnez\n                        des effets précis — et vous <a class=\"rule-ref\" href=\"#chap-11\"\n                            data-tip=\"Parade pure = plein dé. Sinon −1 niveau, annulé par la spécialisation dédiée (§11).\">parez\n                            sans malus</a> avec cette approche.\n                        <br>Chaque ligne ci-dessous est une spécialisation à part entière : vous les achetez une par\n                        une, chacune au même tarif. Lisez l'indentation : une spécialisation indentée (↳)\n                        a pour prérequis celle qu'elle pointe — sa mère, juste au-dessus dans sa branche.\n                    </p>\n\n                    "
+     "html": "\n\n                    <p class=\"lead\">\n                        Tu veux une spécialisation ? Ça coûte <strong><a class=\"rule-ref\"\n                                href=\"livre_1.html#sec-5-3\"\n                                data-tip=\"Spécialisation : 5 XP de la bonne banque ou du libre, au tarif normal (§5.3).\">5\n                                XP de la bonne banque (ou du\n                                libre)</a></strong>,\n                        <strong><a class=\"rule-ref\" href=\"livre_1.html#sec-5-3\"\n                                data-tip=\"Coût croisé ×2 : dépenser l'XP d'une autre compétence coûte double (§5.3).\">10\n                                XP depuis une autre banque</a></strong> (<a class=\"rule-ref\" href=\"livre_1.html#sec-5-3\"\n                            data-tip=\"Dépenser son XP : dans sa compétence au tarif normal, ×2 en croisé, libre partout (§5.3).\">Livre\n                            I §5.3</a>). En échange, tu gagnes\n                        des effets précis — et tu <a class=\"rule-ref\" href=\"#chap-11\"\n                            data-tip=\"Parade pure = plein dé. Sinon −1 niveau, annulé par la spécialisation dédiée (§11).\">pares\n                            sans malus</a> avec cette approche.\n                        <br>Chaque ligne ci-dessous est une spécialisation à part entière : tu les achètes une par\n                        une, chacune au même tarif. Lis l'indentation : une spécialisation indentée (↳)\n                        a pour prérequis celle qu'elle pointe — sa mère, juste au-dessus dans sa branche.\n                    </p>\n\n                    "
     },
     {
      "type": "ref",
@@ -129,7 +129,7 @@
     },
     {
      "type": "html",
-     "html": "\n                    <h3 id=\"sec-15-1\">15.1 Fiche technique d'une technique</h3>\n                    <p>\n                        Pour chaque technique, remplis ces rubriques avec ton MJ. Une ligne chacune, ça tient sur un post-it :\n                    </p>\n                    <ul>\n                        <li><strong>Nom :</strong> le titre de ta technique (gratuit). <em>Ex : Fente Basse, Suture Réflexe.</em></li>\n                        <li><strong>Ensemble ◆ :</strong> un seul, lié à une compétence entraînée (table ci-dessous). Il dit quand ça se déclenche — et tes PA de base. Sans compétence liée, rien ne se branche.</li>\n                        <li><strong>Pièces :</strong> 1 à 3, 3 logements max. Recopie leurs textes : ta technique est écrite. Les 8 cartes Conditions (contact, arme en main, immobile, critique, Δ≥2, 1/combat, essoufflement, entraînement) se branchent gratis, hors logements.</li>\n                        <li><strong>Famille :</strong> un seul type par technique — le 1er effet posé fixe le type (affiché sous ◆). Ta compétence liée n'ouvre que ses familles (Esquive = défensif pur). Deux types = +1 XP d'hybride, jamais de PA en plus.</li>\n                        <li><strong>Finitions :</strong> sur chaque carte, pas à côté — portée, zone, durée, hors-compétence (voir 15.7).</li>\n                        <li><strong>Coûts :</strong> l'addition XP d'un côté, l'addition PA de l'autre. Montre les deux au MJ.</li>\n                        <li><strong>Accord MJ :</strong> il vérifie les 9 règles ci-dessous, il signe, tu paies.</li>\n                    </ul>\n                    <h3 id=\"sec-15-regles\">Les 9 règles d'assemblage</h3>\n                    <ol>\n                        <li><strong>Un ensemble ◆, un seul — et une compétence entraînée liée.</strong> Il dit quand ta technique part, et ses PA de base.</li>\n                        <li><strong>Un ensemble + 1 à 3 pièces, pas plus.</strong> 3 logements : au-delà, ce sont deux techniques sœurs.</li>\n                        <li><strong>Budget : tu additionnes ensemble + pièces + finitions.</strong> Vise 4 à 6 XP. À 7 XP et plus, c'est une signature : une seule par personnage, MJ obligatoire.</li>\n                        <li><strong>Activation à 6 PA max, ensemble compté.</strong> Si ça dépasse, découpe. Passif C0 : 0 PA strict — ni pièce ni finition à PA.</li>\n                        <li><strong>Un seul bonus chiffré par jet.</strong> O8 et O9 ne se cumulent pas — le meilleur gagne.</li>\n                        <li><strong>Chaque effet a son seuil, écrit sur sa carte.</strong> Sur touche, Δ≥0, Δ≥3, succès net, parade réussie, critique ou condition. Raté ? Rien ne part — ni dégâts, ni effet.</li>\n                        <li><strong>Paliers = variantes au menu, pas des achats à empiler.</strong> Soin U7 (−5, −10 ou −15 dégâts), Saignement O28 (2, 3 ou 4 résiduels), Souffle U11 (cases à cocher). D8 exige D1 ou D3. O18 exige 3 pièces de la même arme.</li>\n                        <li><strong>Incompatibilités.</strong> O7 ⊕ O15 : l'Absolu ne frappe jamais en zone ni sur deux cibles. D6 ⊕ D1, D2, D3, D4 : la garde totale joue seule. Le reste se combine.</li>\n                        <li><strong>Réaction C3 = +2 PA, 1/round.</strong> Opportunité C4 = 0 PA, 1/round, déclencheur étroit obligatoire (Δ≥2, critique, esquive…). Passif C0 = au moins 1 prérequis. Comme les sorts.</li>\n                    </ol>\n"
+     "html": "\n                    <h3 id=\"sec-15-1\">15.1 Fiche technique d'une technique</h3>\n                    <p>\n                        Pour chaque technique, remplis ces rubriques avec ton MJ. Une ligne chacune, ça tient sur un post-it :\n                    </p>\n                    <ul>\n                        <li><strong>Nom :</strong> le titre de ta technique (gratuit). <em>Ex : Fente Basse, Suture Réflexe.</em></li>\n                        <li><strong>Ensemble ◆ :</strong> un seul, lié à une compétence entraînée (table ci-dessous). Il dit quand ça se déclenche — et tes PA de base. Sans compétence liée, rien ne se branche.</li>\n                        <li><strong>Pièces :</strong> 1 à 3, 3 logements max. Recopie leurs textes : ta technique est écrite. Les 8 cartes Conditions (contact, arme en main, immobile, critique, Δ≥2, 1/combat, essoufflement, entraînement) se branchent gratis, hors logements.</li>\n                        <li><strong>Famille :</strong> un seul type par technique — le 1er effet posé fixe le type (affiché sous ◆). Ta compétence liée n'ouvre que ses familles (Esquive = défensif pur). Deux types = +1 XP d'hybride, jamais de PA en plus.</li>\n                        <li><strong>Finitions :</strong> sur chaque carte, pas à côté — portée, zone, durée, hors-compétence (voir 15.7).</li>\n                        <li><strong>Coûts :</strong> l'addition XP d'un côté, l'addition PA de l'autre. Montre les deux au MJ.</li>\n                        <li><strong>Accord MJ :</strong> il vérifie les 9 règles ci-dessous, il signe, tu paies.</li>\n                    </ul>\n                    <h3 id=\"sec-15-regles\">Les 9 règles d'assemblage</h3>\n                    <ol>\n                        <li><strong>Un ensemble ◆, un seul — et une compétence entraînée liée.</strong> Il dit quand ta technique part, et ses PA de base.</li>\n                        <li><strong>Un ensemble + 1 à 3 pièces, pas plus.</strong> 3 logements : au-delà, ce sont deux techniques sœurs.</li>\n                        <li><strong>Budget : tu additionnes ensemble + pièces + finitions.</strong> Vise 4 à 6 XP. À 7 XP et plus, c'est une signature : une seule par personnage, MJ obligatoire.</li>\n                        <li><strong>Activation à 6 PA max, ensemble compté.</strong> Si ça dépasse, découpe. Passif C0 : 0 PA strict — ni pièce ni finition à PA.</li>\n                        <li><strong>Un seul bonus chiffré par jet.</strong> O8 et O9 ne se cumulent pas — le meilleur gagne.</li>\n                        <li><strong>Chaque effet a son seuil, écrit sur sa carte.</strong> Sur touche, Δ≥0, Δ≥3, succès net, parade réussie, critique ou condition. Raté ? Rien ne part — ni dégâts, ni effet.</li>\n                        <li><strong>Paliers = variantes au menu, pas des achats à empiler.</strong> Soin U7 (−5, −10 ou −15 dégâts), Saignement O28 (2, 3 ou 4 résiduels), Souffle U11 (cases à cocher). D8 exige D1 ou D3. O18 exige 3 pièces de la même arme.</li>\n                        <li><strong>Incompatibilités.</strong> O7 ⊕ O15 : l'Absolu ne frappe jamais en zone ni sur deux cibles. D6 ⊕ D1, D2, D3, D4 : la garde totale joue seule. Le reste se combine.</li>\n                        <li><strong>Réaction C3 = +2 PA, 1/cycle.</strong> Opportunité C4 = 0 PA, 1/cycle, déclencheur étroit obligatoire (Δ≥2, critique, esquive…). Passif C0 = au moins 1 prérequis. Comme les sorts.</li>\n                    </ol>\n"
     },
     {
      "type": "html",
@@ -193,7 +193,7 @@
     },
     {
      "type": "html",
-     "html": "\n\n                    <div class=\"codex-signature\">\n                        <div class=\"sig-meta\">\n                            <strong>LIVRE III DU CODEX UNIVERSEL</strong><br>\n                            Vos compétences, vos spécialités.<br>\n                            <em>Servez-vous, testez autour de la table — et bon jeu.</em>\n                        </div>\n                        <div class=\"sig-stamp\">\n                            <span class=\"stamp-title\">COMPÉTENCES HOMOLOGUÉES</span>\n                            <span class=\"stamp-date\">PRÊT POUR VOS FICHES PJ ET PNJ</span>\n                        </div>\n                    </div>\n\n                    <!-- PAGINATION ENTRE LIVRES -->\n                    <div class=\"chapter-pagination\">\n                        <a href=\"livre_2.html\" class=\"pagination-btn\">\n                            <div>\n                                <div class=\"pagination-label\">Livre Précédent</div>\n                                <div class=\"pagination-title\">← Livre II : Paliers de Dés & Épreuves</div>\n                            </div>\n                        </a>\n                        <a href=\"livre_4.html\" class=\"pagination-btn\">\n                            <div>\n                                <div class=\"pagination-label\">Livre Suivant</div>\n                                <div class=\"pagination-title\">Livre IV : 5e Force & Magie →</div>\n                            </div>\n                        </a>\n                    </div>\n\n                "
+     "html": "\n\n                    <div class=\"codex-signature\">\n                        <div class=\"sig-meta\">\n                            <strong>LIVRE III DU CODEX UNIVERSEL</strong><br>\n                            Tes compétences, tes spécialités.<br>\n                            <em>Sers-toi, teste autour de la table — et bon jeu.</em>\n                        </div>\n                        <div class=\"sig-stamp\">\n                            <span class=\"stamp-title\">COMPÉTENCES HOMOLOGUÉES</span>\n                            <span class=\"stamp-date\">PRÊT POUR TES FICHES PJ ET PNJ</span>\n                        </div>\n                    </div>\n\n                    <!-- PAGINATION ENTRE LIVRES -->\n                    <div class=\"chapter-pagination\">\n                        <a href=\"livre_2.html\" class=\"pagination-btn\">\n                            <div>\n                                <div class=\"pagination-label\">Livre Précédent</div>\n                                <div class=\"pagination-title\">← Livre II : Paliers de Dés & Épreuves</div>\n                            </div>\n                        </a>\n                        <a href=\"livre_4.html\" class=\"pagination-btn\">\n                            <div>\n                                <div class=\"pagination-label\">Livre Suivant</div>\n                                <div class=\"pagination-title\">Livre IV : 5e Force & Magie →</div>\n                            </div>\n                        </a>\n                    </div>\n\n                "
     }
    ],
    "nav": "Fabrique de Techniques"
@@ -207,7 +207,7 @@
     {
      "titre": "Offensif",
      "top": false,
-     "corps_html": "Vous frappez, vous bousculez, vous ouvrez un passage. C'est pour blesser\n                                ou déstabiliser en face.",
+     "corps_html": "Tu frappes, tu bouscules, tu ouvres un passage. C'est pour blesser\n                                ou déstabiliser en face.",
      "pieds": [
       {
        "ton": "ruby",
@@ -218,7 +218,7 @@
     {
      "titre": "Défensif",
      "top": false,
-     "corps_html": "Vous parez, vous esquivez, vous encaissez. C'est pour rester debout\n                                quand ça arrive.",
+     "corps_html": "Tu pares, tu esquives, tu encaisses. C'est pour rester debout\n                                quand ça arrive.",
      "pieds": [
       {
        "ton": "emerald",
@@ -229,7 +229,7 @@
     {
      "titre": "Utilitaire",
      "top": false,
-     "corps_html": "Vous grimpez, vous réparez, vous soignez, vous passez sans bruit.\n                                Pas pour frapper ni parer.",
+     "corps_html": "Tu grimpes, tu répares, tu soignes, tu passes sans bruit.\n                                Pas pour frapper ni parer.",
      "pieds": [
       {
        "ton": "cyan",
@@ -240,7 +240,7 @@
     {
      "titre": "Social",
      "top": false,
-     "corps_html": "Vous parlez, vous négociez, vous intimidez. Pour obtenir quelque chose\n                                de quelqu'un qui réfléchit.",
+     "corps_html": "Tu parles, tu négocies, tu intimides. Pour obtenir quelque chose\n                                de quelqu'un qui réfléchit.",
      "pieds": [
       {
        "ton": "amber",
@@ -251,7 +251,7 @@
     {
      "titre": "Hybride",
      "top": false,
-     "corps_html": "Vous faites deux choses en une. Exemple : vous frappez et, en même temps,\n                                vous impressionnez ou vous faites reculer.",
+     "corps_html": "Tu fais deux choses en une. Exemple : tu frappes et, en même temps,\n                                tu impressionnes ou tu fais reculer.",
      "pieds": [
       {
        "ton": "cyan",
@@ -274,13 +274,13 @@
      "<strong>Mains Nues</strong>",
      "Force, Agilité",
      "Offensif, Défensif, Utilitaire",
-     "<strong>Arts Martiaux</strong> — parade sans malus, refoulement\n                                        <br>↳ Enchaînement Fluide → Frappe Téléportée → Déphasage Cinétique\n                                        <br>↳ Onde Tellurique → Brise-Blindage → Paume de Brum'korath\n                                        <br>↳ Balayage Rotatif → Clé d'Articulation → Rupture Ligamentaire\n                                        <br><strong>Perforation de Silicate</strong> → Fracture Sismique → Cœur\n                                        d'Adamas\n                                        <br>Agripper, Frapper, Étrangler"
+     "<strong>Arts Martiaux</strong> — parade sans malus, refoulement\n                                        <br>↳ Enchaînement Fluide → Frappe Téléportée → Déphasage Cinétique\n                                        <br>↳ Onde Tellurique → Brise-Blindage → Paume Brise-Roc\n                                        <br>↳ Balayage Rotatif → Clé d'Articulation → Rupture Ligamentaire\n                                        <br><strong>Perforation de Silicate</strong> → Fracture Sismique → Cœur\n                                        d'Adamas\n                                        <br>Agripper, Frapper, Étrangler"
     ],
     [
      "<strong>Maniement d'Arme</strong> (Tranchantes / Contondantes)",
      "Force, Agilité",
      "Offensif, Défensif",
-     "<strong>Spécialisation Épée</strong>\n                                        <br>↳ Riposte Éclair → Tranchant Tempétueux → Lame de Ligne Temporelle Zéro\n                                        <br>↳ Garde Haute Impériale → Lame Miroir → Dôme de Parade\n                                        <br><strong>Fente de Rupture</strong> → Pointe Chirurgicale → Transpercement\n                                        Traversant → Fissure Causal\n                                        <br><strong>Bloquer</strong> <em>(commune avec Défense Corporelle)</em> → Mur\n                                        de Bouclier → Heurt de Bouclier → Forteresse Impénétrable\n                                        <br><strong>Armes Contondantes</strong> (Marteau, Masse, Gourdin, Fléau) →\n                                        Marteau de Guerre\n                                        <br>↳ Écrasement Osseux → Brise-Crâne → Cataclysme de Fer\n                                        <br>↳ Onde de Faille → Onde Sismique Réverbérante\n                                        <br><strong>Hache de guerre</strong>\n                                        <br>↳ Fente du Bûcheron → Brise-Garde → Exécution du Bourreau\n                                        <br>↳ Croc de Désarmement → Arrache-Bouclier\n                                        <br>Zweihander"
+     "<strong>Spécialisation Épée</strong>\n                                        <br>↳ Riposte Éclair → Tranchant Tempétueux → Lame de Ligne Temporelle Zéro\n                                        <br>↳ Garde Haute Impériale → Lame Miroir → Dôme de Parade\n                                        <br><strong>Fente de Rupture</strong> → Pointe Chirurgicale → Transpercement\n                                        Traversant → Fissure Causale\n                                        <br><strong>Bloquer</strong> <em>(commune avec Défense Corporelle)</em> → Mur\n                                        de Bouclier → Heurt de Bouclier → Forteresse Impénétrable\n                                        <br><strong>Armes Contondantes</strong> (Marteau, Masse, Gourdin, Fléau) →\n                                        Marteau de Guerre\n                                        <br>↳ Écrasement Osseux → Brise-Crâne → Cataclysme de Fer\n                                        <br>↳ Onde de Faille → Onde Sismique Réverbérante\n                                        <br><strong>Hache de guerre</strong>\n                                        <br>↳ Fente du Bûcheron → Brise-Garde → Exécution du Bourreau\n                                        <br>↳ Croc de Désarmement → Arrache-Bouclier\n                                        <br>Zweihander"
     ],
     [
      "<strong>Athlétisme</strong>",
@@ -483,9 +483,9 @@
     ],
     [
      "<strong>Artisanat / Connaissance</strong>",
-     "Sagesse, Intelligence",
+     "Instinct, Intelligence",
      "Utilitaire",
-     "<strong>Affûtage de Précision</strong> → Fil Monomoléculaire → Blindage\n                                        Trempé → Acier de Maître d'Hybris\n                                        <br>Fabriquer, Forger, Sculpter, Enseigner"
+     "<strong>Affûtage de Précision</strong> → Fil Monomoléculaire → Blindage\n                                        Trempé → Acier de Maître\n                                        <br>Fabriquer, Forger, Sculpter, Enseigner"
     ]
    ]
   },
@@ -502,7 +502,7 @@
      "<strong>Maniement de l'Épée</strong>",
      "Maniement d'Arme (FOR, AGI)",
      "Offensif, Défensif",
-     "Vous parez sans malus et vous <strong>contre-attaquez en réaction</strong>."
+     "Tu pares sans malus et tu <strong>contre-attaques en réaction</strong>."
     ],
     [
      {
@@ -511,7 +511,7 @@
      },
      "Maniement d'Arme (FOR, AGI)",
      "Offensif, Défensif",
-     "Votre riposte ne prend aucun malus."
+     "Ta riposte ne prend aucun malus."
     ],
     [
      {
@@ -520,7 +520,7 @@
      },
      "Maniement d'Arme (FOR, AGI)",
      "Offensif, Défensif",
-     "+2 dégâts sur vos ripostes réussies."
+     "+2 dégâts sur tes ripostes réussies."
     ],
     [
      {
@@ -529,7 +529,7 @@
      },
      "Maniement d'Arme (FOR, AGI)",
      "Offensif, Défensif",
-     "Sur critique en parade,\n                                        vous annulez l'attaque et renvoyez tous les dégâts."
+     "Sur critique en parade, tu annules l'attaque et renvoies tous les dégâts."
     ],
     [
      {
@@ -547,7 +547,7 @@
      },
      "Maniement d'Arme (FOR, AGI)",
      "Offensif, Défensif",
-     "Vous parez les tirs laser au\n                                        contact (Delta ≥ 0)."
+     "Tu pares les tirs laser au contact (Delta ≥ 0)."
     ],
     [
      {
@@ -556,13 +556,13 @@
      },
      "Maniement d'Arme (FOR, AGI)",
      "Offensif, Défensif",
-     "Vous parez pour un allié adjacent."
+     "Tu pares pour un allié adjacent."
     ],
     [
      "<strong>Armes Contondantes</strong>",
      "Maniement d'Arme (FOR, AGI)",
      "Offensif, Défensif",
-     "Maîtrise du choc (Marteau, Masse, Gourdin, Fléau) : vous parez sans malus."
+     "Maîtrise du choc (Marteau, Masse, Gourdin, Fléau) : tu pares sans malus."
     ],
     [
      {
@@ -696,17 +696,17 @@
     [
      {
       "attrs": " style=\"padding-left:5em;\"",
-      "html": "↳ <strong>Fissure Causal</strong>"
+      "html": "↳ <strong>Fissure Causale</strong>"
      },
      "Maniement d'Arme (FOR, AGI)",
      "Offensif",
-     "Statut Chrono-Fracture,\n                                        draine 2 PA adverses."
+     "Inflige <strong><a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (+1 PA/case, non cumulatif avec À Terre pour ramper).\">Déstabilisé</a></strong> 1 tour et draine <strong>2 PA</strong> adverses."
     ],
     [
      "<strong>Bloquer</strong>",
      "Maniement d'Arme / Défense Corporelle (FOR, AGI / FOR)",
      "Défensif",
-     "Bouclier ou garde hermétique : vous parez sans malus. Valable des deux côtés."
+     "Bouclier ou garde hermétique : tu pares sans malus. Valable des deux côtés."
     ],
     [
      {
@@ -739,7 +739,7 @@
      "<strong>Bouclier Vivant</strong>",
      "Défense Corporelle (FOR)",
      "Défensif",
-     "Vous interposez votre corps pour un allié adjacent."
+     "Prise de coup (<a class=\"rule-ref\" href=\"livre_5.html#sec-20-6\" data-tip=\"Prise de coup : s'interposer pour un allié adjacent (1 PA, réaction libre) ou posture préventive 0 PA à −1 attaque (§20.6).\">Livre V §20.6</a>) possible jusqu'à <strong>2 cases</strong> (pas de côté inclus) ; la posture préventive n'impose plus le malus de −1 à l'attaque."
     ],
     [
      {
@@ -748,7 +748,7 @@
      },
      "Défense Corporelle (FOR)",
      "Défensif",
-     "Coûte 1 PA au lieu de 2."
+     "S'interposer coûte <strong>0 PA</strong> (consomme toujours la réaction libre) et donne <strong>+1</strong> à ta parade lors de l'interposition."
     ],
     [
      {
@@ -766,7 +766,7 @@
      },
      "Défense Corporelle (FOR)",
      "Défensif",
-     "Vous encaissez les grenades sans\n                                        refoulement ni Déstabilisé."
+     "Tu encaisses les grenades sans refoulement ni Déstabilisé."
     ],
     [
      "<strong>Arme de Hast</strong>",
@@ -821,7 +821,7 @@
     ],
     [
      "<strong>Tir à l'Arc</strong>",
-     "Ballistique (AGI)",
+     "Ballistique (AGI / Vision)",
      "Offensif",
      "Arcs et arbalètes <strong>silencieux</strong> (+2 cases de portée)."
     ],
@@ -830,7 +830,7 @@
       "attrs": " style=\"padding-left:2em;\"",
       "html": "↳ <strong>Flèche Perforante</strong>"
      },
-     "Ballistique (AGI)",
+     "Ballistique (AGI / Vision)",
      "Offensif",
      "Ignore 2 points d'armure."
     ],
@@ -839,7 +839,7 @@
       "attrs": " style=\"padding-left:3.5em;\"",
       "html": "↳ <strong>Tir en Cloche</strong>"
      },
-     "Ballistique (AGI)",
+     "Ballistique (AGI / Vision)",
      "Offensif",
      "Ignore le couvert partiel, +4 cases\n                                        de portée."
     ],
@@ -848,7 +848,7 @@
       "attrs": " style=\"padding-left:5em;\"",
       "html": "↳ <strong>Pluie d'Acier</strong>"
      },
-     "Ballistique (AGI)",
+     "Ballistique (AGI / Vision)",
      "Offensif",
      "Blesse une seconde cible adjacente."
     ],
@@ -857,22 +857,22 @@
       "attrs": " style=\"padding-left:2em;\"",
       "html": "↳ <strong>Tir Instinctif</strong>"
      },
-     "Ballistique (AGI)",
+     "Ballistique (AGI / Vision)",
      "Offensif",
-     "Votre premier tir du tour coûte 1 PA\n                                        de moins."
+     "Ton premier tir du tour coûte 1 PA de moins."
     ],
     [
      {
       "attrs": " style=\"padding-left:3.5em;\"",
       "html": "↳ <strong>Chasseur Silencieux</strong>"
      },
-     "Ballistique (AGI)",
+     "Ballistique (AGI / Vision)",
      "Offensif",
      "Abattre un isolé ne donne pas\n                                        l'alerte ; +2 en Discrétion après un tir réussi."
     ],
     [
      "<strong>Fusil de Précision</strong>",
-     "Ballistique (AGI)",
+     "Ballistique (AGI / Vision)",
      "Offensif",
      "Tir longue portée : +4 cases, critique facilité."
     ],
@@ -881,16 +881,16 @@
       "attrs": " style=\"padding-left:2em;\"",
       "html": "↳ <strong>Visée Millimétrique</strong>"
      },
-     "Ballistique (AGI)",
+     "Ballistique (AGI / Vision)",
      "Offensif",
-     "+2 en visée chirurgicale si vous\n                                        n'avez pas bougé."
+     "+2 en visée chirurgicale si tu n'as pas bougé."
     ],
     [
      {
       "attrs": " style=\"padding-left:3.5em;\"",
       "html": "↳ <strong>Perforation Hyper-Véloce</strong>"
      },
-     "Ballistique (AGI)",
+     "Ballistique (AGI / Vision)",
      "Offensif",
      "Ignore 4 points d'armure."
     ],
@@ -899,7 +899,7 @@
       "attrs": " style=\"padding-left:5em;\"",
       "html": "↳ <strong>Tir à Travers les Parois</strong>"
      },
-     "Ballistique (AGI)",
+     "Ballistique (AGI / Vision)",
      "Offensif",
      "Cible derrière un couvert\n                                        total à -2 seulement."
     ],
@@ -908,7 +908,7 @@
       "attrs": " style=\"padding-left:2em;\"",
       "html": "↳ <strong>Tir de Suppression</strong>"
      },
-     "Ballistique (AGI)",
+     "Ballistique (AGI / Vision)",
      "Offensif",
      "<a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (+1 PA/case, non cumulatif avec À Terre pour ramper).\">Déstabilisé</a>\n                                        et draine 1 PA défensif."
     ],
@@ -917,13 +917,13 @@
       "attrs": " style=\"padding-left:3.5em;\"",
       "html": "↳ <strong>Calibre Anti-Matériel</strong>"
      },
-     "Ballistique (AGI)",
+     "Ballistique (AGI / Vision)",
      "Offensif",
      "+4 dégâts contre véhicules et\n                                        structures."
     ],
     [
      "<strong>Grenadier d'Assaut</strong>",
-     "Ballistique (AGI)",
+     "Ballistique (AGI / Vision)",
      "Offensif",
      "Explosifs : dispersion réduite, +2 cases de lancer."
     ],
@@ -932,7 +932,7 @@
       "attrs": " style=\"padding-left:2em;\"",
       "html": "↳ <strong>Calcul Balistique</strong>"
      },
-     "Ballistique (AGI)",
+     "Ballistique (AGI / Vision)",
      "Offensif",
      "Dispersion réduite d'1 case de\n                                        plus (minimum 0)."
     ],
@@ -941,7 +941,7 @@
       "attrs": " style=\"padding-left:3.5em;\"",
       "html": "↳ <strong>Dégoupillage Éclair</strong>"
      },
-     "Ballistique (AGI)",
+     "Ballistique (AGI / Vision)",
      "Offensif",
      "Lancer coûte 1 PA de moins."
     ],
@@ -950,7 +950,7 @@
       "attrs": " style=\"padding-left:5em;\"",
       "html": "↳ <strong>Souffle Thermobarique</strong>"
      },
-     "Ballistique (AGI)",
+     "Ballistique (AGI / Vision)",
      "Offensif",
      "Rayon du souffle +1 case."
     ],
@@ -958,19 +958,55 @@
      "<strong>Course d'Endurance</strong>",
      "Athlétisme (CON, FOR, AGI)",
      "Utilitaire",
-     "Le premier déplacement du tour coûte <strong>1 <a class=\"rule-ref\"\n                                                href=\"livre_1.html#chap-4\"\n                                                data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a>\n                                            de moins</strong>.\n                                        Second Souffle : Reprendre son Souffle efface <strong>2 <a class=\"rule-ref\"\n                                                href=\"livre_1.html#sec-4-2\"\n                                                data-tip=\"Essoufflement : 1 point = des PA d'urgence ; ne part pas tout seul, action dédiée pour souffler (§4.2).\">ESS</a></strong>.\n                                        Cœur de Marathon : Souffle d'Urgence à <strong>+3 PA</strong>."
+     "Le premier déplacement du tour coûte <strong>1 <a class=\"rule-ref\" href=\"livre_1.html#chap-4\" data-tip=\"PA : Max(Agi,Int) + Rap + Min. Total = Tirage + PA − malus, sans bonus de carac (§4).\">PA</a> de moins</strong>."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:2em;\"",
+      "html": "↳ <strong>Second Souffle</strong>"
+     },
+     "Athlétisme (CON, FOR, AGI)",
+     "Utilitaire",
+     "L'action <em>Reprendre son Souffle</em> efface <strong>2 <a class=\"rule-ref\" href=\"livre_1.html#sec-4-2\" data-tip=\"Essoufflement : 1 point = des PA d'urgence ; ne part pas tout seul, action dédiée pour souffler (§4.2).\">ESS</a></strong> au lieu d'1."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Cœur de Marathon</strong>"
+     },
+     "Athlétisme (CON, FOR, AGI)",
+     "Utilitaire",
+     "1 fois par combat, pour <strong>1 point d'Essoufflement</strong>, tu gagnes <strong>+3 PA</strong> d'urgence au lieu de +1 (<a class=\"rule-ref\" href=\"livre_1.html#sec-4-2\" data-tip=\"Essoufflement : 1 point = +1 PA d'urgence de base ; plafond = Constitution (§4.2).\">Livre I §4.2</a>)."
     ],
     [
      "<strong>Franchissement</strong>",
      "Athlétisme (CON, FOR, AGI)",
      "Utilitaire",
-     "Ignore le <strong>terrain difficile</strong>. Escalade Assurée franchit\n                                        murets et tranchées sans surcoût. Nage de Combat : aucune épreuve en\n                                        eau agitée, apnée de 2 &times; Constitution en tours."
+     "Ignore le surcoût du <strong>terrain difficile</strong>."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:2em;\"",
+      "html": "↳ <strong>Escalade Assurée</strong>"
+     },
+     "Athlétisme (CON, FOR, AGI)",
+     "Utilitaire",
+     "Franchit murets, parois praticables et tranchées sans surcoût de <strong>2 PA/case</strong> ; <strong>+2 en Athlétisme</strong> sur les parois raides."
+    ],
+    [
+     {
+      "attrs": " style=\"padding-left:3.5em;\"",
+      "html": "↳ <strong>Nage de Combat</strong>"
+     },
+     "Athlétisme (CON, FOR, AGI)",
+     "Utilitaire",
+     "Aucune épreuve en eau agitée ni surcoût de <strong>2 PA/case</strong> ; apnée doublée (<strong>2 &times; Constitution</strong> tours)."
     ],
     [
      "<strong>Condition de Fer</strong>",
      "Endurance Physique (CON, FOR)",
      "Utilitaire, Défensif",
-     "Retire <strong>1 dégât</strong> au début de votre tour si blessé et conscient."
+     "Retire <strong>1 dégât</strong> au début de ton tour si blessé et conscient."
     ],
     [
      {
@@ -994,7 +1030,7 @@
      "<strong>Trempe de Fer</strong>",
      "Endurance Physique (CON, FOR)",
      "Défensif",
-     "<a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (+1 PA/case, non cumulatif avec À Terre pour ramper).\">Déstabilisé</a>\n                                        réduit à <strong>-1</strong> sur tous vos jets."
+     "<a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"Déstabilisé : −2 ec aux épreuves, déplacement rampant (+1 PA/case, non cumulatif avec À Terre pour ramper).\">Déstabilisé</a> réduit à <strong>-1</strong> sur tous tes jets."
     ],
     [
      {
@@ -1051,7 +1087,7 @@
      "<strong>Poussée Cardiovasculaire</strong>",
      "Cardio (CON)",
      "Utilitaire",
-     "Vous forcez 1 PA d'action en prenant 1 point d'essoufflement."
+     "Plafond d'Essoufflement augmenté de <strong>+1</strong> (CON + 1) ; 1 fois par combat, génère <strong>+1 PA d'urgence</strong> sans prendre d'Essoufflement (<a class=\"rule-ref\" href=\"livre_1.html#sec-4-2\" data-tip=\"Essoufflement : 1 point = +1 PA d'urgence, plafond = Constitution ; au-delà, À Terre + Inconscient 1 tour (§4.2).\">Livre I §4.2</a>)."
     ],
     [
      {
@@ -1060,7 +1096,7 @@
      },
      "Cardio (CON)",
      "Utilitaire",
-     "Plafond d'essoufflement sans\n                                        Ralenti."
+     "1 fois par combat, si tu dois prendre 1 point d'Essoufflement déjà au plafond, tu <strong>ne tombes pas</strong> À Terre ni Inconscient (tu tiens 1 point au-delà du plafond sans décrocher)."
     ],
     [
      {
@@ -1126,7 +1162,7 @@
      },
      "Intuition (INT, INS)",
      "Utilitaire",
-     "Immunité totale aux <strong><a class=\"rule-ref\" href=\"livre_5.html#sec-21-4\"\n                                                data-tip=\"Embuscade : sans Vigilance, pas de réaction défensive. Détection au brouillard (§21.4).\">embuscades</a></strong>\n                                        et aux attaques de dos."
+     "Immunité totale à la surprise et aux <strong><a class=\"rule-ref\" href=\"livre_5.html#sec-21-4\" data-tip=\"Tour d'Embuscade : 1 action principale de surprise avant l'initiative ; immunisé par Clairvoyance du Vétéran (§21.4).\">embuscades</a></strong> : tu agis normalement dès le tour d'embuscade et gardes ta réaction libre."
     ],
     [
      "<strong>Instinct du Chasseur</strong>",
@@ -1156,7 +1192,7 @@
      "<strong>Sphère de Résonance</strong>",
      "Intuition (INT, INS)",
      "Utilitaire, Défensif",
-     "Immunité aux attaques de dos et embuscades dans un rayon de 3 cases."
+     "Dans un rayon de <strong>3 cases</strong>, aucune cible Dissimulée ou Cachée ne peut t'approcher ni te frapper par surprise (détection automatique sans dépenser 1 PA d'Observation active, <a class=\"rule-ref\" href=\"livre_5.html#sec-21-4\" data-tip=\"Dissimulé / Caché : approche furtive et Observation active 1 PA (§21.4).\">Livre V §21.4</a>)."
     ],
     [
      {
@@ -1165,7 +1201,7 @@
      },
      "Intuition (INT, INS)",
      "Utilitaire, Défensif",
-     "Ajuste votre mise de +1 PA en\n                                        défense au Face-à-Face."
+     "Ajuste ta mise de +1 PA en défense au Face-à-Face."
     ],
     [
      {
@@ -1183,11 +1219,11 @@
      },
      "Intuition (INT, INS)",
      "Utilitaire, Défensif",
-     "Révèle les mises de PA et PE adverses\n                                        avant votre défense."
+     "Révèle les mises de PA et PE adverses avant ta défense."
     ],
     [
      "<strong>Affûtage de Précision</strong>",
-     "Artisanat (SAG, INT)",
+     "Artisanat (INS, INT)",
      "Utilitaire",
      "+1 dégât aux 3 prochaines attaques réussies avec l'arme affûtée."
     ],
@@ -1196,7 +1232,7 @@
       "attrs": " style=\"padding-left:2em;\"",
       "html": "↳ <strong>Fil Monomoléculaire</strong>"
      },
-     "Artisanat (SAG, INT)",
+     "Artisanat (INS, INT)",
      "Utilitaire",
      "+2 dégâts permanents aux\n                                        armes blanches."
     ],
@@ -1205,22 +1241,46 @@
       "attrs": " style=\"padding-left:3.5em;\"",
       "html": "↳ <strong>Blindage Trempé</strong>"
      },
-     "Artisanat (SAG, INT)",
+     "Artisanat (INS, INT)",
      "Utilitaire",
      "+1 absorption permanente aux\n                                        armures métalliques."
     ],
     [
      {
       "attrs": " style=\"padding-left:5em;\"",
-      "html": "↳ <strong>Acier de Maître d'Hybris</strong>"
+      "html": "↳ <strong>Acier de Maître</strong>"
      },
-     "Artisanat (SAG, INT)",
+     "Artisanat (INS, INT)",
      "Utilitaire",
-     "L'arme ne s'émousse jamais ; critique\n                                        dès 11 ou 12 au dé."
+     "L'arme ne s'émousse jamais ; critique déclenché dès <strong>max − 1</strong> sur le dé (ex. 5–6 sur 1d6, 11–12 sur 1d12)."
+    ],
+    [
+     "<strong>Fabriquer</strong>",
+     "Artisanat (INS, INT)",
+     "Utilitaire",
+     "+2 en Artisanat pour concevoir, assembler ou réparer un objet courant ou un équipement Détruit en atelier avec pièces de rechange (<a class=\"rule-ref\" href=\"livre_6.html#sec-24-5\" data-tip=\"Objet Détruit : inutilisable jusqu'à réparation en atelier avec pièces de rechange ; Anéanti = irréparable (§24.5).\">Livre VI §24.5</a>)."
+    ],
+    [
+     "<strong>Forger</strong>",
+     "Artisanat (INS, INT)",
+     "Utilitaire",
+     "+2 en Artisanat pour forger, tremper ou réparer armes et armures métalliques en forge (se cumule avec le don Nain)."
+    ],
+    [
+     "<strong>Sculpter</strong>",
+     "Artisanat (INS, INT)",
+     "Utilitaire",
+     "+2 en Artisanat pour tailler pierre, bois, os ou métal fin (sceaux, gravures, moules et pièces de précision)."
+    ],
+    [
+     "<strong>Enseigner</strong>",
+     "Artisanat (INS, INT)",
+     "Utilitaire",
+     "+2 en Artisanat pour transmettre un savoir ou encadrer l'entraînement d'un compagnon entre deux aventures."
     ],
     [
      "<strong>Vigilance Réflexe</strong>",
-     "Observation (VUE, INS)",
+     "Observation (Vision, Ouïe)",
      "Utilitaire, Défensif",
      "Immunise contre l'effet de surprise, réaction défensive conservée en\n                                        <a class=\"rule-ref\" href=\"livre_5.html#sec-21-4\"\n                                            data-tip=\"Embuscade : sans Vigilance, pas de réaction défensive. Détection au brouillard (§21.4).\">embuscade</a>."
     ],
@@ -1229,7 +1289,7 @@
       "attrs": " style=\"padding-left:2em;\"",
       "html": "↳ <strong>Œil de Lynx</strong>"
      },
-     "Observation (VUE, INS)",
+     "Observation (Vision, Ouïe)",
      "Utilitaire, Défensif",
      "<strong>+2</strong> aux duels de\n                                        détection du\n                                        brouillard (<a class=\"rule-ref\" href=\"livre_5.html#sec-21-4\"\n                                            data-tip=\"Brouillard de Guerre : détection asymétrique, duels d'Observation contre Discrétion (§21.4).\">Livre\n                                            V §21.4</a>)."
     ],
@@ -1238,7 +1298,7 @@
       "attrs": " style=\"padding-left:3.5em;\"",
       "html": "↳ <strong>Détection Thermique</strong>"
      },
-     "Observation (VUE, INS)",
+     "Observation (Vision, Ouïe)",
      "Utilitaire, Défensif",
      "<strong>+2</strong> au duel, révèle les\n                                        unités camouflées et invisibles à travers les parois légères."
     ],
@@ -1247,31 +1307,73 @@
       "attrs": " style=\"padding-left:5em;\"",
       "html": "↳ <strong>Perception Panoramique 360°</strong>"
      },
-     "Observation (VUE, INS)",
+     "Observation (Vision, Ouïe)",
      "Utilitaire, Défensif",
-     "Immunité aux\n                                        embuscades, bonus de surprise permanent (le combat voit à 360°)."
+     "Immunité aux embuscades et <strong>+2 en Observation active</strong> contre les cibles Cachées ou en couvert ; ignore les malus liés aux attaques multiples ou à l'encerclement."
+    ],
+    [
+     "<strong>Perception des bruits lointains</strong>",
+     "Écoute (Ouïe)",
+     "Utilitaire",
+     "+2 en Écoute pour repérer pas, voix ou mouvements à longue distance et à travers portes ou cloisons."
+    ],
+    [
+     "<strong>Écho acoustique</strong>",
+     "Écoute (Ouïe)",
+     "Utilitaire",
+     "+2 en Écoute en obscurité, fumée ou brouillard pour estimer le nombre, la direction et la distance approximative d'individus en mouvement."
+    ],
+    [
+     "<strong>Auscultation</strong>",
+     "Écoute (Ouïe)",
+     "Utilitaire",
+     "+2 en Écoute pour diagnostiquer un battement, une respiration, un mécanisme caché (serrure, horlogerie) ou une cavité derrière un mur."
+    ],
+    [
+     "<strong>Traque</strong>",
+     "Nature & Survie (INS, INT)",
+     "Utilitaire",
+     "+2 en Nature & Survie pour repérer et remonter une piste fraîche ou ancienne en milieu sauvage et estimer l'allure de la proie."
+    ],
+    [
+     "<strong>Orientation</strong>",
+     "Nature & Survie (INS, INT)",
+     "Utilitaire",
+     "+2 en Nature & Survie pour s'orienter sans carte ni boussole, lire la météo proche et éviter de s'égarer en milieu hostile ou souterrain."
+    ],
+    [
+     "<strong>Botanique sauvage</strong>",
+     "Nature & Survie (INS, INT)",
+     "Utilitaire",
+     "+2 en Nature & Survie pour identifier plantes comestibles, toxiques ou médicinales et préparer des cataplasmes de fortune."
+    ],
+    [
+     "<strong>Construction d'abris</strong>",
+     "Nature & Survie (INS, INT)",
+     "Utilitaire",
+     "+2 en Nature & Survie pour monter un bivouac sûr ; réduit d'1 cran la pénalité de climat léger au campement (<a class=\"rule-ref\" href=\"livre_2.html#sec-8-1\" data-tip=\"Climat léger : −1 aux épreuves d'endurance et survie sans abri ni équipement adapté (Livre II §8.1).\">Livre II §8.1</a>)."
     ],
     [
      "<strong>Pistolet & Tir Rapide</strong>",
-     "Ballistique (AGI)",
+     "Ballistique (AGI / Vision)",
      "Offensif",
-     "Sur réussite nette : la cible est <strong><a class=\"rule-ref\"\n                                                href=\"livre_6.html#sec-24-1\"\n                                                data-tip=\"Ralenti : actions hors déplacement ×2 PA ; déplacement +1 PA/case (§24.1).\">Ralentie</a></strong>\n                                        pour 1 tour. Sur 5 ou 6 au dé : la cible <strong><a class=\"rule-ref\"\n                                                href=\"livre_6.html#sec-24-1\"\n                                                data-tip=\"À Terre : −1 ec mêlée/Athlétisme/Acrobatie, −2 ec jet (arc impossible), −2 défense (tir/magie sans malus). Déplacement +1 PA/case, se relever 1 PA.\">tombe\n                                                au sol</a></strong>."
+     "Sur réussite nette (<strong>Delta ≥ 1</strong>) : la cible est <strong><a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"Ralenti : tout coûte double en PA (bouger, attaquer, parer, se relever, §24.1).\">Ralentie</a></strong> pour 1 tour. Sur <strong>Delta ≥ 3</strong> (ou critique) : la cible tombe <strong><a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"À Terre : −1 ec pour attaquer ou parer, −2 contre le corps-à-corps ; se relever coûte 2 PA (§24.1).\">À Terre</a></strong>."
     ],
     [
      {
       "attrs": " style=\"padding-left:2em;\"",
       "html": "↳ <strong>Dégainé Réflexe</strong>"
      },
-     "Ballistique (AGI)",
+     "Ballistique (AGI / Vision)",
      "Offensif",
-     "Votre premier tir du tour coûte\n                                        1 PA de moins."
+     "Ton premier tir du tour coûte 1 PA de moins."
     ],
     [
      {
       "attrs": " style=\"padding-left:3.5em;\"",
       "html": "↳ <strong>Akimbo Assaut</strong>"
      },
-     "Ballistique (AGI)",
+     "Ballistique (AGI / Vision)",
      "Offensif",
      "Deux pistolets sur la même cible pour\n                                        3 PA."
     ],
@@ -1280,7 +1382,7 @@
       "attrs": " style=\"padding-left:5em;\"",
       "html": "↳ <strong>Trait d'Orichalque</strong>"
      },
-     "Ballistique (AGI)",
+     "Ballistique (AGI / Vision)",
      "Offensif",
      "Ignore le couvert partiel,\n                                        transperce 2 cibles alignées."
     ],
@@ -1289,7 +1391,7 @@
       "attrs": " style=\"padding-left:2em;\"",
       "html": "↳ <strong>Balle dans le Genou</strong>"
      },
-     "Ballistique (AGI)",
+     "Ballistique (AGI / Vision)",
      "Offensif",
      "Visée Jambes sans malus,\n                                        Ralenti garanti."
     ],
@@ -1298,13 +1400,13 @@
       "attrs": " style=\"padding-left:3.5em;\"",
       "html": "↳ <strong>Tir de Neutralisation</strong>"
      },
-     "Ballistique (AGI)",
+     "Ballistique (AGI / Vision)",
      "Offensif",
      "Visée Bras Droit, désarme sur\n                                        Delta ≥ 1."
     ],
     [
      "<strong>Roulade de Décrochage</strong>",
-     "Esquive (AGI)",
+     "Esquive (AGI, RAP ou INS)",
      "Défensif",
      "Sur esquive réussie (Delta ≥ 2) : 1 case de recul gratuit."
     ],
@@ -1313,7 +1415,7 @@
       "attrs": " style=\"padding-left:2em;\"",
       "html": "↳ <strong>Reprise d'Appui</strong>"
      },
-     "Esquive (AGI)",
+     "Esquive (AGI, RAP ou INS)",
      "Défensif",
      "+1 PA de réserve au tour suivant\n                                        après une esquive parfaite."
     ],
@@ -1322,16 +1424,16 @@
       "attrs": " style=\"padding-left:3.5em;\"",
       "html": "↳ <strong>Ombre Évasive</strong>"
      },
-     "Esquive (AGI)",
+     "Esquive (AGI, RAP ou INS)",
      "Défensif",
-     "On ne peut plus vous cibler jusqu'à\n                                        votre prochain tour."
+     "On ne peut plus te cibler jusqu'à ton prochain tour."
     ],
     [
      {
       "attrs": " style=\"padding-left:5em;\"",
       "html": "↳ <strong>Pas Déphasé</strong>"
      },
-     "Esquive (AGI)",
+     "Esquive (AGI, RAP ou INS)",
      "Défensif",
      "Téléportation de 2 cases sur esquive\n                                        réussie."
     ],
@@ -1340,22 +1442,22 @@
       "attrs": " style=\"padding-left:2em;\"",
       "html": "↳ <strong>Esquive Réactive</strong>"
      },
-     "Esquive (AGI)",
+     "Esquive (AGI, RAP ou INS)",
      "Défensif",
-     "Le Ralenti ne double plus votre\n                                        coût d'esquive."
+     "Le Ralenti ne double plus ton coût d'esquive."
     ],
     [
      {
       "attrs": " style=\"padding-left:3.5em;\"",
       "html": "↳ <strong>Contre-Poussée</strong>"
      },
-     "Esquive (AGI)",
+     "Esquive (AGI, RAP ou INS)",
      "Défensif",
      "Repousse l'assaillant d'1 case après\n                                        une esquive au contact."
     ],
     [
      "<strong>Acrobatie d'Évitement</strong>",
-     "Esquive (AGI)",
+     "Esquive (AGI, RAP ou INS)",
      "Défensif",
      "Voltige : tranchées et demi-couverts sans PA."
     ],
@@ -1364,7 +1466,7 @@
       "attrs": " style=\"padding-left:2em;\"",
       "html": "↳ <strong>Saut Périlleux</strong>"
      },
-     "Esquive (AGI)",
+     "Esquive (AGI, RAP ou INS)",
      "Défensif",
      "Barricades et mi-hauteurs sans\n                                        coût de mouvement."
     ],
@@ -1373,7 +1475,7 @@
       "attrs": " style=\"padding-left:3.5em;\"",
       "html": "↳ <strong>Vrille Balistique</strong>"
      },
-     "Esquive (AGI)",
+     "Esquive (AGI, RAP ou INS)",
      "Défensif",
      "+2 en esquive contre fusils et\n                                        grenades."
     ],
@@ -1396,8 +1498,74 @@
      "<strong>+2 en Discrétion</strong> en pénombre, nuit ou fumée ; <strong>Se cacher</strong> te coûte <strong>1 PA</strong> au lieu de 2 PA dans ces conditions (<a class=\"rule-ref\" href=\"livre_5.html#sec-21-4\" data-tip=\"Se cacher : 2 PA par défaut, 1 PA avec Ombres en pénombre/nuit/fumée (§21.4).\">Livre V §21.4</a>)."
     ],
     [
+     "<strong>Saut acrobatique</strong>",
+     "Acrobatie (AGI, RAP)",
+     "Utilitaire, Défensif",
+     "+2 en Acrobatie pour franchir un gouffre, un mur bas ou un obstacle ; saute un obstacle bas sans surcoût de PA."
+    ],
+    [
+     "<strong>Équilibre</strong>",
+     "Acrobatie (AGI, RAP)",
+     "Utilitaire, Défensif",
+     "+2 en Acrobatie sur surface étroite, glissante ou instable (poutre, toit, glace, pont de navire) ; ignore la pénalité de terrain glissant pour rester debout."
+    ],
+    [
+     "<strong>Se balancer</strong>",
+     "Acrobatie (AGI, RAP)",
+     "Utilitaire, Défensif",
+     "+2 en Acrobatie pour utiliser cordes, câbles, lianes ou agrès et franchir un vide au coût normal de déplacement."
+    ],
+    [
+     "<strong>Chute contrôlée</strong>",
+     "Acrobatie (AGI, RAP)",
+     "Utilitaire, Défensif",
+     "Sur épreuve d'Acrobatie réussie, réduit les dégâts de chute (<a class=\"rule-ref\" href=\"livre_2.html#sec-8-2\" data-tip=\"Chute de H cases : inflige H − 2 dégâts bruts hors armure, Encaissement sur les jambes (Livre II §8.2).\">H − 2, Livre II §8.2</a>) de <strong>2 points</strong> avant Encaissement et assure une réception debout."
+    ],
+    [
+     "<strong>Véhicules terrestres</strong>",
+     "Conduite & Pilotage (AGI, RAP)",
+     "Utilitaire",
+     "+2 en Conduite & Pilotage sur véhicules routiers, blindés ou tout-terrain ; manœuvres brusques sans perte de contrôle en terrain difficile."
+    ],
+    [
+     "<strong>Pods arcaniques</strong>",
+     "Conduite & Pilotage (AGI, RAP)",
+     "Utilitaire",
+     "+2 en Conduite & Pilotage sur pods et nacelles arcaniques ; esquive de tirs et freinage d'urgence en zone encombrée."
+    ],
+    [
+     "<strong>Vaisseaux</strong>",
+     "Conduite & Pilotage (AGI, RAP)",
+     "Utilitaire",
+     "+2 en Conduite & Pilotage pour manœuvres spatiales, appontages et navigation en champ d'astéroïdes ou sous feu nourri."
+    ],
+    [
+     "<strong>Montures</strong>",
+     "Conduite & Pilotage (AGI, RAP)",
+     "Utilitaire",
+     "+2 en Conduite & Pilotage à dos de monture (chevaux, bêtes de bât ou de guerre) ; agit en selle sans malus de stabilité."
+    ],
+    [
+     "<strong>Crochetage mécanique</strong>",
+     "Subterfuge Manuel (AGI, INT)",
+     "Utilitaire",
+     "+2 en Subterfuge Manuel pour ouvrir serrures, cadenas, coffres et menottes mécaniques sans les briser."
+    ],
+    [
+     "<strong>Vol à la tire</strong>",
+     "Subterfuge Manuel (AGI, INT)",
+     "Utilitaire",
+     "+2 en Subterfuge Manuel en Face-à-Face contre Observation pour subtiliser ou glisser un petit objet à l'insu d'une cible."
+    ],
+    [
+     "<strong>Sabotage</strong>",
+     "Subterfuge Manuel (AGI, INT)",
+     "Utilitaire",
+     "+2 en Subterfuge Manuel pour désamorcer un piège, enrayer un mécanisme ou neutraliser discrètement un appareil."
+    ],
+    [
      "<strong>Armes Lourdes (Canons)</strong>",
-     "Ballistique (AGI)",
+     "Ballistique (AGI / Vision)",
      "Offensif",
      "Armement de gros calibre : confère <strong>+100 dégâts de masse</strong> contre\n                                        les structures, fortifications et blindages de véhicules."
     ],
@@ -1456,7 +1624,7 @@
      "<strong>Frappe Jugulaire</strong>",
      "Armes Perçantes (AGI)",
      "Offensif",
-     "Gorge et carotides : sur Delta ≥ 3, <a class=\"rule-ref\"\n                                            href=\"livre_6.html#sec-24-2\"\n                                            data-tip=\"Saignement : dégâts résiduels en début de tour, puis −1/tour (ne baisse pas après Course, Charge ou Essoufflement). Tout soin l'arrête (§24.2).\">Saignement</a>\n                                        (résiduels = vos entraînements)."
+     "Gorge et carotides : sur Delta ≥ 3, <a class=\"rule-ref\" href=\"livre_6.html#sec-24-2\" data-tip=\"Saignement : dégâts résiduels en début de tour, puis −1/tour (ne baisse pas après Course, Charge ou Essoufflement). Tout soin l'arrête (§24.2).\">Saignement</a> (résiduels = tes entraînements)."
     ],
     [
      {
@@ -1489,7 +1657,7 @@
      "<strong>Arts Martiaux</strong>",
      "Mains Nues (FOR, AGI)",
      "Offensif, Défensif",
-     "Vous parez sans malus, <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\"\n                                            data-tip=\"Canon Entravé : arme longue + ennemi adjacent = −2 au tir (annulable pour +1 PA de visée).\">immunité\n                                            Canon Entravé</a>. Sur choc traumatique ou Delta ≥ 4 : refoulement d'1\n                                        case."
+     "Tu pares sans malus, <a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"Canon Entravé : arme longue + ennemi adjacent = −2 au tir (annulable pour +1 PA de visée).\">immunité Canon Entravé</a>. Sur choc traumatique ou Delta ≥ 4 : refoulement d'1 case."
     ],
     [
      {
@@ -1498,7 +1666,7 @@
      },
      "Mains Nues (FOR, AGI)",
      "Offensif, Défensif",
-     "Votre 2e attaque du tour coûte 1\n                                        PA de moins."
+     "Ta 2e attaque du tour coûte 1 PA de moins."
     ],
     [
      {
@@ -1534,12 +1702,12 @@
      },
      "Mains Nues (FOR, AGI)",
      "Offensif, Défensif",
-     "Vos frappes ignorent 2 d'armure."
+     "Tes frappes ignorent 2 d'armure."
     ],
     [
      {
       "attrs": " style=\"padding-left:5em;\"",
-      "html": "↳ <strong>Paume de Brum'korath</strong>"
+      "html": "↳ <strong>Paume Brise-Roc</strong>"
      },
      "Mains Nues (FOR, AGI)",
      "Offensif, Défensif",
@@ -1597,6 +1765,42 @@
      "Ignore 4, <a class=\"rule-ref\"\n                                                href=\"livre_6.html#sec-24-1\"\n                                                data-tip=\"Sonné : aucune action. La créature tombe immédiatement à terre.\">Sonné</a>\n                                        sur Delta ≥ 2."
     ],
     [
+     "<strong>Histoire des mondes</strong>",
+     "Académie (INT)",
+     "Utilitaire",
+     "+2 en Académie pour reconnaître époques, lignées, guerres, reliques et institutions des Élias."
+    ],
+    [
+     "<strong>Linguistique</strong>",
+     "Académie (INT)",
+     "Utilitaire",
+     "+2 en Académie pour déchiffrer écritures anciennes, dialectes, codes chiffrés et argots étrangers."
+    ],
+    [
+     "<strong>Économie impériale</strong>",
+     "Académie (INT)",
+     "Utilitaire",
+     "+2 en Académie pour évaluer la juste valeur d'un bien, repérer une fraude ou comprendre les routes commerciales et guildes."
+    ],
+    [
+     "<strong>Stabilisation d'urgence</strong>",
+     "Premiers Soins (INS)",
+     "Utilitaire",
+     "+2 en Premiers Soins (<a class=\"rule-ref\" href=\"livre_6.html#chap-25\" data-tip=\"Premiers Soins : 3 PA d'immobilisation au chevet du blessé, Difficulté 6 pour stabiliser un Agonisant (§25.1).\">Difficulté 6, Livre VI §25.1</a>) pour stabiliser un allié Agonisant ; utilisable même avec du matériel improvisé."
+    ],
+    [
+     "<strong>Pose de garrot</strong>",
+     "Premiers Soins (INS)",
+     "Utilitaire",
+     "+2 en Premiers Soins pour stopper un Saignement actif ; réduit un Saignement d'1 cran supplémentaire sur réussite."
+    ],
+    [
+     "<strong>Soins de terrain</strong>",
+     "Premiers Soins (INS)",
+     "Utilitaire",
+     "+2 en Premiers Soins pour lever l'état Souffrant, nettoyer une plaie ou dégager des voies respiratoires (Asphyxie) en conditions précaires."
+    ],
+    [
      "<strong>Chirurgie</strong>",
      "Médecine Avancée (INT, INS)",
      "Utilitaire",
@@ -1609,7 +1813,7 @@
      },
      "Médecine Avancée (INT, INS)",
      "Utilitaire",
-     "Vous lisez dégâts subis, seuils et armure exacts d'une\n                                        unité examinée."
+     "Tu lis dégâts subis, seuils et armure exacts d'une unité examinée."
     ],
     [
      {
@@ -1633,7 +1837,7 @@
      "<strong>Apothicaire de Guerre</strong>",
      "Médecine Avancée (INT, INS)",
      "Utilitaire",
-     "Vous composez des stimulants (Antidouleurs, Speed) sans laboratoire."
+     "Tu composes des stimulants (Antidouleurs, Speed) sans laboratoire."
     ],
     [
      {
@@ -1684,7 +1888,7 @@
      },
      "Ingénierie & Arcanotech (INT, AGI)",
      "Utilitaire",
-     "+3 dégâts d'énergie pure à\n                                        toutes vos attaques du tour."
+     "+3 dégâts d'énergie pure à toutes tes attaques du tour."
     ],
     [
      {
@@ -1699,7 +1903,7 @@
      "<strong>Analyse de Faille</strong>",
      "Penser / Stratégie (INT)",
      "Utilitaire, Défensif",
-     "2 PA : votre prochain coup (ou celui d'un allié) ignore\n                                        l'<a class=\"rule-ref\" href=\"livre_1.html#sec-4-1\"\n                                            data-tip=\"Encaissement = CON × 2 : ce que ton corps encaisse en un coup sans traumatisme (§4.1).\">encaissement</a>\n                                        adverse."
+     "2 PA : ton prochain coup (ou celui d'un allié) contre cette cible <strong>ignore son armure</strong>."
     ],
     [
      {
@@ -1732,7 +1936,7 @@
      "<strong>Tromper</strong>",
      "Communication (CHA, INT)",
      "Social",
-     "Dupez un adversaire ou un PNJ par une <a class=\"rule-ref\"\n                                            href=\"livre_2.html#chap-7\"\n                                            data-tip=\"Face-à-Face : les deux lancent en secret, dé + PA − malus. Égalité = l'initiateur passe (§7.3).\">épreuve\n                                            sociale opposée</a> à son\n                                        Intuition/Instinct."
+     "Dupe un adversaire ou un PNJ par une <a class=\"rule-ref\" href=\"livre_2.html#chap-7\" data-tip=\"Face-à-Face : les deux lancent en secret, dé + PA − malus. Égalité = l'initiateur passe (§7.3).\">épreuve sociale opposée</a> à son Intuition/Instinct."
     ],
     [
      {
@@ -1741,7 +1945,7 @@
      },
      "Communication (CHA, INT)",
      "Social",
-     "1 PA : un ennemi tourne le dos jusqu'au tour\n                                        suivant."
+     "1 PA : Face-à-Face <strong>Communication contre Intuition</strong> ; sur réussite, la cible est distraite et subit <strong>−2 à sa prochaine défense</strong> avant ton prochain tour."
     ],
     [
      {
@@ -1759,11 +1963,11 @@
      },
      "Communication (CHA, INT)",
      "Social",
-     "Traversez les zones ennemies sans\n                                        hostilité."
+     "Traverse les zones ennemies sans hostilité."
     ],
     [
      "<strong>Négocier</strong>",
-     "Communication (CHA)",
+     "Communication (CHA, INT)",
      "Social",
      "Réduit de 10 % à 50 % le prix des équipements."
     ],
@@ -1772,7 +1976,7 @@
       "attrs": " style=\"padding-left:2em;\"",
       "html": "↳ <strong>Marché Noir Impérial</strong>"
      },
-     "Communication (CHA)",
+     "Communication (CHA, INT)",
      "Social",
      "Achète prototypes et rareté Légendaire."
     ],
@@ -1781,7 +1985,7 @@
       "attrs": " style=\"padding-left:3.5em;\"",
       "html": "↳ <strong>Cessez-le-Feu</strong>"
      },
-     "Communication (CHA)",
+     "Communication (CHA, INT)",
      "Social",
      "Suspend les attaques ennemies\n                                        pendant 1 tour pour parlementer."
     ],
@@ -1790,7 +1994,7 @@
       "attrs": " style=\"padding-left:5em;\"",
       "html": "↳ <strong>Rachat d'Allégeance</strong>"
      },
-     "Communication (CHA)",
+     "Communication (CHA, INT)",
      "Social",
      "Convertit un sbire ennemi en allié pour\n                                        le combat."
     ],
@@ -1816,7 +2020,7 @@
      },
      "Intimidation (CHA, FOR)",
      "Social, Offensif",
-     "La cible ne peut attaquer que\n                                        vous."
+     "La cible ne peut attaquer que toi."
     ],
     [
      {
@@ -1825,11 +2029,11 @@
      },
      "Intimidation (CHA, FOR)",
      "Social, Offensif",
-     "Paralysé 1 tour si la Volonté de\n                                        la cible est sous votre Charisme."
+     "La cible est <strong><a class=\"rule-ref\" href=\"livre_6.html#sec-24-1\" data-tip=\"Paralysé : aucune action, aucun mouvement, aucune défense (§24.1).\">Paralysée</a></strong> 1 tour sur <strong>Delta ≥ 3</strong> (ou si son <strong>Instinct (INS)</strong> est inférieur à ton Charisme)."
     ],
     [
      "<strong>Charmer</strong>",
-     "Communication (CHA)",
+     "Communication (CHA, INT)",
      "Social",
      "Gagne la confiance immédiate d'un PNJ non hostile. Accorde un avantage de +1 <a\n                                            class=\"rule-ref\" href=\"livre_2.html#chap-6\"\n                                            data-tip=\"EC : on teste toujours une compétence précise, jamais un attribut brut (§6).\">EC</a>\n                                        sur les interactions sociales ultérieures."
     ],
@@ -1903,13 +2107,13 @@
      "◆ C3 · Réaction",
      "1",
      "+2",
-     "Hors de ton tour, 1/round. Le +2 s'ajoute aux PA des pièces (comme les sorts, Livre IV §20)."
+     "Hors de ton tour, 1/cycle. Le +2 s'ajoute aux PA des pièces (comme les sorts, Livre IV §19)."
     ],
     [
      "◆ C4 · Opportunité",
      "2",
      "0",
-     "0 PA, 1/round max. Déclencheur étroit obligatoire : Δ≥2, critique, esquive réussie... Sans déclencheur ni seuil, l’atelier t’alerte."
+     "0 PA, 1/cycle max. Déclencheur étroit obligatoire : Δ≥2, critique, esquive réussie... Sans déclencheur ni seuil, l’atelier t’alerte."
     ]
    ]
   },
@@ -2068,8 +2272,8 @@
     [
      "3",
      "0",
-     "<strong>D7 · Immunité embuscade et dos</strong> — Ni surprise, ni attaques de dos : tu gardes ta réaction en embuscade.",
-     "Ne donne pas la vision à 360° (voir Perception Panoramique au compendium)."
+     "<strong>D7 · Immunité embuscade</strong> — Jamais pris par surprise : tu gardes ta réaction libre en embuscade et ignores le bonus d'attaque cachée.",
+     "Ne donne pas la détection automatique de Sphère de Résonance ni +2 en Observation active."
     ],
     [
      "2",
@@ -2116,13 +2320,13 @@
      "2",
      "0",
      "<strong>U4 · Mouvement gratuit 1 case</strong> — 1 case offerte : recul après esquive, pas vers l’ennemi avant la frappe...",
-     "Opportunité : 1/round, déclencheur écrit."
+     "Opportunité : 1/cycle, déclencheur écrit."
     ],
     [
      "4",
      "0",
      "<strong>U5 · Téléport 2 cases sur esquive</strong> — Esquive réussie Δ≥2 : tu te téléportes de 2 cases.",
-     "Prérequis : Roulade ou esquive Δ≥2. 1/round."
+     "Prérequis : Roulade ou esquive Δ≥2. 1/cycle."
     ],
     [
      "2",
@@ -2163,8 +2367,8 @@
     [
      "2",
      "−1*",
-     "<strong>U12 · Force contre essoufflement</strong> — *Tu gagnes 1 PA d’action et tu prends 1 essoufflement.",
-     "1 PA d’action contre 1 essoufflement, sans variante."
+     "<strong>U12 · Réserve d'urgence</strong> — *1 fois par combat : tu gagnes +2 PA d'action contre 1 point d'Essoufflement (au lieu de +1 PA).",
+     "1 fois par combat, +2 PA contre 1 Essoufflement, sans variante."
     ]
    ]
   },
@@ -2246,7 +2450,7 @@
     [
      "+1 XP",
      "<strong>Hybride (deux familles)</strong> (+0 PA)",
-     "Frappe + intimidation, soin + commandement... Le +1 ne compte pas dans les PA (comme l’Injonction Douce, Livre IV §20)."
+     "Frappe + intimidation, soin + commandement... Le +1 ne compte pas dans les PA (comme l’Injonction Douce, Livre IV §19)."
     ],
     [
      "×2 XP",
@@ -2379,28 +2583,28 @@
  "mecaniques": {
   "note": "Genere depuis livre_3.html (motif RP-075/Livre II). Source unique : regenerer.",
   "calcul_rang_base": {
-   "texte": "Pour trouver votre score de base, prenez la moyenne de vos attributs liés, arrondie vers le haut. Un seul attribut lié ? Gardez sa valeur telle quelle. Exemple 1 : Maniement des armes de contact (FOR, AGI). Vous avez Force 5 et Agilité 4, la moyenne fait (5 + 4) / 2 = 4.5, arrondi à 5 → +2 niveaux de dé (Dé associé sans entraînement : 1d6). Exemple 2 : Premiers Soins (INS). Vous avez un niveau d'Instinct de 3 → +1 niveau (Dé associé : 1d4). Votre piste de progression : 3 cases (Livre I §5). Exemple 3 : Athlétisme (CON, FOR, AGI). Vous avez Con 4, For 5, Agi 3, la moyenne fait (4 + 5 + 3) / 3 = 4 → +1 niveau (Dé associé : 1d4). Votre progression (Livre I §5) : votre rang de base fixe aussi la taille de votre piste : base 3 → 3 cases, base 5 → 5 cases. Chaque réussite avec la compétence coche 1 case. Piste pleine ? Vous gagnez +1 XP lié, puis la piste repart à zéro. Vous le dépensez au coût normal, ou en croisé ×2. Votre Bagage de départ : tout héros commence avec 3 entraînements gratuits à la création (+1 don Humain Touche-à-tout, +1 tirage historique pur Livre VII, max 5). Ils sont fixés une seule fois à la création (aucune caractéristique n'en offre en jeu), coûtent 0 XP et restent hors de votre total. Maximum 3 entraînements par compétence au départ — 6 si votre dé a atteint 2d6 (3 déblocables : 2d6 ➔ 2d8 ➔ 2d10 ➔ 2d12). Ce sont les 6 cases de votre fiche. Chaque entraînement donne +1 niveau de dé."
+   "texte": "Pour trouver ton score de base, prends la moyenne de tes attributs liés, arrondie au supérieur. Un seul attribut lié ? Garde sa valeur telle quelle. Exemple 1 : Maniement d'Arme (FOR, AGI). Tu as Force 5 et Agilité 4 : la moyenne fait (5 + 4) / 2 = 4,5, arrondi à 5 → +2 niveaux de dé (dé associé sans entraînement : 1d6). Exemple 2 : Premiers Soins (INS). Tu as Instinct 3 → +1 niveau (dé associé : 1d4). Ta piste de progression compte 3 cases (Livre I §5). Exemple 3 : Athlétisme (CON, FOR, AGI). Tu as CON 4, FOR 5, AGI 3 : la moyenne fait (4 + 5 + 3) / 3 = 4 → +1 niveau (dé associé : 1d4). Ta progression (Livre I §5) : ton rang de base fixe aussi la taille de ta piste : base 3 → 3 cases, base 5 → 5 cases. Chaque réussite avec la compétence coche 1 case. Piste pleine ? Tu gagnes +1 XP lié, puis la piste repart à zéro. Tu le dépenses au coût normal, ou en croisé ×2. Ton Bagage de départ : tout héros commence avec 3 entraînements gratuits à la création (+1 don Humain Touche-à-tout, +1 tirage historique pur Livre VII, max 5). Ils sont fixés une seule fois à la création (aucune caractéristique n'en offre en jeu), coûtent 0 XP et restent hors de ton total. Maximum 3 entraînements par compétence : tu ne peux jamais dépasser 3 au départ, gratuits et achetés confondus — 6 si ton dé a atteint 2d6 (3 déblocables : 2d6 ➔ 2d8 ➔ 2d10 ➔ 2d12). Ce sont les 6 cases de ta fiche. Chaque entraînement donne +1 niveau de dé."
   },
   "categories_action": [
    {
     "titre": "Offensif",
-    "texte": "Vous frappez, vous bousculez, vous ouvrez un passage. C'est pour blesser ou déstabiliser en face."
+    "texte": "Tu frappes, tu bouscules, tu ouvres un passage. C'est pour blesser ou déstabiliser en face."
    },
    {
     "titre": "Défensif",
-    "texte": "Vous parez, vous esquivez, vous encaissez. C'est pour rester debout quand ça arrive."
+    "texte": "Tu pares, tu esquives, tu encaisses. C'est pour rester debout quand ça arrive."
    },
    {
     "titre": "Utilitaire",
-    "texte": "Vous grimpez, vous réparez, vous soignez, vous passez sans bruit. Pas pour frapper ni parer."
+    "texte": "Tu grimpes, tu répares, tu soignes, tu passes sans bruit. Pas pour frapper ni parer."
    },
    {
     "titre": "Social",
-    "texte": "Vous parlez, vous négociez, vous intimidez. Pour obtenir quelque chose de quelqu'un qui réfléchit."
+    "texte": "Tu parles, tu négocies, tu intimides. Pour obtenir quelque chose de quelqu'un qui réfléchit."
    },
    {
     "titre": "Hybride",
-    "texte": "Vous faites deux choses en une. Exemple : vous frappez et, en même temps, vous impressionnez ou vous faites reculer."
+    "texte": "Tu fais deux choses en une. Exemple : tu frappes et, en même temps, tu impressionnes ou tu fais reculer."
    }
   ],
   "arbres": {
@@ -2409,14 +2613,14 @@
      "competence": "Mains Nues",
      "attributs": "Force, Agilité",
      "type": "Offensif, Défensif, Utilitaire",
-     "specialisations": "Arts Martiaux — parade sans malus, refoulement ↳ Enchaînement Fluide → Frappe Téléportée → Déphasage Cinétique ↳ Onde Tellurique → Brise-Blindage → Paume de Brum'korath ↳ Balayage Rotatif → Clé d'Articulation → Rupture Ligamentaire Perforation de Silicate → Fracture Sismique → Cœur d'Adamas Agripper, Frapper, Étrangler",
+     "specialisations": "Arts Martiaux — parade sans malus, refoulement ↳ Enchaînement Fluide → Frappe Téléportée → Déphasage Cinétique ↳ Onde Tellurique → Brise-Blindage → Paume Brise-Roc ↳ Balayage Rotatif → Clé d'Articulation → Rupture Ligamentaire Perforation de Silicate → Fracture Sismique → Cœur d'Adamas Agripper, Frapper, Étrangler",
      "arbre": "FOR"
     },
     {
      "competence": "Maniement d'Arme (Tranchantes / Contondantes)",
      "attributs": "Force, Agilité",
      "type": "Offensif, Défensif",
-     "specialisations": "Spécialisation Épée ↳ Riposte Éclair → Tranchant Tempétueux → Lame de Ligne Temporelle Zéro ↳ Garde Haute Impériale → Lame Miroir → Dôme de Parade Fente de Rupture → Pointe Chirurgicale → Transpercement Traversant → Fissure Causal Bloquer (commune avec Défense Corporelle) → Mur de Bouclier → Heurt de Bouclier → Forteresse Impénétrable Armes Contondantes (Marteau, Masse, Gourdin, Fléau) → Marteau de Guerre ↳ Écrasement Osseux → Brise-Crâne → Cataclysme de Fer ↳ Onde de Faille → Onde Sismique Réverbérante Hache de guerre ↳ Fente du Bûcheron → Brise-Garde → Exécution du Bourreau ↳ Croc de Désarmement → Arrache-Bouclier Zweihander",
+     "specialisations": "Spécialisation Épée ↳ Riposte Éclair → Tranchant Tempétueux → Lame de Ligne Temporelle Zéro ↳ Garde Haute Impériale → Lame Miroir → Dôme de Parade Fente de Rupture → Pointe Chirurgicale → Transpercement Traversant → Fissure Causale Bloquer (commune avec Défense Corporelle) → Mur de Bouclier → Heurt de Bouclier → Forteresse Impénétrable Armes Contondantes (Marteau, Masse, Gourdin, Fléau) → Marteau de Guerre ↳ Écrasement Osseux → Brise-Crâne → Cataclysme de Fer ↳ Onde de Faille → Onde Sismique Réverbérante Hache de guerre ↳ Fente du Bûcheron → Brise-Garde → Exécution du Bourreau ↳ Croc de Désarmement → Arrache-Bouclier Zweihander",
      "arbre": "FOR"
     },
     {
@@ -2568,41 +2772,41 @@
      "arbre": "CHA"
     }
    ],
-   "INS/SAG": [
+   "INS": [
     {
      "competence": "Observation",
      "attributs": "Vision, Ouïe",
      "type": "Utilitaire, Défensif",
      "specialisations": "Vigilance Réflexe → Œil de Lynx → Détection Thermique → Perception Panoramique 360° Détection des embuscades, Repérage de détails, Vigilance",
-     "arbre": "INS/SAG"
+     "arbre": "INS"
     },
     {
      "competence": "Écoute",
      "attributs": "Ouïe",
      "type": "Utilitaire",
      "specialisations": "Perception des bruits lointains, Écho acoustique, Auscultation",
-     "arbre": "INS/SAG"
+     "arbre": "INS"
     },
     {
      "competence": "Intuition",
      "attributs": "Intelligence, Instinct",
      "type": "Utilitaire, Défensif",
      "specialisations": "Sens du Danger → Premiers Réflexes → Clairvoyance du Vétéran Instinct du Chasseur → Pistage → Piégeur Sphère de Résonance → Écho Myotatique → Champ Prédictif → Omniprésence Synaptique",
-     "arbre": "INS/SAG"
+     "arbre": "INS"
     },
     {
      "competence": "Nature & Survie",
      "attributs": "Instinct, Intelligence",
      "type": "Utilitaire",
      "specialisations": "Traque, Orientation, Botanique sauvage, Construction d'abris",
-     "arbre": "INS/SAG"
+     "arbre": "INS"
     },
     {
      "competence": "Artisanat / Connaissance",
-     "attributs": "Sagesse, Intelligence",
+     "attributs": "Instinct, Intelligence",
      "type": "Utilitaire",
-     "specialisations": "Affûtage de Précision → Fil Monomoléculaire → Blindage Trempé → Acier de Maître d'Hybris Fabriquer, Forger, Sculpter, Enseigner",
-     "arbre": "INS/SAG"
+     "specialisations": "Affûtage de Précision → Fil Monomoléculaire → Blindage Trempé → Acier de Maître Fabriquer, Forger, Sculpter, Enseigner",
+     "arbre": "INS"
     }
    ]
   },
@@ -2611,14 +2815,14 @@
     "competence": "Mains Nues",
     "attributs": "Force, Agilité",
     "type": "Offensif, Défensif, Utilitaire",
-    "specialisations": "Arts Martiaux — parade sans malus, refoulement ↳ Enchaînement Fluide → Frappe Téléportée → Déphasage Cinétique ↳ Onde Tellurique → Brise-Blindage → Paume de Brum'korath ↳ Balayage Rotatif → Clé d'Articulation → Rupture Ligamentaire Perforation de Silicate → Fracture Sismique → Cœur d'Adamas Agripper, Frapper, Étrangler",
+    "specialisations": "Arts Martiaux — parade sans malus, refoulement ↳ Enchaînement Fluide → Frappe Téléportée → Déphasage Cinétique ↳ Onde Tellurique → Brise-Blindage → Paume Brise-Roc ↳ Balayage Rotatif → Clé d'Articulation → Rupture Ligamentaire Perforation de Silicate → Fracture Sismique → Cœur d'Adamas Agripper, Frapper, Étrangler",
     "arbre": "FOR"
    },
    "Maniement d'Arme (Tranchantes / Contondantes)": {
     "competence": "Maniement d'Arme (Tranchantes / Contondantes)",
     "attributs": "Force, Agilité",
     "type": "Offensif, Défensif",
-    "specialisations": "Spécialisation Épée ↳ Riposte Éclair → Tranchant Tempétueux → Lame de Ligne Temporelle Zéro ↳ Garde Haute Impériale → Lame Miroir → Dôme de Parade Fente de Rupture → Pointe Chirurgicale → Transpercement Traversant → Fissure Causal Bloquer (commune avec Défense Corporelle) → Mur de Bouclier → Heurt de Bouclier → Forteresse Impénétrable Armes Contondantes (Marteau, Masse, Gourdin, Fléau) → Marteau de Guerre ↳ Écrasement Osseux → Brise-Crâne → Cataclysme de Fer ↳ Onde de Faille → Onde Sismique Réverbérante Hache de guerre ↳ Fente du Bûcheron → Brise-Garde → Exécution du Bourreau ↳ Croc de Désarmement → Arrache-Bouclier Zweihander",
+    "specialisations": "Spécialisation Épée ↳ Riposte Éclair → Tranchant Tempétueux → Lame de Ligne Temporelle Zéro ↳ Garde Haute Impériale → Lame Miroir → Dôme de Parade Fente de Rupture → Pointe Chirurgicale → Transpercement Traversant → Fissure Causale Bloquer (commune avec Défense Corporelle) → Mur de Bouclier → Heurt de Bouclier → Forteresse Impénétrable Armes Contondantes (Marteau, Masse, Gourdin, Fléau) → Marteau de Guerre ↳ Écrasement Osseux → Brise-Crâne → Cataclysme de Fer ↳ Onde de Faille → Onde Sismique Réverbérante Hache de guerre ↳ Fente du Bûcheron → Brise-Garde → Exécution du Bourreau ↳ Croc de Désarmement → Arrache-Bouclier Zweihander",
     "arbre": "FOR"
    },
    "Athlétisme": {
@@ -2766,35 +2970,35 @@
     "attributs": "Vision, Ouïe",
     "type": "Utilitaire, Défensif",
     "specialisations": "Vigilance Réflexe → Œil de Lynx → Détection Thermique → Perception Panoramique 360° Détection des embuscades, Repérage de détails, Vigilance",
-    "arbre": "INS/SAG"
+    "arbre": "INS"
    },
    "Écoute": {
     "competence": "Écoute",
     "attributs": "Ouïe",
     "type": "Utilitaire",
     "specialisations": "Perception des bruits lointains, Écho acoustique, Auscultation",
-    "arbre": "INS/SAG"
+    "arbre": "INS"
    },
    "Intuition": {
     "competence": "Intuition",
     "attributs": "Intelligence, Instinct",
     "type": "Utilitaire, Défensif",
     "specialisations": "Sens du Danger → Premiers Réflexes → Clairvoyance du Vétéran Instinct du Chasseur → Pistage → Piégeur Sphère de Résonance → Écho Myotatique → Champ Prédictif → Omniprésence Synaptique",
-    "arbre": "INS/SAG"
+    "arbre": "INS"
    },
    "Nature & Survie": {
     "competence": "Nature & Survie",
     "attributs": "Instinct, Intelligence",
     "type": "Utilitaire",
     "specialisations": "Traque, Orientation, Botanique sauvage, Construction d'abris",
-    "arbre": "INS/SAG"
+    "arbre": "INS"
    },
    "Artisanat / Connaissance": {
     "competence": "Artisanat / Connaissance",
-    "attributs": "Sagesse, Intelligence",
+    "attributs": "Instinct, Intelligence",
     "type": "Utilitaire",
-    "specialisations": "Affûtage de Précision → Fil Monomoléculaire → Blindage Trempé → Acier de Maître d'Hybris Fabriquer, Forger, Sculpter, Enseigner",
-    "arbre": "INS/SAG"
+    "specialisations": "Affûtage de Précision → Fil Monomoléculaire → Blindage Trempé → Acier de Maître Fabriquer, Forger, Sculpter, Enseigner",
+    "arbre": "INS"
    }
   },
   "nb_competences": 27,
@@ -2804,28 +3008,28 @@
     "parente": null,
     "source": "Maniement d'Arme (FOR, AGI)",
     "type": "Offensif, Défensif",
-    "effets": "Vous parez sans malus et vous contre-attaquez en réaction."
+    "effets": "Tu pares sans malus et tu contre-attaques en réaction."
    },
    {
     "nom": "Riposte Éclair",
     "parente": "Maniement de l'Épée",
     "source": "Maniement d'Arme (FOR, AGI)",
     "type": "Offensif, Défensif",
-    "effets": "Votre riposte ne prend aucun malus."
+    "effets": "Ta riposte ne prend aucun malus."
    },
    {
     "nom": "Tranchant Tempétueux",
-    "parente": "Maniement de l'Épée",
+    "parente": "Riposte Éclair",
     "source": "Maniement d'Arme (FOR, AGI)",
     "type": "Offensif, Défensif",
-    "effets": "+2 dégâts sur vos ripostes réussies."
+    "effets": "+2 dégâts sur tes ripostes réussies."
    },
    {
     "nom": "Lame de Ligne Temporelle Zéro",
-    "parente": "Maniement de l'Épée",
+    "parente": "Tranchant Tempétueux",
     "source": "Maniement d'Arme (FOR, AGI)",
     "type": "Offensif, Défensif",
-    "effets": "Sur critique en parade, vous annulez l'attaque et renvoyez tous les dégâts."
+    "effets": "Sur critique en parade, tu annules l'attaque et renvoies tous les dégâts."
    },
    {
     "nom": "Garde Haute Impériale",
@@ -2836,24 +3040,24 @@
    },
    {
     "nom": "Lame Miroir",
-    "parente": "Maniement de l'Épée",
+    "parente": "Garde Haute Impériale",
     "source": "Maniement d'Arme (FOR, AGI)",
     "type": "Offensif, Défensif",
-    "effets": "Vous parez les tirs laser au contact (Delta ≥ 0)."
+    "effets": "Tu pares les tirs laser au contact (Delta ≥ 0)."
    },
    {
     "nom": "Dôme de Parade",
-    "parente": "Maniement de l'Épée",
+    "parente": "Lame Miroir",
     "source": "Maniement d'Arme (FOR, AGI)",
     "type": "Offensif, Défensif",
-    "effets": "Vous parez pour un allié adjacent."
+    "effets": "Tu pares pour un allié adjacent."
    },
    {
     "nom": "Armes Contondantes",
     "parente": null,
     "source": "Maniement d'Arme (FOR, AGI)",
     "type": "Offensif, Défensif",
-    "effets": "Maîtrise du choc (Marteau, Masse, Gourdin, Fléau) : vous parez sans malus."
+    "effets": "Maîtrise du choc (Marteau, Masse, Gourdin, Fléau) : tu pares sans malus."
    },
    {
     "nom": "Marteau de Guerre",
@@ -2864,35 +3068,35 @@
    },
    {
     "nom": "Écrasement Osseux",
-    "parente": "Armes Contondantes",
+    "parente": "Marteau de Guerre",
     "source": "Maniement d'Arme (FOR, AGI)",
     "type": "Offensif",
     "effets": "+3 dégâts contre armure lourde."
    },
    {
     "nom": "Brise-Crâne",
-    "parente": "Armes Contondantes",
+    "parente": "Écrasement Osseux",
     "source": "Maniement d'Arme (FOR, AGI)",
     "type": "Offensif",
     "effets": "Visée Tête sans malus, applique Sonné et Étourdi."
    },
    {
     "nom": "Cataclysme de Fer",
-    "parente": "Armes Contondantes",
+    "parente": "Brise-Crâne",
     "source": "Maniement d'Arme (FOR, AGI)",
     "type": "Offensif",
     "effets": "+5 dégâts, onde qui renverse les unités adjacentes."
    },
    {
     "nom": "Onde de Faille",
-    "parente": "Armes Contondantes",
+    "parente": "Marteau de Guerre",
     "source": "Maniement d'Arme (FOR, AGI)",
     "type": "Offensif",
     "effets": "Zone de terrain difficile sur 2 cases."
    },
    {
     "nom": "Onde Sismique Réverbérante",
-    "parente": "Armes Contondantes",
+    "parente": "Onde de Faille",
     "source": "Maniement d'Arme (FOR, AGI)",
     "type": "Offensif",
     "effets": "Déstabilisé dans un rayon de 2 cases."
@@ -2913,14 +3117,14 @@
    },
    {
     "nom": "Brise-Garde",
-    "parente": "Hache de Guerre",
+    "parente": "Fente du Bûcheron",
     "source": "Maniement d'Arme (FOR, AGI)",
     "type": "Offensif, Défensif",
     "effets": "+4 dégâts, À Terre sur Delta ≥ 2."
    },
    {
     "nom": "Exécution du Bourreau",
-    "parente": "Hache de Guerre",
+    "parente": "Brise-Garde",
     "source": "Maniement d'Arme (FOR, AGI)",
     "type": "Offensif, Défensif",
     "effets": "+5 dégâts, dégâts convertis en Absolus sur critique."
@@ -2934,7 +3138,7 @@
    },
    {
     "nom": "Arrache-Bouclier",
-    "parente": "Hache de Guerre",
+    "parente": "Croc de Désarmement",
     "source": "Maniement d'Arme (FOR, AGI)",
     "type": "Offensif, Défensif",
     "effets": "Une parade adverse limite (-1 ou 0) devient une touche franche."
@@ -2955,24 +3159,24 @@
    },
    {
     "nom": "Transpercement Traversant",
-    "parente": "Fente de Rupture",
+    "parente": "Pointe Chirurgicale",
     "source": "Maniement d'Arme (FOR, AGI)",
     "type": "Offensif",
     "effets": "Ignore 4 points d'armure et blesse aussi l'ennemi juste derrière."
    },
    {
-    "nom": "Fissure Causal",
-    "parente": "Fente de Rupture",
+    "nom": "Fissure Causale",
+    "parente": "Transpercement Traversant",
     "source": "Maniement d'Arme (FOR, AGI)",
     "type": "Offensif",
-    "effets": "Statut Chrono-Fracture, draine 2 PA adverses."
+    "effets": "Inflige Déstabilisé 1 tour et draine 2 PA adverses."
    },
    {
     "nom": "Bloquer",
     "parente": null,
     "source": "Maniement d'Arme / Défense Corporelle (FOR, AGI / FOR)",
     "type": "Défensif",
-    "effets": "Bouclier ou garde hermétique : vous parez sans malus. Valable des deux côtés."
+    "effets": "Bouclier ou garde hermétique : tu pares sans malus. Valable des deux côtés."
    },
    {
     "nom": "Mur de Bouclier",
@@ -2983,14 +3187,14 @@
    },
    {
     "nom": "Heurt de Bouclier",
-    "parente": "Bloquer",
+    "parente": "Mur de Bouclier",
     "source": "Maniement d'Arme / Défense Corporelle (FOR, AGI / FOR)",
     "type": "Défensif",
     "effets": "Après un blocage, 4 dégâts et repousse d'1 case."
    },
    {
     "nom": "Forteresse Impénétrable",
-    "parente": "Bloquer",
+    "parente": "Heurt de Bouclier",
     "source": "Maniement d'Arme / Défense Corporelle (FOR, AGI / FOR)",
     "type": "Défensif",
     "effets": "Immunité aux critiques, au Déstabilisé et à À Terre pendant la garde."
@@ -3000,28 +3204,28 @@
     "parente": null,
     "source": "Défense Corporelle (FOR)",
     "type": "Défensif",
-    "effets": "Vous interposez votre corps pour un allié adjacent."
+    "effets": "Prise de coup (Livre V §20.6) possible jusqu'à 2 cases (pas de côté inclus) ; la posture préventive n'impose plus le malus de −1 à l'attaque."
    },
    {
     "nom": "Interposition Réflexe",
     "parente": "Bouclier Vivant",
     "source": "Défense Corporelle (FOR)",
     "type": "Défensif",
-    "effets": "Coûte 1 PA au lieu de 2."
+    "effets": "S'interposer coûte 0 PA (consomme toujours la réaction libre) et donne +1 à ta parade lors de l'interposition."
    },
    {
     "nom": "Dévier le Calibre",
-    "parente": "Bouclier Vivant",
+    "parente": "Interposition Réflexe",
     "source": "Défense Corporelle (FOR)",
     "type": "Défensif",
     "effets": "Dégâts interceptés divisés par deux."
    },
    {
     "nom": "Mur Inébranlable",
-    "parente": "Bouclier Vivant",
+    "parente": "Dévier le Calibre",
     "source": "Défense Corporelle (FOR)",
     "type": "Défensif",
-    "effets": "Vous encaissez les grenades sans refoulement ni Déstabilisé."
+    "effets": "Tu encaisses les grenades sans refoulement ni Déstabilisé."
    },
    {
     "nom": "Arme de Hast",
@@ -3039,14 +3243,14 @@
    },
    {
     "nom": "Mur de Piques",
-    "parente": "Arme de Hast",
+    "parente": "Arrêt de Charge",
     "source": "Armes Perçantes (AGI)",
     "type": "Offensif",
     "effets": "Ignore 3 et repousse d'1 case."
    },
    {
     "nom": "Phalange d'Acier",
-    "parente": "Arme de Hast",
+    "parente": "Mur de Piques",
     "source": "Armes Perçantes (AGI)",
     "type": "Offensif",
     "effets": "Ignore 4 et blesse aussi l'ennemi derrière."
@@ -3060,7 +3264,7 @@
    },
    {
     "nom": "Crochet de Hallebarde",
-    "parente": "Arme de Hast",
+    "parente": "Fauchage Latéral",
     "source": "Armes Perçantes (AGI)",
     "type": "Offensif",
     "effets": "Désarmer ou mettre À Terre sur Delta ≥ 2."
@@ -3068,112 +3272,112 @@
    {
     "nom": "Tir à l'Arc",
     "parente": null,
-    "source": "Ballistique (AGI)",
+    "source": "Ballistique (AGI / Vision)",
     "type": "Offensif",
     "effets": "Arcs et arbalètes silencieux (+2 cases de portée)."
    },
    {
     "nom": "Flèche Perforante",
     "parente": "Tir à l'Arc",
-    "source": "Ballistique (AGI)",
+    "source": "Ballistique (AGI / Vision)",
     "type": "Offensif",
     "effets": "Ignore 2 points d'armure."
    },
    {
     "nom": "Tir en Cloche",
-    "parente": "Tir à l'Arc",
-    "source": "Ballistique (AGI)",
+    "parente": "Flèche Perforante",
+    "source": "Ballistique (AGI / Vision)",
     "type": "Offensif",
     "effets": "Ignore le couvert partiel, +4 cases de portée."
    },
    {
     "nom": "Pluie d'Acier",
-    "parente": "Tir à l'Arc",
-    "source": "Ballistique (AGI)",
+    "parente": "Tir en Cloche",
+    "source": "Ballistique (AGI / Vision)",
     "type": "Offensif",
     "effets": "Blesse une seconde cible adjacente."
    },
    {
     "nom": "Tir Instinctif",
     "parente": "Tir à l'Arc",
-    "source": "Ballistique (AGI)",
+    "source": "Ballistique (AGI / Vision)",
     "type": "Offensif",
-    "effets": "Votre premier tir du tour coûte 1 PA de moins."
+    "effets": "Ton premier tir du tour coûte 1 PA de moins."
    },
    {
     "nom": "Chasseur Silencieux",
-    "parente": "Tir à l'Arc",
-    "source": "Ballistique (AGI)",
+    "parente": "Tir Instinctif",
+    "source": "Ballistique (AGI / Vision)",
     "type": "Offensif",
     "effets": "Abattre un isolé ne donne pas l'alerte ; +2 en Discrétion après un tir réussi."
    },
    {
     "nom": "Fusil de Précision",
     "parente": null,
-    "source": "Ballistique (AGI)",
+    "source": "Ballistique (AGI / Vision)",
     "type": "Offensif",
     "effets": "Tir longue portée : +4 cases, critique facilité."
    },
    {
     "nom": "Visée Millimétrique",
     "parente": "Fusil de Précision",
-    "source": "Ballistique (AGI)",
+    "source": "Ballistique (AGI / Vision)",
     "type": "Offensif",
-    "effets": "+2 en visée chirurgicale si vous n'avez pas bougé."
+    "effets": "+2 en visée chirurgicale si tu n'as pas bougé."
    },
    {
     "nom": "Perforation Hyper-Véloce",
-    "parente": "Fusil de Précision",
-    "source": "Ballistique (AGI)",
+    "parente": "Visée Millimétrique",
+    "source": "Ballistique (AGI / Vision)",
     "type": "Offensif",
     "effets": "Ignore 4 points d'armure."
    },
    {
     "nom": "Tir à Travers les Parois",
-    "parente": "Fusil de Précision",
-    "source": "Ballistique (AGI)",
+    "parente": "Perforation Hyper-Véloce",
+    "source": "Ballistique (AGI / Vision)",
     "type": "Offensif",
     "effets": "Cible derrière un couvert total à -2 seulement."
    },
    {
     "nom": "Tir de Suppression",
     "parente": "Fusil de Précision",
-    "source": "Ballistique (AGI)",
+    "source": "Ballistique (AGI / Vision)",
     "type": "Offensif",
     "effets": "Déstabilisé et draine 1 PA défensif."
    },
    {
     "nom": "Calibre Anti-Matériel",
-    "parente": "Fusil de Précision",
-    "source": "Ballistique (AGI)",
+    "parente": "Tir de Suppression",
+    "source": "Ballistique (AGI / Vision)",
     "type": "Offensif",
     "effets": "+4 dégâts contre véhicules et structures."
    },
    {
     "nom": "Grenadier d'Assaut",
     "parente": null,
-    "source": "Ballistique (AGI)",
+    "source": "Ballistique (AGI / Vision)",
     "type": "Offensif",
     "effets": "Explosifs : dispersion réduite, +2 cases de lancer."
    },
    {
     "nom": "Calcul Balistique",
     "parente": "Grenadier d'Assaut",
-    "source": "Ballistique (AGI)",
+    "source": "Ballistique (AGI / Vision)",
     "type": "Offensif",
     "effets": "Dispersion réduite d'1 case de plus (minimum 0)."
    },
    {
     "nom": "Dégoupillage Éclair",
-    "parente": "Grenadier d'Assaut",
-    "source": "Ballistique (AGI)",
+    "parente": "Calcul Balistique",
+    "source": "Ballistique (AGI / Vision)",
     "type": "Offensif",
     "effets": "Lancer coûte 1 PA de moins."
    },
    {
     "nom": "Souffle Thermobarique",
-    "parente": "Grenadier d'Assaut",
-    "source": "Ballistique (AGI)",
+    "parente": "Dégoupillage Éclair",
+    "source": "Ballistique (AGI / Vision)",
     "type": "Offensif",
     "effets": "Rayon du souffle +1 case."
    },
@@ -3182,21 +3386,49 @@
     "parente": null,
     "source": "Athlétisme (CON, FOR, AGI)",
     "type": "Utilitaire",
-    "effets": "Le premier déplacement du tour coûte 1 PA de moins. Second Souffle : Reprendre son Souffle efface 2 ESS. Cœur de Marathon : Souffle d'Urgence à +3 PA."
+    "effets": "Le premier déplacement du tour coûte 1 PA de moins."
+   },
+   {
+    "nom": "Second Souffle",
+    "parente": "Course d'Endurance",
+    "source": "Athlétisme (CON, FOR, AGI)",
+    "type": "Utilitaire",
+    "effets": "L'action Reprendre son Souffle efface 2 ESS au lieu d'1."
+   },
+   {
+    "nom": "Cœur de Marathon",
+    "parente": "Second Souffle",
+    "source": "Athlétisme (CON, FOR, AGI)",
+    "type": "Utilitaire",
+    "effets": "1 fois par combat, pour 1 point d'Essoufflement, tu gagnes +3 PA d'urgence au lieu de +1 (Livre I §4.2)."
    },
    {
     "nom": "Franchissement",
     "parente": null,
     "source": "Athlétisme (CON, FOR, AGI)",
     "type": "Utilitaire",
-    "effets": "Ignore le terrain difficile. Escalade Assurée franchit murets et tranchées sans surcoût. Nage de Combat : aucune épreuve en eau agitée, apnée de 2 × Constitution en tours."
+    "effets": "Ignore le surcoût du terrain difficile."
+   },
+   {
+    "nom": "Escalade Assurée",
+    "parente": "Franchissement",
+    "source": "Athlétisme (CON, FOR, AGI)",
+    "type": "Utilitaire",
+    "effets": "Franchit murets, parois praticables et tranchées sans surcoût de 2 PA/case ; +2 en Athlétisme sur les parois raides."
+   },
+   {
+    "nom": "Nage de Combat",
+    "parente": "Escalade Assurée",
+    "source": "Athlétisme (CON, FOR, AGI)",
+    "type": "Utilitaire",
+    "effets": "Aucune épreuve en eau agitée ni surcoût de 2 PA/case ; apnée doublée (2 × Constitution tours)."
    },
    {
     "nom": "Condition de Fer",
     "parente": null,
     "source": "Endurance Physique (CON, FOR)",
     "type": "Utilitaire, Défensif",
-    "effets": "Retire 1 dégât au début de votre tour si blessé et conscient."
+    "effets": "Retire 1 dégât au début de ton tour si blessé et conscient."
    },
    {
     "nom": "Dur à Cuire",
@@ -3207,7 +3439,7 @@
    },
    {
     "nom": "Mur de Chair",
-    "parente": "Condition de Fer",
+    "parente": "Dur à Cuire",
     "source": "Endurance Physique (CON, FOR)",
     "type": "Utilitaire, Défensif",
     "effets": "+2 Encaissement et +1 Armure naturelle permanente."
@@ -3217,7 +3449,7 @@
     "parente": null,
     "source": "Endurance Physique (CON, FOR)",
     "type": "Défensif",
-    "effets": "Déstabilisé réduit à -1 sur tous vos jets."
+    "effets": "Déstabilisé réduit à -1 sur tous tes jets."
    },
    {
     "nom": "Ignorer la Douleur",
@@ -3228,7 +3460,7 @@
    },
    {
     "nom": "Esprit de Granit",
-    "parente": "Trempe de Fer",
+    "parente": "Ignorer la Douleur",
     "source": "Endurance Physique (CON, FOR)",
     "type": "Défensif",
     "effets": "Le malus d'Étourdi est ignoré."
@@ -3249,14 +3481,14 @@
    },
    {
     "nom": "Poumons d'Acier",
-    "parente": "Seconde Respiration",
+    "parente": "Rechargement Anaérobie",
     "source": "Cardio (CON)",
     "type": "Utilitaire",
     "effets": "Efface 4 points et donne +1 PA immédiat."
    },
    {
     "nom": "Cœur de Berserker",
-    "parente": "Seconde Respiration",
+    "parente": "Poumons d'Acier",
     "source": "Cardio (CON)",
     "type": "Utilitaire",
     "effets": "Utilisable 2 fois par combat, immunité au Ralenti."
@@ -3266,18 +3498,18 @@
     "parente": null,
     "source": "Cardio (CON)",
     "type": "Utilitaire",
-    "effets": "Vous forcez 1 PA d'action en prenant 1 point d'essoufflement."
+    "effets": "Plafond d'Essoufflement augmenté de +1 (CON + 1) ; 1 fois par combat, génère +1 PA d'urgence sans prendre d'Essoufflement (Livre I §4.2)."
    },
    {
     "nom": "Redline Stabilisé",
     "parente": "Poussée Cardiovasculaire",
     "source": "Cardio (CON)",
     "type": "Utilitaire",
-    "effets": "Plafond d'essoufflement sans Ralenti."
+    "effets": "1 fois par combat, si tu dois prendre 1 point d'Essoufflement déjà au plafond, tu ne tombes pas À Terre ni Inconscient (tu tiens 1 point au-delà du plafond sans décrocher)."
    },
    {
     "nom": "Injection d'Adrénaline",
-    "parente": "Poussée Cardiovasculaire",
+    "parente": "Redline Stabilisé",
     "source": "Cardio (CON)",
     "type": "Utilitaire",
     "effets": "La poussée donne +2 PA au lieu de +1 par point engagé."
@@ -3298,14 +3530,14 @@
    },
    {
     "nom": "Filtrage des Gaz de Guerre",
-    "parente": "Immunité Toxique",
+    "parente": "Neutralisation des Poisons",
     "source": "Système Immunitaire (CON)",
     "type": "Défensif",
     "effets": "Immunité aux lacrymogènes et neurotoxiques."
    },
    {
     "nom": "Sang Antidote Universel",
-    "parente": "Immunité Toxique",
+    "parente": "Filtrage des Gaz de Guerre",
     "source": "Système Immunitaire (CON)",
     "type": "Défensif",
     "effets": "Immunise les alliés à moins de 2 cases contre gaz et toxines."
@@ -3326,10 +3558,10 @@
    },
    {
     "nom": "Clairvoyance du Vétéran",
-    "parente": "Sens du Danger",
+    "parente": "Premiers Réflexes",
     "source": "Intuition (INT, INS)",
     "type": "Utilitaire",
-    "effets": "Immunité totale aux embuscades et aux attaques de dos."
+    "effets": "Immunité totale à la surprise et aux embuscades : tu agis normalement dès le tour d'embuscade et gardes ta réaction libre."
    },
    {
     "nom": "Instinct du Chasseur",
@@ -3347,7 +3579,7 @@
    },
    {
     "nom": "Piégeur",
-    "parente": "Instinct du Chasseur",
+    "parente": "Pistage",
     "source": "Intuition (INT, INS)",
     "type": "Utilitaire",
     "effets": "Pose et détecte les pièges de campagne ; les proies prises sont Immobilisées."
@@ -3357,187 +3589,264 @@
     "parente": null,
     "source": "Intuition (INT, INS)",
     "type": "Utilitaire, Défensif",
-    "effets": "Immunité aux attaques de dos et embuscades dans un rayon de 3 cases."
+    "effets": "Dans un rayon de 3 cases, aucune cible Dissimulée ou Cachée ne peut t'approcher ni te frapper par surprise (détection automatique sans dépenser 1 PA d'Observation active, Livre V §21.4)."
    },
    {
     "nom": "Écho Myotatique",
     "parente": "Sphère de Résonance",
     "source": "Intuition (INT, INS)",
     "type": "Utilitaire, Défensif",
-    "effets": "Ajuste votre mise de +1 PA en défense au Face-à-Face."
+    "effets": "Ajuste ta mise de +1 PA en défense au Face-à-Face."
    },
    {
     "nom": "Champ Prédictif",
-    "parente": "Sphère de Résonance",
+    "parente": "Écho Myotatique",
     "source": "Intuition (INT, INS)",
     "type": "Utilitaire, Défensif",
     "effets": "Anticipe la zone visée : +2 en esquive."
    },
    {
     "nom": "Omniprésence Synaptique",
-    "parente": "Sphère de Résonance",
+    "parente": "Champ Prédictif",
     "source": "Intuition (INT, INS)",
     "type": "Utilitaire, Défensif",
-    "effets": "Révèle les mises de PA et PE adverses avant votre défense."
+    "effets": "Révèle les mises de PA et PE adverses avant ta défense."
    },
    {
     "nom": "Affûtage de Précision",
     "parente": null,
-    "source": "Artisanat (SAG, INT)",
+    "source": "Artisanat (INS, INT)",
     "type": "Utilitaire",
     "effets": "+1 dégât aux 3 prochaines attaques réussies avec l'arme affûtée."
    },
    {
     "nom": "Fil Monomoléculaire",
     "parente": "Affûtage de Précision",
-    "source": "Artisanat (SAG, INT)",
+    "source": "Artisanat (INS, INT)",
     "type": "Utilitaire",
     "effets": "+2 dégâts permanents aux armes blanches."
    },
    {
     "nom": "Blindage Trempé",
-    "parente": "Affûtage de Précision",
-    "source": "Artisanat (SAG, INT)",
+    "parente": "Fil Monomoléculaire",
+    "source": "Artisanat (INS, INT)",
     "type": "Utilitaire",
     "effets": "+1 absorption permanente aux armures métalliques."
    },
    {
-    "nom": "Acier de Maître d'Hybris",
-    "parente": "Affûtage de Précision",
-    "source": "Artisanat (SAG, INT)",
+    "nom": "Acier de Maître",
+    "parente": "Blindage Trempé",
+    "source": "Artisanat (INS, INT)",
     "type": "Utilitaire",
-    "effets": "L'arme ne s'émousse jamais ; critique dès 11 ou 12 au dé."
+    "effets": "L'arme ne s'émousse jamais ; critique déclenché dès max − 1 sur le dé (ex. 5–6 sur 1d6, 11–12 sur 1d12)."
+   },
+   {
+    "nom": "Fabriquer",
+    "parente": null,
+    "source": "Artisanat (INS, INT)",
+    "type": "Utilitaire",
+    "effets": "+2 en Artisanat pour concevoir, assembler ou réparer un objet courant ou un équipement Détruit en atelier avec pièces de rechange (Livre VI §24.5)."
+   },
+   {
+    "nom": "Forger",
+    "parente": null,
+    "source": "Artisanat (INS, INT)",
+    "type": "Utilitaire",
+    "effets": "+2 en Artisanat pour forger, tremper ou réparer armes et armures métalliques en forge (se cumule avec le don Nain)."
+   },
+   {
+    "nom": "Sculpter",
+    "parente": null,
+    "source": "Artisanat (INS, INT)",
+    "type": "Utilitaire",
+    "effets": "+2 en Artisanat pour tailler pierre, bois, os ou métal fin (sceaux, gravures, moules et pièces de précision)."
+   },
+   {
+    "nom": "Enseigner",
+    "parente": null,
+    "source": "Artisanat (INS, INT)",
+    "type": "Utilitaire",
+    "effets": "+2 en Artisanat pour transmettre un savoir ou encadrer l'entraînement d'un compagnon entre deux aventures."
    },
    {
     "nom": "Vigilance Réflexe",
     "parente": null,
-    "source": "Observation (VUE, INS)",
+    "source": "Observation (Vision, Ouïe)",
     "type": "Utilitaire, Défensif",
     "effets": "Immunise contre l'effet de surprise, réaction défensive conservée en embuscade."
    },
    {
     "nom": "Œil de Lynx",
     "parente": "Vigilance Réflexe",
-    "source": "Observation (VUE, INS)",
+    "source": "Observation (Vision, Ouïe)",
     "type": "Utilitaire, Défensif",
     "effets": "+2 aux duels de détection du brouillard (Livre V §21.4)."
    },
    {
     "nom": "Détection Thermique",
-    "parente": "Vigilance Réflexe",
-    "source": "Observation (VUE, INS)",
+    "parente": "Œil de Lynx",
+    "source": "Observation (Vision, Ouïe)",
     "type": "Utilitaire, Défensif",
     "effets": "+2 au duel, révèle les unités camouflées et invisibles à travers les parois légères."
    },
    {
     "nom": "Perception Panoramique 360°",
-    "parente": "Vigilance Réflexe",
-    "source": "Observation (VUE, INS)",
+    "parente": "Détection Thermique",
+    "source": "Observation (Vision, Ouïe)",
     "type": "Utilitaire, Défensif",
-    "effets": "Immunité aux embuscades, bonus de surprise permanent (le combat voit à 360°)."
+    "effets": "Immunité aux embuscades et +2 en Observation active contre les cibles Cachées ou en couvert ; ignore les malus liés aux attaques multiples ou à l'encerclement."
+   },
+   {
+    "nom": "Perception des bruits lointains",
+    "parente": null,
+    "source": "Écoute (Ouïe)",
+    "type": "Utilitaire",
+    "effets": "+2 en Écoute pour repérer pas, voix ou mouvements à longue distance et à travers portes ou cloisons."
+   },
+   {
+    "nom": "Écho acoustique",
+    "parente": null,
+    "source": "Écoute (Ouïe)",
+    "type": "Utilitaire",
+    "effets": "+2 en Écoute en obscurité, fumée ou brouillard pour estimer le nombre, la direction et la distance approximative d'individus en mouvement."
+   },
+   {
+    "nom": "Auscultation",
+    "parente": null,
+    "source": "Écoute (Ouïe)",
+    "type": "Utilitaire",
+    "effets": "+2 en Écoute pour diagnostiquer un battement, une respiration, un mécanisme caché (serrure, horlogerie) ou une cavité derrière un mur."
+   },
+   {
+    "nom": "Traque",
+    "parente": null,
+    "source": "Nature & Survie (INS, INT)",
+    "type": "Utilitaire",
+    "effets": "+2 en Nature & Survie pour repérer et remonter une piste fraîche ou ancienne en milieu sauvage et estimer l'allure de la proie."
+   },
+   {
+    "nom": "Orientation",
+    "parente": null,
+    "source": "Nature & Survie (INS, INT)",
+    "type": "Utilitaire",
+    "effets": "+2 en Nature & Survie pour s'orienter sans carte ni boussole, lire la météo proche et éviter de s'égarer en milieu hostile ou souterrain."
+   },
+   {
+    "nom": "Botanique sauvage",
+    "parente": null,
+    "source": "Nature & Survie (INS, INT)",
+    "type": "Utilitaire",
+    "effets": "+2 en Nature & Survie pour identifier plantes comestibles, toxiques ou médicinales et préparer des cataplasmes de fortune."
+   },
+   {
+    "nom": "Construction d'abris",
+    "parente": null,
+    "source": "Nature & Survie (INS, INT)",
+    "type": "Utilitaire",
+    "effets": "+2 en Nature & Survie pour monter un bivouac sûr ; réduit d'1 cran la pénalité de climat léger au campement (Livre II §8.1)."
    },
    {
     "nom": "Pistolet & Tir Rapide",
     "parente": null,
-    "source": "Ballistique (AGI)",
+    "source": "Ballistique (AGI / Vision)",
     "type": "Offensif",
-    "effets": "Sur réussite nette : la cible est Ralentie pour 1 tour. Sur 5 ou 6 au dé : la cible tombe au sol."
+    "effets": "Sur réussite nette (Delta ≥ 1) : la cible est Ralentie pour 1 tour. Sur Delta ≥ 3 (ou critique) : la cible tombe À Terre."
    },
    {
     "nom": "Dégainé Réflexe",
     "parente": "Pistolet & Tir Rapide",
-    "source": "Ballistique (AGI)",
+    "source": "Ballistique (AGI / Vision)",
     "type": "Offensif",
-    "effets": "Votre premier tir du tour coûte 1 PA de moins."
+    "effets": "Ton premier tir du tour coûte 1 PA de moins."
    },
    {
     "nom": "Akimbo Assaut",
-    "parente": "Pistolet & Tir Rapide",
-    "source": "Ballistique (AGI)",
+    "parente": "Dégainé Réflexe",
+    "source": "Ballistique (AGI / Vision)",
     "type": "Offensif",
     "effets": "Deux pistolets sur la même cible pour 3 PA."
    },
    {
     "nom": "Trait d'Orichalque",
-    "parente": "Pistolet & Tir Rapide",
-    "source": "Ballistique (AGI)",
+    "parente": "Akimbo Assaut",
+    "source": "Ballistique (AGI / Vision)",
     "type": "Offensif",
     "effets": "Ignore le couvert partiel, transperce 2 cibles alignées."
    },
    {
     "nom": "Balle dans le Genou",
     "parente": "Pistolet & Tir Rapide",
-    "source": "Ballistique (AGI)",
+    "source": "Ballistique (AGI / Vision)",
     "type": "Offensif",
     "effets": "Visée Jambes sans malus, Ralenti garanti."
    },
    {
     "nom": "Tir de Neutralisation",
-    "parente": "Pistolet & Tir Rapide",
-    "source": "Ballistique (AGI)",
+    "parente": "Balle dans le Genou",
+    "source": "Ballistique (AGI / Vision)",
     "type": "Offensif",
     "effets": "Visée Bras Droit, désarme sur Delta ≥ 1."
    },
    {
     "nom": "Roulade de Décrochage",
     "parente": null,
-    "source": "Esquive (AGI)",
+    "source": "Esquive (AGI, RAP ou INS)",
     "type": "Défensif",
     "effets": "Sur esquive réussie (Delta ≥ 2) : 1 case de recul gratuit."
    },
    {
     "nom": "Reprise d'Appui",
     "parente": "Roulade de Décrochage",
-    "source": "Esquive (AGI)",
+    "source": "Esquive (AGI, RAP ou INS)",
     "type": "Défensif",
     "effets": "+1 PA de réserve au tour suivant après une esquive parfaite."
    },
    {
     "nom": "Ombre Évasive",
-    "parente": "Roulade de Décrochage",
-    "source": "Esquive (AGI)",
+    "parente": "Reprise d'Appui",
+    "source": "Esquive (AGI, RAP ou INS)",
     "type": "Défensif",
-    "effets": "On ne peut plus vous cibler jusqu'à votre prochain tour."
+    "effets": "On ne peut plus te cibler jusqu'à ton prochain tour."
    },
    {
     "nom": "Pas Déphasé",
-    "parente": "Roulade de Décrochage",
-    "source": "Esquive (AGI)",
+    "parente": "Ombre Évasive",
+    "source": "Esquive (AGI, RAP ou INS)",
     "type": "Défensif",
     "effets": "Téléportation de 2 cases sur esquive réussie."
    },
    {
     "nom": "Esquive Réactive",
     "parente": "Roulade de Décrochage",
-    "source": "Esquive (AGI)",
+    "source": "Esquive (AGI, RAP ou INS)",
     "type": "Défensif",
-    "effets": "Le Ralenti ne double plus votre coût d'esquive."
+    "effets": "Le Ralenti ne double plus ton coût d'esquive."
    },
    {
     "nom": "Contre-Poussée",
-    "parente": "Roulade de Décrochage",
-    "source": "Esquive (AGI)",
+    "parente": "Esquive Réactive",
+    "source": "Esquive (AGI, RAP ou INS)",
     "type": "Défensif",
     "effets": "Repousse l'assaillant d'1 case après une esquive au contact."
    },
    {
     "nom": "Acrobatie d'Évitement",
     "parente": null,
-    "source": "Esquive (AGI)",
+    "source": "Esquive (AGI, RAP ou INS)",
     "type": "Défensif",
     "effets": "Voltige : tranchées et demi-couverts sans PA."
    },
    {
     "nom": "Saut Périlleux",
     "parente": "Acrobatie d'Évitement",
-    "source": "Esquive (AGI)",
+    "source": "Esquive (AGI, RAP ou INS)",
     "type": "Défensif",
     "effets": "Barricades et mi-hauteurs sans coût de mouvement."
    },
    {
     "nom": "Vrille Balistique",
-    "parente": "Acrobatie d'Évitement",
-    "source": "Esquive (AGI)",
+    "parente": "Saut Périlleux",
+    "source": "Esquive (AGI, RAP ou INS)",
     "type": "Défensif",
     "effets": "+2 en esquive contre fusils et grenades."
    },
@@ -3563,9 +3872,86 @@
     "effets": "+2 en Discrétion en pénombre, nuit ou fumée ; Se cacher te coûte 1 PA au lieu de 2 PA dans ces conditions (Livre V §21.4)."
    },
    {
+    "nom": "Saut acrobatique",
+    "parente": null,
+    "source": "Acrobatie (AGI, RAP)",
+    "type": "Utilitaire, Défensif",
+    "effets": "+2 en Acrobatie pour franchir un gouffre, un mur bas ou un obstacle ; saute un obstacle bas sans surcoût de PA."
+   },
+   {
+    "nom": "Équilibre",
+    "parente": null,
+    "source": "Acrobatie (AGI, RAP)",
+    "type": "Utilitaire, Défensif",
+    "effets": "+2 en Acrobatie sur surface étroite, glissante ou instable (poutre, toit, glace, pont de navire) ; ignore la pénalité de terrain glissant pour rester debout."
+   },
+   {
+    "nom": "Se balancer",
+    "parente": null,
+    "source": "Acrobatie (AGI, RAP)",
+    "type": "Utilitaire, Défensif",
+    "effets": "+2 en Acrobatie pour utiliser cordes, câbles, lianes ou agrès et franchir un vide au coût normal de déplacement."
+   },
+   {
+    "nom": "Chute contrôlée",
+    "parente": null,
+    "source": "Acrobatie (AGI, RAP)",
+    "type": "Utilitaire, Défensif",
+    "effets": "Sur épreuve d'Acrobatie réussie, réduit les dégâts de chute (H − 2, Livre II §8.2) de 2 points avant Encaissement et assure une réception debout."
+   },
+   {
+    "nom": "Véhicules terrestres",
+    "parente": null,
+    "source": "Conduite & Pilotage (AGI, RAP)",
+    "type": "Utilitaire",
+    "effets": "+2 en Conduite & Pilotage sur véhicules routiers, blindés ou tout-terrain ; manœuvres brusques sans perte de contrôle en terrain difficile."
+   },
+   {
+    "nom": "Pods arcaniques",
+    "parente": null,
+    "source": "Conduite & Pilotage (AGI, RAP)",
+    "type": "Utilitaire",
+    "effets": "+2 en Conduite & Pilotage sur pods et nacelles arcaniques ; esquive de tirs et freinage d'urgence en zone encombrée."
+   },
+   {
+    "nom": "Vaisseaux",
+    "parente": null,
+    "source": "Conduite & Pilotage (AGI, RAP)",
+    "type": "Utilitaire",
+    "effets": "+2 en Conduite & Pilotage pour manœuvres spatiales, appontages et navigation en champ d'astéroïdes ou sous feu nourri."
+   },
+   {
+    "nom": "Montures",
+    "parente": null,
+    "source": "Conduite & Pilotage (AGI, RAP)",
+    "type": "Utilitaire",
+    "effets": "+2 en Conduite & Pilotage à dos de monture (chevaux, bêtes de bât ou de guerre) ; agit en selle sans malus de stabilité."
+   },
+   {
+    "nom": "Crochetage mécanique",
+    "parente": null,
+    "source": "Subterfuge Manuel (AGI, INT)",
+    "type": "Utilitaire",
+    "effets": "+2 en Subterfuge Manuel pour ouvrir serrures, cadenas, coffres et menottes mécaniques sans les briser."
+   },
+   {
+    "nom": "Vol à la tire",
+    "parente": null,
+    "source": "Subterfuge Manuel (AGI, INT)",
+    "type": "Utilitaire",
+    "effets": "+2 en Subterfuge Manuel en Face-à-Face contre Observation pour subtiliser ou glisser un petit objet à l'insu d'une cible."
+   },
+   {
+    "nom": "Sabotage",
+    "parente": null,
+    "source": "Subterfuge Manuel (AGI, INT)",
+    "type": "Utilitaire",
+    "effets": "+2 en Subterfuge Manuel pour désamorcer un piège, enrayer un mécanisme ou neutraliser discrètement un appareil."
+   },
+   {
     "nom": "Armes Lourdes (Canons)",
     "parente": null,
-    "source": "Ballistique / Tir",
+    "source": "Ballistique (AGI / Vision)",
     "type": "Offensif",
     "effets": "Armement de gros calibre : confère +100 dégâts de masse contre les structures, fortifications et blindages de véhicules."
    },
@@ -3585,14 +3971,14 @@
    },
    {
     "nom": "Fleuret Éclair",
-    "parente": "Escrime / Rapière",
+    "parente": "Riposte à l'Estoc",
     "source": "Armes Perçantes (AGI)",
     "type": "Offensif, Défensif",
     "effets": "+2 en initiative réflexe, 1 parade gratuite par tour."
    },
    {
     "nom": "Frappe Fantôme",
-    "parente": "Escrime / Rapière",
+    "parente": "Fleuret Éclair",
     "source": "Armes Perçantes (AGI)",
     "type": "Offensif, Défensif",
     "effets": "Ignore la défense active si la cible a déjà dépensé des PA."
@@ -3606,7 +3992,7 @@
    },
    {
     "nom": "Entaille Précise",
-    "parente": "Escrime / Rapière",
+    "parente": "Désarmement Fleuret",
     "source": "Armes Perçantes (AGI)",
     "type": "Offensif, Défensif",
     "effets": "-2 aux attaques de la cible pendant 2 tours."
@@ -3616,7 +4002,7 @@
     "parente": null,
     "source": "Armes Perçantes (AGI)",
     "type": "Offensif",
-    "effets": "Gorge et carotides : sur Delta ≥ 3, Saignement (résiduels = vos entraînements)."
+    "effets": "Gorge et carotides : sur Delta ≥ 3, Saignement (résiduels = tes entraînements)."
    },
    {
     "nom": "Hémorragie Profonde",
@@ -3627,14 +4013,14 @@
    },
    {
     "nom": "Asphyxie Sanguine",
-    "parente": "Frappe Jugulaire",
+    "parente": "Hémorragie Profonde",
     "source": "Armes Perçantes (AGI)",
     "type": "Offensif",
     "effets": "Ajoute Asphyxie (drain 1 PA/tour)."
    },
    {
     "nom": "Tranche-Artère Silencieux",
-    "parente": "Frappe Jugulaire",
+    "parente": "Asphyxie Sanguine",
     "source": "Armes Perçantes (AGI)",
     "type": "Offensif",
     "effets": "Dégâts nets au-delà de l'Encaissement = mort instantanée, sans bruit."
@@ -3644,25 +4030,25 @@
     "parente": null,
     "source": "Mains Nues (FOR, AGI)",
     "type": "Offensif, Défensif",
-    "effets": "Vous parez sans malus, immunité Canon Entravé. Sur choc traumatique ou Delta ≥ 4 : refoulement d'1 case."
+    "effets": "Tu pares sans malus, immunité Canon Entravé. Sur choc traumatique ou Delta ≥ 4 : refoulement d'1 case."
    },
    {
     "nom": "Enchaînement Fluide",
     "parente": "Arts Martiaux",
     "source": "Mains Nues (FOR, AGI)",
     "type": "Offensif, Défensif",
-    "effets": "Votre 2e attaque du tour coûte 1 PA de moins."
+    "effets": "Ta 2e attaque du tour coûte 1 PA de moins."
    },
    {
     "nom": "Frappe Téléportée",
-    "parente": "Arts Martiaux",
+    "parente": "Enchaînement Fluide",
     "source": "Mains Nues (FOR, AGI)",
     "type": "Offensif, Défensif",
     "effets": "1 case gratuite vers l'ennemi avant la frappe (si 2+ PA)."
    },
    {
     "nom": "Déphasage Cinétique",
-    "parente": "Arts Martiaux",
+    "parente": "Frappe Téléportée",
     "source": "Mains Nues (FOR, AGI)",
     "type": "Offensif, Défensif",
     "effets": "Sur critique, ignore parade et contre-attaques."
@@ -3676,14 +4062,14 @@
    },
    {
     "nom": "Brise-Blindage",
-    "parente": "Arts Martiaux",
+    "parente": "Onde Tellurique",
     "source": "Mains Nues (FOR, AGI)",
     "type": "Offensif, Défensif",
-    "effets": "Vos frappes ignorent 2 d'armure."
+    "effets": "Tes frappes ignorent 2 d'armure."
    },
    {
-    "nom": "Paume de Brum'korath",
-    "parente": "Arts Martiaux",
+    "nom": "Paume Brise-Roc",
+    "parente": "Brise-Blindage",
     "source": "Mains Nues (FOR, AGI)",
     "type": "Offensif, Défensif",
     "effets": "Sur critique, choc traumatique + projette de 3 cases."
@@ -3697,14 +4083,14 @@
    },
    {
     "nom": "Clé d'Articulation",
-    "parente": "Arts Martiaux",
+    "parente": "Balayage Rotatif",
     "source": "Mains Nues (FOR, AGI)",
     "type": "Offensif, Défensif",
     "effets": "Au contact, Immobilisé + 3 dégâts sans armure."
    },
    {
     "nom": "Rupture Ligamentaire",
-    "parente": "Arts Martiaux",
+    "parente": "Clé d'Articulation",
     "source": "Mains Nues (FOR, AGI)",
     "type": "Offensif, Défensif",
     "effets": "Paralysé 1 tour si la cible est Déstabilisée."
@@ -3725,10 +4111,52 @@
    },
    {
     "nom": "Cœur d'Adamas",
-    "parente": "Perforation de Silicate",
+    "parente": "Fracture Sismique",
     "source": "Mains Nues (FOR, AGI)",
     "type": "Offensif",
     "effets": "Ignore 4, Sonné sur Delta ≥ 2."
+   },
+   {
+    "nom": "Histoire des mondes",
+    "parente": null,
+    "source": "Académie (INT)",
+    "type": "Utilitaire",
+    "effets": "+2 en Académie pour reconnaître époques, lignées, guerres, reliques et institutions des Élias."
+   },
+   {
+    "nom": "Linguistique",
+    "parente": null,
+    "source": "Académie (INT)",
+    "type": "Utilitaire",
+    "effets": "+2 en Académie pour déchiffrer écritures anciennes, dialectes, codes chiffrés et argots étrangers."
+   },
+   {
+    "nom": "Économie impériale",
+    "parente": null,
+    "source": "Académie (INT)",
+    "type": "Utilitaire",
+    "effets": "+2 en Académie pour évaluer la juste valeur d'un bien, repérer une fraude ou comprendre les routes commerciales et guildes."
+   },
+   {
+    "nom": "Stabilisation d'urgence",
+    "parente": null,
+    "source": "Premiers Soins (INS)",
+    "type": "Utilitaire",
+    "effets": "+2 en Premiers Soins (Difficulté 6, Livre VI §25.1) pour stabiliser un allié Agonisant ; utilisable même avec du matériel improvisé."
+   },
+   {
+    "nom": "Pose de garrot",
+    "parente": null,
+    "source": "Premiers Soins (INS)",
+    "type": "Utilitaire",
+    "effets": "+2 en Premiers Soins pour stopper un Saignement actif ; réduit un Saignement d'1 cran supplémentaire sur réussite."
+   },
+   {
+    "nom": "Soins de terrain",
+    "parente": null,
+    "source": "Premiers Soins (INS)",
+    "type": "Utilitaire",
+    "effets": "+2 en Premiers Soins pour lever l'état Souffrant, nettoyer une plaie ou dégager des voies respiratoires (Asphyxie) en conditions précaires."
    },
    {
     "nom": "Chirurgie",
@@ -3742,18 +4170,18 @@
     "parente": "Chirurgie",
     "source": "Médecine Avancée (INT, INS)",
     "type": "Utilitaire",
-    "effets": "Vous lisez dégâts subis, seuils et armure exacts d'une unité examinée."
+    "effets": "Tu lis dégâts subis, seuils et armure exacts d'une unité examinée."
    },
    {
     "nom": "Suture Réflexe",
-    "parente": "Chirurgie",
+    "parente": "Diagnostic Vital",
     "source": "Médecine Avancée (INT, INS)",
     "type": "Utilitaire",
     "effets": "Les premiers soins d'urgence passent de 3 à 2 PA."
    },
    {
     "nom": "Greffe d'Urgence",
-    "parente": "Chirurgie",
+    "parente": "Suture Réflexe",
     "source": "Médecine Avancée (INT, INS)",
     "type": "Utilitaire",
     "effets": "Restaure un membre détruit ou amputé en plein combat."
@@ -3763,7 +4191,7 @@
     "parente": null,
     "source": "Médecine Avancée (INT, INS)",
     "type": "Utilitaire",
-    "effets": "Vous composez des stimulants (Antidouleurs, Speed) sans laboratoire."
+    "effets": "Tu composes des stimulants (Antidouleurs, Speed) sans laboratoire."
    },
    {
     "nom": "Stimulant Neuro-Accélérateur",
@@ -3774,14 +4202,14 @@
    },
    {
     "nom": "Sérum Antidote",
-    "parente": "Apothicaire de Guerre",
+    "parente": "Stimulant Neuro-Accélérateur",
     "source": "Médecine Avancée (INT, INS)",
     "type": "Utilitaire",
     "effets": "Purge toutes les altérations biologiques d'un allié au contact."
    },
    {
     "nom": "Cocktail Panacée",
-    "parente": "Apothicaire de Guerre",
+    "parente": "Sérum Antidote",
     "source": "Médecine Avancée (INT, INS)",
     "type": "Utilitaire",
     "effets": "Soigne 15 dégâts et immunise contre tous les états pendant 3 tours."
@@ -3802,14 +4230,14 @@
    },
    {
     "nom": "Décharge Harmonique",
-    "parente": "Surfréquence Nytharite",
+    "parente": "Stabilisateur de Flux",
     "source": "Ingénierie & Arcanotech (INT, AGI)",
     "type": "Utilitaire",
-    "effets": "+3 dégâts d'énergie pure à toutes vos attaques du tour."
+    "effets": "+3 dégâts d'énergie pure à toutes tes attaques du tour."
    },
    {
     "nom": "Résonance Infinie",
-    "parente": "Surfréquence Nytharite",
+    "parente": "Décharge Harmonique",
     "source": "Ingénierie & Arcanotech (INT, AGI)",
     "type": "Utilitaire",
     "effets": "Surfréquence maintenue 3 tours sans recharge."
@@ -3819,7 +4247,7 @@
     "parente": null,
     "source": "Penser / Stratégie (INT)",
     "type": "Utilitaire, Défensif",
-    "effets": "2 PA : votre prochain coup (ou celui d'un allié) ignore l'encaissement adverse."
+    "effets": "2 PA : ton prochain coup (ou celui d'un allié) contre cette cible ignore son armure."
    },
    {
     "nom": "Tir Coordonné",
@@ -3830,14 +4258,14 @@
    },
    {
     "nom": "Prédiction de Retraite",
-    "parente": "Analyse de Faille",
+    "parente": "Tir Coordonné",
     "source": "Penser / Stratégie (INT)",
     "type": "Utilitaire, Défensif",
     "effets": "La cible ne profite d'aucun couvert à son prochain tour."
    },
    {
     "nom": "Échec et Mat",
-    "parente": "Analyse de Faille",
+    "parente": "Prédiction de Retraite",
     "source": "Penser / Stratégie (INT)",
     "type": "Utilitaire, Défensif",
     "effets": "Toute attaque réussie contre la cible analysée devient un critique."
@@ -3847,54 +4275,54 @@
     "parente": null,
     "source": "Communication (CHA, INT)",
     "type": "Social",
-    "effets": "Dupez un adversaire ou un PNJ par une épreuve sociale opposée à son Intuition/Instinct."
+    "effets": "Dupe un adversaire ou un PNJ par une épreuve sociale opposée à son Intuition/Instinct."
    },
    {
     "nom": "Feinte Oratoire",
     "parente": "Tromper",
     "source": "Communication (CHA, INT)",
     "type": "Social",
-    "effets": "1 PA : un ennemi tourne le dos jusqu'au tour suivant."
+    "effets": "1 PA : Face-à-Face Communication contre Intuition ; sur réussite, la cible est distraite et subit −2 à sa prochaine défense avant ton prochain tour."
    },
    {
     "nom": "Faux Signalement",
-    "parente": "Tromper",
+    "parente": "Feinte Oratoire",
     "source": "Communication (CHA, INT)",
     "type": "Social",
     "effets": "Disperse les renforts ennemis hors du champ de bataille."
    },
    {
     "nom": "Mascarade Totale",
-    "parente": "Tromper",
+    "parente": "Faux Signalement",
     "source": "Communication (CHA, INT)",
     "type": "Social",
-    "effets": "Traversez les zones ennemies sans hostilité."
+    "effets": "Traverse les zones ennemies sans hostilité."
    },
    {
     "nom": "Négocier",
     "parente": null,
-    "source": "Communication (CHA)",
+    "source": "Communication (CHA, INT)",
     "type": "Social",
     "effets": "Réduit de 10 % à 50 % le prix des équipements."
    },
    {
     "nom": "Marché Noir Impérial",
     "parente": "Négocier",
-    "source": "Communication (CHA)",
+    "source": "Communication (CHA, INT)",
     "type": "Social",
     "effets": "Achète prototypes et rareté Légendaire."
    },
    {
     "nom": "Cessez-le-Feu",
-    "parente": "Négocier",
-    "source": "Communication (CHA)",
+    "parente": "Marché Noir Impérial",
+    "source": "Communication (CHA, INT)",
     "type": "Social",
     "effets": "Suspend les attaques ennemies pendant 1 tour pour parlementer."
    },
    {
     "nom": "Rachat d'Allégeance",
-    "parente": "Négocier",
-    "source": "Communication (CHA)",
+    "parente": "Cessez-le-Feu",
+    "source": "Communication (CHA, INT)",
     "type": "Social",
     "effets": "Convertit un sbire ennemi en allié pour le combat."
    },
@@ -3914,22 +4342,22 @@
    },
    {
     "nom": "Regard de Prédateur",
-    "parente": "Intimider",
+    "parente": "Rugissement de Terreur",
     "source": "Intimidation (CHA, FOR)",
     "type": "Social, Offensif",
-    "effets": "La cible ne peut attaquer que vous."
+    "effets": "La cible ne peut attaquer que toi."
    },
    {
     "nom": "Paralysie Psychologique",
-    "parente": "Intimider",
+    "parente": "Regard de Prédateur",
     "source": "Intimidation (CHA, FOR)",
     "type": "Social, Offensif",
-    "effets": "Paralysé 1 tour si la Volonté de la cible est sous votre Charisme."
+    "effets": "La cible est Paralysée 1 tour sur Delta ≥ 3 (ou si son Instinct (INS) est inférieur à ton Charisme)."
    },
    {
     "nom": "Charmer",
     "parente": null,
-    "source": "Communication (CHA)",
+    "source": "Communication (CHA, INT)",
     "type": "Social",
     "effets": "Gagne la confiance immédiate d'un PNJ non hostile. Accorde un avantage de +1 EC sur les interactions sociales ultérieures."
    },
@@ -3949,14 +4377,14 @@
    },
    {
     "nom": "Tenir la Ligne !",
-    "parente": "Mener (Commandement)",
+    "parente": "En avant !",
     "source": "Leadership (CHA, INT)",
     "type": "Social, Utilitaire",
     "effets": "+3 à l'encaissement des alliés proches pendant 1 tour."
    },
    {
     "nom": "Galvanisation des Héros",
-    "parente": "Mener (Commandement)",
+    "parente": "Tenir la Ligne !",
     "source": "Leadership (CHA, INT)",
     "type": "Social, Utilitaire",
     "effets": "+2 PA à toute l'escouade et purge des altérations mentales."
@@ -3968,28 +4396,28 @@
     "parente": null,
     "source": "Maniement d'Arme (FOR, AGI)",
     "type": "Offensif, Défensif",
-    "effets": "Vous parez sans malus et vous contre-attaquez en réaction."
+    "effets": "Tu pares sans malus et tu contre-attaques en réaction."
    },
    "Riposte Éclair": {
     "nom": "Riposte Éclair",
     "parente": "Maniement de l'Épée",
     "source": "Maniement d'Arme (FOR, AGI)",
     "type": "Offensif, Défensif",
-    "effets": "Votre riposte ne prend aucun malus."
+    "effets": "Ta riposte ne prend aucun malus."
    },
    "Tranchant Tempétueux": {
     "nom": "Tranchant Tempétueux",
-    "parente": "Maniement de l'Épée",
+    "parente": "Riposte Éclair",
     "source": "Maniement d'Arme (FOR, AGI)",
     "type": "Offensif, Défensif",
-    "effets": "+2 dégâts sur vos ripostes réussies."
+    "effets": "+2 dégâts sur tes ripostes réussies."
    },
    "Lame de Ligne Temporelle Zéro": {
     "nom": "Lame de Ligne Temporelle Zéro",
-    "parente": "Maniement de l'Épée",
+    "parente": "Tranchant Tempétueux",
     "source": "Maniement d'Arme (FOR, AGI)",
     "type": "Offensif, Défensif",
-    "effets": "Sur critique en parade, vous annulez l'attaque et renvoyez tous les dégâts."
+    "effets": "Sur critique en parade, tu annules l'attaque et renvoies tous les dégâts."
    },
    "Garde Haute Impériale": {
     "nom": "Garde Haute Impériale",
@@ -4000,24 +4428,24 @@
    },
    "Lame Miroir": {
     "nom": "Lame Miroir",
-    "parente": "Maniement de l'Épée",
+    "parente": "Garde Haute Impériale",
     "source": "Maniement d'Arme (FOR, AGI)",
     "type": "Offensif, Défensif",
-    "effets": "Vous parez les tirs laser au contact (Delta ≥ 0)."
+    "effets": "Tu pares les tirs laser au contact (Delta ≥ 0)."
    },
    "Dôme de Parade": {
     "nom": "Dôme de Parade",
-    "parente": "Maniement de l'Épée",
+    "parente": "Lame Miroir",
     "source": "Maniement d'Arme (FOR, AGI)",
     "type": "Offensif, Défensif",
-    "effets": "Vous parez pour un allié adjacent."
+    "effets": "Tu pares pour un allié adjacent."
    },
    "Armes Contondantes": {
     "nom": "Armes Contondantes",
     "parente": null,
     "source": "Maniement d'Arme (FOR, AGI)",
     "type": "Offensif, Défensif",
-    "effets": "Maîtrise du choc (Marteau, Masse, Gourdin, Fléau) : vous parez sans malus."
+    "effets": "Maîtrise du choc (Marteau, Masse, Gourdin, Fléau) : tu pares sans malus."
    },
    "Marteau de Guerre": {
     "nom": "Marteau de Guerre",
@@ -4028,35 +4456,35 @@
    },
    "Écrasement Osseux": {
     "nom": "Écrasement Osseux",
-    "parente": "Armes Contondantes",
+    "parente": "Marteau de Guerre",
     "source": "Maniement d'Arme (FOR, AGI)",
     "type": "Offensif",
     "effets": "+3 dégâts contre armure lourde."
    },
    "Brise-Crâne": {
     "nom": "Brise-Crâne",
-    "parente": "Armes Contondantes",
+    "parente": "Écrasement Osseux",
     "source": "Maniement d'Arme (FOR, AGI)",
     "type": "Offensif",
     "effets": "Visée Tête sans malus, applique Sonné et Étourdi."
    },
    "Cataclysme de Fer": {
     "nom": "Cataclysme de Fer",
-    "parente": "Armes Contondantes",
+    "parente": "Brise-Crâne",
     "source": "Maniement d'Arme (FOR, AGI)",
     "type": "Offensif",
     "effets": "+5 dégâts, onde qui renverse les unités adjacentes."
    },
    "Onde de Faille": {
     "nom": "Onde de Faille",
-    "parente": "Armes Contondantes",
+    "parente": "Marteau de Guerre",
     "source": "Maniement d'Arme (FOR, AGI)",
     "type": "Offensif",
     "effets": "Zone de terrain difficile sur 2 cases."
    },
    "Onde Sismique Réverbérante": {
     "nom": "Onde Sismique Réverbérante",
-    "parente": "Armes Contondantes",
+    "parente": "Onde de Faille",
     "source": "Maniement d'Arme (FOR, AGI)",
     "type": "Offensif",
     "effets": "Déstabilisé dans un rayon de 2 cases."
@@ -4077,14 +4505,14 @@
    },
    "Brise-Garde": {
     "nom": "Brise-Garde",
-    "parente": "Hache de Guerre",
+    "parente": "Fente du Bûcheron",
     "source": "Maniement d'Arme (FOR, AGI)",
     "type": "Offensif, Défensif",
     "effets": "+4 dégâts, À Terre sur Delta ≥ 2."
    },
    "Exécution du Bourreau": {
     "nom": "Exécution du Bourreau",
-    "parente": "Hache de Guerre",
+    "parente": "Brise-Garde",
     "source": "Maniement d'Arme (FOR, AGI)",
     "type": "Offensif, Défensif",
     "effets": "+5 dégâts, dégâts convertis en Absolus sur critique."
@@ -4098,7 +4526,7 @@
    },
    "Arrache-Bouclier": {
     "nom": "Arrache-Bouclier",
-    "parente": "Hache de Guerre",
+    "parente": "Croc de Désarmement",
     "source": "Maniement d'Arme (FOR, AGI)",
     "type": "Offensif, Défensif",
     "effets": "Une parade adverse limite (-1 ou 0) devient une touche franche."
@@ -4119,24 +4547,24 @@
    },
    "Transpercement Traversant": {
     "nom": "Transpercement Traversant",
-    "parente": "Fente de Rupture",
+    "parente": "Pointe Chirurgicale",
     "source": "Maniement d'Arme (FOR, AGI)",
     "type": "Offensif",
     "effets": "Ignore 4 points d'armure et blesse aussi l'ennemi juste derrière."
    },
-   "Fissure Causal": {
-    "nom": "Fissure Causal",
-    "parente": "Fente de Rupture",
+   "Fissure Causale": {
+    "nom": "Fissure Causale",
+    "parente": "Transpercement Traversant",
     "source": "Maniement d'Arme (FOR, AGI)",
     "type": "Offensif",
-    "effets": "Statut Chrono-Fracture, draine 2 PA adverses."
+    "effets": "Inflige Déstabilisé 1 tour et draine 2 PA adverses."
    },
    "Bloquer": {
     "nom": "Bloquer",
     "parente": null,
     "source": "Maniement d'Arme / Défense Corporelle (FOR, AGI / FOR)",
     "type": "Défensif",
-    "effets": "Bouclier ou garde hermétique : vous parez sans malus. Valable des deux côtés."
+    "effets": "Bouclier ou garde hermétique : tu pares sans malus. Valable des deux côtés."
    },
    "Mur de Bouclier": {
     "nom": "Mur de Bouclier",
@@ -4147,14 +4575,14 @@
    },
    "Heurt de Bouclier": {
     "nom": "Heurt de Bouclier",
-    "parente": "Bloquer",
+    "parente": "Mur de Bouclier",
     "source": "Maniement d'Arme / Défense Corporelle (FOR, AGI / FOR)",
     "type": "Défensif",
     "effets": "Après un blocage, 4 dégâts et repousse d'1 case."
    },
    "Forteresse Impénétrable": {
     "nom": "Forteresse Impénétrable",
-    "parente": "Bloquer",
+    "parente": "Heurt de Bouclier",
     "source": "Maniement d'Arme / Défense Corporelle (FOR, AGI / FOR)",
     "type": "Défensif",
     "effets": "Immunité aux critiques, au Déstabilisé et à À Terre pendant la garde."
@@ -4164,28 +4592,28 @@
     "parente": null,
     "source": "Défense Corporelle (FOR)",
     "type": "Défensif",
-    "effets": "Vous interposez votre corps pour un allié adjacent."
+    "effets": "Prise de coup (Livre V §20.6) possible jusqu'à 2 cases (pas de côté inclus) ; la posture préventive n'impose plus le malus de −1 à l'attaque."
    },
    "Interposition Réflexe": {
     "nom": "Interposition Réflexe",
     "parente": "Bouclier Vivant",
     "source": "Défense Corporelle (FOR)",
     "type": "Défensif",
-    "effets": "Coûte 1 PA au lieu de 2."
+    "effets": "S'interposer coûte 0 PA (consomme toujours la réaction libre) et donne +1 à ta parade lors de l'interposition."
    },
    "Dévier le Calibre": {
     "nom": "Dévier le Calibre",
-    "parente": "Bouclier Vivant",
+    "parente": "Interposition Réflexe",
     "source": "Défense Corporelle (FOR)",
     "type": "Défensif",
     "effets": "Dégâts interceptés divisés par deux."
    },
    "Mur Inébranlable": {
     "nom": "Mur Inébranlable",
-    "parente": "Bouclier Vivant",
+    "parente": "Dévier le Calibre",
     "source": "Défense Corporelle (FOR)",
     "type": "Défensif",
-    "effets": "Vous encaissez les grenades sans refoulement ni Déstabilisé."
+    "effets": "Tu encaisses les grenades sans refoulement ni Déstabilisé."
    },
    "Arme de Hast": {
     "nom": "Arme de Hast",
@@ -4203,14 +4631,14 @@
    },
    "Mur de Piques": {
     "nom": "Mur de Piques",
-    "parente": "Arme de Hast",
+    "parente": "Arrêt de Charge",
     "source": "Armes Perçantes (AGI)",
     "type": "Offensif",
     "effets": "Ignore 3 et repousse d'1 case."
    },
    "Phalange d'Acier": {
     "nom": "Phalange d'Acier",
-    "parente": "Arme de Hast",
+    "parente": "Mur de Piques",
     "source": "Armes Perçantes (AGI)",
     "type": "Offensif",
     "effets": "Ignore 4 et blesse aussi l'ennemi derrière."
@@ -4224,7 +4652,7 @@
    },
    "Crochet de Hallebarde": {
     "nom": "Crochet de Hallebarde",
-    "parente": "Arme de Hast",
+    "parente": "Fauchage Latéral",
     "source": "Armes Perçantes (AGI)",
     "type": "Offensif",
     "effets": "Désarmer ou mettre À Terre sur Delta ≥ 2."
@@ -4232,112 +4660,112 @@
    "Tir à l'Arc": {
     "nom": "Tir à l'Arc",
     "parente": null,
-    "source": "Ballistique (AGI)",
+    "source": "Ballistique (AGI / Vision)",
     "type": "Offensif",
     "effets": "Arcs et arbalètes silencieux (+2 cases de portée)."
    },
    "Flèche Perforante": {
     "nom": "Flèche Perforante",
     "parente": "Tir à l'Arc",
-    "source": "Ballistique (AGI)",
+    "source": "Ballistique (AGI / Vision)",
     "type": "Offensif",
     "effets": "Ignore 2 points d'armure."
    },
    "Tir en Cloche": {
     "nom": "Tir en Cloche",
-    "parente": "Tir à l'Arc",
-    "source": "Ballistique (AGI)",
+    "parente": "Flèche Perforante",
+    "source": "Ballistique (AGI / Vision)",
     "type": "Offensif",
     "effets": "Ignore le couvert partiel, +4 cases de portée."
    },
    "Pluie d'Acier": {
     "nom": "Pluie d'Acier",
-    "parente": "Tir à l'Arc",
-    "source": "Ballistique (AGI)",
+    "parente": "Tir en Cloche",
+    "source": "Ballistique (AGI / Vision)",
     "type": "Offensif",
     "effets": "Blesse une seconde cible adjacente."
    },
    "Tir Instinctif": {
     "nom": "Tir Instinctif",
     "parente": "Tir à l'Arc",
-    "source": "Ballistique (AGI)",
+    "source": "Ballistique (AGI / Vision)",
     "type": "Offensif",
-    "effets": "Votre premier tir du tour coûte 1 PA de moins."
+    "effets": "Ton premier tir du tour coûte 1 PA de moins."
    },
    "Chasseur Silencieux": {
     "nom": "Chasseur Silencieux",
-    "parente": "Tir à l'Arc",
-    "source": "Ballistique (AGI)",
+    "parente": "Tir Instinctif",
+    "source": "Ballistique (AGI / Vision)",
     "type": "Offensif",
     "effets": "Abattre un isolé ne donne pas l'alerte ; +2 en Discrétion après un tir réussi."
    },
    "Fusil de Précision": {
     "nom": "Fusil de Précision",
     "parente": null,
-    "source": "Ballistique (AGI)",
+    "source": "Ballistique (AGI / Vision)",
     "type": "Offensif",
     "effets": "Tir longue portée : +4 cases, critique facilité."
    },
    "Visée Millimétrique": {
     "nom": "Visée Millimétrique",
     "parente": "Fusil de Précision",
-    "source": "Ballistique (AGI)",
+    "source": "Ballistique (AGI / Vision)",
     "type": "Offensif",
-    "effets": "+2 en visée chirurgicale si vous n'avez pas bougé."
+    "effets": "+2 en visée chirurgicale si tu n'as pas bougé."
    },
    "Perforation Hyper-Véloce": {
     "nom": "Perforation Hyper-Véloce",
-    "parente": "Fusil de Précision",
-    "source": "Ballistique (AGI)",
+    "parente": "Visée Millimétrique",
+    "source": "Ballistique (AGI / Vision)",
     "type": "Offensif",
     "effets": "Ignore 4 points d'armure."
    },
    "Tir à Travers les Parois": {
     "nom": "Tir à Travers les Parois",
-    "parente": "Fusil de Précision",
-    "source": "Ballistique (AGI)",
+    "parente": "Perforation Hyper-Véloce",
+    "source": "Ballistique (AGI / Vision)",
     "type": "Offensif",
     "effets": "Cible derrière un couvert total à -2 seulement."
    },
    "Tir de Suppression": {
     "nom": "Tir de Suppression",
     "parente": "Fusil de Précision",
-    "source": "Ballistique (AGI)",
+    "source": "Ballistique (AGI / Vision)",
     "type": "Offensif",
     "effets": "Déstabilisé et draine 1 PA défensif."
    },
    "Calibre Anti-Matériel": {
     "nom": "Calibre Anti-Matériel",
-    "parente": "Fusil de Précision",
-    "source": "Ballistique (AGI)",
+    "parente": "Tir de Suppression",
+    "source": "Ballistique (AGI / Vision)",
     "type": "Offensif",
     "effets": "+4 dégâts contre véhicules et structures."
    },
    "Grenadier d'Assaut": {
     "nom": "Grenadier d'Assaut",
     "parente": null,
-    "source": "Ballistique (AGI)",
+    "source": "Ballistique (AGI / Vision)",
     "type": "Offensif",
     "effets": "Explosifs : dispersion réduite, +2 cases de lancer."
    },
    "Calcul Balistique": {
     "nom": "Calcul Balistique",
     "parente": "Grenadier d'Assaut",
-    "source": "Ballistique (AGI)",
+    "source": "Ballistique (AGI / Vision)",
     "type": "Offensif",
     "effets": "Dispersion réduite d'1 case de plus (minimum 0)."
    },
    "Dégoupillage Éclair": {
     "nom": "Dégoupillage Éclair",
-    "parente": "Grenadier d'Assaut",
-    "source": "Ballistique (AGI)",
+    "parente": "Calcul Balistique",
+    "source": "Ballistique (AGI / Vision)",
     "type": "Offensif",
     "effets": "Lancer coûte 1 PA de moins."
    },
    "Souffle Thermobarique": {
     "nom": "Souffle Thermobarique",
-    "parente": "Grenadier d'Assaut",
-    "source": "Ballistique (AGI)",
+    "parente": "Dégoupillage Éclair",
+    "source": "Ballistique (AGI / Vision)",
     "type": "Offensif",
     "effets": "Rayon du souffle +1 case."
    },
@@ -4346,21 +4774,49 @@
     "parente": null,
     "source": "Athlétisme (CON, FOR, AGI)",
     "type": "Utilitaire",
-    "effets": "Le premier déplacement du tour coûte 1 PA de moins. Second Souffle : Reprendre son Souffle efface 2 ESS. Cœur de Marathon : Souffle d'Urgence à +3 PA."
+    "effets": "Le premier déplacement du tour coûte 1 PA de moins."
+   },
+   "Second Souffle": {
+    "nom": "Second Souffle",
+    "parente": "Course d'Endurance",
+    "source": "Athlétisme (CON, FOR, AGI)",
+    "type": "Utilitaire",
+    "effets": "L'action Reprendre son Souffle efface 2 ESS au lieu d'1."
+   },
+   "Cœur de Marathon": {
+    "nom": "Cœur de Marathon",
+    "parente": "Second Souffle",
+    "source": "Athlétisme (CON, FOR, AGI)",
+    "type": "Utilitaire",
+    "effets": "1 fois par combat, pour 1 point d'Essoufflement, tu gagnes +3 PA d'urgence au lieu de +1 (Livre I §4.2)."
    },
    "Franchissement": {
     "nom": "Franchissement",
     "parente": null,
     "source": "Athlétisme (CON, FOR, AGI)",
     "type": "Utilitaire",
-    "effets": "Ignore le terrain difficile. Escalade Assurée franchit murets et tranchées sans surcoût. Nage de Combat : aucune épreuve en eau agitée, apnée de 2 × Constitution en tours."
+    "effets": "Ignore le surcoût du terrain difficile."
+   },
+   "Escalade Assurée": {
+    "nom": "Escalade Assurée",
+    "parente": "Franchissement",
+    "source": "Athlétisme (CON, FOR, AGI)",
+    "type": "Utilitaire",
+    "effets": "Franchit murets, parois praticables et tranchées sans surcoût de 2 PA/case ; +2 en Athlétisme sur les parois raides."
+   },
+   "Nage de Combat": {
+    "nom": "Nage de Combat",
+    "parente": "Escalade Assurée",
+    "source": "Athlétisme (CON, FOR, AGI)",
+    "type": "Utilitaire",
+    "effets": "Aucune épreuve en eau agitée ni surcoût de 2 PA/case ; apnée doublée (2 × Constitution tours)."
    },
    "Condition de Fer": {
     "nom": "Condition de Fer",
     "parente": null,
     "source": "Endurance Physique (CON, FOR)",
     "type": "Utilitaire, Défensif",
-    "effets": "Retire 1 dégât au début de votre tour si blessé et conscient."
+    "effets": "Retire 1 dégât au début de ton tour si blessé et conscient."
    },
    "Dur à Cuire": {
     "nom": "Dur à Cuire",
@@ -4371,7 +4827,7 @@
    },
    "Mur de Chair": {
     "nom": "Mur de Chair",
-    "parente": "Condition de Fer",
+    "parente": "Dur à Cuire",
     "source": "Endurance Physique (CON, FOR)",
     "type": "Utilitaire, Défensif",
     "effets": "+2 Encaissement et +1 Armure naturelle permanente."
@@ -4381,7 +4837,7 @@
     "parente": null,
     "source": "Endurance Physique (CON, FOR)",
     "type": "Défensif",
-    "effets": "Déstabilisé réduit à -1 sur tous vos jets."
+    "effets": "Déstabilisé réduit à -1 sur tous tes jets."
    },
    "Ignorer la Douleur": {
     "nom": "Ignorer la Douleur",
@@ -4392,7 +4848,7 @@
    },
    "Esprit de Granit": {
     "nom": "Esprit de Granit",
-    "parente": "Trempe de Fer",
+    "parente": "Ignorer la Douleur",
     "source": "Endurance Physique (CON, FOR)",
     "type": "Défensif",
     "effets": "Le malus d'Étourdi est ignoré."
@@ -4413,14 +4869,14 @@
    },
    "Poumons d'Acier": {
     "nom": "Poumons d'Acier",
-    "parente": "Seconde Respiration",
+    "parente": "Rechargement Anaérobie",
     "source": "Cardio (CON)",
     "type": "Utilitaire",
     "effets": "Efface 4 points et donne +1 PA immédiat."
    },
    "Cœur de Berserker": {
     "nom": "Cœur de Berserker",
-    "parente": "Seconde Respiration",
+    "parente": "Poumons d'Acier",
     "source": "Cardio (CON)",
     "type": "Utilitaire",
     "effets": "Utilisable 2 fois par combat, immunité au Ralenti."
@@ -4430,18 +4886,18 @@
     "parente": null,
     "source": "Cardio (CON)",
     "type": "Utilitaire",
-    "effets": "Vous forcez 1 PA d'action en prenant 1 point d'essoufflement."
+    "effets": "Plafond d'Essoufflement augmenté de +1 (CON + 1) ; 1 fois par combat, génère +1 PA d'urgence sans prendre d'Essoufflement (Livre I §4.2)."
    },
    "Redline Stabilisé": {
     "nom": "Redline Stabilisé",
     "parente": "Poussée Cardiovasculaire",
     "source": "Cardio (CON)",
     "type": "Utilitaire",
-    "effets": "Plafond d'essoufflement sans Ralenti."
+    "effets": "1 fois par combat, si tu dois prendre 1 point d'Essoufflement déjà au plafond, tu ne tombes pas À Terre ni Inconscient (tu tiens 1 point au-delà du plafond sans décrocher)."
    },
    "Injection d'Adrénaline": {
     "nom": "Injection d'Adrénaline",
-    "parente": "Poussée Cardiovasculaire",
+    "parente": "Redline Stabilisé",
     "source": "Cardio (CON)",
     "type": "Utilitaire",
     "effets": "La poussée donne +2 PA au lieu de +1 par point engagé."
@@ -4462,14 +4918,14 @@
    },
    "Filtrage des Gaz de Guerre": {
     "nom": "Filtrage des Gaz de Guerre",
-    "parente": "Immunité Toxique",
+    "parente": "Neutralisation des Poisons",
     "source": "Système Immunitaire (CON)",
     "type": "Défensif",
     "effets": "Immunité aux lacrymogènes et neurotoxiques."
    },
    "Sang Antidote Universel": {
     "nom": "Sang Antidote Universel",
-    "parente": "Immunité Toxique",
+    "parente": "Filtrage des Gaz de Guerre",
     "source": "Système Immunitaire (CON)",
     "type": "Défensif",
     "effets": "Immunise les alliés à moins de 2 cases contre gaz et toxines."
@@ -4490,10 +4946,10 @@
    },
    "Clairvoyance du Vétéran": {
     "nom": "Clairvoyance du Vétéran",
-    "parente": "Sens du Danger",
+    "parente": "Premiers Réflexes",
     "source": "Intuition (INT, INS)",
     "type": "Utilitaire",
-    "effets": "Immunité totale aux embuscades et aux attaques de dos."
+    "effets": "Immunité totale à la surprise et aux embuscades : tu agis normalement dès le tour d'embuscade et gardes ta réaction libre."
    },
    "Instinct du Chasseur": {
     "nom": "Instinct du Chasseur",
@@ -4511,7 +4967,7 @@
    },
    "Piégeur": {
     "nom": "Piégeur",
-    "parente": "Instinct du Chasseur",
+    "parente": "Pistage",
     "source": "Intuition (INT, INS)",
     "type": "Utilitaire",
     "effets": "Pose et détecte les pièges de campagne ; les proies prises sont Immobilisées."
@@ -4521,187 +4977,264 @@
     "parente": null,
     "source": "Intuition (INT, INS)",
     "type": "Utilitaire, Défensif",
-    "effets": "Immunité aux attaques de dos et embuscades dans un rayon de 3 cases."
+    "effets": "Dans un rayon de 3 cases, aucune cible Dissimulée ou Cachée ne peut t'approcher ni te frapper par surprise (détection automatique sans dépenser 1 PA d'Observation active, Livre V §21.4)."
    },
    "Écho Myotatique": {
     "nom": "Écho Myotatique",
     "parente": "Sphère de Résonance",
     "source": "Intuition (INT, INS)",
     "type": "Utilitaire, Défensif",
-    "effets": "Ajuste votre mise de +1 PA en défense au Face-à-Face."
+    "effets": "Ajuste ta mise de +1 PA en défense au Face-à-Face."
    },
    "Champ Prédictif": {
     "nom": "Champ Prédictif",
-    "parente": "Sphère de Résonance",
+    "parente": "Écho Myotatique",
     "source": "Intuition (INT, INS)",
     "type": "Utilitaire, Défensif",
     "effets": "Anticipe la zone visée : +2 en esquive."
    },
    "Omniprésence Synaptique": {
     "nom": "Omniprésence Synaptique",
-    "parente": "Sphère de Résonance",
+    "parente": "Champ Prédictif",
     "source": "Intuition (INT, INS)",
     "type": "Utilitaire, Défensif",
-    "effets": "Révèle les mises de PA et PE adverses avant votre défense."
+    "effets": "Révèle les mises de PA et PE adverses avant ta défense."
    },
    "Affûtage de Précision": {
     "nom": "Affûtage de Précision",
     "parente": null,
-    "source": "Artisanat (SAG, INT)",
+    "source": "Artisanat (INS, INT)",
     "type": "Utilitaire",
     "effets": "+1 dégât aux 3 prochaines attaques réussies avec l'arme affûtée."
    },
    "Fil Monomoléculaire": {
     "nom": "Fil Monomoléculaire",
     "parente": "Affûtage de Précision",
-    "source": "Artisanat (SAG, INT)",
+    "source": "Artisanat (INS, INT)",
     "type": "Utilitaire",
     "effets": "+2 dégâts permanents aux armes blanches."
    },
    "Blindage Trempé": {
     "nom": "Blindage Trempé",
-    "parente": "Affûtage de Précision",
-    "source": "Artisanat (SAG, INT)",
+    "parente": "Fil Monomoléculaire",
+    "source": "Artisanat (INS, INT)",
     "type": "Utilitaire",
     "effets": "+1 absorption permanente aux armures métalliques."
    },
-   "Acier de Maître d'Hybris": {
-    "nom": "Acier de Maître d'Hybris",
-    "parente": "Affûtage de Précision",
-    "source": "Artisanat (SAG, INT)",
+   "Acier de Maître": {
+    "nom": "Acier de Maître",
+    "parente": "Blindage Trempé",
+    "source": "Artisanat (INS, INT)",
     "type": "Utilitaire",
-    "effets": "L'arme ne s'émousse jamais ; critique dès 11 ou 12 au dé."
+    "effets": "L'arme ne s'émousse jamais ; critique déclenché dès max − 1 sur le dé (ex. 5–6 sur 1d6, 11–12 sur 1d12)."
+   },
+   "Fabriquer": {
+    "nom": "Fabriquer",
+    "parente": null,
+    "source": "Artisanat (INS, INT)",
+    "type": "Utilitaire",
+    "effets": "+2 en Artisanat pour concevoir, assembler ou réparer un objet courant ou un équipement Détruit en atelier avec pièces de rechange (Livre VI §24.5)."
+   },
+   "Forger": {
+    "nom": "Forger",
+    "parente": null,
+    "source": "Artisanat (INS, INT)",
+    "type": "Utilitaire",
+    "effets": "+2 en Artisanat pour forger, tremper ou réparer armes et armures métalliques en forge (se cumule avec le don Nain)."
+   },
+   "Sculpter": {
+    "nom": "Sculpter",
+    "parente": null,
+    "source": "Artisanat (INS, INT)",
+    "type": "Utilitaire",
+    "effets": "+2 en Artisanat pour tailler pierre, bois, os ou métal fin (sceaux, gravures, moules et pièces de précision)."
+   },
+   "Enseigner": {
+    "nom": "Enseigner",
+    "parente": null,
+    "source": "Artisanat (INS, INT)",
+    "type": "Utilitaire",
+    "effets": "+2 en Artisanat pour transmettre un savoir ou encadrer l'entraînement d'un compagnon entre deux aventures."
    },
    "Vigilance Réflexe": {
     "nom": "Vigilance Réflexe",
     "parente": null,
-    "source": "Observation (VUE, INS)",
+    "source": "Observation (Vision, Ouïe)",
     "type": "Utilitaire, Défensif",
     "effets": "Immunise contre l'effet de surprise, réaction défensive conservée en embuscade."
    },
    "Œil de Lynx": {
     "nom": "Œil de Lynx",
     "parente": "Vigilance Réflexe",
-    "source": "Observation (VUE, INS)",
+    "source": "Observation (Vision, Ouïe)",
     "type": "Utilitaire, Défensif",
     "effets": "+2 aux duels de détection du brouillard (Livre V §21.4)."
    },
    "Détection Thermique": {
     "nom": "Détection Thermique",
-    "parente": "Vigilance Réflexe",
-    "source": "Observation (VUE, INS)",
+    "parente": "Œil de Lynx",
+    "source": "Observation (Vision, Ouïe)",
     "type": "Utilitaire, Défensif",
     "effets": "+2 au duel, révèle les unités camouflées et invisibles à travers les parois légères."
    },
    "Perception Panoramique 360°": {
     "nom": "Perception Panoramique 360°",
-    "parente": "Vigilance Réflexe",
-    "source": "Observation (VUE, INS)",
+    "parente": "Détection Thermique",
+    "source": "Observation (Vision, Ouïe)",
     "type": "Utilitaire, Défensif",
-    "effets": "Immunité aux embuscades, bonus de surprise permanent (le combat voit à 360°)."
+    "effets": "Immunité aux embuscades et +2 en Observation active contre les cibles Cachées ou en couvert ; ignore les malus liés aux attaques multiples ou à l'encerclement."
+   },
+   "Perception des bruits lointains": {
+    "nom": "Perception des bruits lointains",
+    "parente": null,
+    "source": "Écoute (Ouïe)",
+    "type": "Utilitaire",
+    "effets": "+2 en Écoute pour repérer pas, voix ou mouvements à longue distance et à travers portes ou cloisons."
+   },
+   "Écho acoustique": {
+    "nom": "Écho acoustique",
+    "parente": null,
+    "source": "Écoute (Ouïe)",
+    "type": "Utilitaire",
+    "effets": "+2 en Écoute en obscurité, fumée ou brouillard pour estimer le nombre, la direction et la distance approximative d'individus en mouvement."
+   },
+   "Auscultation": {
+    "nom": "Auscultation",
+    "parente": null,
+    "source": "Écoute (Ouïe)",
+    "type": "Utilitaire",
+    "effets": "+2 en Écoute pour diagnostiquer un battement, une respiration, un mécanisme caché (serrure, horlogerie) ou une cavité derrière un mur."
+   },
+   "Traque": {
+    "nom": "Traque",
+    "parente": null,
+    "source": "Nature & Survie (INS, INT)",
+    "type": "Utilitaire",
+    "effets": "+2 en Nature & Survie pour repérer et remonter une piste fraîche ou ancienne en milieu sauvage et estimer l'allure de la proie."
+   },
+   "Orientation": {
+    "nom": "Orientation",
+    "parente": null,
+    "source": "Nature & Survie (INS, INT)",
+    "type": "Utilitaire",
+    "effets": "+2 en Nature & Survie pour s'orienter sans carte ni boussole, lire la météo proche et éviter de s'égarer en milieu hostile ou souterrain."
+   },
+   "Botanique sauvage": {
+    "nom": "Botanique sauvage",
+    "parente": null,
+    "source": "Nature & Survie (INS, INT)",
+    "type": "Utilitaire",
+    "effets": "+2 en Nature & Survie pour identifier plantes comestibles, toxiques ou médicinales et préparer des cataplasmes de fortune."
+   },
+   "Construction d'abris": {
+    "nom": "Construction d'abris",
+    "parente": null,
+    "source": "Nature & Survie (INS, INT)",
+    "type": "Utilitaire",
+    "effets": "+2 en Nature & Survie pour monter un bivouac sûr ; réduit d'1 cran la pénalité de climat léger au campement (Livre II §8.1)."
    },
    "Pistolet & Tir Rapide": {
     "nom": "Pistolet & Tir Rapide",
     "parente": null,
-    "source": "Ballistique (AGI)",
+    "source": "Ballistique (AGI / Vision)",
     "type": "Offensif",
-    "effets": "Sur réussite nette : la cible est Ralentie pour 1 tour. Sur 5 ou 6 au dé : la cible tombe au sol."
+    "effets": "Sur réussite nette (Delta ≥ 1) : la cible est Ralentie pour 1 tour. Sur Delta ≥ 3 (ou critique) : la cible tombe À Terre."
    },
    "Dégainé Réflexe": {
     "nom": "Dégainé Réflexe",
     "parente": "Pistolet & Tir Rapide",
-    "source": "Ballistique (AGI)",
+    "source": "Ballistique (AGI / Vision)",
     "type": "Offensif",
-    "effets": "Votre premier tir du tour coûte 1 PA de moins."
+    "effets": "Ton premier tir du tour coûte 1 PA de moins."
    },
    "Akimbo Assaut": {
     "nom": "Akimbo Assaut",
-    "parente": "Pistolet & Tir Rapide",
-    "source": "Ballistique (AGI)",
+    "parente": "Dégainé Réflexe",
+    "source": "Ballistique (AGI / Vision)",
     "type": "Offensif",
     "effets": "Deux pistolets sur la même cible pour 3 PA."
    },
    "Trait d'Orichalque": {
     "nom": "Trait d'Orichalque",
-    "parente": "Pistolet & Tir Rapide",
-    "source": "Ballistique (AGI)",
+    "parente": "Akimbo Assaut",
+    "source": "Ballistique (AGI / Vision)",
     "type": "Offensif",
     "effets": "Ignore le couvert partiel, transperce 2 cibles alignées."
    },
    "Balle dans le Genou": {
     "nom": "Balle dans le Genou",
     "parente": "Pistolet & Tir Rapide",
-    "source": "Ballistique (AGI)",
+    "source": "Ballistique (AGI / Vision)",
     "type": "Offensif",
     "effets": "Visée Jambes sans malus, Ralenti garanti."
    },
    "Tir de Neutralisation": {
     "nom": "Tir de Neutralisation",
-    "parente": "Pistolet & Tir Rapide",
-    "source": "Ballistique (AGI)",
+    "parente": "Balle dans le Genou",
+    "source": "Ballistique (AGI / Vision)",
     "type": "Offensif",
     "effets": "Visée Bras Droit, désarme sur Delta ≥ 1."
    },
    "Roulade de Décrochage": {
     "nom": "Roulade de Décrochage",
     "parente": null,
-    "source": "Esquive (AGI)",
+    "source": "Esquive (AGI, RAP ou INS)",
     "type": "Défensif",
     "effets": "Sur esquive réussie (Delta ≥ 2) : 1 case de recul gratuit."
    },
    "Reprise d'Appui": {
     "nom": "Reprise d'Appui",
     "parente": "Roulade de Décrochage",
-    "source": "Esquive (AGI)",
+    "source": "Esquive (AGI, RAP ou INS)",
     "type": "Défensif",
     "effets": "+1 PA de réserve au tour suivant après une esquive parfaite."
    },
    "Ombre Évasive": {
     "nom": "Ombre Évasive",
-    "parente": "Roulade de Décrochage",
-    "source": "Esquive (AGI)",
+    "parente": "Reprise d'Appui",
+    "source": "Esquive (AGI, RAP ou INS)",
     "type": "Défensif",
-    "effets": "On ne peut plus vous cibler jusqu'à votre prochain tour."
+    "effets": "On ne peut plus te cibler jusqu'à ton prochain tour."
    },
    "Pas Déphasé": {
     "nom": "Pas Déphasé",
-    "parente": "Roulade de Décrochage",
-    "source": "Esquive (AGI)",
+    "parente": "Ombre Évasive",
+    "source": "Esquive (AGI, RAP ou INS)",
     "type": "Défensif",
     "effets": "Téléportation de 2 cases sur esquive réussie."
    },
    "Esquive Réactive": {
     "nom": "Esquive Réactive",
     "parente": "Roulade de Décrochage",
-    "source": "Esquive (AGI)",
+    "source": "Esquive (AGI, RAP ou INS)",
     "type": "Défensif",
-    "effets": "Le Ralenti ne double plus votre coût d'esquive."
+    "effets": "Le Ralenti ne double plus ton coût d'esquive."
    },
    "Contre-Poussée": {
     "nom": "Contre-Poussée",
-    "parente": "Roulade de Décrochage",
-    "source": "Esquive (AGI)",
+    "parente": "Esquive Réactive",
+    "source": "Esquive (AGI, RAP ou INS)",
     "type": "Défensif",
     "effets": "Repousse l'assaillant d'1 case après une esquive au contact."
    },
    "Acrobatie d'Évitement": {
     "nom": "Acrobatie d'Évitement",
     "parente": null,
-    "source": "Esquive (AGI)",
+    "source": "Esquive (AGI, RAP ou INS)",
     "type": "Défensif",
     "effets": "Voltige : tranchées et demi-couverts sans PA."
    },
    "Saut Périlleux": {
     "nom": "Saut Périlleux",
     "parente": "Acrobatie d'Évitement",
-    "source": "Esquive (AGI)",
+    "source": "Esquive (AGI, RAP ou INS)",
     "type": "Défensif",
     "effets": "Barricades et mi-hauteurs sans coût de mouvement."
    },
    "Vrille Balistique": {
     "nom": "Vrille Balistique",
-    "parente": "Acrobatie d'Évitement",
-    "source": "Esquive (AGI)",
+    "parente": "Saut Périlleux",
+    "source": "Esquive (AGI, RAP ou INS)",
     "type": "Défensif",
     "effets": "+2 en esquive contre fusils et grenades."
    },
@@ -4726,10 +5259,87 @@
     "type": "Utilitaire, Défensif",
     "effets": "+2 en Discrétion en pénombre, nuit ou fumée ; Se cacher te coûte 1 PA au lieu de 2 PA dans ces conditions (Livre V §21.4)."
    },
+   "Saut acrobatique": {
+    "nom": "Saut acrobatique",
+    "parente": null,
+    "source": "Acrobatie (AGI, RAP)",
+    "type": "Utilitaire, Défensif",
+    "effets": "+2 en Acrobatie pour franchir un gouffre, un mur bas ou un obstacle ; saute un obstacle bas sans surcoût de PA."
+   },
+   "Équilibre": {
+    "nom": "Équilibre",
+    "parente": null,
+    "source": "Acrobatie (AGI, RAP)",
+    "type": "Utilitaire, Défensif",
+    "effets": "+2 en Acrobatie sur surface étroite, glissante ou instable (poutre, toit, glace, pont de navire) ; ignore la pénalité de terrain glissant pour rester debout."
+   },
+   "Se balancer": {
+    "nom": "Se balancer",
+    "parente": null,
+    "source": "Acrobatie (AGI, RAP)",
+    "type": "Utilitaire, Défensif",
+    "effets": "+2 en Acrobatie pour utiliser cordes, câbles, lianes ou agrès et franchir un vide au coût normal de déplacement."
+   },
+   "Chute contrôlée": {
+    "nom": "Chute contrôlée",
+    "parente": null,
+    "source": "Acrobatie (AGI, RAP)",
+    "type": "Utilitaire, Défensif",
+    "effets": "Sur épreuve d'Acrobatie réussie, réduit les dégâts de chute (H − 2, Livre II §8.2) de 2 points avant Encaissement et assure une réception debout."
+   },
+   "Véhicules terrestres": {
+    "nom": "Véhicules terrestres",
+    "parente": null,
+    "source": "Conduite & Pilotage (AGI, RAP)",
+    "type": "Utilitaire",
+    "effets": "+2 en Conduite & Pilotage sur véhicules routiers, blindés ou tout-terrain ; manœuvres brusques sans perte de contrôle en terrain difficile."
+   },
+   "Pods arcaniques": {
+    "nom": "Pods arcaniques",
+    "parente": null,
+    "source": "Conduite & Pilotage (AGI, RAP)",
+    "type": "Utilitaire",
+    "effets": "+2 en Conduite & Pilotage sur pods et nacelles arcaniques ; esquive de tirs et freinage d'urgence en zone encombrée."
+   },
+   "Vaisseaux": {
+    "nom": "Vaisseaux",
+    "parente": null,
+    "source": "Conduite & Pilotage (AGI, RAP)",
+    "type": "Utilitaire",
+    "effets": "+2 en Conduite & Pilotage pour manœuvres spatiales, appontages et navigation en champ d'astéroïdes ou sous feu nourri."
+   },
+   "Montures": {
+    "nom": "Montures",
+    "parente": null,
+    "source": "Conduite & Pilotage (AGI, RAP)",
+    "type": "Utilitaire",
+    "effets": "+2 en Conduite & Pilotage à dos de monture (chevaux, bêtes de bât ou de guerre) ; agit en selle sans malus de stabilité."
+   },
+   "Crochetage mécanique": {
+    "nom": "Crochetage mécanique",
+    "parente": null,
+    "source": "Subterfuge Manuel (AGI, INT)",
+    "type": "Utilitaire",
+    "effets": "+2 en Subterfuge Manuel pour ouvrir serrures, cadenas, coffres et menottes mécaniques sans les briser."
+   },
+   "Vol à la tire": {
+    "nom": "Vol à la tire",
+    "parente": null,
+    "source": "Subterfuge Manuel (AGI, INT)",
+    "type": "Utilitaire",
+    "effets": "+2 en Subterfuge Manuel en Face-à-Face contre Observation pour subtiliser ou glisser un petit objet à l'insu d'une cible."
+   },
+   "Sabotage": {
+    "nom": "Sabotage",
+    "parente": null,
+    "source": "Subterfuge Manuel (AGI, INT)",
+    "type": "Utilitaire",
+    "effets": "+2 en Subterfuge Manuel pour désamorcer un piège, enrayer un mécanisme ou neutraliser discrètement un appareil."
+   },
    "Armes Lourdes (Canons)": {
     "nom": "Armes Lourdes (Canons)",
     "parente": null,
-    "source": "Ballistique / Tir",
+    "source": "Ballistique (AGI / Vision)",
     "type": "Offensif",
     "effets": "Armement de gros calibre : confère +100 dégâts de masse contre les structures, fortifications et blindages de véhicules."
    },
@@ -4749,14 +5359,14 @@
    },
    "Fleuret Éclair": {
     "nom": "Fleuret Éclair",
-    "parente": "Escrime / Rapière",
+    "parente": "Riposte à l'Estoc",
     "source": "Armes Perçantes (AGI)",
     "type": "Offensif, Défensif",
     "effets": "+2 en initiative réflexe, 1 parade gratuite par tour."
    },
    "Frappe Fantôme": {
     "nom": "Frappe Fantôme",
-    "parente": "Escrime / Rapière",
+    "parente": "Fleuret Éclair",
     "source": "Armes Perçantes (AGI)",
     "type": "Offensif, Défensif",
     "effets": "Ignore la défense active si la cible a déjà dépensé des PA."
@@ -4770,7 +5380,7 @@
    },
    "Entaille Précise": {
     "nom": "Entaille Précise",
-    "parente": "Escrime / Rapière",
+    "parente": "Désarmement Fleuret",
     "source": "Armes Perçantes (AGI)",
     "type": "Offensif, Défensif",
     "effets": "-2 aux attaques de la cible pendant 2 tours."
@@ -4780,7 +5390,7 @@
     "parente": null,
     "source": "Armes Perçantes (AGI)",
     "type": "Offensif",
-    "effets": "Gorge et carotides : sur Delta ≥ 3, Saignement (résiduels = vos entraînements)."
+    "effets": "Gorge et carotides : sur Delta ≥ 3, Saignement (résiduels = tes entraînements)."
    },
    "Hémorragie Profonde": {
     "nom": "Hémorragie Profonde",
@@ -4791,14 +5401,14 @@
    },
    "Asphyxie Sanguine": {
     "nom": "Asphyxie Sanguine",
-    "parente": "Frappe Jugulaire",
+    "parente": "Hémorragie Profonde",
     "source": "Armes Perçantes (AGI)",
     "type": "Offensif",
     "effets": "Ajoute Asphyxie (drain 1 PA/tour)."
    },
    "Tranche-Artère Silencieux": {
     "nom": "Tranche-Artère Silencieux",
-    "parente": "Frappe Jugulaire",
+    "parente": "Asphyxie Sanguine",
     "source": "Armes Perçantes (AGI)",
     "type": "Offensif",
     "effets": "Dégâts nets au-delà de l'Encaissement = mort instantanée, sans bruit."
@@ -4808,25 +5418,25 @@
     "parente": null,
     "source": "Mains Nues (FOR, AGI)",
     "type": "Offensif, Défensif",
-    "effets": "Vous parez sans malus, immunité Canon Entravé. Sur choc traumatique ou Delta ≥ 4 : refoulement d'1 case."
+    "effets": "Tu pares sans malus, immunité Canon Entravé. Sur choc traumatique ou Delta ≥ 4 : refoulement d'1 case."
    },
    "Enchaînement Fluide": {
     "nom": "Enchaînement Fluide",
     "parente": "Arts Martiaux",
     "source": "Mains Nues (FOR, AGI)",
     "type": "Offensif, Défensif",
-    "effets": "Votre 2e attaque du tour coûte 1 PA de moins."
+    "effets": "Ta 2e attaque du tour coûte 1 PA de moins."
    },
    "Frappe Téléportée": {
     "nom": "Frappe Téléportée",
-    "parente": "Arts Martiaux",
+    "parente": "Enchaînement Fluide",
     "source": "Mains Nues (FOR, AGI)",
     "type": "Offensif, Défensif",
     "effets": "1 case gratuite vers l'ennemi avant la frappe (si 2+ PA)."
    },
    "Déphasage Cinétique": {
     "nom": "Déphasage Cinétique",
-    "parente": "Arts Martiaux",
+    "parente": "Frappe Téléportée",
     "source": "Mains Nues (FOR, AGI)",
     "type": "Offensif, Défensif",
     "effets": "Sur critique, ignore parade et contre-attaques."
@@ -4840,14 +5450,14 @@
    },
    "Brise-Blindage": {
     "nom": "Brise-Blindage",
-    "parente": "Arts Martiaux",
+    "parente": "Onde Tellurique",
     "source": "Mains Nues (FOR, AGI)",
     "type": "Offensif, Défensif",
-    "effets": "Vos frappes ignorent 2 d'armure."
+    "effets": "Tes frappes ignorent 2 d'armure."
    },
-   "Paume de Brum'korath": {
-    "nom": "Paume de Brum'korath",
-    "parente": "Arts Martiaux",
+   "Paume Brise-Roc": {
+    "nom": "Paume Brise-Roc",
+    "parente": "Brise-Blindage",
     "source": "Mains Nues (FOR, AGI)",
     "type": "Offensif, Défensif",
     "effets": "Sur critique, choc traumatique + projette de 3 cases."
@@ -4861,14 +5471,14 @@
    },
    "Clé d'Articulation": {
     "nom": "Clé d'Articulation",
-    "parente": "Arts Martiaux",
+    "parente": "Balayage Rotatif",
     "source": "Mains Nues (FOR, AGI)",
     "type": "Offensif, Défensif",
     "effets": "Au contact, Immobilisé + 3 dégâts sans armure."
    },
    "Rupture Ligamentaire": {
     "nom": "Rupture Ligamentaire",
-    "parente": "Arts Martiaux",
+    "parente": "Clé d'Articulation",
     "source": "Mains Nues (FOR, AGI)",
     "type": "Offensif, Défensif",
     "effets": "Paralysé 1 tour si la cible est Déstabilisée."
@@ -4889,10 +5499,52 @@
    },
    "Cœur d'Adamas": {
     "nom": "Cœur d'Adamas",
-    "parente": "Perforation de Silicate",
+    "parente": "Fracture Sismique",
     "source": "Mains Nues (FOR, AGI)",
     "type": "Offensif",
     "effets": "Ignore 4, Sonné sur Delta ≥ 2."
+   },
+   "Histoire des mondes": {
+    "nom": "Histoire des mondes",
+    "parente": null,
+    "source": "Académie (INT)",
+    "type": "Utilitaire",
+    "effets": "+2 en Académie pour reconnaître époques, lignées, guerres, reliques et institutions des Élias."
+   },
+   "Linguistique": {
+    "nom": "Linguistique",
+    "parente": null,
+    "source": "Académie (INT)",
+    "type": "Utilitaire",
+    "effets": "+2 en Académie pour déchiffrer écritures anciennes, dialectes, codes chiffrés et argots étrangers."
+   },
+   "Économie impériale": {
+    "nom": "Économie impériale",
+    "parente": null,
+    "source": "Académie (INT)",
+    "type": "Utilitaire",
+    "effets": "+2 en Académie pour évaluer la juste valeur d'un bien, repérer une fraude ou comprendre les routes commerciales et guildes."
+   },
+   "Stabilisation d'urgence": {
+    "nom": "Stabilisation d'urgence",
+    "parente": null,
+    "source": "Premiers Soins (INS)",
+    "type": "Utilitaire",
+    "effets": "+2 en Premiers Soins (Difficulté 6, Livre VI §25.1) pour stabiliser un allié Agonisant ; utilisable même avec du matériel improvisé."
+   },
+   "Pose de garrot": {
+    "nom": "Pose de garrot",
+    "parente": null,
+    "source": "Premiers Soins (INS)",
+    "type": "Utilitaire",
+    "effets": "+2 en Premiers Soins pour stopper un Saignement actif ; réduit un Saignement d'1 cran supplémentaire sur réussite."
+   },
+   "Soins de terrain": {
+    "nom": "Soins de terrain",
+    "parente": null,
+    "source": "Premiers Soins (INS)",
+    "type": "Utilitaire",
+    "effets": "+2 en Premiers Soins pour lever l'état Souffrant, nettoyer une plaie ou dégager des voies respiratoires (Asphyxie) en conditions précaires."
    },
    "Chirurgie": {
     "nom": "Chirurgie",
@@ -4906,18 +5558,18 @@
     "parente": "Chirurgie",
     "source": "Médecine Avancée (INT, INS)",
     "type": "Utilitaire",
-    "effets": "Vous lisez dégâts subis, seuils et armure exacts d'une unité examinée."
+    "effets": "Tu lis dégâts subis, seuils et armure exacts d'une unité examinée."
    },
    "Suture Réflexe": {
     "nom": "Suture Réflexe",
-    "parente": "Chirurgie",
+    "parente": "Diagnostic Vital",
     "source": "Médecine Avancée (INT, INS)",
     "type": "Utilitaire",
     "effets": "Les premiers soins d'urgence passent de 3 à 2 PA."
    },
    "Greffe d'Urgence": {
     "nom": "Greffe d'Urgence",
-    "parente": "Chirurgie",
+    "parente": "Suture Réflexe",
     "source": "Médecine Avancée (INT, INS)",
     "type": "Utilitaire",
     "effets": "Restaure un membre détruit ou amputé en plein combat."
@@ -4927,7 +5579,7 @@
     "parente": null,
     "source": "Médecine Avancée (INT, INS)",
     "type": "Utilitaire",
-    "effets": "Vous composez des stimulants (Antidouleurs, Speed) sans laboratoire."
+    "effets": "Tu composes des stimulants (Antidouleurs, Speed) sans laboratoire."
    },
    "Stimulant Neuro-Accélérateur": {
     "nom": "Stimulant Neuro-Accélérateur",
@@ -4938,14 +5590,14 @@
    },
    "Sérum Antidote": {
     "nom": "Sérum Antidote",
-    "parente": "Apothicaire de Guerre",
+    "parente": "Stimulant Neuro-Accélérateur",
     "source": "Médecine Avancée (INT, INS)",
     "type": "Utilitaire",
     "effets": "Purge toutes les altérations biologiques d'un allié au contact."
    },
    "Cocktail Panacée": {
     "nom": "Cocktail Panacée",
-    "parente": "Apothicaire de Guerre",
+    "parente": "Sérum Antidote",
     "source": "Médecine Avancée (INT, INS)",
     "type": "Utilitaire",
     "effets": "Soigne 15 dégâts et immunise contre tous les états pendant 3 tours."
@@ -4966,14 +5618,14 @@
    },
    "Décharge Harmonique": {
     "nom": "Décharge Harmonique",
-    "parente": "Surfréquence Nytharite",
+    "parente": "Stabilisateur de Flux",
     "source": "Ingénierie & Arcanotech (INT, AGI)",
     "type": "Utilitaire",
-    "effets": "+3 dégâts d'énergie pure à toutes vos attaques du tour."
+    "effets": "+3 dégâts d'énergie pure à toutes tes attaques du tour."
    },
    "Résonance Infinie": {
     "nom": "Résonance Infinie",
-    "parente": "Surfréquence Nytharite",
+    "parente": "Décharge Harmonique",
     "source": "Ingénierie & Arcanotech (INT, AGI)",
     "type": "Utilitaire",
     "effets": "Surfréquence maintenue 3 tours sans recharge."
@@ -4983,7 +5635,7 @@
     "parente": null,
     "source": "Penser / Stratégie (INT)",
     "type": "Utilitaire, Défensif",
-    "effets": "2 PA : votre prochain coup (ou celui d'un allié) ignore l'encaissement adverse."
+    "effets": "2 PA : ton prochain coup (ou celui d'un allié) contre cette cible ignore son armure."
    },
    "Tir Coordonné": {
     "nom": "Tir Coordonné",
@@ -4994,14 +5646,14 @@
    },
    "Prédiction de Retraite": {
     "nom": "Prédiction de Retraite",
-    "parente": "Analyse de Faille",
+    "parente": "Tir Coordonné",
     "source": "Penser / Stratégie (INT)",
     "type": "Utilitaire, Défensif",
     "effets": "La cible ne profite d'aucun couvert à son prochain tour."
    },
    "Échec et Mat": {
     "nom": "Échec et Mat",
-    "parente": "Analyse de Faille",
+    "parente": "Prédiction de Retraite",
     "source": "Penser / Stratégie (INT)",
     "type": "Utilitaire, Défensif",
     "effets": "Toute attaque réussie contre la cible analysée devient un critique."
@@ -5011,54 +5663,54 @@
     "parente": null,
     "source": "Communication (CHA, INT)",
     "type": "Social",
-    "effets": "Dupez un adversaire ou un PNJ par une épreuve sociale opposée à son Intuition/Instinct."
+    "effets": "Dupe un adversaire ou un PNJ par une épreuve sociale opposée à son Intuition/Instinct."
    },
    "Feinte Oratoire": {
     "nom": "Feinte Oratoire",
     "parente": "Tromper",
     "source": "Communication (CHA, INT)",
     "type": "Social",
-    "effets": "1 PA : un ennemi tourne le dos jusqu'au tour suivant."
+    "effets": "1 PA : Face-à-Face Communication contre Intuition ; sur réussite, la cible est distraite et subit −2 à sa prochaine défense avant ton prochain tour."
    },
    "Faux Signalement": {
     "nom": "Faux Signalement",
-    "parente": "Tromper",
+    "parente": "Feinte Oratoire",
     "source": "Communication (CHA, INT)",
     "type": "Social",
     "effets": "Disperse les renforts ennemis hors du champ de bataille."
    },
    "Mascarade Totale": {
     "nom": "Mascarade Totale",
-    "parente": "Tromper",
+    "parente": "Faux Signalement",
     "source": "Communication (CHA, INT)",
     "type": "Social",
-    "effets": "Traversez les zones ennemies sans hostilité."
+    "effets": "Traverse les zones ennemies sans hostilité."
    },
    "Négocier": {
     "nom": "Négocier",
     "parente": null,
-    "source": "Communication (CHA)",
+    "source": "Communication (CHA, INT)",
     "type": "Social",
     "effets": "Réduit de 10 % à 50 % le prix des équipements."
    },
    "Marché Noir Impérial": {
     "nom": "Marché Noir Impérial",
     "parente": "Négocier",
-    "source": "Communication (CHA)",
+    "source": "Communication (CHA, INT)",
     "type": "Social",
     "effets": "Achète prototypes et rareté Légendaire."
    },
    "Cessez-le-Feu": {
     "nom": "Cessez-le-Feu",
-    "parente": "Négocier",
-    "source": "Communication (CHA)",
+    "parente": "Marché Noir Impérial",
+    "source": "Communication (CHA, INT)",
     "type": "Social",
     "effets": "Suspend les attaques ennemies pendant 1 tour pour parlementer."
    },
    "Rachat d'Allégeance": {
     "nom": "Rachat d'Allégeance",
-    "parente": "Négocier",
-    "source": "Communication (CHA)",
+    "parente": "Cessez-le-Feu",
+    "source": "Communication (CHA, INT)",
     "type": "Social",
     "effets": "Convertit un sbire ennemi en allié pour le combat."
    },
@@ -5078,22 +5730,22 @@
    },
    "Regard de Prédateur": {
     "nom": "Regard de Prédateur",
-    "parente": "Intimider",
+    "parente": "Rugissement de Terreur",
     "source": "Intimidation (CHA, FOR)",
     "type": "Social, Offensif",
-    "effets": "La cible ne peut attaquer que vous."
+    "effets": "La cible ne peut attaquer que toi."
    },
    "Paralysie Psychologique": {
     "nom": "Paralysie Psychologique",
-    "parente": "Intimider",
+    "parente": "Regard de Prédateur",
     "source": "Intimidation (CHA, FOR)",
     "type": "Social, Offensif",
-    "effets": "Paralysé 1 tour si la Volonté de la cible est sous votre Charisme."
+    "effets": "La cible est Paralysée 1 tour sur Delta ≥ 3 (ou si son Instinct (INS) est inférieur à ton Charisme)."
    },
    "Charmer": {
     "nom": "Charmer",
     "parente": null,
-    "source": "Communication (CHA)",
+    "source": "Communication (CHA, INT)",
     "type": "Social",
     "effets": "Gagne la confiance immédiate d'un PNJ non hostile. Accorde un avantage de +1 EC sur les interactions sociales ultérieures."
    },
@@ -5113,20 +5765,20 @@
    },
    "Tenir la Ligne !": {
     "nom": "Tenir la Ligne !",
-    "parente": "Mener (Commandement)",
+    "parente": "En avant !",
     "source": "Leadership (CHA, INT)",
     "type": "Social, Utilitaire",
     "effets": "+3 à l'encaissement des alliés proches pendant 1 tour."
    },
    "Galvanisation des Héros": {
     "nom": "Galvanisation des Héros",
-    "parente": "Mener (Commandement)",
+    "parente": "Tenir la Ligne !",
     "source": "Leadership (CHA, INT)",
     "type": "Social, Utilitaire",
     "effets": "+2 PA à toute l'escouade et purge des altérations mentales."
    }
   },
-  "nb_specialisations": 166,
+  "nb_specialisations": 198,
   "fabrique": {
    "note": "Fabrique de Techniques (sysRP). Standard 4-6 XP, signature 7+ XP (MJ), activation ≤ 6 PA.",
    "budgets": {
@@ -5161,14 +5813,14 @@
      "nom": "Réaction",
      "cout_xp": "1",
      "cout_pa": "+2",
-     "cadre": "Hors de ton tour, 1/round. Le +2 s'ajoute aux PA des pièces (comme les sorts, Livre IV §20)."
+     "cadre": "Hors de ton tour, 1/cycle. Le +2 s'ajoute aux PA des pièces (comme les sorts, Livre IV §19)."
     },
     {
      "id": "C4",
      "nom": "Opportunité",
      "cout_xp": "2",
      "cout_pa": "0",
-     "cadre": "0 PA, 1/round max. Déclencheur étroit obligatoire : Δ≥2, critique, esquive réussie..."
+     "cadre": "0 PA, 1/cycle max. Déclencheur étroit obligatoire : Δ≥2, critique, esquive réussie..."
     }
    ],
    "modificateurs": [
@@ -5205,7 +5857,7 @@
      "nom": "Hybride (deux familles)",
      "cout": "+1 XP",
      "cout_pa": "+0 PA",
-     "detail": "Frappe + intimidation, soin + commandement... Le +1 ne compte pas dans les PA (comme l’Injonction Douce, Livre IV §20)."
+     "detail": "Frappe + intimidation, soin + commandement... Le +1 ne compte pas dans les PA (comme l’Injonction Douce, Livre IV §19)."
     },
     {
      "id": "M7",
@@ -5516,7 +6168,7 @@
     },
     {
      "id": "D7",
-     "nom": "Immunité embuscade et dos",
+     "nom": "Immunité embuscade",
      "famille": "defensif",
      "cout_xp": "3",
      "cout_pa": "0",
@@ -5525,7 +6177,7 @@
      "prerequis": [],
      "seuil": null,
      "incompatible": [],
-     "texte": "Ni embuscade ni attaque de dos ne te surprend."
+     "texte": "Jamais pris par surprise : tu gardes ta réaction libre en embuscade et ignores le bonus d'attaque cachée."
     },
     {
      "id": "D8",
@@ -5702,7 +6354,7 @@
     },
     {
      "id": "U12",
-     "nom": "Force contre essoufflement",
+     "nom": "Réserve d'urgence",
      "famille": "utilitaire",
      "cout_xp": "2",
      "cout_pa": "−1*",
@@ -5711,7 +6363,7 @@
      "prerequis": [],
      "seuil": null,
      "incompatible": [],
-     "texte": "Tu forces 1 PA d’action contre 1 essoufflement."
+     "texte": "1 fois par combat : tu gagnes +2 PA d'action contre 1 point d'Essoufflement."
     },
     {
      "id": "S1",

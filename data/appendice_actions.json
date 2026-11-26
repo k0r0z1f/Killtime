@@ -1010,7 +1010,7 @@
     "Si la case arrière du Refoulement est occupée ou bloquée par un obstacle infranchissable, la cible heurte la paroi et subit l'état Déstabilisé."
    ],
    "conditions": "L'attaque doit réussir son seuil (Δ ≥ 0 en règle de base pour effets de spé ; voir §20.4 et §22.2). Annulé contre une cible sous Ancrage ou Pas de la Montagne (Géomancie).",
-   "modificateurs": "Renforcé par Heurt de Bouclier (repousse 1 case), Paume de Brum'korath (3 cases sur critique), Mur de Piques (1 case).",
+   "modificateurs": "Renforcé par Heurt de Bouclier (repousse 1 case), Paume Brise-Roc (3 cases sur critique), Mur de Piques (1 case).",
    "source": {
     "label": "Livre V §20.4 & §22.2",
     "livre": 5,
@@ -4598,12 +4598,12 @@
     "CHA",
     "INS"
    ],
-   "limite": "1/round max pour C3 et C4 ; 6 PA max/activation en Fabrique",
+   "limite": "1/cycle max pour C3 et C4 ; 6 PA max/activation en Fabrique",
    "ralenti_effet": "Pièces actives à PA ×2 sous Ralenti ; passifs C0 restent à 0 PA",
    "resume": "Mettre en jeu une spécialisation du compendium (5/10 XP) ou une technique assemblée dans la Fabrique Maison.",
    "procedure": [
     "Compendium (§14) : déclenche soit un passif/effet conditionnel sur succès net (ex. Surfréquence 2 PA, Analyse de Faille 2 PA, Mener 2 PA, Riposte à l'Estoc 1 PA, Akimbo Assaut 3 PA, Feinte Oratoire 1 PA), et permet de parer sans malus avec la compétence liée.",
-    "Fabrique Maison (§15) : le cadre est dicté par l'ensemble ◆ choisi — C0 Passif conditionnel (0 PA strict, ≥ 1 prérequis), C2 Action principale (1 PA + pièces actives), C3 Réaction (+2 PA + pièces, 1/round), C4 Opportunité (0 PA, 1/round, déclencheur étroit). Plafond strict : 6 PA max par activation."
+    "Fabrique Maison (§15) : le cadre est dicté par l'ensemble ◆ choisi — C0 Passif conditionnel (0 PA strict, ≥ 1 prérequis), C2 Action principale (1 PA + pièces actives), C3 Réaction (+2 PA + pièces, 1/cycle), C4 Opportunité (0 PA, 1/cycle, déclencheur étroit). Plafond strict : 6 PA max par activation."
    ],
    "conditions": "Les spécialisations indentées (↳) ou pièces de filière exigent leur mère / prérequis. En Fabrique, 7 XP+ = technique signature (1 seule par PJ, accord MJ).",
    "modificateurs": "Règle d'or (Livre V §20.2) : quand un pouvoir, un sort ou une spécialisation contredit une règle de base, c'est lui qui gagne.",
@@ -5332,7 +5332,7 @@
    "ralenti_effet": "Coût ×2 PA en combat sous Ralenti",
    "resume": "Influencer, duper, marchander ou retourner l'allégeance d'un interlocuteur par l'éloquence et la manipulation.",
    "procedure": [
-    "Tromper : Face-à-Face Communication contre Intuition/Instinct adverse. Avec Feinte Oratoire (1 PA) : l'ennemi tourne le dos jusqu'au tour suivant ; Mascarade Totale : traverse sans hostilité.",
+    "Tromper : Face-à-Face Communication contre Intuition/Instinct adverse. Avec Feinte Oratoire (1 PA) : la cible est distraite (−2 à sa prochaine défense) ; Mascarade Totale : traverse sans hostilité.",
     "Négocier : hors combat, réduit de 10 % à 50 % le prix des équipements selon le Δ (ou ouvre Marché Noir Impérial). En combat : Cessez-le-Feu (suspend attaques 1 tour) ou Rachat d'Allégeance (convertit un sbire pour le combat).",
     "Charmer : gagne la confiance immédiate d'un PNJ non hostile et donne +1 EC aux interactions ultérieures."
    ],
@@ -5376,7 +5376,7 @@
    "contexte": "Combat & Hors-Combat",
    "timing": "Pendant son tour ou négociation tendue",
    "portee": "À vue / 3 cases (Rugissement de Terreur)",
-   "jet": "Face-à-Face Intimidation vs Sang-Froid / Volonté / Intimidation",
+   "jet": "Face-à-Face Intimidation vs Sang-Froid / Intuition / Intimidation",
    "requiert_jet": true,
    "consomme_reaction_libre": false,
    "silencieux": false,
@@ -5393,7 +5393,7 @@
    "procedure": [
     "Lancer Intimidation (CHA, ou moyenne CHA/FOR) contre la résistance morale de la cible.",
     "Avec spécialisation Intimider (§14) : sur Δ ≥ 3, force un sbire à fuir le champ de bataille (contre un majeur en Fabrique S2 : Δ ≥ 3 = Déstabilisé).",
-    "Évolutions : Rugissement de Terreur (Déstabilisé à tous les ennemis < 3 cases), Regard de Prédateur (provoque la cible qui ne peut attaquer que vous), Paralysie Psychologique (Paralysé 1 tour si Volonté < CHA)."
+    "Évolutions : Rugissement de Terreur (Déstabilisé à tous les ennemis < 3 cases), Regard de Prédateur (provoque la cible qui ne peut attaquer que vous), Paralysie Psychologique (Paralysé 1 tour sur Δ ≥ 3 ou si INS < CHA)."
    ],
    "conditions": "Les automates dénués de conscience ou ennemis immunisés à la peur ne cèdent pas aux menaces psychologiques.",
    "modificateurs": "Don Vardien Trempe des Bordures : +2 en Intimidation (pour intimider comme pour résister) et +1 aux tests de moral/peur.",
@@ -5504,9 +5504,9 @@
    ],
    "limite": "Sur cible analysée",
    "ralenti_effet": "Coût ×2 PA sous Ralenti (4 PA)",
-   "resume": "Étudier le rythme et les angles morts d'un adversaire pour percer son Encaissement et guider les frappes alliées.",
+   "resume": "Étudier le rythme et les angles morts d'un adversaire pour percer son armure et guider les frappes alliées.",
    "procedure": [
-    "Analyse de Faille (§14) : dépenser 2 PA pour que votre prochain coup (ou celui d'un allié) ignore totalement l'Encaissement adverse.",
+    "Analyse de Faille (§14) : dépenser 2 PA pour que votre prochain coup (ou celui d'un allié) ignore son armure.",
     "Évolutions de branche : Tir Coordonné (+2 à l'attaque pour tous les alliés contre la cible analysée), Prédiction de Retraite (cible privée de tout couvert au prochain tour), Échec et Mat (toute attaque réussie contre la cible analysée devient un critique)."
    ],
    "conditions": "Cible visible et spécialisation Analyse de Faille acquise (Livre III §14).",
@@ -5739,7 +5739,7 @@
    "resume": "Forger ou réparer un équipement Détruit en atelier avec pièces de rechange, affûter une lame ou enseigner un savoir.",
    "procedure": [
     "Restaurer en atelier avec pièces de rechange tout équipement passé à l'état Détruit (§24.5) ; un objet Anéanti reste irréparable.",
-    "Affûtage de Précision (§14) : confère +1 dégât aux 3 prochaines attaques réussies de l'arme affûtée ; Fil Monomoléculaire (+2 dégâts permanents armes blanches) ; Blindage Trempé (+1 absorption armures métal) ; Acier de Maître d'Hybris (critique dès 11 ou 12).",
+    "Affûtage de Précision (§14) : confère +1 dégât aux 3 prochaines attaques réussies de l'arme affûtée ; Fil Monomoléculaire (+2 dégâts permanents armes blanches) ; Blindage Trempé (+1 absorption armures métal) ; Acier de Maître (critique dès max − 1 au dé).",
     "Don Derek Maître-Fondeur : +2 pour forger, armure forgée par soi gagne +1 protection."
    ],
    "conditions": "Exige le matériel d'atelier ou d'affûtage et des pièces de rechange pour la restauration d'un objet Détruit.",

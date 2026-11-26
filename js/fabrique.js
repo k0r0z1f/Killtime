@@ -519,8 +519,8 @@ function suggestName(CAT, sel) {
    Pur : suggestDesc(CAT, sel) -> string ('' si rien à décrire). */var DESC_CHASSIS = {
     C0: 'Toujours actif quand la condition tient.',
     C2: 'Pendant ton tour, tu agis.',
-    C3: 'Hors de ton tour, 1/round.',
-    C4: '0 PA, 1/round, quand le déclencheur tombe.'
+    C3: 'Hors de ton tour, 1/cycle.',
+    C4: '0 PA, 1/cycle, quand le déclencheur tombe.'
 };
 var DESC_U7 = { '5': ' (−5 dégâts + purge 1 état).', '10': ' (−10 dégâts + purge 1 état).', '15': ' (−15 dégâts + immunité 3 tours).' };
 var DESC_U11 = { p3: '3 ESS', p4: '4 ESS + 1 PA', p2x: '2×/combat' };

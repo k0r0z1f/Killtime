@@ -48,7 +48,7 @@ livre: 3
                                 data-tip="Progression : 1 réussite = 1 case. Piste pleine = +1 XP lié, piste à zéro (§5.1-5.2).">Livre
                                 I §5</a>) :</strong> ton rang de base fixe aussi la
                         <strong>taille de ta <a class="rule-ref" href="livre_1.html#chap-5"
-                                data-tip="Piste de progression : autant de cases que votre base — base 3 → 3 cases, base 5 → 5 cases (§5.1).">piste</a></strong>
+                                data-tip="Piste de progression : autant de cases que ta base — base 3 → 3 cases, base 5 → 5 cases (§5.1).">piste</a></strong>
                         : base 3 → 3 cases, base 5 → 5 cases. Chaque
                         <strong>réussite</strong> avec la compétence coche 1 case. Piste pleine ? Tu gagnes +1 <a
                             class="rule-ref" href="livre_1.html#sec-5-2"
