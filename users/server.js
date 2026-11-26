@@ -10,6 +10,7 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const { URL: NodeURL, URLSearchParams: NodeURLSearchParams } = require('url');
+const ssrCodex = require('./ssr_codex');
 
 /* ---------- .env parser (zero dependency) ---------- */
 const ENV_PATH = path.join(__dirname, '..', '.env');
@@ -431,6 +432,22 @@ function serveStatic(req, res, pathname) {
     if (!filePath.startsWith(PUBLIC_DIR)) {
         res.writeHead(403, { 'Content-Type': 'text/plain; charset=utf-8' });
         return res.end('Accès interdit.');
+    }
+
+    const ssr = ssrCodex.renderSsrHtml(PUBLIC_DIR, safePath);
+    if (ssr) {
+        if (isFresh(req, ssr.mtime)) {
+            res.writeHead(304);
+            return res.end();
+        }
+        res.writeHead(200, Object.assign(
+            {
+                'Content-Type': 'text/html; charset=utf-8',
+                'Content-Length': ssr.buffer.length
+            },
+            staticCacheHeaders('.html', { mtime: ssr.mtime })
+        ));
+        return res.end(req.method === 'HEAD' ? undefined : ssr.buffer);
     }
 
     fs.stat(filePath, (err, stats) => {
@@ -3069,6 +3086,17 @@ async function handleRequest(req, res, isAdminListener) {
     }
 
     if (req.method === 'GET' || req.method === 'HEAD') {
+        const rawHost = String(req.headers.host || '').split(':')[0].toLowerCase();
+        const isWww = rawHost === 'www.killtime.studio';
+        const isRootIndex = parsedUrl.pathname.toLowerCase() === '/index.html';
+        if (isWww || isRootIndex) {
+            const targetPath = isRootIndex ? '/' : parsedUrl.pathname;
+            const location = isWww
+                ? `https://killtime.studio${targetPath}${parsedUrl.search}`
+                : `${targetPath}${parsedUrl.search}`;
+            res.writeHead(301, { 'Location': location });
+            return res.end();
+        }
         return serveStatic(req, res, parsedUrl.pathname);
     }
 

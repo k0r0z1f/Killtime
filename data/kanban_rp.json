@@ -3931,6 +3931,22 @@
           "suggestedAsset": "tables.html",
           "updated": "2026-11-26",
           "details": "DONE 2026-11-26 — Implémentation complète du VTT Web SysRP en 3 itérations (board-vtt-web VTT-006..VTT-045 100% done) : moteur de règles js/vtt-rules.js, état serveur persistant anti-maphack users/vtt_state.js + policy users/vtt_hub_policy.js + routes WS/REST users/server.js, canvas HiDPI 7 couches js/vtt-canvas.js, client WS js/vtt-client.js, compendiums js/vtt-compendium.js, duels Face-à-Face/réactions/handouts js/vtt-combat.js, horloge/défis/sorts/audio js/vtt-extras.js, interface Chat↔VTT/blessures/DLPH/véhicules/mobile js/vtt-ui.js + css/vtt.css, intégration tables.html, js/tables.js et dock global js/table-dock.js, 60/60 tests node --test verts, et actualisation de README.md."
+        },
+        {
+          "id": "RP-256",
+          "title": "Site SEO — balises canonical, liens racine, redirections 301, robots.txt/sitemap & SSR Codex",
+          "epic": "Site Codex",
+          "status": "done",
+          "priority": "high",
+          "order": 253,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "users/ssr_codex.js",
+          "updated": "2026-11-26",
+          "details": "DONE 2026-11-26 — Correction complète Search Console (Duplicate without user-selected canonical & Crawled - currently not indexed) : ajout <link rel=\"canonical\"> sur les 19 pages Codex + correction canonical Killtime/index.html, normalisation des liens internes index.html -> / (20 pages dont doc_viewer.html & atlas_3d.html), redirections 301 (/index.html -> /, www.killtime.studio -> https://killtime.studio) dans users/server.js, resserrage robots.txt (exclusion doc_viewer.html, *.docx, chatgpt/, lore/, manuscripts/ en gardant /data/ ouvert) & mise à jour sitemap.xml (20 URLs), pré-rendu serveur SSR caché par mtime (users/ssr_codex.js) pour les 11 Livres JSON et 3 Appendices, plus 8 nouveaux tests (users/tests/canonical_redirect.test.js & ssr_codex.test.js, 68/68 verts)."
         }
       ]
     },

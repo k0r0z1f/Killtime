@@ -14,5 +14,10 @@ Disallow: /tactics_index.html
 Disallow: /tactics_evolution.html
 Disallow: /tactics_files.html
 Disallow: /tactics_fleur_fichiers.html
+Disallow: /doc_viewer.html
+Disallow: /*.docx$
+Disallow: /Killtime/Killtime/chatgpt/
+Disallow: /Killtime/Killtime/lore/
+Disallow: /Killtime/Killtime/manuscripts/
 
 Sitemap: https://killtime.studio/sitemap.xml
