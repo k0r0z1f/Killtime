@@ -8,6 +8,7 @@
 [![Univers](https://img.shields.io/badge/Lore-Killtime_Universe-10b981.svg)](Killtime/index.html)
 [![Web_App](https://img.shields.io/badge/Plateforme-Web_Autonome-8b5cf6.svg)](index.html)
 [![Licence](https://img.shields.io/badge/Licence-GPLv3-blue.svg)](Killtime/LICENSE)
+[![What's New](https://img.shields.io/badge/What%27s_New-6f497f7_%E2%86%92_6fd7604-ef4444.svg)](WHATS_NEW.md)
 
 ---
 

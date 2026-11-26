@@ -3883,6 +3883,22 @@
           "suggestedAsset": "users/server.js",
           "updated": "2026-11-25",
           "details": "DONE 2026-11-25 — Correctif dans users/server.js (écouteur admin 127.0.0.1:3100 uniquement, garde isLoopbackHost) : liste blanche GET/HEAD pour /css/themes.css, /js/theme-init.js, /js/theme.js et /favicon.ico (corrige la page admin.html sans styles et les 404 console) + routage GET/HEAD protégé pour /data/archives/<fichier>.json (requirePerm users.manage + regex stricte). Port public 3000 inchangé (404). Mot de passe du compte local AlexisLacasse (usr_architect_00) réinitialisé dans users/users.json."
+        },
+        {
+          "id": "RP-253",
+          "title": "Documentation — What's New racine (6f497f7 → 6fd7604) & badge README GitHub",
+          "epic": "Site Codex",
+          "status": "done",
+          "priority": "medium",
+          "order": 250,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "WHATS_NEW.md",
+          "updated": "2026-11-25",
+          "details": "DONE 2026-11-25 — Création de WHATS_NEW.md à la racine du dépôt pour accès rapide sur GitHub (plage 6f497f7 → 6fd7604 : tableau comparatif, 3 commits d'audit mécanique sysrp 6fd7604/5146306/2a867a6 + commit intermédiaire Appendice C / Board VTT / Infra 76e6dcf, suivi des écarts depuis la baseline locale summaries/mecaniques_systeme_rp_6f497f7.md) et ajout du badge What's New dans README.md."
         }
       ]
     },
